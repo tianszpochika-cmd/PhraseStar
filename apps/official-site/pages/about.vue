@@ -80,7 +80,7 @@ useOfficialSeo({ title: t("official.v1.info.about.seoTitle"), description: t("of
 .v1-info-about__values article > p:last-child { margin-top: 20px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-info-about__cta { min-height: 138px; margin-top: 28px; padding: 21px 24px 13px; border-radius: 19px; background: var(--v1-info-about-cta-bg, var(--v1-bg)); }
 .v1-info-about__cta h2 { font-size: 22px; }
-.v1-info-about__cta :deep(.btn) { min-width: 230px; min-height: 52px; margin-top: 17px; border-radius: 14px; color: var(--v1-on-brand); background: var(--v1-brand); }
+.v1-info-about__cta :deep(.btn) { min-width: 230px; min-height: 52px; margin-top: 22px; border-radius: 14px; color: var(--v1-on-brand); background: var(--v1-brand); }
 .v1-info-about__useful { margin-top: 30px; }
 html[data-theme="high-contrast"] .v1-info-about__story,
 html[data-theme="high-contrast"] .v1-info-about__sample,

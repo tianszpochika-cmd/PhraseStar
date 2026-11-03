@@ -831,7 +831,7 @@
         },
         {
           "path": "apps/official-site/components/v1/experience/CatalogView.vue",
-          "sha256": "e78f43acbf570ac57014532a1321adb8ef2d050f98eb04e7d0e4c149f1e482a7"
+          "sha256": "62e82d8d006097979a02a79a1d2d7098699ae1e2a5de2f38a502aff8808aeff4"
         },
         {
           "path": "apps/official-site/components/v1/experience/WorldScene.vue",
@@ -891,7 +891,7 @@
         },
         {
           "path": "apps/official-site/pages/about.vue",
-          "sha256": "f8aff317c02e57fc784d6d3036a55c788b052b48a027bef8ba293c51232a1eaf"
+          "sha256": "0f9dd1be31b4fa1259a52ec8d336ae60998ca7d099225fbf521aca23240d1b3a"
         },
         {
           "path": "apps/official-site/pages/announcements.vue",
@@ -915,7 +915,7 @@
         },
         {
           "path": "apps/official-site/pages/help.vue",
-          "sha256": "68b46d8d477c9b3e1bcb31ffad1ecb32d4dd23e51edd4633553488a99e3bfe33"
+          "sha256": "d1f57f03aa9c276b622e3d2245ed40b43dd2e97e8ce2dec4553ca3f5020cdfe2"
         },
         {
           "path": "apps/official-site/pages/index.vue",
@@ -1365,7 +1365,7 @@
         ],
         "currentSourceCharacterSetSha256": "8edc641bcb02cacddaa3f5bc56698da80a03bfcc4425a128a2a69e0ebbd81a3f",
         "fontBinaryUnchanged": true,
-        "atUtc": "2026-11-03T09:12:57.751266+00:00"
+        "atUtc": "2026-11-03T09:32:07.130890+00:00"
       }
     }
   ]
