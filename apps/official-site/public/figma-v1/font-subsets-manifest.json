@@ -831,7 +831,7 @@
         },
         {
           "path": "apps/official-site/components/v1/experience/CatalogView.vue",
-          "sha256": "d5a5586c601a7272044caaf7c5216e9c569ebd64bd8400e61692407c16386aa4"
+          "sha256": "9d74f35314159a59888c3e30297c48b4a3538714bb18df5907b4cf02a80539f7"
         },
         {
           "path": "apps/official-site/components/v1/experience/WorldScene.vue",
@@ -1365,7 +1365,7 @@
         ],
         "currentSourceCharacterSetSha256": "8edc641bcb02cacddaa3f5bc56698da80a03bfcc4425a128a2a69e0ebbd81a3f",
         "fontBinaryUnchanged": true,
-        "atUtc": "2026-11-03T09:44:56.546189+00:00"
+        "atUtc": "2026-11-03T09:53:17.301778+00:00"
       }
     }
   ]
