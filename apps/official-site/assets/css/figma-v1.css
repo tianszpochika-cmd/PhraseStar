@@ -521,6 +521,10 @@ dialog.v1-dialog-bare {
   font-size: 14px;
 }
 
+.v1-site-footer--interior .v1-site-footer__column a[aria-current="page"] {
+  color: var(--v1-footer-current);
+}
+
 .v1-page-heading__body {
   display: flex;
   justify-content: space-between;
@@ -719,6 +723,10 @@ dialog.v1-dialog-bare {
     color: var(--v1-footer-ink);
     font-size: 13px;
     font-weight: 400;
+  }
+
+  .v1-site-footer--interior .v1-site-footer__mobile-links a[aria-current="page"] {
+    color: var(--v1-footer-current);
   }
 
   .v1-page-heading__body {

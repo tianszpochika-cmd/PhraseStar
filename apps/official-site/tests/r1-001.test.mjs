@@ -45,7 +45,15 @@ test("R1-001 honest course, price and download messages do not promise approved 
 
 test("R1-001 handoff to learner registration has adult boundary and controlled URL preferences", async () => {
   const query = "?locale=zh-CN&theme=dark&utm_source=r1-audit&returnTo=%2F%2Fevil.test&redirect=https%3A%2F%2Fevil.test&access_token=forbidden";
-  const html = await read("/start" + query);
+  const home = await read("/" + query);
+  const homeHrefs = [...home.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replaceAll("&amp;", "&"));
+  const start = homeHrefs.map((href) => new URL(href, origin)).find((url) =>
+    url.origin === origin && url.pathname === "/start" && url.searchParams.get("utm_source") === "r1-audit");
+  assert.ok(start, "header CTA first navigates to the official start page");
+  assert.equal(start.searchParams.get("locale"), "zh-CN");
+  assert.equal(start.searchParams.get("theme"), "dark");
+  for (const key of ["access_token", "redirect", "returnTo", "owner", "tenant", "role"]) assert.equal(start.searchParams.has(key), false);
+  const html = await read(start.pathname + start.search);
   assert.match(html, /18 岁以上成人与大学生/);
   assert.match(html, /通过前不开放学习能力/);
   const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replaceAll("&amp;", "&"));

@@ -103,7 +103,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
       </section>
       <p :id="`${panelId}-boundary`" class="v1-world-note">{{ t("official.v1.experience.world.note") }}</p>
       <section class="v1-world-example" aria-labelledby="world-example-title"><p class="v1-world-eyebrow">{{ t("official.v1.experience.world.trainLabel") }}</p><h2 id="world-example-title">{{ t("official.v1.experience.world.trainTitle") }}</h2><p>{{ t("official.v1.experience.world.trainDescription") }}</p>
-        <div class="v1-world-example-grid"><div class="v1-world-train"><h3>{{ t("official.v1.experience.world.trainPreview") }}</h3><div class="v1-world-wagons"><span v-for="word in ['wordI', 'wordLearn', 'wordEnglish']" :key="word"><strong>{{ t(`official.v1.experience.world.${word}`) }}</strong><i aria-hidden="true">◉</i></span></div><p>{{ t("official.v1.experience.world.trainNote") }}</p></div><div class="v1-world-maturity"><h3>{{ t("official.v1.experience.world.maturityTitle") }}</h3><ol><li v-for="(name, index) in ['Train', 'Space', 'Study']" :key="name"><span>{{ t(index === 0 ? "official.v1.experience.world.phase0" : "official.v1.experience.world.phase1") }}</span><div><strong>{{ t(`official.v1.experience.world.maturity${name}`) }}</strong><p>{{ t(`official.v1.experience.world.maturity${name}Note`) }}</p></div></li></ol></div></div>
+        <div class="v1-world-example-grid"><div class="v1-world-train"><h3>{{ t("official.v1.experience.world.trainPreview") }}</h3><div class="v1-world-wagons"><span v-for="word in ['wordI', 'wordLearn', 'wordEnglish']" :key="word"><strong>{{ t(`official.v1.experience.world.${word}`) }}</strong><i aria-hidden="true">◉</i></span></div><p>{{ t("official.v1.experience.world.trainNote") }}</p></div><div class="v1-world-maturity"><h3>{{ t("official.v1.experience.world.maturityTitle") }}</h3><ol><li v-for="(name, index) in ['Train', 'Space', 'Study']" :key="name"><span>{{ t(index === 0 ? "official.v1.experience.world.phase0" : "official.v1.experience.world.phase1") }}</span><div><strong>{{ t(`official.v1.experience.world.maturity${name}`) }}<span class="v1-world-maturity-short" aria-hidden="true">{{ t(`official.v1.experience.world.maturity${name}Short`) }}</span></strong><p>{{ t(`official.v1.experience.world.maturity${name}Note`) }}</p></div></li></ol></div></div>
       </section>
     </div>
   </div>
@@ -134,9 +134,9 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 .v1-world-heading-card small { position: absolute; left: 165px; top: 143px; max-width: 158px; margin: 0; }
 .v1-world-progress { position: absolute; left: 21px; top: 140px; width: 124px; height: 6px; border-radius: 4px; background: var(--v1-surface); margin: 0; }
 .v1-world-progress i { display: block; width: 68%; height: 100%; border-radius: inherit; background: var(--v1-brand); }
-.v1-world-heading-word { position: absolute; right: 11px; top: 261px; width: 338px; opacity: .3; font: 600 31px var(--v1-font-display); color: var(--v1-brand); }
-.v1-world-heading-spark { position: absolute; right: -82px; top: 183px; color: var(--v1-brand); opacity: .32; font-size: 39px; }
-.v1-world-heading-bar { position: absolute; left: 0; top: 300px; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-brand); opacity: .25; }
+.v1-world-heading-word { position: absolute; right: 11px; top: 261px; width: 338px; opacity: .23; font: 600 31px var(--v1-font-display); color: var(--v1-world-hero-accent, var(--v1-brand)); }
+.v1-world-heading-spark { position: absolute; right: -82px; top: 183px; color: var(--v1-world-hero-accent, var(--v1-brand)); opacity: .32; font-size: 39px; }
+.v1-world-heading-bar { position: absolute; left: 0; top: 300px; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-world-hero-accent, var(--v1-brand)); opacity: .25; }
 
 .v1-world-content { padding-top: 52px; padding-bottom: 40px; }
 .v1-world-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 21px; }
@@ -169,6 +169,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 .v1-world-example > h2 { margin: 16px 6px 8px; font-size: 29px; }.v1-world-example > p:not(.v1-world-eyebrow) { margin: 0 6px; color: var(--v1-muted); font-size: 13px; }
 .v1-world-example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 25px; }.v1-world-train,.v1-world-maturity { min-height: 243px; padding: 17px; border-radius: 18px; background: var(--v1-surface); }.v1-world-example-grid h3 { margin: 0; font-size: 17px; }
 .v1-world-train { display: flex; flex-direction: column; }.v1-world-wagons { display: flex; gap: 14px; margin-top: 18px; }.v1-world-wagons > span { display: flex; flex-direction: column; justify-content: center; gap: 2px; width: 147px; height: 61px; padding: 8px 11px; border-radius: 13px; background: var(--v1-brand-soft); font-size: 15px; }.v1-world-wagons > span:nth-child(2) { background: var(--v1-download-hero-from, var(--v1-brand-soft)); }.v1-world-wagons i { color: var(--v1-brand); font-style: normal; }.v1-world-train > p { margin-top: auto; color: var(--v1-muted); font-size: 12px; }
+.v1-world-maturity-short { display: none; }
 .v1-world-maturity ol { display: grid; gap: 14px; padding: 0; margin: 15px 0 0; list-style: none; }.v1-world-maturity li { display: flex; gap: 12px; align-items: start; font-size: 14px; }.v1-world-maturity li > span { display: grid; place-items: center; flex: 0 0 53px; height: 35px; border-radius: 12px; color: var(--v1-brand); background: var(--v1-brand-soft); }.v1-world-maturity li:first-child > span { background: var(--v1-card-mint, var(--v1-brand-soft)); }.v1-world-maturity li p { margin: 4px 0 0; color: var(--v1-muted); font-size: 12px; }
 .v1-world :is(button,a):focus-visible,.v1-world-panel:focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
 @media (max-width: 768px) {
@@ -188,14 +189,15 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
   .v1-world-light-mobile { right: -33px; top: 32px; }
   .v1-world-ellipse-mobile { right: -81px; top: 100px; }
   .v1-world-heading-card :is(span,strong,small,.v1-world-progress) { display: none; }
-  .v1-world-heading-word { display: block; left: 1px; right: auto; top: 263px; width: auto; font-size: 11px; }
+  .v1-world-heading-word { display: block; left: 1px; right: auto; top: 263px; width: auto; opacity: .41; font-size: 11px; }
   .v1-world-heading-spark { right: 12px; top: 59px; font-size: 27px; opacity: .65; }
-  .v1-world-heading-bar { top: 283px; width: 74px; }
+  .v1-world-heading-bar { top: 283px; width: 74px; opacity: .33; }
 
   .v1-world-content { padding-top: 43px; }.v1-world-tabs { gap: 8px; }.v1-world-preview { margin-left: 0; }.v1-world-tabs button { flex: 0 0 79px; min-width: 79px; padding: 8px; font-size: 14px; }
   .v1-world-panel { min-height: 440px; padding: 20px; }.v1-world-views { margin: 0; }.v1-world-views button { padding-left: 0; font-size: 12px; }.v1-world-panel > h2 { margin: 22px 0 38px; font-size: 16px; }.v1-world-scene-options { gap: 5px; margin-top: 25px; }.v1-world-scene-options button { font-size: 12px; }
   .v1-world-cards { grid-template-columns: 1fr; gap: 12px; margin-top: 23px; }.v1-world-card { min-height: 130px; border-radius: 16px; }.v1-world-card > div > span,.v1-world-card > button { display: none; }.v1-world-card p { margin-top: 14px; }
-  .v1-world-example { padding: 20px 15px 25px; }.v1-world-example > h2 { font-size: 23px; }.v1-world-example-grid { grid-template-columns: 1fr; gap: 16px; }.v1-world-train { min-height: 147px; }.v1-world-maturity { min-height: 197px; }.v1-world-wagons { gap: 7px; }.v1-world-wagons > span { width: 0; flex: 1; }.v1-world-train > p { margin-top: 12px; }
+  .v1-world-example { padding: 20px 15px 25px; }.v1-world-example > h2 { font-size: 23px; }.v1-world-example-grid { grid-template-columns: 1fr; gap: 16px; }.v1-world-train { min-height: 147px; }.v1-world-maturity { min-height: 197px; }.v1-world-wagons { gap: 7px; }.v1-world-wagons > span { width: 0; flex: 1; }  .v1-world-maturity-short { display: inline; }
+  .v1-world-train > p,.v1-world-maturity li p { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 @media (max-width: 360px) { .v1-world-heading :deep(.container), .v1-world-content { width: calc(100% - 32px); } }
 </style>

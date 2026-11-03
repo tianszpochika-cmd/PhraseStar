@@ -80,10 +80,13 @@ export const officialSiteV1Experience = {
     phase1: "P1",
     maturityTrain: "拼句小火车",
     maturityTrainNote: "首发范围：官网本地示例",
+    maturityTrainShort: " · 本地首发",
     maturitySpace: "学习空间 / 3D 形象",
     maturitySpaceNote: "后续增强",
+    maturitySpaceShort: " · 后续",
     maturityStudy: "Study Room",
     maturityStudyNote: "开放前需治理",
+    maturityStudyShort: " · 待治理",
   },
   start: {
     seoTitle: "开始学习 · 语学星",

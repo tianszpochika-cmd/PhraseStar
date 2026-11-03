@@ -77,7 +77,13 @@ test("R1-001 public entry links to learner registration and retains adult/read-o
   assert.match(header, /SiteStartButton/);
   assert.match(header, /v1-mobile-menu/);
   assert.match(header, /:to="authLink\(\)" external/);
-  for (const source of [button, start, courseIndex]) assert.match(source, /registerLink\(\)/);
+  assert.match(button, /path:\s*"\/start"/);
+  assert.match(button, /data-start-entry/);
+  assert.match(button, /preserveCampaignParams\(route\.query\)/);
+  assert.match(button, /resolvePublicUiLocale/);
+  assert.match(button, /resolvePublicThemeMode/);
+  assert.doesNotMatch(button, /registerLink\(\)/);
+  for (const source of [start, courseIndex]) assert.match(source, /registerLink\(\)/);
   assert.match(links, /buildPublicLearningEntry/);
   assert.match(links, /buildLearnerLoginLink/);
   assert.match(start, /data-register-entry/);

@@ -458,7 +458,7 @@ test("leaving a public page clears its instance state before a later visit", asy
 
 test("a stale-only content signal becomes recovery without aging fresh commerce", async () => {
   const plan = {
-    skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
+    planId: "fresh-plan", skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "fresh-sku-v1",
   };
@@ -487,7 +487,7 @@ test("B9 meta stale wins over a ready content payload without aging independent 
   const content = canonicalContentPayload();
   content.meta.stale = true;
   const plan = {
-    skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
+    planId: "fresh-plan", skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "fresh-sku-v1",
   };
@@ -620,7 +620,7 @@ test("late malformed content cannot downgrade newer denial; known denial wins ov
 
 test("supported content wrappers use fresh commerce prices and honor their nested access and stale state", async () => {
   const fresh = {
-    skuId: "new-sku", title: "当前方案", currency: "CNY", amountMinor: 1299,
+    planId: "new-plan", skuId: "new-sku", title: "当前方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "new-v1",
   };
@@ -681,7 +681,7 @@ test("BFF keeps legitimate recovery data, time, stale flag and reason", async ()
 test("BFF recovery keeps fresh independent commerce state instead of forcing all facets", async () => {
   const course = { id: "course-1", title: "基础英语" };
   const plans = [{
-    skuId: "sku-valid", title: "月度方案", currency: "CNY", amountMinor: 1299,
+    planId: "plan-valid", skuId: "sku-valid", title: "月度方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "sku-valid-v1",
   }];
@@ -715,7 +715,7 @@ test("BFF still clears permission/error/maintenance content while keeping commer
 
 test("BFF sequential recovery updates cached commerce facts and never revives withdrawn plans", async () => {
   const oldPlan = {
-    skuId: "withdrawn", title: "Old published plan", currency: "CNY", amountMinor: 1299,
+    planId: "plan-withdrawn", skuId: "withdrawn", title: "Old published plan", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "old-snapshot",
   };
@@ -788,7 +788,7 @@ test("BFF recovery does not refresh the 60s cache window", async () => {
 
 test("BFF late revoked response cannot refill withdrawn commerce facts", async () => {
   const oldPlan = {
-    skuId: "withdrawn", title: "Old published plan", currency: "CNY", amountMinor: 1299,
+    planId: "plan-withdrawn", skuId: "withdrawn", title: "Old published plan", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "old-snapshot",
   };
@@ -921,13 +921,13 @@ test("public commerce accepts the contract envelope and the existing legacy shap
     const { body, headers } = await app.request();
     assert.equal(headers["x-public-projection-commerce"], "gateway");
     assert.equal(body.facets.pricing.state, "ready");
-    assert.deepEqual(body.projection.pricingPlans.map((item) => item.skuId), ["sku-public"]);
+    assert.equal(body.projection.pricingPlans.map((item) => item.skuId).join(","), "sku-public");
   }
 });
 
 test("a malformed commerce envelope cannot fall back to sibling legacy plans", async () => {
   const plan = {
-    skuId: "old-plan", title: "旧方案", currency: "CNY", amountMinor: 1299,
+    planId: "old-plan", skuId: "old-plan", title: "旧方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "old-plan-v1",
   };
@@ -945,26 +945,93 @@ test("a malformed commerce envelope cannot fall back to sibling legacy plans", a
   }
 });
 
-test("malformed public offers are withheld instead of displaying a placeholder price", async () => {
-  const app = harness();
+test("malformed or mixed public offers fail the pricing facet without losing content", async () => {
   const valid = {
-    skuId: "sku-valid", title: "月度方案", currency: "CNY", amountMinor: 1299,
+    planId: "plan-valid", skuId: "sku-valid", title: "月度方案", currency: "CNY", amountMinor: 1299,
     billingPeriod: "MONTH", availability: "PUBLISHED",
     entitlementCode: "learn.month", priceSnapshotId: "sku-valid-v1",
   };
-  app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog")
-    ? { plans: [
-      valid,
-      { ...valid, skuId: "sku-invalid-currency", currency: "INVALID" },
-      { ...valid, skuId: "sku-no-snapshot", priceSnapshotId: "" },
-      { ...valid, skuId: "sku-invalid-term", billingPeriod: "WEEK" },
-      { ...valid, skuId: "sku-fractional", amountMinor: 12.5 },
-    ] }
-    : readyPayload));
-  const { body } = await app.request();
-  assert.deepEqual(body.projection.pricingPlans.map((plan) => plan.skuId), ["sku-valid"]);
-  assert.equal(body.projection.pricingPlans[0].price, "¥12.99");
-  assert.deepEqual(body.projection.skus.map((sku) => sku.skuId), ["sku-valid"]);
+  for (const plans of [
+    [{ broken: true }], [null],
+    [valid, { ...valid, currency: "INVALID" }],
+    [{ ...valid, priceSnapshotId: "" }],
+    [{ ...valid, billingPeriod: "WEEK" }],
+    [{ ...valid, amountMinor: 12.5 }],
+    [{ ...valid, billingPeriod: "PERPETUAL", availability: "PUBLISHED" }],
+  ]) {
+    const app = harness();
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans } : readyPayload));
+    const { body, headers } = await app.request();
+    assert.equal(body.facets.pricing.state, "error");
+    assert.equal(body.projection.pricingPlans.length, 0);
+    assert.equal(body.projection.skus.length, 0);
+    assert.equal(body.projection.courses.length, 1);
+    assert.equal(headers["cache-control"], "no-store");
+    assert.equal(headers["x-public-projection-commerce"], "degraded");
+  }
+  for (const availability of ["COMING_SOON", "UNAVAILABLE"]) {
+    const app = harness();
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog")
+      ? { plans: [{ ...valid, billingPeriod: "PERPETUAL", availability }] } : readyPayload));
+    const { body } = await app.request();
+    assert.equal(body.facets.pricing.state, "ready");
+    assert.equal(body.projection.pricingPlans.length, 1);
+    assert.notEqual(body.projection.pricingPlans[0].availability, "available");
+  }
+  const empty = harness();
+  empty.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [] } : readyPayload));
+  const result = await empty.request();
+  assert.equal(result.body.facets.pricing.state, "ready");
+  assert.equal(result.body.projection.pricingPlans.length, 0);
+  assert.match(result.headers["cache-control"], /^public/);
+});
+
+test("commerce plans require all published schema fields and honor every billing availability combination", async () => {
+  const plan = {
+    planId: "plan-1", skuId: "sku-1", title: "公开方案", billingPeriod: "MONTH",
+    currency: "CNY", amountMinor: 1299, priceSnapshotId: "snapshot-1",
+    availability: "PUBLISHED", entitlementCode: "learn.month",
+  };
+  const malformed = Object.keys(plan).map((key) => {
+    const missing = { ...plan };
+    delete missing[key];
+    return missing;
+  });
+  malformed.push(
+    { ...plan, planId: " " }, { ...plan, planId: "p".repeat(129) },
+    { ...plan, skuId: "s".repeat(129) }, { ...plan, title: "t".repeat(161) },
+    { ...plan, entitlementCode: "e".repeat(97) }, { ...plan, priceSnapshotId: "p".repeat(129) },
+    { ...plan, currency: " CNY " }, { ...plan, amountMinor: -1 },
+    { ...plan, availability: "ACTIVE" }, { ...plan, billingPeriod: "DAY" },
+    { ...plan, unexpected: "field" },
+    { ...plan, billingPeriod: "PERPETUAL", availability: "PUBLISHED" },
+  );
+  for (const [index, badPlan] of malformed.entries()) {
+    const app = harness();
+    const catalog = index % 2 ? { data: { plans: [plan, badPlan] } } : { plans: [badPlan] };
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? catalog : readyPayload));
+    const { body, headers } = await app.request();
+    assert.equal(body.facets.pricing.state, "error", `invalid plan ${index}`);
+    assert.equal(body.projection.pricingPlans.length, 0);
+    assert.equal(body.projection.courses.length, 1);
+    assert.equal(headers["cache-control"], "no-store");
+  }
+  for (const billingPeriod of ["FREE", "MONTH", "QUARTER", "YEAR", "PERPETUAL"]) {
+    for (const availability of ["PUBLISHED", "COMING_SOON", "UNAVAILABLE"]) {
+      const app = harness();
+      app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog")
+        ? { plans: [{ ...plan, billingPeriod, availability }] } : readyPayload));
+      const { body, headers } = await app.request();
+      if (billingPeriod === "PERPETUAL" && availability === "PUBLISHED") {
+        assert.equal(body.facets.pricing.state, "error");
+        assert.equal(body.projection.pricingPlans.length, 0);
+        assert.equal(headers["cache-control"], "no-store");
+      } else {
+        assert.equal(body.facets.pricing.state, "ready", `${billingPeriod}/${availability}`);
+        assert.equal(body.projection.pricingPlans.length, 1);
+      }
+    }
+  }
 });
 
 test("Nuxt and full Compose keep the internal address private", async () => {

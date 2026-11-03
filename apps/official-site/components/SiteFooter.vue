@@ -86,13 +86,13 @@ const mobileLinks = computed(() => isHome.value ? homeMobileLinks : informationP
           :aria-label="t(group.title)"
         >
           <h2>{{ t(group.title) }}</h2>
-          <NuxtLink v-for="[path, label] in group.links" :key="path" :to="path">
+          <NuxtLink v-for="[path, label] in group.links" :key="path" :to="path" :aria-current="route.path === path ? 'page' : undefined">
             {{ t(label) }}
           </NuxtLink>
         </nav>
       </div>
       <nav class="v1-site-footer__mobile-links" :aria-label="t('official.c5e0350877')">
-        <NuxtLink v-for="[path, label] in mobileLinks" :key="path" :to="path">
+        <NuxtLink v-for="[path, label] in mobileLinks" :key="path" :to="path" :aria-current="route.path === path ? 'page' : undefined">
           {{ t(label) }}
         </NuxtLink>
       </nav>

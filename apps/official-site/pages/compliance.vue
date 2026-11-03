@@ -25,7 +25,7 @@ const stateMessage = computed(() => {
         <div v-if="notices.length" class="v1-info-compliance-notices__items">
           <article v-for="notice in notices" :key="notice.id"><span v-if="notice.status">{{ notice.status }}</span><h3>{{ notice.title }}</h3><p>{{ notice.description }}</p></article>
         </div>
-        <p v-else-if="canShow || facet.state === 'empty'" class="v1-info-compliance-notices__empty" role="status">{{ t("official.v1.info.legal.compliance.empty") }}</p>
+        <p v-else-if="canShow || facet.state === 'empty'" class="v1-info-compliance-notices__empty" role="status">{{ t(facet.state === "recovery" ? "official.v1.info.legal.compliance.recoveryEmpty" : "official.v1.info.legal.compliance.empty") }}</p>
         <div v-else class="v1-info-compliance-notices__state" :role="['error', 'permission'].includes(facet.state) ? 'alert' : 'status'" aria-live="polite">
           <p>{{ stateMessage }}</p>
           <button v-if="facet.state !== 'loading'" type="button" @click="load">{{ t("official.v1.info.legal.compliance.retry") }}</button>

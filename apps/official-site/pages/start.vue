@@ -159,9 +159,9 @@ useOfficialSeo({
 .v1-start-heading-card small { position: absolute; left: 165px; top: 143px; max-width: 158px; margin: 0; }
 .v1-start-progress { position: absolute; left: 21px; top: 140px; width: 124px; height: 6px; border-radius: 4px; background: var(--v1-surface); margin: 0; }
 .v1-start-progress i { display: block; width: 68%; height: 100%; border-radius: inherit; background: var(--v1-brand); }
-.v1-start-heading-word { position: absolute; right: 11px; top: 261px; width: 338px; opacity: .3; font: 600 31px var(--v1-font-display); color: var(--v1-brand); }
-.v1-start-heading-spark { position: absolute; right: -82px; top: 183px; color: var(--v1-brand); opacity: .32; font-size: 39px; }
-.v1-start-heading-bar { position: absolute; left: 0; top: 300px; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-brand); opacity: .25; }
+.v1-start-heading-word { position: absolute; right: 11px; top: 261px; width: 338px; opacity: .23; font: 600 31px var(--v1-font-display); color: var(--v1-start-hero-accent, var(--v1-brand)); }
+.v1-start-heading-spark { position: absolute; right: -82px; top: 183px; color: var(--v1-start-hero-accent, var(--v1-brand)); opacity: .32; font-size: 39px; }
+.v1-start-heading-bar { position: absolute; left: 0; top: 300px; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-start-hero-accent, var(--v1-brand)); opacity: .25; }
 .v1-start-content { padding-top: 52px; padding-bottom: 40px; }
 .v1-start-journey { position: relative; min-height: 435px; padding: 33px 24px 26px; border-radius: 23px; background: var(--v1-brand-soft); overflow: hidden; }
 .v1-start-journey-copy { position: relative; z-index: 1; max-width: 560px; }
@@ -219,9 +219,9 @@ useOfficialSeo({
   .v1-start-light-mobile { right: -33px; top: 32px; }
   .v1-start-ellipse-mobile { right: -81px; top: 100px; }
   .v1-start-heading-card :is(span,strong,small,.v1-start-progress) { display: none; }
-  .v1-start-heading-word { display: block; left: 1px; right: auto; top: 263px; width: auto; font-size: 11px; }
+  .v1-start-heading-word { display: block; left: 1px; right: auto; top: 263px; width: auto; opacity: .41; font-size: 11px; }
   .v1-start-heading-spark { right: 12px; top: 59px; font-size: 27px; opacity: .65; }
-  .v1-start-heading-bar { top: 283px; width: 74px; }
+  .v1-start-heading-bar { top: 283px; width: 74px; opacity: .33; }
   .v1-start-content { padding-top: 43px; }
   .v1-start-journey { min-height: 439px; padding: 33px 24px 24px; }
   .v1-start-journey h2 { margin: 34px 0 42px; font-size: 25px; }

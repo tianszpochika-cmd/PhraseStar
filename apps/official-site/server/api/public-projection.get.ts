@@ -23,10 +23,6 @@ function isRecord(value: unknown): value is PublicGatewayPayload {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function list(value: unknown): PublicGatewayPayload[] {
-  return Array.isArray(value) ? value.filter(isRecord) : [];
-}
-
 function usableContentPayload(value: unknown): value is PublicGatewayPayload {
   if (!isRecord(value)) return false;
   const wrappers = ["publicProjection", "data", "result"] as const;
@@ -61,43 +57,38 @@ function publicCommerceCatalog(value: unknown): PublicGatewayPayload | null {
   return Array.isArray(value.plans) ? value : null;
 }
 
-function mergeCommercePricing(
-  projection: unknown,
-  commerce: PublicGatewayPayload | null,
-  locale: PublicUiLocale,
-): unknown {
-  if (!isRecord(projection)) return projection;
-  const plans = commerce ? list(commerce.plans) : [];
-  // Match sourceData's precedence so new commerce facts replace old prices in
-  // the exact supported wrapper that the normalizer will subsequently read.
-  const wrapper = (["publicProjection", "data", "result"] as const)
-    .find((key) => isRecord(projection[key]));
-  const data = wrapper && isRecord(projection[wrapper]) ? projection[wrapper] : projection;
-
-  // The official site may display commerce facts, but it must not own or copy
-  // order/entitlement data. Keep only the catalog's public, field-filtered
-  // plan projection and merge it at the BFF boundary.
-  const pricing = plans.flatMap((plan) => {
-    const skuId = typeof plan.skuId === "string" ? plan.skuId.trim() : "";
-    const name = typeof plan.title === "string" ? plan.title.trim() : "";
-    const currency = typeof plan.currency === "string" ? plan.currency.trim() : "";
+function publicCommercePrices(commerce: PublicGatewayPayload, locale: PublicUiLocale): PublicGatewayPayload[] | null {
+  if (!Array.isArray(commerce.plans)) return null;
+  const pricing: PublicGatewayPayload[] = [];
+  const allowedFields = new Set(["planId", "skuId", "title", "billingPeriod", "currency", "amountMinor", "priceSnapshotId", "availability", "entitlementCode"]);
+  for (const plan of commerce.plans) {
+    if (!isRecord(plan) || Object.keys(plan).some((key) => !allowedFields.has(key))) return null;
+    const requiredText = (key: string, maxLength: number) => {
+      const value = plan[key];
+      return typeof value === "string" && Array.from(value).length <= maxLength ? value.trim() : "";
+    };
+    const planId = requiredText("planId", 128);
+    const skuId = requiredText("skuId", 128);
+    const name = requiredText("title", 160);
+    const currency = typeof plan.currency === "string" ? plan.currency : "";
     const billingPeriod = typeof plan.billingPeriod === "string" ? plan.billingPeriod : "";
     const availability = typeof plan.availability === "string" ? plan.availability : "";
-    const entitlementCode = typeof plan.entitlementCode === "string" ? plan.entitlementCode.trim() : "";
-    const priceSnapshotId = typeof plan.priceSnapshotId === "string" ? plan.priceSnapshotId.trim() : "";
+    const entitlementCode = requiredText("entitlementCode", 96);
+    const priceSnapshotId = requiredText("priceSnapshotId", 128);
     const amountMinor = plan.amountMinor;
-    if (!skuId || !name || !/^[A-Z]{3}$/.test(currency)
+    if (!planId || !skuId || !name || !/^[A-Z]{3}$/.test(currency)
       || !["FREE", "MONTH", "QUARTER", "YEAR", "PERPETUAL"].includes(billingPeriod)
       || !["PUBLISHED", "COMING_SOON", "UNAVAILABLE"].includes(availability)
+      || (billingPeriod === "PERPETUAL" && availability === "PUBLISHED")
       || !entitlementCode || !priceSnapshotId
-      || typeof amountMinor !== "number" || !Number.isSafeInteger(amountMinor) || amountMinor < 0) return [];
+      || typeof amountMinor !== "number" || !Number.isSafeInteger(amountMinor) || amountMinor < 0) return null;
     let price: string;
     try {
       const formatter = new Intl.NumberFormat(locale, { style: "currency", currency });
       const digits = formatter.resolvedOptions().maximumFractionDigits ?? 2;
       price = formatter.format(amountMinor / (10 ** digits));
-    } catch { return []; }
-    return [{
+    } catch { return null; }
+    pricing.push({
       id: skuId,
       skuId,
       name,
@@ -109,8 +100,20 @@ function mergeCommercePricing(
       availability,
       entitlementCode,
       priceSnapshotId,
-    }];
-  });
+    });
+  }
+  return pricing;
+}
+
+function mergeCommercePricing(projection: unknown, pricing: PublicGatewayPayload[]): unknown {
+  if (!isRecord(projection)) return projection;
+  // Match sourceData's precedence so new commerce facts replace old prices in
+  // the exact supported wrapper that the normalizer will subsequently read.
+  const wrapper = (["publicProjection", "data", "result"] as const)
+    .find((key) => isRecord(projection[key]));
+  const data = wrapper && isRecord(projection[wrapper]) ? projection[wrapper] : projection;
+  // Only the public, field-filtered catalog is merged; any invalid plan makes
+  // the commerce facet unavailable instead of turning a partial catalog empty.
   // Commerce owns public offers. A missing or empty catalog must also clear
   // prices and SKUs carried by an older content projection.
   const mergedData = { ...data, pricingPlans: pricing, skus: [] };
@@ -224,7 +227,7 @@ export default defineEventHandler(
         return rejectInvalidContent(null);
       }
       if (!usableContentPayload(projectionPayload)) return rejectInvalidContent(projectionPayload);
-      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, null, locale);
+      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, []);
       let commerceDegraded = false;
       try {
         const commerceUrl = joinPath(gatewayBase, "/public/commerce/catalog");
@@ -238,8 +241,9 @@ export default defineEventHandler(
         if (commerceResponse.ok) {
           const commercePayload = await commerceResponse.json();
           const catalog = publicCommerceCatalog(commercePayload);
-          if (catalog) {
-            mergedPayload = mergeCommercePricing(projectionPayload, catalog, locale);
+          const pricing = catalog ? publicCommercePrices(catalog, locale) : null;
+          if (pricing !== null) {
+            mergedPayload = mergeCommercePricing(projectionPayload, pricing);
             setResponseHeader(event, "x-public-projection-commerce", "gateway");
           } else {
             commerceDegraded = true;

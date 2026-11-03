@@ -39,9 +39,9 @@ useOfficialSeo({ title: t("official.v1.info.announcements.seoTitle"), descriptio
         </article>
       </div>
       <article v-else-if="canShow || facet.state === 'empty'" class="v1-info-announcements__card v1-info-announcements__empty" role="status">
-        <h2>{{ t("official.v1.info.announcements.empty") }}</h2>
-        <p>{{ t("official.v1.info.announcements.emptyText") }}</p>
-        <span class="v1-info-announcements__chip">{{ t("official.v1.info.announcements.pending") }}</span>
+        <h2>{{ t(facet.state === "recovery" ? "official.v1.info.announcements.recoveryEmpty" : "official.v1.info.announcements.empty") }}</h2>
+        <p>{{ t(facet.state === "recovery" ? "official.v1.info.announcements.recoveryEmptyText" : "official.v1.info.announcements.emptyText") }}</p>
+        <span class="v1-info-announcements__chip">{{ t(facet.state === "recovery" ? "official.v1.info.announcements.recovering" : "official.v1.info.announcements.pending") }}</span>
         <picture class="v1-info-announcements__icon" aria-hidden="true"><source media="(max-width: 800px)" :srcset="`${mobileAssets}/imgFrame1.svg`" /><img :src="`${desktopAssets}/imgFrame1.svg`" alt="" /></picture>
         <span class="v1-info-announcements__rule" aria-hidden="true"></span>
       </article>
@@ -74,7 +74,7 @@ useOfficialSeo({ title: t("official.v1.info.announcements.seoTitle"), descriptio
 .v1-info-announcements__icon img { width: 24px; height: 24px; max-width: none; }
 .v1-info-announcements__rule { position: absolute; bottom: 18px; left: 21px; width: 265px; max-width: 60%; height: 4px; border-radius: 2px; background: var(--v1-brand-soft); }
 .v1-info-announcements__rule::before { content: ""; display: block; width: 91px; max-width: 35%; height: 100%; border-radius: 2px; background: var(--v1-brand); }
-.v1-info-announcements__empty { min-height: 152px; margin-top: 24px; background: var(--v1-bg); }
+.v1-info-announcements__card.v1-info-announcements__empty { min-height: 152px; margin-top: 24px; background: var(--v1-bg); }
 .v1-info-announcements__empty::before { background: var(--v1-border); }
 .v1-info-announcements__useful { margin-top: 30px; }
 :global(html[data-theme="high-contrast"]) .v1-info-announcements__intro { border: 1px solid var(--v1-border); }
