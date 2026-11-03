@@ -1,5 +1,7 @@
 # Changelog
 
+- [OFFICIAL-V1-CANDIDATE-20261103] 按用户指定的 11 月 2 日官网定稿实现 16 类页面、桌面/手机素材和主题；公开内容、商业目录和链接保留状态/安全边界，明确成人资格与只读示例。用户确认冲突文案采用准确说明，逐节点差异见 `docs/06-design/v2-980plus/official-site-v1-20261103/`。产品源码候选 `0b45356d` 的生产 build/typecheck、官网源码 53/53、64 组基础视口与两个 404 通过；本地视觉对照 32/32 主画板与 20/20 UI MOCK 状态图通过。C8 的受控浏览器 15/15、延迟状态 52/52 单独归属 C8；详见 [QA](docs/takeover/official-site-v1-20261103/QA.md) 与 [独立审查](docs/takeover/official-site-v1-20261103/REVIEW.md)。真实服务联调、真机/读屏、运行中压力降档和部署均未验，整体业务与交付验收为 PARTIAL。
+
 - [DOC-CONSISTENCY-20261102] 统一当前状态、R1 计划和快速开始需求口径，清理已被取代的旧卡墙、交接及旧环境归档；R1 签收仍绑定原候选和范围，SKIPPED 计划的契约兼容与运行证据仍待核。仅文档变更，不改变接口、数据或部署；旧文件可从本次提交的父提交恢复。验证：`git diff --check`、`node scripts/audit/verify-v2-design-package.mjs`；文档审计仍有既存缺口，`node scripts/check-dod.mjs --json` 的全仓密钥扫描报既存源码项，未做运行验收。
 
 - [UI-WIP-20261021] 用户暂停检查点/WIP（已本地提交 b64db8e9，推送阻塞）：保存MB007真实首页C8会话恢复候选与Learn L2必要跳转修稿；未新增UI验收、未升级旧C7通过、未跑C8浏览器/构建；本地9/远程7未变，auth401/empty/cross-owner仍为未清风险。

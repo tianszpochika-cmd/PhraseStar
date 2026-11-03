@@ -2,6 +2,8 @@
 
 官网使用 Vue 3、TypeScript 与 Nuxt SSR，按用户指定的 2026-11-02 Figma 定稿实施。交付索引覆盖 16 类页面的 32 张桌面/手机主画板；课程详情复用动态路由，现有 sitemap 列出 21 个公开地址。设计节点、资产、需求映射及候选边界见 [官网 V1 追溯](../../docs/06-design/v2-980plus/official-site-v1-20261103/TRACEABILITY.md)。设计对稿与发布验收分开记录。
 
+当前产品源码候选为 `0b45356d117735fdeff58fa9a6f477b742191f99`：生产构建、类型检查和 53 项官网源码测试通过。各候选的键盘与受控上游测试、图像复核及未运行项目分别见 [QA 记录](../../docs/takeover/official-site-v1-20261103/QA.md)、[独立审阅](../../docs/takeover/official-site-v1-20261103/REVIEW.md) 和追溯记录；这些本地证据不代表真实服务联调或部署。
+
 ## 本地启动和验证
 
 在仓库根目录运行：
@@ -20,6 +22,8 @@ R1 的 11 个原始公开地址及注册跳转还可使用下面的运行时检�
 ```sh
 pnpm --filter @englishflow/official-site exec node --import ../../scripts/dev/register-typescript.mjs --test tests/r1-001.test.mjs
 ```
+
+另可在已启动的受控官网上运行 `node apps/official-site/tests/browser/official-v1-regression.cjs`。该浏览器回归使用公开投影与剪贴板夹具；具体前提和证据边界见 QA 记录。
 
 ## 公开页面与边界
 
