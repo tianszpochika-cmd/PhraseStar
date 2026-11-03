@@ -1,0 +1,448 @@
+{
+  "base": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+  "frozen_at": "2026-11-03T16:50:05.468490+00:00",
+  "job_checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-04-resume-01.checkpoint.json",
+  "files": [
+    {
+      "path": "apps/mobile/src/components/MobileClosedPracticeNotice.vue",
+      "sha256": "49b19d903c65b02744c8d248426f97d58b4a6fb0ac05913a30a4f00f69d6181f",
+      "bytes": 10287
+    },
+    {
+      "path": "apps/mobile/src/pages/b11-listening/b11-listening.vue",
+      "sha256": "3b498ec15b181b7dafdf2301f6fbd7fa1c34618a83dcb1239d175cd39973a5b3",
+      "bytes": 24150
+    },
+    {
+      "path": "apps/mobile/src/pages/b11-speaking/b11-speaking.vue",
+      "sha256": "bd2ecb9b6d3d0666573951949a5ce47bfa18009583370d7bdaf1e262b9e0ebb0",
+      "bytes": 26308
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+      "sha256": "7152ad763d7e82681dfef41e2a727995a5e969790e9b800336b105a3762908df",
+      "bytes": 18459
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+      "sha256": "42bc7606b2c14a5f7467b6cb51997024d9968eeb30a9e50a9383fb63d75aaabb",
+      "bytes": 25393
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-writing/b3-writing.vue",
+      "sha256": "3f612492237ee364b48984a8f2c443cbebfbd5dc9fbc905304af328d78f2d97c",
+      "bytes": 24606
+    },
+    {
+      "path": "apps/mobile/src/pages/b4-games/b4-games.vue",
+      "sha256": "f5d0a7ddf4d80a240c8835f9eb7b398b3acff570107e9b0bb3243b85fb2904be",
+      "bytes": 29492
+    },
+    {
+      "path": "apps/mobile/src/pages/b4-offline/b4-offline.vue",
+      "sha256": "55b4d02e1127026c6e66956baab11dcb8ce628769fd4b344742458c590bfd409",
+      "bytes": 5857
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/055e2e46-2327-4a80-8732-dc6ba0135825.svg",
+      "sha256": "f806f57d1f9a116510ba7f9437185cb05fdf4890361561964059cb9721a9d75f",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/1ad156ec-6c46-46a7-afde-69003eae8577.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/59736468-29fc-451d-b095-809594a1ff91.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/7473ba78-43b2-49ac-949f-bf252f5b027c.svg",
+      "sha256": "1be6bc9ee9b20ccd61b759d686766ee7abbbbd32a57d4f1df0d31cdb4842ee4b",
+      "bytes": 1066
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/afc85b52-a417-48b4-a07c-4f301dc9a259.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/c783b91a-2153-42e2-acc6-7d5c181423e8.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/050695e7-7f3d-4007-9760-3d89c94e6725.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/235a9127-86dc-4f14-b784-028d2b50ce74.svg",
+      "sha256": "f806f57d1f9a116510ba7f9437185cb05fdf4890361561964059cb9721a9d75f",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/39e8258c-9396-4ce3-8d3b-286415020f26.svg",
+      "sha256": "1be6bc9ee9b20ccd61b759d686766ee7abbbbd32a57d4f1df0d31cdb4842ee4b",
+      "bytes": 1066
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/3a7b6e37-d5f6-4494-8b21-2e493d4581ab.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/4e7c093b-c2f2-44c5-b33b-4f4877a79499.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/d91329fd-0c05-46c3-9a5d-f300190c7d9b.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/261b7c3f-f474-4abd-9e23-dff819c47d2b.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/2873e8dd-acf2-4903-a2e0-e1046ba5166d.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/679cf7aa-0ce1-4ae7-8caf-70db9789cc07.svg",
+      "sha256": "cc3e9bf83d093fd152e579df00fb59018d8c8a4b07efbef790a9627dbd55cba1",
+      "bytes": 1102
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/7f0256b5-f3cd-4635-b4d3-3d4b7045a127.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/9e998881-5cf4-47d5-a4b3-8b77c7bb8347.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/abaf7a75-11e2-4a95-b329-8bc1452320fe.svg",
+      "sha256": "f31d69896989f333611efa95c23b928f0b4220a07e5952c087992d00ebacc285",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/237c0686-acee-476b-97dd-0743926e7055.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/3d832733-5146-41f7-b495-52259359d487.svg",
+      "sha256": "cc3e9bf83d093fd152e579df00fb59018d8c8a4b07efbef790a9627dbd55cba1",
+      "bytes": 1102
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/571548d9-e968-4aee-9c47-f0d8151ae53e.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/76a0b677-f745-483d-801f-87719e42e7f9.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/88a1fd7a-bbb3-4189-a4b9-e4faf5e11822.svg",
+      "sha256": "f31d69896989f333611efa95c23b928f0b4220a07e5952c087992d00ebacc285",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/a24dc873-e7f9-49c5-b94e-e6f758ccf2ba.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/160841d4-c5ed-477c-889d-09d66d800524.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/3c5187e8-0de1-47b7-a99f-096226453a9f.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/3cfa29d3-5518-43db-9c68-8ddefe5c9e9a.svg",
+      "sha256": "acba12b28ea534425b283b1869326194bf673e903c5d757715f2c00567813eff",
+      "bytes": 850
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/a2fb823f-a42c-4ae9-9e76-da240a0d712a.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/b58014db-d97f-4102-b67a-add6a602160c.svg",
+      "sha256": "149b0bf68504c27fac17a707abbd6b5e73dfb81061b4103c6e1be4007c376b99",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/c2887965-483d-4879-8090-ebece5c7c6a6.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/39d39cfd-9d9f-4a74-87dd-7d2afa230999.svg",
+      "sha256": "ea114c1d4a016d008625b01dac94914168574ee5f777461cd7b323e684b8f28b",
+      "bytes": 766
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/7edc101f-d5d5-4cb8-a983-636b09d16b77.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/c6ebc160-a569-4d54-8b8e-1e8d8c24e667.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/049e6bcd-8d05-48cf-995e-11a10c6f1545.svg",
+      "sha256": "c43e810849aafc8f1c3f2a12b7349a04b1f45c35a714b9a530974f5e648c4744",
+      "bytes": 1183
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/22806d99-c3c8-4573-b60d-dbc4ce94fc5a.svg",
+      "sha256": "db709f610f355d7c11c7e5a92e541faa7cb21017f54c6c3cdf8ac5ed5a71b365",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/3c5bb6ac-ca3c-4fd6-b33c-650bc119c227.svg",
+      "sha256": "51e56690d6bfbae5a7728c021a711048caa9499a5ff3c97497389e16e84276e8",
+      "bytes": 860
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/44675a19-02d8-4b97-8faf-d44b75993cfe.svg",
+      "sha256": "b9e1fdb8fab01c9abb9edf34ebe9343dfb69e4b1690f8b0a7748ca5faae3429d",
+      "bytes": 1743
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/6f5a2737-3612-48da-9a06-f9bbc3b93674.svg",
+      "sha256": "40780cbd5dd1913e95b2a22d04b7a370538037c491cfa52af488d2d72a503bc3",
+      "bytes": 801
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/73e64094-9ca5-43cf-bfb9-5229b88801de.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/bd20b178-9580-43ff-9989-6e59b54d526d.svg",
+      "sha256": "c50d554a126e0f99c21f76b64f20b9965771ed140c4e6d9d33b907c4cef92c71",
+      "bytes": 905
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/d75fd8c4-4fe2-4378-92a4-8e6c466c32de.svg",
+      "sha256": "ee7fd7b9d499426334d3e5a871783b2aa78eb078c5597893da1b370977195189",
+      "bytes": 538
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/ec4ac7e1-b7d8-47ab-adb7-e5ebb04e680d.svg",
+      "sha256": "ceb9b720001ac9f4ace58f9b190ba7c5ee689cfaee873fd57e9bbbba7756ce9e",
+      "bytes": 824
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/2529c60e-f1dd-4920-83bf-31e9d9f53fe0.svg",
+      "sha256": "6193f93259c47b730527f16eff6747d73c25a9abd2f71b9209e11d350c454454",
+      "bytes": 1049
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/4b37b568-25c6-4eb9-93c7-7f2988e0cb24.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/5a39c062-43c0-4f73-8a34-7d48751de671.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/7faf25d2-f041-4b2f-9fb0-c38246059244.svg",
+      "sha256": "6f734dd3d448fc7a3d9de06a0fdc4616cda215940ebc9049296e869f5ead361a",
+      "bytes": 2367
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/bb5c33f3-e06f-4bc2-b97f-298591ce7e22.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/f55fe0b7-2f4d-4616-a752-f3d7005a212c.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/018fa2ef-96d4-46cf-b3e9-5afa6d8a77a5.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/0d6fa31c-6c03-4359-9e5f-9ee9b72f43d8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/1666888b-37cb-491a-8721-f60d75b3b68a.svg",
+      "sha256": "13dc734fc1932cace14f44dacaca4c24730fe6d7abc2540c62e83b458b571497",
+      "bytes": 928
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/59eeeb0b-7a3c-44e7-a568-929d2a38f9f7.svg",
+      "sha256": "e9de5402baf4ee2ddb36e6b32c43b1e07574445f3f1596528dd343b33aa0ee85",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/73c59544-664d-49be-98b9-7db6bf986f54.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/92031080-c911-4049-9a71-a8b30e2bd73c.svg",
+      "sha256": "99683f9a932aa38423a0b78fa552e47865ccbf1dab07227a36a69e8d1a9d464a",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/f4ad17da-bb62-4ab5-8de1-6fdbc521bc84.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/143da062-2801-4437-93e2-66d844bc5052.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/794dcf27-611e-4061-a069-a4f3e512e8f8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/7a778424-9d8f-4678-b11f-0fb9c5aba178.svg",
+      "sha256": "43e2ee1d28e3cf69b59705ccb43d9ffa34625bad1a99e602d703d8b00e1f8461",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/a231f701-d20a-4b35-97a8-c84d2a6a3b22.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/e19decb7-eca9-4054-949d-79d1a1e739ac.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/47f87508-80dd-4352-bebb-bfeaa3d54b89.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/521426b9-2e53-46ee-8427-c880a6766161.svg",
+      "sha256": "43e2ee1d28e3cf69b59705ccb43d9ffa34625bad1a99e602d703d8b00e1f8461",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/a34f34ca-6fe7-48bb-bdba-ca8c2c96e318.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/b3a46d94-a342-4165-ad14-d5bde7f25fe8.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/c1a1e1f0-f8b9-4b7b-8123-d1e48cb3c24c.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/0f94cabc-1908-482b-898a-18086998a59c.svg",
+      "sha256": "5b063d60628501af27b1c8434f3fd2a6fe533e0cb887542d0f2087fbfab7c1d5",
+      "bytes": 1520
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/27d5d44b-e0d7-40e3-b993-f70065b638ba.svg",
+      "sha256": "e396c5d09b53872126a4b6cd56a1c3fc13fd80eaa624a7f6d18b16b81b1a4697",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/b58084ac-ea82-4f36-a95f-6a478c404ac8.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/cbc4185f-2d0b-4efd-b5d7-c774a1ce92d7.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/f5f3ca60-5b1d-4c03-a5e4-90321f52faa1.svg",
+      "sha256": "24d2ea56b5a8d08d7ba4d12727c055041fd54179de053825af71679529bca24d",
+      "bytes": 1462
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/f8cddec0-cfad-46e7-9411-7baf2906931b.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/tests/b11-listening-closed.test.mjs",
+      "sha256": "d66909cd019552b666ff18b8ebcc02f6c36c78ca33ac9bd1242f5527118038bd",
+      "bytes": 2411
+    },
+    {
+      "path": "apps/mobile/tests/b11-speaking-closed.test.mjs",
+      "sha256": "ce45fafc2e3641ce836a75971c8916315f56fc17a181237dd5a94c5483bde15b",
+      "bytes": 2441
+    },
+    {
+      "path": "apps/mobile/tests/b3-listening-closed.test.mjs",
+      "sha256": "c6941fc49538e78cbb37dd025c0da0cc06eb422c408c7470def1f4273c8cc052",
+      "bytes": 2374
+    },
+    {
+      "path": "apps/mobile/tests/b3-speaking-closed.test.mjs",
+      "sha256": "99bcd5ed3c42e2d7d0edfc823180228c177cdf0412830d4057c40c8400d72f0e",
+      "bytes": 2301
+    },
+    {
+      "path": "apps/mobile/tests/b3-writing.test.mjs",
+      "sha256": "22dda77e25a716e5118e90f34d9c669f7b82421423c4b9cdf5e56d37c52ee01c",
+      "bytes": 3813
+    },
+    {
+      "path": "apps/mobile/tests/b4-games-page-reentry.test.mjs",
+      "sha256": "317e2297346c45b31194df2f2d8f85b2251aa97d41039038b26272972ebfba51",
+      "bytes": 7493
+    },
+    {
+      "path": "apps/mobile/tests/b4-offline.test.mjs",
+      "sha256": "6e03e4dbb744be275d80ae31a22e3fb562d508c42db19c169cc85cdd3fc0bb07",
+      "bytes": 4158
+    },
+    {
+      "path": "apps/mobile/tests/closed-page-test-harness.mjs",
+      "sha256": "06cf1fab383ce76d09b702045a9c56db435dfe2ead2d6f25a4e59ab32f1245aa",
+      "bytes": 9609
+    },
+    {
+      "path": "apps/mobile/tests/mobile-closed-practice-notice.test.mjs",
+      "sha256": "359b30f07f4cefad9e96400a6e6170c04b1a61e5da2eb1c9ca9603723951b452",
+      "bytes": 9015
+    }
+  ]
+}

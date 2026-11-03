@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
+import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
 import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
+import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
@@ -95,17 +96,49 @@ async function retake(): Promise<void> { const scope = accountScope(); if (!isCu
 async function register(): Promise<void> { if (!store.recordingDraft) { store.setRecordingMessage('请先录音。'); return }; await store.registerRecordingDraft() }
 function rate(value: B11SelfRating): void { void store.saveSelfRating(value) }
 function completeShadowing(): void { if (!store.recordingDraft?.sourceSegmentId) return; void store.completeShadowing(store.recordingDraft.sourceSegmentId) }
+function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
+function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
+const alternatives = [
+  {
+    id: 'vocab',
+    target: '/pages/b2-vocabulary/b2-vocabulary',
+    iconSrc: '/static/figma-closed-168-6160/237c0686-acee-476b-97dd-0743926e7055.svg',
+    chevronSrc: '/static/figma-closed-168-6160/a24dc873-e7f9-49c5-b94e-e6f758ccf2ba.svg',
+    titleKey: 'closed.alternatives.vocab',
+    metaKey: 'closed.alternatives.vocabMeta',
+    tone: 'brand' as const,
+  },
+  {
+    id: 'reading',
+    target: '/pages/b3-reading/b3-reading',
+    iconSrc: '/static/figma-closed-168-6160/76a0b677-f745-483d-801f-87719e42e7f9.svg',
+    chevronSrc: '/static/figma-closed-168-6160/a24dc873-e7f9-49c5-b94e-e6f758ccf2ba.svg',
+    titleKey: 'closed.alternatives.reading',
+    metaKey: 'closed.alternatives.readingMeta',
+    tone: 'ok' as const,
+  },
+]
 onMounted(() => { /* closed practice: no live load */ undefined })
 onUnmounted(() => { audio.value?.destroy() })
 </script>
 
 <template>
-  <view class="yx-page b11-page v2-b11speak-page" :class="themeClass" :style="experienceStyle" :data-motion="store.motionDisabled || store.performanceLevel === 'Performance' ? 'off' : experienceMotion">
-    <MobilePageHeader page="b11-speaking" />
+  <view class="yx-page b11-page v2-b11speak-page v2-closed-page" :class="themeClass" :style="experienceStyle" :data-motion="store.motionDisabled || store.performanceLevel === 'Performance' ? 'off' : experienceMotion">
+    <MobilePageHeader page="b11-speaking" compact :title="mobileT('closed.b11Speaking.navTitle')" back-icon-src="/static/figma-closed-168-6160/571548d9-e968-4aee-9c47-f0d8151ae53e.svg" :show-settings="false" />
     <view class="v2-b11speak-body">
-    <view class="yx-card card v2-b11speak-card" data-closed-practice role="status"><view class="eyebrow v2-b11speak-eyebrow"><AppIcon name="lock" :size="14" /><text>口语</text></view><text class="v2-b11speak-title v2-b11speak-h2">跟读练习<text class="yx-soon-badge" data-coming-soon>即将开放</text></text><text class="yx-soon-reason" data-closed-reason>跟读需要录音上传和发音评分服务，目前尚未接入，无法给出真实评分。</text><button type="button" class="btn v2-b11speak-btn" data-closed-back @click="getUniRuntime().navigateTo({ url: '/pages/today/today' })"><AppIcon name="back" :size="14" />回到可用学习</button></view>
+    <MobileClosedPracticeNotice
+      variant="speaking"
+      title-key="closed.b11Speaking.title"
+      description-key="closed.b11Speaking.reason"
+      aria-label-key="closed.b11Speaking.title"
+      glow-src="/static/figma-closed-168-6160/88a1fd7a-bbb3-4189-a4b9-e4faf5e11822.svg"
+      icon-src="/static/figma-closed-168-6160/3d832733-5146-41f7-b495-52259359d487.svg"
+      :alternatives="alternatives"
+      @back="backToLearning"
+      @select="openRelated"
+    />
 
-    <B11StatusPanel class="v2-b11speak-status" :status="store.phoneticsStatus === 'error' || store.recordingStatus === 'error' ? 'error' : store.recordingStatus === 'offline' ? 'offline' : store.phoneticsStatus" :message="store.recordingMessage ?? store.phoneticsMessage" :queue-count="store.queueCount" :performance-level="store.performanceLevel" :motion-disabled="store.motionDisabled" @retry="load" @sync="sync" @performance="setPerformance" @motion="setMotion" />
+<B11StatusPanel class="v2-b11speak-status" :status="store.phoneticsStatus === 'error' || store.recordingStatus === 'error' ? 'error' : store.recordingStatus === 'offline' ? 'offline' : store.phoneticsStatus" :message="store.recordingMessage ?? store.phoneticsMessage" :queue-count="store.queueCount" :performance-level="store.performanceLevel" :motion-disabled="store.motionDisabled" @retry="load" @sync="sync" @performance="setPerformance" @motion="setMotion" />
 
     <view v-if="hasPracticeContent" class="yx-card phoneme-card card v2-b11speak-card"><view class="card-heading v2-b11speak-heading"><view class="v2-b11speak-titlewrap"><view class="eyebrow v2-b11speak-eyebrow"><AppIcon name="type" :size="14" /><text class="kicker eyebrow v2-b11speak-eyebrow">英语音标 · 发音图解</text></view><text class="v2-b11speak-title v2-b11speak-h2">英语音标 · 发音图解</text><text class="subtle d v2-b11speak-d">{{ store.phonemes.length }}/48 · {{ b11T('speaking.aiOff') }}</text></view><text class="permission v2-b11speak-meta" :class="`permission--${store.permissionStatus.toLowerCase()}`">{{ permissionLabels[store.permissionStatus] }}</text></view><view class="phoneme-grid v2-b11speak-list"><button tabindex="0" role="button" v-for="phoneme in store.phonemes" :key="phoneme.phonemeId" class="phoneme opt v2-b11speak-opt v2-b11speak-row" :class="{ active: selectedPhoneme?.phonemeId === phoneme.phonemeId }" type="button" @click="selectedPhoneme = phoneme"><text class="symbol v2-b11speak-stem">{{ phoneme.symbol }}</text><text class="d v2-b11speak-d">{{ phoneme.exampleWord }}</text><text class="subtle d v2-b11speak-d">{{ phoneme.group }}</text></button></view></view>
 
@@ -155,4 +188,7 @@ onUnmounted(() => { audio.value?.destroy() })
 .v2-b11speak-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700}
 .v2-b11speak-submit:hover{border-color:var(--v2-brand)}
 @media(max-width:360px){.v2-b11speak-controls{grid-template-columns:minmax(0,1fr)}}
+
+.v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+@media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

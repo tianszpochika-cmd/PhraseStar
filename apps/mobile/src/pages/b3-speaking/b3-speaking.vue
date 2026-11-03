@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppIcon from '../../components/AppIcon.vue'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import { useMobileExperience } from '../../platform/experience'
+import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
+import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -31,15 +32,48 @@ async function advanceRoleplay(choiceCode?: string): Promise<void> { if (!rolepl
 async function setRating(value: string): Promise<void> { rating.value = value; if (!savedRecording.value) { message.value = '请先登记一次真实录音，再提交自评。'; return } try { await submitSelfRating(savedRecording.value.recordingId, value); message.value = `自评已保存：${value}。Phase 1 不生成 AI 分数。` } catch (error) { message.value = error instanceof Error ? error.message : '自评提交失败。' } }
 async function playLocal(): Promise<void> { const runtime = getUniRuntime() as RecorderRuntime & { getSecureRecordingVault?: () => UniSecureRecordingVault }; if (!encryptedPath.value) { message.value = '暂无已加密录音可回放。'; return } const vault = runtime.getSecureRecordingVault?.(); const audio = runtime.createInnerAudioContext?.(); if (!vault || !audio) { message.value = '当前平台没有安全解密回放适配器；未伪造播放成功。'; return } try { audio.src = await vault.createPlaybackSource({ encryptedFilePath: encryptedPath.value }); audio.play() } catch { message.value = '加密录音解密回放失败。' } }
 async function removeRecording(): Promise<void> { if (!savedRecording.value) return; const runtime = getUniRuntime() as RecorderRuntime & { getSecureRecordingVault?: () => UniSecureRecordingVault }; const vault = runtime.getSecureRecordingVault?.(); try { await deleteRecording(savedRecording.value.recordingId); if (vault && encryptedPath.value) await vault.deleteFile({ encryptedFilePath: encryptedPath.value }); savedRecording.value = null; encryptedPath.value = null; message.value = '录音已删除，原生加密文件已请求清理。' } catch (error) { message.value = error instanceof Error ? error.message : '录音删除失败。' } }
+function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
+function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
+const alternatives = [
+  {
+    id: 'vocab',
+    target: '/pages/b2-vocabulary/b2-vocabulary',
+    iconSrc: '/static/figma-closed-168-5501/2873e8dd-acf2-4903-a2e0-e1046ba5166d.svg',
+    chevronSrc: '/static/figma-closed-168-5501/261b7c3f-f474-4abd-9e23-dff819c47d2b.svg',
+    titleKey: 'closed.alternatives.vocab',
+    metaKey: 'closed.alternatives.vocabMeta',
+    tone: 'brand' as const,
+  },
+  {
+    id: 'reading',
+    target: '/pages/b3-reading/b3-reading',
+    iconSrc: '/static/figma-closed-168-5501/7f0256b5-f3cd-4635-b4d3-3d4b7045a127.svg',
+    chevronSrc: '/static/figma-closed-168-5501/261b7c3f-f474-4abd-9e23-dff819c47d2b.svg',
+    titleKey: 'closed.alternatives.reading',
+    metaKey: 'closed.alternatives.readingMeta',
+    tone: 'ok' as const,
+  },
+]
 onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } /* closed practice: no live load */ undefined }); onUnmounted(() => { demoAudio.value?.destroy(); unsubscribe(); engine.dispose() })
 </script>
 
 <template>
-  <view class="yx-page" :style="experienceStyle" :data-motion="experienceMotion" :class="themeClass">
-    <MobilePageHeader page="b3-speaking" />
+  <view class="yx-page v2-closed-page" :style="experienceStyle" :data-motion="experienceMotion" :class="themeClass">
+    <MobilePageHeader page="b3-speaking" compact :title="mobileT('closed.b3Speaking.navTitle')" back-icon-src="/static/figma-closed-168-5501/9e998881-5cf4-47d5-a4b3-8b77c7bb8347.svg" :show-settings="false" />
     <view class="v2-b3speak-body">
-    <view class="yx-card card v2-b3speak-card" data-closed-practice role="status"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="lock" :size="14" /><text>口语</text></view><text class="v2-b3speak-title v2-b3speak-h2">跟读练习<text class="yx-soon-badge" data-coming-soon>即将开放</text></text><text class="yx-soon-reason" data-closed-reason>跟读需要录音上传和发音评分服务，目前尚未接入，无法给出真实评分。</text><button type="button" class="btn v2-b3speak-btn" data-closed-back @click="getUniRuntime().navigateTo({ url: '/pages/today/today' })"><AppIcon name="back" :size="14" />回到可用学习</button></view>
-    <B2StatusPanel class="v2-b3speak-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" @sync="() => undefined" />
+    <MobileClosedPracticeNotice
+      variant="speaking"
+      title-key="closed.b3Speaking.title"
+      description-key="closed.b3Speaking.reason"
+      aria-label-key="closed.b3Speaking.title"
+      glow-src="/static/figma-closed-168-5501/abaf7a75-11e2-4a95-b329-8bc1452320fe.svg"
+      icon-src="/static/figma-closed-168-5501/679cf7aa-0ce1-4ae7-8caf-70db9789cc07.svg"
+      :alternatives="alternatives"
+      @back="backToLearning"
+      @select="openRelated"
+    />
+
+<B2StatusPanel class="v2-b3speak-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" @sync="() => undefined" />
   <view v-if="phonemes.length" class="yx-card phoneme-card card v2-b3speak-card"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="type" :size="14" /><text>英语音标</text></view><text class="v2-b3speak-title v2-b3speak-h2">发音图解 · {{ phonemes.length }}/48</text><text class="card-kicker v2-b3speak-kicker">英语音标 · 发音图解 · {{ phonemes.length }}/48</text><view class="phoneme-grid v2-b3speak-list"><button tabindex="0" role="button" v-for="phoneme in phonemes" :key="phoneme.phonemeId" :class="{ active: selectedPhoneme?.phonemeId === phoneme.phonemeId }" class="phoneme opt v2-b3speak-opt v2-b3speak-row" type="button" @click="selectPhoneme(phoneme)"><text class="phoneme__symbol v2-b3speak-stem">{{ phoneme.symbol }}</text><text class="d v2-b3speak-d">{{ phoneme.exampleWord }}</text><text class="phoneme__group d v2-b3speak-d">{{ phoneme.group }}</text></button></view></view>
   <view v-if="phonemes.length" class="yx-card demo-audio card v2-b3speak-card" role="status" aria-live="polite"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="activity" :size="14" /><text>示范音频</text></view><text class="v2-b3speak-title v2-b3speak-h2">跟读前先听一遍示范</text><text class="card-kicker v2-b3speak-kicker">示范音频</text><button tabindex="0" role="button" v-if="demoAudioUrl" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-submit" type="button" @click="playDemoAudio"><AppIcon name="activity" :size="14" />播放示范音频</button><text class="d v2-b3speak-d">{{ demoAudioMessage }}</text></view>
   <view class="speaking-workspace v2-b3speak-workspace">
@@ -94,4 +128,7 @@ onMounted(async () => { await session.restore(); if (!session.isAuthenticated) {
 .v2-b3speak-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
 .v2-b3speak-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
 .v2-b3speak-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
+
+.v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+@media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

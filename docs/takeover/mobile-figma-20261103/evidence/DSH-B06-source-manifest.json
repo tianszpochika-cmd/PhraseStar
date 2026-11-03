@@ -1,0 +1,873 @@
+{
+  "base": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+  "frozen_at": "2026-11-03T17:44:25.874164+00:00",
+  "job_checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-06-resume-01.checkpoint.json",
+  "files": [
+    {
+      "path": "apps/mobile/src/components/MobileClosedPracticeNotice.vue",
+      "sha256": "d82f8f66028b0012074ca5a3c2fd0fbcf5eb1aa00a4c7faa953940ce3a01c5e2",
+      "bytes": 10722
+    },
+    {
+      "path": "apps/mobile/src/components/MobilePageHeader.vue",
+      "sha256": "5678b9519f29e50d43addb7226cbb5e94fda9c5a2319a529abe437c3c9d32af2",
+      "bytes": 4128
+    },
+    {
+      "path": "apps/mobile/src/pages/b11-listening/b11-listening.vue",
+      "sha256": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+      "bytes": 24260
+    },
+    {
+      "path": "apps/mobile/src/pages/b11-speaking/b11-speaking.vue",
+      "sha256": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7",
+      "bytes": 26418
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+      "sha256": "87f67b305cf55b4fdcfab45df005f29b187f5066e1546667208db4376e78ffcc",
+      "bytes": 18569
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+      "sha256": "e9054fa597d3e88c3c743d4fd87d46973a0ba68ee274af20f2a2075f27f2ef19",
+      "bytes": 25503
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-writing/b3-writing.vue",
+      "sha256": "f881392908301f35798c27183133f28bb1815a9bb90d2111202ba545c053b8d8",
+      "bytes": 24716
+    },
+    {
+      "path": "apps/mobile/src/pages/b4-games/b4-games.vue",
+      "sha256": "9be32752cf1a628f102b03b6c76812bf7b2744cfddfa2ba87b97b9fb59462242",
+      "bytes": 30472
+    },
+    {
+      "path": "apps/mobile/src/pages/b4-offline/b4-offline.vue",
+      "sha256": "3f1c87247e3b3b7133869f11d8f08ecb8b2f9953c9d18307a8dd9781ca243ba4",
+      "bytes": 5967
+    },
+    {
+      "path": "apps/mobile/src/pages/b4-social/b4-social.vue",
+      "sha256": "41c938bcb2e2c5d51cb09b76212fa4686448c5f5a7750de3aa90f83b3e7c7217",
+      "bytes": 32163
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/055e2e46-2327-4a80-8732-dc6ba0135825.svg",
+      "sha256": "f806f57d1f9a116510ba7f9437185cb05fdf4890361561964059cb9721a9d75f",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/1ad156ec-6c46-46a7-afde-69003eae8577.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/59736468-29fc-451d-b095-809594a1ff91.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/7473ba78-43b2-49ac-949f-bf252f5b027c.svg",
+      "sha256": "1be6bc9ee9b20ccd61b759d686766ee7abbbbd32a57d4f1df0d31cdb4842ee4b",
+      "bytes": 1066
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/afc85b52-a417-48b4-a07c-4f301dc9a259.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-3746/c783b91a-2153-42e2-acc6-7d5c181423e8.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/050695e7-7f3d-4007-9760-3d89c94e6725.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/235a9127-86dc-4f14-b784-028d2b50ce74.svg",
+      "sha256": "f806f57d1f9a116510ba7f9437185cb05fdf4890361561964059cb9721a9d75f",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/39e8258c-9396-4ce3-8d3b-286415020f26.svg",
+      "sha256": "1be6bc9ee9b20ccd61b759d686766ee7abbbbd32a57d4f1df0d31cdb4842ee4b",
+      "bytes": 1066
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/3a7b6e37-d5f6-4494-8b21-2e493d4581ab.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/4e7c093b-c2f2-44c5-b33b-4f4877a79499.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-4327/d91329fd-0c05-46c3-9a5d-f300190c7d9b.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/261b7c3f-f474-4abd-9e23-dff819c47d2b.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/2873e8dd-acf2-4903-a2e0-e1046ba5166d.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/679cf7aa-0ce1-4ae7-8caf-70db9789cc07.svg",
+      "sha256": "cc3e9bf83d093fd152e579df00fb59018d8c8a4b07efbef790a9627dbd55cba1",
+      "bytes": 1102
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/7f0256b5-f3cd-4635-b4d3-3d4b7045a127.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/9e998881-5cf4-47d5-a4b3-8b77c7bb8347.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-5501/abaf7a75-11e2-4a95-b329-8bc1452320fe.svg",
+      "sha256": "f31d69896989f333611efa95c23b928f0b4220a07e5952c087992d00ebacc285",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/237c0686-acee-476b-97dd-0743926e7055.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/3d832733-5146-41f7-b495-52259359d487.svg",
+      "sha256": "cc3e9bf83d093fd152e579df00fb59018d8c8a4b07efbef790a9627dbd55cba1",
+      "bytes": 1102
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/571548d9-e968-4aee-9c47-f0d8151ae53e.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/76a0b677-f745-483d-801f-87719e42e7f9.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/88a1fd7a-bbb3-4189-a4b9-e4faf5e11822.svg",
+      "sha256": "f31d69896989f333611efa95c23b928f0b4220a07e5952c087992d00ebacc285",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6160/a24dc873-e7f9-49c5-b94e-e6f758ccf2ba.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/160841d4-c5ed-477c-889d-09d66d800524.svg",
+      "sha256": "2b5958ac906b46beda6a4597f2b6a106930e2b195d0a5de8aa3861dcbd05220f",
+      "bytes": 754
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/3c5187e8-0de1-47b7-a99f-096226453a9f.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "bytes": 331
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/3cfa29d3-5518-43db-9c68-8ddefe5c9e9a.svg",
+      "sha256": "acba12b28ea534425b283b1869326194bf673e903c5d757715f2c00567813eff",
+      "bytes": 850
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/a2fb823f-a42c-4ae9-9e76-da240a0d712a.svg",
+      "sha256": "971d7d978f8801c40a05e973c501113d05b8116a03e67f632cdedfbc4cfabeb5",
+      "bytes": 836
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/b58014db-d97f-4102-b67a-add6a602160c.svg",
+      "sha256": "149b0bf68504c27fac17a707abbd6b5e73dfb81061b4103c6e1be4007c376b99",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-168-6945/c2887965-483d-4879-8090-ebece5c7c6a6.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/39d39cfd-9d9f-4a74-87dd-7d2afa230999.svg",
+      "sha256": "ea114c1d4a016d008625b01dac94914168574ee5f777461cd7b323e684b8f28b",
+      "bytes": 766
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/7edc101f-d5d5-4cb8-a983-636b09d16b77.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-closed-169-8610/c6ebc160-a569-4d54-8b8e-1e8d8c24e667.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/049e6bcd-8d05-48cf-995e-11a10c6f1545.svg",
+      "sha256": "c43e810849aafc8f1c3f2a12b7349a04b1f45c35a714b9a530974f5e648c4744",
+      "bytes": 1183
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/22806d99-c3c8-4573-b60d-dbc4ce94fc5a.svg",
+      "sha256": "db709f610f355d7c11c7e5a92e541faa7cb21017f54c6c3cdf8ac5ed5a71b365",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/3c5bb6ac-ca3c-4fd6-b33c-650bc119c227.svg",
+      "sha256": "51e56690d6bfbae5a7728c021a711048caa9499a5ff3c97497389e16e84276e8",
+      "bytes": 860
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/44675a19-02d8-4b97-8faf-d44b75993cfe.svg",
+      "sha256": "b9e1fdb8fab01c9abb9edf34ebe9343dfb69e4b1690f8b0a7748ca5faae3429d",
+      "bytes": 1743
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/6f5a2737-3612-48da-9a06-f9bbc3b93674.svg",
+      "sha256": "40780cbd5dd1913e95b2a22d04b7a370538037c491cfa52af488d2d72a503bc3",
+      "bytes": 801
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/73e64094-9ca5-43cf-bfb9-5229b88801de.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/bd20b178-9580-43ff-9989-6e59b54d526d.svg",
+      "sha256": "c50d554a126e0f99c21f76b64f20b9965771ed140c4e6d9d33b907c4cef92c71",
+      "bytes": 905
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/d75fd8c4-4fe2-4378-92a4-8e6c466c32de.svg",
+      "sha256": "ee7fd7b9d499426334d3e5a871783b2aa78eb078c5597893da1b370977195189",
+      "bytes": 538
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-catalog-169-5353/ec4ac7e1-b7d8-47ab-adb7-e5ebb04e680d.svg",
+      "sha256": "ceb9b720001ac9f4ace58f9b190ba7c5ee689cfaee873fd57e9bbbba7756ce9e",
+      "bytes": 824
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/2529c60e-f1dd-4920-83bf-31e9d9f53fe0.svg",
+      "sha256": "6193f93259c47b730527f16eff6747d73c25a9abd2f71b9209e11d350c454454",
+      "bytes": 1049
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/4b37b568-25c6-4eb9-93c7-7f2988e0cb24.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-empty-169-5475/5a39c062-43c0-4f73-8a34-7d48751de671.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/7faf25d2-f041-4b2f-9fb0-c38246059244.svg",
+      "sha256": "6f734dd3d448fc7a3d9de06a0fdc4616cda215940ebc9049296e869f5ead361a",
+      "bytes": 2367
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/bb5c33f3-e06f-4bc2-b97f-298591ce7e22.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-loading-169-5279/f55fe0b7-2f4d-4616-a752-f3d7005a212c.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/018fa2ef-96d4-46cf-b3e9-5afa6d8a77a5.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/0d6fa31c-6c03-4359-9e5f-9ee9b72f43d8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/1666888b-37cb-491a-8721-f60d75b3b68a.svg",
+      "sha256": "13dc734fc1932cace14f44dacaca4c24730fe6d7abc2540c62e83b458b571497",
+      "bytes": 928
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/59eeeb0b-7a3c-44e7-a568-929d2a38f9f7.svg",
+      "sha256": "e9de5402baf4ee2ddb36e6b32c43b1e07574445f3f1596528dd343b33aa0ee85",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/73c59544-664d-49be-98b9-7db6bf986f54.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/92031080-c911-4049-9a71-a8b30e2bd73c.svg",
+      "sha256": "99683f9a932aa38423a0b78fa552e47865ccbf1dab07227a36a69e8d1a9d464a",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-no-items-169-5811/f4ad17da-bb62-4ab5-8de1-6fdbc521bc84.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/143da062-2801-4437-93e2-66d844bc5052.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/794dcf27-611e-4061-a069-a4f3e512e8f8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/7a778424-9d8f-4678-b11f-0fb9c5aba178.svg",
+      "sha256": "43e2ee1d28e3cf69b59705ccb43d9ffa34625bad1a99e602d703d8b00e1f8461",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/a231f701-d20a-4b35-97a8-c84d2a6a3b22.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-paused-169-5637/e19decb7-eca9-4054-949d-79d1a1e739ac.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/47f87508-80dd-4352-bebb-bfeaa3d54b89.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/521426b9-2e53-46ee-8427-c880a6766161.svg",
+      "sha256": "43e2ee1d28e3cf69b59705ccb43d9ffa34625bad1a99e602d703d8b00e1f8461",
+      "bytes": 980
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/a34f34ca-6fe7-48bb-bdba-ca8c2c96e318.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/b3a46d94-a342-4165-ad14-d5bde7f25fe8.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-round-169-5549/c1a1e1f0-f8b9-4b7b-8123-d1e48cb3c24c.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/0f94cabc-1908-482b-898a-18086998a59c.svg",
+      "sha256": "5b063d60628501af27b1c8434f3fd2a6fe533e0cb887542d0f2087fbfab7c1d5",
+      "bytes": 1520
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/27d5d44b-e0d7-40e3-b993-f70065b638ba.svg",
+      "sha256": "e396c5d09b53872126a4b6cd56a1c3fc13fd80eaa624a7f6d18b16b81b1a4697",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/b58084ac-ea82-4f36-a95f-6a478c404ac8.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/cbc4185f-2d0b-4efd-b5d7-c774a1ce92d7.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/f5f3ca60-5b1d-4c03-a5e4-90321f52faa1.svg",
+      "sha256": "24d2ea56b5a8d08d7ba4d12727c055041fd54179de053825af71679529bca24d",
+      "bytes": 1462
+    },
+    {
+      "path": "apps/mobile/src/static/figma-games-settlement-169-5726/f8cddec0-cfad-46e7-9411-7baf2906931b.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/03f64a63-e3ab-4ea9-8d14-921d620355c5.svg",
+      "sha256": "0a3b5f79ab083b22bacaa689e56b0d5d685f80b533847450d9ede6b53415a339",
+      "bytes": 1382
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/129c0c9d-fea1-42b2-ab62-272ac42e9a89.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/6a9eb632-2c40-4020-8e70-9f853c2c7b43.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/6dd20339-084d-4217-b435-ee4513009d2d.svg",
+      "sha256": "8c62e8389be28a911913fce595cb8a604af94baccda830df0da227db60c52a2b",
+      "bytes": 710
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/80f7f396-6184-4723-b73d-5d40013457b5.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/c0174dda-08ee-45b8-bb15-33f9c616f421.svg",
+      "sha256": "95211feade9099dc2370bb2bbf9e43ee2c46dc6447660b3cafcab6cff13d625b",
+      "bytes": 1091
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/e268398e-ff76-4b7d-8db5-7f4ba6693595.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/e637f37f-5cdd-45ab-b0fe-f43b805f210c.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-all-read-169-6695/e6897efd-67e5-4d70-97ea-a596eb75ffcc.svg",
+      "sha256": "aebd5839d082f45183509b3db76d18d6e0e0a395ef5650a3f5adc1ec7a45732c",
+      "bytes": 1543
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-completed-169-7228/a8ff0045-5a8f-4f1f-92a5-c8ff3e7c8b84.svg",
+      "sha256": "8100f77ea20d1c917c905ad1fd7510109db065b6a8693d7c722ac85fcb27af21",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-completed-169-7228/e9823053-f430-4138-8b06-ae664d3309b2.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-completed-169-7228/ec769a54-c207-40a0-b4ea-26cf65490040.svg",
+      "sha256": "aa5415984b29ff71a7396ea4d576d93924d2e11d24c1601e52c6786644a5303a",
+      "bytes": 2353
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/1749002f-0b22-47c4-961e-db8f108c75c5.svg",
+      "sha256": "8ba074b290ad5c76a5e4961e83f350def5eb10d78cb5d7ef13740b8bcdb81801",
+      "bytes": 1262
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/2444c31c-2994-42b3-b249-f7a844dcf986.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/27d6106b-31bf-4dea-84e0-d19f2b823360.svg",
+      "sha256": "8447779115f654c714c236425c560be42b803353c5f6ee70b95797bac7bc7911",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/9f3f9829-2d99-4a2b-bd54-95160f56f64e.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/bfe19ca6-b294-49bb-b29d-a70f2e64d07d.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/f4749abb-8723-450c-8ac4-e2517e74a787.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-empty-169-6504/fe1edc9c-c66f-43c3-931f-312d5c2a847b.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/0364a74a-f746-4b0d-86dc-b25f77852606.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/098b5ff2-ca00-4615-a1ce-91480700d999.svg",
+      "sha256": "8d3e67fa28179991786c085982982633c5db7f705e42831a8c977d58db856c43",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/9023a783-38d3-479f-b825-fc88302dc370.svg",
+      "sha256": "54f28e015e935a64e9631a2c2d017309241373bc17a9c22eedcf9212b5e7052b",
+      "bytes": 882
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/a071d17a-8802-4cd7-9f77-a7afaee00d82.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/b2859826-7d57-4f4d-84d6-ec3ebd684df7.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-error-169-6434/f3969b8e-e345-471f-b373-8fb0c6cf93e8.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-focus-169-7071/10fc40f1-29a3-478c-b43b-2b63b98efa39.svg",
+      "sha256": "613efd2b5e483a39c6ce18516dc7d4875bbd876496ffa486561c97d38d03c281",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-focus-169-7071/25824688-8635-454f-9eb3-a88753e220f1.svg",
+      "sha256": "cbee429fe961886bce40ca755b0eb9e221ee44b01d8e99bd238dd8a392a9f330",
+      "bytes": 500
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-focus-169-7071/4e49981b-e079-466d-9ab4-dc6fdc3b4a35.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-focus-169-7071/4fe9e836-d6c9-4dd0-ad78-5f0726271d3e.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-focus-169-7071/a83fadd6-b352-47c5-9d9f-c918364aa3c8.svg",
+      "sha256": "8accc66a0a0219d6f15306e5612829212f7372c2a4bccda4ac83c2b8b735185c",
+      "bytes": 1246
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-gated-169-7496/52b3a28b-a6cf-4e9e-bfcb-b8f7a8b195f0.svg",
+      "sha256": "c511e8f16857e5efde33a5360e5c1b43dfb7ee2953251cb01ba9396bd78494d1",
+      "bytes": 860
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-gated-169-7496/8302e9dc-315b-4d4b-bc09-25b59fb896ba.svg",
+      "sha256": "613efd2b5e483a39c6ce18516dc7d4875bbd876496ffa486561c97d38d03c281",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-gated-169-7496/c3941be6-9dbd-4ab0-b69a-1c4a9a303512.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-joined-169-6985/19d0a3d5-9251-4478-a488-3b081c541c44.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-joined-169-6985/4cbe8327-c227-4234-a471-21a19d2e04ca.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-joined-169-6985/c8864c95-bb0d-40d7-b981-a2d46fe83cf4.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-joined-169-6985/c9620990-0cf7-4d93-ab37-97ab16b9e2d2.svg",
+      "sha256": "c2e1caae7fb317db8ee76b3be15d52db76f96b5a45b5c4397f816b7e11162faa",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-joined-169-6985/e3acdb9c-9f5e-4580-a685-4cddd3691717.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/39741ab0-9f8e-4375-9f56-7ae19a39be59.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/63688e94-a991-42e0-80df-a81759c00ae9.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/8d1407a1-11f4-41c2-81ac-794381b3b0c7.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/b9c8474d-6c49-4a1f-beb2-d875501c4388.svg",
+      "sha256": "bb73017173a550711f14e63aafb97067a2cfc2d6bd4d63270e10e6eee78c94f4",
+      "bytes": 1684
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/bb8d02cc-e9b4-4faf-b90c-3c764806b775.svg",
+      "sha256": "ab1b305724265cc89e7ee03ae88197a46e047944752c6f6c19d422ad860c04b2",
+      "bytes": 812
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/d03b51ef-65af-482b-9c04-520a9cb0014e.svg",
+      "sha256": "9b9b77967eeafc3a0bf7f5237b77d0d75ab6c0fd4af3e139b8bb48d0f0f41a7a",
+      "bytes": 812
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-leaderboard-169-7298/fc6b1a58-fc8a-4cee-a9f2-1adfb0d4c1cf.svg",
+      "sha256": "417b96c9e434375525f7e411fad70637ee51cc1714e742186f19a34b668d9ffc",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-loading-169-6359/0a296cf3-ea68-46b3-8fca-2744ed2b58de.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-loading-169-6359/43db01a4-e610-421b-a658-93fd6851f980.svg",
+      "sha256": "c22673eb076719cae016c0ec92331d95a13a6cdca4b2b2482bf97a870830187d",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-loading-169-6359/8c34a7c5-7769-447e-a87b-f0bcfaf83071.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-loading-169-6359/92018c48-811b-4687-a208-9ed178945876.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-loading-169-6359/9c669ce0-5e72-4da6-a794-39693cf638ba.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-no-rooms-169-6809/533b99da-b4bf-4e00-abae-b371a218267c.svg",
+      "sha256": "15c4bd87c4407eee84a590b70f4a74eb45c493b8dab76cb1b2681a2a8a1da322",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-no-rooms-169-6809/98670df1-3abe-40a6-8568-0b39748afe91.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-no-rooms-169-6809/f7660161-4f74-4113-aa80-fa9f1b087041.svg",
+      "sha256": "8447779115f654c714c236425c560be42b803353c5f6ee70b95797bac7bc7911",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/02baff56-9353-48ac-b418-10e613421713.svg",
+      "sha256": "ede2d5b3db10fee2e89ef3f8acd22e83cc0e9f59049243afb0e416eb8021dc27",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/068fe4af-0de0-4378-8b34-28dee647229c.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/368ebccb-0a2c-47eb-af07-2cf58a3b01bc.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/44e4b26f-493d-4a2b-918e-fac21792fa4b.svg",
+      "sha256": "0a3b5f79ab083b22bacaa689e56b0d5d685f80b533847450d9ede6b53415a339",
+      "bytes": 1382
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/9afce2f4-a387-42d2-b9d2-d92aa3d7aa15.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/a86af758-7618-4d9c-9f1c-638af0d5eb6a.svg",
+      "sha256": "aebd5839d082f45183509b3db76d18d6e0e0a395ef5650a3f5adc1ec7a45732c",
+      "bytes": 1543
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/d2105818-93a7-4270-8ae1-3e677d16013d.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/d708c33c-1bad-4a59-ad31-5c045c35da1d.svg",
+      "sha256": "95211feade9099dc2370bb2bbf9e43ee2c46dc6447660b3cafcab6cff13d625b",
+      "bytes": 1091
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-notifications-169-6585/ef1d816f-a569-4cb3-bd51-6dcc68d8d13d.svg",
+      "sha256": "1123c99275316b5534f2fbabb351c8f4b6c359a056c1b85f53cb1402741dca35",
+      "bytes": 230
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/05085ddb-e873-4f44-8a05-eacab2da3e77.svg",
+      "sha256": "2ccae8a537e58096b5de177f7c61015199e4f25d61f9ef0068addea1e86e4c62",
+      "bytes": 862
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/0f673a08-f1c8-45dd-8a6c-a12bb15370ad.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/5ec0c379-3e84-4d51-bea7-cdeac120d664.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/9753f3af-efff-48a5-bab8-00ac0f507230.svg",
+      "sha256": "640e86a16d868e413aecc02f5744beef2d4ead613d48e1b5a9bf898ede92b659",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/a8b9c8c2-5340-4b0d-a578-d8b4fb376071.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/cf3164bc-0c8e-4f6c-baee-f990621686a0.svg",
+      "sha256": "cbee429fe961886bce40ca755b0eb9e221ee44b01d8e99bd238dd8a392a9f330",
+      "bytes": 500
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-paused-169-7148/d043b7ac-d3c0-4dbe-989e-b089a159be7e.svg",
+      "sha256": "42d74026faef97b560278abfdaeb3a433df15cf670bc28be941763af92cb8109",
+      "bytes": 1762
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-report-169-7410/4ec9628d-d465-47ab-b92f-1012526c8429.svg",
+      "sha256": "fbe533b9a46d794b79b8cc6bd90a1d21923ca7653ea690f3f83bcbb7d9ef0204",
+      "bytes": 734
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-report-169-7410/67130d1e-bc16-41b7-9e59-66b66027f873.svg",
+      "sha256": "70a58fdb36c73be7e1ef6b486f7fd75a354a230f2727199e9102298dac2808f4",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-report-169-7410/85b1b93e-6ed9-4a12-afd9-65f9d312e400.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-report-169-7410/b8c86b81-6ae0-429e-b23c-5136408dd6dd.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-report-169-7410/ee88b4e7-87e6-4de1-8a1b-0be7385335a4.svg",
+      "sha256": "38f5a6fea5ae446861ad4758fd51c5357a0050df8ce4ca3472f781ad21ae6272",
+      "bytes": 857
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-rooms-169-6882/14ab6b99-f06b-4dae-b2ca-46361c7db5e3.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-rooms-169-6882/2d94bdea-f4f5-4d01-a391-c54fba8ed2c4.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-rooms-169-6882/3c246442-ffcb-4e13-8fff-0e4fac010522.svg",
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-rooms-169-6882/6326e752-11de-4f5f-8173-b6b2a977aba8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-social-rooms-169-6882/e1cb0915-5a9b-4562-a3c5-fa806aa0e2e0.svg",
+      "sha256": "99bb15b511878fe9f9c4e37503d282a150ce5f4cc649bb5534eee440828e22eb",
+      "bytes": 1374
+    },
+    {
+      "path": "apps/mobile/tests/b11-listening-closed.test.mjs",
+      "sha256": "d66909cd019552b666ff18b8ebcc02f6c36c78ca33ac9bd1242f5527118038bd",
+      "bytes": 2411
+    },
+    {
+      "path": "apps/mobile/tests/b11-speaking-closed.test.mjs",
+      "sha256": "ce45fafc2e3641ce836a75971c8916315f56fc17a181237dd5a94c5483bde15b",
+      "bytes": 2441
+    },
+    {
+      "path": "apps/mobile/tests/b3-listening-closed.test.mjs",
+      "sha256": "c6941fc49538e78cbb37dd025c0da0cc06eb422c408c7470def1f4273c8cc052",
+      "bytes": 2374
+    },
+    {
+      "path": "apps/mobile/tests/b3-speaking-closed.test.mjs",
+      "sha256": "99bcd5ed3c42e2d7d0edfc823180228c177cdf0412830d4057c40c8400d72f0e",
+      "bytes": 2301
+    },
+    {
+      "path": "apps/mobile/tests/b3-writing.test.mjs",
+      "sha256": "22dda77e25a716e5118e90f34d9c669f7b82421423c4b9cdf5e56d37c52ee01c",
+      "bytes": 3813
+    },
+    {
+      "path": "apps/mobile/tests/b4-games-page-reentry.test.mjs",
+      "sha256": "317e2297346c45b31194df2f2d8f85b2251aa97d41039038b26272972ebfba51",
+      "bytes": 7493
+    },
+    {
+      "path": "apps/mobile/tests/b4-offline.test.mjs",
+      "sha256": "6e03e4dbb744be275d80ae31a22e3fb562d508c42db19c169cc85cdd3fc0bb07",
+      "bytes": 4158
+    },
+    {
+      "path": "apps/mobile/tests/b4-social-page.test.mjs",
+      "sha256": "98432ff85c66bc8908dba5d0314902aacf69e35370767ad0450e7b7a69109bfd",
+      "bytes": 8205
+    },
+    {
+      "path": "apps/mobile/tests/closed-page-test-harness.mjs",
+      "sha256": "06cf1fab383ce76d09b702045a9c56db435dfe2ead2d6f25a4e59ab32f1245aa",
+      "bytes": 9609
+    },
+    {
+      "path": "apps/mobile/tests/mobile-closed-practice-notice.test.mjs",
+      "sha256": "359b30f07f4cefad9e96400a6e6170c04b1a61e5da2eb1c9ca9603723951b452",
+      "bytes": 9015
+    },
+    {
+      "path": "apps/mobile/tests/mobile-header-and-closed-geometry.test.mjs",
+      "sha256": "3583809bc617ce264635dcc18ed03d816307af67ef9f9732b7f1bc2819b68370",
+      "bytes": 3000
+    },
+    {
+      "path": "packages/design-tokens/src/mobile.ts",
+      "sha256": "7146839d2f96c9862a82e0c3097e124d043acf275ace98bbb63717708063e0aa",
+      "bytes": 8228
+    },
+    {
+      "path": "packages/i18n/src/mobile-experience.ts",
+      "sha256": "d76bd6ae7e4af8b6559b09b19702fa296020dc22dab59b4c1f050d85bd1edc93",
+      "bytes": 51283
+    }
+  ]
+}

@@ -1,0 +1,2945 @@
+{
+  "schema_version": "mobile-figma-supervision-v1",
+  "generated_at": "2026-11-03",
+  "status": "IN_PROGRESS_NOT_ACCEPTED",
+  "base_commit": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+  "remote_verified_by": "root",
+  "figma": {
+    "file_key": "UpcXTamTjwrb5OQg9WJiFu",
+    "design": "UIUX2.0RC1",
+    "node": "393:2",
+    "reported_scope": "QA12 反馈：已确认页面可开发；定级反馈规则尚待确认",
+    "verification": "Root reviewed cached QA12 raw text and canonical context/screenshot references; RC1 candidate only, no final freeze or page acceptance inferred.",
+    "reference_preflight": {
+      "reported_at": "2026-11-03T23:31:34+08:00",
+      "source": "Root 转述；原始回执时间待补",
+      "directory": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/figma-reference",
+      "reported": "首页、登录、离线关闭页面的高保真 context 与 PNG 已准备；素材批次报告 39 项与 3 项，具体关联和完整性逐批复核。",
+      "verification": "素材存在不等于整页设计、交互、业务或设备验收。"
+    },
+    "reference_session": "45ada585-4930-4b6a-9e48-ad948d1acdff"
+  },
+  "inventory": {
+    "formal_routes": 33,
+    "vue_components": 15,
+    "test_files": 50,
+    "method": "pages.json / components Vue files / apps/mobile/tests files; counts are inventory, not acceptance"
+  },
+  "worktrees": [
+    {
+      "owner": "ROOT",
+      "branch": "codex/mobile-figma-integration-20261103",
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+      "initial_head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900"
+    },
+    {
+      "owner": "GROK",
+      "branch": "codex/mobile-figma-grok-20261103",
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
+      "initial_head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900"
+    },
+    {
+      "owner": "DSH",
+      "branch": "codex/mobile-figma-dsh-20261103",
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+      "initial_head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900"
+    },
+    {
+      "owner": "DSH_PROFILE",
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-profile-20261104/cloudstudy",
+      "branch": "codex/mobile-figma-dsh-profile-20261104",
+      "initial_head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "preloaded_shared": "Grok batch-02-shared exact three files; external provenance receipt dsh/profile-shared-seed.json"
+    }
+  ],
+  "quota": {
+    "GROK": {
+      "weekly": "UNKNOWN",
+      "observed_at": null,
+      "source": null,
+      "checkpoint": null
+    },
+    "DSH": {
+      "weekly": "UNKNOWN",
+      "observed_at": null,
+      "source": null,
+      "checkpoint": null
+    }
+  },
+  "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
+  "runtime_lease": {
+    "port": 18183,
+    "holder": "ROOT_QA_SERVING_DSH_MAIN",
+    "pid": 45797,
+    "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+    "acquired_at": null,
+    "rule": "同一时刻一个 owner；移交前核验监听进程及所属工作树，不抢占/不自行换端口",
+    "port_check": "单 H5 场景可先使用 node scripts/check-fixed-ports.mjs --service mobile-h5-dev；启动全栈须按 AGENTS 执行 pnpm ports:check。",
+    "other_infra": "Root 报告现有基础设施 BUSY；该事实不自动阻止独立 H5，不能为此停止其他基础设施；实时 PID/占有者仍须核验。",
+    "note": "Root PTY1519; main DSH batch10 social QA; no worker starts or stops HTTP."
+  },
+  "trace_policy": "每页已有的编号是待核源锚点；TRACE_PENDING 必须在该页审签前逐字段补齐，不能编造或继承历史结果。",
+  "tasks": [
+    {
+      "id": "FOUNDATION",
+      "owner": "GROK",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "规范共享壳、组件接口和现状清单；统一页面状态与导航接缝"
+    },
+    {
+      "id": "ASSETS",
+      "owner": "GROK",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "按已确认 Figma 节点核对素材、许可、适配、导出质量"
+    },
+    {
+      "id": "THEME-I18N",
+      "owner": "GROK",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "语义 token / uni-app adapter / 亮、暗、跟随系统、高对比及 locale fallback"
+    },
+    {
+      "id": "IPAD",
+      "owner": "ROOT_QA",
+      "status": "PENDING",
+      "scope": "H5 模拟 768/1024 宽度与方向；真实 iPad/native 另列"
+    },
+    {
+      "id": "QA",
+      "owner": "ROOT_QA",
+      "status": "PENDING",
+      "scope": "按当前候选单页与共享影响独立复核及跨端门"
+    },
+    {
+      "id": "DOCS",
+      "owner": "ROOT",
+      "status": "IN_PROGRESS",
+      "scope": "更新任务、证据、交接与状态，仅准确记录观察"
+    },
+    {
+      "id": "INTEGRATION",
+      "owner": "ROOT",
+      "status": "PENDING",
+      "scope": "串行审核整合，保护独立工作树；授权内正常提交与推送"
+    }
+  ],
+  "pages": [
+    {
+      "id": "MB-001",
+      "route": "#/pages/login/login",
+      "file": "apps/mobile/src/pages/login/login.vue",
+      "name": "登录",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "输入校验、提交中、失败、会话恢复与安全回跳；凭据只经 IAM TLS",
+      "services_data_owners": [
+        "iam-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-AUTH-LOGIN"
+        ],
+        "r1": [
+          "R1-004",
+          "R1-015"
+        ],
+        "bc": [
+          "BC-004"
+        ],
+        "ic": [
+          "IC-053"
+        ],
+        "feat_v2": [
+          "FEAT-USR-001→V2-980-0359"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1044→V2-980-0366"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "ui-login.e2e.cjs",
+        "iam-auth-transport.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-002",
+      "route": "#/pages/register/register",
+      "file": "apps/mobile/src/pages/register/register.vue",
+      "name": "注册",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "字段、去重、回执和成人门分流，不因注册成功直接放行学习",
+      "services_data_owners": [
+        "iam-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-AUTH-REGISTER-RESET"
+        ],
+        "r1": [
+          "R1-002",
+          "R1-003",
+          "R1-015"
+        ],
+        "bc": [
+          "BC-002",
+          "BC-003"
+        ],
+        "ic": [
+          "IC-052"
+        ],
+        "feat_v2": [
+          "FEAT-USR-001→V2-980-0359"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1044→V2-980-0366"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "ui-register.e2e.cjs",
+        "public-auth-handoff.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-003",
+      "route": "#/pages/reset-password/reset-password",
+      "file": "apps/mobile/src/pages/reset-password/reset-password.vue",
+      "name": "找回密码",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "申请与确认两步、恒定回执、过期及返回登录；不枚举账号",
+      "services_data_owners": [
+        "iam-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-AUTH-REGISTER-RESET"
+        ],
+        "r1": [
+          "R1-012",
+          "R1-015"
+        ],
+        "bc": [
+          "BC-012"
+        ],
+        "ic": [
+          "IC-054"
+        ],
+        "feat_v2": [
+          "FEAT-USR-002→V2-980-0360"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "ui-reset.e2e.cjs",
+        "password-reset-failure-marker.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-004",
+      "route": "#/pages/onboarding/onboarding",
+      "file": "apps/mobile/src/pages/onboarding/onboarding.vue",
+      "name": "成人门、同意与目标",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
+      "services_data_owners": [
+        "iam-service",
+        "learner-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-02",
+          "JNY-P1-03"
+        ],
+        "rule": [
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "rule_note": "成人资格和同意由 IAM 判定",
+        "int_ids": [
+          "INT-P1-002",
+          "INT-P1-003",
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-ADULT-CONSENT",
+          "E2E-P1-FIRST-DAY"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002",
+          "ARCH-API-001"
+        ],
+        "page": [
+          "PAGE-P1-ADULT-CONSENT",
+          "PAGE-P1-ONB-GOAL"
+        ],
+        "r1": [
+          "R1-006",
+          "R1-008",
+          "R1-010",
+          "R1-011",
+          "R1-016",
+          "R1-017"
+        ],
+        "bc": [
+          "BC-006",
+          "BC-008",
+          "BC-010",
+          "BC-011"
+        ],
+        "ic": [
+          "IC-055",
+          "IC-056",
+          "IC-057"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-001→V2-980-0001"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1044→V2-980-0366"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "ui-onboarding.e2e.cjs",
+        "onboarding-resume.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-005",
+      "route": "#/pages/forbidden/forbidden",
+      "file": "apps/mobile/src/pages/forbidden/forbidden.vue",
+      "name": "访问受限",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "拒绝原因、安全出口和退出；403 不伪装空态或越过 Gate",
+      "services_data_owners": [
+        "iam-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-02",
+          "JNY-P1-03"
+        ],
+        "rule": [
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "rule_note": "成人资格和同意由 IAM 判定",
+        "int_ids": [
+          "INT-P1-002",
+          "INT-P1-003",
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-ADULT-CONSENT",
+          "E2E-P1-FIRST-DAY"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002",
+          "ARCH-API-001"
+        ],
+        "page": [
+          "PAGE-P1-ADULT-CONSENT"
+        ],
+        "r1": [
+          "R1-007",
+          "R1-013"
+        ],
+        "bc": [
+          "BC-007",
+          "BC-201"
+        ],
+        "ic": [
+          "IC-055"
+        ],
+        "feat_v2": [
+          "FEAT-USR-001→V2-980-0359"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1044→V2-980-0366"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "ui-forbidden.e2e.cjs",
+        "onboarding-adult-verdict.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-006",
+      "route": "#/pages/assessment/assessment",
+      "file": "apps/mobile/src/pages/assessment/assessment.vue",
+      "name": "定级",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "10 题与版本、checkpoint、未知结果/冲突、跳过和重测；反馈时点 DEC-04 不代签",
+      "services_data_owners": [
+        "assessment-service",
+        "content-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-04"
+        ],
+        "rule": [
+          "RULE-P1-PLACEMENT",
+          "RULE-P1-SESSION",
+          "RULE-P1-DAILY-PLAN"
+        ],
+        "int_ids": [
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-FIRST-DAY"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-ASSESSMENT",
+          "PAGE-P1-ASSESSMENT-RESULT"
+        ],
+        "r1": [
+          "R1-018",
+          "R1-020",
+          "R1-021",
+          "R1-022",
+          "R1-023",
+          "R1-024",
+          "R1-027",
+          "R1-028"
+        ],
+        "bc": [
+          "BC-013",
+          "BC-014",
+          "BC-015",
+          "BC-016",
+          "BC-017",
+          "BC-018",
+          "BC-022"
+        ],
+        "ic": [
+          "IC-010",
+          "IC-011",
+          "IC-012",
+          "IC-058",
+          "IC-059"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-003→V2-980-0003",
+          "FEAT-ONB-004→V2-980-0004"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "placement-checkpoint-resume.test.mjs",
+        "placement-score-units.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-007",
+      "route": "#/pages/home/home",
+      "file": "apps/mobile/src/pages/home/home.vue",
+      "name": "首页",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "真实计划摘要、首学、空/错/401、切号及迟到响应",
+      "services_data_owners": [
+        "learner-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-03",
+          "JNY-P1-05"
+        ],
+        "rule": [
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-FIRST-DAY",
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-LEARN-HOME"
+        ],
+        "r1": [
+          "R1-032",
+          "R1-037",
+          "R1-039",
+          "R1-041"
+        ],
+        "bc": [
+          "BC-025",
+          "BC-030",
+          "BC-032"
+        ],
+        "ic": [
+          "IC-013",
+          "IC-021"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-010→V2-980-0010"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c03-learning-flow.test.mjs",
+        "mobile-learning-account-scope.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-008",
+      "route": "#/pages/today/today",
+      "file": "apps/mobile/src/pages/today/today.vue",
+      "name": "今日任务",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "区分无计划/已完成/无内容/无到期/失败；无有效 practiceRef 不编题",
+      "services_data_owners": [
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-03",
+          "JNY-P1-05"
+        ],
+        "rule": [
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-FIRST-DAY",
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-TODAY"
+        ],
+        "r1": [
+          "R1-034",
+          "R1-035",
+          "R1-037",
+          "R1-041"
+        ],
+        "bc": [
+          "BC-027",
+          "BC-028",
+          "BC-030"
+        ],
+        "ic": [
+          "IC-017",
+          "IC-018"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-012→V2-980-0012"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0494→V2-980-0255"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c03-learning-flow.test.mjs",
+        "mobile-learning-account-scope.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-009",
+      "route": "#/pages/learn/learn",
+      "file": "apps/mobile/src/pages/learn/learn.vue",
+      "name": "学习与课程",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "书架/继续学习、内容授权与版本、空目录/无结果/失败分开",
+      "services_data_owners": [
+        "content-service",
+        "learner-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-03",
+          "JNY-P1-05"
+        ],
+        "rule": [
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-004"
+        ],
+        "e2e": [
+          "E2E-P1-FIRST-DAY",
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-PLAN-MAP",
+          "PAGE-P1-COURSE-SHELF"
+        ],
+        "r1": [
+          "R1-037",
+          "R1-040",
+          "R1-041"
+        ],
+        "bc": [
+          "BC-199"
+        ],
+        "ic": [
+          "IC-029",
+          "IC-039"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-014→V2-980-0014"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c03-learning-flow.test.mjs",
+        "mobile-state-boundaries.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-010",
+      "route": "#/pages/practice/practice",
+      "file": "apps/mobile/src/pages/practice/practice.vue",
+      "name": "练习入口",
+      "owner": "GROK",
+      "wave": "G1",
+      "status": "PENDING",
+      "scope": "真实可用入口、队列、能力关闭原因；不开放隐藏功能",
+      "services_data_owners": [
+        "assessment-service",
+        "learning-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-05",
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-REL-001",
+          "ARCH-DATA-001"
+        ],
+        "page": [
+          "PAGE-P1-PRACTICE-HUB"
+        ],
+        "r1": [
+          "R1-043",
+          "R1-048",
+          "R1-058"
+        ],
+        "bc": [
+          "BC-033",
+          "BC-043"
+        ],
+        "ic": [
+          "IC-022"
+        ],
+        "feat_v2": [
+          "FEAT-ASM-012→V2-980-0226"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0474→V2-980-0236"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c04-assessment-chain.test.mjs",
+        "mobile-state-boundaries.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-011",
+      "route": "#/pages/b2-practice/b2-practice",
+      "file": "apps/mobile/src/pages/b2-practice/b2-practice.vue",
+      "name": "旧综合练习入口",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "旧入口迁移说明/可用出口，保持现有网关与权限边界",
+      "services_data_owners": [
+        "assessment-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-05",
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-REL-001",
+          "ARCH-DATA-001"
+        ],
+        "page": [
+          "PAGE-P1-PRACTICE-SESSION"
+        ],
+        "r1": [
+          "R1-043",
+          "R1-048"
+        ],
+        "bc": [
+          "BC-033",
+          "BC-043"
+        ],
+        "ic": [
+          "IC-022"
+        ],
+        "feat_v2": [
+          "FEAT-ASM-012→V2-980-0226"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0474→V2-980-0236"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c04-assessment-chain.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-012",
+      "route": "#/pages/b2-vocabulary/b2-vocabulary",
+      "file": "apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue",
+      "name": "词汇与复习",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放",
+      "services_data_owners": [
+        "content-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-VOCAB",
+          "PAGE-P1-SRS"
+        ],
+        "r1": [
+          "R1-048",
+          "R1-054",
+          "R1-055",
+          "R1-056"
+        ],
+        "bc": [
+          "BC-042",
+          "BC-055",
+          "BC-056"
+        ],
+        "ic": [
+          "IC-025",
+          "IC-032"
+        ],
+        "feat_v2": [
+          "FEAT-VOC-005→V2-980-0027"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0176→V2-980-0068"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b10/c05-vocabulary.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-013",
+      "route": "#/pages/b3-grammar/b3-grammar",
+      "file": "apps/mobile/src/pages/b3-grammar/b3-grammar.vue",
+      "name": "语法与长难句",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "内容与练习版本、已保存再反馈、缺题关闭和降级",
+      "services_data_owners": [
+        "content-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-GRAMMAR",
+          "PAGE-P1-PRACTICE-SESSION"
+        ],
+        "r1": [
+          "R1-043",
+          "R1-044",
+          "R1-045",
+          "R1-046",
+          "R1-058"
+        ],
+        "bc": [
+          "BC-033",
+          "BC-034",
+          "BC-036",
+          "BC-037"
+        ],
+        "ic": [
+          "IC-022",
+          "IC-023"
+        ],
+        "feat_v2": [
+          "FEAT-GRM-001→V2-980-0071"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0474→V2-980-0236"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b3-grammar-guards.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-014",
+      "route": "#/pages/b3-reading/b3-reading",
+      "file": "apps/mobile/src/pages/b3-reading/b3-reading.vue",
+      "name": "阅读精练",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "阅读内容/题目授权、保存后反馈、返回原位置",
+      "services_data_owners": [
+        "content-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-READING",
+          "PAGE-P1-PRACTICE-SESSION"
+        ],
+        "r1": [
+          "R1-043",
+          "R1-044",
+          "R1-045",
+          "R1-046"
+        ],
+        "bc": [
+          "BC-035",
+          "BC-036",
+          "BC-038"
+        ],
+        "ic": [
+          "IC-022",
+          "IC-023"
+        ],
+        "feat_v2": [
+          "FEAT-RDG-002→V2-980-0136"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0392→V2-980-0151"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c08-reading.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-015",
+      "route": "#/pages/b11-reading/b11-reading",
+      "file": "apps/mobile/src/pages/b11-reading/b11-reading.vue",
+      "name": "分级阅读",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "正文长文、进度与内容下线；恢复身份与内容版本",
+      "services_data_owners": [
+        "content-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-READING"
+        ],
+        "r1": [
+          "R1-040",
+          "R1-046"
+        ],
+        "bc": [
+          "BC-038",
+          "BC-199",
+          "BC-200"
+        ],
+        "ic": [
+          "IC-023",
+          "IC-029"
+        ],
+        "feat_v2": [
+          "FEAT-RDG-002→V2-980-0136"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0392→V2-980-0151"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "c08-reading.test.mjs",
+        "b11/b11-mobile-contract.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-016",
+      "route": "#/pages/b10-report/b10-report",
+      "file": "apps/mobile/src/pages/b10-report/b10-report.vue",
+      "name": "错题与报告",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "报告/错题/补救，空/未就绪/失败/部分与真实数据区分",
+      "services_data_owners": [
+        "assessment-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-08",
+          "JNY-P1-09"
+        ],
+        "rule": [
+          "RULE-P1-MISTAKE-REPAIR",
+          "RULE-P1-MASTERY",
+          "RULE-P1-REPORT"
+        ],
+        "int_ids": [
+          "INT-P1-006",
+          "INT-P1-007"
+        ],
+        "e2e": [
+          "E2E-P1-MISTAKE-MASTERY",
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-DATA-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-MISTAKES-MASTERY",
+          "PAGE-P1-REPORT"
+        ],
+        "r1": [
+          "R1-050",
+          "R1-051",
+          "R1-052",
+          "R1-053",
+          "R1-060",
+          "R1-061",
+          "R1-066",
+          "R1-067",
+          "R1-068"
+        ],
+        "bc": [
+          "BC-045",
+          "BC-048",
+          "BC-052",
+          "BC-063",
+          "BC-064",
+          "BC-069"
+        ],
+        "ic": [
+          "IC-030",
+          "IC-031",
+          "IC-033"
+        ],
+        "feat_v2": [
+          "FEAT-ONB-004→V2-980-0004"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b10/b10-mobile-contract.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-017",
+      "route": "#/pages/report-share/report-share",
+      "file": "apps/mobile/src/pages/report-share/report-share.vue",
+      "name": "报告分享",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "PENDING",
+      "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
+      "services_data_owners": [
+        "assessment-service",
+        "learning-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-08",
+          "JNY-P1-09"
+        ],
+        "rule": [
+          "RULE-P1-MISTAKE-REPAIR",
+          "RULE-P1-MASTERY",
+          "RULE-P1-REPORT"
+        ],
+        "int_ids": [
+          "INT-P1-006",
+          "INT-P1-007"
+        ],
+        "e2e": [
+          "E2E-P1-MISTAKE-MASTERY",
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-DATA-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-REPORT"
+        ],
+        "r1": [
+          "R1-065",
+          "R1-068"
+        ],
+        "bc": [
+          "BC-068"
+        ],
+        "ic": [
+          "IC-033"
+        ],
+        "feat_v2": [],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b10/b10-mobile-contract.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-018",
+      "route": "#/pages/world/world",
+      "file": "apps/mobile/src/pages/world/world.vue",
+      "name": "成长世界",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
+      "services_data_owners": [
+        "gamification-service",
+        "social-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-10"
+        ],
+        "rule": [
+          "RULE-P1-SESSION"
+        ],
+        "int_ids": [
+          "INT-P1-008"
+        ],
+        "e2e": [
+          "E2E-P1-REWARD"
+        ],
+        "arch": [
+          "ARCH-PLAT-001",
+          "ARCH-API-001"
+        ],
+        "page": [
+          "PAGE-P1-WORLD"
+        ],
+        "r1": [
+          "R1-049"
+        ],
+        "bc": [
+          "BC-044"
+        ],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-GAM-022→V2-980-0288"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b12/b12-mobile-contract.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-019",
+      "route": "#/pages/b4-games/b4-games",
+      "file": "apps/mobile/src/pages/b4-games/b4-games.vue",
+      "name": "游戏目录边界",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "CANDIDATE_FROZEN_PENDING_SHARED_BROWSER_REVIEW",
+      "scope": "说明开放状态与返回；无游戏可用契约不可伪造可玩或奖励",
+      "services_data_owners": [
+        "gamification-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-10"
+        ],
+        "rule": [
+          "RULE-P1-SESSION"
+        ],
+        "int_ids": [
+          "INT-P1-008"
+        ],
+        "e2e": [
+          "E2E-P1-REWARD"
+        ],
+        "arch": [
+          "ARCH-PLAT-001",
+          "ARCH-API-001"
+        ],
+        "page": [
+          "PAGE-P1-GAME"
+        ],
+        "r1": [
+          "R1-049"
+        ],
+        "bc": [
+          "BC-044"
+        ],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-GAM-009→V2-980-0275"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0729→V2-980-0318"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b4-games-page-reentry.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-04-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-020",
+      "route": "#/pages/b4-social/b4-social",
+      "file": "apps/mobile/src/pages/b4-social/b4-social.vue",
+      "name": "自习室和社交边界",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "scope": "当前允许范围、空态与返回；禁止伪造席位/社交事实",
+      "services_data_owners": [
+        "social-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-11"
+        ],
+        "rule": [
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-009"
+        ],
+        "e2e": [
+          "E2E-P1-SOCIAL"
+        ],
+        "arch": [
+          "ARCH-IAM-002",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SOCIAL"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-SOC-001→V2-980-0335"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1097→V2-980-0447"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b4-account-scope.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-021",
+      "route": "#/pages/b4-avatar/b4-avatar",
+      "file": "apps/mobile/src/pages/b4-avatar/b4-avatar.vue",
+      "name": "头像与衣柜",
+      "owner": "UNASSIGNED",
+      "wave": "LATER",
+      "status": "PENDING",
+      "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
+      "services_data_owners": [
+        "gamification-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-10"
+        ],
+        "rule": [
+          "RULE-P1-SESSION"
+        ],
+        "int_ids": [
+          "INT-P1-008"
+        ],
+        "e2e": [
+          "E2E-P1-REWARD"
+        ],
+        "arch": [
+          "ARCH-PLAT-001",
+          "ARCH-API-001"
+        ],
+        "page": [
+          "PAGE-P1-AVATAR-REWARD"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-GAM-013→V2-980-0279"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0718→V2-980-0307"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b4-avatar-display.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-022",
+      "route": "#/pages/b4-offline/b4-offline",
+      "file": "apps/mobile/src/pages/b4-offline/b4-offline.vue",
+      "name": "离线服务边界",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "未开放不显示可点必败下载；不把 PWA 当离线可学",
+      "services_data_owners": [
+        "learning-service",
+        "media-service",
+        "workflow-service（恢复编排，具体 owner 待逐项核对）"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-14"
+        ],
+        "rule": [
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-014"
+        ],
+        "e2e": [
+          "E2E-P1-NOTIFICATION-SYNC"
+        ],
+        "arch": [
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SYNC-OFFLINE"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [
+          "IC-062"
+        ],
+        "feat_v2": [
+          "FEAT-INF-004→V2-980-0408"
+        ],
+        "prd_atom_v2": [],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b11/b11-media-adapter.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-023",
+      "route": "#/pages/profile/profile",
+      "file": "apps/mobile/src/pages/profile/profile.vue",
+      "name": "我的",
+      "owner": "DSH_PROFILE",
+      "wave": "D2",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "账号和入口、会话状态、退出反馈；页面身份映射待核",
+      "services_data_owners": [
+        "iam-service",
+        "learner-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-ONB-GOAL",
+          "PAGE-P1-SETTINGS"
+        ],
+        "r1": [
+          "R1-004",
+          "R1-010"
+        ],
+        "bc": [
+          "BC-004",
+          "BC-010"
+        ],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-USR-006→V2-980-0364"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1052→V2-980-0373"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-settings-devices.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-01-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-024",
+      "route": "#/pages/settings/settings",
+      "file": "apps/mobile/src/pages/settings/settings.vue",
+      "name": "设置与隐私",
+      "owner": "DSH_PROFILE",
+      "wave": "D2",
+      "status": "PREPARATION_IN_PROGRESS",
+      "scope": "偏好/通知/隐私撤回读回与失败；受理不等于删除完成",
+      "services_data_owners": [
+        "learner-service.privacy",
+        "iam-service",
+        "notification-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-PRIVACY",
+          "ACT-P1-AUDITOR",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-15"
+        ],
+        "rule": [
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-015",
+          "INT-P1-016",
+          "INT-P1-017"
+        ],
+        "e2e": [
+          "E2E-P1-PRIVACY"
+        ],
+        "arch": [
+          "ARCH-IAM-002",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SETTINGS",
+          "PAGE-P1-PRIVACY"
+        ],
+        "r1": [
+          "R1-009",
+          "R1-103",
+          "R1-104",
+          "R1-105",
+          "R1-106",
+          "R1-114"
+        ],
+        "bc": [
+          "BC-009",
+          "BC-188",
+          "BC-189",
+          "BC-190",
+          "BC-191",
+          "BC-192"
+        ],
+        "ic": [
+          "IC-034",
+          "IC-036",
+          "IC-061",
+          "IC-105",
+          "IC-106",
+          "IC-107",
+          "IC-108"
+        ],
+        "feat_v2": [
+          "FEAT-INF-003→V2-980-0407"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1631→V2-980-0386"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-settings-devices.test.mjs",
+        "learning-consent-withdrawal.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      },
+      "current_job": "profile-batch-05-settings-prep"
+    },
+    {
+      "id": "MB-025",
+      "route": "#/pages/devices/devices",
+      "file": "apps/mobile/src/pages/devices/devices.vue",
+      "name": "设备与会话",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "PENDING",
+      "scope": "当前设备标识、确认、撤销读回与被踢登录状态",
+      "services_data_owners": [
+        "iam-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-DEVICES"
+        ],
+        "r1": [
+          "R1-005"
+        ],
+        "bc": [
+          "BC-005"
+        ],
+        "ic": [
+          "IC-035"
+        ],
+        "feat_v2": [
+          "FEAT-USR-005→V2-980-0363"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1050→V2-980-0371"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-settings-devices.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-026",
+      "route": "#/pages/b5-commerce/b5-commerce",
+      "file": "apps/mobile/src/pages/b5-commerce/b5-commerce.vue",
+      "name": "权益与兑换",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "PENDING",
+      "scope": "权益/兑换真实可用范围；支付关闭且不伪造支付或权益",
+      "services_data_owners": [
+        "commerce-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-FINANCE",
+          "ACT-P1-PAYMENT-CHANNEL"
+        ],
+        "jny": [
+          "JNY-P1-12"
+        ],
+        "rule": [],
+        "rule_note": "订单与权益契约；无独立学习规则",
+        "int_ids": [
+          "INT-P1-010"
+        ],
+        "e2e": [
+          "E2E-P1-ENTITLEMENT"
+        ],
+        "arch": [
+          "ARCH-REL-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-COMMERCE"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [
+          "IC-038"
+        ],
+        "feat_v2": [
+          "FEAT-COM-009→V2-980-0469"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1104→V2-980-0475"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-state-boundaries.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-027",
+      "route": "#/pages/b6-platform/b6-platform",
+      "file": "apps/mobile/src/pages/b6-platform/b6-platform.vue",
+      "name": "语言主题与性能",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "PENDING",
+      "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
+      "services_data_owners": [
+        "learner-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-05",
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-DAILY-PLAN",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-003",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-TODAY-SESSION"
+        ],
+        "arch": [
+          "ARCH-REL-001",
+          "ARCH-DATA-001"
+        ],
+        "page": [
+          "PAGE-P1-SETTINGS"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [
+          "IC-034"
+        ],
+        "feat_v2": [],
+        "prd_atom_v2": [
+          "PRD-ATOM-1738→V2-980-0397"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-settings-devices.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-028",
+      "route": "#/pages/support/support",
+      "file": "apps/mobile/src/pages/support/support.vue",
+      "name": "帮助与客服",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "PENDING",
+      "scope": "工单和帮助实际边界，安全内容引用；不伪造发送/回复",
+      "services_data_owners": [
+        "admin-ops-service.support"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SUPPORT",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-14"
+        ],
+        "rule": [
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-012",
+          "INT-P1-013",
+          "INT-P1-017"
+        ],
+        "e2e": [
+          "E2E-P1-SUPPORT",
+          "E2E-P1-RECOVERY"
+        ],
+        "arch": [
+          "ARCH-IAM-002",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SUPPORT"
+        ],
+        "r1": [
+          "R1-100",
+          "R1-101",
+          "R1-114"
+        ],
+        "bc": [
+          "BC-185",
+          "BC-186"
+        ],
+        "ic": [
+          "IC-037",
+          "IC-103",
+          "IC-104"
+        ],
+        "feat_v2": [
+          "FEAT-INF-008→V2-980-0412"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1545→V2-980-0530"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "support-real-gateway.e2e.mjs",
+        "support-state-fixture.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "NOT_RUN",
+        "h5": "NOT_RUN",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "NOT_RUN"
+      }
+    },
+    {
+      "id": "MB-029",
+      "route": "#/pages/b3-listening/b3-listening",
+      "file": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+      "name": "听力旧入口",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "旧入口关闭说明与安全出口；不得假装提供音频",
+      "services_data_owners": [
+        "media-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-LISTENING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-026"
+        ],
+        "feat_v2": [
+          "FEAT-LST-001→V2-980-0107"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0476→V2-980-0238"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b11/b11-media-adapter.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-030",
+      "route": "#/pages/b11-listening/b11-listening",
+      "file": "apps/mobile/src/pages/b11-listening/b11-listening.vue",
+      "name": "听力与 Clips",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "当前关闭原因与返回；素材未准入不得开放",
+      "services_data_owners": [
+        "media-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-LISTENING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-026"
+        ],
+        "feat_v2": [
+          "FEAT-LST-001→V2-980-0107"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0476→V2-980-0238"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b11/b11-media-adapter.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-031",
+      "route": "#/pages/b3-speaking/b3-speaking",
+      "file": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+      "name": "口语旧入口",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "旧入口不可用说明与返回，不伪造语音评分",
+      "services_data_owners": [
+        "media-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SPEAKING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-027"
+        ],
+        "feat_v2": [
+          "FEAT-SPK-004→V2-980-0162"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0170→V2-980-0063"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "mobile-state-boundaries.e2e.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-032",
+      "route": "#/pages/b11-speaking/b11-speaking",
+      "file": "apps/mobile/src/pages/b11-speaking/b11-speaking.vue",
+      "name": "音标与跟读",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "关闭说明与返回，不提前申请麦克风或伪造评分",
+      "services_data_owners": [
+        "media-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SPEAKING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-027"
+        ],
+        "feat_v2": [
+          "FEAT-SPK-004→V2-980-0162"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0170→V2-980-0063"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b11/b11-media-adapter.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    },
+    {
+      "id": "MB-033",
+      "route": "#/pages/b3-writing/b3-writing",
+      "file": "apps/mobile/src/pages/b3-writing/b3-writing.vue",
+      "name": "写作",
+      "owner": "DSH",
+      "wave": "D1",
+      "status": "INTEGRATED_LOCAL_UI_CANDIDATE_NOT_FULL_ACCEPTED",
+      "scope": "当前关闭说明/返回；无题或提交链不得提供虚假编辑成功",
+      "services_data_owners": [
+        "content-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-WRITING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-028"
+        ],
+        "feat_v2": [
+          "FEAT-WRT-002→V2-980-0190"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0454→V2-980-0195"
+        ],
+        "trace_status": "TRACE_PENDING",
+        "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+      },
+      "existing_test_leads": [
+        "b3-writing.test.mjs"
+      ],
+      "evidence": {
+        "visual": "NOT_RUN",
+        "interaction": "AUTHOR_SYNTHETIC_TEST_RECEIPTS; real service NOT_RUN",
+        "h5": "ROOT_BUILD_EXIT0_FROZEN_B03",
+        "cross_viewport": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "real_api": "NOT_RUN",
+        "device": "NOT_RUN",
+        "independent_review": "ROOT_SELECTED_SCREENSHOTS_REVIEWED_LIMITED_SCOPE",
+        "combined_source_checks": "55/55 targeted tests, typecheck and H5 production build exit0",
+        "combined_browser": "PENDING"
+      },
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+    }
+  ],
+  "unassigned": "MB-011…016、018、021 的执行者在前批完成后由 Root 调度并先登记唯一写者。",
+  "hour_estimate": "100–140 小时仅为排期估算，不是授权上限；具体随实情修正。",
+  "evidence_status": "NOT_RUN",
+  "notes": [
+    "历史 R1 签收绑定 7a6ac0a2，不自动覆盖本轮代码、环境和证据。",
+    "新 UI 不改变 Phase 1、服务数据 owner、认证和业务 Gate。",
+    "实服、部署、native、真机及辅助技术未核验，不得以截图/构建/模拟验收代替。"
+  ],
+  "dispatch": {
+    "reported_at": "2026-11-03T23:31:34+08:00",
+    "timestamp_semantics": "接到主任务报告的本机记录时间，非 preflight 原始执行时间",
+    "source": "Root 转述 cli_preflight；精确执行时间待补",
+    "runners": {
+      "GROK": "ROOT_DIRECT_LOCAL_CLI",
+      "DSH": "ROOT_DIRECT_LOCAL_CLI",
+      "DSH_PROFILE": "ROOT_DIRECT_LOCAL_CLI"
+    },
+    "preflight": {
+      "GROK": {
+        "version": "1.0.62",
+        "connectivity": "CONNECTED_REPORTED",
+        "weekly_quota": "UNKNOWN",
+        "usage_ui": "空白"
+      },
+      "DSH": {
+        "version": "0.2.1-rc.5",
+        "profile_reported": "opendesin/deepseek-v4.1-flash/max",
+        "connectivity": "CONNECTED_REPORTED",
+        "weekly_quota": "UNKNOWN",
+        "usage_ui": "未登录"
+      }
+    },
+    "note": "Codex runner agents stopped. Latest CLI jobs and actual sessions supersede launch-era notes; no dashboard checks."
+  },
+  "execution_policy": {
+    "updated_at": "2026-11-04T00:28:05.326720+08:00",
+    "allowed_model_clis": [
+      "grok",
+      "dsh"
+    ],
+    "codex_subagents": "PROHIBITED_BY_LATEST_USER_INSTRUCTION; all previous workers stopped",
+    "root_role": "dispatch/review/supervision documentation/integration only",
+    "quota_observation": "no more dashboard checks; use actual CLI quota-stop receipts; ordinary completion/permission/network exits are not quota exhaustion"
+  },
+  "cli_runtime_observations": {
+    "GROK": {
+      "session": "91c9ab9d-03da-4d4f-a8b4-3ea04dda4bf3",
+      "last_observed_pid": 44044,
+      "job_checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-06-closed-tokens-resume-01.checkpoint.json",
+      "state": "RUNNING_OBSERVED",
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
+      "observed_at": "2026-11-03T18:25:32.208583+00:00",
+      "quota": "UNKNOWN_NO_DASHBOARD_PROBES"
+    },
+    "DSH": {
+      "session": "session-d2c8ff30-eeea-4c3d-8efc-f21974580ecb",
+      "last_observed_pid": 42107,
+      "job_checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-08-profile-qa.checkpoint.json",
+      "state": "EXITED_OBSERVED",
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+      "observed_at": "2026-11-03T18:25:32.208583+00:00",
+      "quota": "UNKNOWN_NO_DASHBOARD_PROBES"
+    },
+    "DSH_PROFILE": {
+      "session": "session-de7799cc-d99f-40cf-80cc-e82277f1a3be",
+      "last_observed_pid": 44047,
+      "job_checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-04.checkpoint.json",
+      "state": "RUNNING_OBSERVED",
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-profile-20261104/cloudstudy",
+      "observed_at": "2026-11-03T18:25:32.208583+00:00",
+      "quota": "UNKNOWN_NO_DASHBOARD_PROBES"
+    }
+  },
+  "state": "IN_PROGRESS_NOT_ACCEPTED",
+  "dedicated_asset_ownership": {
+    "owner": "DSH",
+    "directories": [
+      "apps/mobile/src/static/figma-closed-169-8610",
+      "apps/mobile/src/static/figma-closed-168-6945",
+      "apps/mobile/src/static/figma-closed-168-3746",
+      "apps/mobile/src/static/figma-closed-168-4327",
+      "apps/mobile/src/static/figma-closed-168-5501",
+      "apps/mobile/src/static/figma-closed-168-6160"
+    ],
+    "status": "authorized disjoint directories; exact hashes and rendering pending final review"
+  },
+  "dedicated_component_ownership": {
+    "owner": "DSH",
+    "path": "apps/mobile/src/components/MobileClosedPracticeNotice.vue",
+    "scope": "pure shared closed-state body; no generic header or domain logic",
+    "status": "batch-03 in progress, not accepted"
+  },
+  "candidate_reviews": [
+    {
+      "id": "DSH-B02",
+      "status": "NOT_ACCEPTED_PENDING_SHARED_COMPONENT_I18N_HEADER_BROWSER",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-02-source-snapshot/manifest.json",
+      "verified_source_files": 46,
+      "asset_hashes_reported": "33/33; source snapshot matches all manifest file hashes",
+      "author_checks_reported": {
+        "typecheck": "PASS",
+        "sfc": "6/6",
+        "page_tests": "16/16",
+        "related_regression": "18/18",
+        "b10_contract": "5/6, retained unchanged-API failure",
+        "browser": "NOT_RUN",
+        "i18n": "PENDING"
+      },
+      "review_boundary": "root verified frozen source hashes; author test receipts are not independent browser or service acceptance"
+    },
+    {
+      "id": "DSH-B03",
+      "status": "SOURCE_FROZEN_NOT_UI_ACCEPTED",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "source_files": 48,
+      "assets": 33,
+      "author_checks": {
+        "component_and_pages": "20/20",
+        "related_regression": "18/18",
+        "SFC": "7/7"
+      },
+      "root_checks": {
+        "typecheck": "exit0, tsc script only",
+        "build_h5": "exit0",
+        "diff_check": "exit0"
+      },
+      "pending": [
+        "shared tokens and i18n composition",
+        "precise header",
+        "browser/theme/iPad",
+        "real service",
+        "native device",
+        "deployment"
+      ],
+      "review": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-root-review.md"
+    },
+    {
+      "id": "GROK-R03",
+      "status": "FROZEN_RETURNED_FOR_CHANGES",
+      "source_manifest": "evidence/GROK-R03-source-manifest.json",
+      "root_browser": {
+        "scope": "SYNTHETIC_UI",
+        "checks_observed": 133,
+        "failed": 16,
+        "screenshots": 14,
+        "home": "NOT_REACHED_DUE_FIXTURE_TIMEOUT"
+      },
+      "review": "reviews/GROK-R03.md",
+      "limits": "9 eye samples likely test defect; one error fixture failed; contrast/explicit dark visual mismatches need correction; no real-service pass"
+    },
+    {
+      "id": "DSH-B04",
+      "status": "FROZEN_PENDING_SHARED_BROWSER_REVIEW",
+      "source_manifest": "evidence/DSH-B04-source-manifest.json",
+      "delta_files": 40,
+      "assets": 38,
+      "previous_b03_files_changed": 0,
+      "author_checks": {
+        "target_and_account_scope": "14/14",
+        "typecheck": "exit0",
+        "sfc": "pass",
+        "assets": "38/38"
+      },
+      "business_limits": "No question payload, no new-game start; p04/p05/p06 not fully connected, preserved real progress and result fields",
+      "browser": "NOT_RUN"
+    },
+    {
+      "id": "GROK-B02",
+      "status": "SHARED_INTERFACE_PUBLISHED_NOT_PAGE_ACCEPTANCE",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-02-shared-source-snapshot/manifest.json",
+      "delta_product_files": 3,
+      "source_checks": "275/275",
+      "typecheck": "exit0",
+      "build_h5": "exit0",
+      "handoff": "exact 3-file source-hash verified copy to DSH main/profile, original baseline checked before overwrite"
+    },
+    {
+      "id": "DSH-B05",
+      "status": "CANDIDATE_FROZEN_NOT_UI_ACCEPTED",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-05-source-snapshot/manifest.json",
+      "delta_files": 81,
+      "assets": 79,
+      "prior_b04_files_changed": 0,
+      "author_checks": "typecheck/SFC, page+account tests14/14, assets79/79",
+      "remaining": [
+        "social69 keys pending published modules",
+        "focus ring denominator fix required",
+        "q12/q13 B12 layout partial",
+        "browser/real service/device NOT_RUN"
+      ]
+    },
+    {
+      "id": "DSH-B06",
+      "status": "ROOT_VISUAL_REJECTED_PENDING_FIXES",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-06-source-snapshot/manifest.json",
+      "author_browser": "243/243 automatic checks,24 PNG, synthetic",
+      "root_findings": [
+        "en-US writing PNG byte-identical to Chinese",
+        "dark back/CTA visible contrast concerns",
+        "writing CTA missing in screenshot",
+        "CTA52px vs target48px"
+      ],
+      "root_visual_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-06-root-visual-snapshot-01/manifest.json",
+      "continued_as": "batch-07",
+      "limits": "No UI acceptance inferred from automatic PASS"
+    },
+    {
+      "id": "DSH-PROFILE-B01",
+      "status": "FROZEN_NOT_UI_ACCEPTED",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-01-source-snapshot/manifest.json",
+      "product_page_and_test": 2,
+      "assets": 52,
+      "preloaded_shared_files": 3,
+      "root_typecheck": "exit0",
+      "root_page_tests": "11/11 exit0",
+      "browser": "NOT_RUN",
+      "pending": [
+        "profile47 translations now delegated to own module",
+        "profile11 tokens await GROK",
+        "exact visual/theme/iPad/device",
+        "guest prototype blocked by AUTH_ONLY; guard preserved"
+      ]
+    },
+    {
+      "id": "DSH-B07",
+      "status": "ROOT_CONFIRMED_THREE_RETURNS_FIXED; EXACT_SKIN_PENDING",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-07-source-snapshot/manifest.json",
+      "author_browser": "341 checks/26 PNG synthetic",
+      "root_visual_reviewed": [
+        "en-US-writing now English",
+        "dark back and CTA readable",
+        "390-writing CTA visible"
+      ],
+      "pending": [
+        "exact glass/CTA semantic tokens and final composition",
+        "unhandled Object in negative gate",
+        "native/real service/iPad/readers/deployment"
+      ]
+    },
+    {
+      "id": "GROK-B05",
+      "status": "PROFILE11_TOKENS_PUBLISHED_COPIED_TO_PROFILE",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-05-profile-tokens-source-snapshot/manifest.json",
+      "checks": "56 static; design-tokens/mobile typecheck and H5 build exit0",
+      "provenance": "profile.ts delta in Grok tree was Root preload of DSH_PROFILE47 resource; Grok only authored mobile.ts"
+    },
+    {
+      "id": "DSH-PROFILE-INDEPENDENT-QA",
+      "status": "CHANGES_REQUIRED",
+      "report": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-independent-qa-review/report.md",
+      "checks": 121,
+      "failures": 3,
+      "screenshots": 15,
+      "findings": [
+        "dark light-glow not switched",
+        "selected high-contrast root rect0x0",
+        "high-contrast decorative glow not hidden"
+      ],
+      "source_hashes_stable": true,
+      "continued_as": "profile-batch-04"
+    },
+    {
+      "id": "DSH-B09",
+      "status": "FROZEN_LOCAL_UI_REVIEWED_SELECTED_SCREENS",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-09-source-snapshot/manifest.json",
+      "author_browser": "481 checks/26 screenshots synthetic",
+      "root_reviewed": [
+        "390-writing",
+        "dark-offline",
+        "selected high contrast writing"
+      ],
+      "limits": "negative gate Object, native/real service/readers/deployment, dark asset adaptation"
+    },
+    {
+      "id": "DSH-PROFILE-B04",
+      "status": "THEME_THREE_RETURNS_FIXED_SELECTED_SCREENS_REVIEWED",
+      "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-04-source-snapshot/manifest.json",
+      "author_browser": "123 checks/15 screenshots synthetic;13 tests",
+      "root_reviewed": [
+        "dark",
+        "selected high contrast"
+      ],
+      "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
+    }
+  ],
+  "updated_at": "2026-11-03T18:54:21.889362+00:00",
+  "dedicated_games_asset_ownership": {
+    "owner": "DSH",
+    "directories": [
+      "apps/mobile/src/static/figma-games-169-5279",
+      "apps/mobile/src/static/figma-games-169-5353",
+      "apps/mobile/src/static/figma-games-169-5475",
+      "apps/mobile/src/static/figma-games-169-5549",
+      "apps/mobile/src/static/figma-games-169-5637",
+      "apps/mobile/src/static/figma-games-169-5726",
+      "apps/mobile/src/static/figma-games-169-5811"
+    ]
+  },
+  "dedicated_social_asset_ownership": {
+    "owner": "DSH",
+    "directories": [
+      "apps/mobile/src/static/figma-social-169-6359",
+      "apps/mobile/src/static/figma-social-169-6434",
+      "apps/mobile/src/static/figma-social-169-6504",
+      "apps/mobile/src/static/figma-social-169-6585",
+      "apps/mobile/src/static/figma-social-169-6695",
+      "apps/mobile/src/static/figma-social-169-6809",
+      "apps/mobile/src/static/figma-social-169-6882",
+      "apps/mobile/src/static/figma-social-169-6985",
+      "apps/mobile/src/static/figma-social-169-7071",
+      "apps/mobile/src/static/figma-social-169-7148",
+      "apps/mobile/src/static/figma-social-169-7228",
+      "apps/mobile/src/static/figma-social-169-7298",
+      "apps/mobile/src/static/figma-social-169-7410",
+      "apps/mobile/src/static/figma-social-169-7496"
+    ]
+  },
+  "i18n_module_handoff": {
+    "status": "PUBLISHED_COPIED_TO_MAIN_AND_PROFILE",
+    "owner": "GROK",
+    "central_entry": "packages/i18n/src/mobile-experience.ts",
+    "planned_modules": {
+      "closed.ts": "DSH",
+      "games.ts": "DSH",
+      "social.ts": "DSH",
+      "profile.ts": "DSH_PROFILE"
+    },
+    "directory": "packages/i18n/src/mobile-resources",
+    "rule": "Author transfer only after frozen publication; no page-specific translator or key collision with mobile.settings",
+    "source_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-03-i18n-source-snapshot/manifest.json",
+    "checks": "47/47; old566 leaves unchanged, social69 appended,635 leaves per locale; profile empty",
+    "typecheck": "exit0",
+    "copy_rule": "No live QA source mutation; copy new modules first then central entry only after receiving writer exits",
+    "receipts": [
+      "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-07-module-seed.json",
+      "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-module-seed.json"
+    ]
+  },
+  "header_ownership_transfer": {
+    "owner": "DSH",
+    "path": "apps/mobile/src/components/MobilePageHeader.vue",
+    "from": "GROK B02 frozen publication",
+    "baseline_hash_verified": true,
+    "scope": "compatible navigation API and eight-page visual/text-size closeout; other shared files retain their owner"
+  },
+  "auth_sample_pending": {
+    "job": "grok/batch-07-auth-resume",
+    "state": "RUNNING_OBSERVED",
+    "cause": "inline contrast node-e command lacked scoped permission, not quota",
+    "next": "Use only QA-directory node scripts; keep profile/closed published variables and DSH header/modules unchanged"
+  },
+  "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
+  "latest_dispatch": {
+    "GROK": "batch-07-auth-resume",
+    "DSH": "batch-10",
+    "DSH_PROFILE": "profile-batch-05-settings-prep"
+  },
+  "integration_batch_01": {
+    "status": "TYPECHECK_BUILD_55_TESTS_PASS_COMBINED_BROWSER_PENDING",
+    "files": 109,
+    "assets": 85,
+    "review": "reviews/INTEGRATION-B01.md",
+    "evidence": "evidence/integration-batch-01-receipt.json",
+    "deployment": "NOT_RUN"
+  },
+  "i18n_registry_next_pages": {
+    "status": "IMMUTABLE_PUBLICATION_VERIFIED_AWAIT_RECEIVER_EXIT",
+    "publication": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-07-registry-frozen-publication",
+    "namespaces": [
+      "settingsPage",
+      "devicesPage",
+      "commercePage",
+      "platformPage",
+      "supportPage",
+      "reportSharePage"
+    ],
+    "old_leaves_per_locale": 682,
+    "new_leaf_count": 0
+  }
+}

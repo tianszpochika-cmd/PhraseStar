@@ -23,6 +23,12 @@
 | 原 114 卡墙 | 已被 115 卡账取代，GAP-WALL-114 / RES-WALL-114 已 CLOSED（2026-10-11）；过期材料已从当前工作树清理 | [CARD-LEDGER](takeover/CARD-LEDGER.md) §0.1 |
 | R1 计划 | [dev-plan-R1](06-design/v2-980plus/redesign/dev-plan-R1.md)（IT-1～IT-7） | — |
 
+## 移动端 Figma 新一轮改造（2026-11-03）
+
+- [本轮监督账与交接](takeover/mobile-figma-20261103/README.md)：以 `f01cddc6` 为候选基线，33 条正式路由分批推进，Grok、DSH 使用隔离工作树执行，Root 分发与审核；用户后续已停止 Codex 子代理。当前仍为未签收候选，不代表新一轮页面、真实服务、设备或部署已验收。
+- 首批六个关闭状态页与个人页已按冻结作者源码合入本轮独立集成候选，类型检查、H5 构建和 55 项针对性测试通过；原作者本地浏览器证据与 Root 局部审图见[组合审核](takeover/mobile-figma-20261103/reviews/INTEGRATION-B01.md)。组合树浏览器、完整追溯、真实服务和设备仍待验，登录/首页/小游戏/社交未在此批合入。
+- Figma UIUX2.0RC1 的 QA12 说明与逐页设计确认来源、`TRACE_PENDING`、唯一写者和未执行证据见监督账；定级反馈时点仍待 DEC-04 确认。历史 MB 与官网、Web 记录的适用范围保持不变。
+
 ## 移动端 UI 规格
 
 | 轮次 | 状态 | 文档 |
