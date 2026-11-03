@@ -2,6 +2,7 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
+- [注册组合审核 B26](reviews/INTEGRATION-B26-REGISTER.md)：12项源检查、51样本/14组/43图；暗色图标修复，全局B23五失败仍保留。
 - [公开分享组合审核 B25](reviews/INTEGRATION-B25-REPORT-SHARE.md)：11项源检查、73项组合矩阵、14项UI登录后公开读检查；日期与授权边界已复验。
 - [客服组合审核 B24](reviews/INTEGRATION-B24-SUPPORT.md)：49项源检查、198项组合浏览器检查；GET适配保留设置兼容，写业务保持关闭。
 - [设备组合审核 B23](reviews/INTEGRATION-B23-DEVICES.md)：最终41项源检查/26项英文错误复验；较早247核心/131共享布局检查按源分开，原失败保留。

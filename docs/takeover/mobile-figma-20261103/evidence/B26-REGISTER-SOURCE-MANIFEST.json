@@ -1,0 +1,85 @@
+{
+  "base": "7dd9bf4cece5132c17691d1b781ed32b5b48b8c0",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-17-register-icon-source-snapshot",
+  "at": "2026-11-03T22:01:52.987508+00:00",
+  "method": "EXACT_FROZEN_AUTHOR_BYTES",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/register/register.vue",
+      "before": "e3296601141e5be4942f872239960ec00d04b53e572e8a0fe410cb6ca8543794",
+      "sha256": "64603f4c9eb17c62702b2ea02c469c860ffa200de5c5c1a45b1204a95c3d5f88"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/02775667-c477-47ad-8c16-e40ab684d37d.png",
+      "before": null,
+      "sha256": "7ddbe6d5fda3398113bdad40bb75170b03c7d003be7d1f7abb44fcbeef014be2"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/2bc6b8cc-1111-461e-974a-a1acbdfe4c31.svg",
+      "before": null,
+      "sha256": "11d13fe935a8c2e78bb0f5f5c4f3eb97c6a1c0d4f00ab6c60de1b0d3c3666c6d"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/4f1867c9-6a7e-489a-b45e-af8fb3387e68.svg",
+      "before": null,
+      "sha256": "1b6fc6c1c0722c94e96dcf84230e335d6367320f566186233e12a7c33ccaaf94"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/5994b664-5600-4a49-85dc-1ae42b4fb6d1.svg",
+      "before": null,
+      "sha256": "556b91f750b403987c0f58233df50fdafff2b943b08ea0482fc0080102fbac14"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/a294dcef-2313-4614-a958-99fce5503507.svg",
+      "before": null,
+      "sha256": "184bcbfb04190803cabbfd5ee27b19ddc9b327ce547385a22db68c765988d197"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/bd178784-7408-4045-8893-5b82830e0c42.svg",
+      "before": null,
+      "sha256": "d9f012e3939a45ae98469bec747a22595d6e02576ab2f9e41dcfb7a0f1858c08"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/cda03eb9-6976-4787-9637-6ffe089f9949.svg",
+      "before": null,
+      "sha256": "13296cd5eb4abd53b21f4c68d296159ad796a327377d04ec3a648905161e3db5"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/d032a755-ad2f-4d83-87ae-80c7aa616f58.svg",
+      "before": null,
+      "sha256": "5f04a5eae394d4e72aa0b7f70af8b5f15392ae7a511193b015f08e045a2614a6"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/f29df247-3aff-43a8-8a3d-b680bc23c3ae.svg",
+      "before": null,
+      "sha256": "0100771405921168c0744889ec38151ce87f15704eab75bf868a2abff79cd24d"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-register-98-2169/f7b499cc-fd9c-4bee-81ce-5b57d696273a.svg",
+      "before": null,
+      "sha256": "78b5db16ebeda74266c645d96b011a671541d8cb59cd58441e2832c6a4536985"
+    },
+    {
+      "path": "apps/mobile/tests/ui-login.e2e.cjs",
+      "before": "a1b2a23b78c5a468076e808565369497420797dbaec8517180a09edadc5959a0",
+      "sha256": "5f6b26723800c27c6cfc49b3ddfaa4d6adfa64ad7716f7e3958f2a18dc6ea420"
+    },
+    {
+      "path": "apps/mobile/tests/ui-register.e2e.cjs",
+      "before": "58905ebafd8df2ea692416ef9273df2f122634464bd028dc528fb08508840587",
+      "sha256": "1197c179d33b5f4e85eecd5307aa9ef7bd67593998cbaeb39b112d92d259fb31"
+    },
+    {
+      "path": "packages/i18n/src/mobile-experience.ts",
+      "before": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "sha256": "0fcd7a4f0e49da8fdf3a07b8657678240165ed57b0ae6595b32c44d0e2486ef5"
+    },
+    {
+      "path": "tests/b23/b23-auth-localization.test.mjs",
+      "before": "40381631c182266bc00f2214d7211711fb3a1203d05018924be196a2b0400d99",
+      "sha256": "1772b724117ec7132332b599b10a41a68c52af0d5f5adbde8da69d843659d7ba"
+    }
+  ],
+  "retained": "token128/currentDSHresourcecontents/Header/previous14pages",
+  "qaOnlyExtras": "B14 b23fileURLloader+loginleasepidremoval;assertions not weakened"
+}

@@ -77,3 +77,7 @@ DSH_COMMERCE is the sole author for world page and dedicated world tests/assets.
 ## Mistake read validation exception - Profile B18
 
 DSH_PROFILE alone may minimally change existing mistake read response validation in api/b10.ts and add b10-mistake-response.test.mjs. Validate current B2Mistake contract; unknown enums/invalid rows must fail explicitly instead of invented states or false empty. No endpoint/schema/server/write operation, report/assessment parser, other API, auth or store changes.
+
+## Registry B19 published
+
+Grok published frozen central a10418b5 plus empty avatarPageCopy/reportPageCopy/worldPageCopy modules; 1396 old leaves unchanged, type/package/theme checks passed. Root copied four files to idle DSH/DSH_PROFILE/DSH_COMMERCE trees and transferred only the corresponding resource module to its page owner. Other copies remain read-only; central remains Grok owned. Main DSH B28 performance store publication was also copied to the World consumer; no live writer was overwritten.

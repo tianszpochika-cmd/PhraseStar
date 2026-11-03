@@ -74,10 +74,17 @@
   },
   "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
   "runtime_lease": {
+    "at": "2026-11-03T22:03:21.286853+00:00",
+    "holder": "ROOT_INTEGRATION_REGISTER_B26_QA",
     "port": 18183,
-    "holder": "ROOT_QA_GROK_REGISTER",
-    "pid": 79961,
-    "ptySession": 70531
+    "pid": 97288,
+    "ptySession": 47549,
+    "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+    "previousGrokPid": 79961,
+    "previousPty": 70531,
+    "previousStopExit": 0,
+    "guardBeforeStart": "FREE18183",
+    "allCLIs": "compiledartifactonly;no18183"
   },
   "trace_policy": "每页已有的编号是待核源锚点；TRACE_PENDING 必须在该页审签前逐字段补齐，不能编造或继承历史结果。",
   "tasks": [
@@ -204,7 +211,7 @@
       "name": "注册",
       "owner": "GROK",
       "wave": "G1",
-      "status": "FUNCTIONAL_ROOT51_SAMPLES_PASS_DARK_ICON_HOLD",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "字段、去重、回执和成人门分流，不因注册成功直接放行学习",
       "services_data_owners": [
         "iam-service"
@@ -265,8 +272,9 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "dark/HC eye contrast issue;notintegrated",
-        "candidate_browser": "Root51matrix/13groups/43shots pageerror0 expectedHTTP17;GrokB15QA only"
+        "independent_review": "reviews/INTEGRATION-B26-REGISTER.md",
+        "candidate_browser": "Rootcombined51matrix14groups43shots;dark/HC/systemicon contrast+allauthscoped behaviors pass",
+        "source_tests": "Root12/12 auth/publicdocs+types/H5build0;globalb23 1pass5fail retained"
       }
     },
     {
@@ -276,7 +284,7 @@
       "name": "找回密码",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "IMPLEMENTATION_RUNNING",
       "scope": "申请与确认两步、恒定回执、过期及返回登录；不枚举账号",
       "services_data_owners": [
         "iam-service"
@@ -334,7 +342,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/batch-20-reset-implementation"
     },
     {
       "id": "MB-004",
@@ -1289,7 +1298,7 @@
       "name": "错题与报告",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "READONLY_PREP_RUNNING",
+      "status": "IMPLEMENTATION_RUNNING",
       "scope": "报告/错题/补救，空/未就绪/失败/部分与真实数据区分",
       "services_data_owners": [
         "assessment-service",
@@ -1369,7 +1378,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "current_job": "dsh/profile-batch-17-report-prep"
+      "current_job": "dsh/profile-batch-19-report-implementation"
     },
     {
       "id": "MB-017",
@@ -1452,7 +1461,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "READONLY_PREP_RUNNING",
+      "status": "IMPLEMENTATION_RUNNING",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1509,7 +1518,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "current_job": "dsh/commerce-batch-04-world-prep"
+      "current_job": "dsh/commerce-batch-05-world-implementation"
     },
     {
       "id": "MB-019",
@@ -1652,7 +1661,7 @@
       "name": "头像与衣柜",
       "owner": "DSH",
       "wave": "D2",
-      "status": "READONLY_PREP_RUNNING",
+      "status": "IMPLEMENTATION_RUNNING",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -1706,7 +1715,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "current_job": "dsh/batch-27-avatar-prep"
+      "current_job": "dsh/batch-29-avatar-implementation"
     },
     {
       "id": "MB-022",
@@ -2086,7 +2095,7 @@
       "name": "语言主题与性能",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "LOCAL_SOURCE7_TESTS_PASS_BROWSER_PENDING",
+      "status": "AUTHOR545_BROWSER_PASS_PENDING_INTEGRATION",
       "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
       "services_data_owners": [
         "learner-service"
@@ -2142,7 +2151,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
-        "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN"
+        "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN",
+        "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate"
       }
     },
     {
@@ -2878,7 +2888,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T21:57:53.716452+00:00",
+  "updated_at": "2026-11-03T22:18:13.208896+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2947,11 +2957,11 @@
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
     "policy": "ONLY_GROK_AND_DSH",
-    "grok": "grok/batch-18-i18n-three-page-registry",
-    "dsh": "dsh/batch-28-b4-performance-singleton",
-    "dshProfile": "dsh/profile-batch-18-mistake-response-validation",
-    "dshDevices": "dsh/devices-batch-17-qa-and-platform",
-    "dshCommerce": "dsh/commerce-batch-04-world-prep",
+    "grok": "grok/batch-20-reset-implementation",
+    "dsh": "dsh/batch-29-avatar-implementation",
+    "dshProfile": "dsh/profile-batch-19-report-implementation",
+    "dshDevices": "dsh/devices-batch-18-current-shared-audit",
+    "dshCommerce": "dsh/commerce-batch-05-world-implementation",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
     "codexSubagents": "STOPPED_NO_CALLS"
   },
@@ -3063,7 +3073,7 @@
       "scope": "neutral accountconflict/reset semantic+protectedWeb markup/regex;no tests weakened, no Web business edits"
     },
     "register_dark_icon": {
-      "state": "AUTHOR_B17_FIXED_ROOT51_MATRIX14_GROUPS_PASS_PENDING_INTEGRATION",
+      "state": "RESOLVED_LOCAL_ROOT_B26",
       "eyeFill": "#1C1633",
       "background": "dark alpha43,37,67;HCblack",
       "source": "GrokB13 product unchanged byB15",
@@ -3110,5 +3120,34 @@
     "pageSha": "9d031981ffb4c891a30a679227111aa1c94ad85a09de8fcb0d37c673e135e4fc",
     "review": "reviews/INTEGRATION-B25-REPORT-SHARE.md",
     "remote": "NOT_PUSHED"
+  },
+  "integration_batch_26_register": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 15,
+    "sourceTests": 12,
+    "types": 0,
+    "build": 0,
+    "rootMatrix": 51,
+    "rootGroups": 14,
+    "rootImages": 43,
+    "review": "reviews/INTEGRATION-B26-REGISTER.md",
+    "globalB23": "FAIL_1PASS5FAIL_RETAINED",
+    "remote": "NOT_PUSHED"
+  },
+  "registry_b19_publication": {
+    "central": "a10418b500fbd8e2e478a6a2769d13ef71e203b51a79c0346404343d67f84b17",
+    "oldLeavesUnchanged": 1396,
+    "newEmptyModules": [
+      "avatarPage",
+      "reportPage",
+      "worldPage"
+    ],
+    "receivers": [
+      "DSH",
+      "DSH_PROFILE",
+      "DSH_COMMERCE"
+    ],
+    "integration": "NOT_COPIED_YET",
+    "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/handoffs/registry-b19-20261104/receipts.json"
   }
 }
