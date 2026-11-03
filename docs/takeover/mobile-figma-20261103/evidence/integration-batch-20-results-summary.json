@@ -1,0 +1,360 @@
+{
+  "kind": "ROOT_COMPILED_ARTIFACT_CANDIDATE_REVIEW",
+  "status": "PASS",
+  "at": "2026-11-03T20:18:20.116Z",
+  "base": "https://integration-ui.synthetic.invalid",
+  "browser": {
+    "name": "chromium",
+    "version": "153.0.8010.12"
+  },
+  "checks": [
+    {
+      "name": "390-light: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"width\":390,\"height\":844,\"dpr\":1,\"scrollWidth\":390,\"bodyScrollWidth\":390,\"theme\":\"light\",\"resolvedTheme\":\"light\",\"state\":\"rooms\"}"
+    },
+    {
+      "name": "390-light: visible SVG files non-empty and decoded",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-light: visible SVG manifest SHA matches",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-light: social glow wrapper 360x300",
+      "ok": true,
+      "detail": "{\"x\":150,\"y\":-140,\"width\":360,\"height\":300}"
+    },
+    {
+      "name": "390-light: social glow intrinsic 540x480",
+      "ok": true,
+      "detail": "{\"x\":60,\"y\":-230,\"width\":540,\"height\":480}"
+    },
+    {
+      "name": "390-light: header chevL 22x22",
+      "ok": true,
+      "detail": "{\"x\":33,\"y\":29,\"width\":22,\"height\":22}"
+    },
+    {
+      "name": "390-light: B12 wrapper hosts fragment class",
+      "ok": true,
+      "detail": "{\"ext\":1,\"b12\":2}"
+    },
+    {
+      "name": "390-light: no extraneous B12 class warning",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-light: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-light: quality picker has a rendered value and touch target",
+      "ok": true,
+      "detail": "{\"text\":\"画质取消完成精致舒适轻量省资源舒适\",\"pickerTag\":\"UNI-PICKER\",\"pickerChildren\":2,\"valueTag\":\"UNI-VIEW\",\"valueText\":\"舒适\",\"valueBox\":{\"width\":50,\"height\":36}}"
+    },
+    {
+      "name": "390-light: room tile is Figma44px",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(19, 200, 142)\",\"token\":\"#13C88E\"}"
+    },
+    {
+      "name": "390-light: room tile consumes published semantic token",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(19, 200, 142)\",\"token\":\"#13C88E\"}"
+    },
+    {
+      "name": "390-dark: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"width\":390,\"height\":844,\"dpr\":1,\"scrollWidth\":390,\"bodyScrollWidth\":390,\"theme\":\"dark\",\"resolvedTheme\":\"dark\",\"state\":\"rooms\"}"
+    },
+    {
+      "name": "390-dark: visible SVG files non-empty and decoded",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-dark: visible SVG manifest SHA matches",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-dark: social glow wrapper 360x300",
+      "ok": true,
+      "detail": "{\"x\":150,\"y\":-140,\"width\":360,\"height\":300}"
+    },
+    {
+      "name": "390-dark: social glow intrinsic 540x480",
+      "ok": true,
+      "detail": "{\"x\":60,\"y\":-230,\"width\":540,\"height\":480}"
+    },
+    {
+      "name": "390-dark: header chevL 22x22",
+      "ok": true,
+      "detail": "{\"x\":33,\"y\":29,\"width\":22,\"height\":22}"
+    },
+    {
+      "name": "390-dark: B12 wrapper hosts fragment class",
+      "ok": true,
+      "detail": "{\"ext\":1,\"b12\":2}"
+    },
+    {
+      "name": "390-dark: no extraneous B12 class warning",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-dark: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390-dark: quality picker has a rendered value and touch target",
+      "ok": true,
+      "detail": "{\"text\":\"画质取消完成精致舒适轻量省资源舒适\",\"pickerTag\":\"UNI-PICKER\",\"pickerChildren\":2,\"valueTag\":\"UNI-VIEW\",\"valueText\":\"舒适\",\"valueBox\":{\"width\":50,\"height\":36}}"
+    },
+    {
+      "name": "390-dark: room tile is Figma44px",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(37, 55, 48)\",\"token\":\"#253730\"}"
+    },
+    {
+      "name": "390-dark: room tile consumes published semantic token",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(37, 55, 48)\",\"token\":\"#253730\"}"
+    },
+    {
+      "name": "320-high-contrast: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"width\":320,\"height\":844,\"dpr\":1,\"scrollWidth\":320,\"bodyScrollWidth\":320,\"theme\":\"high-contrast\",\"resolvedTheme\":\"high-contrast\",\"state\":\"rooms\"}"
+    },
+    {
+      "name": "320-high-contrast: visible SVG files non-empty and decoded",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "320-high-contrast: visible SVG manifest SHA matches",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "320-high-contrast: resolved high-contrast attr",
+      "ok": true,
+      "detail": "{\"width\":320,\"height\":844,\"dpr\":1,\"scrollWidth\":320,\"bodyScrollWidth\":320,\"theme\":\"high-contrast\",\"resolvedTheme\":\"high-contrast\",\"state\":\"rooms\"}"
+    },
+    {
+      "name": "320-high-contrast: HC decorative glow hidden",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "320-high-contrast: HC card has no shadow",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "320-high-contrast: header chevL 22x22",
+      "ok": true,
+      "detail": "{\"x\":27,\"y\":29,\"width\":22,\"height\":22}"
+    },
+    {
+      "name": "320-high-contrast: B12 wrapper hosts fragment class",
+      "ok": true,
+      "detail": "{\"ext\":1,\"b12\":2}"
+    },
+    {
+      "name": "320-high-contrast: no extraneous B12 class warning",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "320-high-contrast: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "320-high-contrast: quality picker has a rendered value and touch target",
+      "ok": true,
+      "detail": "{\"text\":\"画质取消完成精致舒适轻量省资源舒适\",\"pickerTag\":\"UNI-PICKER\",\"pickerChildren\":2,\"valueTag\":\"UNI-VIEW\",\"valueText\":\"舒适\",\"valueBox\":{\"width\":50,\"height\":36}}"
+    },
+    {
+      "name": "320-high-contrast: room tile is Figma44px",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(37, 55, 48)\",\"token\":\"#253730\"}"
+    },
+    {
+      "name": "320-high-contrast: room tile consumes published semantic token",
+      "ok": true,
+      "detail": "{\"width\":44,\"height\":44,\"background\":\"rgb(37, 55, 48)\",\"token\":\"#253730\"}"
+    },
+    {
+      "name": "390-games: quality picker has a rendered value and touch target",
+      "ok": true,
+      "detail": "{\"text\":\"画质取消完成精致舒适轻量省资源舒适\",\"pickerTag\":\"UNI-PICKER\",\"pickerChildren\":2,\"valueTag\":\"UNI-VIEW\",\"valueText\":\"舒适\",\"valueBox\":{\"width\":50,\"height\":36}}"
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no nonfixture requests escaped",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "pageErrors": [],
+  "sourceHashes": {
+    "apps/mobile/src/pages/b4-games/b4-games.vue": "c77eeb23aa9b1257428deba69c3b01ad0fec992ca9cc6efdabda34b8a067cd94",
+    "apps/mobile/src/pages/b4-social/b4-social.vue": "c7f0f5ade74a234a79eae61a1010f6f96385322ad2951174d463cb5db14cd714",
+    "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+    "packages/i18n/src/mobile-experience.ts": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+    "packages/i18n/src/mobile-resources/social.ts": "9b2ce63f4fefb8fdc1fb194492c149792e6a6fb7cb90222e711cf7eff61b8c34"
+  },
+  "sourceHashesEnd": {
+    "apps/mobile/src/pages/b4-games/b4-games.vue": "c77eeb23aa9b1257428deba69c3b01ad0fec992ca9cc6efdabda34b8a067cd94",
+    "apps/mobile/src/pages/b4-social/b4-social.vue": "c7f0f5ade74a234a79eae61a1010f6f96385322ad2951174d463cb5db14cd714",
+    "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+    "packages/i18n/src/mobile-experience.ts": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+    "packages/i18n/src/mobile-resources/social.ts": "9b2ce63f4fefb8fdc1fb194492c149792e6a6fb7cb90222e711cf7eff61b8c34"
+  },
+  "scope": "Frozen B14 games/social + frozen Grok token128; synthetic API, no HTTP service",
+  "blockedNetwork": [],
+  "artifactMisses": [],
+  "qualityProbes": [
+    {
+      "label": "390-light",
+      "text": "画质取消完成精致舒适轻量省资源舒适",
+      "pickerTag": "UNI-PICKER",
+      "pickerChildren": 2,
+      "valueTag": "UNI-VIEW",
+      "valueText": "舒适",
+      "valueBox": {
+        "width": 50,
+        "height": 36
+      }
+    },
+    {
+      "label": "390-dark",
+      "text": "画质取消完成精致舒适轻量省资源舒适",
+      "pickerTag": "UNI-PICKER",
+      "pickerChildren": 2,
+      "valueTag": "UNI-VIEW",
+      "valueText": "舒适",
+      "valueBox": {
+        "width": 50,
+        "height": 36
+      }
+    },
+    {
+      "label": "320-high-contrast",
+      "text": "画质取消完成精致舒适轻量省资源舒适",
+      "pickerTag": "UNI-PICKER",
+      "pickerChildren": 2,
+      "valueTag": "UNI-VIEW",
+      "valueText": "舒适",
+      "valueBox": {
+        "width": 50,
+        "height": 36
+      }
+    },
+    {
+      "label": "390-games",
+      "text": "画质取消完成精致舒适轻量省资源舒适",
+      "pickerTag": "UNI-PICKER",
+      "pickerChildren": 2,
+      "valueTag": "UNI-VIEW",
+      "valueText": "舒适",
+      "valueBox": {
+        "width": 50,
+        "height": 36
+      }
+    }
+  ],
+  "tileGeometry": [
+    {
+      "label": "390-light",
+      "width": 44,
+      "height": 44,
+      "background": "rgb(19, 200, 142)",
+      "token": "#13C88E"
+    },
+    {
+      "label": "390-dark",
+      "width": 44,
+      "height": 44,
+      "background": "rgb(37, 55, 48)",
+      "token": "#253730"
+    },
+    {
+      "label": "320-high-contrast",
+      "width": 44,
+      "height": 44,
+      "background": "rgb(37, 55, 48)",
+      "token": "#253730"
+    }
+  ],
+  "sourceHashesStable": true,
+  "localEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-20",
+  "screenshots": [
+    {
+      "name": "390-light-rooms",
+      "bytes": 118251,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dpr": 1,
+      "theme": "light",
+      "resolvedTheme": "light",
+      "state": "rooms"
+    },
+    {
+      "name": "390-dark-rooms",
+      "bytes": 119850,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dpr": 1,
+      "theme": "dark",
+      "resolvedTheme": "dark",
+      "state": "rooms"
+    },
+    {
+      "name": "320-high-contrast-rooms",
+      "bytes": 75756,
+      "viewport": {
+        "width": 320,
+        "height": 844
+      },
+      "dpr": 1,
+      "theme": "high-contrast",
+      "resolvedTheme": "high-contrast",
+      "state": "rooms"
+    },
+    {
+      "name": "390-games-empty",
+      "bytes": 99354,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dpr": 1,
+      "theme": "light",
+      "resolvedTheme": null,
+      "state": null
+    }
+  ]
+}

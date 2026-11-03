@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-03T20:16:26.727203+00:00",
+  "receipt": "copy-receipt.json",
+  "attempts": [
+    {
+      "command": "node --test ...mobile-header-and-closed-geometry.test.mjs...",
+      "exit": 1,
+      "classification": "audit invocation referenced absent test; tests did not run; not product failure"
+    },
+    {
+      "command": "node --test apps/mobile/tests/b4-games-page-reentry.test.mjs apps/mobile/tests/b4-social-page.test.mjs apps/mobile/tests/mobile-closed-practice-notice.test.mjs apps/mobile/tests/profile-page.test.mjs",
+      "exit": 0,
+      "tests": 25,
+      "pass": 25
+    },
+    {
+      "command": "pnpm --filter @englishflow/mobile typecheck",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @englishflow/mobile build:h5",
+      "exit": 0,
+      "warnings": [
+        "Existing Vite CommonJS config warning",
+        "Sass import deprecation",
+        "Existing dynamic import remains in shared chunk"
+      ]
+    }
+  ],
+  "browser": "PENDING"
+}

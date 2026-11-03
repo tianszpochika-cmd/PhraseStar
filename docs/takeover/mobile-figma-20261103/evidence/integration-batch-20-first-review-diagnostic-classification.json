@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-03T20:18:19.886331+00:00",
+  "previousEvidence": "root-built-evidence",
+  "classification": "Four audit assertion mismatches; no product defects proven by these failures",
+  "facts": [
+    "Dark/HC getComputedStyle resolves var(--yx-success-soft) to #253730, matching actual correct background rgb(37,55,48)",
+    "Old helper identifies HC by label string, initial320-hc label did not trigger HC branch though actual theme was high-contrast",
+    "All measured room tiles44px; light actual rgb19,200,142",
+    "Games/social value rendered without explicit mode; potential missing-picker concern not reproduced, removed from product defect queue"
+  ]
+}

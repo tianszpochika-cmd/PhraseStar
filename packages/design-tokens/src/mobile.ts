@@ -40,6 +40,9 @@ export function mobileExperienceVariables(theme: ResolvedTheme): Record<string, 
     ...mobileDecorationVariables(theme),
     ...mobileProfileVariables(theme),
     ...mobileClosedSkinVariables(theme),
+    ...mobileAuthLoginVariables(theme),
+    ...mobileSettingsVariables(theme),
+    ...mobileSocialRoomVariables(theme),
   }
 }
 
@@ -213,4 +216,117 @@ function mobileClosedSkinVariables(theme: ResolvedTheme): Record<string, string>
     '--closed-cta-on': '#F5F0FF',
     '--closed-cta-shadow': ctaShadow,
   }
+}
+
+/**
+ * Login screen 98:1182 / 248:1391. Light and dark use those frames.
+ * High contrast is not in either frame: it reuses the existing surface,
+ * border and solid brand roles, and drops blur, gradient and shadow.
+ * Older `--yx-r4-*`, profile and closed keys stay on their published values.
+ */
+function mobileAuthLoginVariables(theme: ResolvedTheme): Record<string, string> {
+  const ctaImage = 'linear-gradient(171.96428928946523deg, rgb(79, 45, 174) 14.286%, rgb(106, 69, 198) 53.571%, rgb(138, 85, 204) 85.714%)'
+  const ctaShadow = '0 5px 16px rgba(89,53,184,0.2), inset 0 1px 0 rgba(255,255,255,0.18)'
+  const cardShadow = '0 6px 16px rgba(89,53,184,0.08), 0 -12px 16px -2px rgba(42,22,96,0.14), inset 0 -1px 0 rgba(217,199,255,0.35), inset 0 1px 0 rgba(255,255,255,0.78)'
+  const fieldShadow = '0 2px 8px -1px rgba(42,22,96,0.07), inset 0 1px 0 rgba(255,255,255,0.8)'
+  const mascotImage = 'linear-gradient(135deg, rgb(230, 220, 255) 0%, rgb(251, 227, 243) 71.429%)'
+  const mascotShadow = '0 5px 13.333px -1.667px rgba(42,22,96,0.1), inset 0 0.833px 0 rgba(255,255,255,0.8)'
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-auth-page-color': 'var(--yx-surface-page)',
+      '--yx-auth-page-image': 'none',
+      '--yx-auth-ink': 'var(--yx-text-primary)',
+      '--yx-auth-muted': 'var(--yx-text-secondary)',
+      '--yx-auth-subtitle': 'var(--yx-text-primary)',
+      '--yx-auth-brand': 'var(--yx-brand)',
+      '--yx-auth-wordmark': 'var(--yx-text-primary)',
+      '--yx-auth-glass': 'var(--yx-surface-card)',
+      '--yx-auth-glass-border': 'var(--yx-border)',
+      '--yx-auth-field': 'var(--yx-surface-page)',
+      '--yx-auth-field-border': 'var(--yx-border)',
+      '--yx-auth-tip': 'var(--yx-surface-soft)',
+      '--yx-auth-tip-ink': 'var(--yx-text-primary)',
+      '--yx-auth-cta-color': 'var(--yx-brand)',
+      '--yx-auth-cta-image': 'none',
+      '--yx-auth-on-cta': 'var(--yx-surface-card)',
+      '--yx-auth-shadow-card': 'none',
+      '--yx-auth-shadow-cta': 'none',
+      '--yx-auth-shadow-field': 'none',
+      '--yx-auth-shadow-mascot': 'none',
+      '--yx-auth-blur': '0px',
+      '--yx-auth-mascot-border': 'var(--yx-border)',
+      '--yx-auth-mascot-image': 'none',
+      '--yx-auth-mascot-color': 'var(--yx-surface-card)',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-auth-page-color': dark ? '#121423' : '#fcfaff',
+    '--yx-auth-page-image': dark
+      ? 'linear-gradient(to bottom, #1b152f 0%, #1f1933 47%, #121423 100%)'
+      : 'linear-gradient(111.82481389843deg, rgb(240, 229, 255) 10.714%, rgb(252, 250, 255) 42.857%, rgb(255, 240, 247) 82.143%)',
+    '--yx-auth-ink': dark ? '#ffffff' : '#222337',
+    '--yx-auth-muted': dark ? '#bab8cf' : '#606277',
+    '--yx-auth-subtitle': dark ? '#bab8cf' : '#242637',
+    '--yx-auth-brand': dark ? '#bcabff' : '#5935b8',
+    '--yx-auth-wordmark': dark ? '#ddccff' : '#4f3382',
+    '--yx-auth-glass': dark ? 'rgba(43,37,67,0.88)' : 'rgba(250,247,255,0.74)',
+    '--yx-auth-glass-border': dark ? 'rgba(143,121,192,0.3)' : 'rgba(255,255,255,0.72)',
+    '--yx-auth-field': dark ? 'rgba(43,37,67,0.92)' : 'rgba(255,255,255,0.92)',
+    '--yx-auth-field-border': dark ? 'rgba(143,121,192,0.3)' : 'rgba(255,255,255,0.95)',
+    '--yx-auth-tip': dark ? '#2b2543' : '#f6f2ff',
+    '--yx-auth-tip-ink': dark ? '#ece7f9' : '#3e4154',
+    '--yx-auth-cta-color': '#4f2dae',
+    '--yx-auth-cta-image': ctaImage,
+    '--yx-auth-on-cta': dark ? '#f5f0ff' : '#ffffff',
+    '--yx-auth-shadow-card': cardShadow,
+    '--yx-auth-shadow-cta': ctaShadow,
+    '--yx-auth-shadow-field': fieldShadow,
+    '--yx-auth-shadow-mascot': mascotShadow,
+    '--yx-auth-blur': '10px',
+    '--yx-auth-mascot-border': 'rgba(255,255,255,0.95)',
+    '--yx-auth-mascot-image': mascotImage,
+    '--yx-auth-mascot-color': '#f4eeff',
+  }
+}
+
+/**
+ * Settings opt-in roles from the seven requested slots.
+ * The accessible keys are only the 320 / high-contrast / 200% appearance variant.
+ * They do not replace the normal page, profile, closed, or auth variables.
+ * High contrast drops shadow and does not add blur.
+ */
+function mobileSettingsVariables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-settings-segment-shadow': 'none',
+      '--yx-settings-bottom-bar-shadow': 'none',
+      '--yx-settings-card-inset': 'none',
+      '--yx-settings-accessible-page': '#000000',
+      '--yx-settings-accessible-surface': 'var(--yx-surface-card)',
+      '--yx-settings-accessible-border': 'var(--yx-border)',
+      '--yx-settings-accessible-muted': 'var(--yx-text-secondary)',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-settings-segment-shadow': dark ? 'none' : '0 2px 6px 0 rgba(42, 31, 92, 0.10)',
+    '--yx-settings-bottom-bar-shadow': dark ? '0 -4px 16px 0 rgba(8, 3, 20, 0.35)' : '0 -4px 16px 0 rgba(42, 31, 92, 0.08)',
+    '--yx-settings-card-inset': dark ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.7)',
+    '--yx-settings-accessible-page': dark ? '#12111B' : 'var(--yx-surface-page)',
+    '--yx-settings-accessible-surface': dark ? '#252333' : 'var(--v2-card)',
+    '--yx-settings-accessible-border': dark ? '#AFACC0' : 'var(--v2-line)',
+    '--yx-settings-accessible-muted': dark ? '#E6E4EF' : 'var(--v2-mut)',
+  }
+}
+
+/**
+ * Social room tile. Light is the Figma 169:6882 solid.
+ * Dark and high contrast have no dedicated frame, so they reference the
+ * existing semantic success-soft. Night success-soft stays visible behind a
+ * white icon. The reference is not a 1:1 copy of a design frame.
+ */
+function mobileSocialRoomVariables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'light') return { '--yx-social-room-tile': '#13C88E' }
+  return { '--yx-social-room-tile': 'var(--yx-success-soft)' }
 }

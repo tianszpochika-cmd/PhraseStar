@@ -142,8 +142,8 @@ export function socialCopy(en: boolean) {
       empty: '暂无通知',
       error: '通知暂时读不出来',
       loading: '正在读取通知…',
-      markRead: '已读',
-      readAll: '全部已读',
+      markRead: '标为已读',
+      readAll: '全部标为已读',
       title: '通知',
       type: {
         focus: '专注提醒',

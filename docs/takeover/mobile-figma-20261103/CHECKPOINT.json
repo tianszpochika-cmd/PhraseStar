@@ -137,7 +137,7 @@
       "name": "登录",
       "owner": "GROK",
       "wave": "G1",
-      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "status": "FORM_GAP_FIXED_ROOT_PARTIAL_BROWSER_LEGAL_OBSERVER_RETURN",
       "scope": "输入校验、提交中、失败、会话恢复与安全回跳；凭据只经 IAM TLS",
       "services_data_owners": [
         "iam-service"
@@ -196,8 +196,10 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
-      }
+        "independent_review": "NOT_RUN",
+        "partial_browser": "30 matrix rows and6 immediate-input probes;privacyGap18px;stopped at legal popup test observer"
+      },
+      "current_job": "grok/batch-11-legal-observer"
     },
     {
       "id": "MB-002",
@@ -1514,7 +1516,7 @@
       "name": "游戏目录边界",
       "owner": "DSH",
       "wave": "D1",
-      "status": "CANDIDATE_FROZEN_PENDING_SHARED_BROWSER_REVIEW",
+      "status": "INTEGRATED_LIMITED_SYNTHETIC_REVIEW_TRACE_PENDING",
       "scope": "说明开放状态与返回；无游戏可用契约不可伪造可玩或奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1564,16 +1566,18 @@
         "b4-games-page-reentry.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
+        "visual": "ROOT_SELECTED_SCREENSHOTS_LIMITED_SCOPE",
         "interaction": "NOT_RUN",
         "h5": "NOT_RUN",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B20.md",
+        "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
+        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-04-source-snapshot/manifest.json"
+      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json"
     },
     {
       "id": "MB-020",
@@ -1582,7 +1586,7 @@
       "name": "自习室和社交边界",
       "owner": "DSH",
       "wave": "D1",
-      "status": "SYNTHETIC_INTERACTION_PASS_EXACT_TILE_TOKEN_GEOMETRY_PENDING",
+      "status": "INTEGRATED_LIMITED_SYNTHETIC_REVIEW_TRACE_PENDING",
       "scope": "当前允许范围、空态与返回；禁止伪造席位/社交事实",
       "services_data_owners": [
         "social-service"
@@ -1626,15 +1630,18 @@
         "b4-account-scope.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
+        "visual": "ROOT_SELECTED_SCREENSHOTS_LIMITED_SCOPE",
         "interaction": "239/239 synthetic checks/29shots; B12 deeper states remain partial",
         "h5": "NOT_RUN",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
-      }
+        "independent_review": "reviews/INTEGRATION-B20.md",
+        "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
+        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
+      },
+      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json"
     },
     {
       "id": "MB-021",
@@ -1843,7 +1850,7 @@
       "name": "设置与隐私",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "STATIC_IMPLEMENTED_REVIEW_FIXES_PASSED_BROWSER_PENDING",
+      "status": "BUILT_ARTIFACT_BROWSER_PASSED_RETURNED_FOR_VISUAL_FIXES",
       "scope": "偏好/通知/隐私撤回读回与失败；受理不等于删除完成",
       "services_data_owners": [
         "learner-service.privacy",
@@ -1926,9 +1933,10 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
-        "source_tests": "23/23 author after review fixes; prior20/20 independent Root"
+        "source_tests": "23/23 author after review fixes; prior20/20 independent Root",
+        "candidate_browser": "B08 124/124 and25images, source frozen; root returned glow seam/back border/disabled appearance"
       },
-      "current_job": "profile-batch-05-settings-prep"
+      "current_job": "dsh/profile-batch-09-settings-visual"
     },
     {
       "id": "MB-025",
@@ -1937,7 +1945,7 @@
       "name": "设备与会话",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "CANDIDATE_RETURNED_FOR_BULK_BUSY_AND_FACT_CONFIRMATION_FIXES",
+      "status": "CORE_LIST_BROWSER_PASSED_OTHER_INTERACTIONS_RUNNING",
       "scope": "当前设备标识、确认、撤销读回与被踢登录状态",
       "services_data_owners": [
         "iam-service"
@@ -1995,8 +2003,10 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
-        "source_tests": "27/27 Root plus typecheck/H5 build passed before semantic findings; not acceptance"
-      }
+        "source_tests": "27/27 Root plus typecheck/H5 build passed before semantic findings; not acceptance",
+        "candidate_browser": "B09 list14/14 built-artifact source/build stable, root viewed390;remaining scenarios not yetverified"
+      },
+      "current_job": "dsh/devices-batch-10-core-scenarios"
     },
     {
       "id": "MB-026",
@@ -2134,7 +2144,7 @@
       "name": "帮助与客服",
       "owner": "DSH",
       "wave": "D2",
-      "status": "CANDIDATE_IN_PROGRESS_CONTRACT_ADAPTER_COMPATIBILITY_RETURN",
+      "status": "API16_TESTS_PASSED_RETURNED_FOR_IDENTITY_AND_DETAIL_STATE_FIXES",
       "scope": "工单和帮助实际边界，安全内容引用；不伪造发送/回复",
       "services_data_owners": [
         "admin-ops-service.support"
@@ -2202,9 +2212,10 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
-        "api_read_adapter": "formal array fixed; old minimal legacy projection and pagination returned for correction"
-      }
+        "independent_review": "Root local SFC unit probe reproduces retained list afterlogout and mismatched detail permanentloading;returned",
+        "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore"
+      },
+      "current_job": "dsh/batch-22-support-state-isolated"
     },
     {
       "id": "MB-029",
@@ -2857,7 +2868,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T19:53:40.147029+00:00",
+  "updated_at": "2026-11-03T20:23:01.803038+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2925,10 +2936,13 @@
   },
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
-    "GROK": "batch-09-login-browser-resume-01",
-    "DSH": "batch-16-support-core",
-    "DSH_PROFILE": "profile-batch-08-settings-browser",
-    "DSH_DEVICES": "devices-batch-05-core-browser"
+    "policy": "ONLY_GROK_AND_DSH",
+    "grok": "grok/batch-11-legal-observer",
+    "dsh": "dsh/batch-22-support-state-isolated",
+    "dshProfile": "dsh/profile-batch-09-settings-visual",
+    "dshDevices": "dsh/devices-batch-10-core-scenarios",
+    "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
+    "codexSubagents": "STOPPED_NO_CALLS"
   },
   "integration_batch_01": {
     "status": "TYPECHECK_H5_BUILD_55_TESTS_AND_599_SYNTHETIC_BROWSER_CHECKS_PASS_WITH_OPEN_NEGATIVE_GATE",
@@ -2969,5 +2983,30 @@
     "source_candidate": "3a91f6ec",
     "evidence": "evidence/B14-TRACEABILITY.json",
     "note": "No invented PAGE-P1-PROFILE or inherited historical R1 acceptance"
+  },
+  "integration_batch_20": {
+    "state": "REVIEWED_LOCAL_CANDIDATE_NOT_FULL_DOD",
+    "previousHead": "468b768b56271be82158205a6de4cf22eee36638",
+    "pages": [
+      "MB-019",
+      "MB-020"
+    ],
+    "copied_files": 123,
+    "sourceTests": {
+      "count": 25,
+      "exit": 0
+    },
+    "typecheck": 0,
+    "buildH5": 0,
+    "browser": {
+      "checks": 41,
+      "shots": 4,
+      "kind": "SYNTHETIC_UI_BUILT_ARTIFACT",
+      "sourceHashesStable": true
+    },
+    "oldTokensUnchanged": 96,
+    "newTokenCount": 128,
+    "review": "reviews/INTEGRATION-B20.md",
+    "remote": "NOT_PUSHED"
   }
 }
