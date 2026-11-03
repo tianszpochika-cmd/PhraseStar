@@ -67,21 +67,33 @@ test('mobile password posts and refresh use the IAM client; domain reads and log
   await adapter.refresh()
   await adapter.logout()
 
-  const passwordCalls = calls.slice(0, 4)
-  assert.deepEqual(passwordCalls.map((call) => call.name), ['iam', 'iam', 'iam', 'iam'])
-  assert.deepEqual(passwordCalls.map((call) => call.url), [
-    'https://127.0.0.1:18087/api/v1/auth/login',
-    'https://127.0.0.1:18087/api/v1/auth/register',
-    'https://127.0.0.1:18087/api/v1/auth/password-reset/request',
-    'https://127.0.0.1:18087/api/v1/auth/password-reset/confirm',
+  const sequence = calls.map((call) => ({
+    name: call.name,
+    url: call.url,
+    method: call.options.method ?? 'GET',
+  }))
+  // getPermissions reads /iam/principal/me. That principal contract carries the
+  // current permissions and adult eligibility. The old fixed calls[4] expected
+  // /iam/permissions; the Gateway client route for that path stays in the next test.
+  assert.deepEqual(sequence, [
+    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/login', method: 'POST' },
+    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/register', method: 'POST' },
+    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/password-reset/request', method: 'POST' },
+    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/password-reset/confirm', method: 'POST' },
+    { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/iam/principal/me', method: 'GET' },
+    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/token/refresh', method: 'POST' },
+    { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/auth/logout', method: 'POST' },
   ])
-  assert.equal(calls[4].name, 'gateway')
-  assert.equal(calls[4].url, 'http://127.0.0.1:18070/api/v1/iam/permissions')
-  assert.equal(calls[5].name, 'iam')
-  assert.equal(calls[5].url, 'https://127.0.0.1:18087/api/v1/auth/token/refresh')
-  assert.equal(calls[6].name, 'gateway')
-  assert.equal(calls[6].url, 'http://127.0.0.1:18070/api/v1/auth/logout')
+  const secretPosts = calls.filter((call) => (
+    call.url.endsWith('/auth/login')
+    || call.url.endsWith('/auth/register')
+    || call.url.endsWith('/auth/password-reset/confirm')
+  ))
+  assert.equal(secretPosts.length, 3)
+  assert.ok(secretPosts.every((call) => call.name === 'iam' && call.url.startsWith('https://') && JSON.stringify(call.options.data).includes(password)))
   assert.equal(calls.some((call) => call.name === 'gateway' && JSON.stringify(call.options.data ?? {}).includes(password)), false)
+  assert.ok(calls.filter((call) => call.name === 'iam').every((call) => call.url.startsWith('https://127.0.0.1:18087/')))
+  assert.ok(calls.filter((call) => call.name === 'gateway').every((call) => call.url.startsWith('http://127.0.0.1:18070/')))
 })
 
 test('mobile IAM client posts the password to TLS without the current bearer', async () => {

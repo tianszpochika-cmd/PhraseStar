@@ -75,14 +75,9 @@
   "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
   "runtime_lease": {
     "port": 18183,
-    "holder": "ROOT_QA_SERVING_GROK",
-    "pid": 55957,
-    "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
-    "acquired_at": null,
-    "rule": "同一时刻一个 owner；移交前核验监听进程及所属工作树，不抢占/不自行换端口",
-    "port_check": "单 H5 场景可先使用 node scripts/check-fixed-ports.mjs --service mobile-h5-dev；启动全栈须按 AGENTS 执行 pnpm ports:check。",
-    "other_infra": "Root 报告现有基础设施 BUSY；该事实不自动阻止独立 H5，不能为此停止其他基础设施；实时 PID/占有者仍须核验。",
-    "note": "Root PTY38138; separate settings/device compiled-artifact browsers use route.fulfill, no new HTTP listeners or real services."
+    "holder": "ROOT_QA_INTEGRATION",
+    "pid": 71475,
+    "ptySession": 83456
   },
   "trace_policy": "每页已有的编号是待核源锚点；TRACE_PENDING 必须在该页审签前逐字段补齐，不能编造或继承历史结果。",
   "tasks": [
@@ -137,7 +132,7 @@
       "name": "登录",
       "owner": "GROK",
       "wave": "G1",
-      "status": "FORM_GAP_FIXED_ROOT_PARTIAL_BROWSER_LEGAL_OBSERVER_RETURN",
+      "status": "INTEGRATED_SCOPED_UI_REVIEW_TRACE_PENDING",
       "scope": "输入校验、提交中、失败、会话恢复与安全回跳；凭据只经 IAM TLS",
       "services_data_owners": [
         "iam-service"
@@ -189,17 +184,18 @@
         "iam-auth-transport.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "ROOT_SELECTED_LIGHT_DARK_EN200_SCREENSHOTS",
+        "interaction": "14 named groups/6 immediate-input probes;synthetic auth fixtures",
+        "h5": "ROOT_CURRENT_INTEGRATION_BUILD_EXIT0",
+        "cross_viewport": "30 layout samples incl320/390/430/768/834;H5simulation",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
+        "independent_review": "reviews/INTEGRATION-B21-LOGIN.md",
         "partial_browser": "30 matrix rows and6 immediate-input probes;privacyGap18px;stopped at legal popup test observer"
       },
-      "current_job": "grok/batch-11-legal-observer"
+      "current_job": "grok/batch-11-legal-observer",
+      "candidate_manifest": "evidence/integration-batch-21-login-source-manifest.json"
     },
     {
       "id": "MB-002",
@@ -1378,9 +1374,9 @@
       "route": "#/pages/report-share/report-share",
       "file": "apps/mobile/src/pages/report-share/report-share.vue",
       "name": "报告分享",
-      "owner": "DSH",
+      "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "PENDING",
+      "status": "READONLY_PREP_IN_PROGRESS",
       "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
       "services_data_owners": [
         "assessment-service",
@@ -1850,7 +1846,7 @@
       "name": "设置与隐私",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "BUILT_ARTIFACT_BROWSER_PASSED_RETURNED_FOR_VISUAL_FIXES",
+      "status": "SOURCE_FROZEN_FOCUS_SCOPE_FIXED_AWAITING_COMBINED_REVIEW",
       "scope": "偏好/通知/隐私撤回读回与失败；受理不等于删除完成",
       "services_data_owners": [
         "learner-service.privacy",
@@ -1934,7 +1930,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
         "source_tests": "23/23 author after review fixes; prior20/20 independent Root",
-        "candidate_browser": "B08 124/124 and25images, source frozen; root returned glow seam/back border/disabled appearance"
+        "candidate_browser": "B10 134 checks/28images;root boundarynegative unit+actual navigation,secondicon unavailable inauthor tree"
       },
       "current_job": "dsh/profile-batch-09-settings-visual"
     },
@@ -1945,7 +1941,7 @@
       "name": "设备与会话",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "CORE_LIST_BROWSER_PASSED_OTHER_INTERACTIONS_RUNNING",
+      "status": "CORE151_ROOT_PASSED_RESPONSIVE_MATRIX_RUNNING",
       "scope": "当前设备标识、确认、撤销读回与被踢登录状态",
       "services_data_owners": [
         "iam-service"
@@ -2004,7 +2000,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
         "source_tests": "27/27 Root plus typecheck/H5 build passed before semantic findings; not acceptance",
-        "candidate_browser": "B09 list14/14 built-artifact source/build stable, root viewed390;remaining scenarios not yetverified"
+        "candidate_browser": "Root finalB10 151/151 across10core scenarios;source/build stable;B11 matrixrunning"
       },
       "current_job": "dsh/devices-batch-10-core-scenarios"
     },
@@ -2013,9 +2009,9 @@
       "route": "#/pages/b5-commerce/b5-commerce",
       "file": "apps/mobile/src/pages/b5-commerce/b5-commerce.vue",
       "name": "权益与兑换",
-      "owner": "DSH",
+      "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "PENDING",
+      "status": "ISOLATED_READONLY_PREP_IN_PROGRESS",
       "scope": "权益/兑换真实可用范围；支付关闭且不伪造支付或权益",
       "services_data_owners": [
         "commerce-service"
@@ -2144,7 +2140,7 @@
       "name": "帮助与客服",
       "owner": "DSH",
       "wave": "D2",
-      "status": "API16_TESTS_PASSED_RETURNED_FOR_IDENTITY_AND_DETAIL_STATE_FIXES",
+      "status": "PAGINATION_AND_STATE33_ROOT_PASSED_BROWSER_CORE_RUNNING",
       "scope": "工单和帮助实际边界，安全内容引用；不伪造发送/回复",
       "services_data_owners": [
         "admin-ops-service.support"
@@ -2213,7 +2209,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "Root local SFC unit probe reproduces retained list afterlogout and mismatched detail permanentloading;returned",
-        "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore"
+        "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore",
+        "source_tests": "Root33/33 API11+page22 afterB23;browserpending"
       },
       "current_job": "dsh/batch-22-support-state-isolated"
     },
@@ -2868,7 +2865,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T20:23:01.803038+00:00",
+  "updated_at": "2026-11-03T20:42:43.288103+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2937,12 +2934,13 @@
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
     "policy": "ONLY_GROK_AND_DSH",
-    "grok": "grok/batch-11-legal-observer",
-    "dsh": "dsh/batch-22-support-state-isolated",
-    "dshProfile": "dsh/profile-batch-09-settings-visual",
-    "dshDevices": "dsh/devices-batch-10-core-scenarios",
+    "grok": "grok/batch-13-register-implementation",
+    "dsh": "dsh/batch-24-support-browser-core",
+    "dshProfile": "dsh/profile-batch-11-share-prep",
+    "dshDevices": "dsh/devices-batch-11-matrix",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
-    "codexSubagents": "STOPPED_NO_CALLS"
+    "codexSubagents": "STOPPED_NO_CALLS",
+    "dshCommerce": "dsh/commerce-batch-01-prep"
   },
   "integration_batch_01": {
     "status": "TYPECHECK_H5_BUILD_55_TESTS_AND_599_SYNTHETIC_BROWSER_CHECKS_PASS_WITH_OPEN_NEGATIVE_GATE",
@@ -3007,6 +3005,26 @@
     "oldTokensUnchanged": 96,
     "newTokenCount": 128,
     "review": "reviews/INTEGRATION-B20.md",
+    "remote": "NOT_PUSHED"
+  },
+  "integration_batch_21_login": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "source": "grok/batch-11-legal-observer-source-snapshot",
+    "files": 38,
+    "staticTests": 12,
+    "mobileTypes": 0,
+    "i18nTypes": 0,
+    "h5Build": 0,
+    "browser": {
+      "matrix": 30,
+      "groups": 14,
+      "shots": 31,
+      "sourceHashDrift": [],
+      "kind": "SYNTHETIC_AUTH_FIXTURES_REAL_H5"
+    },
+    "sharedRegressionChecks": 41,
+    "review": "reviews/INTEGRATION-B21-LOGIN.md",
+    "realService": "NOT_RUN",
     "remote": "NOT_PUSHED"
   }
 }

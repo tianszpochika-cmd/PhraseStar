@@ -123,3 +123,19 @@ body > div[style*="z-index: -1"][style*="visibility: hidden"] > div > div {
 }
 
 .mobile-locale-picker { min-height: 44px; display: flex; align-items: center; padding: 0 12px; border: 1px solid var(--yx-border); border-radius: 10px; color: var(--yx-brand); }
+
+/* Opt-in R4 screen. Login and home use it. Other pages keep the existing page background. */
+.yx-r4-screen {
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  background-color: var(--yx-r4-page-color, var(--yx-surface-page));
+}
+.yx-r4-screen[data-motion="reduced"] .yx-r4-fx,
+.yx-r4-screen[data-motion="off"] .yx-r4-fx { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .yx-r4-fx { display: none !important; }
+}
+:root[data-theme="high-contrast"] .yx-r4-fx,
+:root[data-theme="dark"] .yx-r4-fx { display: none; }

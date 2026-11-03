@@ -1,0 +1,1936 @@
+{
+  "scope": "MOBILE_LOGIN_H5_UI_ONLY_SYNTHETIC_AUTH_FAILURES",
+  "at": "2026-11-03T20:35:09.934Z",
+  "status": "PASS_UI_SCOPED_NOT_BUSINESS_ACCEPTANCE",
+  "sourceHashes": {
+    "apps/mobile/src/pages/login/login.vue": "f6ed75a50a4bccbcce338c1097daf04d300c2428b5f27be0423b7bf71ff108ae",
+    "apps/mobile/src/theme/v2-tokens.scss": "561d1b8bead07c1c09ecf6c2bec0b4eee4151d5ae1b15e9cc755f84fac855869",
+    "apps/mobile/src/theme/v2-icons.ts": "93951db891ef4997dc071482176ce2c1b5801c600c5315bbcf915691ef164ba5",
+    "apps/mobile/src/uni.scss": "293b6c724c2b3a1351882cdd5230f33e58567ebaa6a5c353352cd128f4ac253e",
+    "apps/mobile/src/platform/v2-foundation.ts": "8cbfe6c7665de68dfba0c281e3b0a2abc296d091dc043782e5ff7af775018c37",
+    "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+    "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+    "apps/mobile/src/theme/figma-r4-assets.ts": "cdfe7a9a67ceaa587ad042a9910db30906013b365d92cdda3863ef6e9b489537",
+    "apps/mobile/src/platform/experience.ts": "8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575",
+    "apps/mobile/src/platform/public-documents.ts": "1cb87e496c8d6d4e9f2f47d3b208ef4d009f76b141389b772f1f50e72fee58c9",
+    "apps/mobile/src/platform/uni-runtime.ts": "0b9b98dd309e16f01489415973315e0eef39e2129bff2efee60caeb27d603ae4",
+    "apps/mobile/src/env.d.ts": "8be035ea20b4d3564adeb5cabf77d6e29bbf1dd275852e01c053a51695f20934",
+    "apps/mobile/tests/ui-login.e2e.cjs": "a1b2a23b78c5a468076e808565369497420797dbaec8517180a09edadc5959a0"
+  },
+  "sourceHashesEnd": {
+    "apps/mobile/src/pages/login/login.vue": "f6ed75a50a4bccbcce338c1097daf04d300c2428b5f27be0423b7bf71ff108ae",
+    "apps/mobile/src/theme/v2-tokens.scss": "561d1b8bead07c1c09ecf6c2bec0b4eee4151d5ae1b15e9cc755f84fac855869",
+    "apps/mobile/src/theme/v2-icons.ts": "93951db891ef4997dc071482176ce2c1b5801c600c5315bbcf915691ef164ba5",
+    "apps/mobile/src/uni.scss": "293b6c724c2b3a1351882cdd5230f33e58567ebaa6a5c353352cd128f4ac253e",
+    "apps/mobile/src/platform/v2-foundation.ts": "8cbfe6c7665de68dfba0c281e3b0a2abc296d091dc043782e5ff7af775018c37",
+    "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+    "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+    "apps/mobile/src/theme/figma-r4-assets.ts": "cdfe7a9a67ceaa587ad042a9910db30906013b365d92cdda3863ef6e9b489537",
+    "apps/mobile/src/platform/experience.ts": "8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575",
+    "apps/mobile/src/platform/public-documents.ts": "1cb87e496c8d6d4e9f2f47d3b208ef4d009f76b141389b772f1f50e72fee58c9",
+    "apps/mobile/src/platform/uni-runtime.ts": "0b9b98dd309e16f01489415973315e0eef39e2129bff2efee60caeb27d603ae4",
+    "apps/mobile/src/env.d.ts": "8be035ea20b4d3564adeb5cabf77d6e29bbf1dd275852e01c053a51695f20934",
+    "apps/mobile/tests/ui-login.e2e.cjs": "a1b2a23b78c5a468076e808565369497420797dbaec8517180a09edadc5959a0"
+  },
+  "sourceHashDrift": [],
+  "checks": [
+    "Six sub-100ms native input cases: clearing blocks login and focuses password; final character/replacement with click or Enter consumes the current event value; boolean-only isolated action stubs make zero IAM requests",
+    "24 isolated viewport/locale/theme combinations; system preference responds live; true inputs labelled and autocomplete intact",
+    "Native input node receives visible focus; account and password rows keep the 18px gap and the privacy note stays above submit",
+    "Visible Tab focus; empty submit associates errors and focuses first missing input; account Enter goes to password",
+    "Eye Enter/Space toggle preserves labels; password Enter submits; busy disables controls and prevents duplicate IAM request; rejection allows retry",
+    "Typing/blur clear only resolved required errors; live locale-adapter change updates true input labels; eye controls point at the actual input",
+    "Synthetic IAM rejection held for six seconds keeps busy truthful, sends one request and restores native input semantics after rejection",
+    "Two-stage synthetic 5.1s + 5.9s principal lookup outage remains busy beyond ten seconds then shows neutral failure; no early page race",
+    "Chinese/English 200% text and short viewport scroll checks; no physical OS soft-keyboard claim",
+    "430 and distinct iPad 834 layouts keep the 24px title, 390 column, and 44px targets",
+    "390 light/dark references show decorations and switch original dark assets; reduced motion hides decorations; high contrast keeps dark assets",
+    "Unknown /api/v1 route returns 404. Login rejection stays 401 and the principal outage stays 503",
+    "Terms and privacy dispatch a real noopener popup. The first document is the dev legal origin served by SYNTHETIC_LEGAL_TARGET. Official site content is NOT_RUN",
+    "Synthetic adult gate REQUIRED follows the existing gate: unsafe returnTo reaches onboarding, and a safe public returnTo stays on that internal route. No setupState success injection"
+  ],
+  "matrix": [
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "en-US",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "en-US",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 320,
+      "locale": "en-US",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 320,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 286,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "en-US",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "en-US",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "en-US",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "zh-CN",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "zh-CN",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "zh-CN",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "zh-CN",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "en-US",
+      "requestedTheme": "dark",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "en-US",
+      "requestedTheme": "high-contrast",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=high-contrast&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "high-contrast",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(0, 0, 0)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 21,
+      "descriptionContrast": 21,
+      "submitFont": "16px",
+      "submitContrast": 10.241035683218554,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 768,
+      "locale": "en-US",
+      "requestedTheme": "system",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=system&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "requestedTheme": "light",
+      "textScale": 2,
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "48px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "32px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "32px",
+        "32px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 128,
+          "height": 68.796875
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 78
+        },
+        {
+          "label": "注册",
+          "width": 72,
+          "height": 68.796875
+        },
+        {
+          "label": "用户协议",
+          "width": 128,
+          "height": 68.796875
+        },
+        {
+          "label": "隐私政策",
+          "width": 128,
+          "height": 68.796875
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 390,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "textScale": 2,
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "48px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "32px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "32px",
+        "32px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 239.59375,
+          "height": 68.796875
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 126
+        },
+        {
+          "label": "Register",
+          "width": 126.390625,
+          "height": 68.796875
+        },
+        {
+          "label": "Terms",
+          "width": 98.578125,
+          "height": 68.796875
+        },
+        {
+          "label": "Privacy policy",
+          "width": 199.890625,
+          "height": 68.796875
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "locale": "zh-CN",
+      "requestedTheme": "light",
+      "device": "phone",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "device": "phone",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 834,
+      "height": 1194,
+      "locale": "zh-CN",
+      "requestedTheme": "dark",
+      "device": "ipad",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=dark&uiLocale=zh-CN",
+      "title": "登录",
+      "theme": "dark",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(18, 20, 35)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 18.260046498877145,
+      "descriptionContrast": 9.430023081994236,
+      "submitFont": "16px",
+      "submitContrast": 8.102838796467024,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "忘记密码",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "登录并继续",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "注册",
+          "width": 44,
+          "height": 46.390625
+        },
+        {
+          "label": "用户协议",
+          "width": 72,
+          "height": 46.390625
+        },
+        {
+          "label": "隐私政策",
+          "width": 72,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "width": 834,
+      "height": 1194,
+      "locale": "en-US",
+      "requestedTheme": "light",
+      "device": "ipad",
+      "url": "http://127.0.0.1:18183/#/pages/login/login?theme=light&uiLocale=en-US",
+      "title": "Sign in",
+      "theme": "light",
+      "overflow": false,
+      "contentWidth": 390,
+      "background": "rgb(252, 250, 255)",
+      "titleFont": "24px",
+      "titleFontFamily": "Inter, \"PingFang SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+      "titleContrast": 14.855816096848324,
+      "descriptionContrast": 14.393177547654762,
+      "submitFont": "16px",
+      "submitContrast": 9.055604499746867,
+      "inputFonts": [
+        "16px",
+        "16px"
+      ],
+      "fieldGap": 18,
+      "privacyBeforeSubmit": true,
+      "privacyGap": 18,
+      "targets": [
+        {
+          "label": "Show password",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Forgot password",
+          "width": 127.796875,
+          "height": 46.390625
+        },
+        {
+          "label": "Sign in and continue",
+          "width": 340,
+          "height": 54
+        },
+        {
+          "label": "Register",
+          "width": 71.203125,
+          "height": 46.390625
+        },
+        {
+          "label": "Terms",
+          "width": 57.296875,
+          "height": 46.390625
+        },
+        {
+          "label": "Privacy policy",
+          "width": 107.953125,
+          "height": 46.390625
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "inputTiming": [
+    {
+      "kind": "clear",
+      "activation": "click",
+      "elapsedMs": 2.8000000044703484,
+      "modelAlreadyCurrent": false,
+      "calls": []
+    },
+    {
+      "kind": "clear",
+      "activation": "Enter",
+      "elapsedMs": 1.1999999955296516,
+      "modelAlreadyCurrent": false,
+      "calls": []
+    },
+    {
+      "kind": "last-character",
+      "activation": "click",
+      "elapsedMs": 1.1999999955296516,
+      "modelAlreadyCurrent": false,
+      "calls": [
+        {
+          "identifierMatches": true,
+          "passwordMatchesLatest": true
+        }
+      ]
+    },
+    {
+      "kind": "last-character",
+      "activation": "Enter",
+      "elapsedMs": 1.2000000029802322,
+      "modelAlreadyCurrent": false,
+      "calls": [
+        {
+          "identifierMatches": true,
+          "passwordMatchesLatest": true
+        }
+      ]
+    },
+    {
+      "kind": "replacement",
+      "activation": "click",
+      "elapsedMs": 1.5,
+      "modelAlreadyCurrent": false,
+      "calls": [
+        {
+          "identifierMatches": true,
+          "passwordMatchesLatest": true
+        }
+      ]
+    },
+    {
+      "kind": "replacement",
+      "activation": "Enter",
+      "elapsedMs": 1.0999999940395355,
+      "modelAlreadyCurrent": false,
+      "calls": [
+        {
+          "identifierMatches": true,
+          "passwordMatchesLatest": true
+        }
+      ]
+    }
+  ],
+  "legalPopups": [
+    {
+      "name": "用户协议",
+      "kind": "popup-dispatch-synthetic-target",
+      "fixture": "SYNTHETIC_LEGAL_TARGET",
+      "current": {
+        "protocol": "http:",
+        "origin": "http://127.0.0.1:18182",
+        "path": "/terms"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "protocol": "http:",
+          "origin": "http://127.0.0.1:18182",
+          "path": "/terms"
+        }
+      ],
+      "openerPresent": false,
+      "officialSiteService": "NOT_RUN"
+    },
+    {
+      "name": "隐私政策",
+      "kind": "popup-dispatch-synthetic-target",
+      "fixture": "SYNTHETIC_LEGAL_TARGET",
+      "current": {
+        "protocol": "http:",
+        "origin": "http://127.0.0.1:18182",
+        "path": "/privacy"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "protocol": "http:",
+          "origin": "http://127.0.0.1:18182",
+          "path": "/privacy"
+        }
+      ],
+      "openerPresent": false,
+      "officialSiteService": "NOT_RUN"
+    }
+  ],
+  "consoleClassification": {
+    "counts": {
+      "debug": 96,
+      "verbose": 48,
+      "error": 4
+    },
+    "unexpectedErrors": [],
+    "note": "Fixture 401, 404, and 503 may be logged. Other console errors fail. The console is not claimed clean."
+  },
+  "notRun": [
+    "Official site http://127.0.0.1:18182 live document and content; the popup target is SYNTHETIC_LEGAL_TARGET only",
+    "Native openURL capability; node public-documents tests still cover the missing-capability failure",
+    "Closed, games, and social page UI in this tree"
+  ],
+  "shots": 31,
+  "pageErrors": [],
+  "unhandledRejections": [],
+  "rootViewed": [
+    "login-390-zh-CN-light-reference.png",
+    "login-390-zh-CN-dark-reference.png",
+    "login-390-en-US-text-200.png"
+  ],
+  "runtimeLease": {
+    "at": "2026-11-03T20:35:09.173497+00:00",
+    "port": 18183,
+    "holder": "ROOT_QA_INTEGRATION",
+    "pid": 71475,
+    "ptySession": 83456,
+    "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+    "previousPid": 55957,
+    "previousPty": 38138,
+    "previousStop": "root controlled Ctrl-C, exit0 andport FREE before new start",
+    "scriptLeaseField": "ui-login author test still embeds historical55957;this verifiedlsof/cwdreceipt iscurrentauthority",
+    "lsof": "COMMAND   PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nnode    71475 Admin   20u  IPv4 0x295284b8c66e166d      0t0  TCP 127.0.0.1:18183 (LISTEN)\n",
+    "cwd": "p71475\nfcwd\nn/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/apps/mobile\n"
+  },
+  "sourceValidation": {
+    "authTests": 12,
+    "authExit": 0,
+    "mobileTypecheck": 0,
+    "i18nTypecheck": 0,
+    "buildH5": 0
+  },
+  "sharedRegression": {
+    "checks": 41,
+    "status": "PASS",
+    "shots": 4,
+    "sourceHashes": {
+      "apps/mobile/src/pages/b4-games/b4-games.vue": "c77eeb23aa9b1257428deba69c3b01ad0fec992ca9cc6efdabda34b8a067cd94",
+      "apps/mobile/src/pages/b4-social/b4-social.vue": "c7f0f5ade74a234a79eae61a1010f6f96385322ad2951174d463cb5db14cd714",
+      "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+      "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "packages/i18n/src/mobile-resources/social.ts": "9b2ce63f4fefb8fdc1fb194492c149792e6a6fb7cb90222e711cf7eff61b8c34"
+    }
+  },
+  "localRawEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-21-login"
+}

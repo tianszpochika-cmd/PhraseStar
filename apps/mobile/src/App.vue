@@ -72,8 +72,9 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
   padding: calc(48rpx + env(safe-area-inset-top)) 48rpx calc(48rpx + env(safe-area-inset-bottom));
-  color: var(--yx-text-primary, #202332);
-  background: var(--yx-surface-page, #f7f8fc);
+  color: var(--yx-r4-ink, var(--yx-text-primary, #202332));
+  background-color: var(--yx-r4-page-color, var(--yx-surface-page, #f7f8fc));
+  background-image: var(--yx-r4-page-image, none);
 }
 .yx-app {
   min-height: 100vh;

@@ -2,6 +2,7 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL?: string
   readonly VITE_GATEWAY_BASE_URL?: string
   readonly VITE_RUNTIME_MODE?: string
+  readonly VITE_PUBLIC_SITE_ORIGIN?: string
 }
 
 interface ImportMeta {

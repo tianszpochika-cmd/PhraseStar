@@ -51,7 +51,7 @@ export function useMobileExperience() {
   onShow(syncMobileTabBar)
   const experienceStyle = computed(() => mobileExperienceVariables(theme.value))
   const experienceMotion = computed(() => resolveMobileMotion(mobileMotionMode.value as 'FULL' | 'REDUCED' | 'OFF', performance.value))
-  return { experienceStyle, experienceMotion }
+  return { experienceStyle, experienceMotion, theme }
 }
 
 export function backMobile(): void {

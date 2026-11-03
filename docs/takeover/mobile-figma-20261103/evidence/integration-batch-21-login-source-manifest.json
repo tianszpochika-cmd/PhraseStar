@@ -1,0 +1,235 @@
+{
+  "frozenSource": "grok/batch-11-legal-observer-source-snapshot",
+  "previousHead": "bd649198721f3d0660e0726632ce553391874400",
+  "at": "2026-11-03T20:32:08.536763+00:00",
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "faebed04e99e9da8163303ef749e3cc041da7759675847d181288f0a10cddac1",
+      "before_sha256": "cd3bd7747a37bc07c540f423f5ffa0dfacabd2d4e90b581c35f7c2f8fc970945",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/App.vue",
+      "sha256": "04e93a75561f2f6e9aa1ced6b67564f1c04de253524f1896bfbfd9a968e9b6a8",
+      "before_sha256": "0edf45590fbe57d94289a7cddb9d2d34eb1430750c7fba12c89525774d0f12f3",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/components/FigmaAsset.vue",
+      "sha256": "b4b9adb96d1044f27cadb62d0c8f35561e10b87680b0562c8d7fe703a20f50a8",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/env.d.ts",
+      "sha256": "8be035ea20b4d3564adeb5cabf77d6e29bbf1dd275852e01c053a51695f20934",
+      "before_sha256": "6f5213f3df2fc911e89a7befb584394a2cbf407c300f2e0d81173fa81e0cea66",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/pages/login/login.vue",
+      "sha256": "f6ed75a50a4bccbcce338c1097daf04d300c2428b5f27be0423b7bf71ff108ae",
+      "before_sha256": "0c5fb5cd346d9e86271eaf65638cf2ffabbc9b466fb3d6cd1079e4fbc9a55460",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/platform/experience.ts",
+      "sha256": "8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575",
+      "before_sha256": "2a5859f672fc02239fd784ba26d7327ab6d8ac71f043f558fa3e350d4d05d240",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/platform/public-documents.ts",
+      "sha256": "1cb87e496c8d6d4e9f2f47d3b208ef4d009f76b141389b772f1f50e72fee58c9",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/platform/uni-runtime.ts",
+      "sha256": "0b9b98dd309e16f01489415973315e0eef39e2129bff2efee60caeb27d603ae4",
+      "before_sha256": "03b21bab8c4121ec289b5633ae9fab79ba0b64c60d0431f7adbf8953115f265a",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/0ea923f3-b892-40a7-8bf2-95e995daf4d5.png",
+      "sha256": "7ddbe6d5fda3398113bdad40bb75170b03c7d003be7d1f7abb44fcbeef014be2",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/2cbc7d32-3253-403a-b8c4-f4ed5a69aa99.svg",
+      "sha256": "fa470d5520ef81b64d0424c718ff2b9acdf3f31b5d7d45118342df0519381296",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/36eb854b-eb52-4d77-9706-eb2840858384.svg",
+      "sha256": "d9f012e3939a45ae98469bec747a22595d6e02576ab2f9e41dcfb7a0f1858c08",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/45264d42-60b1-4297-a661-4ea1d7a10e84.svg",
+      "sha256": "dc04eb6b14a6adce0aed7ad2ac6b90f9a366f8815012c699214bc32e008b479d",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/6e6494f0-ee81-4842-90de-a740aa69cf5d.svg",
+      "sha256": "649257ee650e6d3225edc19fc2999723cdfb0d4d8414cf813e09bf8e221b2757",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/7fdca4db-3d4e-41e3-ad18-66151d4525a3.svg",
+      "sha256": "184bcbfb04190803cabbfd5ee27b19ddc9b327ce547385a22db68c765988d197",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/80bb7b06-52b2-4c7f-8e98-952ba8260668.svg",
+      "sha256": "51d22bc92a26051d5ea80eb38f7485ae933053312cb9bdb49e68e5b03fc0e6f0",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/8927e61b-9aec-4e2c-93fd-4d3f2a998de5.svg",
+      "sha256": "11d13fe935a8c2e78bb0f5f5c4f3eb97c6a1c0d4f00ab6c60de1b0d3c3666c6d",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/ae426ae9-3891-4e73-af8c-0bf76c3eede8.svg",
+      "sha256": "befe12ad3966ef88c31bf9e705fbc3a76b11502f03c9ea8b619a6dab79e7515f",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/b12dec8d-cd0d-4cc2-9aa0-6c6e0acc27ab.svg",
+      "sha256": "151d25dcb95ad0f49f101bb430e4b7fd56ea6b2573860646ffba211f165b5a3b",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/dd1a4b1d-1ef8-42a1-be90-c720b26ef82b.svg",
+      "sha256": "556b91f750b403987c0f58233df50fdafff2b943b08ea0482fc0080102fbac14",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-98-1182/dddfbe81-06bf-47d6-83b8-808b470c415f.svg",
+      "sha256": "99e140d548e122159efe2338da3c0c96aa46cac1b4842828f6b26362d05cbe44",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/003efa13-eff2-4c8e-9eda-2238d6117c21.svg",
+      "sha256": "6010f361747a10d88ed7d9e28589043a38f3fa8b1718da1f2ba50a1a67c3f6ef",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/0cda7900-eb40-4244-801b-affa44ebabef.svg",
+      "sha256": "17523d54ece7f302f6b23d607820395ab2b552b9cb548a16ff06a7c9ce42f6a0",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/3b2ccd7a-b76c-419b-b498-fc6931d6bbac.svg",
+      "sha256": "339ebcd45b0388861048ba98b0395c4cb055509dabfa61dd86571bfa106a2efd",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/43aebdb0-db5d-418a-831e-ba79e777d486.svg",
+      "sha256": "5c3340cb1940d1c726c8fa7f7105d2e6fc4d28aa084a65d70f5ddc5cdc0c1f63",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/74884c52-c082-4fdc-9fcd-d5201138d22b.svg",
+      "sha256": "fa470d5520ef81b64d0424c718ff2b9acdf3f31b5d7d45118342df0519381296",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/791d1470-17e6-4e40-a3e5-4e8eade95fc5.svg",
+      "sha256": "f06db4876ba805db8a48d38ea26f9ee4c6fc76e19c866b6ce1823a95160e907a",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/7c9d7ce7-26f7-47dd-9525-38cf5623d8d1.svg",
+      "sha256": "d9f012e3939a45ae98469bec747a22595d6e02576ab2f9e41dcfb7a0f1858c08",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/83435cdc-b497-4093-8ed8-e19810ccf786.png",
+      "sha256": "7ddbe6d5fda3398113bdad40bb75170b03c7d003be7d1f7abb44fcbeef014be2",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/97c4b589-54f5-4111-8972-f5882100ee73.svg",
+      "sha256": "77daf676a1ce57a9e521a5bea211829b2d1c40aeab7a5e530c31a375e4f149bc",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/a2d82186-de0c-4c15-8667-7bb4315a7b40.svg",
+      "sha256": "c763a765bdd29443e300d33679cf2e01c1319b92ad8ee58a07e14542bf3a662d",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/c729a76c-bebb-4d04-a703-b63bb480c034.svg",
+      "sha256": "649257ee650e6d3225edc19fc2999723cdfb0d4d8414cf813e09bf8e221b2757",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/static/figma-login-dark-248-1391/eb84fb33-631b-48b5-ae4f-6b2c957e14c5.svg",
+      "sha256": "f1bad49af8a526ef41ed6da76c0899a080772b126b3c647766b9a8cc3fd34a0d",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/theme/figma-r4-assets.ts",
+      "sha256": "cdfe7a9a67ceaa587ad042a9910db30906013b365d92cdda3863ef6e9b489537",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/src/uni.scss",
+      "sha256": "293b6c724c2b3a1351882cdd5230f33e58567ebaa6a5c353352cd128f4ac253e",
+      "before_sha256": "0bd56842fc5baebd8767e721f2d938986e293d1d87bfc74bb087b3c228f638d7",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/tests/iam-auth-transport.test.mjs",
+      "sha256": "a7bbb400f1d474c670a7cd60173564a4e804c195054132cb1a135145305b271c",
+      "before_sha256": "9222647118fcb5209e70d37e12ce36099744e549f159fb7a686822836c066983",
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/tests/public-documents.test.mjs",
+      "sha256": "07d9fe9047c351c9530659834daad15cd8028c7fa6dedef84743c123b452460f",
+      "before_sha256": null,
+      "unchanged": false
+    },
+    {
+      "path": "apps/mobile/tests/ui-login.e2e.cjs",
+      "sha256": "a1b2a23b78c5a468076e808565369497420797dbaec8517180a09edadc5959a0",
+      "before_sha256": "e7e2d2e125ac25bdb65223a7b90b7dda59a2e9bd95955ecbba2e18653ec0e701",
+      "unchanged": false
+    },
+    {
+      "path": "packages/i18n/src/mobile-experience.ts",
+      "sha256": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "before_sha256": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+      "unchanged": false
+    }
+  ]
+}
