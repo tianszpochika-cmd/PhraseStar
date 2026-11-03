@@ -25,7 +25,7 @@
 | `apps/mobile/src/pages/b6-platform/**` 与专属测试 | DSH-DEVICES | MB-027；唯一共享 controller 不复制，缺独立设计稿如实记录 |
 | `apps/mobile/src/pages/b5-commerce/**` 与专属测试、`static/figma-commerce-*/**` | DSH-COMMERCE | MB-026；独立树基于 bd649198，只读权益/订单/公开目录，购买支付兑换关闭；原素材例外优先于 static 常规归属 |
 | `apps/mobile/src/pages/profile/profile.vue`、`apps/mobile/tests/profile-page.test.mjs`、`src/static/figma-profile-{169-9356,169-9446,169-9544,169-9707,248-4123}/**` | DSH-PROFILE | 同一 DSH CLI/provider 的独立任务与工作树；主 DSH 会话不再写此页。已从 Grok 冻结包预载三个共享文件，不能在本任务中修改；实际会话与进程见 CHECKPOINT |
-| MB-011…015/018 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
+| MB-011…015 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
 | `apps/mobile/src/{api,auth,domain,platform,stores}/**`；`packages/contracts/**`、服务与迁移 | 默认只读；具名例外见下文 | 发现必需改动先交具体文件/原因，Root 指定唯一写者；不能让两个 CLI 随意改同一工具。已发布 experience/uni-runtime/public-documents 适配器归 Grok；support.ts 的既有 GET 兼容例外只归主 DSH |
 | `apps/mobile/tests/**` | 按具体文件单写者 | 只创建/修改本人页面明确独占的测试；共用测试由 Root 指派唯一执行者。不得通过改断言、跳测或覆写证据制造通过 |
 | `docs/takeover/mobile-figma-20261103/**`、`docs/STATUS.md`、`CURRENT-HANDOFF.md`、`CHANGELOG.md` 与集成分支 | Root | 单一集成人按已批准事实维护；保留官网/Figma Web 记录；候选先审再合入 |
@@ -65,3 +65,15 @@ Main DSH is the sole author for b4-avatar page, its dedicated tests and static/f
 ## MB-016 transfer 2026-11-04
 
 DSH_PROFILE is the sole author for b10-report, dedicated report tests and static/figma-report assets. B17 is read-only preparation; implementation waits for reviewed operation/Gate scope and a frozen i18n registry publication from Grok. Public report-share remains frozen. Shared/API/domain/auth/store/contracts remain read-only.
+
+## B4 performance store exception - B28
+
+Main DSH alone may minimally update stores/b4.ts and b4-performance-sync.test.mjs to consume the published mobileExperienceEngine singleton while preserving public store interfaces and owner/queue/Gate behavior. Other stores, shared controller/package, APIs, contracts and pages remain read-only. No global engine disposal or new sampling system.
+
+## MB-018 transfer 2026-11-04
+
+DSH_COMMERCE is the sole author for world page and dedicated world tests/assets. B04 is read-only preparation. Main DSH remains sole stores/b4.ts writer for the performance singleton correction; Grok alone publishes central i18n/token additions. Commerce candidate remains frozen. No API/domain/auth/contracts writes.
+
+## Mistake read validation exception - Profile B18
+
+DSH_PROFILE alone may minimally change existing mistake read response validation in api/b10.ts and add b10-mistake-response.test.mjs. Validate current B2Mistake contract; unknown enums/invalid rows must fail explicitly instead of invented states or false empty. No endpoint/schema/server/write operation, report/assessment parser, other API, auth or store changes.

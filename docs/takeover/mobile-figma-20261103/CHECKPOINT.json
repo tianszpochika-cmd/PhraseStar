@@ -1378,7 +1378,7 @@
       "name": "报告分享",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "AUTHOR73_MATRIX14_AUTH_PASS_FROZEN_PENDING_INTEGRATION",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
       "services_data_owners": [
         "assessment-service",
@@ -1439,9 +1439,9 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
-        "source_tests": "B13 author10/10+types/build0;publicallowlist/noBearer;notyetRootreviewed",
-        "candidate_browser": "B15 UTCfix73checks21shots;B16 authenticated publicnoBearer14checks4shots;same9d031source"
+        "independent_review": "reviews/INTEGRATION-B25-REPORT-SHARE.md",
+        "source_tests": "Root11/11+types/H5build0",
+        "candidate_browser": "Root73matrix21shots+14authenticated4shots;UTC+publicnoBearer verified"
       },
       "current_job": "dsh/profile-batch-15-share-matrix"
     },
@@ -1450,9 +1450,9 @@
       "route": "#/pages/world/world",
       "file": "apps/mobile/src/pages/world/world.vue",
       "name": "成长世界",
-      "owner": "UNASSIGNED",
-      "wave": "LATER",
-      "status": "PENDING",
+      "owner": "DSH_COMMERCE",
+      "wave": "D2",
+      "status": "READONLY_PREP_RUNNING",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1508,7 +1508,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "dsh/commerce-batch-04-world-prep"
     },
     {
       "id": "MB-019",
@@ -2877,7 +2878,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T21:46:23.639604+00:00",
+  "updated_at": "2026-11-03T21:57:53.716452+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2946,11 +2947,11 @@
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
     "policy": "ONLY_GROK_AND_DSH",
-    "grok": "grok/batch-17-register-icon-contrast",
-    "dsh": "dsh/batch-27-avatar-prep",
-    "dshProfile": "dsh/profile-batch-17-report-prep",
+    "grok": "grok/batch-18-i18n-three-page-registry",
+    "dsh": "dsh/batch-28-b4-performance-singleton",
+    "dshProfile": "dsh/profile-batch-18-mistake-response-validation",
     "dshDevices": "dsh/devices-batch-17-qa-and-platform",
-    "dshCommerce": "dsh/commerce-batch-03-browser",
+    "dshCommerce": "dsh/commerce-batch-04-world-prep",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
     "codexSubagents": "STOPPED_NO_CALLS"
   },
@@ -2984,7 +2985,7 @@
     "old_leaves_per_locale": 682,
     "new_leaf_count": 0
   },
-  "integration_commit": "01b75d4b5bbbe6b5a6cd1f5ba63bd354038a4735",
+  "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
   "remote_push": "NOT_YET_PHASE_ACTIVE",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
@@ -3062,10 +3063,11 @@
       "scope": "neutral accountconflict/reset semantic+protectedWeb markup/regex;no tests weakened, no Web business edits"
     },
     "register_dark_icon": {
-      "state": "ROOT_REPRODUCED_PENDING_AUTHOR",
+      "state": "AUTHOR_B17_FIXED_ROOT51_MATRIX14_GROUPS_PASS_PENDING_INTEGRATION",
       "eyeFill": "#1C1633",
       "background": "dark alpha43,37,67;HCblack",
-      "source": "GrokB13 product unchanged byB15"
+      "source": "GrokB13 product unchanged byB15",
+      "pageSha": "64603f4c9eb17c62702b2ea02c469c860ffa200de5c5c1a45b1204a95c3d5f88"
     }
   },
   "integration_batch_23_devices": {
@@ -3094,6 +3096,19 @@
     "authorExtraMatrixChecks": 220,
     "review": "reviews/INTEGRATION-B24-SUPPORT.md",
     "tabletVisual": "PENDING_SEPARATE_SIGNOFF",
+    "remote": "NOT_PUSHED"
+  },
+  "integration_batch_25_report_share": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 13,
+    "sourceTests": 11,
+    "types": 0,
+    "buildH5": 0,
+    "rootGuestMatrixChecks": 73,
+    "rootAuthenticatedChecks": 14,
+    "rootShots": 25,
+    "pageSha": "9d031981ffb4c891a30a679227111aa1c94ad85a09de8fcb0d37c673e135e4fc",
+    "review": "reviews/INTEGRATION-B25-REPORT-SHARE.md",
     "remote": "NOT_PUSHED"
   }
 }

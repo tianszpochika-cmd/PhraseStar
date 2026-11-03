@@ -1,0 +1,78 @@
+{
+  "base": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/report-share-batch-16-source-snapshot",
+  "at": "2026-11-03T21:50:42.535968+00:00",
+  "method": "EXACT_FROZEN_AUTHOR_BYTES",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/report-share/report-share.vue",
+      "before": "991a4d8adb5830e3f4771522d4bd8a36f70ac043e7d3091c74f55619ef5ae5db",
+      "sha256": "9d031981ffb4c891a30a679227111aa1c94ad85a09de8fcb0d37c673e135e4fc"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1652/imgDot.svg",
+      "before": null,
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1652/imgDot1.svg",
+      "before": null,
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1652/imgDot2.svg",
+      "before": null,
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1652/imgGlow.svg",
+      "before": null,
+      "sha256": "e5747c30b9edff0bf3f682c3f52509210c240e16203d94844bc3ede7ecf866fa"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1714/imgGlow.svg",
+      "before": null,
+      "sha256": "2f37a9fecde9ba87d7ed32d1bf73907e603fc7758ee7f51da43d582e8ee7206f"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1714/imgIconLightbulb.svg",
+      "before": null,
+      "sha256": "fe0053208d9e1022ac826f67cc3ee10b7ba5c21604be5c9350c80585c22742d8"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1799/imgGlow.svg",
+      "before": null,
+      "sha256": "889f6ac5eca8a9d4b08d8223291f4a82137c0e46fe81a21a0b38dc6d85734e8a"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1799/imgIconLink.svg",
+      "before": null,
+      "sha256": "e64eaebcaa9c5ba6d737135885bd5756d0a378583ac8769366a29e03b49cc8b2"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1863/imgGlow.svg",
+      "before": null,
+      "sha256": "395b62af823981c040559ed76c1251a509fcae234dfffe42ac95fc17648ead58"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-share-169-1863/imgMascot.svg",
+      "before": null,
+      "sha256": "ac0360c44ea161ce9928e50497341b91b0df918c787848788a9dfcd26dd8f7dc"
+    },
+    {
+      "path": "apps/mobile/tests/report-share-page.test.mjs",
+      "before": null,
+      "sha256": "626327914fe4731260151c314f4d6c00db5717ffe0f7581434d16b9f74e9f00f"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/report-share-page.ts",
+      "before": "2c6d07c3f558b2bc1d1401bc2a462e5b0865f5a364131fdd51e89b84368d7bbe",
+      "sha256": "3cfe8839d8a4d22096bf8d013c8ebc43cffdfc93eac432800031d4d47dd65b12"
+    }
+  ],
+  "preexisting_dirty_docs": [
+    "docs/takeover/mobile-figma-20261103/CHECKPOINT.json",
+    "docs/takeover/mobile-figma-20261103/OWNERSHIP.md"
+  ],
+  "retained": "current128token/central/Header/login/settings/devices/support"
+}

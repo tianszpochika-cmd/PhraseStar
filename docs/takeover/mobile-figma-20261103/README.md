@@ -2,6 +2,7 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
+- [公开分享组合审核 B25](reviews/INTEGRATION-B25-REPORT-SHARE.md)：11项源检查、73项组合矩阵、14项UI登录后公开读检查；日期与授权边界已复验。
 - [客服组合审核 B24](reviews/INTEGRATION-B24-SUPPORT.md)：49项源检查、198项组合浏览器检查；GET适配保留设置兼容，写业务保持关闭。
 - [设备组合审核 B23](reviews/INTEGRATION-B23-DEVICES.md)：最终41项源检查/26项英文错误复验；较早247核心/131共享布局检查按源分开，原失败保留。
 - [设置组合审核 B22](reviews/INTEGRATION-B22-SETTINGS.md)：保留全部实际业务，24项源检查、134项组合检查、5项跨页焦点及最终CSS34项局部回归；真服务与设备另列。
@@ -29,7 +30,7 @@
 
 用户后续明确：执行只使用本机 Grok CLI 与 DSH CLI，不再调用 Codex 模型子代理；此前的 Codex 子代理已停止。Root 直接承担派工、审核、监督记录及整合，不代写产品实现。停止查看额度面板，保留 CLI 实际额度耗尽停止的回执；余额仍为 UNKNOWN，不能用普通完成、权限取消或网络失败替代额度停止。
 
-1. Grok 负责共享 token、多数共享组件和 MB-001…010；DSH 主任务先做 MB-019/020/022/029…033，再做 MB-017、025…028；DSH-PROFILE 独立处理 MB-023、024。两个 DSH 任务使用同一 CLI/provider 的不同会话与工作树。MobileClosedPracticeNotice、已发布后的 MobilePageHeader 等独占例外以 OWNERSHIP 和机器检查点为准。MB-021 已转主 DSH，MB-016 已转 DSH-PROFILE；MB-011…015/018 后续由 Root 明确指定；所有切换先登记唯一写者。
+1. Grok 负责共享 token、多数共享组件和 MB-001…010；DSH 主任务先做 MB-019/020/022/029…033，再做 MB-017、025…028；DSH-PROFILE 独立处理 MB-023、024。两个 DSH 任务使用同一 CLI/provider 的不同会话与工作树。MobileClosedPracticeNotice、已发布后的 MobilePageHeader 等独占例外以 OWNERSHIP 和机器检查点为准。MB-021 已转主 DSH，MB-016 已转 DSH-PROFILE，MB-018 已转 DSH-COMMERCE；MB-011…015 后续由 Root 明确指定；所有切换先登记唯一写者。
 2. 设计、接口和数据事实不得互相替代。成人/同意/身份由 IAM，题目和规则由 content，attempt/定级由 assessment，计划/SRS 由 learning 等各自 owner 判定。无合法 API/权限或阶段条件时保留受限、空、失败与恢复路径，不因画稿或 fixture 开启能力。
 3. 每页先核已有 R1/BC/IC、PAGE 和适用契约，再实施对应 UI 差量；FEAT/PRD-ATOM/V2-980、ARCH、ACT/JNY/PAGE/RULE/INT/E2E、服务和数据 owner 的未核项标 `TRACE_PENDING`。整页审签前必须补齐或明确不适用的原因，不得发明 ID。
 4. 本机 H5、受控数据、真实服务读写、iOS/Android/iPad 实机、无障碍和部署分别计账；所有验收绑定候选源、运行版本、环境、可复现步骤及证据，失败原件保留。
