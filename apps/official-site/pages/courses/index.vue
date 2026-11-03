@@ -157,7 +157,7 @@ useOfficialSeo({
 </template>
 
 <style scoped>
-.v1-core-catalog { color: var(--v1-text); font-family: var(--v1-font-sans); }
+.v1-core-catalog { background: var(--v1-surface); color: var(--v1-text); font-family: var(--v1-font-sans); }
 .v1-core-container { width: min(1192px, calc(100% - 48px)); margin-inline: auto; }
 .v1-core-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .v1-core-catalog__hero { overflow: hidden; background: linear-gradient(100deg, var(--v1-hero-from), var(--v1-hero-to)); }

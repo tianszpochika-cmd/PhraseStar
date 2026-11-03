@@ -23,7 +23,7 @@ export const officialSiteV1Experience = {
     exampleLabel: "GET STARTED", exampleTitle: "不同设备，同一个学习目标", exampleDescription: "了解网页入口和客户端的发布安排。", exampleFirstTitle: "从适合你的设备开始", exampleSecondTitle: "怎样找到官方下载？", free: "网页版", freeNote: "由学习入口访问", member: "手机客户端", memberNote: "以实际发布渠道为准", generalNote: "开放情况以公告为准。",
     step1: "已发布渠道", step1Note: "以官方公布信息为准", step2: "准备中状态", step2Note: "请关注服务公告", step3: "更新与兼容", step3Note: "查看系统支持情况",
   },
-  catalog: { billing: { FREE: "免费", MONTH: "每月", QUARTER: "每季度", YEAR: "每年", PERPETUAL: "一次性" }, availability: { available: "已发布的公开介绍", "coming-soon": "准备中", unavailable: "暂不可用", maintenance: "维护中", restricted: "受限，请以服务端资格判断为准" }, announcements: "查看服务公告", updatedAt: "上次可用信息更新于 {time}。" },
+  catalog: { marker: { empty: "○", filled: "●" }, billing: { FREE: "免费", MONTH: "每月", QUARTER: "每季度", YEAR: "每年", PERPETUAL: "一次性" }, availability: { available: "已发布的公开介绍", "coming-soon": "准备中", unavailable: "暂不可用", maintenance: "维护中", restricted: "受限，请以服务端资格判断为准" }, announcements: "查看服务公告", updatedAt: "上次可用信息更新于 {time}。" },
   world: {
     seoTitle: "互动世界 · 语学星",
     seoDescription: "探索仅在官网本地运行的互动示例，了解后续场景规划。",

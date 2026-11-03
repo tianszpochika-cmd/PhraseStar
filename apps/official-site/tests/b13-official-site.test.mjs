@@ -165,6 +165,8 @@ test("R1-001 保留公开投影兼容，价格/下载独立空态且不展示购
   const sku = await source("components/PublicSkuCard.vue");
   const campaign = await source("components/PublicCampaignCard.vue");
   const download = await source("pages/download.vue");
+  const catalog = await source("components/v1/experience/CatalogView.vue");
+  const copy = await readFile(join(siteRoot, "../../packages/i18n/src/official-site-v1/experience.ts"), "utf8");
 
   for (const token of [
     "PublicSkuProjection",
@@ -176,16 +178,23 @@ test("R1-001 保留公开投影兼容，价格/下载独立空态且不展示购
   ]) {
     assert.match(projection, new RegExp(token));
   }
-  assert.match(pricing, /PublicStatus/);
-  assert.match(pricing, /r1PricingPreparing/);
+  assert.match(pricing, /getFacet\("pricing"\)/);
+  assert.match(download, /getFacet\("download"\)/);
+  for (const [page, kind] of [[pricing, "pricing"], [download, "download"]]) {
+    assert.match(page, new RegExp(`<CatalogView kind="${kind}"[^>]*:state="facet.state"[^>]*:empty="catalogEmpty"[^>]*@retry="load"`));
+    assert.match(page, /value\.stale/);
+    assert.doesNotMatch(page, /navigateTo|redirectCode/);
+  }
+  assert.match(catalog, /props\.state === "ready" && !props\.empty/);
+  assert.match(catalog, /<PublicStatus v-else[^>]*:state="displayState"[^>]*emptyTitle[^>]*emptyMessage[^>]*@retry="emit\('retry'\)"/);
+  assert.match(copy, /emptyTitle: "收费方案暂未开放"/);
+  assert.match(copy, /emptyTitle: "下载准备中"/);
   assert.doesNotMatch(pricing, /navigateTo|redirectCode/);
   assert.match(sku, /entitlement-list/);
   assert.match(campaign, /safe|publicLink|authLink/);
-  assert.match(download, /r1DownloadPreparing/);
-  assert.doesNotMatch(download, /navigateTo|redirectCode/);
   assert.doesNotMatch(pricing, /PublicSkuCard|jsonld-pricing-public-offers/);
   assert.doesNotMatch(
-    pricing,
+    `${pricing}\n${download}\n${catalog}`,
     /createOrder|\/orders|payment|entitlement\/write/i,
   );
 });

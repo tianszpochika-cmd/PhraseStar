@@ -58,8 +58,17 @@ const innerMobileLinks = [
   ["/terms", "official.v1.common.footer.terms"],
   ["/compliance", "official.v1.common.footer.complianceLink"],
 ] as const;
+const informationMobileLinks = [
+  ["/courses", "official.v1.common.nav.courses"],
+  ["/world", "official.v1.common.nav.world"],
+  ["/help", "official.v1.common.nav.help"],
+  ["/privacy", "official.v1.common.footer.privacy"],
+  ["/terms", "official.v1.common.footer.terms"],
+  ["/compliance", "official.v1.common.footer.complianceLink"],
+] as const;
+const informationPaths = new Set(["/help", "/about", "/announcements", "/status", "/privacy", "/terms", "/minors", "/compliance"]);
 const groups = computed(() => isHome.value ? homeGroups : innerGroups);
-const mobileLinks = computed(() => isHome.value ? homeMobileLinks : innerMobileLinks);
+const mobileLinks = computed(() => isHome.value ? homeMobileLinks : informationPaths.has(route.path) ? informationMobileLinks : innerMobileLinks);
 </script>
 
 <template>

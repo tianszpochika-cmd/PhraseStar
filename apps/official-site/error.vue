@@ -1,8 +1,30 @@
 <script setup lang="ts">
+import { renderOfficialSiteV1Theme } from "@englishflow/design-tokens/official-site-v1";
+import { resolvePublicThemeMode } from "~/utils/public-projection";
+
 const props = defineProps<{ error: { statusCode?: number; statusMessage?: string } }>();
 const { t } = useSiteText();
+const route = useRoute();
+const themeCookie = useCookie<string>("yx.public.theme");
+const theme = resolvePublicThemeMode(route.query.theme ?? themeCookie.value);
+const { officialThemeController, officialThemeAdapter } = useNuxtApp().$foundation;
 const code = computed(() => Number.isInteger(props.error.statusCode) && props.error.statusCode! >= 400 && props.error.statusCode! <= 599 ? props.error.statusCode! : 500);
-useHead({ title: t("official.cf9e4e94e2"), meta: [{ name: "robots", content: "noindex, nofollow" }] });
+useHead({
+  title: t("official.cf9e4e94e2"),
+  meta: [{ name: "robots", content: "noindex, nofollow" }],
+  htmlAttrs: { "data-theme": theme === "system" ? undefined : theme },
+  style: [{ id: "englishflow-official-error-tokens", textContent: renderOfficialSiteV1Theme() }],
+  script: theme === "system" ? [{
+    id: "englishflow-official-error-theme-bootstrap",
+    textContent: 'document.documentElement.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";',
+  }] : [],
+});
+onMounted(() => {
+  officialThemeController.restore();
+  if (route.query.theme !== undefined)
+    officialThemeController.setTheme(resolvePublicThemeMode(route.query.theme));
+  officialThemeAdapter.sync();
+});
 </script>
 <template>
   <main class="v1-info-error">

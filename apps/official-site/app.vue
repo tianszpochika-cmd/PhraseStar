@@ -36,9 +36,6 @@ watch(() => [route.query.locale, route.query.theme], syncUrlPreferences);
 onBeforeUnmount(() => {
   unsubLocale();
   unsubTheme();
-  officialI18nAdapter.dispose();
-  officialThemeAdapter.dispose();
-  officialThemeController.dispose();
 });
 installSiteMotion();
 useHead({

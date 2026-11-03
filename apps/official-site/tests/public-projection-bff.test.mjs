@@ -49,6 +49,18 @@ const readyPayload = {
   },
 };
 const emptyPayload = { data: { uiLocale: "zh-CN", courses: [] } };
+// Shape of the public B9 data + meta envelope, including the mandatory lists.
+const canonicalContentPayload = () => ({
+  data: {
+    projectionVersion: 1, contentEpoch: 1, generatedAt: "2026-11-03T00:00:00Z",
+    courses: [{ contentCode: "course-1", contentType: "COURSE", title: "基础英语", contentLocale: "en-US", targetLevel: "A1", contentVersionId: 1, availability: "PUBLISHED" }],
+    pricing: [],
+    downloads: [{ platform: "WEB", channel: "web", status: "AVAILABLE", downloadUrl: "https://study.example.com/" }],
+    announcements: [{ announcementCode: "news-1", title: "公告", summary: "公开消息", publishedAt: "2026-11-03T00:00:00Z" }],
+    compliance: [{ noticeCode: "notice-1", title: "公示", body: "公开说明", version: "1", effectiveAt: "2026-11-03T00:00:00Z" }],
+  },
+  meta: { projectionVersion: 1, contentEpoch: 1, generatedAt: "2026-11-03T00:00:00Z", source: "CONTENT_SERVICE", stale: false },
+});
 const ok = (payload) => ({ ok: true, status: 200, json: async () => payload });
 function deferred() {
   let resolve;
@@ -468,6 +480,106 @@ test("a stale-only content signal becomes recovery without aging fresh commerce"
   assert.equal(projection.normalizePublicProjectionResponse({
     state: "recovery", accessState: "denied", data: { courses: [] },
   }).state, "permission");
+});
+
+test("B9 meta stale wins over a ready content payload without aging independent commerce", async () => {
+  const app = harness();
+  const content = canonicalContentPayload();
+  content.meta.stale = true;
+  const plan = {
+    skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
+    billingPeriod: "MONTH", availability: "PUBLISHED",
+    entitlementCode: "learn.month", priceSnapshotId: "fresh-sku-v1",
+  };
+  app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [plan] } : content));
+  const { body, headers } = await app.request();
+  assert.equal(body.state, "recovery");
+  assert.equal(body.stale, true);
+  assert.equal(headers["cache-control"], "no-store");
+  for (const key of ["courses", "download", "announcements", "compliance"]) {
+    assert.equal(body.facets[key].state, "recovery");
+    assert.equal(body.facets[key].stale, true);
+  }
+  assert.equal(body.facets.pricing.state, "ready");
+  assert.equal(body.facets.pricing.stale, false);
+  assert.equal(body.projection.pricingPlans.length, 1);
+
+  content.data.accessState = "denied";
+  const denied = await app.request();
+  assert.equal(denied.body.state, "permission");
+  assert.equal(denied.body.facets.courses.state, "permission");
+  assert.equal(denied.body.facets.pricing.state, "permission");
+  assert.equal(denied.body.projection.courses.length, 0);
+  assert.equal(denied.body.projection.pricingPlans.length, 0);
+});
+
+test("B9 malformed or missing collections are isolated errors, never false empty or cached facts", async () => {
+  const keys = { courses: "courses", downloads: "download", announcements: "announcements", compliance: "compliance" };
+  for (const [collection, facet] of Object.entries(keys)) {
+    for (const malformed of ["missing", "object", "null", "bad-item"]) {
+      const app = harness();
+      const content = canonicalContentPayload();
+      app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [] } : content));
+      assert.equal((await app.request()).body.state, "ready");
+      if (malformed === "missing") delete content.data[collection];
+      else content.data[collection] = malformed === "object" ? { malformed: true } : malformed === "null" ? null : [null];
+      const invalid = await app.request();
+      assert.equal(invalid.body.facets[facet].state, "error", `${collection}: ${malformed}`);
+      assert.equal(invalid.body.facets[facet].errorCode, "PUBLIC_FACET_INVALID");
+      assert.equal(invalid.headers["cache-control"], "no-store");
+      for (const other of Object.values(keys).filter((item) => item !== facet)) {
+        assert.equal(invalid.body.facets[other].state, "ready");
+      }
+      app.setFetch(async () => { throw new Error("subsequent outage"); });
+      assert.equal((await app.request()).body.state, "error", "malformed authoritative data invalidates the older snapshot");
+    }
+    const app = harness();
+    const empty = canonicalContentPayload();
+    empty.data[collection] = [];
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [] } : empty));
+    const result = await app.request();
+    assert.equal(result.body.facets[facet].state, "empty", `${collection}: a real empty array remains empty`);
+    assert.match(result.headers["cache-control"], /^public/);
+  }
+});
+
+test("supported content wrappers use fresh commerce prices and honor their nested access and stale state", async () => {
+  const fresh = {
+    skuId: "new-sku", title: "当前方案", currency: "CNY", amountMinor: 1299,
+    billingPeriod: "MONTH", availability: "PUBLISHED",
+    entitlementCode: "learn.month", priceSnapshotId: "new-v1",
+  };
+  for (const wrapper of ["publicProjection", "result"]) {
+    const app = harness();
+    const inner = {
+      courses: [{ id: "course-1", title: "基础英语" }],
+      pricingPlans: [{ id: "old-sku", skuId: "old-sku", name: "旧方案", price: "¥1" }],
+      skus: [{ id: "old-sku", skuId: "old-sku", name: "旧方案", price: "¥1" }],
+    };
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [fresh] } : { [wrapper]: inner }));
+    const current = await app.request();
+    assert.equal(current.body.state, "ready", wrapper);
+    assert.equal(current.body.facets.pricing.state, "ready");
+    assert.equal(current.body.projection.pricingPlans.map((plan) => plan.skuId).join(","), "new-sku");
+    assert.ok(!JSON.stringify(current.body.projection).includes("old-sku"));
+
+    inner.state = "denied";
+    const denied = await app.request();
+    assert.equal(denied.body.state, "permission", wrapper);
+    assert.equal(denied.body.projection.pricingPlans.length, 0);
+    inner.state = "maintenance";
+    const maintenance = await app.request();
+    assert.equal(maintenance.body.state, "maintenance", wrapper);
+    assert.equal(maintenance.body.projection.courses.length, 0);
+    delete inner.state;
+    inner.stale = true;
+    const stale = await app.request();
+    assert.equal(stale.body.state, "recovery", wrapper);
+    assert.equal(stale.body.facets.courses.stale, true);
+    assert.equal(stale.body.facets.pricing.state, "ready");
+    assert.equal(stale.body.projection.pricingPlans[0].skuId, "new-sku");
+    assert.equal(stale.headers["cache-control"], "no-store");
+  }
 });
 
 test("BFF keeps legitimate recovery data, time, stale flag and reason", async () => {

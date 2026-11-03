@@ -66,8 +66,8 @@ useOfficialSeo({ title: t("official.v1.info.announcements.seoTitle"), descriptio
 .v1-info-announcements__card { position: relative; min-height: 179px; padding: 24px 21px 36px; border: 1px solid var(--v1-border); border-radius: 20px; background: color-mix(in srgb, var(--v1-brand-soft) 65%, var(--v1-surface)); }
 .v1-info-announcements__card:nth-child(even) { background: var(--v1-tint-sky, var(--v1-bg)); }
 .v1-info-announcements__card::before { content: ""; position: absolute; top: 13px; bottom: 13px; left: 8px; width: 4px; border-radius: 2px; background: var(--v1-brand); }
-.v1-info-announcements__card h2 { max-width: 70%; font-size: 20px; line-height: 1.4; overflow-wrap: anywhere; }
-.v1-info-announcements__card p { max-width: 86%; margin-top: 18px; color: var(--v1-muted); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.v1-info-announcements__card h2 { max-width: calc(100% - 180px); font-size: 20px; line-height: 1.4; overflow-wrap: anywhere; }
+.v1-info-announcements__card p { max-width: calc(100% - 44px); margin-top: 18px; color: var(--v1-muted); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
 .v1-info-announcements__chip { position: absolute; top: 21px; right: 23px; display: grid; min-width: 156px; min-height: 34px; place-items: center; padding: 4px 10px; border-radius: 15px; background: var(--v1-brand-soft); color: var(--v1-brand); font-size: 12px; }
 .v1-info-announcements__link { display: inline-block; margin-top: 12px; color: var(--v1-brand); font-size: 13px; font-weight: 600; }
 .v1-info-announcements__icon { position: absolute; right: 26px; bottom: 51px; }
@@ -84,7 +84,7 @@ useOfficialSeo({ title: t("official.v1.info.announcements.seoTitle"), descriptio
  .v1-info-announcements__intro h2 { font-size: 21px; }
  .v1-info-announcements__cards { grid-template-columns: 1fr; gap: 13px; }
  .v1-info-announcements__card { min-height: 132px; }
- .v1-info-announcements__card h2 { max-width: 60%; }
+ .v1-info-announcements__card h2 { max-width: calc(100% - 120px); }
  .v1-info-announcements__card p { margin-top: 18px; }
  .v1-info-announcements__chip { right: 10px; min-width: 103px; font-size: 11px; }
  .v1-info-announcements__icon { right: 36px; bottom: 24px; }

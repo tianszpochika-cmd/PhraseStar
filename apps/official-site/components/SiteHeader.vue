@@ -96,7 +96,7 @@ function returnFromPreferences() {
         :aria-expanded="menu"
         @click="menu = true"
       >
-        <span>{{ t("official.v1.common.nav.menu") }}</span>
+        <span v-if="isHome">{{ t("official.v1.common.nav.menu") }}</span>
         <span class="v1-site-header__menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
     </div>

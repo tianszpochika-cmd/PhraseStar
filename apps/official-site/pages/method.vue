@@ -81,7 +81,7 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
   </div>
 </template>
 <style scoped>
-.v1-core-method { color: var(--v1-text); font-family: var(--v1-font-sans); }
+.v1-core-method { background: var(--v1-surface); color: var(--v1-text); font-family: var(--v1-font-sans); }
 .v1-core-method__container { width: min(1192px, calc(100% - 48px)); margin: auto; padding: 52px 0 40px; }
 .v1-core-method__sample { display: grid; grid-template-columns: minmax(0, 1fr) 304px; gap: 36px; min-height: 335px; margin-bottom: 36px; padding: 23px 36px 24px 24px; border-radius: 24px; background: var(--v1-brand-soft); }
 .v1-core-method__practice { min-width: 0; }

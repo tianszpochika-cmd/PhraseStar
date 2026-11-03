@@ -70,7 +70,7 @@ useOfficialSeo({ title: `${title.value} · 语学星`, description: t(directionT
   </div>
 </template>
 <style scoped>
-.v1-core-detail { color: var(--v1-text); font-family: var(--v1-font-sans); }
+.v1-core-detail { background: var(--v1-surface); color: var(--v1-text); font-family: var(--v1-font-sans); }
 .v1-core-detail__container { width: min(1192px, calc(100% - 48px)); margin: auto; padding: 52px 0 40px; }
 .v1-core-detail__intro { display: grid; grid-template-columns: minmax(0, 1fr) 359px; gap: 24px; min-height: 295px; padding: 26px 43px 24px 23px; border-radius: 24px; background: var(--v1-brand-soft); }
 .v1-core-detail__intro-copy { min-width: 0; }

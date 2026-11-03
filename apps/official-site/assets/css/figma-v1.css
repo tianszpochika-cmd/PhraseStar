@@ -581,6 +581,11 @@ dialog.v1-dialog-bare {
     gap: 4px;
   }
 
+  .v1-site-header--interior .v1-site-header__menu-button {
+    justify-content: flex-end;
+    padding-right: 14px;
+  }
+
   .v1-site-header__menu-icon i {
     display: block;
     height: 2px;

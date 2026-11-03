@@ -90,7 +90,7 @@ useOfficialSeo({ title: t("official.v1.info.about.seoTitle"), description: t("of
  .v1-info-about__body { padding-top: 50px; }
  .v1-info-about__story { min-height: 346px; }
  .v1-info-about__story-copy { max-width: none; }
- .v1-info-about__story h2 { margin-top: 39px; font-size: 28px; line-height: 42px; }
+ .v1-info-about__story h2 { margin-top: 39px; font-size: clamp(23px, 7.18vw, 28px); line-height: 1.5; }
  .v1-info-about__story-text { margin-top: 37px; font-size: 15px; line-height: 1.5; }
  .v1-info-about__sample { display: none; }
  .v1-info-about__tiny-progress { position: absolute; left: 20px; right: 20px; bottom: 21px; display: flex; align-items: center; height: 35px; padding: 0 13px; border-radius: 14px; background: var(--v1-surface); }

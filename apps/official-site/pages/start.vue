@@ -144,8 +144,8 @@ useOfficialSeo({
 .v1-start-heading :deep(.v1-page-heading__copy h1) { font-size: 48px; line-height: 1.33; margin: 39px 0 30px; }
 .v1-start-heading :deep(.v1-page-heading__copy > p) { font-size: 17px; }
 .v1-start-heading :deep(.v1-page-heading__artwork) { position: static; flex: 0 0 368px; align-self: center; }
-.v1-start-heading-card { position: relative; overflow: hidden; min-height: 220px; padding: 35px 39px; border: 18px solid var(--v1-surface); border-radius: 24px; background: var(--v1-brand-soft); display: grid; justify-items: start; gap: 6px; }
-.v1-start-heading-icon { position: relative; margin-bottom: 17px; }
+.v1-start-heading-card { position: relative; overflow: hidden; width: 368px; height: 220px; padding: 0; border: 18px solid var(--v1-surface); border-radius: 24px; transform: translate(-8px, 8px); background: var(--v1-brand-soft); display: block; }
+.v1-start-heading-icon { display: block; position: absolute; left: 21px; top: 20px; margin: 0; }
 .v1-start-card-ellipse { position: absolute; left: 188px; top: -38px; }
 .v1-start-heading-ambient { position: absolute; inset: 0; pointer-events: none; }
 .v1-start-heading-ambient img { position: absolute; }
@@ -154,9 +154,10 @@ useOfficialSeo({
 .v1-start-glimmer { right: 226px; top: 28px; }
 .v1-start-mobile-art { display: none; }
 .v1-start-heading-card span,.v1-start-heading-card small,.v1-start-eyebrow { color: var(--v1-brand); font: 600 13px var(--v1-font-display); }
-.v1-start-heading-card strong { font-size: 23px; }
-.v1-start-heading-card small { justify-self: end; margin-top: -13px; }
-.v1-start-progress { width: 124px; height: 6px; border-radius: 4px; background: var(--v1-surface); margin-top: 7px; }
+.v1-start-heading-card > span { position: absolute; left: 21px; top: 70px; }
+.v1-start-heading-card strong { position: absolute; left: 21px; top: 97px; font-size: 23px; }
+.v1-start-heading-card small { position: absolute; left: 165px; top: 143px; max-width: 158px; margin: 0; }
+.v1-start-progress { position: absolute; left: 21px; top: 140px; width: 124px; height: 6px; border-radius: 4px; background: var(--v1-surface); margin: 0; }
 .v1-start-progress i { display: block; width: 68%; height: 100%; border-radius: inherit; background: var(--v1-brand); }
 .v1-start-heading-word { position: absolute; right: 11px; top: 261px; width: 338px; opacity: .3; font: 600 31px var(--v1-font-display); color: var(--v1-brand); }
 .v1-start-heading-spark { position: absolute; right: -82px; top: 183px; color: var(--v1-brand); opacity: .32; font-size: 39px; }
@@ -209,8 +210,8 @@ useOfficialSeo({
   .v1-start-heading :deep(.v1-page-heading__copy > p) { max-width: 280px; font-size: 14px; line-height: 26px; }
   .v1-start-heading :deep(.v1-page-heading__artwork) { position: static; flex: 0 0 0; width: 0; min-width: 0; }
   .v1-start-heading-card { position: absolute; right: 0; top: 26px; z-index: 1; }
-  .v1-start-heading-card { position: absolute; overflow: hidden; min-height: 54px; width: 54px; padding: 15px; border: 0; border-radius: 17px; background: var(--v1-surface); }
-  .v1-start-heading-icon { margin: 0; }
+  .v1-start-heading-card { position: absolute; overflow: hidden; min-height: 54px; width: 54px; height: 54px; padding: 15px; transform: none; border: 0; border-radius: 17px; background: var(--v1-surface); }
+  .v1-start-heading-icon { position: static; margin: 0; }
   .v1-start-card-ellipse,.v1-start-desktop-art { display: none; }
   .v1-start-mobile-art { display: block; }
   .v1-start-orbit-mobile { right: -28px; top: 154px; }
@@ -223,8 +224,8 @@ useOfficialSeo({
   .v1-start-heading-bar { top: 283px; width: 74px; }
   .v1-start-content { padding-top: 43px; }
   .v1-start-journey { min-height: 439px; padding: 33px 24px 24px; }
-  .v1-start-journey h2 { margin: 34px 0 30px; font-size: 25px; }
-  .v1-start-actions { width: 100%; margin-top: 42px; }
+  .v1-start-journey h2 { margin: 34px 0 42px; font-size: 25px; }
+  .v1-start-actions { width: 100%; margin-top: 49px; }
   .v1-start-journey-art { width: 72px; height: 47px; top: 12px; right: 23px; }
   .v1-start-cards { grid-template-columns: 1fr; gap: 12px; }
   .v1-start-card { min-height: 130px; border-radius: 16px; }
@@ -235,6 +236,7 @@ useOfficialSeo({
   .v1-start-example-grid { grid-template-columns: 1fr; gap: 16px; }
   .v1-start-duration { min-height: 147px; }
   .v1-start-steps { min-height: 197px; }
+  .v1-start-steps li p { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .v1-start-duration-options { gap: 2px; margin-top: 15px; }
   .v1-start-duration > p { margin-top: 12px; }
 }

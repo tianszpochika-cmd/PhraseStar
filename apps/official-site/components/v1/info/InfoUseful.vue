@@ -36,6 +36,7 @@ const { t } = useSiteText();
 .v1-info-useful__steps .v1-info-useful__row:first-of-type { background: var(--v1-brand-soft); }
 .v1-info-useful__steps .v1-info-useful__row > span { background: transparent; }
 :global(html[data-theme="high-contrast"]) .v1-info-useful, :global(html[data-theme="high-contrast"]) .v1-info-useful__card { border: 1px solid var(--v1-border); }
+:global(html[data-theme="high-contrast"]) .v1-info-useful__row > span { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) {
  .v1-info-useful { padding: 19px 15px 24px; }
  .v1-info-useful h2 { margin-top: 19px; font-size: 20px; line-height: 29px; }
@@ -46,7 +47,11 @@ const { t } = useSiteText();
  .v1-info-useful__row { min-height: 30px; margin-top: 5px; padding: 0; background: transparent !important; font-size: 12px; }
  .v1-info-useful__row:first-of-type { margin-top: 0; }
  .v1-info-useful__row > span { flex-basis: 40px; min-height: 30px; background: var(--v1-brand-soft); }
+ .v1-info-useful__card:not(.v1-info-useful__steps) .v1-info-useful__row:nth-of-type(2) > span { background: var(--v1-tint-sky, var(--v1-brand-soft)); }
+ .v1-info-useful__card:not(.v1-info-useful__steps) .v1-info-useful__row:nth-of-type(3) > span { background: var(--v1-tint-mint, var(--v1-brand-soft)); }
  .v1-info-useful__steps .v1-info-useful__row { min-height: 32px; font-size: 13px; }
  .v1-info-useful__steps .v1-info-useful__row > span { flex-basis: 27px; }
+ .v1-info-useful__steps .v1-info-useful__row:first-of-type { color: var(--v1-brand); }
+ .v1-info-useful__steps .v1-info-useful__row:not(:first-of-type) > span { color: var(--v1-text); }
 }
 </style>

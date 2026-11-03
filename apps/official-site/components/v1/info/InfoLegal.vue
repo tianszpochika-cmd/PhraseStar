@@ -6,10 +6,10 @@ type LegalKind = "privacy" | "terms" | "minors" | "compliance";
 const props = defineProps<{ kind: LegalKind }>();
 const { t } = useSiteText();
 const pages = {
-  privacy: { desktop: "privacy-desktop-168-3140", mobile: "privacy-mobile-168-3249", tone: "brand", cardTone: "rose" },
-  terms: { desktop: "terms-desktop-168-3317", mobile: "terms-mobile-168-3426", tone: "sand", cardTone: "sky" },
-  minors: { desktop: "minors-desktop-168-3494", mobile: "minors-mobile-168-3603", tone: "rose", cardTone: "mint" },
-  compliance: { desktop: "compliance-desktop-168-3671", mobile: "compliance-mobile-168-3786", tone: "mint", cardTone: "mint" },
+  privacy: { desktop: "privacy-desktop-168-3140", mobile: "privacy-mobile-168-3249", tone: "brand", cardTone: "rose", decor: "violet" },
+  terms: { desktop: "terms-desktop-168-3317", mobile: "terms-mobile-168-3426", tone: "sand", cardTone: "sky", decor: "sand" },
+  minors: { desktop: "minors-desktop-168-3494", mobile: "minors-mobile-168-3603", tone: "rose", cardTone: "mint", decor: "orchid" },
+  compliance: { desktop: "compliance-desktop-168-3671", mobile: "compliance-mobile-168-3786", tone: "mint", cardTone: "mint", decor: "teal" },
 } as const;
 const config = computed(() => pages[props.kind]);
 const desktopAssets = computed(() => `/figma-v1/assets/${config.value.desktop}`);
@@ -27,7 +27,7 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
 </script>
 <template>
   <div class="v1-info-legal">
-    <InfoHero :eyebrow="t(key('eyebrow'))" :title="t(key('title'))" :lead="t(key('lead'))" :caption="t(key('caption'))" :card-label="t(key('cardLabel'))" :card-title="t(key('cardTitle'))" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" :tone="config.tone" :card-tone="config.cardTone" />
+    <InfoHero :eyebrow="t(key('eyebrow'))" :title="t(key('title'))" :lead="t(key('lead'))" :caption="t(key('caption'))" :card-label="t(key('cardLabel'))" :card-title="t(key('cardTitle'))" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" :tone="config.tone" :card-tone="config.cardTone" :decor="config.decor" />
     <div class="v1-info-legal__body"><div class="v1-info-legal__container">
       <nav class="v1-info-legal__nav" :aria-label="t('official.v1.info.legal.navigation')">
         <NuxtLink v-for="link in links" :key="link.kind" :to="link.path" :aria-current="kind === link.kind ? 'page' : undefined">{{ t(link.label) }}</NuxtLink>

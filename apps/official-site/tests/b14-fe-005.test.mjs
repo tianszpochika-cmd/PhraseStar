@@ -51,12 +51,16 @@ test("clyunedev official image builds mobile handoff with the public mobile orig
 test("official site applies explicit URL locale/theme preferences after restore", async () => {
   const app = await read("apps/official-site/app.vue");
   const header = await read("apps/official-site/components/SiteHeader.vue");
+  const links = await read("apps/official-site/composables/useOfficialSiteLinks.ts");
   assert.match(app, /route\.query\.locale/);
   assert.match(app, /route\.query\.theme/);
   assert.match(app, /resolvePublicUiLocale/);
   assert.match(app, /resolvePublicThemeMode/);
-  assert.match(header, /officialI18nAdapter\.subscribe/);
-  assert.doesNotMatch(header, /buildPublicLearningEntry|authLink|login-link|menu-login/);
+  assert.match(app, /officialI18nAdapter\.subscribe/);
+  assert.match(app, /officialThemeController\.subscribe/);
+  assert.match(header, /:to="authLink\(\)" external/);
+  assert.match(links, /return buildLearnerLoginLink\(learnerWebUrl/);
+  assert.doesNotMatch(header, /password|accessToken|refreshToken/i);
 });
 
 // R1-001 supersedes 8a689ec5's closed-account UI policy. Canonical auth rules remain unchanged.
@@ -66,27 +70,28 @@ test("R1-001 public entry links to learner registration and retains adult/read-o
   const button = await read("apps/official-site/components/SiteStartButton.vue");
   const links = await read("apps/official-site/composables/useOfficialSiteLinks.ts");
   const home = await read("apps/official-site/pages/index.vue");
+  const practice = await read("apps/official-site/components/v1/home/Practice.vue");
   const courseIndex = await read("apps/official-site/pages/courses/index.vue");
-  const copy = await read("packages/i18n/src/official-site.ts");
+  const copy = await read("packages/i18n/src/official-site-v1/experience.ts");
+  const infoCopy = await read("packages/i18n/src/official-site-v1/info.ts");
   assert.match(header, /SiteStartButton/);
-  assert.match(header, /menu-example/);
-  assert.doesNotMatch(header, /menu-login|login-link|authLink/);
+  assert.match(header, /v1-mobile-menu/);
+  assert.match(header, /:to="authLink\(\)" external/);
   for (const source of [button, start, courseIndex]) assert.match(source, /registerLink\(\)/);
   assert.match(links, /buildPublicLearningEntry/);
+  assert.match(links, /buildLearnerLoginLink/);
   assert.match(start, /data-register-entry/);
   assert.match(start, /data-sample-entry/);
   assert.match(start, /to="\/#practice-example"/);
-  assert.match(start, /role="status"[\s\S]*official\.c8a7b34f12/);
-  assert.equal((start.match(/official\.c8a7b34f12/g) || []).length, 1);
-  assert.match(home, /id="practice-example"/);
+  assert.match(start, /role="status"[^>]*>[\s\S]*?official\.v1\.experience\.start\.adultBoundary/);
+  assert.match(home, /<HomePractice/);
+  assert.match(practice, /id="practice-example"/);
   assert.match(copy, /18 岁以上成人与大学生/);
   assert.match(copy, /通过前不开放学习能力/);
-  assert.match(copy, /c03e46770e: "去注册"/);
-  assert.match(copy, /r1CoursesPreparing: "课程准备中"/);
-  assert.match(copy, /c7044fa394: "界面示意"/);
-  assert.match(copy, /个人数据查看、导出和删除功能当前无法通过学习账号访问/);
-  assert.doesNotMatch(copy, /学习账号注册与登录(?:当前)?暂不可用|学习账号注册暂不可用/);
-  assert.doesNotMatch(copy, /初期免费开放|初期开放的学习功能免费使用|同一个账号登录即可查看已经保存/);
+  assert.match(infoCopy, /官网示例无需登录/);
+  assert.match(infoCopy, /不会生成正式学习记录/);
+  assert.doesNotMatch(`${copy}\n${infoCopy}`, /学习账号注册与登录(?:当前)?暂不可用|学习账号注册暂不可用/);
+  assert.doesNotMatch(`${copy}\n${infoCopy}`, /同一个账号登录即可查看已经保存/);
 });
 
 test("official site exposes all eight state semantics without color-only status", async () => {

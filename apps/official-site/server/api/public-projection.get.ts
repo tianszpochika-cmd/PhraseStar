@@ -44,7 +44,11 @@ function mergeCommercePricing(
 ): unknown {
   if (!isRecord(projection)) return projection;
   const plans = commerce ? list(commerce.plans) : [];
-  const data = isRecord(projection.data) ? projection.data : projection;
+  // Match sourceData's precedence so new commerce facts replace old prices in
+  // the exact supported wrapper that the normalizer will subsequently read.
+  const wrapper = (["publicProjection", "data", "result"] as const)
+    .find((key) => isRecord(projection[key]));
+  const data = wrapper && isRecord(projection[wrapper]) ? projection[wrapper] : projection;
 
   // The official site may display commerce facts, but it must not own or copy
   // order/entitlement data. Keep only the catalog's public, field-filtered
@@ -86,9 +90,7 @@ function mergeCommercePricing(
   // Commerce owns public offers. A missing or empty catalog must also clear
   // prices and SKUs carried by an older content projection.
   const mergedData = { ...data, pricingPlans: pricing, skus: [] };
-  return isRecord(projection.data)
-    ? { ...projection, data: mergedData }
-    : mergedData;
+  return wrapper ? { ...projection, [wrapper]: mergedData } : mergedData;
 }
 
 const LAST_GOOD_MAX_AGE_MS = 60_000;
@@ -237,9 +239,11 @@ export default defineEventHandler(
         return emptyFallback(latestInvalidation?.state ?? "error");
       }
       latestAppliedRequestByLocale.set(locale, requestId);
-      if (result.state === "ready" && !commerceDegraded)
+      const hasInvalidContentFacet = Object.entries(result.facets).some(([name, facet]) =>
+        name !== "pricing" && facet.errorCode === "PUBLIC_FACET_INVALID");
+      if (result.state === "ready" && !commerceDegraded && !hasInvalidContentFacet)
         lastGoodProjectionByLocale.set(locale, { response: result, fetchedAt: Date.now() });
-      else if (result.state === "recovery") {
+      else if (result.state === "recovery" && !hasInvalidContentFacet) {
         // F10: recovery 携带权威内容+commerce 事实。刷新缓存中的事实，使随后的
         // 网络故障不能复活已被清空/替换的旧套餐；保留原 fetchedAt，recovery 永不
         // 延长 60 秒 TTL。无前置缓存时不从 recovery 新建缓存。
@@ -249,7 +253,7 @@ export default defineEventHandler(
         }
       } else
         invalidate(locale, result.state === "permission" ? "permission" : "error");
-      if (!commerceDegraded && (result.state === "ready" || result.state === "empty"))
+      if (!commerceDegraded && !hasInvalidContentFacet && (result.state === "ready" || result.state === "empty"))
         setResponseHeader(
           event,
           "cache-control",

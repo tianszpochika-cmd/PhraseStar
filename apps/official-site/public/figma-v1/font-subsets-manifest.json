@@ -707,15 +707,15 @@
         },
         {
           "path": "packages/i18n/src/official-site-v1/core.ts",
-          "sha256": "11e270ab4c23b408c5b6b9df4f7e305493251651b2fc53dda781f33afcfd2e0f"
+          "sha256": "7943e803a97c474177da97b26a86a5ef3d2942eef28e6ac233fb47326e078652"
         },
         {
           "path": "packages/i18n/src/official-site-v1/experience.ts",
-          "sha256": "4530cbd5164fca4e1c21eeb57e76bed268381c00736ea7ab68cf62a268250363"
+          "sha256": "1354559b73b8262077d4a8904326324c043648e9174c1f94f8980a91a975b12e"
         },
         {
           "path": "packages/i18n/src/official-site-v1/home.ts",
-          "sha256": "df5b22042f581a78cf9f10b38ad2262ce45a2767d3605d83999c5e76a5d9d24e"
+          "sha256": "d505bddf1ae0be5500194d98459b452117261dcb50f101321d287bd449c29f49"
         },
         {
           "path": "packages/i18n/src/official-site-v1/index.ts",
@@ -723,7 +723,7 @@
         },
         {
           "path": "packages/i18n/src/official-site-v1/info.ts",
-          "sha256": "66f938fe59457c95b874b3b7cc0932677bd63dab059c82974919f1fc096b53fc"
+          "sha256": "1f5ac0faefabd3c1488b1ca63f69a30970b431947c2bb80479d3575c68f05d6b"
         },
         {
           "path": "packages/i18n/src/official-site.ts",
@@ -732,18 +732,18 @@
       ],
       "sourceChangedDuringGeneration": [],
       "corpusFile": "fonts/site-extra-characters.txt",
-      "corpusSha256": "d59c93b648786e9e81ab19f675987346a19e224030f5861a0413cbdeb45cb95b",
-      "corpusCharacters": 125,
+      "corpusSha256": "a2f7320aa89eb835a5259b996b7d041c60f30d29354aa0ae02137476101e8289",
+      "corpusCharacters": 129,
       "combinedCorpusFile": "fonts/site-static-characters.txt",
-      "combinedCorpusSha256": "93fb2f6df5b06314583f0376f2cce900d3f81ad21248d5ace95890a74d58012b",
-      "unicodeRange": "U+4e13, U+4e66, U+4ecb, U+4ed6, U+4f4d, U+4fbf, U+501f, U+504f, U+50cf, U+513f, U+5141, U+5171, U+51cf, U+51fb, U+521d, U+5220, U+5224, U+5373, U+53a2, U+53bb, U+53f3, U+540d, U+5448, U+54cd, U+5546, U+56e0, U+56fe, U+5730, U+5740, U+5747, U+5757, U+57df, U+586b, U+5916, U+592a, U+5956, U+5976, U+5b57, U+5b83, U+5bb6, U+5bfb, U+5c42, U+5c9a, U+5de6, U+5dee, U+5e26, U+5e55, U+5e72, U+5e97, U+5f02, U+5f20, U+5f71, U+5fbd, U+5fc5, U+5fd9, U+601d, U+6062, U+610f, U+624d, U+62f1, U+6361, U+63d2, U+64ad, U+6539, U+65ad, U+684c, U+690d, U+6bd4, U+6c1b, U+6cb9, U+6d45, U+6f88, U+706f, U+7167, U+7269, U+72ec, U+767d, U+76cf, U+76d1, U+7701, U+793c, U+79be, U+79f0, U+7a0d, U+7a97, U+7acb, U+7ae5, U+7bc7, U+7d2b, U+7ec6, U+7ecd, U+7ed1, U+7ed5, U+7eff, U+7f72, U+7ffb, U+8272, U+8349, U+8377, U+8584, U+85cf, U+89d2, U+89e6, U+8ba2, U+8bb8, U+8bef, U+8c03, U+8c8c, U+8df3, U+8f83, U+8f85, U+8fd0-8fd1, U+8fd4, U+9000, U+904d, U+91cf, U+9501, U+95ef, U+963f, U+975e, U+98ce, U+9986, U+9ad8, U+ff01",
-      "bytes": 41500,
-      "sha256": "cda126178d45dfc22faad8114b70201e4a4ce3ba41d76ec13152336a5e94a16e",
+      "combinedCorpusSha256": "f79b68167143cd4157d670ab613dbf659dde78d6141e5d56963cf6620c78b171",
+      "unicodeRange": "U+4e13, U+4e66, U+4ecb, U+4ed6, U+4f4d, U+4fbf, U+501f, U+504f, U+50cf, U+513f, U+5141, U+5171, U+51cf, U+51fb, U+521d, U+5220, U+5224, U+5373, U+53a2, U+53bb, U+53f3, U+540d, U+5448, U+54cd, U+5546, U+56e0, U+56fe, U+5730, U+5740, U+5747, U+5757, U+57df, U+586b, U+5916, U+592a, U+5956, U+5976, U+5b57, U+5b63, U+5b83, U+5bb6, U+5bfb, U+5c42, U+5c9a, U+5de6, U+5dee, U+5e26, U+5e55, U+5e72, U+5e97, U+5f02, U+5f20, U+5f71, U+5fbd, U+5fc5, U+5fd9, U+601d, U+6027, U+6062, U+610f, U+624d, U+62f1, U+6361, U+63d2, U+64ad, U+6539, U+65ad, U+6708, U+684c, U+690d, U+6bd4, U+6c1b, U+6cb9, U+6d45, U+6f88, U+706f, U+7167, U+7269, U+72ec, U+767d, U+76cf, U+76d1, U+7701, U+793c, U+79be, U+79f0, U+7a0d, U+7a97, U+7acb, U+7ae5, U+7bc7, U+7d2b, U+7ec6, U+7ecd, U+7ed1, U+7ed5, U+7eff, U+7f72, U+7ffb, U+8003, U+8272, U+8349, U+8377, U+8584, U+85cf, U+89d2, U+89e6, U+8ba2, U+8bb8, U+8bef, U+8c03, U+8c8c, U+8df3, U+8f83, U+8f85, U+8fd0-8fd1, U+8fd4, U+9000, U+904d, U+91cf, U+9501, U+95ef, U+963f, U+975e, U+98ce, U+9986, U+9ad8, U+ff01",
+      "bytes": 44176,
+      "sha256": "ad5b7325d1b3d0efa917d0a6477aa99a163962554fe6fba889f47f494418af0c",
       "license": "fonts/NotoSansSC-OFL.txt",
       "combinedGlyphCoverage": {
         "method": "WOFF2 cmap format 4/12 via Brotli decompression, union of frozen and extra subsets",
-        "checkedCodepoints": 853,
-        "present": 840,
+        "checkedCodepoints": 857,
+        "present": 844,
         "missingCodepoints": [
           "U+0259",
           "U+026A",
