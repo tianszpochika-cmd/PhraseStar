@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-03T23:46:38.141874+00:00",
+  "provider": "existing DSH headless configured account",
+  "stop": "HTTP402 insufficient_balance; coding_plan_exhausted=true",
+  "providerResetAt": "2026-11-04T02:02:22Z",
+  "period": "receipt does not specify weekly period; no quota dashboard queried",
+  "jobs": [
+    {
+      "job": "batch-34-grammar-figma",
+      "state": "exited",
+      "exit": 1,
+      "pid": 28857,
+      "quotaEvents": 1
+    },
+    {
+      "job": "commerce-batch-10-avatar-late-gate-fix",
+      "state": "exited",
+      "exit": 1,
+      "pid": 31522,
+      "quotaEvents": 1
+    },
+    {
+      "job": "devices-batch-23-srs-store-receipts",
+      "state": "exited",
+      "exit": 1,
+      "pid": 28854,
+      "quotaEvents": 1
+    },
+    {
+      "job": "profile-batch-26-reading-figma",
+      "state": "exited",
+      "exit": 1,
+      "pid": 33254,
+      "quotaEvents": 1
+    }
+  ],
+  "policy": "No DSH retry/provider/account/wallet/config change; Grok continues until actual quota stop too",
+  "localRawReceipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/quota-exhausted-20261104.json"
+}

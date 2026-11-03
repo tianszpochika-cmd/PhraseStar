@@ -1,0 +1,123 @@
+{
+  "at": "2026-11-03T23:49:16.403354+00:00",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/reset-password/reset-password.vue",
+      "sha256": "58b33a5872108205ef7c800d11843ac20d8664d3cbd8b1505ae2b6e0fbaef8ad",
+      "bytes": 33014
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/2506ca91-7ee3-45d9-821c-61518014dcb3.svg",
+      "sha256": "184bcbfb04190803cabbfd5ee27b19ddc9b327ce547385a22db68c765988d197",
+      "bytes": 1012
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/50303499-2f0b-48b3-8a7a-faee5d8366ed.svg",
+      "sha256": "a24af57f4346b700e7bf289f4bdc29f358dcc364a2e321d77da6338b3ffe5771",
+      "bytes": 590
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/5e30a043-b716-4efd-8a7b-3339c910a35d.svg",
+      "sha256": "556b91f750b403987c0f58233df50fdafff2b943b08ea0482fc0080102fbac14",
+      "bytes": 2045
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/77f1647d-4413-4f8e-9f1c-85668a1f02a5.svg",
+      "sha256": "8392aebc50bc3c96224c3f9dd016bde183b2c125d01a958e30cef556acf65076",
+      "bytes": 11818
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/ba66caf5-da10-4df3-806b-d921328d3ef2.svg",
+      "sha256": "25bc4f48eff6f17fed8c44fc55776ddcc883b0b16c937bc56af503fd455552ba",
+      "bytes": 1658
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/cb97f0f2-6667-44b2-be3d-155535a4cd6f.svg",
+      "sha256": "f736b8d06f0a68c8315f9702b7f74ecd284f2fbe5b6be01a4a474c0143656fc3",
+      "bytes": 663
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/d4fd84fd-04b3-4a40-a677-cf3fb16e078e.png",
+      "sha256": "7ddbe6d5fda3398113bdad40bb75170b03c7d003be7d1f7abb44fcbeef014be2",
+      "bytes": 217351
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/d942ba15-6d1f-4d90-88a0-52e0d00336de.svg",
+      "sha256": "2559c046172750a7507f730563d69e8d861dfdf8cf173d6aa0e611a5dcf8e304",
+      "bytes": 662
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/e9fb5194-39d2-4ad5-bbcd-88a2d81d5833.svg",
+      "sha256": "1d53fe3575acdf8d5ad1b8e81d388994e91c4f8f8297bb8150145562f3a1e6d4",
+      "bytes": 663
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-confirm-98-3496/ff4f2f62-94a5-4562-9839-bcbbc39da0a1.svg",
+      "sha256": "d9f012e3939a45ae98469bec747a22595d6e02576ab2f9e41dcfb7a0f1858c08",
+      "bytes": 3429
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/06e3c1bf-175f-498b-82ed-b595f062df16.svg",
+      "sha256": "649257ee650e6d3225edc19fc2999723cdfb0d4d8414cf813e09bf8e221b2757",
+      "bytes": 227
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/24ba3707-5595-45e0-8071-77974a83c135.svg",
+      "sha256": "e7ab492e353254b9eacf6dfc576c9367fd3cdb6d924fc7963368233a660fdcbd",
+      "bytes": 11818
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/656c9112-1523-4f77-94a4-5003d2ce1090.svg",
+      "sha256": "25b494a6149a4cc811d49e15c3302fd6dd842d91b49d790527826b0953936371",
+      "bytes": 590
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/6e250af8-330c-474d-a954-30ab74ad665e.svg",
+      "sha256": "8e1fae2736f39ce74c5719d77bac1e151386d7ed961b0441031046137b79aebe",
+      "bytes": 662
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/b514a046-f64e-420f-9807-7670bd14cf22.svg",
+      "sha256": "d9f012e3939a45ae98469bec747a22595d6e02576ab2f9e41dcfb7a0f1858c08",
+      "bytes": 3429
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/c3c1ce6a-1c7e-44b1-98b3-a99e23149ee2.svg",
+      "sha256": "292e1e8afa9febab56c2305ee887341f9faba27c86067ede83ee205058160335",
+      "bytes": 663
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/c6b72e83-7579-49a6-8f77-93d0cf7a32b9.png",
+      "sha256": "7ddbe6d5fda3398113bdad40bb75170b03c7d003be7d1f7abb44fcbeef014be2",
+      "bytes": 217351
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/f183c114-f721-41cb-84f2-976e7007f9f7.svg",
+      "sha256": "556b91f750b403987c0f58233df50fdafff2b943b08ea0482fc0080102fbac14",
+      "bytes": 2045
+    },
+    {
+      "path": "apps/mobile/src/static/figma-reset-request-98-3187/fed73ed8-3c36-42c5-bcc2-ef2558a04904.svg",
+      "sha256": "0851af0927de488991dbea3169650d48db1cf7e5897f1c8ef029c81b1578c49b",
+      "bytes": 663
+    },
+    {
+      "path": "apps/mobile/tests/mobile-reset-gate.test.mjs",
+      "sha256": "74b8acf797e87c032bc46097f921193ec29060cd4a2b55befeae14f1b0d03e5e",
+      "bytes": 8322
+    },
+    {
+      "path": "apps/mobile/tests/ui-reset.e2e.cjs",
+      "sha256": "264cfbb75297971fcee9a9ddb1122c141e977bb83394c7ec932924cc571644e5",
+      "bytes": 73116
+    },
+    {
+      "path": "packages/i18n/src/mobile-experience.ts",
+      "sha256": "d70de2687be9c40cc229a128f8fe6d9a7b0734ca9e79e72e7069af05d6d4e774",
+      "bytes": 44286
+    }
+  ],
+  "productAuthor": "Grok B20 frozen page/19originalassets/central resetcopy",
+  "qaAuthor": "DSH B09 portable observer + actual-store gate test",
+  "rootRole": "review, exact frozen authored byte copy, independent verification"
+}

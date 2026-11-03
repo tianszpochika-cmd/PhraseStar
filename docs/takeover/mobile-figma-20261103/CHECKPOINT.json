@@ -60,16 +60,17 @@
   ],
   "quota": {
     "GROK": {
-      "weekly": "UNKNOWN",
+      "weekly": "UNKNOWN_RUNNING_NO_STOP_OBSERVED",
       "observed_at": null,
       "source": null,
       "checkpoint": null
     },
     "DSH": {
-      "weekly": "UNKNOWN",
-      "observed_at": null,
-      "source": null,
-      "checkpoint": null
+      "weekly": "PERIOD_NOT_STATED_BY_CLI",
+      "observed_at": "2026-11-03T23:46:38.141874+00:00",
+      "source": "evidence/DSH-QUOTA-STOP-20261104.json",
+      "checkpoint": "four exited writers frozen; no retry",
+      "observed_stop": "CODING_PLAN_EXHAUSTED_402"
     }
   },
   "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
@@ -2888,7 +2889,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T23:07:56.253796+00:00",
+  "updated_at": "2026-11-03T23:49:16.403354+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2996,7 +2997,7 @@
     "new_leaf_count": 0
   },
   "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
-  "remote_push": "NOT_YET_PHASE_ACTIVE",
+  "remote_push": "NOT_YET_PHASE_CONTINUES",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
     "pages": 7,
@@ -3595,5 +3596,85 @@
       "No real service/payment/account/native/screenreader/deployment acceptance."
     ],
     "remotePush": false
+  },
+  "integration_batch_34_reset": {
+    "at": "2026-11-03T23:49:16.403354+00:00",
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 23,
+    "sourceTests": {
+      "tests": 18,
+      "pass": 18,
+      "fail": 0,
+      "exit": 0
+    },
+    "typesExit": 0,
+    "h5BuildExit": 0,
+    "rootBrowser": {
+      "mode": "default H5 from different Root integration checkout; standard repo UI test",
+      "matrix": 68,
+      "interactionGroups": 8,
+      "assetScenarios": 7,
+      "screenshots": 37,
+      "unknownApi": 0,
+      "pageErrors": 0,
+      "externalAborts": 0,
+      "expectedConsoleErrors": 6,
+      "artifactStable": true,
+      "index": "f542df81bd7fef1a5c084a245ba14a325da14a461a5c3a41ed03c8fd195167e3",
+      "artifactFileCount": 475,
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-34-reset-portable/browser"
+    },
+    "inputObservation": {
+      "zeroDelay": {
+        "nativeLength": 4,
+        "submitAtMs": 7,
+        "observationElapsedMs": 201,
+        "submitRequests": 0,
+        "identifierError": false,
+        "originalZeroDelayExpectedModel": 4,
+        "zeroDelayWouldFail": true,
+        "note": "Preserved 0ms observation: native DOM has 4 characters; production build exposes no Vue setupState, so native length + submit/error is the observable model evidence."
+      },
+      "documentedBoundMs": 200,
+      "boundReason": "installed uni-h5 useValueSync throttle/debounce 100ms + bounded 100ms event/paint flush",
+      "internalModelObservable": false,
+      "nativeLength": 4,
+      "identifierFocusedAtBound": true,
+      "elapsedToBoundMs": 209,
+      "submitRequests": 1,
+      "submitNativeLength": 4,
+      "noBlurBeforeSubmit": true,
+      "password": {
+        "nativeLength": 12,
+        "elapsedToBoundMs": 218,
+        "focusedAtBound": true,
+        "tokenLength": 0,
+        "documentedBoundMs": 200
+      }
+    },
+    "firstFailures": [
+      "B30 stale Vite cached i18n; original log/JSON retained",
+      "Asset async currentSrc readiness; exact original assets pass after decode/paint",
+      "near-zero input submit precedes installed uni-h5 100ms input sync; no immediate internal-model PASS claim"
+    ],
+    "limits": [
+      "production internal model/adultGate/pointerFeedback not exposed; actual-store gate semantic8 checks separately",
+      "All API synthetic; no real service/reset/native/device/reader/deploy acceptance",
+      "Build includes pending Avatar24 and hydration4; neither accepted in this card",
+      "Figma RC1 candidate, trace pending"
+    ],
+    "remote": "NOT_PUSHED_PHASE_CONTINUES"
+  },
+  "integration_scope_count": {
+    "routesWithLocalUICandidates": 17,
+    "formalRouteDenominator": 33,
+    "notDoD": true,
+    "notOverallProjectPercentage": true
+  },
+  "pending_quota_candidates": {
+    "grammarB34": "56browser checks/11failed/12shots; frozen288; NOT_ACCEPTED",
+    "avatarLifecycleB10": "partial page/tests edited; duplicate lifecycle handler cleanup requires verification, NOT_ACCEPTED",
+    "srsStoreB23": "18semanticpass; boundary/type/buildlogs exist; Rootreview not complete; NOT_ACCEPTED",
+    "readingB26": "prerequisites only; no reading product implementation"
   }
 }

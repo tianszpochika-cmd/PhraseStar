@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B34-20261104] 整合找回密码申请/确认页原素材与可移植观察器，保留恒定回执和成人资格边界。Root18项源测试、68布局样本/8组交互/7图标场景/37图及类型/H5构建通过；输入同步等待与生产内部状态观测限制另列。DSH实际402额度停止，未签候选已冻结；Grok继续，尚未推送或部署。
+
 - [MOBILE-FIGMA-B31-20261104] 整合权益只读页面12文件与8张原SVG；保留购买/支付/兑换关闭。Root11项测试、类型/H5构建，208核心与39按钮检查分别通过；高对比文字由1.8567修为11.3104。共享会话过期缺陷另流修复，未签真实交易/服务/设备/部署。
 
 - [MOBILE-FIGMA-B29-20261104] Clip the original games glow within the positioned page and enlarge quality picker target to44px. Root4 tests, H5 build and27 compiled-artifact browser checks passed at320/390/768; original assets/business boundaries unchanged. No real-device/deployment signoff.

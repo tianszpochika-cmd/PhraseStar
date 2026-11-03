@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-03T23:49:16.403354+00:00",
+  "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+  "files": 23,
+  "sourceTests": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "exit": 0
+  },
+  "typesExit": 0,
+  "h5BuildExit": 0,
+  "rootBrowser": {
+    "mode": "default H5 from different Root integration checkout; standard repo UI test",
+    "matrix": 68,
+    "interactionGroups": 8,
+    "assetScenarios": 7,
+    "screenshots": 37,
+    "unknownApi": 0,
+    "pageErrors": 0,
+    "externalAborts": 0,
+    "expectedConsoleErrors": 6,
+    "artifactStable": true,
+    "index": "f542df81bd7fef1a5c084a245ba14a325da14a461a5c3a41ed03c8fd195167e3",
+    "artifactFileCount": 475,
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-34-reset-portable/browser"
+  },
+  "inputObservation": {
+    "zeroDelay": {
+      "nativeLength": 4,
+      "submitAtMs": 7,
+      "observationElapsedMs": 201,
+      "submitRequests": 0,
+      "identifierError": false,
+      "originalZeroDelayExpectedModel": 4,
+      "zeroDelayWouldFail": true,
+      "note": "Preserved 0ms observation: native DOM has 4 characters; production build exposes no Vue setupState, so native length + submit/error is the observable model evidence."
+    },
+    "documentedBoundMs": 200,
+    "boundReason": "installed uni-h5 useValueSync throttle/debounce 100ms + bounded 100ms event/paint flush",
+    "internalModelObservable": false,
+    "nativeLength": 4,
+    "identifierFocusedAtBound": true,
+    "elapsedToBoundMs": 209,
+    "submitRequests": 1,
+    "submitNativeLength": 4,
+    "noBlurBeforeSubmit": true,
+    "password": {
+      "nativeLength": 12,
+      "elapsedToBoundMs": 218,
+      "focusedAtBound": true,
+      "tokenLength": 0,
+      "documentedBoundMs": 200
+    }
+  },
+  "firstFailures": [
+    "B30 stale Vite cached i18n; original log/JSON retained",
+    "Asset async currentSrc readiness; exact original assets pass after decode/paint",
+    "near-zero input submit precedes installed uni-h5 100ms input sync; no immediate internal-model PASS claim"
+  ],
+  "limits": [
+    "production internal model/adultGate/pointerFeedback not exposed; actual-store gate semantic8 checks separately",
+    "All API synthetic; no real service/reset/native/device/reader/deploy acceptance",
+    "Build includes pending Avatar24 and hydration4; neither accepted in this card",
+    "Figma RC1 candidate, trace pending"
+  ],
+  "remote": "NOT_PUSHED_PHASE_CONTINUES"
+}
