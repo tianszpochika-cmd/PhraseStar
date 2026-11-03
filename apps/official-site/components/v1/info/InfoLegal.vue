@@ -6,10 +6,10 @@ type LegalKind = "privacy" | "terms" | "minors" | "compliance";
 const props = defineProps<{ kind: LegalKind }>();
 const { t } = useSiteText();
 const pages = {
-  privacy: { desktop: "privacy-desktop-168-3140", mobile: "privacy-mobile-168-3249", tone: "brand", cardTone: "rose", decor: "violet" },
-  terms: { desktop: "terms-desktop-168-3317", mobile: "terms-mobile-168-3426", tone: "sand", cardTone: "sky", decor: "sand" },
-  minors: { desktop: "minors-desktop-168-3494", mobile: "minors-mobile-168-3603", tone: "rose", cardTone: "mint", decor: "orchid" },
-  compliance: { desktop: "compliance-desktop-168-3671", mobile: "compliance-mobile-168-3786", tone: "mint", cardTone: "mint", decor: "teal" },
+  privacy: { desktop: "privacy-desktop-168-3140", mobile: "privacy-mobile-168-3249", tone: "brand", cardTone: "rose", decor: "violet", navIcon: "imgFrame1.svg", readingIcon: "imgFrame.svg" },
+  terms: { desktop: "terms-desktop-168-3317", mobile: "terms-mobile-168-3426", tone: "sand", cardTone: "sky", decor: "sand", navIcon: "imgFrame.svg", readingIcon: "imgFrame1.svg" },
+  minors: { desktop: "minors-desktop-168-3494", mobile: "minors-mobile-168-3603", tone: "rose", cardTone: "mint", decor: "orchid", navIcon: "imgFrame1.svg", readingIcon: "imgFrame.svg" },
+  compliance: { desktop: "compliance-desktop-168-3671", mobile: "compliance-mobile-168-3786", tone: "mint", cardTone: "mint", decor: "teal", navIcon: "imgFrame.svg", readingIcon: "imgFrame1.svg" },
 } as const;
 const config = computed(() => pages[props.kind]);
 const desktopAssets = computed(() => `/figma-v1/assets/${config.value.desktop}`);
@@ -45,10 +45,10 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
             <p class="v1-info-legal__notice">{{ t(key("notice")) }}</p>
           </div>
           <aside class="v1-info-legal__contents" :aria-label="t('official.v1.info.legal.contents')">
-            <div class="v1-info-legal__contents-title"><img :src="`${desktopAssets}/imgFrame1.svg`" alt="" /><h3>{{ t("official.v1.info.legal.contents") }}</h3></div>
+            <div class="v1-info-legal__contents-title"><img :src="`${desktopAssets}/${config.navIcon}`" alt="" /><h3>{{ t("official.v1.info.legal.contents") }}</h3></div>
             <p class="v1-info-legal__contents-label">{{ t("official.v1.info.legal.contentsLabel") }}</p>
             <a v-for="n in [1, 2, 3]" :key="n" :href="`#legal-section-${n}`"><span>0{{ n }}</span><strong>{{ t(key(`short${n}`)) }}<small>{{ t("official.v1.info.legal.chapter") }}</small></strong></a>
-            <div class="v1-info-legal__reading"><div><img :src="`${desktopAssets}/imgFrame.svg`" alt="" /><h3>{{ t("official.v1.info.legal.readingTitle") }}</h3></div><p>{{ t("official.v1.info.legal.reading1") }}<br />{{ t("official.v1.info.legal.reading2") }}</p></div>
+            <div class="v1-info-legal__reading"><div><img :src="`${desktopAssets}/${config.readingIcon}`" alt="" /><h3>{{ t("official.v1.info.legal.readingTitle") }}</h3></div><p>{{ t("official.v1.info.legal.reading1") }}<br />{{ t("official.v1.info.legal.reading2") }}</p></div>
           </aside>
         </div>
       </article>

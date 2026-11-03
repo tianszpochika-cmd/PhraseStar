@@ -5,6 +5,10 @@ const { loadState, load, getFacet } = usePublicProjection("compliance");
 const facet = computed(() => getFacet("compliance"));
 const canShow = computed(() => ["ready", "recovery"].includes(facet.value.state));
 const notices = computed(() => canShow.value ? loadState.value.projection.complianceNotices : []);
+const stateMessage = computed(() => {
+  const state = facet.value.state;
+  return t(`official.v1.info.legal.compliance.${["loading", "error", "permission", "maintenance"].includes(state) ? state : "error"}`);
+});
 </script>
 <template>
   <InfoLegal kind="compliance">
@@ -22,7 +26,10 @@ const notices = computed(() => canShow.value ? loadState.value.projection.compli
           <article v-for="notice in notices" :key="notice.id"><span v-if="notice.status">{{ notice.status }}</span><h3>{{ notice.title }}</h3><p>{{ notice.description }}</p></article>
         </div>
         <p v-else-if="canShow || facet.state === 'empty'" class="v1-info-compliance-notices__empty" role="status">{{ t("official.v1.info.legal.compliance.empty") }}</p>
-        <PublicStatus v-else :state="facet.state" @retry="load" />
+        <div v-else class="v1-info-compliance-notices__state" :role="['error', 'permission'].includes(facet.state) ? 'alert' : 'status'" aria-live="polite">
+          <p>{{ stateMessage }}</p>
+          <button v-if="facet.state !== 'loading'" type="button" @click="load">{{ t("official.v1.info.legal.compliance.retry") }}</button>
+        </div>
       </section>
     </template>
   </InfoLegal>
@@ -37,7 +44,9 @@ const notices = computed(() => canShow.value ? loadState.value.projection.compli
 .v1-info-compliance-notices__items span { color: var(--v1-brand); font-size: 12px; font-weight: 600; }
 .v1-info-compliance-notices__items h3 { margin-top: 4px; font-size: 18px; }
 .v1-info-compliance-notices__items p { margin-top: 8px; color: var(--v1-muted); line-height: 1.6; }
-.v1-info-compliance-notices :deep(.public-status) { margin-top: 18px; }
+.v1-info-compliance-notices__state { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: 8px; }
+.v1-info-compliance-notices__state p { color: var(--v1-muted); font-size: 14px; line-height: 24px; }
+.v1-info-compliance-notices__state button { min-height: 44px; padding: 0 12px; border: 1px solid var(--v1-border); border-radius: 12px; color: var(--v1-brand); font-size: 13px; font-weight: 700; }
 .v1-info-compliance-notices :is(a, button):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
 :global(html[data-theme="high-contrast"]) .v1-info-compliance-notices { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) { .v1-info-compliance-notices { min-height: 142px; } }

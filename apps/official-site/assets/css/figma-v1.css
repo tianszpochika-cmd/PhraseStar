@@ -19,10 +19,11 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  /* The source font lacks these 13 IPA/decorative code points; skip the large
+  /* The source font lacks these 16 IPA/decorative code points; skip the large
      download for them and let the final system fallback supply those glyphs. */
   unicode-range: U+0000-0258, U+025A-0269, U+026B-028B, U+028D-02C7,
-    U+02C9-02CF, U+02D1-2302, U+2305-2314, U+2316-25C7, U+25C9-262F,
+    U+02C9-02CF, U+02D1-21BA, U+21BC-2300, U+2302, U+2305-2314, U+2316-25C7,
+    U+25C9-25F6, U+25F8-262F,
     U+2631-263D, U+263F-2725, U+2728-10FFFF;
 }
 @font-face {

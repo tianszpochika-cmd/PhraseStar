@@ -12,10 +12,10 @@ const { t } = useSiteText();
 const route = useRoute();
 const direction = computed(() => directions.find((item) => item.id === route.params.id));
 if (!direction.value) throw createError({ statusCode: 404, statusMessage: "Learning direction not found" });
-const title = computed(() => `${t(directionTextKey(direction.value!, "title"))} ${t("official.v1.core.detail.titleSuffix")}`);
+const title = computed(() => `${direction.value!.key === "words" ? t("official.v1.core.detail.wordTitle") : t(directionTextKey(direction.value!, "title"))} ${t("official.v1.core.detail.titleSuffix")}`);
 const steps = ["first", "second", "third"] as const;
 const features = computed(() => [
-  { title: t("official.v1.core.detail.focus"), description: t(directionTextKey(direction.value!, "short")) },
+  { title: t("official.v1.core.detail.focus"), description: direction.value!.key === "words" ? t("official.v1.core.detail.wordFocus") : t(directionTextKey(direction.value!, "short")) },
   { title: t("official.v1.core.detail.review"), description: t("official.v1.core.detail.reviewNote") },
   { title: t("official.v1.core.detail.progress"), description: t("official.v1.core.detail.progressNote") },
 ]);
@@ -54,7 +54,7 @@ useOfficialSeo({ title: `${title.value} · 语学星`, description: t(directionT
         <div class="v1-core-detail__path-columns">
           <div class="v1-core-detail__structure">
             <h3>{{ t("official.v1.core.detail.structure") }}</h3>
-            <ol><li v-for="(step, index) in steps" :key="step"><span>{{ String(index + 1).padStart(2, '0') }}</span><strong>{{ t(directionTextKey(direction, step)) }}</strong></li></ol>
+            <ol><li v-for="(step, index) in steps" :key="step"><span>{{ String(index + 1).padStart(2, '0') }}</span><strong>{{ direction.key === 'words' ? t(`official.v1.core.detail.wordStage${index + 1}`) : t(directionTextKey(direction, step)) }}</strong></li></ol>
             <small>{{ t("official.v1.core.detail.structureNote") }}</small>
           </div>
           <div class="v1-core-detail__word-card">

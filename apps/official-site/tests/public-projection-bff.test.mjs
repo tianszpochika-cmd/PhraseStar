@@ -543,6 +543,81 @@ test("B9 malformed or missing collections are isolated errors, never false empty
   }
 });
 
+test("malformed content envelopes cannot fall back to sibling facts or revive a previous snapshot", async () => {
+  const old = [{ id: "old", title: "旧课程" }];
+  const invalid = [
+    null, [], "invalid", {},
+    { data: null, meta: { stale: false }, courses: old },
+    { data: [], courses: old },
+    { data: {}, meta: { stale: false }, courses: old },
+    { publicProjection: null, courses: old },
+    { result: null, courses: old },
+    { publicProjection: {}, data: { courses: old } },
+    { data: { courses: [] }, meta: null },
+    { data: { courses: [] }, meta: { stale: "false" } },
+    { publicProjection: { courses: old }, data: { stale: "false", courses: [] } },
+  ];
+  for (const payload of invalid) {
+    const app = harness();
+    assert.equal((await app.request()).body.state, "ready");
+    app.setFetch(async () => ok(payload));
+    const bad = await app.request();
+    assert.equal(bad.body.state, "error", JSON.stringify(payload));
+    assert.equal(bad.body.projection.courses.length, 0);
+    assert.equal(bad.body.facets.courses.state, "error");
+    assert.equal(bad.headers["cache-control"], "no-store");
+    app.setFetch(async () => { throw new Error("outage"); });
+    const after = await app.request();
+    assert.equal(after.body.state, "error");
+    assert.equal(after.body.projection.courses.length, 0);
+  }
+  const app = harness();
+  await app.request();
+  app.setFetch(async () => ({ ok: true, status: 200, json: async () => { throw new SyntaxError("invalid JSON"); } }));
+  assert.equal((await app.request()).body.state, "error");
+  app.setFetch(async () => { throw new Error("outage"); });
+  assert.equal((await app.request()).body.state, "error");
+
+  const legacy = harness();
+  legacy.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [] } : { courses: old }));
+  assert.equal((await legacy.request()).body.projection.courses[0].id, "old");
+  legacy.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [] } : { state: "denied" }));
+  assert.equal((await legacy.request()).body.state, "permission");
+});
+
+test("late malformed content cannot downgrade newer denial; known denial wins over bad metadata", async () => {
+  const app = harness();
+  const started = deferred();
+  const oldResponse = deferred();
+  let reads = 0;
+  app.setFetch(async () => {
+    reads += 1;
+    if (reads === 1) { started.resolve(); return oldResponse.promise; }
+    return { ok: false, status: 403, json: async () => ({}) };
+  });
+  const oldRequest = app.request();
+  await started.promise;
+  assert.equal((await app.request()).body.state, "permission");
+  oldResponse.resolve(ok(null));
+  const late = await oldRequest;
+  assert.equal(late.body.state, "permission");
+  assert.equal(late.body.projection.courses.length, 0);
+  assert.equal(late.headers["cache-control"], "no-store");
+
+  for (const payload of [
+    { data: null, meta: { accessState: "denied" } },
+    { data: { accessState: "denied" }, meta: null },
+    { state: "recovery", data: null, accessState: "denied" },
+  ]) {
+    const denied = harness();
+    denied.setFetch(async () => ok(payload));
+    const result = await denied.request();
+    assert.equal(result.body.state, "permission");
+    assert.equal(result.body.facets.pricing.state, "permission");
+    assert.equal(result.body.projection.courses.length, 0);
+  }
+});
+
 test("supported content wrappers use fresh commerce prices and honor their nested access and stale state", async () => {
   const fresh = {
     skuId: "new-sku", title: "当前方案", currency: "CNY", amountMinor: 1299,

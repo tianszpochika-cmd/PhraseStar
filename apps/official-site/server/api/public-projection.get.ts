@@ -27,6 +27,30 @@ function list(value: unknown): PublicGatewayPayload[] {
   return Array.isArray(value) ? value.filter(isRecord) : [];
 }
 
+function usableContentPayload(value: unknown): value is PublicGatewayPayload {
+  if (!isRecord(value)) return false;
+  const wrappers = ["publicProjection", "data", "result"] as const;
+  // An explicitly malformed wrapper must never fall back to sibling data.
+  if (wrappers.some((key) => Object.hasOwn(value, key) && !isRecord(value[key]))) return false;
+  if (Object.hasOwn(value, "meta") && !isRecord(value.meta)) return false;
+  const wrapper = wrappers.find((key) => isRecord(value[key]));
+  const content = wrapper && isRecord(value[wrapper]) ? value[wrapper] : value;
+  const layers: PublicGatewayPayload[] = [value];
+  for (const key of wrappers) {
+    const candidate = value[key];
+    if (isRecord(candidate)) layers.push(candidate);
+  }
+  if (isRecord(value.meta)) layers.push(value.meta);
+  if (layers.some((layer) => Object.hasOwn(layer, "stale") && typeof layer.stale !== "boolean")) return false;
+  const collections = ["courses", "pricingPlans", "pricing", "prices", "skus", "publicSkus", "campaigns", "activities", "promotions", "downloadChannels", "downloads", "announcements", "notices", "complianceNotices", "compliance"];
+  if (collections.some((key) => Object.hasOwn(content, key))) return true;
+  // A no-content denial/maintenance response must retain its explicit state;
+  // an otherwise empty object cannot prove that the catalog is truly empty.
+  return layers.some((layer) => [layer.state, layer.serviceState, layer.projectionState, layer.accessState]
+    .some((state) => typeof state === "string" && ["permission", "forbidden", "denied", "access-denied", "error", "failed", "unavailable", "maintenance", "maintaining"]
+      .includes(state.toLowerCase().replaceAll("_", "-"))) || layer.maintenance === true);
+}
+
 function publicCommerceCatalog(value: unknown): PublicGatewayPayload | null {
   if (!isRecord(value)) return null;
   // Check the data/plans shape when an envelope is present. Never fall back
@@ -149,6 +173,21 @@ export default defineEventHandler(
     setResponseHeader(event, "cache-control", "no-store");
     setResponseHeader(event, "vary", "Accept-Language");
 
+    const rejectInvalidContent = (payload: unknown): PublicProjectionResponse => {
+      const latest = invalidationByLocale.get(locale);
+      setResponseHeader(event, "x-public-projection-source", "empty-fallback");
+      // A late malformed response cannot replace a newer denial or successful
+      // decision. It still returns no public facts to its own caller.
+      if ((latest?.generation ?? 0) !== initialGeneration)
+        return emptyFallback(latest?.state ?? "error");
+      if (requestId < (latestAppliedRequestByLocale.get(locale) ?? 0))
+        return emptyFallback("error");
+      latestAppliedRequestByLocale.set(locale, requestId);
+      const state = normalizePublicProjectionResponse(payload, locale).state === "permission" ? "permission" : "error";
+      invalidate(locale, state);
+      return emptyFallback(state);
+    };
+
     let accessDenied = false;
     try {
       const internalBase = String(config.gatewayInternalBaseUrl || "").trim();
@@ -178,7 +217,13 @@ export default defineEventHandler(
       }
       if (!response.ok)
         throw new Error(`PUBLIC_PROJECTION_HTTP_${response.status}`);
-      const projectionPayload = await response.json();
+      let projectionPayload: unknown;
+      try {
+        projectionPayload = await response.json();
+      } catch {
+        return rejectInvalidContent(null);
+      }
+      if (!usableContentPayload(projectionPayload)) return rejectInvalidContent(projectionPayload);
       let mergedPayload: unknown = mergeCommercePricing(projectionPayload, null, locale);
       let commerceDegraded = false;
       try {

@@ -1,9 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createI18n } from "@englishflow/i18n";
-import { officialWebsiteMessages } from "@englishflow/i18n/official-site";
+import { register } from "node:module";
 import { publicRoutes } from "../utils/site-content.mjs";
 import { buildPublicLearningEntry } from "../utils/public-links.mjs";
+
+register("./website-typescript-loader.mjs", import.meta.url);
+const [{ createI18n }, { officialWebsiteMessages }] = await Promise.all([
+  import("@englishflow/i18n"), import("@englishflow/i18n/official-site"),
+]);
 
 // Current-source R1 contract. Uses the already running fixed-port site; never starts a runner.
 const origin = "http://127.0.0.1:18182";

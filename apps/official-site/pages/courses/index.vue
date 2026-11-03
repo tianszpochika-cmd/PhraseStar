@@ -2,7 +2,8 @@
 import { directions, directionTextKey, type Direction, type DirectionGroup } from "~/components/v1/core/catalog";
 import { useOfficialSeo } from "~/utils/seo";
 
-const { t } = useSiteText();
+const { t, locale } = useSiteText();
+const { officialI18n } = useNuxtApp().$foundation;
 const route = useRoute();
 const router = useRouter();
 const { loadState, getFacet, load } = usePublicProjection("courses");
@@ -10,9 +11,24 @@ const { registerLink, authLink } = useOfficialSiteLinks();
 const coursesFacet = computed(() => getFacet("courses"));
 const canShowCourses = computed(() => ["ready", "recovery"].includes(coursesFacet.value.state));
 const publicCourses = computed(() => canShowCourses.value ? loadState.value.projection.courses : []);
-const coursesEmpty = computed(() => coursesFacet.value.state === "empty" ||
-  (coursesFacet.value.state === "ready" && publicCourses.value.length === 0));
-const coursesStatus = computed(() => coursesEmpty.value ? "empty" : coursesFacet.value.state);
+const coursesStatus = computed(() => {
+  const facet = coursesFacet.value;
+  if (["ready", "empty"].includes(facet.state) && facet.stale) return "recovery";
+  if (facet.state === "ready" && publicCourses.value.length === 0) return "empty";
+  return facet.state;
+});
+const coursesEmpty = computed(() => coursesStatus.value === "empty");
+const updatedAt = computed(() => coursesFacet.value.updatedAt
+  ? officialI18n.formatDate(coursesFacet.value.updatedAt, { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Shanghai" }, locale.value)
+  : "");
+const statusTitle = computed(() => t(`official.v1.core.catalog.status.${coursesStatus.value}.title`));
+const statusMessage = computed(() => {
+  if (coursesStatus.value !== "recovery") return t(`official.v1.core.catalog.status.${coursesStatus.value}.message`);
+  const message = t(`official.v1.core.catalog.status.recovery.${publicCourses.value.length ? "withData" : "withoutData"}`);
+  return `${message} ${updatedAt.value
+    ? t("official.v1.core.catalog.status.recovery.generatedAt", { time: updatedAt.value })
+    : t("official.v1.core.catalog.status.recovery.generatedAtUnknown")}`;
+});
 const groupOptions: DirectionGroup[] = ["all", "words", "understand", "express"];
 const queryText = (value: unknown) => typeof value === "string" ? value : "";
 const readGroup = (value: unknown): DirectionGroup =>
@@ -20,6 +36,7 @@ const readGroup = (value: unknown): DirectionGroup =>
 const group = ref<DirectionGroup>(readGroup(route.query.group));
 const query = ref(queryText(route.query.q));
 const resultsHeading = ref<HTMLElement | null>(null);
+const coursesNote = ref<HTMLElement | null>(null);
 watch(() => [route.query.group, route.query.q], ([nextGroup, nextQuery]) => {
   group.value = readGroup(nextGroup);
   query.value = queryText(nextQuery);
@@ -43,6 +60,11 @@ function chooseGoal(direction: Direction) {
     resultsHeading.value?.scrollIntoView({ behavior: "auto", block: "start" });
     resultsHeading.value?.focus({ preventScroll: true });
   });
+}
+async function retryCourses() {
+  await load();
+  await nextTick();
+  coursesNote.value?.focus({ preventScroll: true });
 }
 useOfficialSeo({
   title: t("official.v1.core.catalog.seoTitle"),
@@ -117,7 +139,10 @@ useOfficialSeo({
         <p>{{ t("official.v1.core.catalog.noResultsNote") }}</p>
         <button type="button" @click="setFilter('all', '')">{{ t("official.v1.core.catalog.resetFilters") }}</button>
       </div>
-      <p class="v1-core-catalog__note">{{ t("official.v1.core.catalog.note") }} <span>{{ t("official.v1.core.catalog.directionBoundary") }}</span></p>
+      <div ref="coursesNote" class="v1-core-catalog__note" tabindex="-1">
+        <p>{{ t("official.v1.core.catalog.note") }} <span>{{ t("official.v1.core.catalog.directionBoundary") }}</span></p>
+        <PublicStatus v-if="coursesStatus !== 'ready'" :state="coursesStatus" :title="statusTitle" :message="statusMessage" :action-label="coursesEmpty ? t('official.v1.core.catalog.publishedRegister') : undefined" :action-href="coursesEmpty ? registerLink() : undefined" @retry="retryCourses" />
+      </div>
 
       <section class="v1-core-catalog__goals" aria-labelledby="goals-title">
         <p class="v1-core-catalog__eyebrow">{{ t("official.v1.core.catalog.goalsEyebrow") }}</p>
@@ -140,11 +165,11 @@ useOfficialSeo({
         </div>
       </section>
 
-      <section class="v1-core-catalog__published" aria-labelledby="published-courses-title">
+      <section v-if="publicCourses.length" class="v1-core-catalog__published" aria-labelledby="published-courses-title">
         <h2 id="published-courses-title">{{ t("official.v1.core.catalog.publishedTitle") }}</h2>
         <p>{{ t("official.v1.core.catalog.publishedLead") }}</p>
-        <PublicStatus v-if="coursesFacet.state !== 'ready' || coursesEmpty" :state="coursesStatus" :title="coursesEmpty ? t('official.v1.core.catalog.publishedEmpty') : undefined" :message="coursesEmpty ? t('official.v1.core.catalog.publishedEmptyNote') : undefined" :action-label="coursesEmpty ? t('official.v1.core.catalog.publishedRegister') : undefined" :action-href="coursesEmpty ? registerLink() : undefined" @retry="load" />
-        <div v-if="publicCourses.length" class="v1-core-catalog__published-grid">
+        <p v-if="updatedAt && coursesStatus === 'ready'" class="v1-core-catalog__published-time">{{ t("official.v1.core.catalog.publishedGeneratedAt", { time: updatedAt }) }}</p>
+        <div class="v1-core-catalog__published-grid">
           <article v-for="course in publicCourses" :key="course.id">
             <span v-if="course.level">{{ course.level }}</span>
             <h3>{{ course.title }}</h3><p v-if="course.description">{{ course.description }}</p>
@@ -208,6 +233,14 @@ useOfficialSeo({
 .v1-core-catalog__card a span { font: 600 19px var(--v1-font-display); }
 .v1-core-catalog__note { margin-top: 23px; padding: 17px 18px; border-radius: 17px; background: var(--v1-brand-soft); color: var(--v1-text); font-size: 14px; line-height: 24px; }
 .v1-core-catalog__note span { color: var(--v1-muted); }
+.v1-core-catalog__note > p { color: var(--v1-text); }
+.v1-core-catalog__note:focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
+.v1-core-catalog__note :deep(.public-status) { display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-start; gap: 4px 12px; min-height: 0; margin-top: 10px; padding: 10px 0 0; border: 0; border-top: 1px solid var(--v1-border); border-radius: 0; background: transparent; text-align: left; }
+.v1-core-catalog__note :deep(.public-status > .icon) { display: none; }
+.v1-core-catalog__note :deep(.public-status h2) { margin: 0; color: var(--v1-text); font-size: 14px; font-weight: 700; }
+.v1-core-catalog__note :deep(.public-status p) { flex: 1 1 260px; max-width: none; margin: 0; color: var(--v1-muted); font-size: 13px; line-height: 1.6; }
+.v1-core-catalog__note :deep(.public-status .btn) { min-height: 44px; margin: 0; padding: 8px 14px; color: var(--v1-brand); font-size: 13px; }
+.v1-core-catalog__note :deep(.public-status .btn .icon) { width: 16px; height: 16px; }
 .v1-core-catalog__no-results { width: min(762px, 100%); min-height: 176px; margin-top: 32px; padding: 30px 23px 12px; border: 1px solid var(--v1-border); border-radius: 18px; background: var(--v1-surface); }
 .v1-core-catalog__no-results h3 { font-size: 19px; }
 .v1-core-catalog__no-results p { min-height: 36px; margin-top: 18px; color: var(--v1-muted); font-size: 14px; line-height: 1.5; }
@@ -234,6 +267,7 @@ useOfficialSeo({
 .v1-core-catalog__published { margin-top: 40px; }
 .v1-core-catalog__published > h2 { font-size: 25px; }
 .v1-core-catalog__published > p { margin: 8px 0 20px; color: var(--v1-muted); font-size: 14px; }
+.v1-core-catalog__published > .v1-core-catalog__published-time { margin-top: -12px; font-size: 12px; }
 .v1-core-catalog__published-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
 .v1-core-catalog__published-grid article { min-width: 0; padding: 20px; border: 1px solid var(--v1-border); border-radius: 18px; background: var(--v1-surface); overflow-wrap: anywhere; }
 .v1-core-catalog__published-grid article > span { color: var(--v1-brand); font-size: 12px; }

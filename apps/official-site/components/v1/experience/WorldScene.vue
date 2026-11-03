@@ -21,7 +21,7 @@ const { t } = useSiteText();
     <img class="scene-leaf-two scene-desktop" src="/figma-v1/assets/world-desktop-168-1223/imgPlantLeaf2.svg" alt="" />
     <img class="scene-leaf-three scene-desktop" src="/figma-v1/assets/world-desktop-168-1223/imgPlantLeaf3.svg" alt="" />
     <div class="scene-cup scene-mobile"></div><img class="scene-coffee scene-mobile" src="/figma-v1/assets/world-mobile-168-1389/imgCoffeeTop.svg" alt="" />
-    <span class="scene-label">{{ t(morning ? "official.v1.experience.world.morningScene" : "official.v1.experience.world.nightScene") }}</span>
+    <span class="scene-label"><span class="scene-desktop">{{ t(morning ? "official.v1.experience.world.morningScene" : "official.v1.experience.world.nightSceneDesktop") }}</span><span class="scene-mobile">{{ t(morning ? "official.v1.experience.world.morningScene" : "official.v1.experience.world.nightScene") }}</span></span>
   </div>
 </template>
 

@@ -75,11 +75,13 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
     </PageHeading>
 
     <div class="container v1-world-content">
-      <div class="v1-world-tabs" role="tablist" :aria-label="t('official.v1.experience.world.tabList')" @keydown="tabKeys">
-        <button v-for="item in tabs" :id="`${panelId}-${item}`" :key="item" :data-world-tab="item" role="tab" :aria-controls="panelId" :aria-selected="tab === item" :tabindex="tab === item ? 0 : -1" @click="selectTab(item)">{{ t(`official.v1.experience.world.${item}Tab`) }}</button>
+      <div class="v1-world-toolbar">
+        <div class="v1-world-tabs" role="tablist" :aria-label="t('official.v1.experience.world.tabList')" :aria-describedby="`${panelId}-boundary`" @keydown="tabKeys">
+          <button v-for="item in tabs" :id="`${panelId}-${item}`" :key="item" :data-world-tab="item" role="tab" :aria-controls="panelId" :aria-selected="tab === item" :tabindex="tab === item ? 0 : -1" @click="selectTab(item)">{{ t(`official.v1.experience.world.${item}Tab`) }}</button>
+        </div>
+        <p class="v1-world-preview">{{ t("official.v1.experience.world.previewBadge") }}</p>
       </div>
-      <p class="v1-world-boundary">{{ t("official.v1.experience.world.previewBoundary") }}</p>
-      <section :id="panelId" class="v1-world-panel" role="tabpanel" :aria-labelledby="`${panelId}-${tab}`" tabindex="0">
+      <section :id="panelId" class="v1-world-panel" role="tabpanel" :aria-labelledby="`${panelId}-${tab}`" :aria-describedby="`${panelId}-boundary`" tabindex="0">
         <template v-if="tab === 'room'">
           <div class="v1-world-views" role="group" :aria-label="t('official.v1.experience.world.viewLabel')"><button type="button" aria-pressed="true">{{ t("official.v1.experience.world.flatView") }}</button><button type="button" disabled>{{ t("official.v1.experience.world.depthLater") }}</button></div>
           <h2>{{ t("official.v1.experience.world.spaceTitle") }}</h2>
@@ -99,7 +101,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
       <section class="v1-world-cards" :aria-label="t('official.v1.experience.world.tabList')">
         <article v-for="card in cards" :key="card" class="v1-world-card" :class="`v1-world-card--${card}`"><div><h2>{{ t(`official.v1.experience.world.${card}Title`) }}</h2><span aria-hidden="true"><img src="/figma-v1/assets/world-desktop-168-1223/imgFrame.svg" alt="" /></span></div><p>{{ t(`official.v1.experience.world.${card}Description`) }}</p><button type="button" @click="selectTab(card, true)">{{ t("official.v1.experience.world.tryContent") }}<span aria-hidden="true">→</span></button></article>
       </section>
-      <p class="v1-world-note">{{ t("official.v1.experience.world.note") }}</p>
+      <p :id="`${panelId}-boundary`" class="v1-world-note">{{ t("official.v1.experience.world.note") }}</p>
       <section class="v1-world-example" aria-labelledby="world-example-title"><p class="v1-world-eyebrow">{{ t("official.v1.experience.world.trainLabel") }}</p><h2 id="world-example-title">{{ t("official.v1.experience.world.trainTitle") }}</h2><p>{{ t("official.v1.experience.world.trainDescription") }}</p>
         <div class="v1-world-example-grid"><div class="v1-world-train"><h3>{{ t("official.v1.experience.world.trainPreview") }}</h3><div class="v1-world-wagons"><span v-for="word in ['wordI', 'wordLearn', 'wordEnglish']" :key="word"><strong>{{ t(`official.v1.experience.world.${word}`) }}</strong><i aria-hidden="true">◉</i></span></div><p>{{ t("official.v1.experience.world.trainNote") }}</p></div><div class="v1-world-maturity"><h3>{{ t("official.v1.experience.world.maturityTitle") }}</h3><ol><li v-for="(name, index) in ['Train', 'Space', 'Study']" :key="name"><span>{{ t(index === 0 ? "official.v1.experience.world.phase0" : "official.v1.experience.world.phase1") }}</span><div><strong>{{ t(`official.v1.experience.world.maturity${name}`) }}</strong><p>{{ t(`official.v1.experience.world.maturity${name}Note`) }}</p></div></li></ol></div></div>
       </section>
@@ -137,10 +139,11 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 .v1-world-heading-bar { position: absolute; left: 0; top: 300px; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-brand); opacity: .25; }
 
 .v1-world-content { padding-top: 52px; padding-bottom: 40px; }
+.v1-world-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 21px; }
 .v1-world-tabs { display: flex; flex-wrap: wrap; gap: 12px; }
 .v1-world-tabs button { min-width: 118px; min-height: 44px; padding: 8px 18px; border: 0; border-radius: 22px; background: var(--v1-brand-soft); color: var(--v1-brand); font: inherit; font-size: 14px; cursor: pointer; }
 .v1-world-tabs button[aria-selected="true"] { background: var(--v1-brand); color: var(--v1-on-brand); }
-.v1-world-boundary { margin: 10px 0 14px; color: var(--v1-muted); font-size: 13px; line-height: 1.5; }
+.v1-world-preview { margin: 0 0 0 8px; color: var(--v1-muted); font-size: 13px; line-height: 1.5; }
 .v1-world-panel { min-height: 548px; padding: 20px 5.45% 22px; border-radius: 26px; background: var(--v1-scene-bg, var(--v1-text)); color: var(--v1-scene-text, var(--v1-on-brand)); }
 .v1-world-views { display: flex; gap: 12px; margin-left: -4.3%; }
 .v1-world-views button,.v1-world-scene-options button { min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
@@ -189,7 +192,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
   .v1-world-heading-spark { right: 12px; top: 59px; font-size: 27px; opacity: .65; }
   .v1-world-heading-bar { top: 283px; width: 74px; }
 
-  .v1-world-content { padding-top: 43px; }.v1-world-tabs { gap: 8px; }.v1-world-tabs button { flex: 0 0 79px; min-width: 79px; padding: 8px; font-size: 14px; }
+  .v1-world-content { padding-top: 43px; }.v1-world-tabs { gap: 8px; }.v1-world-preview { margin-left: 0; }.v1-world-tabs button { flex: 0 0 79px; min-width: 79px; padding: 8px; font-size: 14px; }
   .v1-world-panel { min-height: 440px; padding: 20px; }.v1-world-views { margin: 0; }.v1-world-views button { padding-left: 0; font-size: 12px; }.v1-world-panel > h2 { margin: 22px 0 38px; font-size: 16px; }.v1-world-scene-options { gap: 5px; margin-top: 25px; }.v1-world-scene-options button { font-size: 12px; }
   .v1-world-cards { grid-template-columns: 1fr; gap: 12px; margin-top: 23px; }.v1-world-card { min-height: 130px; border-radius: 16px; }.v1-world-card > div > span,.v1-world-card > button { display: none; }.v1-world-card p { margin-top: 14px; }
   .v1-world-example { padding: 20px 15px 25px; }.v1-world-example > h2 { font-size: 23px; }.v1-world-example-grid { grid-template-columns: 1fr; gap: 16px; }.v1-world-train { min-height: 147px; }.v1-world-maturity { min-height: 197px; }.v1-world-wagons { gap: 7px; }.v1-world-wagons > span { width: 0; flex: 1; }.v1-world-train > p { margin-top: 12px; }
