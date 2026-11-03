@@ -186,7 +186,8 @@ test("R1-001 保留公开投影兼容，价格/下载独立空态且不展示购
     assert.doesNotMatch(page, /navigateTo|redirectCode/);
   }
   assert.match(catalog, /props\.state === "ready" && !props\.empty/);
-  assert.match(catalog, /<PublicStatus v-else[^>]*:state="displayState"[^>]*emptyTitle[^>]*emptyMessage[^>]*@retry="emit\('retry'\)"/);
+  assert.match(catalog, /<PublicStatus v-else[^>]*:state="displayState"[^>]*emptyTitle[^>]*emptyMessage[^>]*@retry="retryFromStatus"/);
+  assert.match(catalog, /function retryFromStatus\(\)[\s\S]*?emit\("retry"\)/);
   assert.match(copy, /emptyTitle: "收费方案暂未开放"/);
   assert.match(copy, /emptyTitle: "下载准备中"/);
   assert.doesNotMatch(pricing, /navigateTo|redirectCode/);

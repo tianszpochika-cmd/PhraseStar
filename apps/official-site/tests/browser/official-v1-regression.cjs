@@ -45,6 +45,71 @@ function projection(state) {
       await context.close();
     }
   }
+  async function checkCatalogRetry(page, routeName, moveFocus) {
+    const facetName = routeName === 'pricing' ? 'pricing' : 'download';
+    const failed = projection('ready');
+    failed.facets[facetName] = { state: 'error', updatedAt: null, errorCode: 'UI_TEST_ERROR', stale: false };
+    const empty = projection('empty');
+    let requestCount = 0;
+    let releaseResponse;
+    let notifyRequested;
+    const pendingResponse = new Promise(resolve => { releaseResponse = resolve; });
+    const retryRequested = new Promise(resolve => { notifyRequested = resolve; });
+    await page.route('**/api/public-projection**', async request => {
+      requestCount++;
+      if (requestCount === 1) {
+        return request.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(failed) });
+      }
+      notifyRequested();
+      await pendingResponse;
+      return request.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(empty) });
+    });
+    try {
+      await page.goto(`${origin}/${routeName}`, { waitUntil: 'networkidle' });
+      const panel = page.locator('.v1-catalog-panel');
+      const retry = panel.locator('.v1-catalog-status[data-state="error"] button');
+      await retry.waitFor({ state: 'visible' });
+      await retry.focus();
+      await page.keyboard.press('Enter');
+      let timeout;
+      try {
+        await Promise.race([retryRequested, new Promise((_, reject) => {
+          timeout = setTimeout(() => reject(new Error('Enter did not start the retry request')), 5000);
+        })]);
+      } finally {
+        clearTimeout(timeout);
+      }
+      assert.ok(requestCount >= 2, 'retry must issue a new request');
+      assert.equal(await panel.getAttribute('tabindex'), '-1');
+      assert.ok(await panel.getAttribute('aria-label'), 'focused panel needs an accessible name');
+      assert.equal(await panel.evaluate(element => element === document.activeElement), true);
+      const focusStyle = await panel.evaluate(element => {
+        const style = getComputedStyle(element);
+        return { outline: style.outlineStyle, shadow: style.boxShadow };
+      });
+      assert.ok(focusStyle.outline !== 'none' || focusStyle.shadow !== 'none', 'keyboard focus must be visible');
+
+      let movedTarget;
+      if (moveFocus) {
+        await page.keyboard.press('Shift+Tab');
+        movedTarget = await page.evaluateHandle(() => document.activeElement);
+        assert.equal(await movedTarget.evaluate(element => element !== document.body), true);
+        assert.equal(await panel.evaluate(element => element === document.activeElement), false);
+      }
+      releaseResponse();
+      await panel.locator('.v1-catalog-status[data-state="empty"]').waitFor({ state: 'visible' });
+      assert.equal(await panel.locator('[aria-live]').count(), 1, 'there should be one status live region');
+      if (moveFocus) {
+        assert.equal(await movedTarget.evaluate(element => element === document.activeElement), true, 'response must not steal focus after the user moves it');
+      } else {
+        assert.equal(await panel.evaluate(element => element === document.activeElement), true, 'replacing retry must retain panel focus');
+        await page.keyboard.press('Tab');
+        assert.equal(await page.evaluate(() => document.activeElement === document.body || !!document.activeElement?.closest('header')), false, 'Tab must continue from the panel');
+      }
+    } finally {
+      releaseResponse();
+    }
+  }
   try {
     for (const width of [390, 1440]) {
       await check('FAQ opens, filters, searches and returns focus after reset', width, async page => {
@@ -125,6 +190,14 @@ function projection(state) {
       }, success
         ? () => { Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => {} } }); }
         : () => { Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => { throw new Error('denied'); } } }); });
+    }
+    for (const routeName of ['pricing', 'download']) {
+      for (const width of [390, 1440]) {
+        for (const moveFocus of [false, true]) {
+          await check(`${routeName} keyboard retry ${moveFocus ? 'respects moved focus' : 'retains panel focus'}`, width,
+            page => checkCatalogRetry(page, routeName, moveFocus));
+        }
+      }
     }
   } finally {
     await browser.close();
