@@ -1,0 +1,355 @@
+{
+  "status": "PASS_LOCAL_SYNTHETIC_SCOPE",
+  "at": "2026-11-03T23:07:56.253796+00:00",
+  "source": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4",
+  "sourceTests": 11,
+  "mobileTypecheckExit": 0,
+  "h5BuildExit": 0,
+  "rootBrowser": {
+    "core": {
+      "status": "COMPLETED_PASS_SYNTHETIC_SCOPE",
+      "counts": {
+        "checks": 208,
+        "failed": 0,
+        "scenarios": 22,
+        "screenshots": 24,
+        "requests": 384,
+        "unknownApi": 0,
+        "pageErrors": 0,
+        "consoleErrors": 7
+      },
+      "source": {
+        "apps/mobile/src/pages/b5-commerce/b5-commerce.vue": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4",
+        "apps/mobile/src/pages/b5-commerce/commerce-page.ts": "f5539d503e4f2a73ef93801083eaa632d127dd25faa581a4e2000e9ee76a0002",
+        "apps/mobile/tests/b5-commerce-page.test.mjs": "e029b1cfc86e7227e8c1e258d3de133dfa37b03d088066644b0158776eb8d092",
+        "packages/i18n/src/mobile-resources/commerce-page.ts": "d75b976edb8dcfbc82e8aa31de05cf833be92f2ee2ed0527f429f57471650143",
+        "apps/mobile/src/static/figma-commerce-core/chevron-22.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+        "apps/mobile/src/static/figma-commerce-core/crown-22.svg": "db9e45fef693f42681c095791f39342bce126b8a49d7b4c10953f7e120ea9ddd",
+        "apps/mobile/src/static/figma-commerce-core/ticket-20.svg": "dab8cb2600f5a435a8105fe929d9d617c97633226c157400faf8db06c0119599",
+        "apps/mobile/src/static/figma-commerce-core/glow-540.svg": "6771b7b43912e9a9b634d6cde90600f5c7418521f895e8cb23087ae1ca6a5009",
+        "apps/mobile/src/static/figma-commerce-core/receipt-22.svg": "c01628586a86dc3738f3c7bdd9a08449773366fdd94bf43e6dd4e330c2794a81",
+        "apps/mobile/src/static/figma-commerce-core/error-17.svg": "72544206999e02d48f53162cf228e002cc6c4b05b3ea0aa85e8814cb3c3da5d1",
+        "apps/mobile/src/static/figma-commerce-core/dot-brand-8.svg": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+        "apps/mobile/src/static/figma-commerce-core/dot-info-8.svg": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+      },
+      "buildDigest": "380b501b9cd2a07af1340db5d75720efbd4cf74697bcd477156d8dadcd289c74",
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-31-commerce/core"
+    },
+    "cta": {
+      "status": "COMPLETED_PASS_SYNTHETIC_SCOPE",
+      "counts": {
+        "checks": 39,
+        "failed": 0,
+        "scenarios": 8,
+        "screenshots": 12,
+        "contrast": 7,
+        "unknownApi": 0,
+        "pageErrors": 0,
+        "consoleErrors": 0
+      },
+      "source": {
+        "apps/mobile/src/pages/b5-commerce/b5-commerce.vue": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4",
+        "apps/mobile/src/pages/b5-commerce/commerce-page.ts": "f5539d503e4f2a73ef93801083eaa632d127dd25faa581a4e2000e9ee76a0002",
+        "apps/mobile/tests/b5-commerce-page.test.mjs": "e029b1cfc86e7227e8c1e258d3de133dfa37b03d088066644b0158776eb8d092",
+        "packages/i18n/src/mobile-resources/commerce-page.ts": "d75b976edb8dcfbc82e8aa31de05cf833be92f2ee2ed0527f429f57471650143"
+      },
+      "buildDigest": "380b501b9cd2a07af1340db5d75720efbd4cf74697bcd477156d8dadcd289c74",
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-31-commerce/cta"
+    }
+  },
+  "contrast": [
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 778,
+        "width": 342,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgb(195, 181, 250)",
+        "backgroundImage": "none",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 54,
+        "background": {
+          "r": 195,
+          "g": 181,
+          "b": 250,
+          "a": 255
+        },
+        "foreground": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 255
+        },
+        "maxDistance": 626
+      },
+      "computedColorHex": "#000000",
+      "backgroundHex": "#c3b5fa",
+      "paintedForegroundHex": "#000000",
+      "computedContrast": 11.31039533489464,
+      "paintedContrast": 11.31039533489464
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 778,
+        "width": 342,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgb(89, 53, 184)",
+        "backgroundImage": "linear-gradient(172deg, rgb(79, 45, 174) 14.3%, rgb(106, 69, 198) 53.6%, rgb(138, 85, 204) 85.7%)",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 54,
+        "background": {
+          "r": 89,
+          "g": 53,
+          "b": 182,
+          "a": 255
+        },
+        "foreground": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "maxDistance": 441
+      },
+      "computedColorHex": "#ffffff",
+      "backgroundHex": "#5935b6",
+      "paintedForegroundHex": "#ffffff",
+      "computedContrast": 8.047548281220733,
+      "paintedContrast": 8.047548281220733
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 778,
+        "width": 342,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(33, 27, 53)",
+        "backgroundColor": "rgb(188, 171, 255)",
+        "backgroundImage": "none",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 54,
+        "background": {
+          "r": 188,
+          "g": 171,
+          "b": 255,
+          "a": 255
+        },
+        "foreground": {
+          "r": 33,
+          "g": 27,
+          "b": 53,
+          "a": 255
+        },
+        "maxDistance": 501
+      },
+      "computedColorHex": "#211b35",
+      "backgroundHex": "#bcabff",
+      "paintedForegroundHex": "#211b35",
+      "computedContrast": 8.176495938166001,
+      "paintedContrast": 8.176495938166001
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 778,
+        "width": 342,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgb(89, 53, 184)",
+        "backgroundImage": "linear-gradient(172deg, rgb(79, 45, 174) 14.3%, rgb(106, 69, 198) 53.6%, rgb(138, 85, 204) 85.7%)",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 54,
+        "background": {
+          "r": 89,
+          "g": 53,
+          "b": 182,
+          "a": 255
+        },
+        "foreground": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "maxDistance": 441
+      },
+      "computedColorHex": "#ffffff",
+      "backgroundHex": "#5935b6",
+      "paintedForegroundHex": "#ffffff",
+      "computedContrast": 8.047548281220733,
+      "paintedContrast": 8.047548281220733
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 778,
+        "width": 342,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgb(89, 53, 184)",
+        "backgroundImage": "linear-gradient(172deg, rgb(79, 45, 174) 14.3%, rgb(106, 69, 198) 53.6%, rgb(138, 85, 204) 85.7%)",
+        "opacity": "0.55",
+        "disabled": true,
+        "ariaDisabled": "true",
+        "text": "购买暂未开放"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 54,
+        "background": {
+          "r": 163,
+          "g": 143,
+          "b": 214,
+          "a": 255
+        },
+        "foreground": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "maxDistance": 245
+      },
+      "computedColorHex": "#ffffff",
+      "backgroundHex": "#a38fd6",
+      "paintedForegroundHex": "#ffffff",
+      "computedContrast": 2.816033281920233,
+      "paintedContrast": 2.816033281920233
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 16,
+        "y": 502,
+        "width": 288,
+        "height": 54
+      },
+      "computed": {
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgb(195, 181, 250)",
+        "backgroundImage": "none",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 288,
+        "height": 54,
+        "background": {
+          "r": 195,
+          "g": 181,
+          "b": 250,
+          "a": 255
+        },
+        "foreground": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 255
+        },
+        "maxDistance": 626
+      },
+      "computedColorHex": "#000000",
+      "backgroundHex": "#c3b5fa",
+      "paintedForegroundHex": "#000000",
+      "computedContrast": 11.31039533489464,
+      "paintedContrast": 11.31039533489464
+    },
+    {
+      "selector": ".commerce-cta",
+      "box": {
+        "x": 24,
+        "y": 763.59375,
+        "width": 342,
+        "height": 68.40625
+      },
+      "computed": {
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgb(89, 53, 184)",
+        "backgroundImage": "linear-gradient(172deg, rgb(79, 45, 174) 14.3%, rgb(106, 69, 198) 53.6%, rgb(138, 85, 204) 85.7%)",
+        "opacity": "1",
+        "disabled": false,
+        "ariaDisabled": null,
+        "text": "继续学习"
+      },
+      "decoded": {
+        "width": 342,
+        "height": 69,
+        "background": {
+          "r": 90,
+          "g": 55,
+          "b": 184,
+          "a": 255
+        },
+        "foreground": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "maxDistance": 436
+      },
+      "computedColorHex": "#ffffff",
+      "backgroundHex": "#5a37b8",
+      "paintedForegroundHex": "#ffffff",
+      "computedContrast": 7.855325772625309,
+      "paintedContrast": 7.855325772625309
+    }
+  ],
+  "rootViewed": [
+    "cta/screenshots/hc-390-enabled.png",
+    "author hc/text200 screenshots"
+  ],
+  "scope": "Commerce catalog/entitlements/orders GET-only; explicit purchase/payment/redeem CLOSED, no commercePOST. Actual GET retry/readback, known vs malformed/empty/permissions/owner protected. Original8SVGs.",
+  "firstFailure": "Root actual white-on-lavender1.856699; authorB07 independently reproduced and corrected existing semantic-token foreground. Final RootHC11.3104,light8.0475,dark8.1765. Original rawfailure retained.",
+  "limits": [
+    "Not full redemption/purchase design; closed by current capability/contract.",
+    "Shared401 expiry routing is separately active DSH_PROFILE B23; no business auth acceptance implied.",
+    "Build includes separately pending ResetB30 source22files. Only commerce12 staged; central diff restricted reset display keys, commerce registry already existed in HEAD.",
+    "No real service/payment/account/native/screenreader/deployment acceptance."
+  ],
+  "remotePush": false
+}

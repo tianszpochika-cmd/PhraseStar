@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B31-20261104] 整合权益只读页面12文件与8张原SVG；保留购买/支付/兑换关闭。Root11项测试、类型/H5构建，208核心与39按钮检查分别通过；高对比文字由1.8567修为11.3104。共享会话过期缺陷另流修复，未签真实交易/服务/设备/部署。
+
 - [MOBILE-FIGMA-B29-20261104] Clip the original games glow within the positioned page and enlarge quality picker target to44px. Root4 tests, H5 build and27 compiled-artifact browser checks passed at320/390/768; original assets/business boundaries unchanged. No real-device/deployment signoff.
 
 - [MOBILE-FIGMA-B28-20261104] B4 store uses the sole shared quality controller; owner, API and queue boundaries preserved. Root23 tests, types, H5 build and15 native-wheel browser checks passed; original QA click timeout retained. Shared startup hydration and commerce HC contrast remain open; no real-device/deployment signoff.

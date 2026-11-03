@@ -1,0 +1,79 @@
+{
+  "at": "2026-11-03T23:02:55.661831+00:00",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/commerce-world-batch-07-source-snapshot",
+  "method": "Exact frozen B07 author bytes; commerce12 only. ResetB30 pending22 paths excluded from this candidate.",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/b5-commerce/b5-commerce.vue",
+      "sha256": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4",
+      "bytes": 35966,
+      "before": "49a5f925fb88f4babf144e4921aa8b4c9910386cb7b72b23427b163cca3bbfab"
+    },
+    {
+      "path": "apps/mobile/src/pages/b5-commerce/commerce-page.ts",
+      "sha256": "f5539d503e4f2a73ef93801083eaa632d127dd25faa581a4e2000e9ee76a0002",
+      "bytes": 15619,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/chevron-22.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/crown-22.svg",
+      "sha256": "db9e45fef693f42681c095791f39342bce126b8a49d7b4c10953f7e120ea9ddd",
+      "bytes": 1684,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/dot-brand-8.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/dot-info-8.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/error-17.svg",
+      "sha256": "72544206999e02d48f53162cf228e002cc6c4b05b3ea0aa85e8814cb3c3da5d1",
+      "bytes": 1768,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/glow-540.svg",
+      "sha256": "6771b7b43912e9a9b634d6cde90600f5c7418521f895e8cb23087ae1ca6a5009",
+      "bytes": 671,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/receipt-22.svg",
+      "sha256": "c01628586a86dc3738f3c7bdd9a08449773366fdd94bf43e6dd4e330c2794a81",
+      "bytes": 961,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/src/static/figma-commerce-core/ticket-20.svg",
+      "sha256": "dab8cb2600f5a435a8105fe929d9d617c97633226c157400faf8db06c0119599",
+      "bytes": 1514,
+      "before": null
+    },
+    {
+      "path": "apps/mobile/tests/b5-commerce-page.test.mjs",
+      "sha256": "e029b1cfc86e7227e8c1e258d3de133dfa37b03d088066644b0158776eb8d092",
+      "bytes": 15183,
+      "before": null
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/commerce-page.ts",
+      "sha256": "d75b976edb8dcfbc82e8aa31de05cf833be92f2ee2ed0527f429f57471650143",
+      "bytes": 7317,
+      "before": "78975f8ed3ff055af34da3a9034584cc2c3716809a18c03732d14dc29d764046"
+    }
+  ]
+}

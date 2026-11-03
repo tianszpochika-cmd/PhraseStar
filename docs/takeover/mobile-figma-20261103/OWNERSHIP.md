@@ -81,3 +81,10 @@ DSH_PROFILE alone may minimally change existing mistake read response validation
 ## Registry B19 published
 
 Grok published frozen central a10418b5 plus empty avatarPageCopy/reportPageCopy/worldPageCopy modules; 1396 old leaves unchanged, type/package/theme checks passed. Root copied four files to idle DSH/DSH_PROFILE/DSH_COMMERCE trees and transferred only the corresponding resource module to its page owner. Other copies remain read-only; central remains Grok owned. Main DSH B28 performance store publication was also copied to the World consumer; no live writer was overwritten.
+
+
+## 2026-11-04 当前限定转交
+
+- DSH_PROFILE B23仅可修api/client.ts、stores/session.ts、auth/navigation.ts及具名语义测试的共享401过期路由；Grok B22独占App.vue与experience.ts，双方互为只读。
+- DSH_DEVICES B22唯一写api/b10.ts的词汇/SRS解析与必要domain字段；已收到冻结b8f00924及8项错题测试，不得覆盖非SRS/词汇函数。DSH_PROFILE此文件只读。
+- 主DSH B32只修已冻结World日历日期映射/测试，已收到36文件；DSH_COMMERCE B08只做Root找回密码冻结构建QA，所有产品只读。原作者分支、快照和失败证据保留。
