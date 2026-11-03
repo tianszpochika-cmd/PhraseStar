@@ -1,0 +1,24 @@
+{
+  "base": "7b79292694f20bbb89488c9632f3fd16164145ef",
+  "at": "2026-11-03T22:23:30.131107+00:00",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-28-performance-source-snapshot",
+  "method": "EXACT_FROZEN_AUTHOR_BYTES",
+  "files": [
+    {
+      "path": "apps/mobile/src/stores/b4.ts",
+      "before": "af498991eb9c9aa968abc2297392c1549c4c3d69e61bb0cba11f8552f88ced57",
+      "sha256": "3596c1c5852233e0bebd9f5938d387fb8a33c6f5723ca0cd66479f5284a4a494"
+    },
+    {
+      "path": "apps/mobile/tests/b4-account-scope.test.mjs",
+      "before": "22702acb1a5cd9e0b344207102c98be7d4a09e9eb9380ede4fe8392c2c1742ea",
+      "sha256": "f6309152b90240f49efc6111ae69bfe80e5d1c97af0f6f2fd7748acafe0c002c"
+    },
+    {
+      "path": "apps/mobile/tests/b4-performance-sync.test.mjs",
+      "before": null,
+      "sha256": "44c31b973ec53f9aaa1f1fe5931f13c15301f0c659a4d2271f1857b953959a9b"
+    }
+  ],
+  "testHarnessChange": "accountscope experience importmock only,noassertionschanged"
+}

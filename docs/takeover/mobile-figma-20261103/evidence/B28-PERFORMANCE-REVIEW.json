@@ -1,0 +1,37 @@
+{
+  "status": "PASS_LOCAL_SYNTHETIC_SCOPE",
+  "at": "2026-11-03T22:43:06.828737+00:00",
+  "authorSnapshot": "dsh/batch-28-performance-source-snapshot",
+  "productPaths": [
+    "apps/mobile/src/stores/b4.ts"
+  ],
+  "qaPaths": [
+    "apps/mobile/tests/b4-performance-sync.test.mjs",
+    "apps/mobile/tests/b4-account-scope.test.mjs"
+  ],
+  "sourceTests": 23,
+  "mobileTypecheckExit": 0,
+  "h5BuildExit": 0,
+  "rootBrowser": {
+    "checks": 15,
+    "failed": 0,
+    "screenshots": 3,
+    "sourceHashesStable": true,
+    "index": "14b5d3e52c74d8097d95ed4f6480a64d7be32c520b8baeba31c77f9f95b4c931",
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-28-performance-native-wheel",
+    "interaction": "Real native wheel CDP touch swipe; wait target at wheel center, then confirm; no store/engine state injection"
+  },
+  "firstFailure": {
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-28-performance",
+    "observed": "2 successful checks followed by chooseQuality timeout; source independently unchanged",
+    "classification": "QA clicked visible non-clickable native wheel row then immediately confirmed old selection. DSH B19 reproduced3/5; Root corrected wheel run15/15."
+  },
+  "review": "Replaces B4 private engine with shared singleton; same public signatures, owner guards, event queue, API and data behavior. Dispose unsubscribes B4 listener only; does not dispose global engine. Existing account-scope test changes mock imports only; no assertions weakened.",
+  "openGaps": [
+    "Global shared restore before uni runtime remains Grok owner; this store/browser test does not resolve it.",
+    "Games decorative glow390→690 and actual36px picker host are separate MainDSH owner layout concerns.",
+    "No real server/account/native device/a11y/deployment acceptance.",
+    "Old World UI used solely for B4 subscription cross-read; pending World Figma candidate not included."
+  ],
+  "remotePush": false
+}

@@ -65,10 +65,12 @@ function environment() {
     pushB4SyncEvents: async () => ({ accepted: true }),
   }
   const strategy = { fallbackMode: 'svg' }
+  const qualityEngine = { level: 'High', state: { strategy }, subscribe: () => () => {}, restore: () => {}, setLevel: () => {} }
   class MobileApiError extends Error { constructor(status, message) { super(message); this.status = status } }
   const storeModule = load('src/stores/b4.ts', {
     vue: require('vue'), pinia: require('pinia'),
-    '@englishflow/performance': { createAdaptivePerformanceEngine: () => ({ level: 'High', state: { strategy }, subscribe: () => () => {}, restore: () => {}, setLevel: () => {}, dispose: () => {} }) },
+    '@englishflow/performance': { createAdaptivePerformanceEngine: () => qualityEngine },
+    '../platform/experience': { mobileExperienceEngine: qualityEngine, setMobileQuality: (level) => qualityEngine.setLevel(level) },
     '../api/client': { MobileApiError },
     '../api/b4': api, '../domain/b4': domain, '../platform/b4-offline': offlineModule,
     '../platform/uni-runtime': platform, './session': sessionModule,
