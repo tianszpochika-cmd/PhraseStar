@@ -25,7 +25,7 @@
 | `apps/mobile/src/pages/b6-platform/**` 与专属测试 | DSH-DEVICES | MB-027；唯一共享 controller 不复制，缺独立设计稿如实记录 |
 | `apps/mobile/src/pages/b5-commerce/**` 与专属测试、`static/figma-commerce-*/**` | DSH-COMMERCE | MB-026；独立树基于 bd649198，只读权益/订单/公开目录，购买支付兑换关闭；原素材例外优先于 static 常规归属 |
 | `apps/mobile/src/pages/profile/profile.vue`、`apps/mobile/tests/profile-page.test.mjs`、`src/static/figma-profile-{169-9356,169-9446,169-9544,169-9707,248-4123}/**` | DSH-PROFILE | 同一 DSH CLI/provider 的独立任务与工作树；主 DSH 会话不再写此页。已从 Grok 冻结包预载三个共享文件，不能在本任务中修改；实际会话与进程见 CHECKPOINT |
-| MB-011…016/018/021 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
+| MB-011…016/018 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
 | `apps/mobile/src/{api,auth,domain,platform,stores}/**`；`packages/contracts/**`、服务与迁移 | 默认只读；具名例外见下文 | 发现必需改动先交具体文件/原因，Root 指定唯一写者；不能让两个 CLI 随意改同一工具。已发布 experience/uni-runtime/public-documents 适配器归 Grok；support.ts 的既有 GET 兼容例外只归主 DSH |
 | `apps/mobile/tests/**` | 按具体文件单写者 | 只创建/修改本人页面明确独占的测试；共用测试由 Root 指派唯一执行者。不得通过改断言、跳测或覆写证据制造通过 |
 | `docs/takeover/mobile-figma-20261103/**`、`docs/STATUS.md`、`CURRENT-HANDOFF.md`、`CHANGELOG.md` 与集成分支 | Root | 单一集成人按已批准事实维护；保留官网/Figma Web 记录；候选先审再合入 |
@@ -57,3 +57,7 @@ DSH_DEVICES is the sole author of devices.vue, devices-page.test.mjs, mobile-res
 ## Support adapter exception - batch15
 
 Main DSH alone may update apps/mobile/src/api/support.ts for existing formal GET list/detail contract adaptation and validated legacy IT7 compatibility. readMobileClosureBoard public behavior must stay compatible for settings. No create/message/upload/auth/server/contract writes. Dedicated support-page resources/assets/tests belong to main DSH.
+
+## MB-021 transfer 2026-11-04
+
+Main DSH is the sole author for b4-avatar page, its dedicated tests and static/figma-avatar assets. B27 is read-only preparation; product implementation waits for a reviewed scope and immutable i18n registry publication from Grok. Support is frozen during this task; all shared/API/domain/auth/store/contracts remain read-only.

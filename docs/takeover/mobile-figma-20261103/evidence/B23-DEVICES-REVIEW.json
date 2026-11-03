@@ -1,0 +1,69 @@
+{
+  "kind": "SYNTHETIC_UI_BUILT_ARTIFACT",
+  "at": "2026-11-03T21:39:01.264954+00:00",
+  "final_page_sha": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d",
+  "final_source_tests": 41,
+  "mobile_typecheck_exit": 0,
+  "i18n_typecheck_exit": 0,
+  "h5_build_exit": 0,
+  "before_language_only_patch": {
+    "page_sha": "15abbb925d8356b01becde949504e892316d0815b9b6aa16c740e5bde7139206",
+    "core_checks": 247,
+    "matrix_cases": 5,
+    "matrix_checks": 131
+  },
+  "final_language_probe": {
+    "status": "PASS",
+    "cases": 1,
+    "checks": 26,
+    "source": {
+      "start": {
+        "apps/mobile/src/pages/devices/devices.vue": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d",
+        "apps/mobile/src/api/devices.ts": "18d879da9e6deda85305484ee8e7da495ee357a0b4a54817c2976aedcb5d9caa",
+        "apps/mobile/src/api/client.ts": "561604d193bd29efb1bb087f18e4621faeea804522117d2a152ebae7cd3a3039",
+        "apps/mobile/src/platform/gateway.ts": "75409dfb3a50ac619f0a8dbc8d0db8c3dd9c077c6b57c3c1c25e6f884201e6e0",
+        "apps/mobile/src/stores/session.ts": "d944c9e84617af5ad553d2fbc1fd0c07120ce790411dbe02603f9338333f8931",
+        "apps/mobile/src/auth/gateway-auth.ts": "746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277",
+        "apps/mobile/src/auth/navigation.ts": "7365fec07c55857445fdb1d87b60659734e9e94dc06cfb65afabcb3e8863a4b5",
+        "apps/mobile/tests/devices-page.test.mjs": "8afc3a28beab8ba005947d07702220d2a5a0515fbb199a37f18291da245e1abc",
+        "apps/mobile/tests/mobile-settings-devices.test.mjs": "a22e61f45dc23ebf5ee7266ada9a3b0e55302d84beb124d30b5a4895ec7762cc",
+        "packages/i18n/src/mobile-resources/devices-page.ts": "c15febcb29e7fea9a6a43597a85a853f0ef61925dabfdf3095a3f22e133f8839"
+      },
+      "end": {
+        "apps/mobile/src/pages/devices/devices.vue": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d",
+        "apps/mobile/src/api/devices.ts": "18d879da9e6deda85305484ee8e7da495ee357a0b4a54817c2976aedcb5d9caa",
+        "apps/mobile/src/api/client.ts": "561604d193bd29efb1bb087f18e4621faeea804522117d2a152ebae7cd3a3039",
+        "apps/mobile/src/platform/gateway.ts": "75409dfb3a50ac619f0a8dbc8d0db8c3dd9c077c6b57c3c1c25e6f884201e6e0",
+        "apps/mobile/src/stores/session.ts": "d944c9e84617af5ad553d2fbc1fd0c07120ce790411dbe02603f9338333f8931",
+        "apps/mobile/src/auth/gateway-auth.ts": "746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277",
+        "apps/mobile/src/auth/navigation.ts": "7365fec07c55857445fdb1d87b60659734e9e94dc06cfb65afabcb3e8863a4b5",
+        "apps/mobile/tests/devices-page.test.mjs": "8afc3a28beab8ba005947d07702220d2a5a0515fbb199a37f18291da245e1abc",
+        "apps/mobile/tests/mobile-settings-devices.test.mjs": "a22e61f45dc23ebf5ee7266ada9a3b0e55302d84beb124d30b5a4895ec7762cc",
+        "packages/i18n/src/mobile-resources/devices-page.ts": "c15febcb29e7fea9a6a43597a85a853f0ef61925dabfdf3095a3f22e133f8839"
+      },
+      "stable": true
+    },
+    "build": {
+      "indexSha256": "33d12e7bb5a2cd48656fa9b48df58615ca062f5bf611c6a0d806968319b594ca",
+      "fileCount": 400,
+      "digestStart": "b1667e7c27650f43020e2171e96f3875bccfa3297f10e9c53cc70d6166c47355",
+      "digestEnd": "b1667e7c27650f43020e2171e96f3875bccfa3297f10e9c53cc70d6166c47355",
+      "stable": true,
+      "manifest": "build-manifest.json"
+    }
+  },
+  "first_failure": {
+    "status": "FAIL",
+    "product": "en500 English title with Chinese Error.message",
+    "observer": "retryVisible only recognized Chinese; corrected to Try again without product change"
+  },
+  "author_extra_locale_browser": "DSH B16 running;not claimed in this signoff",
+  "not_run": [
+    "real IAM/Gateway/DB",
+    "native iOS/Android/iPad",
+    "real screenreader",
+    "deployment",
+    "full trace closure"
+  ],
+  "root_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-23-devices"
+}

@@ -1,0 +1,182 @@
+{
+  "batch": "INTEGRATION_B23_DEVICES",
+  "at": "2026-11-03T21:21:39.842481+00:00",
+  "base": "a5d0adb80ca2f7db5824f222657b85d6e03ee2a4",
+  "frozen_source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/devices-batch-12-source-snapshot",
+  "frozen_base": "3a91f6ec48022e9564268e126427c0410cde2f86",
+  "method": "EXACT_FROZEN_AUTHOR_BYTES_NO_ROOT_PRODUCT_CODE",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/devices/devices.vue",
+      "before": "6552ab1037ad9fba229070458e9f7f8142ddf964e64de7e8a9a2f91fd04cd386",
+      "sha256": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12516/0cd62dcb-ae76-440b-a22c-50431f0e55f4.svg",
+      "before": null,
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12516/a494526b-e46c-46f4-901f-d4a50835797c.svg",
+      "before": null,
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12516/ad3f2441-91ca-408c-a62f-d1c88ce71f8d.svg",
+      "before": null,
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12516/b6bfd7b4-2930-47e9-9c10-d6436bf1183b.svg",
+      "before": null,
+      "sha256": "c22673eb076719cae016c0ec92331d95a13a6cdca4b2b2482bf97a870830187d"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12516/c4536968-d0d5-4bb9-8758-d22f89ad9cff.svg",
+      "before": null,
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12591/534f02db-03d7-4e6e-8943-bb00232b0a0e.svg",
+      "before": null,
+      "sha256": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12591/c7d0c106-38ec-42eb-83dc-d47eb753faae.svg",
+      "before": null,
+      "sha256": "6f734dd3d448fc7a3d9de06a0fdc4616cda215940ebc9049296e869f5ead361a"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12591/d95ebcb0-a4af-4080-baf8-447e38cf327d.svg",
+      "before": null,
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/30f969ea-9a6c-444b-bd13-ecdd23272c90.svg",
+      "before": null,
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/41e10610-dc91-443c-9f8f-95ff6e9fc90e.svg",
+      "before": null,
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/46daffe4-1393-4572-9691-9df6a850d6d6.svg",
+      "before": null,
+      "sha256": "4b62f9bffcc2ba08365aab6f79e3000aa11a5019caa0a84ff4e53ba2c2cb79a2"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/7b3dab5f-9add-492c-992a-8a40dbda523e.svg",
+      "before": null,
+      "sha256": "613efd2b5e483a39c6ce18516dc7d4875bbd876496ffa486561c97d38d03c281"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/a295f65f-664e-43b2-bb6b-5c7a0d3bee12.svg",
+      "before": null,
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12665/a306ecbe-aefa-4194-a0ca-a55c5efa3057.svg",
+      "before": null,
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12835/94788030-aa5f-42ce-8f89-0b626d7f06c9.svg",
+      "before": null,
+      "sha256": "42d74026faef97b560278abfdaeb3a433df15cf670bc28be941763af92cb8109"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-169-12835/c5662358-827d-4cdf-bd04-a4370756bc41.svg",
+      "before": null,
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/038db1b4-d7c0-4362-91c7-fd53347cbcc2.svg",
+      "before": null,
+      "sha256": "c71a8975cccc554921c9b1793f08465c1c3e8961921b599a475f2dc797871c01"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/1c011da0-ff9e-4bc0-bb25-789d6d65bac1.svg",
+      "before": null,
+      "sha256": "23e8738674c07c37b7ec8e21b4d084473344f4a427f64b02a3b876482143334e"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/2f1b5590-3fa8-4989-97d2-3eda52ec02c5.svg",
+      "before": null,
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/40e69fea-ad37-4654-8494-5beb023bec1a.svg",
+      "before": null,
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/61861281-89ce-4d9e-acf5-977f99d3469d.svg",
+      "before": null,
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/6eccda75-ee0b-4049-870a-e9ed1c3d7fea.svg",
+      "before": null,
+      "sha256": "2cd732016bb1c74b23e6951aafa71dc9165e32c8502ab9ffa759dff0e14a1a06"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-6788/a558df4e-08bc-4bf9-9d2c-b73cc6204d2e.svg",
+      "before": null,
+      "sha256": "ecb4ffecc1de905f50f4d82f07690e9f6e72e522c3a99df7989af9af488da35c"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7072/971065fe-5bba-491b-8346-ebb1813d2286.svg",
+      "before": null,
+      "sha256": "17e8173aec589d11940faf3a27a18aa4fc68059b5ba08242086aeaf7d2c85421"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7072/e193f456-4945-4b95-99b6-33c2a2a473d2.svg",
+      "before": null,
+      "sha256": "72544206999e02d48f53162cf228e002cc6c4b05b3ea0aa85e8814cb3c3da5d1"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7264/1f86ced8-df83-4775-a4ea-6af7c6c95879.svg",
+      "before": null,
+      "sha256": "f06ec04020dc8334ecfc900144c0225a8b7a114468167ad3bcbda299e60bb1d5"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7264/31e8a0bc-621e-4e0f-8e8d-fc02fa9959f8.svg",
+      "before": null,
+      "sha256": "e396c5d09b53872126a4b6cd56a1c3fc13fd80eaa624a7f6d18b16b81b1a4697"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7264/4e01d5dd-a163-4e8a-825e-b69b60f91f94.svg",
+      "before": null,
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-devices-358-7264/822490dd-53fc-4d23-9bea-dc2388bee6dd.svg",
+      "before": null,
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274"
+    },
+    {
+      "path": "apps/mobile/tests/devices-page.test.mjs",
+      "before": null,
+      "sha256": "8afc3a28beab8ba005947d07702220d2a5a0515fbb199a37f18291da245e1abc"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/devices-page.ts",
+      "before": "10eb73f356a62e86f5d31395e92f2e3ad930bcd858542363cb0cdf8bdd21ebeb",
+      "sha256": "c15febcb29e7fea9a6a43597a85a853f0ef61925dabfdf3095a3f22e133f8839"
+    }
+  ],
+  "dependencies_unchanged": [
+    "apps/mobile/src/api/devices.ts",
+    "apps/mobile/src/domain/devices.ts",
+    "apps/mobile/src/stores/session.ts",
+    "apps/mobile/src/auth/navigation.ts",
+    "apps/mobile/src/components/MobilePageHeader.vue",
+    "apps/mobile/tests/mobile-settings-devices.test.mjs"
+  ],
+  "retained_shared": "current128 tokens/currentcentral/login/settings",
+  "final_source_snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/devices-batch-15-source-snapshot",
+  "final_at": "2026-11-03T21:39:01.264954+00:00",
+  "language_fix_receipt": "error-locale-copy-receipt.json"
+}

@@ -204,7 +204,7 @@
       "name": "注册",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "FUNCTIONAL_ROOT51_SAMPLES_PASS_DARK_ICON_HOLD",
       "scope": "字段、去重、回执和成人门分流，不因注册成功直接放行学习",
       "services_data_owners": [
         "iam-service"
@@ -265,7 +265,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "dark/HC eye contrast issue;notintegrated",
+        "candidate_browser": "Root51matrix/13groups/43shots pageerror0 expectedHTTP17;GrokB15QA only"
       }
     },
     {
@@ -1376,7 +1377,7 @@
       "name": "报告分享",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "STATIC_IMPLEMENTED10_TESTS_BROWSER_PENDING",
+      "status": "AUTHOR_CORE33_PASS_MATRIX_PENDING",
       "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
       "services_data_owners": [
         "assessment-service",
@@ -1438,8 +1439,10 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
-        "source_tests": "B13 author10/10+types/build0;publicallowlist/noBearer;notyetRootreviewed"
-      }
+        "source_tests": "B13 author10/10+types/build0;publicallowlist/noBearer;notyetRootreviewed",
+        "candidate_browser": "B14 author33checks11shots;retrying fixed;B15 timezone/HC/200/navigation pending"
+      },
+      "current_job": "dsh/profile-batch-15-share-matrix"
     },
     {
       "id": "MB-018",
@@ -1645,9 +1648,9 @@
       "route": "#/pages/b4-avatar/b4-avatar",
       "file": "apps/mobile/src/pages/b4-avatar/b4-avatar.vue",
       "name": "头像与衣柜",
-      "owner": "UNASSIGNED",
-      "wave": "LATER",
-      "status": "PENDING",
+      "owner": "DSH",
+      "wave": "D2",
+      "status": "READONLY_PREP_RUNNING",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -1700,7 +1703,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "dsh/batch-27-avatar-prep"
     },
     {
       "id": "MB-022",
@@ -1943,7 +1947,7 @@
       "name": "设备与会话",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "FROZEN_SOURCE_CURRENT151_CORE96_STATE_AND22_MATRIX_AUTHOR_CHECKED",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "当前设备标识、确认、撤销读回与被踢登录状态",
       "services_data_owners": [
         "iam-service"
@@ -2000,11 +2004,11 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
-        "source_tests": "27/27 Root plus typecheck/H5 build passed before semantic findings; not acceptance",
-        "candidate_browser": "B12 latest15ab:151core+96gaps247checks;B11 22cases27shots;21/2/1 nodecoverage no fakeEXPIRED"
+        "independent_review": "reviews/INTEGRATION-B23-DEVICES.md",
+        "source_tests": "Root final41/41+mobile/i18n types/build0",
+        "candidate_browser": "Prelocale-only patch:247core+131matrix;final enerror26checks PASS;authorB16running"
       },
-      "current_job": "dsh/devices-batch-10-core-scenarios"
+      "current_job": "dsh/devices-batch-16-error-locale-browser"
     },
     {
       "id": "MB-026",
@@ -2013,7 +2017,7 @@
       "name": "权益与兑换",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "READONLY_COMMERCE_IMPLEMENTATION_RUNNING_GATE_CLOSED",
+      "status": "LOCAL_SOURCE11_TESTS_PASS_BROWSER_RUNNING",
       "scope": "权益/兑换真实可用范围；支付关闭且不伪造支付或权益",
       "services_data_owners": [
         "commerce-service"
@@ -2067,8 +2071,11 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
-      }
+        "independent_review": "NOT_RUN",
+        "source_tests": "B02 author11 dedicated+types/build0;B13official-site1fail retained",
+        "candidate_browser": "B03 running"
+      },
+      "current_job": "dsh/commerce-batch-03-browser"
     },
     {
       "id": "MB-027",
@@ -2077,7 +2084,7 @@
       "name": "语言主题与性能",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "READONLY_PLATFORM_PREP_IN_PROGRESS",
+      "status": "LOCAL_SOURCE7_TESTS_PASS_BROWSER_PENDING",
       "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
       "services_data_owners": [
         "learner-service"
@@ -2132,7 +2139,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "NOT_RUN",
+        "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN"
       }
     },
     {
@@ -2142,7 +2150,7 @@
       "name": "帮助与客服",
       "owner": "DSH",
       "wave": "D2",
-      "status": "PAGINATION_AND_STATE33_ROOT_PASSED_BROWSER_CORE_RUNNING",
+      "status": "AUTHOR_FIGMA_CORE198_PASS_MATRIX_RUNNING",
       "scope": "工单和帮助实际边界，安全内容引用；不伪造发送/回复",
       "services_data_owners": [
         "admin-ops-service.support"
@@ -2212,9 +2220,10 @@
         "device": "NOT_RUN",
         "independent_review": "Root local SFC unit probe reproduces retained list afterlogout and mismatched detail permanentloading;returned",
         "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore",
-        "source_tests": "Root33/33 API11+page22 afterB23;browserpending"
+        "source_tests": "Root33/33 API11+page22 afterB23;browserpending",
+        "candidate_browser": "B25 198checks24shots;Rootviewed2;B26remainingmatrix running"
       },
-      "current_job": "dsh/batch-22-support-state-isolated"
+      "current_job": "dsh/batch-26-support-matrix"
     },
     {
       "id": "MB-029",
@@ -2867,7 +2876,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T21:10:38.492745+00:00",
+  "updated_at": "2026-11-03T21:39:01.264954+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2936,13 +2945,13 @@
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
     "policy": "ONLY_GROK_AND_DSH",
-    "grok": "grok/batch-15-register-observer",
-    "dsh": "dsh/batch-25-support-visual",
-    "dshProfile": "dsh/profile-batch-13-share-implementation",
-    "dshDevices": "dsh/devices-batch-13-platform-prep",
+    "grok": "grok/batch-17-register-icon-contrast",
+    "dsh": "dsh/batch-27-avatar-prep",
+    "dshProfile": "dsh/profile-batch-16-share-authenticated",
+    "dshDevices": "dsh/devices-batch-16-error-locale-browser",
+    "dshCommerce": "dsh/commerce-batch-03-browser",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
-    "codexSubagents": "STOPPED_NO_CALLS",
-    "dshCommerce": "dsh/commerce-batch-02-implementation"
+    "codexSubagents": "STOPPED_NO_CALLS"
   },
   "integration_batch_01": {
     "status": "TYPECHECK_H5_BUILD_55_TESTS_AND_599_SYNTHETIC_BROWSER_CHECKS_PASS_WITH_OPEN_NEGATIVE_GATE",
@@ -3048,8 +3057,28 @@
       "tests": 6,
       "pass": 1,
       "fail": 5,
-      "status": "FAILED_REVIEW_PENDING",
+      "status": "FAILED_1_OF_6_PASS_CLASSIFIED_NO_ASSERTIONS_CHANGED",
       "scope": "neutral accountconflict/reset semantic+protectedWeb markup/regex;no tests weakened, no Web business edits"
+    },
+    "register_dark_icon": {
+      "state": "ROOT_REPRODUCED_PENDING_AUTHOR",
+      "eyeFill": "#1C1633",
+      "background": "dark alpha43,37,67;HCblack",
+      "source": "GrokB13 product unchanged byB15"
     }
+  },
+  "integration_batch_23_devices": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 32,
+    "sourceTests": 37,
+    "types": 0,
+    "build": 0,
+    "browserCoreChecks": 247,
+    "browserSharedMatrixChecks": 131,
+    "englishErrorProbe": "FINAL_PASS_1_CASE_26_CHECKS_FIRST_FAILURE_PRESERVED",
+    "sourceSha": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d",
+    "review": "reviews/INTEGRATION-B23-DEVICES.md",
+    "remote": "NOT_PUSHED",
+    "finalSourceTests": 41
   }
 }
