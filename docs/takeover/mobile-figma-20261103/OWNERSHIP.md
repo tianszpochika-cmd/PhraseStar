@@ -1,13 +1,17 @@
 # 唯一写者和集成边界
 
-每个 CLI 仅在自身工作树落盘；主导人维护集成树与文档。修改共享文件前必须分配唯一写者；跨工作树无实时共享文件，请勿把另一个 worktree 的未审稿当作已存在接口。下面是初始分配，具体任务与状态以 [CHECKPOINT.json](CHECKPOINT.json) 更新为准。
+每个 CLI 仅在自身工作树落盘；主导人维护集成树与文档。修改共享文件前必须分配唯一写者；跨工作树无实时共享文件，请勿把另一个 worktree 的未审稿当作已存在接口。下面是当前分配，具体停点和状态以 [CHECKPOINT.json](CHECKPOINT.json) 及本机 CLI 回执为准。
 
-| 区域 | 初始写者 | 边界 |
+| 区域 | 当前写者 | 边界 |
 |---|---|---|
 | `apps/mobile/src/components/**`、`src/theme/**`、`src/static/**`、`src/uni.scss`、`src/App.vue`、`src/pages.json`、`src/main.ts`、`src/manifest.json` | Grok | 共享壳/组件/素材/适配器唯一写者；需改共享接口时先公布签名、旧页影响和测试。不得仅为视觉改变路由或开放 Gate |
 | `packages/design-tokens/**`、`packages/i18n/**`（本轮所需部分） | Grok | 与官网、Web 共享；基线已含官网新增 `official-site-v1` 导出及文案，必须保留；同时改 `package.json` 导出时核兼容 |
 | `packages/i18n/src/mobile-resources/{closed,games,social}.ts` | DSH | Grok B03 模块与中央注册已冻结发布；接收树安全复制完成后由 DSH 独占增改该三个模块。中央 mobile-experience.ts 仍归 Grok，UI 不另建翻译器 |
 | `packages/i18n/src/mobile-resources/profile.ts` | DSH-PROFILE | Grok B03 发布空注册模块，接收树安全复制后交 DSH-PROFILE 按本页实际 key 请求补齐；保持 profileCopy(en:boolean) 导出，不覆盖 mobile.settings 字符串或 mobile.pages.profile |
+| `mobile-resources/{settings-page,report-share-page}.ts` | DSH-PROFILE | 仅本页双语词条，中央注册归 Grok；无页面内第二套字典 |
+| `mobile-resources/{devices-page,platform-page}.ts` | DSH-DEVICES | 设备与性能页面专属资源；共享 controller、Token 和中央注册只读 |
+| `mobile-resources/support-page.ts` | 主 DSH | 客服页资源；不能借文案开放创建、消息或上传 |
+| `mobile-resources/commerce-page.ts` | DSH-COMMERCE | 权益只读/关闭态资源；不得把设计示例说成可购买或已兑换 |
 | `apps/mobile/src/static/figma-closed-{169-8610,168-6945,168-3746,168-4327,168-5501,168-6160}/**` | DSH | Root 在第二批明确授权的六个独占素材目录，优先于上表 static 的常规归属；仅复制对应 Figma manifest 的原素材并核 SHA，Grok 不写这些目录 |
 | `apps/mobile/src/static/figma-games-{169-5279,169-5353,169-5475,169-5549,169-5637,169-5726,169-5811}/**` | DSH | 第四批小游戏七个状态的独占原素材目录；优先于 static 常规归属，禁止改动共享素材或以整页截图实现 UI |
 | `apps/mobile/src/static/figma-social-<node>/**` | DSH | 第五批自习室/通知十四个已缓存节点的专属目录，精确 node 清单见 CHECKPOINT 的 dedicated_social_asset_ownership；不包含共享头像、B12 组件或其他资源 |
@@ -16,10 +20,13 @@
 | `apps/mobile/src/components/MobilePageHeader.vue` | DSH | Grok B02 冻结发布后，由 Root 转交给 DSH 收口八页组合中的页头尺寸、原素材、文本放大及视觉问题；此文件优先于 components 常规归属。保持已发布 props 和默认导航行为，Grok 后续不写本文件 |
 | `apps/mobile/src/pages/{login,register,reset-password,onboarding,forbidden,assessment,home,today,learn,practice}/**` | Grok | MB-001…010；定级 DEC-04 未定，不能自行确立新策略 |
 | `apps/mobile/src/pages/{b4-games,b4-social,b4-offline,b3-listening,b11-listening,b3-speaking,b11-speaking,b3-writing}/**` | DSH | D1；只做页面与专属测试；复用已存在或经交接稳定的共享接口 |
-| `apps/mobile/src/pages/{report-share,b5-commerce,b6-platform,support}/**` | DSH | D2；状态/持久化/权限事实必须沿用契约与真实 owner，不因设计开放 |
+| `apps/mobile/src/pages/support/**` 与专属测试、`static/figma-support-*/**` | 主 DSH | MB-028；按真实 GET/权限/分页事实，不开放写业务 |
+| `apps/mobile/src/pages/report-share/**` 与专属测试、`static/figma-report-share-*/**` | DSH-PROFILE | MB-017；仅公开字段/安全退出，不新增推广、签发或撤销操作；原素材例外优先于 static 常规归属 |
+| `apps/mobile/src/pages/b6-platform/**` 与专属测试 | DSH-DEVICES | MB-027；唯一共享 controller 不复制，缺独立设计稿如实记录 |
+| `apps/mobile/src/pages/b5-commerce/**` 与专属测试、`static/figma-commerce-*/**` | DSH-COMMERCE | MB-026；独立树基于 bd649198，只读权益/订单/公开目录，购买支付兑换关闭；原素材例外优先于 static 常规归属 |
 | `apps/mobile/src/pages/profile/profile.vue`、`apps/mobile/tests/profile-page.test.mjs`、`src/static/figma-profile-{169-9356,169-9446,169-9544,169-9707,248-4123}/**` | DSH-PROFILE | 同一 DSH CLI/provider 的独立任务与工作树；主 DSH 会话不再写此页。已从 Grok 冻结包预载三个共享文件，不能在本任务中修改；实际会话与进程见 CHECKPOINT |
 | MB-011…016/018/021 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
-| `apps/mobile/src/{api,auth,domain,platform,stores}/**`；`packages/contracts/**`、服务与迁移 | 暂无授权写者 | 本轮先只读；发现必需改动提交具体文件和原因给 Root，按 contract-first/owner 指定唯一写者；不能让两个 CLI 随意改同一工具 |
+| `apps/mobile/src/{api,auth,domain,platform,stores}/**`；`packages/contracts/**`、服务与迁移 | 默认只读；具名例外见下文 | 发现必需改动先交具体文件/原因，Root 指定唯一写者；不能让两个 CLI 随意改同一工具。已发布 experience/uni-runtime/public-documents 适配器归 Grok；support.ts 的既有 GET 兼容例外只归主 DSH |
 | `apps/mobile/tests/**` | 按具体文件单写者 | 只创建/修改本人页面明确独占的测试；共用测试由 Root 指派唯一执行者。不得通过改断言、跳测或覆写证据制造通过 |
 | `docs/takeover/mobile-figma-20261103/**`、`docs/STATUS.md`、`CURRENT-HANDOFF.md`、`CHANGELOG.md` 与集成分支 | Root | 单一集成人按已批准事实维护；保留官网/Figma Web 记录；候选先审再合入 |
 | 官网和 Web Figma 工作树及对应产品区域 | 原任务所有者 | 本轮不修改、不重启进程、不重复启动作者 |
@@ -45,7 +52,7 @@ DSH_PROFILE is now the sole author for apps/mobile/src/pages/settings/settings.v
 
 ## MB-025 transfer 2026-11-04
 
-DSH_DEVICES is the sole author of devices.vue, devices-page.test.mjs, mobile-resources/devices-page.ts and dedicated figma-devices assets. Its isolated worktree is based on 3a91f6ec, with a distinct DSH CLI session; main DSH no longer writes devices. Shared mobile-settings-devices tests and all API/domain/auth/store/contracts remain read-only. Browser lease is pending.
+DSH_DEVICES is the sole author of devices.vue, devices-page.test.mjs, mobile-resources/devices-page.ts and dedicated figma-devices assets. Its isolated worktree is based on 3a91f6ec, with a distinct DSH CLI session; main DSH no longer writes devices. Shared mobile-settings-devices tests and all API/domain/auth/store/contracts remain read-only. Browser QA uses compiled artifacts and synthetic API interception without an HTTP listener;18183 stays with Root.
 
 ## Support adapter exception - batch15
 

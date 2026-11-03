@@ -1,0 +1,338 @@
+{
+  "at": "2026-11-03T21:10:38.492745+00:00",
+  "method": "SYNTHETIC_UI_BUILT_ARTIFACT",
+  "sourceChecks": {
+    "tests": 24,
+    "exit": 0,
+    "types": 0,
+    "initialBuild": 0,
+    "finalCssBuild": 0,
+    "scriptBlockUnchanged": true
+  },
+  "functional134": {
+    "checks": 134,
+    "pass": 134,
+    "shots": 28,
+    "sourceHashesStart": {
+      "apps/mobile/src/pages/settings/settings.vue": "ef3256803db4ba0f942c95bf22683297550782c20ca73e4d0e53321ff13d4cdf",
+      "apps/mobile/tests/settings-page.test.mjs": "48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b",
+      "packages/i18n/src/mobile-resources/settings-page.ts": "d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999",
+      "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518"
+    },
+    "sourceHashesEnd": {
+      "apps/mobile/src/pages/settings/settings.vue": "ef3256803db4ba0f942c95bf22683297550782c20ca73e4d0e53321ff13d4cdf",
+      "apps/mobile/tests/settings-page.test.mjs": "48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b",
+      "packages/i18n/src/mobile-resources/settings-page.ts": "d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999",
+      "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518"
+    },
+    "pageErrors": [],
+    "externalRequests": [],
+    "artifactMisses": []
+  },
+  "finalLayout34": {
+    "checks": [
+      {
+        "name": "390-layout: save button full content width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":729,\"width\":390,\"height\":115,\"top\":729,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":740,\"width\":342,\"height\":38,\"top\":740,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":658.25,\"width\":301.21875,\"height\":44,\"top\":658.25,\"right\":345.609375,\"bottom\":702.25,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":671,\"width\":271.21875,\"height\":19.5,\"top\":671,\"right\":315.609375,\"bottom\":690.5,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":670.75,\"width\":20,\"height\":20,\"top\":670.75,\"right\":345.609375,\"bottom\":690.75,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-layout: save button at least 48px",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":729,\"width\":390,\"height\":115,\"top\":729,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":740,\"width\":342,\"height\":38,\"top\":740,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":658.25,\"width\":301.21875,\"height\":44,\"top\":658.25,\"right\":345.609375,\"bottom\":702.25,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":671,\"width\":271.21875,\"height\":19.5,\"top\":671,\"right\":315.609375,\"bottom\":690.5,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":670.75,\"width\":20,\"height\":20,\"top\":670.75,\"right\":345.609375,\"bottom\":690.75,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-layout: explanation is above button",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":729,\"width\":390,\"height\":115,\"top\":729,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":740,\"width\":342,\"height\":38,\"top\":740,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":658.25,\"width\":301.21875,\"height\":44,\"top\":658.25,\"right\":345.609375,\"bottom\":702.25,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":671,\"width\":271.21875,\"height\":19.5,\"top\":671,\"right\":315.609375,\"bottom\":690.5,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":670.75,\"width\":20,\"height\":20,\"top\":670.75,\"right\":345.609375,\"bottom\":690.75,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-layout: explanation shares full width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":729,\"width\":390,\"height\":115,\"top\":729,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":740,\"width\":342,\"height\":38,\"top\":740,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":658.25,\"width\":301.21875,\"height\":44,\"top\":658.25,\"right\":345.609375,\"bottom\":702.25,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":671,\"width\":271.21875,\"height\":19.5,\"top\":671,\"right\":315.609375,\"bottom\":690.5,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":670.75,\"width\":20,\"height\":20,\"top\":670.75,\"right\":345.609375,\"bottom\":690.75,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-layout: quality help arrow stays in label row",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":729,\"width\":390,\"height\":115,\"top\":729,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":740,\"width\":342,\"height\":38,\"top\":740,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":658.25,\"width\":301.21875,\"height\":44,\"top\":658.25,\"right\":345.609375,\"bottom\":702.25,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":671,\"width\":271.21875,\"height\":19.5,\"top\":671,\"right\":315.609375,\"bottom\":690.5,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":670.75,\"width\":20,\"height\":20,\"top\":670.75,\"right\":345.609375,\"bottom\":690.75,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-layout: initial disabled visual retained",
+        "ok": true,
+        "detail": "{\"disabled\":true,\"opacity\":\"0.72\"}"
+      },
+      {
+        "name": "390-layout: changed button enabled",
+        "ok": true,
+        "detail": "enabled"
+      },
+      {
+        "name": "390-layout: busy state keeps full-width button",
+        "ok": true,
+        "detail": "{\"disabled\":true,\"busy\":true,\"aria\":\"true\",\"width\":342}"
+      },
+      {
+        "name": "390-layout: saved visual retained",
+        "ok": true,
+        "detail": "{\"disabled\":true,\"opacity\":\"0.72\"}"
+      },
+      {
+        "name": "390-layout: last card above CTA",
+        "ok": true,
+        "detail": "{\"lastBottom\":644.09375,\"barTop\":729}"
+      },
+      {
+        "name": "390-layout: dialog initial focus",
+        "ok": true,
+        "detail": "sp-cancel"
+      },
+      {
+        "name": "390-layout: dialog Tab stays inside",
+        "ok": true,
+        "detail": "inside"
+      },
+      {
+        "name": "390-layout: dialog Escape closes",
+        "ok": true,
+        "detail": "closed"
+      },
+      {
+        "name": "390-layout: settings can leave to real H5 page",
+        "ok": true,
+        "detail": "https://settings-ui.synthetic.invalid/#/pages/devices/devices"
+      },
+      {
+        "name": "390-layout: settings root gone after leave",
+        "ok": true,
+        "detail": "root gone"
+      },
+      {
+        "name": "390-en-layout: save button full content width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":712.5,\"width\":390,\"height\":131.5,\"top\":712.5,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":723.5,\"width\":342,\"height\":54.5,\"top\":723.5,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":769.4375,\"width\":301.21875,\"height\":44,\"top\":769.4375,\"right\":345.609375,\"bottom\":813.4375,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":782.1875,\"width\":271.21875,\"height\":19.5,\"top\":782.1875,\"right\":315.609375,\"bottom\":801.6875,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":781.9375,\"width\":20,\"height\":20,\"top\":781.9375,\"right\":345.609375,\"bottom\":801.9375,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-en-layout: save button at least 48px",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":712.5,\"width\":390,\"height\":131.5,\"top\":712.5,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":723.5,\"width\":342,\"height\":54.5,\"top\":723.5,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":769.4375,\"width\":301.21875,\"height\":44,\"top\":769.4375,\"right\":345.609375,\"bottom\":813.4375,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":782.1875,\"width\":271.21875,\"height\":19.5,\"top\":782.1875,\"right\":315.609375,\"bottom\":801.6875,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":781.9375,\"width\":20,\"height\":20,\"top\":781.9375,\"right\":345.609375,\"bottom\":801.9375,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-en-layout: explanation is above button",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":712.5,\"width\":390,\"height\":131.5,\"top\":712.5,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":723.5,\"width\":342,\"height\":54.5,\"top\":723.5,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":769.4375,\"width\":301.21875,\"height\":44,\"top\":769.4375,\"right\":345.609375,\"bottom\":813.4375,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":782.1875,\"width\":271.21875,\"height\":19.5,\"top\":782.1875,\"right\":315.609375,\"bottom\":801.6875,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":781.9375,\"width\":20,\"height\":20,\"top\":781.9375,\"right\":345.609375,\"bottom\":801.9375,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-en-layout: explanation shares full width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":712.5,\"width\":390,\"height\":131.5,\"top\":712.5,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":723.5,\"width\":342,\"height\":54.5,\"top\":723.5,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":769.4375,\"width\":301.21875,\"height\":44,\"top\":769.4375,\"right\":345.609375,\"bottom\":813.4375,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":782.1875,\"width\":271.21875,\"height\":19.5,\"top\":782.1875,\"right\":315.609375,\"bottom\":801.6875,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":781.9375,\"width\":20,\"height\":20,\"top\":781.9375,\"right\":345.609375,\"bottom\":801.9375,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-en-layout: quality help arrow stays in label row",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":712.5,\"width\":390,\"height\":131.5,\"top\":712.5,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":723.5,\"width\":342,\"height\":54.5,\"top\":723.5,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":769.4375,\"width\":301.21875,\"height\":44,\"top\":769.4375,\"right\":345.609375,\"bottom\":813.4375,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":782.1875,\"width\":271.21875,\"height\":19.5,\"top\":782.1875,\"right\":315.609375,\"bottom\":801.6875,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":781.9375,\"width\":20,\"height\":20,\"top\":781.9375,\"right\":345.609375,\"bottom\":801.9375,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-en-layout: English scope copy",
+        "ok": true,
+        "detail": "Saves appearance settings only"
+      },
+      {
+        "name": "320-hc-200-layout: save button full content width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":320,\"h\":844},\"bar\":{\"x\":0,\"y\":666.015625,\"width\":320,\"height\":177.984375,\"top\":666.015625,\"right\":320,\"bottom\":844,\"left\":0},\"copy\":{\"x\":16,\"y\":678.015625,\"width\":288,\"height\":99.984375,\"top\":678.015625,\"right\":304,\"bottom\":778,\"left\":16},\"save\":{\"x\":16,\"y\":786,\"width\":288,\"height\":48,\"top\":786,\"right\":304,\"bottom\":834,\"left\":16},\"link\":{\"x\":34,\"y\":1843.640625,\"width\":252,\"height\":89.78125,\"top\":1843.640625,\"right\":286,\"bottom\":1933.421875,\"left\":34},\"text\":{\"x\":34,\"y\":1852.640625,\"width\":222,\"height\":72.78125,\"top\":1852.640625,\"right\":256,\"bottom\":1925.421875,\"left\":34},\"icon\":{\"x\":266,\"y\":1879.03125,\"width\":20,\"height\":20,\"top\":1879.03125,\"right\":286,\"bottom\":1899.03125,\"left\":266}}"
+      },
+      {
+        "name": "320-hc-200-layout: save button at least 48px",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":320,\"h\":844},\"bar\":{\"x\":0,\"y\":666.015625,\"width\":320,\"height\":177.984375,\"top\":666.015625,\"right\":320,\"bottom\":844,\"left\":0},\"copy\":{\"x\":16,\"y\":678.015625,\"width\":288,\"height\":99.984375,\"top\":678.015625,\"right\":304,\"bottom\":778,\"left\":16},\"save\":{\"x\":16,\"y\":786,\"width\":288,\"height\":48,\"top\":786,\"right\":304,\"bottom\":834,\"left\":16},\"link\":{\"x\":34,\"y\":1843.640625,\"width\":252,\"height\":89.78125,\"top\":1843.640625,\"right\":286,\"bottom\":1933.421875,\"left\":34},\"text\":{\"x\":34,\"y\":1852.640625,\"width\":222,\"height\":72.78125,\"top\":1852.640625,\"right\":256,\"bottom\":1925.421875,\"left\":34},\"icon\":{\"x\":266,\"y\":1879.03125,\"width\":20,\"height\":20,\"top\":1879.03125,\"right\":286,\"bottom\":1899.03125,\"left\":266}}"
+      },
+      {
+        "name": "320-hc-200-layout: explanation is above button",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":320,\"h\":844},\"bar\":{\"x\":0,\"y\":666.015625,\"width\":320,\"height\":177.984375,\"top\":666.015625,\"right\":320,\"bottom\":844,\"left\":0},\"copy\":{\"x\":16,\"y\":678.015625,\"width\":288,\"height\":99.984375,\"top\":678.015625,\"right\":304,\"bottom\":778,\"left\":16},\"save\":{\"x\":16,\"y\":786,\"width\":288,\"height\":48,\"top\":786,\"right\":304,\"bottom\":834,\"left\":16},\"link\":{\"x\":34,\"y\":1843.640625,\"width\":252,\"height\":89.78125,\"top\":1843.640625,\"right\":286,\"bottom\":1933.421875,\"left\":34},\"text\":{\"x\":34,\"y\":1852.640625,\"width\":222,\"height\":72.78125,\"top\":1852.640625,\"right\":256,\"bottom\":1925.421875,\"left\":34},\"icon\":{\"x\":266,\"y\":1879.03125,\"width\":20,\"height\":20,\"top\":1879.03125,\"right\":286,\"bottom\":1899.03125,\"left\":266}}"
+      },
+      {
+        "name": "320-hc-200-layout: explanation shares full width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":320,\"h\":844},\"bar\":{\"x\":0,\"y\":666.015625,\"width\":320,\"height\":177.984375,\"top\":666.015625,\"right\":320,\"bottom\":844,\"left\":0},\"copy\":{\"x\":16,\"y\":678.015625,\"width\":288,\"height\":99.984375,\"top\":678.015625,\"right\":304,\"bottom\":778,\"left\":16},\"save\":{\"x\":16,\"y\":786,\"width\":288,\"height\":48,\"top\":786,\"right\":304,\"bottom\":834,\"left\":16},\"link\":{\"x\":34,\"y\":1843.640625,\"width\":252,\"height\":89.78125,\"top\":1843.640625,\"right\":286,\"bottom\":1933.421875,\"left\":34},\"text\":{\"x\":34,\"y\":1852.640625,\"width\":222,\"height\":72.78125,\"top\":1852.640625,\"right\":256,\"bottom\":1925.421875,\"left\":34},\"icon\":{\"x\":266,\"y\":1879.03125,\"width\":20,\"height\":20,\"top\":1879.03125,\"right\":286,\"bottom\":1899.03125,\"left\":266}}"
+      },
+      {
+        "name": "320-hc-200-layout: quality help arrow stays in label row",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":320,\"h\":844},\"bar\":{\"x\":0,\"y\":666.015625,\"width\":320,\"height\":177.984375,\"top\":666.015625,\"right\":320,\"bottom\":844,\"left\":0},\"copy\":{\"x\":16,\"y\":678.015625,\"width\":288,\"height\":99.984375,\"top\":678.015625,\"right\":304,\"bottom\":778,\"left\":16},\"save\":{\"x\":16,\"y\":786,\"width\":288,\"height\":48,\"top\":786,\"right\":304,\"bottom\":834,\"left\":16},\"link\":{\"x\":34,\"y\":1843.640625,\"width\":252,\"height\":89.78125,\"top\":1843.640625,\"right\":286,\"bottom\":1933.421875,\"left\":34},\"text\":{\"x\":34,\"y\":1852.640625,\"width\":222,\"height\":72.78125,\"top\":1852.640625,\"right\":256,\"bottom\":1925.421875,\"left\":34},\"icon\":{\"x\":266,\"y\":1879.03125,\"width\":20,\"height\":20,\"top\":1879.03125,\"right\":286,\"bottom\":1899.03125,\"left\":266}}"
+      },
+      {
+        "name": "320-hc-200-layout: last card above CTA",
+        "ok": true,
+        "detail": "{\"lastBottom\":643.921875,\"barTop\":666.015625}"
+      },
+      {
+        "name": "390-200-layout: save button full content width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":667.015625,\"width\":390,\"height\":176.984375,\"top\":667.015625,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":678.015625,\"width\":342,\"height\":99.984375,\"top\":678.015625,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":1162.28125,\"width\":301.21875,\"height\":89.78125,\"top\":1162.28125,\"right\":345.609375,\"bottom\":1252.0625,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":1171.28125,\"width\":271.21875,\"height\":72.78125,\"top\":1171.28125,\"right\":315.609375,\"bottom\":1244.0625,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":1197.671875,\"width\":20,\"height\":20,\"top\":1197.671875,\"right\":345.609375,\"bottom\":1217.671875,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-200-layout: save button at least 48px",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":667.015625,\"width\":390,\"height\":176.984375,\"top\":667.015625,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":678.015625,\"width\":342,\"height\":99.984375,\"top\":678.015625,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":1162.28125,\"width\":301.21875,\"height\":89.78125,\"top\":1162.28125,\"right\":345.609375,\"bottom\":1252.0625,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":1171.28125,\"width\":271.21875,\"height\":72.78125,\"top\":1171.28125,\"right\":315.609375,\"bottom\":1244.0625,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":1197.671875,\"width\":20,\"height\":20,\"top\":1197.671875,\"right\":345.609375,\"bottom\":1217.671875,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-200-layout: explanation is above button",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":667.015625,\"width\":390,\"height\":176.984375,\"top\":667.015625,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":678.015625,\"width\":342,\"height\":99.984375,\"top\":678.015625,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":1162.28125,\"width\":301.21875,\"height\":89.78125,\"top\":1162.28125,\"right\":345.609375,\"bottom\":1252.0625,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":1171.28125,\"width\":271.21875,\"height\":72.78125,\"top\":1171.28125,\"right\":315.609375,\"bottom\":1244.0625,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":1197.671875,\"width\":20,\"height\":20,\"top\":1197.671875,\"right\":345.609375,\"bottom\":1217.671875,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-200-layout: explanation shares full width",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":667.015625,\"width\":390,\"height\":176.984375,\"top\":667.015625,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":678.015625,\"width\":342,\"height\":99.984375,\"top\":678.015625,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":1162.28125,\"width\":301.21875,\"height\":89.78125,\"top\":1162.28125,\"right\":345.609375,\"bottom\":1252.0625,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":1171.28125,\"width\":271.21875,\"height\":72.78125,\"top\":1171.28125,\"right\":315.609375,\"bottom\":1244.0625,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":1197.671875,\"width\":20,\"height\":20,\"top\":1197.671875,\"right\":345.609375,\"bottom\":1217.671875,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-200-layout: quality help arrow stays in label row",
+        "ok": true,
+        "detail": "{\"viewport\":{\"w\":390,\"h\":844},\"bar\":{\"x\":0,\"y\":667.015625,\"width\":390,\"height\":176.984375,\"top\":667.015625,\"right\":390,\"bottom\":844,\"left\":0},\"copy\":{\"x\":24,\"y\":678.015625,\"width\":342,\"height\":99.984375,\"top\":678.015625,\"right\":366,\"bottom\":778,\"left\":24},\"save\":{\"x\":24,\"y\":786,\"width\":342,\"height\":48,\"top\":786,\"right\":366,\"bottom\":834,\"left\":24},\"link\":{\"x\":44.390625,\"y\":1162.28125,\"width\":301.21875,\"height\":89.78125,\"top\":1162.28125,\"right\":345.609375,\"bottom\":1252.0625,\"left\":44.390625},\"text\":{\"x\":44.390625,\"y\":1171.28125,\"width\":271.21875,\"height\":72.78125,\"top\":1171.28125,\"right\":315.609375,\"bottom\":1244.0625,\"left\":44.390625},\"icon\":{\"x\":325.609375,\"y\":1197.671875,\"width\":20,\"height\":20,\"top\":1197.671875,\"right\":345.609375,\"bottom\":1217.671875,\"left\":325.609375}}"
+      },
+      {
+        "name": "390-200-layout: last card above CTA",
+        "ok": true,
+        "detail": "{\"lastBottom\":643.796875,\"barTop\":667.015625}"
+      },
+      {
+        "name": "source hashes stable",
+        "ok": true,
+        "detail": "{\"apps/mobile/src/pages/settings/settings.vue\":\"72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71\",\"apps/mobile/tests/settings-page.test.mjs\":\"48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b\",\"packages/i18n/src/mobile-resources/settings-page.ts\":\"d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999\",\"packages/i18n/src/mobile-experience.ts\":\"c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263\",\"packages/design-tokens/src/mobile.ts\":\"7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121\",\"apps/mobile/src/components/MobilePageHeader.vue\":\"99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93\",\"apps/mobile/src/pages.json\":\"949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518\"}"
+      }
+    ],
+    "shots": 8,
+    "sourceHashesStart": {
+      "apps/mobile/src/pages/settings/settings.vue": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+      "apps/mobile/tests/settings-page.test.mjs": "48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b",
+      "packages/i18n/src/mobile-resources/settings-page.ts": "d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999",
+      "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518"
+    },
+    "sourceHashesEnd": {
+      "apps/mobile/src/pages/settings/settings.vue": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+      "apps/mobile/tests/settings-page.test.mjs": "48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b",
+      "packages/i18n/src/mobile-resources/settings-page.ts": "d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999",
+      "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+      "packages/design-tokens/src/mobile.ts": "7a938c3b9502c50f0f7c53588386425384a590c4c237681268c98a6d23cde121",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518"
+    },
+    "sourceHashesStable": true,
+    "pageErrors": [],
+    "externalRequests": [],
+    "artifactMisses": []
+  },
+  "crossPage": {
+    "status": "PASS",
+    "checks": [
+      {
+        "name": "one visible closed-page back control",
+        "ok": true,
+        "detail": "1"
+      },
+      {
+        "name": "other-page icon inline style is unchanged by settings focus decoration",
+        "ok": true,
+        "detail": "{\"url\":\"https://settings-ui.synthetic.invalid/#/pages/b4-offline/b4-offline\",\"settingsRoots\":0,\"before\":null,\"after\":null,\"backFocused\":true}"
+      },
+      {
+        "name": "settings focus decoration reattaches on return",
+        "ok": true,
+        "detail": "{\"inline\":\"outline: currentcolor solid 2px !important; outline-offset: 2px; border-radius: 50%;\",\"outline\":\"rgb(104, 109, 128) solid 2px\"}"
+      },
+      {
+        "name": "no unknown API",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "no page errors",
+        "ok": true,
+        "detail": "[]"
+      }
+    ],
+    "crossPage": {
+      "url": "https://settings-ui.synthetic.invalid/#/pages/b4-offline/b4-offline",
+      "settingsRoots": 0,
+      "before": null,
+      "after": null,
+      "backFocused": true
+    },
+    "settingsInitialFocus": {
+      "inline": "outline: currentcolor solid 2px !important; outline-offset: 2px; border-radius: 50%;",
+      "outline": "rgb(104, 109, 128) solid 2px"
+    },
+    "settingsReturnFocus": {
+      "inline": "outline: currentcolor solid 2px !important; outline-offset: 2px; border-radius: 50%;",
+      "outline": "rgb(104, 109, 128) solid 2px"
+    },
+    "closedPageSyntheticReads": [
+      {
+        "method": "GET",
+        "path": "/api/v1/gamification/me/summary"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/gamification/streak"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/gamification/quests"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/gamification/season"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/avatar/profile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/avatar/items"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/avatar/loadouts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/avatar/resources"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/games/catalog"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/social/rooms"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/notifications/messages"
+      }
+    ],
+    "sourceHashesStable": true
+  },
+  "rootViewed": [
+    "390-ready-default(B10)",
+    "390-layout(final)",
+    "320-hc-200-layout-bottom(final)"
+  ],
+  "limits": [
+    "Real HTTP/services/native/iPad hardware/readers/deployment NOT_RUN",
+    "H5 settings root unmounted during observed cross-navigation;cached native lifecycle not verified",
+    "Author-suite devices content two unknown GET fixtures404 retained;not device acceptance"
+  ],
+  "rawEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-22-settings"
+}

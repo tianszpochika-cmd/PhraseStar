@@ -2,6 +2,7 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
+- [设置组合审核 B22](reviews/INTEGRATION-B22-SETTINGS.md)：保留全部实际业务，24项源检查、134项组合检查、5项跨页焦点及最终CSS34项局部回归；真服务与设备另列。
 - [登录组合审核 B21](reviews/INTEGRATION-B21-LOGIN.md)：12项认证/文档检查、30布局/14组交互/31图与41项共享局部回归；真实服务另列。
 - [游戏与社交组合审核 B20](reviews/INTEGRATION-B20.md)：25 项源检查、41 项局部构建产物浏览器检查；范围与历史矩阵分开。
 - [七页组合浏览器复核](reviews/INTEGRATION-B13.md): compiled source commit 3a91f6ec,599 synthetic UI checks/39 images; real services/devices remain NOT_RUN.

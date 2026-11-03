@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-03T21:10:38.492745+00:00",
+  "previousHead": "a86c921e54a241275b384d344d15b1d75835cb76",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/settings/settings.vue",
+      "sha256": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+      "sourceSnapshot": "dsh/settings-batch-12-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-10652/imgMaterialError.svg",
+      "sha256": "72544206999e02d48f53162cf228e002cc6c4b05b3ea0aa85e8814cb3c3da5d1",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-10755/imgGlow.svg",
+      "sha256": "613efd2b5e483a39c6ce18516dc7d4875bbd876496ffa486561c97d38d03c281",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-10755/imgIconChevL.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-10755/imgTrackOff.svg",
+      "sha256": "b397f4dc1e6773aeb71e107291749b0c28ebde1a86fc4e20561b6c6d2d16f4aa",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-10852/imgTrackOn.svg",
+      "sha256": "68bba3cf8b21adec13c55be0a81d7ccdc7613b481639dfb6a2f7dd53a05c1e03",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11343/imgIconCheckCircle.svg",
+      "sha256": "1bf8ac02e0b866595c7fcc97e9b5168a910bc1d1420ec9be7f54a59c22ee556d",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11619/imgIconAlert.svg",
+      "sha256": "54f28e015e935a64e9631a2c2d017309241373bc17a9c22eedcf9212b5e7052b",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11760/imgDot.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11760/imgDot1.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11760/imgDot2.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11760/imgMaterialInfo.svg",
+      "sha256": "42d74026faef97b560278abfdaeb3a433df15cf670bc28be941763af92cb8109",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/src/static/figma-settings-169-11915/imgIconChevR.svg",
+      "sha256": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "apps/mobile/tests/settings-page.test.mjs",
+      "sha256": "48204ca21933df0292ebfd79227c06e9c46f61feeae4615130e6c2815dde273b",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/settings-page.ts",
+      "sha256": "d8cc5808da36bf7ca0bc3229f18ce9bc859c3b3525427c6658143fb782c2c999",
+      "sourceSnapshot": "dsh/settings-batch-10-source-snapshot"
+    }
+  ]
+}

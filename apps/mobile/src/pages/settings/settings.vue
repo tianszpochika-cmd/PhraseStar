@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { mobileThemeController } from '../../platform/v2-foundation'
+import { mobileThemeController, mobileI18n } from '../../platform/v2-foundation'
 import { b10ContentLocale, b10UiLocale } from '../../platform/b10-foundation'
-import { mobileExperienceEngine, mobileMotionMode, restoreMobileQualityDefault, setMobileMotion, setMobileQuality, useMobileExperience } from '../../platform/experience'
+import { mobileExperienceEngine, mobileMotionMode, mobileT, restoreMobileQualityDefault, setMobileMotion, setMobileQuality, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { ensureMobilePageAccess } from '../../auth/navigation'
 import { privacyNotices } from '../../domain/it7-closure'
 import { readMobileClosureBoard } from '../../api/support'
 import { withdrawLearningConsent } from '../../api/learning-consent-withdrawal'
-import { WITHDRAW_BUTTON_LABEL, WITHDRAW_CONFIRM_COPY } from '../../domain/learning-consent-withdrawal'
 import { useLearnerContentStore } from '../../stores/learner-content'
 import { useSessionStore } from '../../stores/session'
 import { listB12NotificationPreferences, updateB12NotificationPreference } from '../../api/b12'
 import { DEFAULT_NOTIFICATION_DND_WINDOW, NOTIFICATION_CATEGORIES, NOTIFICATION_DND_OFF, isNotificationDndEnabled, makeNotificationPreferenceCommand, notificationPreferenceMatchesCommand, type NotificationCategory, type NotificationChannel } from '../../domain/notification-preferences'
 import type { M1016NotificationPreference, M1016NotificationPreferenceCommand } from '@englishflow/contracts'
-import { getUniRuntime } from '../../platform/uni-runtime'
+import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
+import { interpolate } from '@englishflow/i18n'
 import { hasPendingMobilePreferenceSync, sameMobilePreferenceIdentity, setPendingMobilePreferenceSync, transitionMobilePreferenceSubject } from '../../domain/mobile-preference-sync'
 import type { PerformanceLevel } from '@englishflow/performance'
 import type { MobileMotionMode, MobileThemeMode } from '../../domain/learner-content'
@@ -41,6 +40,41 @@ function syncPreferenceSubject(subject: string | null | undefined): void {
 }
 const initialPreferenceScope = transitionMobilePreferenceSubject(null, session.verifiedSubject, preferenceSyncStorage())
 preferenceSubject = initialPreferenceScope.subject
+
+const resolvedTheme = ref(mobileThemeController.resolvedTheme)
+const unsubscribeTheme = mobileThemeController.subscribe((state) => { resolvedTheme.value = state.resolvedTheme })
+const restoreNotice = ref('')
+const localeRetryIndex = ref(b10ContentLocale.value === 'zh-CN' ? 1 : 0)
+const withdrawSucceeded = ref(false)
+const profileNavError = ref('')
+const profileNavBusy = ref(false)
+
+type ElementRef = HTMLElement | { $el?: HTMLElement } | null
+const withdrawDialogRef = ref<ElementRef>(null)
+const withdrawCancelRef = ref<ElementRef>(null)
+const withdrawResultRef = ref<ElementRef>(null)
+const settingsRootRef = ref<ElementRef>(null)
+let previousFocus: HTMLElement | null = null
+let withdrawFocusGeneration = 0
+let profileNavGeneration = 0
+
+const iconGlow = '/static/figma-settings-169-10755/imgGlow.svg'
+const iconBack = '/static/figma-settings-169-10755/imgIconChevL.svg'
+const iconTrackOff = '/static/figma-settings-169-10755/imgTrackOff.svg'
+const iconTrackOn = '/static/figma-settings-169-10852/imgTrackOn.svg'
+const iconDot = '/static/figma-settings-169-11760/imgDot.svg'
+const iconDot1 = '/static/figma-settings-169-11760/imgDot1.svg'
+const iconDot2 = '/static/figma-settings-169-11760/imgDot2.svg'
+const iconChevR = '/static/figma-settings-169-11915/imgIconChevR.svg'
+const iconMaterialInfo = '/static/figma-settings-169-11760/imgMaterialInfo.svg'
+const iconMaterialError = '/static/figma-settings-169-10652/imgMaterialError.svg'
+const iconAlert = '/static/figma-settings-169-11619/imgIconAlert.svg'
+const iconCheck = '/static/figma-settings-169-11343/imgIconCheckCircle.svg'
+
+function settingsT(key: string, values?: Record<string, unknown>): string {
+  const message = mobileT(`settingsPage.${key}`)
+  return values ? interpolate(message, values) : message
+}
 
 const themeMode = ref<MobileThemeMode>(mobileThemeController.theme === 'dark' ? 'DARK' : mobileThemeController.theme === 'light' ? 'LIGHT' : 'SYSTEM')
 const motionMode = ref<MobileMotionMode>(mobileMotionMode.value as MobileMotionMode)
@@ -103,9 +137,16 @@ watch([() => session.verifiedSubject, () => session.identityRevision], ([subject
   notificationDndConflict.value = false
   notificationDndRetryPending.value = false
   notificationDndRetryTarget.value = null
-  withdrawConfirming.value = false
   withdrawing.value = false
+  withdrawSucceeded.value = false
   withdrawNotice.value = ''
+  restoreNotice.value = ''
+  withdrawFocusGeneration += 1
+  withdrawConfirming.value = false
+  previousFocus = null
+  profileNavGeneration += 1
+  profileNavBusy.value = false
+  profileNavError.value = ''
   applyingAccountPreferences = true
   try {
     themeMode.value = 'SYSTEM'
@@ -118,10 +159,178 @@ watch([() => session.verifiedSubject, () => session.identityRevision], ([subject
   }
 }, { flush: 'post' })
 const unsubscribeQuality = mobileExperienceEngine.subscribe((state) => { qualityLevel.value = state.level })
-const themeOptions: Array<{ value: MobileThemeMode; label: string }> = [{ value: 'SYSTEM', label: '跟随系统' }, { value: 'LIGHT', label: '浅色' }, { value: 'DARK', label: '深色' }]
-const motionOptions: Array<{ value: MobileMotionMode; label: string }> = [{ value: 'FULL', label: '完整动效' }, { value: 'REDUCED', label: '减少动效' }, { value: 'OFF', label: '关闭动效' }]
-const qualityOptions: Array<{ value: PerformanceLevel; label: string }> = [{ value: 'Ultra', label: '超高' }, { value: 'High', label: '高' }, { value: 'Medium', label: '均衡' }, { value: 'Performance', label: '省资源' }]
-const localeLabels: Record<string, string> = { 'zh-CN': '简体中文', 'en-US': 'English (US)', 'en-GB': 'English (UK)', 'de-DE': 'Deutsch', 'fr-FR': 'Français', 'es-ES': 'Español' }
+const themeOptions: Array<{ value: MobileThemeMode; labelKey: string; descKey: string }> = [{ value: 'SYSTEM', labelKey: 'appearance.themeSystem', descKey: 'appearance.themeSystemDescription' }, { value: 'LIGHT', labelKey: 'appearance.themeLight', descKey: 'appearance.themeLightDescription' }, { value: 'DARK', labelKey: 'appearance.themeDark', descKey: 'appearance.themeDarkDescription' }]
+const motionOptions: Array<{ value: MobileMotionMode; labelKey: string }> = [{ value: 'FULL', labelKey: 'appearance.motionFull' }, { value: 'REDUCED', labelKey: 'appearance.motionReduced' }, { value: 'OFF', labelKey: 'appearance.motionOff' }]
+const qualityOptions: Array<{ value: PerformanceLevel; labelKey: string }> = [{ value: 'Ultra', labelKey: 'quality.ultra' }, { value: 'High', labelKey: 'quality.high' }, { value: 'Medium', labelKey: 'quality.medium' }, { value: 'Performance', labelKey: 'quality.performance' }]
+const GOAL_KEYS: Record<string, string> = { FOUNDATION: 'FOUNDATION', ZERO_BASIS: 'FOUNDATION', COLLEGE_CET: 'COLLEGE_CET', CET_4_6: 'COLLEGE_CET', POSTGRADUATE_ENGLISH: 'POSTGRADUATE_ENGLISH', POSTGRADUATE: 'POSTGRADUATE_ENGLISH', WORKPLACE_DAILY: 'WORKPLACE_DAILY' }
+const goalLabel = computed(() => {
+  const code = store.account.goal
+  if (!code) return settingsT('learning.notSet')
+  const key = GOAL_KEYS[code]
+  if (key) return mobileT(`onboarding.goals.${key}.label`)
+  return store.goals.find((item) => item.value === code)?.label || mobileT('profile.goalUnknown')
+})
+const quotaLabel = computed(() => store.account.quota && store.account.quota > 0
+  ? settingsT('learning.minutes', { count: mobileI18n.formatNumber(store.account.quota) })
+  : settingsT('learning.notSet'))
+const accountLoading = computed(() => store.accountStatus === 'idle' || store.accountStatus === 'loading')
+const accountError = computed(() => !accountLoading.value && store.accountStatus !== 'ready' && !saveError.value && !localeError.value)
+const LOCALE_KEYS: Record<string, string> = { 'zh-CN': 'language.localeZhCN', 'en-US': 'language.localeEnUS', 'en-GB': 'language.localeEnGB', 'de-DE': 'language.localeDeDE', 'fr-FR': 'language.localeFrFR', 'es-ES': 'language.localeEsES' }
+function localeName(code: string): string { return settingsT(LOCALE_KEYS[code] || 'language.localeUnknown') }
+function notificationLabel(category: string): string {
+  const key = category === 'STUDY_ROOM' ? 'studyRoom' : category.toLowerCase()
+  return settingsT(`notifications.category.${key}`)
+}
+function chooseTheme(value: MobileThemeMode): void {
+  themeMode.value = value
+  restoreNotice.value = ''
+  saved.value = false
+  saveError.value = ''
+}
+function chooseMotion(value: MobileMotionMode): void {
+  motionMode.value = value
+  restoreNotice.value = ''
+  saved.value = false
+  saveError.value = ''
+}
+function toggleHighContrast(): void {
+  highContrast.value = !highContrast.value
+  restoreNotice.value = ''
+  saved.value = false
+  saveError.value = ''
+}
+async function retryContentLocale(): Promise<void> {
+  await selectContentLocale(localeRetryIndex.value)
+}
+function asElement(value: ElementRef): HTMLElement | null {
+  const candidate = value && '$el' in value ? value.$el : value
+  return typeof HTMLElement !== 'undefined' && candidate instanceof HTMLElement ? candidate : null
+}
+function focusElement(value: ElementRef): void {
+  const target = asElement(value)
+  if (target && typeof target.focus === 'function') target.focus()
+}
+function openWithdrawConfirm(): void {
+  if (withdrawing.value || withdrawConfirming.value) return
+  previousFocus = typeof document !== 'undefined' && typeof HTMLElement !== 'undefined' && document.activeElement instanceof HTMLElement ? document.activeElement : null
+  withdrawConfirming.value = true
+  const generation = ++withdrawFocusGeneration
+  void nextTick(() => { if (generation === withdrawFocusGeneration && withdrawConfirming.value) focusElement(withdrawCancelRef.value) })
+}
+function closeWithdraw(force = false): void {
+  if (withdrawing.value && !force) return
+  withdrawFocusGeneration += 1
+  withdrawConfirming.value = false
+  const target = previousFocus
+  previousFocus = null
+  if (target && target.isConnected && typeof target.focus === 'function') target.focus()
+}
+function cancelWithdraw(): void { closeWithdraw() }
+type FocusStyleSnapshot = { outline: string; outlinePriority: string; offset: string; offsetPriority: string; radius: string; radiusPriority: string }
+const focusStyleSnapshots = new Map<HTMLElement, FocusStyleSnapshot>()
+function settingsBackFrom(target: EventTarget | null, root: HTMLElement | null = asElement(settingsRootRef.value)): HTMLElement | null {
+  const element = target as HTMLElement | null
+  if (!element || !root || root.isConnected === false) return null
+  return element.classList?.contains('mobile-back') && root.contains(element) ? element : null
+}
+function applyBackFocus(back: HTMLElement | null): void {
+  const icon = back?.querySelector<HTMLElement>('.mobile-back-icon')
+  if (!icon) return
+  if (!focusStyleSnapshots.has(icon)) {
+    focusStyleSnapshots.set(icon, {
+      outline: icon.style.getPropertyValue('outline'), outlinePriority: icon.style.getPropertyPriority('outline'),
+      offset: icon.style.getPropertyValue('outline-offset'), offsetPriority: icon.style.getPropertyPriority('outline-offset'),
+      radius: icon.style.getPropertyValue('border-radius'), radiusPriority: icon.style.getPropertyPriority('border-radius'),
+    })
+  }
+  icon.style.setProperty('outline', '2px solid currentColor', 'important')
+  icon.style.setProperty('outline-offset', '2px')
+  icon.style.setProperty('border-radius', '50%')
+}
+function restoreProperty(element: HTMLElement, name: string, value: string, priority: string): void {
+  if (value) element.style.setProperty(name, value, priority)
+  else element.style.removeProperty(name)
+}
+function restoreBackFocus(back: HTMLElement | null): void {
+  const icon = back?.querySelector<HTMLElement>('.mobile-back-icon')
+  if (!icon) return
+  const saved = focusStyleSnapshots.get(icon)
+  if (!saved) return
+  restoreProperty(icon, 'outline', saved.outline, saved.outlinePriority)
+  restoreProperty(icon, 'outline-offset', saved.offset, saved.offsetPriority)
+  restoreProperty(icon, 'border-radius', saved.radius, saved.radiusPriority)
+  focusStyleSnapshots.delete(icon)
+}
+function cleanupFocusDecorations(): void {
+  for (const icon of Array.from(focusStyleSnapshots.keys())) {
+    const saved = focusStyleSnapshots.get(icon)
+    if (!saved) continue
+    restoreProperty(icon, 'outline', saved.outline, saved.outlinePriority)
+    restoreProperty(icon, 'outline-offset', saved.offset, saved.offsetPriority)
+    restoreProperty(icon, 'border-radius', saved.radius, saved.radiusPriority)
+    focusStyleSnapshots.delete(icon)
+  }
+}
+function onSettingsFocusIn(event: FocusEvent): void { applyBackFocus(settingsBackFrom(event.target)) }
+function onSettingsFocusOut(event: FocusEvent): void { restoreBackFocus(settingsBackFrom(event.target)) }
+let focusListenersAttached = false
+function attachSettingsFocus(): void {
+  if (typeof document === 'undefined') return
+  const root = asElement(settingsRootRef.value)
+  if (!root || focusListenersAttached) return
+  root.addEventListener('focusin', onSettingsFocusIn)
+  root.addEventListener('focusout', onSettingsFocusOut)
+  focusListenersAttached = true
+}
+function detachSettingsFocus(): void {
+  const root = asElement(settingsRootRef.value)
+  if (focusListenersAttached && root) {
+    root.removeEventListener('focusin', onSettingsFocusIn)
+    root.removeEventListener('focusout', onSettingsFocusOut)
+  }
+  focusListenersAttached = false
+  cleanupFocusDecorations()
+}
+function focusableInDialog(): HTMLElement[] {
+  const dialog = asElement(withdrawDialogRef.value)
+  if (!dialog) return []
+  return Array.from(dialog.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((element) => element.tabIndex !== -1 && (element.offsetParent !== null || element === document.activeElement))
+}
+function onWithdrawKeydown(event: KeyboardEvent): void {
+  if (!withdrawConfirming.value || typeof document === 'undefined') return
+  if (event.key === 'Escape') {
+    if (withdrawing.value) return
+    event.preventDefault()
+    closeWithdraw()
+    return
+  }
+  if (event.key !== 'Tab') return
+  const dialog = asElement(withdrawDialogRef.value)
+  if (!dialog) return
+  const items = focusableInDialog()
+  if (!items.length) { event.preventDefault(); return }
+  const first = items[0] as HTMLElement
+  const last = items[items.length - 1] as HTMLElement
+  const active = document.activeElement as HTMLElement | null
+  const inside = Boolean(active && dialog.contains(active))
+  if (event.shiftKey && (!inside || active === first)) { event.preventDefault(); last.focus() }
+  else if (!event.shiftKey && (!inside || active === last)) { event.preventDefault(); first.focus() }
+}
+async function returnToProfile(): Promise<void> {
+  if (profileNavBusy.value) return
+  const generation = ++profileNavGeneration
+  profileNavError.value = ''
+  profileNavBusy.value = true
+  try {
+    await Promise.resolve(openUniPage('/pages/profile/profile'))
+  } catch {
+    if (generation === profileNavGeneration) profileNavError.value = mobileT('forbidden.navigationFailed')
+  } finally {
+    if (generation === profileNavGeneration) profileNavBusy.value = false
+  }
+}
+
 function restoreDisplayDefaults(): void {
   if (saving.value || localeSaving.value) return
   themeMode.value = 'SYSTEM'
@@ -132,12 +341,14 @@ function restoreDisplayDefaults(): void {
   preferenceDraftDirty.value = Boolean(subject && subject === preferenceSubject)
   saved.value = false
   saveError.value = ''
+  restoreNotice.value = settingsT('appearance.restored')
   if (preferenceDraftDirty.value && subject) setPendingMobilePreferenceSync(subject, true, preferenceSyncStorage())
 }
 
 onShow(async () => {
   if (!await ensureMobilePageAccess('/pages/settings/settings')) { settingsVisible = false; return }
   settingsVisible = true
+  attachSettingsFocus()
   syncPreferenceSubject(session.verifiedSubject)
   void loadNotificationSettings()
   privacyLines.value = privacyNotices(await readMobileClosureBoard().catch(() => null))
@@ -150,19 +361,48 @@ async function confirmWithdrawLearningConsent(): Promise<void> {
   withdrawNotice.value = ''
   try {
     const result = await withdrawLearningConsent(`withdraw-adult-learning-${Date.now()}`)
-    withdrawNotice.value = result.notice
+    withdrawSucceeded.value = result.withdrawn
+    withdrawNotice.value = result.withdrawn ? settingsT('privacy.revoked') : settingsT('privacy.revokeFailed')
     if (result.withdrawn) {
       withdrawConfirming.value = false
+      previousFocus = null
+      const generation = ++withdrawFocusGeneration
+      void nextTick(() => { if (generation === withdrawFocusGeneration) { const result = asElement(withdrawResultRef.value); if (result) { result.focus({ preventScroll: true }); result.scrollIntoView({ block: 'center' }) } } })
       if (typeof session.markLearningConsentWithdrawn === 'function') session.markLearningConsentWithdrawn()
       if (typeof store.forgetOnboardingResume === 'function') store.forgetOnboardingResume()
     }
+  } catch {
+    withdrawSucceeded.value = false
+    withdrawNotice.value = settingsT('privacy.revokeFailed')
   } finally {
     withdrawing.value = false
   }
 }
 
-onHide(() => { settingsVisible = false })
-onBeforeUnmount(unsubscribeQuality)
+onHide(() => {
+  detachSettingsFocus()
+  settingsVisible = false
+  withdrawFocusGeneration += 1
+  withdrawConfirming.value = false
+  previousFocus = null
+  profileNavGeneration += 1
+  profileNavBusy.value = false
+  profileNavError.value = ''
+})
+onMounted(() => {
+  if (typeof document !== 'undefined') document.addEventListener('keydown', onWithdrawKeydown)
+  attachSettingsFocus()
+})
+onBeforeUnmount(() => {
+  if (typeof document !== 'undefined') document.removeEventListener('keydown', onWithdrawKeydown)
+  detachSettingsFocus()
+  withdrawFocusGeneration += 1
+  withdrawConfirming.value = false
+  previousFocus = null
+  profileNavGeneration += 1
+  unsubscribeQuality()
+  unsubscribeTheme()
+})
 
 async function loadAccountPreferences(): Promise<void> {
   const identity = session.getMobileApiIdentity()
@@ -227,7 +467,7 @@ async function loadNotificationSettings(): Promise<void> {
     notificationSettings.value = []
     notificationRows.value = []
     notificationStatus.value = 'error'
-    notificationError.value = '通知偏好暂时无法读取。'
+    notificationError.value = settingsT('notifications.errorInline')
   }
 }
 
@@ -258,12 +498,12 @@ async function toggleNotification(setting: NotificationSetting): Promise<void> {
     if (!sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) return
     if (notificationStatus.value === 'ready'
       && notificationPreferenceMatchesCommand(preferenceFor(setting.category, 'IN_APP'), command)) {
-      notificationSuccess.value = '设置已保存。'
+      notificationSuccess.value = settingsT('notifications.currentSettings')
       return
     }
     notificationError.value = notificationStatus.value === 'ready'
-      ? '保存失败，已更新最新设置，请确认后重试。'
-      : '保存失败，且无法读取最新设置；请先重试读取。'
+      ? settingsT('notifications.saveFailedLatest')
+      : settingsT('notifications.saveFailedUnreadable')
   } finally {
     if (sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) notificationBusy.value = null
   }
@@ -282,7 +522,7 @@ function onNotificationDndTimeChange(which: 'start' | 'end', value: string): voi
 async function saveNotificationDnd(enabled: boolean): Promise<void> {
   if (notificationBusy.value) return
   if (enabled && notificationDndStart.value === notificationDndEnd.value) {
-    notificationError.value = '开始和结束时间不能相同。'
+    notificationError.value = settingsT('notifications.startEndEqual')
     return
   }
   const identity = session.getMobileApiIdentity()
@@ -318,10 +558,10 @@ async function saveNotificationDnd(enabled: boolean): Promise<void> {
       if (!sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) return
       notificationDndRetryPending.value = true
       notificationDndDirty.value = true
-      const result = savedCount > 0 ? `${savedCount} 项已保存，${failedCount} 项未保存。` : '免打扰设置未全部保存。'
+      const result = savedCount > 0 ? settingsT('notifications.partial', { saved: mobileI18n.formatNumber(savedCount), failed: mobileI18n.formatNumber(failedCount) }) : settingsT('notifications.noneSaved')
       notificationError.value = notificationStatus.value === 'ready'
-        ? `${result}已更新最新版本，可重试统一时段。`
-        : `${result}无法读取最新版本，请先重试读取。`
+        ? `${result} ${settingsT('notifications.partialRetry')}`
+        : `${result} ${settingsT('notifications.partialRetryFailed')}`
       return
     }
     if (!sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) return
@@ -337,8 +577,8 @@ async function saveNotificationDnd(enabled: boolean): Promise<void> {
     notificationDndRetryPending.value = true
     notificationDndDirty.value = true
     notificationError.value = notificationStatus.value === 'ready'
-      ? '免打扰未全部保存，已更新最新版本，可重试统一时段。'
-      : '免打扰未全部保存，且无法读取最新版本；请先重试读取。'
+      ? settingsT('notifications.saveError')
+      : settingsT('notifications.saveErrorUnreadable')
   } finally {
     if (sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) notificationBusy.value = null
   }
@@ -352,6 +592,7 @@ async function save(): Promise<void> {
   saving.value = true
   saved.value = false
   saveError.value = ''
+  restoreNotice.value = ''
   try {
     await store.savePreferences({ themeMode: themeMode.value, highContrast: highContrast.value, motionMode: motionMode.value })
     if (!sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) return
@@ -360,11 +601,11 @@ async function save(): Promise<void> {
       preferenceDraftDirty.value = false
       setPendingMobilePreferenceSync(identity.subject, false, preferenceSyncStorage())
     } else {
-      saveError.value = '本机设置已立即生效，但未同步到账户，请检查网络后重试。'
+      saveError.value = settingsT('appearance.saveFailedLocalDetail')
     }
   } catch {
     if (!sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) return
-    saveError.value = '本机设置已立即生效，但未同步到账户，请检查网络后重试。'
+    saveError.value = settingsT('appearance.saveFailedLocalDetail')
   } finally {
     if (epoch === saveEpoch) saving.value = false
   }
@@ -373,6 +614,7 @@ async function save(): Promise<void> {
 async function selectContentLocale(index: number): Promise<void> {
   if (saving.value || localeSaving.value) return
   const contentLocale = index === 1 ? 'zh-CN' : 'en-US'
+  localeRetryIndex.value = index
   if (contentLocale === b10ContentLocale.value) return
   const identity = session.getMobileApiIdentity()
   if (!identity || identity.subject !== preferenceSubject) return
@@ -385,7 +627,7 @@ async function selectContentLocale(index: number): Promise<void> {
     if (savedLocale && store.accountStatus === 'ready' && store.account.contentLocale === contentLocale) {
       localeSaved.value = true
     } else {
-      localeError.value = '学习内容语言未保存，请重试。'
+      localeError.value = settingsT('language.contentFailedDetail')
     }
   } finally {
     if (sameMobilePreferenceIdentity(identity, session.getMobileApiIdentity())) localeSaving.value = false
@@ -394,87 +636,269 @@ async function selectContentLocale(index: number): Promise<void> {
 </script>
 
 <template>
-  <view class="yx-page" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="settings" />
-    <view class="v2-settings-body">
-      <view class="yx-card settings-card card v2-settings-card">
-        <text class="eyebrow v2-settings-eyebrow"><AppIcon name="target" :size="14" /><text>学习</text></text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">学习目标</text>
-        <text class="setting-row d v2-settings-row v2-settings-d">当前目标 <text>{{ store.goals.find(item => item.value === store.account.goal)?.label || store.account.goal || '尚未设置' }}</text></text>
-        <text class="setting-row d v2-settings-row v2-settings-d">每日目标 <text>{{ store.account.quota ?? '—' }} 分钟</text></text>
-        <navigator class="settings-link opt v2-settings-link v2-settings-opt" url="/pages/onboarding/onboarding">修改目标<AppIcon name="chev" :size="14" /></navigator>
-      </view>
-      <view class="yx-card settings-card card v2-settings-card">
-        <text class="eyebrow v2-settings-eyebrow"><AppIcon name="gear" :size="14" /><text>偏好</text></text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">偏好设置</text>
-        <text class="setting-note d v2-settings-d">主题、高对比度和动效会立即在本机预览；点保存后同步到账户。</text>
-        <text class="setting-label v2-settings-label">主题</text>
-        <view class="setting-options v2-settings-list"><button tabindex="0" role="button" v-for="option in themeOptions" :key="option.value" :class="['setting-option', 'opt', 'btn', 'v2-settings-opt', 'v2-settings-btn', { selected: themeMode === option.value }]" :disabled="saving || localeSaving" @click="themeMode = option.value">{{ option.label }}</button></view>
-        <text class="setting-label v2-settings-label">动效</text>
-        <view class="setting-options v2-settings-list"><button tabindex="0" role="button" v-for="option in motionOptions" :key="option.value" :class="['setting-option', 'opt', 'btn', 'v2-settings-opt', 'v2-settings-btn', { selected: motionMode === option.value }]" :disabled="saving || localeSaving" @click="motionMode = option.value">{{ option.label }}</button></view>
-        <text class="setting-note d v2-settings-d">减少动效会缩短过渡；关闭动效会停用动画。系统设置优先。</text>
-        <label class="setting-check v2-settings-check v2-settings-row"><checkbox :checked="highContrast" :disabled="saving || localeSaving" @click="highContrast = !highContrast" />高对比度</label>
-        <text class="setting-label v2-settings-label">画质 <text class="setting-inline-note v2-settings-inline">（本机生效）</text></text>
-        <view class="setting-options v2-settings-list"><button tabindex="0" role="button" v-for="option in qualityOptions" :key="option.value" :class="['setting-option', 'opt', 'btn', 'v2-settings-opt', 'v2-settings-btn', { selected: qualityLevel === option.value }]" :aria-pressed="qualityLevel === option.value" @click="setMobileQuality(option.value)">{{ option.label }}</button></view>
-        <text class="setting-note d v2-settings-d">低帧率或内存不足时，画质可能自动降低。</text>
-        <navigator class="settings-link opt v2-settings-link v2-settings-opt" url="/pages/b6-platform/b6-platform">性能帮助与设备适配说明 ›<AppIcon name="chev" :size="14" /></navigator>
-        <text class="setting-row d v2-settings-row v2-settings-d">界面语言（本机，只读） <text>{{ localeLabels[b10UiLocale] || b10UiLocale }}</text></text>
-        <view class="setting-row v2-settings-row"><text>学习内容语言</text><picker :disabled="saving || localeSaving" :range="['en-US', 'zh-CN']" :value="b10ContentLocale === 'zh-CN' ? 1 : 0" @change="selectContentLocale(Number($event.detail.value))"><view class="mobile-locale-picker v2-settings-picker">{{ localeSaving ? '保存中…' : `${b10ContentLocale} ▾` }}</view></picker></view>
-        <text v-if="localeSaved" class="success fb v2-settings-fb v2-settings-ok" role="status">学习内容语言已同步到账户。</text>
-        <text v-if="localeError" class="error fb v2-settings-fb v2-settings-err" role="alert">{{ localeError }}</text>
-        <text class="setting-note d v2-settings-d">恢复默认仅重置显示设置和画质；保存后同步账户。</text>
-        <button tabindex="0" role="button" class="setting-option reset-defaults opt btn v2-settings-opt v2-settings-btn" :disabled="saving || localeSaving" @click="restoreDisplayDefaults">恢复显示默认</button>
-        <button tabindex="0" role="button" class="yx-button btn opt v2-settings-btn v2-settings-opt v2-settings-submit" :loading="saving" :disabled="saving || localeSaving || !preferenceDraftDirty" @click="save"><AppIcon name="check" :size="14" />{{ saving ? '保存中…' : '保存主题、对比度与动效' }}</button><text v-if="!saving && !localeSaving && !preferenceDraftDirty" class="yx-soon-reason" data-disabled-reason>修改上面的主题、对比度或动效后即可保存。</text>
-        <text v-if="saved" class="success fb v2-settings-fb v2-settings-ok" role="status">主题、对比度与动效已同步到账户。</text>
-        <text v-if="saveError" class="error fb v2-settings-fb v2-settings-err" role="alert">{{ saveError }}</text>
-        <view v-if="store.accountStatus === 'loading'" class="preference-state fb v2-settings-fb" role="status"><AppIcon name="refresh" :size="14" />正在读取账户偏好…</view>
-        <view v-else-if="!saveError && store.lastError && store.accountStatus !== 'ready'" class="preference-state fb v2-settings-fb" role="alert"><text>账户偏好暂时无法读取；本机设置仍可使用。</text><button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" @click="loadAccountPreferences">重试读取</button></view>
-      </view>
-      <view class="yx-card settings-card it7-closure card v2-settings-card">
-        <text class="eyebrow v2-settings-eyebrow"><AppIcon name="lock" :size="14" /><text>隐私</text></text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">隐私与数据</text>
-        <text v-for="line in privacyLines" :key="line" class="setting-note d v2-settings-d">{{ line }}</text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">学习同意</text>
-        <text class="setting-note d v2-settings-d">{{ WITHDRAW_CONFIRM_COPY }}</text>
-        <button v-if="!withdrawConfirming" tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" type="button" :disabled="withdrawing" @click="withdrawConfirming = true">{{ WITHDRAW_BUTTON_LABEL }}</button>
-        <view v-else class="v2-settings-list">
-          <text class="d v2-settings-d" role="alert">{{ WITHDRAW_CONFIRM_COPY }}</text>
-          <button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" type="button" :disabled="withdrawing" @click="confirmWithdrawLearningConsent">{{ withdrawing ? '正在撤回…' : '确认撤回' }}</button>
-          <button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" type="button" :disabled="withdrawing" @click="withdrawConfirming = false">取消</button>
+  <view
+    id="settings-shell"
+    ref="settingsRootRef"
+    class="settings-shell"
+    :style="experienceStyle"
+    :data-motion="experienceMotion"
+    :data-resolved-theme="resolvedTheme"
+    :data-settings-state="accountError ? 'error' : accountLoading ? 'loading' : saved ? 'saved' : preferenceDraftDirty ? 'changed' : 'ready'"
+  >
+    <view class="settings-glow-wrap" aria-hidden="true"><image class="settings-glow" :src="iconGlow" mode="aspectFit" /></view>
+
+    <view class="settings-canvas">
+      <MobilePageHeader page="settings" compact :title="mobileT('settings')" :show-settings="false" :back-icon-src="iconBack" />
+
+      <view class="settings-content">
+        <view v-if="accountLoading" class="sp-status" role="status" aria-live="polite">
+          <view class="sp-status-copy"><text class="sp-status-title">{{ settingsT('appearance.accountLoading') }}</text></view>
         </view>
-        <text v-if="withdrawNotice" class="success fb v2-settings-fb v2-settings-ok" role="status">{{ withdrawNotice }}</text>
-      </view>
-      <view class="yx-card settings-card card v2-settings-card">
-        <text class="eyebrow v2-settings-eyebrow"><AppIcon name="grid" :size="14" /><text>设备</text></text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">设备与会话</text>
-        <text class="setting-note d v2-settings-d">查看当前账号已登录的设备，或退出其他设备上的会话。</text>
-        <navigator class="settings-link opt v2-settings-link v2-settings-opt" url="/pages/devices/devices">管理设备与会话 ›<AppIcon name="chev" :size="14" /></navigator>
-      </view>
-      <view class="yx-card settings-card card v2-settings-card" aria-label="站内通知偏好">
-        <text class="eyebrow v2-settings-eyebrow"><AppIcon name="inbox" :size="14" /><text>通知</text></text>
-        <text class="card-title h2 v2-settings-title v2-settings-h2">站内通知偏好</text>
-        <navigator class="settings-link opt v2-settings-link v2-settings-opt" url="/pages/b4-social/b4-social">查看消息<AppIcon name="chev" :size="14" /></navigator>
-        <text class="setting-note d v2-settings-d">未设置的类型默认关闭；这里只管理站内消息。</text>
-        <text v-if="notificationStatus === 'loading'" class="setting-label v2-settings-label" role="status">正在读取…</text>
-        <view v-else-if="notificationStatus === 'error'" class="notification-state fb v2-settings-fb" role="alert"><text>{{ notificationError }}</text><button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" @click="loadNotificationSettings">重试</button></view>
-        <view v-else v-for="setting in notificationSettings" :key="setting.category" class="notification-row v2-settings-row">
-          <view><text>{{ setting.label }}</text><text v-if="setting.unsupportedCadence" class="setting-note d v2-settings-d">摘要投递暂不可用</text></view>
-          <button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" :aria-pressed="setting.enabled" :disabled="Boolean(notificationBusy)" @click="toggleNotification(setting)">{{ notificationBusy === setting.category ? '保存中…' : setting.enabled ? '关闭' : '开启' }}</button>
-        </view>
-        <view v-if="notificationStatus === 'ready'" class="notification-quiet-hours v2-settings-quiet">
-          <view class="notification-row quiet-hours-heading v2-settings-row">
-            <view><text>站内免打扰</text><text class="setting-note d v2-settings-d">{{ notificationDndEnabled ? '开启中' : '已关闭' }}；只影响站内提醒</text></view>
-            <button tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" :aria-pressed="notificationDndEnabled" :disabled="Boolean(notificationBusy)" @click="saveNotificationDnd(!notificationDndEnabled)">{{ notificationBusy === 'dnd' ? '保存中…' : notificationDndEnabled ? '关闭' : '开启' }}</button>
+        <view v-else-if="accountError" class="sp-status sp-status--bad" role="alert">
+          <image class="sp-status-icon" :src="iconMaterialError" mode="aspectFit" aria-hidden="true" />
+          <view class="sp-status-copy">
+            <text class="sp-status-title">{{ settingsT('appearance.accountError') }}</text>
+            <text class="sp-status-text">{{ store.lastError || settingsT('appearance.accountErrorDetail') }}</text>
           </view>
-          <text v-if="notificationDndConflict" class="setting-note d v2-settings-d" role="status">各类型的免打扰时段不一致；保存后会统一。</text>
-          <view class="quiet-hours-times v2-settings-list">
-            <view class="setting-row v2-settings-row"><text>开始</text><picker mode="time" :value="notificationDndStart" :disabled="Boolean(notificationBusy)" @change="onNotificationDndTimeChange('start', String($event.detail.value))"><view class="mobile-locale-picker v2-settings-picker">{{ notificationDndStart }} ▾</view></picker></view>
-            <view class="setting-row v2-settings-row"><text>结束</text><picker mode="time" :value="notificationDndEnd" :disabled="Boolean(notificationBusy)" @change="onNotificationDndTimeChange('end', String($event.detail.value))"><view class="mobile-locale-picker v2-settings-picker">{{ notificationDndEnd }} ▾</view></picker></view>
-            <button v-if="notificationDndDirty || notificationDndRetryPending" tabindex="0" role="button" class="setting-option opt btn v2-settings-opt v2-settings-btn" :disabled="Boolean(notificationBusy)" @click="saveNotificationDnd(notificationDndRetryPending ? notificationDndEnabled : true)">{{ notificationBusy === 'dnd' ? '保存中…' : notificationDndRetryPending ? '重试统一设置' : '保存时段' }}</button>
+          <button tabindex="0" role="button" type="button" class="sp-text-btn" :disabled="accountLoading" @click="loadAccountPreferences">{{ settingsT('common.retryRead') }}</button>
+        </view>
+
+        <view class="sp-card sp-card--appearance">
+          <view class="sp-card-head">
+            <text class="sp-title" role="heading" aria-level="2">{{ settingsT('appearance.title') }}</text>
+            <text class="sp-caption">{{ settingsT('appearance.previewHint') }}</text>
+          </view>
+          <text class="sp-label">{{ settingsT('appearance.theme') }}</text>
+          <view class="sp-segments sp-segments--theme">
+            <button
+              v-for="option in themeOptions"
+              :key="option.value"
+              tabindex="0"
+              role="button"
+              type="button"
+              class="sp-segment"
+              :class="{ 'is-selected': themeMode === option.value }"
+              :aria-pressed="themeMode === option.value"
+              :disabled="saving || localeSaving"
+              @click="chooseTheme(option.value)"
+            >
+              <text class="sp-segment-title">{{ settingsT(option.labelKey) }}</text>
+              <text class="sp-segment-desc">{{ settingsT(option.descKey) }}</text>
+              <text class="sp-segment-state">{{ themeMode === option.value ? settingsT('appearance.themeSelected') : settingsT('appearance.themeUnselected') }}</text>
+            </button>
+          </view>
+
+          <text class="sp-label">{{ settingsT('appearance.motion') }}</text>
+          <view class="sp-segments">
+            <button
+              v-for="option in motionOptions"
+              :key="option.value"
+              tabindex="0"
+              role="button"
+              type="button"
+              class="sp-segment"
+              :class="{ 'is-selected': motionMode === option.value }"
+              :aria-pressed="motionMode === option.value"
+              :disabled="saving || localeSaving"
+              @click="chooseMotion(option.value)"
+            >{{ settingsT(option.labelKey) }}</button>
+          </view>
+          <text class="sp-note">{{ settingsT('appearance.motionNote') }}</text>
+
+          <button tabindex="0" role="switch" type="button" class="sp-toggle" :aria-checked="highContrast" :disabled="saving || localeSaving" @click="toggleHighContrast">
+            <view class="sp-toggle-copy">
+              <text class="sp-toggle-title">{{ settingsT('appearance.highContrast') }}</text>
+              <text class="sp-caption">{{ highContrast ? settingsT('appearance.highContrastOn') : settingsT('appearance.highContrastOff') }}</text>
+            </view>
+            <image class="sp-track" :src="highContrast ? iconTrackOn : iconTrackOff" mode="aspectFit" aria-hidden="true" />
+          </button>
+
+          <view class="sp-restore">
+            <button tabindex="0" role="button" type="button" class="sp-text-btn" :disabled="saving || localeSaving" @click="restoreDisplayDefaults">{{ settingsT('appearance.restore') }}</button>
+            <text v-if="restoreNotice" class="sp-success" role="status">{{ restoreNotice }}</text>
           </view>
         </view>
-        <text v-if="notificationStatus === 'ready' && notificationError" class="error fb v2-settings-fb v2-settings-err" role="alert">{{ notificationError }}</text>
-        <text v-if="notificationStatus === 'ready' && notificationSuccess" class="success fb v2-settings-fb v2-settings-ok" role="status">{{ notificationSuccess }}</text>
+
+        <view class="sp-card">
+          <view class="sp-card-head">
+            <text class="sp-title" role="heading" aria-level="2">{{ settingsT('quality.title') }}</text>
+            <text class="sp-caption">{{ settingsT('common.localOnly') }}</text>
+          </view>
+          <view class="sp-chips">
+            <button
+              v-for="option in qualityOptions"
+              :key="option.value"
+              tabindex="0"
+              role="button"
+              type="button"
+              class="sp-chip"
+              :class="{ 'is-selected': qualityLevel === option.value }"
+              :aria-pressed="qualityLevel === option.value"
+              @click="setMobileQuality(option.value)"
+            >{{ settingsT(option.labelKey) }}</button>
+          </view>
+          <text class="sp-note">{{ settingsT('quality.note') }}</text>
+          <navigator class="sp-link" url="/pages/b6-platform/b6-platform">
+            <text>{{ settingsT('quality.help') }}</text>
+            <image class="sp-link-icon" :src="iconChevR" mode="aspectFit" aria-hidden="true" />
+          </navigator>
+        </view>
+
+        <view class="sp-card">
+          <text class="sp-title" role="heading" aria-level="2">{{ settingsT('language.title') }}</text>
+          <view class="sp-row">
+            <text class="sp-row-label">{{ settingsT('language.ui') }}</text>
+            <text class="sp-row-value">{{ settingsT('language.followDevice') }} · {{ localeName(b10UiLocale) }}</text>
+          </view>
+          <text class="sp-note">{{ settingsT('language.uiFollowNote') }}</text>
+          <view class="sp-row">
+            <text class="sp-row-label">{{ settingsT('language.content') }}</text>
+            <picker mode="selector" :disabled="saving || localeSaving" :range="['en-US', 'zh-CN']" :value="b10ContentLocale === 'zh-CN' ? 1 : 0" @change="selectContentLocale(Number($event.detail.value))">
+              <view class="sp-picker">{{ localeSaving ? settingsT('common.saving') : localeName(b10ContentLocale) }}</view>
+            </picker>
+          </view>
+          <view v-if="localeSaved" class="sp-success-row" role="status">
+            <image class="sp-inline-icon sp-inline-icon--check" :src="iconCheck" mode="aspectFit" aria-hidden="true" />
+            <text class="sp-success">{{ settingsT('language.contentSynced') }}</text>
+          </view>
+          <view v-if="localeError" class="sp-inline-error" role="alert">
+            <text>{{ localeError }}</text>
+            <button tabindex="0" role="button" type="button" class="sp-text-btn" :disabled="localeSaving" @click="retryContentLocale">{{ settingsT('common.retry') }}</button>
+          </view>
+        </view>
+
+        <view class="sp-card">
+          <text class="sp-title" role="heading" aria-level="2">{{ settingsT('learning.title') }}</text>
+          <view class="sp-row"><text class="sp-row-label">{{ settingsT('learning.currentGoal') }}</text><text class="sp-row-value">{{ goalLabel }}</text></view>
+          <view class="sp-row"><text class="sp-row-label">{{ settingsT('learning.dailyGoal') }}</text><text class="sp-row-value">{{ quotaLabel }}</text></view>
+          <navigator class="sp-link" url="/pages/onboarding/onboarding">
+            <text>{{ settingsT('learning.editGoal') }}</text>
+            <image class="sp-link-icon" :src="iconChevR" mode="aspectFit" aria-hidden="true" />
+          </navigator>
+        </view>
+
+        <view class="sp-card">
+          <view class="sp-card-head">
+            <text class="sp-title" role="heading" aria-level="2">{{ settingsT('notifications.title') }}</text>
+            <text class="sp-caption">{{ settingsT('notifications.note') }}</text>
+          </view>
+
+          <view v-if="notificationStatus === 'loading'" class="sp-inline-status" role="status" aria-live="polite">
+            <text class="sp-status-title">{{ settingsT('notifications.loading') }}</text>
+            <text class="sp-note">{{ settingsT('notifications.loadingDetail') }}</text>
+          </view>
+          <view v-else-if="notificationStatus === 'error'" class="sp-inline-error" role="alert">
+            <image class="sp-inline-icon sp-inline-icon--alert" :src="iconAlert" mode="aspectFit" aria-hidden="true" />
+            <view class="sp-error-copy">
+              <text class="sp-status-title">{{ settingsT('notifications.errorTitle') }}</text>
+              <text>{{ notificationError || settingsT('notifications.errorHint') }}</text>
+            </view>
+            <button tabindex="0" role="button" type="button" class="sp-text-btn" @click="loadNotificationSettings">{{ settingsT('common.retry') }}</button>
+          </view>
+          <view v-else>
+            <view v-for="setting in notificationSettings" :key="setting.category" class="sp-notification-row">
+              <view class="sp-notification-copy">
+                <text class="sp-row-title">{{ notificationLabel(setting.category) }}</text>
+                <text v-if="setting.unsupportedCadence" class="sp-note">{{ settingsT('notifications.unsupported') }}</text>
+              </view>
+              <button tabindex="0" role="button" type="button" class="sp-mini" :aria-pressed="setting.enabled" :disabled="Boolean(notificationBusy)" @click="toggleNotification(setting)">
+                {{ notificationBusy === setting.category ? settingsT('common.saving') : setting.enabled ? settingsT('notifications.disable') : settingsT('notifications.enable') }}
+              </button>
+            </view>
+
+            <view class="sp-quiet">
+              <view class="sp-row">
+                <view class="sp-toggle-copy">
+                  <text class="sp-row-title">{{ settingsT('notifications.dndTitle') }}</text>
+                  <text class="sp-note">{{ settingsT('notifications.dndOnlyInApp') }}</text>
+                </view>
+                <button tabindex="0" role="switch" type="button" class="sp-toggle sp-toggle--compact" :aria-checked="notificationDndEnabled" :disabled="Boolean(notificationBusy)" @click="saveNotificationDnd(!notificationDndEnabled)">
+                  <image class="sp-track" :src="notificationDndEnabled ? iconTrackOn : iconTrackOff" mode="aspectFit" aria-hidden="true" />
+                </button>
+              </view>
+              <view v-if="notificationDndConflict" class="sp-inline-hint" role="status">
+                <image class="sp-inline-icon" :src="iconMaterialInfo" mode="aspectFit" aria-hidden="true" />
+                <text class="sp-note">{{ settingsT('notifications.conflict') }} {{ settingsT('notifications.conflictDetail') }}</text>
+              </view>
+              <view class="sp-row"><text class="sp-row-label">{{ settingsT('notifications.start') }}</text><picker mode="time" :value="notificationDndStart" :disabled="Boolean(notificationBusy)" @change="onNotificationDndTimeChange('start', String($event.detail.value))"><view class="sp-picker">{{ notificationDndStart }}</view></picker></view>
+              <view class="sp-row"><text class="sp-row-label">{{ settingsT('notifications.end') }}</text><picker mode="time" :value="notificationDndEnd" :disabled="Boolean(notificationBusy)" @change="onNotificationDndTimeChange('end', String($event.detail.value))"><view class="sp-picker">{{ notificationDndEnd }}</view></picker></view>
+              <button v-if="notificationDndDirty || notificationDndRetryPending" tabindex="0" role="button" type="button" class="sp-secondary" :disabled="Boolean(notificationBusy)" @click="saveNotificationDnd(notificationDndRetryPending ? notificationDndEnabled : true)">
+                {{ notificationBusy === 'dnd' ? settingsT('common.saving') : notificationDndRetryPending ? settingsT('notifications.retryUnified') : settingsT('notifications.saveWindow') }}
+              </button>
+            </view>
+
+            <text v-if="notificationError" class="sp-error" role="alert">{{ notificationError }}</text>
+            <text v-if="notificationSuccess" class="sp-success" role="status">{{ notificationSuccess }}</text>
+          </view>
+        </view>
+
+        <view class="sp-card">
+          <text class="sp-title" role="heading" aria-level="2">{{ settingsT('privacy.title') }}</text>
+          <text v-for="line in privacyLines" :key="line" class="sp-note">{{ line }}</text>
+          <view class="sp-divider"></view>
+          <text class="sp-label">{{ settingsT('privacy.consentTitle') }}</text>
+          <text class="sp-note">{{ settingsT('privacy.revokeSummary') }}</text>
+
+          <view v-if="withdrawSucceeded" ref="withdrawResultRef" tabindex="-1" class="sp-result" role="status">
+            <text class="sp-badge">{{ settingsT('privacy.revokedBadge') }}</text>
+            <text class="sp-result-title">{{ withdrawNotice || settingsT('privacy.revoked') }}</text>
+            <view class="sp-dot-row">
+              <image class="sp-dot" :src="iconDot" mode="aspectFit" aria-hidden="true" />
+              <view class="sp-dot-copy"><text class="sp-row-title">{{ settingsT('privacy.accountRetained') }}</text><text class="sp-note">{{ settingsT('privacy.accountRetainedDetail') }}</text></view>
+            </view>
+            <view class="sp-dot-row">
+              <image class="sp-dot" :src="iconDot1" mode="aspectFit" aria-hidden="true" />
+              <view class="sp-dot-copy"><text class="sp-row-title">{{ settingsT('privacy.reconsent') }}</text><text class="sp-note">{{ settingsT('privacy.reconsentDetail') }}</text></view>
+            </view>
+            <view class="sp-dot-row">
+              <image class="sp-dot" :src="iconDot2" mode="aspectFit" aria-hidden="true" />
+              <view class="sp-dot-copy"><text class="sp-row-title">{{ settingsT('privacy.feedback') }}</text><text class="sp-note">{{ settingsT('privacy.feedbackDetail') }}</text></view>
+            </view>
+            <text v-if="profileNavError" class="sp-error" role="alert">{{ profileNavError }}</text>
+            <button tabindex="0" role="button" type="button" class="sp-primary" :disabled="profileNavBusy" :aria-busy="profileNavBusy ? 'true' : 'false'" @click="returnToProfile">{{ profileNavBusy ? settingsT('common.saving') : settingsT('privacy.returnMe') }}</button>
+          </view>
+          <view v-else>
+            <view v-if="withdrawNotice" class="sp-inline-error" role="alert">
+              <text>{{ withdrawNotice }}</text>
+              <button tabindex="0" role="button" type="button" class="sp-text-btn" :disabled="withdrawing" @click="openWithdrawConfirm">{{ settingsT('privacy.retry') }}</button>
+            </view>
+            <button tabindex="0" role="button" type="button" class="sp-danger-outline" :disabled="withdrawing" @click="openWithdrawConfirm">{{ settingsT('privacy.revoke') }}</button>
+          </view>
+        </view>
+
+        <view class="sp-card">
+          <text class="sp-title" role="heading" aria-level="2">{{ settingsT('devices.title') }}</text>
+          <text class="sp-note">{{ settingsT('devices.description') }}</text>
+          <navigator class="sp-link" url="/pages/devices/devices">
+            <text>{{ settingsT('devices.manage') }}</text>
+            <image class="sp-link-icon" :src="iconChevR" mode="aspectFit" aria-hidden="true" />
+          </navigator>
+        </view>
+      </view>
+    </view>
+
+    <view class="settings-action-bar" role="region" :aria-label="settingsT('appearance.saveScope')">
+      <view class="settings-action-inner">
+        <view class="sp-action-copy" role="status" aria-live="polite">
+          <text class="sp-action-title">{{ saving ? settingsT('appearance.savingTitle') : saved ? settingsT('appearance.saved') : saveError ? settingsT('appearance.saveFailed') : settingsT('appearance.saveScope') }}</text>
+          <text class="sp-action-detail">{{ saving ? settingsT('appearance.savingDetail') : saved ? settingsT('appearance.savedDetail') : saveError || settingsT('appearance.saveScopeDetail') }}</text>
+        </view>
+        <button tabindex="0" role="button" type="button" class="sp-save" :class="{ 'is-busy': saving }" :disabled="saving || localeSaving || !preferenceDraftDirty" :aria-busy="saving ? 'true' : 'false'" @click="save">
+          {{ saving ? settingsT('common.saving') : saveError ? settingsT('common.retrySave') : settingsT('common.save') }}
+        </button>
+      </view>
+    </view>
+
+    <view v-if="withdrawConfirming" class="sp-overlay">
+      <view class="sp-scrim" aria-hidden="true" @click="cancelWithdraw"></view>
+      <view ref="withdrawDialogRef" class="sp-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-withdraw-title" aria-describedby="settings-withdraw-text">
+        <text id="settings-withdraw-title" class="sp-dialog-title" role="heading" aria-level="2">{{ settingsT('privacy.revokeConfirmTitle') }}</text>
+        <text id="settings-withdraw-text" class="sp-dialog-text">{{ settingsT('privacy.revokeSummary') }}</text>
+        <text v-if="withdrawNotice && !withdrawSucceeded" class="sp-error" role="alert">{{ withdrawNotice }}</text>
+        <button tabindex="0" role="button" type="button" class="sp-danger" :disabled="withdrawing" :aria-busy="withdrawing ? 'true' : 'false'" @click="confirmWithdrawLearningConsent">
+          {{ withdrawing ? settingsT('privacy.withdrawing') : settingsT('privacy.revokeConfirm') }}
+        </button>
+        <button ref="withdrawCancelRef" tabindex="0" role="button" type="button" class="sp-cancel" :disabled="withdrawing" @click="cancelWithdraw">{{ settingsT('common.cancel') }}</button>
       </view>
     </view>
   </view>
@@ -520,4 +944,167 @@ async function selectContentLocale(index: number): Promise<void> {
 .v2-settings-submit:hover{border-color:var(--v2-brand)}
 .v2-settings-quiet{box-sizing:border-box;display:grid;gap:var(--v2-space-2);min-width:0;max-width:100%;margin-top:var(--v2-space-2);padding-top:var(--v2-space-2);border-top:1px solid var(--v2-line);font-family:var(--v2-font)}
 .v2-settings-quiet>*{min-width:0;max-width:100%}
+
+/* MB-024 Figma settings skin. Decoration and control styles only; state/logic stays in the existing script. */
+#settings-shell {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: clip;
+  background-color: var(--v2-bg);
+  background-image: var(--yx-profile-page-image, none);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--v2-ink);
+  font-family: var(--v2-font);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+#settings-shell * { box-sizing: border-box; }
+#settings-shell :deep(.mobile-back) { position: relative; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 10px; border: 0; background: transparent; color: var(--yx-text-secondary); font-size: 13px; }
+#settings-shell :deep(.mobile-back--icon) { width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0; flex: 0 0 44px; }
+#settings-shell :deep(.mobile-back):focus .mobile-back-icon, #settings-shell :deep(.mobile-back--icon):focus .mobile-back-icon { outline: 2px solid var(--v2-focus) !important; outline-offset: 2px; border-radius: 50%; filter: drop-shadow(0 0 2px var(--v2-focus)); }
+#settings-shell :deep(.mobile-back):focus, #settings-shell :deep(.mobile-back--icon):focus { background: var(--v2-soft) !important; }
+#settings-shell :deep(.mobile-back)::after, #settings-shell :deep(.mobile-back--icon)::after { border: 0 !important; background: transparent !important; }
+#settings-shell :deep(.mobile-back):focus, #settings-shell :deep(.mobile-back--icon):focus, #settings-shell :deep(.mobile-back):focus-visible, #settings-shell :deep(.mobile-back--icon):focus-visible, #settings-shell :deep(.mobile-back):focus-within, #settings-shell :deep(.mobile-back--icon):focus-within { outline: 2px solid var(--v2-focus) !important; outline-offset: 2px; box-shadow: 0 0 0 2px var(--v2-focus) !important; border: 2px solid var(--v2-focus) !important; border-radius: 50%; }
+#settings-shell :deep(.mobile-back-icon) { display: block; width: 22px; height: 22px; }
+.settings-glow-wrap { position: absolute; top: -140px; right: -120px; z-index: 0; width: 360px; height: 300px; overflow: visible; pointer-events: none; }
+.settings-glow { position: absolute; top: -90px; left: -90px; width: 540px; height: 480px; max-width: none; }
+#settings-shell[data-resolved-theme="dark"] .settings-glow { opacity: .24; }
+#settings-shell[data-resolved-theme="high-contrast"] .settings-glow-wrap { display: none; }
+.settings-canvas {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: calc(18px + env(safe-area-inset-top)) clamp(16px, 6vw, 24px) calc(200px + env(safe-area-inset-bottom));
+}
+.settings-content { display: grid; gap: 16px; min-width: 0; }
+.sp-card {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid var(--yx-profile-glass-border, var(--v2-line));
+  border-radius: 24px;
+  background: var(--yx-profile-glass, var(--v2-card));
+  box-shadow: var(--yx-profile-card-shadow, none);
+  backdrop-filter: blur(var(--yx-profile-blur, 0px));
+  -webkit-backdrop-filter: blur(var(--yx-profile-blur, 0px));
+  overflow: hidden;
+}
+.sp-card > * { position: relative; z-index: 1; min-width: 0; }
+.sp-card-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; }
+.sp-title { display: block; color: var(--v2-ink); font-size: 18px; line-height: 1.45; font-weight: 700; }
+.sp-caption { display: block; color: var(--v2-mut); font-size: 12px; line-height: 1.5; }
+.sp-label { display: block; margin-top: 4px; color: var(--v2-mut); font-size: 13px; line-height: 1.5; }
+.sp-note { display: block; color: var(--v2-mut); font-size: 12px; line-height: 1.6; }
+.sp-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; min-width: 0; min-height: 44px; padding: 8px 0; border-top: 1px solid var(--v2-line); }
+.sp-row:first-of-type { border-top: 0; }
+.sp-row-label { color: var(--v2-mut); font-size: 13px; line-height: 1.5; }
+.sp-row-value { color: var(--v2-ink); font-size: 13px; line-height: 1.5; font-weight: 500; text-align: right; overflow-wrap: anywhere; }
+.sp-row-title { display: block; color: var(--v2-ink); font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-segments { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; padding: 4px; border-radius: 16px; background: var(--v2-soft); }
+.sp-segment { display: flex; flex: 1 1 auto; align-items: center; justify-content: center; min-width: max-content; max-width: 100%; min-height: 44px; padding: 8px 6px; border: 1px solid transparent; border-radius: 12px; color: var(--v2-mut); background: transparent; font: inherit; font-size: 13px; line-height: 1.5; text-align: center; }
+.sp-segment.is-selected { border-color: var(--v2-card); background: var(--v2-card); color: var(--v2-brand); box-shadow: var(--yx-settings-segment-shadow, none); font-weight: 600; }
+.sp-segment-desc, .sp-segment-state { display: none; }
+.sp-segment-title { display: block; }
+.sp-toggle { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; width: 100%; min-height: 44px; padding: 8px 0; border: 0; border-top: 1px solid var(--v2-line); color: var(--v2-ink); background: transparent; font: inherit; text-align: left; }
+.sp-toggle--compact { width: auto; border-top: 0; padding: 0; }
+.sp-toggle-copy { display: grid; gap: 2px; min-width: 0; }
+.sp-toggle-title { display: block; color: var(--v2-ink); font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-track { display: block; flex: none; width: 52px; height: 32px; max-width: none; }
+.sp-restore { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-top: 2px; }
+.sp-chips { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.sp-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--v2-line); border-radius: 22px; color: var(--v2-ink); background: var(--v2-card); font: inherit; font-size: 13px; line-height: 1.5; }
+.sp-chip.is-selected { border-color: var(--v2-brand); background: var(--v2-brand); color: var(--v2-inverse); font-weight: 600; }
+.sp-link { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; padding: 8px 0; border-top: 1px solid var(--v2-line); color: var(--v2-brand); font-size: 13px; line-height: 1.5; text-decoration: none; }
+#settings-shell .sp-link :deep(.navigator-wrap) { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; gap: 10px; width: 100% !important; min-width: 0; color: inherit; text-decoration: none; }
+#settings-shell .sp-link :deep(.navigator-wrap uni-text) { flex: 1 1 auto; min-width: 0; }
+.sp-link text { min-width: 0; overflow-wrap: anywhere; flex: 1 1 auto; }
+.sp-link-icon { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.sp-picker { display: flex; align-items: center; justify-content: flex-end; min-height: 44px; padding: 0 12px; border: 1px solid var(--v2-line); border-radius: 12px; color: var(--v2-brand); background: var(--v2-card); font-size: 13px; line-height: 1.5; }
+.sp-status { display: flex; align-items: flex-start; gap: 8px; padding: 12px 14px; border: 1px solid var(--yx-profile-glass-border, var(--v2-line)); border-radius: 18px; background: var(--yx-profile-glass, var(--v2-card)); color: var(--v2-mut); font-size: 13px; line-height: 1.5; }
+.sp-status--bad { border-color: var(--v2-bad); background: var(--v2-bad-soft); color: var(--v2-bad); }
+.sp-status-icon { display: block; flex: none; width: 17px; height: 17px; margin-top: 2px; }
+.sp-status-copy { display: grid; flex: 1 1 160px; gap: 2px; min-width: 0; }
+.sp-status-title { display: block; color: var(--v2-ink); font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-status--bad .sp-status-title { color: var(--v2-bad); }
+.sp-status-text { display: block; color: inherit; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.sp-text-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 8px; border: 0; color: var(--v2-brand); background: transparent; font: inherit; font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-notification-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; min-width: 0; padding: 8px 0; border-top: 1px solid var(--v2-line); }
+.sp-notification-copy { display: grid; flex: 1 1 150px; gap: 2px; min-width: 0; }
+.sp-mini { display: inline-flex; align-items: center; justify-content: center; min-width: 64px; min-height: 44px; padding: 0 12px; border: 1px solid var(--v2-line); border-radius: 12px; color: var(--v2-brand); background: var(--v2-card); font: inherit; font-size: 13px; line-height: 1.5; }
+.sp-quiet { display: grid; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--v2-line); }
+.sp-secondary { display: inline-flex; align-items: center; justify-content: center; justify-self: start; min-height: 44px; padding: 0 14px; border: 1px solid var(--v2-line); border-radius: 12px; color: var(--v2-brand); background: var(--v2-card); font: inherit; font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-inline-status { display: grid; gap: 4px; padding: 8px 0; }
+.sp-inline-hint { display: flex; align-items: flex-start; gap: 6px; min-width: 0; }
+.sp-inline-icon { display: block; flex: none; width: 17px; height: 17px; margin-top: 1px; }
+.sp-inline-icon--alert { width: 20px; height: 20px; }
+.sp-inline-icon--check { width: 16px; height: 16px; }
+.sp-success-row { display: flex; align-items: flex-start; gap: 6px; min-width: 0; }
+.sp-inline-error { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--v2-bad); font-size: 13px; line-height: 1.5; }
+.sp-error-copy { display: grid; flex: 1 1 160px; gap: 2px; min-width: 0; }
+.sp-error { display: block; color: var(--v2-bad); font-size: 13px; line-height: 1.5; }
+.sp-success { display: block; color: var(--v2-ok); font-size: 13px; line-height: 1.5; }
+.sp-divider { height: 1px; margin: 4px 0; background: var(--v2-line); }
+.sp-result { display: grid; gap: 8px; scroll-margin-bottom: 140px; padding: 12px; border: 1px solid var(--v2-line); border-radius: 16px; background: var(--v2-card); }
+.sp-badge { display: inline-flex; justify-self: start; align-items: center; min-height: 24px; padding: 2px 10px; border-radius: 999px; background: var(--v2-ok-soft); color: var(--v2-ok); font-size: 12px; line-height: 1.5; font-weight: 700; }
+.sp-result-title { display: block; color: var(--v2-ink); font-size: 14px; line-height: 1.5; font-weight: 600; }
+.sp-dot-row { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.sp-dot { display: block; flex: none; width: 8px; height: 8px; margin-top: 6px; }
+.sp-dot-copy { display: grid; gap: 2px; min-width: 0; }
+.sp-danger-outline { display: inline-flex; align-items: center; justify-content: center; justify-self: start; min-height: 44px; padding: 0 14px; border: 1px solid var(--v2-bad); border-radius: 14px; color: var(--v2-bad); background: transparent; font: inherit; font-size: 14px; line-height: 1.5; font-weight: 600; }
+.sp-primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; padding: 12px 18px; border: 0; border-radius: 14px; background: var(--v2-brand); color: var(--v2-inverse); font: inherit; font-size: 14px; line-height: 1.5; font-weight: 700; }
+.settings-action-bar { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; padding: 10px 24px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--v2-line); background: var(--v2-card); box-shadow: var(--yx-settings-bottom-bar-shadow, var(--yx-profile-card-shadow, none)); }
+.settings-action-inner { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; max-width: 760px; margin: 0 auto; }
+.sp-action-copy { display: grid; flex: 0 0 auto; gap: 2px; min-width: 0; }
+.sp-action-title { display: block; color: var(--v2-ink); font-size: 13px; line-height: 1.5; font-weight: 600; }
+.sp-action-detail { display: block; color: var(--v2-mut); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.sp-save { display: flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 100%; min-height: 48px; padding: 0 18px; border: 1px solid transparent; border-radius: 14px; background: var(--v2-brand); color: var(--v2-inverse); font: inherit; font-size: 14px; line-height: 1.5; font-weight: 700; }
+.sp-save[disabled] { opacity: .72; background: var(--v2-soft); color: var(--v2-mut); border-color: var(--v2-line); box-shadow: none; }
+.sp-save.is-busy[disabled] { opacity: .72; background: var(--v2-brand); color: var(--v2-inverse); border-color: transparent; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-save[disabled] { opacity: 1; background: var(--v2-card); color: var(--v2-mut); border: 2px solid var(--v2-line); }
+.sp-overlay { position: fixed; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.sp-scrim { position: absolute; inset: 0; background: var(--yx-profile-scrim, var(--v2-side)); opacity: var(--yx-profile-scrim-opacity, .45); }
+.sp-dialog { position: relative; z-index: 1; display: grid; gap: 10px; width: 100%; max-width: 342px; padding: 24px 24px 16px; border: 1px solid var(--yx-profile-glass-border, var(--v2-line)); border-radius: 28px; background: var(--v2-card); box-shadow: var(--yx-profile-card-shadow, none); text-align: center; }
+.sp-dialog-title { display: block; color: var(--v2-ink); font-size: 20px; line-height: 1.4; font-weight: 700; text-align: center; }
+.sp-dialog-text { display: block; color: var(--v2-mut); font-size: 15px; line-height: 1.5; text-align: center; }
+.sp-danger { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 6px; padding: 12px 18px; border: 0; border-radius: 14px; background: var(--v2-bad); color: var(--v2-inverse); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 700; text-align: center; }
+.sp-cancel { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; padding: 10px 8px; border: 0; color: var(--v2-brand); background: transparent; font: inherit; font-size: 14px; line-height: 1.5; font-weight: 500; text-align: center; }
+#settings-shell .settings-content button, #settings-shell .settings-action-bar button, #settings-shell .sp-dialog button { margin: 0; font-family: var(--v2-font); white-space: normal; }
+#settings-shell .settings-content button::after, #settings-shell .settings-action-bar button::after, #settings-shell .sp-dialog button::after { border: 0; }
+#settings-shell .sp-segment:focus-visible, #settings-shell .sp-chip:focus-visible, #settings-shell .sp-mini:focus-visible, #settings-shell .sp-secondary:focus-visible, #settings-shell .sp-text-btn:focus-visible, #settings-shell .sp-toggle:focus-visible, #settings-shell .sp-save:focus-visible, #settings-shell .sp-primary:focus-visible, #settings-shell .sp-danger-outline:focus-visible, #settings-shell .sp-danger:focus-visible, #settings-shell .sp-cancel:focus-visible { outline: none; box-shadow: var(--v2-focus); }
+#settings-shell .sp-button-disabled, #settings-shell button:disabled { cursor: default; }
+#settings-shell[data-resolved-theme="high-contrast"] { background-color: var(--yx-settings-accessible-page, var(--v2-bg)); }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-card { border-width: 2px; border-color: var(--yx-settings-accessible-border, var(--v2-line)); background: var(--yx-settings-accessible-surface, var(--v2-card)); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-caption, #settings-shell[data-resolved-theme="high-contrast"] .sp-note, #settings-shell[data-resolved-theme="high-contrast"] .sp-label, #settings-shell[data-resolved-theme="high-contrast"] .sp-row-label { color: var(--yx-settings-accessible-muted, var(--v2-mut)); }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segment { border-color: var(--v2-line); }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segment.is-selected { border: 2px solid var(--v2-brand); box-shadow: none; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-chip.is-selected { border-width: 2px; }
+#settings-shell[data-resolved-theme="high-contrast"] .settings-action-bar { border-top-width: 2px; box-shadow: none; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-status { border-width: 2px; }
+@media (max-width: 359px) {
+  .settings-canvas { padding-inline: 16px; }
+  .settings-action-bar { padding-left: 16px; padding-right: 16px; }
+  .sp-card { padding: 16px; border-radius: 20px; }
+  .sp-segments--theme { display: grid; }
+  .sp-segments--theme .sp-segment { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; gap: 4px; width: 100%; min-width: 0; justify-content: flex-start; align-items: flex-start; min-height: 72px; padding: 12px; text-align: left; }
+  .sp-segments--theme .sp-segment > .sp-segment-title, .sp-segments--theme .sp-segment > .sp-segment-desc, .sp-segments--theme .sp-segment > .sp-segment-state { display: block; width: 100%; min-width: 0; }
+  .sp-segments--theme .sp-segment-desc, .sp-segments--theme .sp-segment-state { display: block; }
+  .sp-segment-state { color: var(--v2-mut); font-size: 12px; }
+  .sp-segment.is-selected .sp-segment-state { color: var(--v2-brand); }
+  .settings-action-inner { align-items: stretch; }
+}
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme { display: grid; grid-auto-flow: row; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; gap: 4px; width: 100%; min-width: 0; justify-content: flex-start; align-items: flex-start; min-height: 72px; padding: 12px; text-align: left; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment > .sp-segment-title, #settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment > .sp-segment-desc, #settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment > .sp-segment-state { display: block; width: 100%; min-width: 0; }
+#settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment-desc, #settings-shell[data-resolved-theme="high-contrast"] .sp-segments--theme .sp-segment-state { display: block; }
+@media (prefers-reduced-motion: reduce) { #settings-shell * { animation: none !important; transition: none !important; } }
 </style>

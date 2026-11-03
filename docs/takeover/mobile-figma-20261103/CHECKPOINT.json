@@ -75,9 +75,9 @@
   "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
   "runtime_lease": {
     "port": 18183,
-    "holder": "ROOT_QA_INTEGRATION",
-    "pid": 71475,
-    "ptySession": 83456
+    "holder": "ROOT_QA_GROK_REGISTER",
+    "pid": 79961,
+    "ptySession": 70531
   },
   "trace_policy": "每页已有的编号是待核源锚点；TRACE_PENDING 必须在该页审签前逐字段补齐，不能编造或继承历史结果。",
   "tasks": [
@@ -1376,7 +1376,7 @@
       "name": "报告分享",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "READONLY_PREP_IN_PROGRESS",
+      "status": "STATIC_IMPLEMENTED10_TESTS_BROWSER_PENDING",
       "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
       "services_data_owners": [
         "assessment-service",
@@ -1437,7 +1437,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "NOT_RUN",
+        "source_tests": "B13 author10/10+types/build0;publicallowlist/noBearer;notyetRootreviewed"
       }
     },
     {
@@ -1846,7 +1847,7 @@
       "name": "设置与隐私",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "SOURCE_FROZEN_FOCUS_SCOPE_FIXED_AWAITING_COMBINED_REVIEW",
+      "status": "INTEGRATED_SCOPED_UI_REVIEW_TRACE_PENDING",
       "scope": "偏好/通知/隐私撤回读回与失败；受理不等于删除完成",
       "services_data_owners": [
         "learner-service.privacy",
@@ -1921,18 +1922,19 @@
         "learning-consent-withdrawal.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "Root selected ordinary+320HC200 bottom",
+        "interaction": "134 functional/layout checks;5 crosspagefocus;34 finalCSS checks separately",
+        "h5": "Root exact combination built-artifact",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
-        "source_tests": "23/23 author after review fixes; prior20/20 independent Root",
+        "independent_review": "reviews/INTEGRATION-B22-SETTINGS.md",
+        "source_tests": "24/24;types/build0;finalCSS preserves identical script",
         "candidate_browser": "B10 134 checks/28images;root boundarynegative unit+actual navigation,secondicon unavailable inauthor tree"
       },
-      "current_job": "dsh/profile-batch-09-settings-visual"
+      "current_job": "dsh/profile-batch-09-settings-visual",
+      "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json"
     },
     {
       "id": "MB-025",
@@ -1941,7 +1943,7 @@
       "name": "设备与会话",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "CORE151_ROOT_PASSED_RESPONSIVE_MATRIX_RUNNING",
+      "status": "FROZEN_SOURCE_CURRENT151_CORE96_STATE_AND22_MATRIX_AUTHOR_CHECKED",
       "scope": "当前设备标识、确认、撤销读回与被踢登录状态",
       "services_data_owners": [
         "iam-service"
@@ -2000,7 +2002,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
         "source_tests": "27/27 Root plus typecheck/H5 build passed before semantic findings; not acceptance",
-        "candidate_browser": "Root finalB10 151/151 across10core scenarios;source/build stable;B11 matrixrunning"
+        "candidate_browser": "B12 latest15ab:151core+96gaps247checks;B11 22cases27shots;21/2/1 nodecoverage no fakeEXPIRED"
       },
       "current_job": "dsh/devices-batch-10-core-scenarios"
     },
@@ -2011,7 +2013,7 @@
       "name": "权益与兑换",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "ISOLATED_READONLY_PREP_IN_PROGRESS",
+      "status": "READONLY_COMMERCE_IMPLEMENTATION_RUNNING_GATE_CLOSED",
       "scope": "权益/兑换真实可用范围；支付关闭且不伪造支付或权益",
       "services_data_owners": [
         "commerce-service"
@@ -2073,9 +2075,9 @@
       "route": "#/pages/b6-platform/b6-platform",
       "file": "apps/mobile/src/pages/b6-platform/b6-platform.vue",
       "name": "语言主题与性能",
-      "owner": "DSH",
+      "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "PENDING",
+      "status": "READONLY_PLATFORM_PREP_IN_PROGRESS",
       "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
       "services_data_owners": [
         "learner-service"
@@ -2865,7 +2867,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T20:42:43.288103+00:00",
+  "updated_at": "2026-11-03T21:10:38.492745+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2934,13 +2936,13 @@
   "profile_scope_note": "Current authorized round is Phase1 existing account/navigation/session/logout UI redesign. Full PRD18.1, missing displayName/avatar/stats and canonical-page mapping are honest gaps, not inherited completion; trace old token/lease claims are frozen-baseline facts superseded by receipts.",
   "latest_dispatch": {
     "policy": "ONLY_GROK_AND_DSH",
-    "grok": "grok/batch-13-register-implementation",
-    "dsh": "dsh/batch-24-support-browser-core",
-    "dshProfile": "dsh/profile-batch-11-share-prep",
-    "dshDevices": "dsh/devices-batch-11-matrix",
+    "grok": "grok/batch-15-register-observer",
+    "dsh": "dsh/batch-25-support-visual",
+    "dshProfile": "dsh/profile-batch-13-share-implementation",
+    "dshDevices": "dsh/devices-batch-13-platform-prep",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
     "codexSubagents": "STOPPED_NO_CALLS",
-    "dshCommerce": "dsh/commerce-batch-01-prep"
+    "dshCommerce": "dsh/commerce-batch-02-implementation"
   },
   "integration_batch_01": {
     "status": "TYPECHECK_H5_BUILD_55_TESTS_AND_599_SYNTHETIC_BROWSER_CHECKS_PASS_WITH_OPEN_NEGATIVE_GATE",
@@ -3026,5 +3028,28 @@
     "review": "reviews/INTEGRATION-B21-LOGIN.md",
     "realService": "NOT_RUN",
     "remote": "NOT_PUSHED"
+  },
+  "integration_batch_22_settings": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 15,
+    "sourceChecks": 24,
+    "types": 0,
+    "buildH5": 0,
+    "functionalBrowserChecks": 134,
+    "crossPageChecks": 5,
+    "finalCssLayoutChecks": 34,
+    "finalSourceSha": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+    "review": "reviews/INTEGRATION-B22-SETTINGS.md",
+    "remote": "NOT_PUSHED"
+  },
+  "qa_unresolved": {
+    "b23_localization": {
+      "candidate": "Grok B14 loaderfix not integrated",
+      "tests": 6,
+      "pass": 1,
+      "fail": 5,
+      "status": "FAILED_REVIEW_PENDING",
+      "scope": "neutral accountconflict/reset semantic+protectedWeb markup/regex;no tests weakened, no Web business edits"
+    }
   }
 }
