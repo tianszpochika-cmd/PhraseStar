@@ -1287,9 +1287,9 @@
       "route": "#/pages/b10-report/b10-report",
       "file": "apps/mobile/src/pages/b10-report/b10-report.vue",
       "name": "错题与报告",
-      "owner": "UNASSIGNED",
-      "wave": "LATER",
-      "status": "PENDING",
+      "owner": "DSH_PROFILE",
+      "wave": "D2",
+      "status": "READONLY_PREP_RUNNING",
       "scope": "报告/错题/补救，空/未就绪/失败/部分与真实数据区分",
       "services_data_owners": [
         "assessment-service",
@@ -1368,7 +1368,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "dsh/profile-batch-17-report-prep"
     },
     {
       "id": "MB-017",
@@ -1377,7 +1378,7 @@
       "name": "报告分享",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "AUTHOR_CORE33_PASS_MATRIX_PENDING",
+      "status": "AUTHOR73_MATRIX14_AUTH_PASS_FROZEN_PENDING_INTEGRATION",
       "scope": "有效/过期/撤销/错误只读，公开字段与访问权限按契约",
       "services_data_owners": [
         "assessment-service",
@@ -1440,7 +1441,7 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN",
         "source_tests": "B13 author10/10+types/build0;publicallowlist/noBearer;notyetRootreviewed",
-        "candidate_browser": "B14 author33checks11shots;retrying fixed;B15 timezone/HC/200/navigation pending"
+        "candidate_browser": "B15 UTCfix73checks21shots;B16 authenticated publicnoBearer14checks4shots;same9d031source"
       },
       "current_job": "dsh/profile-batch-15-share-matrix"
     },
@@ -2150,7 +2151,7 @@
       "name": "帮助与客服",
       "owner": "DSH",
       "wave": "D2",
-      "status": "AUTHOR_FIGMA_CORE198_PASS_MATRIX_RUNNING",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "工单和帮助实际边界，安全内容引用；不伪造发送/回复",
       "services_data_owners": [
         "admin-ops-service.support"
@@ -2218,10 +2219,10 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "Root local SFC unit probe reproduces retained list afterlogout and mismatched detail permanentloading;returned",
+        "independent_review": "reviews/INTEGRATION-B24-SUPPORT.md",
         "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore",
-        "source_tests": "Root33/33 API11+page22 afterB23;browserpending",
-        "candidate_browser": "B25 198checks24shots;Rootviewed2;B26remainingmatrix running"
+        "source_tests": "Root49/49 support/API/settings+types/H5build0",
+        "candidate_browser": "Root198/24;authorB26samepage220/13;tabletvisualsignoffpending"
       },
       "current_job": "dsh/batch-26-support-matrix"
     },
@@ -2876,7 +2877,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T21:39:01.264954+00:00",
+  "updated_at": "2026-11-03T21:46:23.639604+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2947,8 +2948,8 @@
     "policy": "ONLY_GROK_AND_DSH",
     "grok": "grok/batch-17-register-icon-contrast",
     "dsh": "dsh/batch-27-avatar-prep",
-    "dshProfile": "dsh/profile-batch-16-share-authenticated",
-    "dshDevices": "dsh/devices-batch-16-error-locale-browser",
+    "dshProfile": "dsh/profile-batch-17-report-prep",
+    "dshDevices": "dsh/devices-batch-17-qa-and-platform",
     "dshCommerce": "dsh/commerce-batch-03-browser",
     "quota": "NO_ACTUAL_QUOTA_STOP_OBSERVED",
     "codexSubagents": "STOPPED_NO_CALLS"
@@ -2983,7 +2984,7 @@
     "old_leaves_per_locale": 682,
     "new_leaf_count": 0
   },
-  "integration_commit": "3a91f6ec48022e9564268e126427c0410cde2f86",
+  "integration_commit": "01b75d4b5bbbe6b5a6cd1f5ba63bd354038a4735",
   "remote_push": "NOT_YET_PHASE_ACTIVE",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
@@ -3080,5 +3081,19 @@
     "review": "reviews/INTEGRATION-B23-DEVICES.md",
     "remote": "NOT_PUSHED",
     "finalSourceTests": 41
+  },
+  "integration_batch_24_support": {
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "files": 12,
+    "sourceTests": 49,
+    "mobileTypes": 0,
+    "i18nTypes": 0,
+    "h5Build": 0,
+    "rootBrowserChecks": 198,
+    "rootShots": 24,
+    "authorExtraMatrixChecks": 220,
+    "review": "reviews/INTEGRATION-B24-SUPPORT.md",
+    "tabletVisual": "PENDING_SEPARATE_SIGNOFF",
+    "remote": "NOT_PUSHED"
   }
 }

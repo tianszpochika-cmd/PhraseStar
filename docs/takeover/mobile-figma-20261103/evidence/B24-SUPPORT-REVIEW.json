@@ -1,0 +1,1437 @@
+{
+  "kind": "SYNTHETIC_UI_BUILT_ARTIFACT",
+  "status": "PASS",
+  "at": "2026-11-03T21:42:05.457Z",
+  "root": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+  "artifactRoot": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/apps/mobile/dist/build/h5",
+  "buildManifest": {
+    "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/build-manifest.json",
+    "indexSha256": "d82a2e880620ba1d63177d1e2e226b6f9aff5988086bb81c52025b608f262b76",
+    "digest": "d93888eabee6f2e96de0c76302da2fea3e2e8ab11f768a7f10537b194d3ef1b1",
+    "fileCount": 407
+  },
+  "checks": [
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13602/dbca4a4d-8dfc-42bd-9a81-6e11a78a15a4.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"42d74026faef97b560278abfdaeb3a433df15cf670bc28be941763af92cb8109\",\"builtHash\":\"42d74026faef97b560278abfdaeb3a433df15cf670bc28be941763af92cb8109\",\"bytes\":1762,\"sourceBytes\":1762}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/436f0799-07ce-4272-98d5-8f07d48d902a.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274\",\"builtHash\":\"dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274\",\"bytes\":223,\"sourceBytes\":223}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/4a33f481-cd16-4c61-bea1-96193f56fe8e.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"c2e1caae7fb317db8ee76b3be15d52db76f96b5a45b5c4397f816b7e11162faa\",\"builtHash\":\"c2e1caae7fb317db8ee76b3be15d52db76f96b5a45b5c4397f816b7e11162faa\",\"bytes\":671,\"sourceBytes\":671}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/578198cb-8a0a-48b9-a8d9-c33700b1cc9c.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be\",\"builtHash\":\"8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be\",\"bytes\":223,\"sourceBytes\":223}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/9924ab81-25e6-4306-9d0f-c8ea170e93c1.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"e600e904d45331229560426c7def35493bc2c0ddd7cc9031d1729e332f2ab569\",\"builtHash\":\"e600e904d45331229560426c7def35493bc2c0ddd7cc9031d1729e332f2ab569\",\"bytes\":737,\"sourceBytes\":737}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/e7767604-ee86-4801-9dc5-20c00d5027cb.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e\",\"builtHash\":\"c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e\",\"bytes\":1059,\"sourceBytes\":1059}"
+    },
+    {
+      "label": "assets",
+      "name": "assets: figma-support-169-13903/f4b24b66-c6a7-44a6-9023-1c2ac9fcf8b7.svg copied byte-identically",
+      "ok": true,
+      "detail": "{\"srcHash\":\"ea691de2953c4bede4e738673a0183b4fdfe36223a34be7b3da85b632b3f89b2\",\"builtHash\":\"ea691de2953c4bede4e738673a0183b4fdfe36223a34be7b3da85b632b3f89b2\",\"bytes\":737,\"sourceBytes\":737}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: support shell ready",
+      "ok": true,
+      "detail": "\"ready\""
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: localized header and page title",
+      "ok": true,
+      "detail": "{\"title\":\"客服与帮助\",\"pageTitle\":\"有疑问，我们一起解决。\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: fixture ticket count visible",
+      "ok": true,
+      "detail": "[\"SUP-2026-0101\",\"SUP-2026-0102\"]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: load-more action visible before final page",
+      "ok": true,
+      "detail": "{\"x\":43,\"y\":439.171875,\"width\":304,\"height\":48,\"top\":439.171875,\"right\":347,\"bottom\":487.171875,\"left\":43}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"title\":\"客服与帮助\",\"pageTitle\":\"有疑问，我们一起解决。\",\"rows\":2,\"rowIds\":[\"SUP-2026-0101\",\"SUP-2026-0102\"],\"scrollWidth\":390,\"viewport\":{\"width\":390,\"height\":844,\"dpr\":2},\"glowNatural\":{\"width\":540,\"height\":480},\"glowWrap\":{\"x\":150,\"y\":-140,\"width\":360,\"height\":300,\"top\":-140,\"right\":510,\"bottom\":160,\"left\":150},\"glowOverflow\":\"visible\",\"back\":{\"x\":22,\"y\":18,\"width\":44,\"height\":44,\"top\":18,\"right\":66,\"bottom\":62,\"left\":22},\"backBorder\":\"0px none rgb(104, 109, 128)\",\"backBackground\":\"rgba(0, 0, 0, 0)\",\"backNatural\":{\"width\":22,\"height\":22},\"infoNatural\":{\"width\":17,\"height\":17},\"rowNatural\":{\"width\":22,\"height\":22},\"loadMore\":{\"x\":43,\"y\":439.171875,\"width\":304,\"height\":48,\"top\":439.171875,\"right\":347,\"bottom\":487.171875,\"left\":43},\"hitIsLoadMore\":true,\"fixed\":[{\"class\":\"v2-support-fixed\",\"rect\":{\"x\":0,\"y\":753,\"width\":390,\"height\":91,\"top\":753,\"right\":390,\"bottom\":844,\"left\":0}}],\"resolvedTheme\":\"light\",\"supportState\":\"ready\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: resolved light theme",
+      "ok": true,
+      "detail": "light"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: glow asset is 540x480 in 360x300 slot",
+      "ok": true,
+      "detail": "{\"title\":\"客服与帮助\",\"pageTitle\":\"有疑问，我们一起解决。\",\"rows\":2,\"rowIds\":[\"SUP-2026-0101\",\"SUP-2026-0102\"],\"scrollWidth\":390,\"viewport\":{\"width\":390,\"height\":844,\"dpr\":2},\"glowNatural\":{\"width\":540,\"height\":480},\"glowWrap\":{\"x\":150,\"y\":-140,\"width\":360,\"height\":300,\"top\":-140,\"right\":510,\"bottom\":160,\"left\":150},\"glowOverflow\":\"visible\",\"back\":{\"x\":22,\"y\":18,\"width\":44,\"height\":44,\"top\":18,\"right\":66,\"bottom\":62,\"left\":22},\"backBorder\":\"0px none rgb(104, 109, 128)\",\"backBackground\":\"rgba(0, 0, 0, 0)\",\"backNatural\":{\"width\":22,\"height\":22},\"infoNatural\":{\"width\":17,\"height\":17},\"rowNatural\":{\"width\":22,\"height\":22},\"loadMore\":{\"x\":43,\"y\":439.171875,\"width\":304,\"height\":48,\"top\":439.171875,\"right\":347,\"bottom\":487.171875,\"left\":43},\"hitIsLoadMore\":true,\"fixed\":[{\"class\":\"v2-support-fixed\",\"rect\":{\"x\":0,\"y\":753,\"width\":390,\"height\":91,\"top\":753,\"right\":390,\"bottom\":844,\"left\":0}}],\"resolvedTheme\":\"light\",\"supportState\":\"ready\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: glow wrapper is not clipped",
+      "ok": true,
+      "detail": "visible"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: back control 44x44 with transparent borderless slot",
+      "ok": true,
+      "detail": "{\"back\":{\"x\":22,\"y\":18,\"width\":44,\"height\":44,\"top\":18,\"right\":66,\"bottom\":62,\"left\":22},\"border\":\"0px none rgb(104, 109, 128)\",\"background\":\"rgba(0, 0, 0, 0)\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: back chevron original 22x22",
+      "ok": true,
+      "detail": "{\"width\":22,\"height\":22}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: info icon original 17x17 slot",
+      "ok": true,
+      "detail": "{\"width\":17,\"height\":17}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: row icon original 22x22 slot",
+      "ok": true,
+      "detail": "{\"width\":22,\"height\":22}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: load-more CTA is not covered",
+      "ok": true,
+      "detail": "{\"loadMore\":{\"x\":43,\"y\":439.171875,\"width\":304,\"height\":48,\"top\":439.171875,\"right\":347,\"bottom\":487.171875,\"left\":43},\"hitIsLoadMore\":true}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: fixed action bar is bottom anchored",
+      "ok": true,
+      "detail": "{\"exists\":true,\"position\":\"fixed\",\"bar\":{\"x\":0,\"y\":753,\"width\":390,\"height\":91,\"top\":753,\"right\":390,\"bottom\":844,\"left\":0},\"bottomGap\":0,\"height\":91,\"paddingBottom\":\"30px\",\"background\":\"rgb(255, 255, 255)\",\"bodyPaddingBottom\":\"150px\",\"viewport\":{\"width\":390,\"height\":844},\"scrollWidth\":390,\"buttons\":[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: fixed bar safe-area padding and content clearance",
+      "ok": true,
+      "detail": "{\"paddingBottom\":\"30px\",\"bodyPaddingBottom\":\"150px\",\"height\":91}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: fixed bar primary is one soft Refresh",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: CORS GET from page origin succeeds",
+      "ok": true,
+      "detail": "{\"ok\":true,\"status\":200,\"type\":\"cors\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: CORS OPTIONS handled with 204",
+      "ok": true,
+      "detail": "{\"ok\":true,\"status\":204,\"type\":\"cors\"}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: OPTIONS route observed",
+      "ok": true,
+      "detail": "[{\"origin\":\"http://127.0.0.1:18070\",\"path\":\"/api/v1/support/tickets\"}]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: last card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":506.171875,\"barTop\":753,\"scrollY\":0,\"max\":844}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: fixed refresh triggers actual list read",
+      "ok": true,
+      "detail": "{\"before\":3,\"after\":4}"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-ready",
+      "name": "390-ready: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: initial loading state visible",
+      "ok": true,
+      "detail": "data-support-state=loading"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: fixed bar visible and primary disabled while loading",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":true,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: resolves to ready list with enabled fixed action",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loading",
+      "name": "390-loading: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: busy state visible and disabled",
+      "ok": true,
+      "detail": "正在加载更多…"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: fixed refresh disabled while page request is busy",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":true,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: repeated click produces one page read",
+      "ok": true,
+      "detail": "{\"reads\":1,\"cursors\":[\"cursor-support-page-2\"]}"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: page appended with ticketId dedupe",
+      "ok": true,
+      "detail": "[\"SUP-2026-0101\",\"SUP-2026-0102\",\"SUP-2026-0103\"]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: final page hides load-more action",
+      "ok": true,
+      "detail": "load-more absent"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: same opaque cursor used",
+      "ok": true,
+      "detail": "[\"cursor-support-page-2\"]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: fixed refresh re-enabled after final page",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: final card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":525.5625,\"barTop\":753,\"scrollY\":0,\"max\":844}"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore",
+      "name": "390-loadmore: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: local pagination error visible",
+      "ok": true,
+      "detail": "更多工单暂时无法读取。"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: previously verified prefix retained",
+      "ok": true,
+      "detail": "[\"SUP-2026-0101\",\"SUP-2026-0102\"]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: fixed retry is the single strong action",
+      "ok": true,
+      "detail": "[{\"text\":\"重试\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--primary\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: retry same cursor and append without duplicates",
+      "ok": true,
+      "detail": "{\"reads\":2,\"cursors\":[\"cursor-support-page-2\",\"cursor-support-page-2\"],\"ids\":[\"SUP-2026-0101\",\"SUP-2026-0102\",\"SUP-2026-0103\"]}"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-500",
+      "name": "390-loadmore-500: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: empty copy visible",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n暂无可见工单。\n刷新"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: empty is distinct from error",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n暂无可见工单。\n刷新"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no load-more on empty list",
+      "ok": true,
+      "detail": "no loadmore"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: fixed refresh is available",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: fixed refresh triggers actual read",
+      "ok": true,
+      "detail": "{\"before\":2,\"after\":3}"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: empty card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":376.78125,\"barTop\":753,\"scrollY\":0,\"max\":844}"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-empty",
+      "name": "390-empty: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: explicit list error visible",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n工单服务暂时不可用，请稍后再试。\n重试"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: not presented as empty",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n工单服务暂时不可用，请稍后再试。\n重试"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: fixed retry is the single strong action",
+      "ok": true,
+      "detail": "[{\"text\":\"重试\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--primary\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: fixed retry recovers real list",
+      "ok": true,
+      "detail": "{\"reads\":3,\"ids\":[\"SUP-2026-0101\",\"SUP-2026-0102\"]}"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-list-failure",
+      "name": "390-list-failure: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: ticket-row layout and state badge",
+      "ok": true,
+      "detail": "[{\"title\":\"工单 SUP-2026-0101\",\"subtitle\":\"媒体与设备\",\"badge\":\"已提交\"},{\"title\":\"创建时间\",\"subtitle\":\"2026/11/03 16:30\",\"badge\":\"普通\"}]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: date row and priority badge use real fields",
+      "ok": true,
+      "detail": "{\"rows\":[{\"title\":\"工单 SUP-2026-0101\",\"subtitle\":\"媒体与设备\",\"badge\":\"已提交\"},{\"title\":\"创建时间\",\"subtitle\":\"2026/11/03 16:30\",\"badge\":\"普通\"}],\"expectedDate\":\"2026/11/03 16:30\"}"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no label-field table or internal queue as main content",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: fixed bar has back + soft query action",
+      "ok": true,
+      "detail": "[{\"text\":\"返回工单列表\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--ghost\",\"rect\":{\"x\":20,\"y\":766,\"width\":147,\"height\":48,\"top\":766,\"right\":167,\"bottom\":814,\"left\":20}},{\"text\":\"查询状态\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":175,\"y\":766,\"width\":195,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":175}}]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: fixed bar clears detail card",
+      "ok": true,
+      "detail": "{\"bodyPaddingBottom\":\"150px\",\"height\":91}"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: last card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":406.171875,\"barTop\":753,\"scrollY\":0,\"max\":844}"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: fixed query triggers actual detail read",
+      "ok": true,
+      "detail": "{\"before\":1,\"after\":[\"SUP-2026-0101\",\"SUP-2026-0101\"]}"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: back restores list and keeps continuation",
+      "ok": true,
+      "detail": "loadmore present"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail",
+      "name": "390-detail: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: explicit not-found copy",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n工单详情\n工单不存在或当前账号不可见。\n返回工单列表\n重试"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no fabricated ticket rows",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: request used requested id",
+      "ok": true,
+      "detail": "[\"SUP-2026-0102\"]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: back keeps list continuation",
+      "ok": true,
+      "detail": "loadmore present"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-404",
+      "name": "390-detail-404: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no private ticket remains visible",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\n暂时无法访问这项内容\\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\\n管理账号\\n帮助与反馈\\n退出登录\"}"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: guard navigates or shows explicit forbidden/error",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\n暂时无法访问这项内容\\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\\n管理账号\\n帮助与反馈\\n退出登录\"}"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: not presented as empty",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-403",
+      "name": "390-detail-403: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: explicit error, not stuck loading",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n工单详情\n工单服务暂时不可用，请稍后再试。\n返回工单列表\n重试"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no wrong ticket rows",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: request id recorded",
+      "ok": true,
+      "detail": "[\"SUP-2026-0101\"]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: back keeps continuation",
+      "ok": true,
+      "detail": "loadmore present"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-detail-mismatch",
+      "name": "390-detail-mismatch: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: page read attempted",
+      "ok": true,
+      "detail": "{\"reads\":2,\"cursors\":[\"cursor-support-page-2\",\"cursor-support-page-2\"]}"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no private rows or detail remain",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/login/login?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\nPhraseStar\\n欢迎回来\\n从上次停下的地方继续\\n登录\\n账号\\n输入邮箱或账号\\n密码\\n输入密码\\n忘记密码\\n信息仅用于登录与学习进度，可随时在设置中管理\\n登录并继续\\n还没有账号？\\n注册\\n查看协议和隐私政策，后续按提示确认\\n用户协议\\n隐私政策\"}"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: guard navigates or shows explicit error",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/login/login?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\nPhraseStar\\n欢迎回来\\n从上次停下的地方继续\\n登录\\n账号\\n输入邮箱或账号\\n密码\\n输入密码\\n忘记密码\\n信息仅用于登录与学习进度，可随时在设置中管理\\n登录并继续\\n还没有账号？\\n注册\\n查看协议和隐私政策，后续按提示确认\\n用户协议\\n隐私政策\"}"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: not presented as empty",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-401",
+      "name": "390-page2-401: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: page read attempted",
+      "ok": true,
+      "detail": "{\"reads\":1,\"cursors\":[\"cursor-support-page-2\"]}"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no private rows or detail remain",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\n暂时无法访问这项内容\\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\\n管理账号\\n帮助与反馈\\n退出登录\"}"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: guard navigates or shows explicit error",
+      "ok": true,
+      "detail": "{\"url\":\"https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport\",\"supportState\":null,\"rows\":0,\"detailFields\":0,\"ticketRows\":0,\"text\":\"语学星\\n暂时无法访问这项内容\\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\\n管理账号\\n帮助与反馈\\n退出登录\"}"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: not presented as empty",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-page2-403",
+      "name": "390-page2-403: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: legacy tag and real legacy state visible",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n工单 synthetic-legacy-1\n设备问题 · 处理中\n旧版工单\n刷新"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no formal ticket fabricated",
+      "ok": true,
+      "detail": "客服与帮助\n有疑问，我们一起解决。\n我们来帮你\n暂不能提交新工单\n可以在这里查看已有工单的编号与处理进度。\n我的工单\n工单 synthetic-legacy-1\n设备问题 · 处理中\n旧版工单\n刷新"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no load-more on legacy single page",
+      "ok": true,
+      "detail": "no loadmore"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-legacy",
+      "name": "390-legacy: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: English ticket rows and badges",
+      "ok": true,
+      "detail": "[{\"title\":\"Ticket SUP-2026-0101\",\"subtitle\":\"Media & device\",\"badge\":\"Open\"},{\"title\":\"Created\",\"subtitle\":\"11/03/2026, 04:30 PM\",\"badge\":\"Normal\"}]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: date formatted under en-US UI locale",
+      "ok": true,
+      "detail": "{\"actual\":\"11/03/2026, 04:30 PM\",\"expectedDate\":\"11/03/2026, 04:30 PM\",\"lang\":\"en-US\"}"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: fixed bar English labels fit",
+      "ok": true,
+      "detail": "[{\"text\":\"Back to tickets\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--ghost\",\"rect\":{\"x\":20,\"y\":766,\"width\":147,\"height\":48,\"top\":766,\"right\":167,\"bottom\":814,\"left\":20}},{\"text\":\"Check status\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":175,\"y\":766,\"width\":195,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":175}}]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"exists\":true,\"position\":\"fixed\",\"bar\":{\"x\":0,\"y\":753,\"width\":390,\"height\":91,\"top\":753,\"right\":390,\"bottom\":844,\"left\":0},\"bottomGap\":0,\"height\":91,\"paddingBottom\":\"30px\",\"background\":\"rgb(255, 255, 255)\",\"bodyPaddingBottom\":\"150px\",\"viewport\":{\"width\":390,\"height\":844},\"scrollWidth\":390,\"buttons\":[{\"text\":\"Back to tickets\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--ghost\",\"rect\":{\"x\":20,\"y\":766,\"width\":147,\"height\":48,\"top\":766,\"right\":167,\"bottom\":814,\"left\":20}},{\"text\":\"Check status\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":175,\"y\":766,\"width\":195,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":175}}]}"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-en-detail",
+      "name": "390-en-detail: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: first cursor page appended",
+      "ok": true,
+      "detail": "[\"SUP-2026-0101\",\"SUP-2026-0102\",\"SUP-2026-0103\"]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: next action remains before cycle is detected",
+      "ok": true,
+      "detail": "loadmore present"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: explicit A->B->A cursor error visible",
+      "ok": true,
+      "detail": "moreStale"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: exactly two cursor reads, no loop",
+      "ok": true,
+      "detail": "{\"reads\":2,\"cursors\":[\"cursor-support-page-2\",\"cursor-support-page-3\"]}"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: one clear recovery action, no notice duplicate",
+      "ok": true,
+      "detail": "{\"bar\":[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":766,\"width\":350,\"height\":48,\"top\":766,\"right\":370,\"bottom\":814,\"left\":20}}],\"noticeButtons\":0}"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: fixed refresh recovers a fresh list chain",
+      "ok": true,
+      "detail": "{\"before\":2,\"after\":3,\"ids\":[\"SUP-2026-0101\",\"SUP-2026-0102\"]}"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-loadmore-cycle",
+      "name": "390-loadmore-cycle: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-320-short",
+      "name": "320-short: fixed bar bottom anchored and visible",
+      "ok": true,
+      "detail": "{\"exists\":true,\"position\":\"fixed\",\"bar\":{\"x\":0,\"y\":477,\"width\":320,\"height\":91,\"top\":477,\"right\":320,\"bottom\":568,\"left\":0},\"bottomGap\":0,\"height\":91,\"paddingBottom\":\"30px\",\"background\":\"rgb(255, 255, 255)\",\"bodyPaddingBottom\":\"150px\",\"viewport\":{\"width\":320,\"height\":568},\"scrollWidth\":320,\"buttons\":[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":16,\"y\":490,\"width\":288,\"height\":48,\"top\":490,\"right\":304,\"bottom\":538,\"left\":16}}]}"
+    },
+    {
+      "label": "390-320-short",
+      "name": "320-short: content padding clears fixed bar",
+      "ok": true,
+      "detail": "{\"bodyPaddingBottom\":\"150px\",\"height\":91}"
+    },
+    {
+      "label": "390-320-short",
+      "name": "320-short: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"exists\":true,\"position\":\"fixed\",\"bar\":{\"x\":0,\"y\":477,\"width\":320,\"height\":91,\"top\":477,\"right\":320,\"bottom\":568,\"left\":0},\"bottomGap\":0,\"height\":91,\"paddingBottom\":\"30px\",\"background\":\"rgb(255, 255, 255)\",\"bodyPaddingBottom\":\"150px\",\"viewport\":{\"width\":320,\"height\":568},\"scrollWidth\":320,\"buttons\":[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":16,\"y\":490,\"width\":288,\"height\":48,\"top\":490,\"right\":304,\"bottom\":538,\"left\":16}}]}"
+    },
+    {
+      "label": "390-320-short",
+      "name": "320-short: last card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":379.5625,\"barTop\":477,\"scrollY\":149,\"max\":717}"
+    },
+    {
+      "label": "390-320-short",
+      "name": "390-320-short: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-320-short",
+      "name": "390-320-short: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-320-short",
+      "name": "390-320-short: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-320-short",
+      "name": "390-320-short: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-320-short",
+      "name": "390-320-short: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "text-200: no horizontal overflow",
+      "ok": true,
+      "detail": "{\"exists\":true,\"position\":\"fixed\",\"bar\":{\"x\":0,\"y\":735.8125,\"width\":390,\"height\":108.1875,\"top\":735.8125,\"right\":390,\"bottom\":844,\"left\":0},\"bottomGap\":0,\"height\":108.1875,\"paddingBottom\":\"30px\",\"background\":\"rgb(255, 255, 255)\",\"bodyPaddingBottom\":\"150px\",\"viewport\":{\"width\":390,\"height\":844},\"scrollWidth\":390,\"buttons\":[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":748.8125,\"width\":350,\"height\":65.1875,\"top\":748.8125,\"right\":370,\"bottom\":814,\"left\":20}}]}"
+    },
+    {
+      "label": "390-text-200",
+      "name": "text-200: fixed bar stays within viewport",
+      "ok": true,
+      "detail": "[{\"text\":\"刷新\",\"disabled\":false,\"class\":\"v2-support-btn v2-support-btn--soft\",\"rect\":{\"x\":20,\"y\":748.8125,\"width\":350,\"height\":65.1875,\"top\":748.8125,\"right\":370,\"bottom\":814,\"left\":20}}]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "text-200: last card scrolls above fixed bar",
+      "ok": true,
+      "detail": "{\"lastBottom\":656.265625,\"barTop\":735.8125,\"scrollY\":305,\"max\":1149}"
+    },
+    {
+      "label": "390-text-200",
+      "name": "390-text-200: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "390-text-200: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "390-text-200: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "390-text-200: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-text-200",
+      "name": "390-text-200: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-hc",
+      "name": "HC: resolved high-contrast and glow hidden",
+      "ok": true,
+      "detail": "{\"resolved\":\"high-contrast\",\"glow\":\"none\",\"barBg\":\"rgb(13, 16, 24)\",\"badgeColor\":\"rgb(195, 181, 250)\"}"
+    },
+    {
+      "label": "390-hc",
+      "name": "HC: fixed bar and badge use visible semantic colors",
+      "ok": true,
+      "detail": "{\"resolved\":\"high-contrast\",\"glow\":\"none\",\"barBg\":\"rgb(13, 16, 24)\",\"badgeColor\":\"rgb(195, 181, 250)\"}"
+    },
+    {
+      "label": "390-hc",
+      "name": "390-hc: no unknown API",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-hc",
+      "name": "390-hc: no blocked external network",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-hc",
+      "name": "390-hc: no artifact misses",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-hc",
+      "name": "390-hc: no page errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "390-hc",
+      "name": "390-hc: no unexpected console errors",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "run",
+      "name": "run: source hashes stable across browser run",
+      "ok": true,
+      "detail": "{\"apps/mobile/src/pages/support/support.vue\":\"5a55baa420c1c6a39965e7a1080b7aa3bc7777b0baaa4835cc724009cadfd041\",\"apps/mobile/tests/support-page.test.mjs\":\"c0e6e8a007cb23d047871d1a5bd910bddb8c1bc74d0f539ea18a969c453de7e7\",\"packages/i18n/src/mobile-resources/support-page.ts\":\"f7e568ea5c204efe272f25935b21e2d75836cdeb116aefbf6493272031197091\",\"packages/i18n/src/mobile-experience.ts\":\"c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263\",\"apps/mobile/src/api/support.ts\":\"8a40819f7dfed8c5fcd8c4e1e43a846ad32cd3cbdba9d7276b6de1e8099bdf9b\",\"apps/mobile/src/api/client.ts\":\"561604d193bd29efb1bb087f18e4621faeea804522117d2a152ebae7cd3a3039\",\"apps/mobile/src/platform/gateway.ts\":\"75409dfb3a50ac619f0a8dbc8d0db8c3dd9c077c6b57c3c1c25e6f884201e6e0\",\"apps/mobile/src/auth/navigation.ts\":\"7365fec07c55857445fdb1d87b60659734e9e94dc06cfb65afabcb3e8863a4b5\",\"apps/mobile/src/auth/gateway-auth.ts\":\"746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277\",\"apps/mobile/src/stores/session.ts\":\"d944c9e84617af5ad553d2fbc1fd0c07120ce790411dbe02603f9338333f8931\",\"apps/mobile/src/App.vue\":\"04e93a75561f2f6e9aa1ced6b67564f1c04de253524f1896bfbfd9a968e9b6a8\",\"apps/mobile/src/components/MobilePageHeader.vue\":\"99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93\",\"apps/mobile/src/components/AppIcon.vue\":\"01384fdd9388e4ef5b6b5bb10bbad87ef33029302c3eedd902d675ce563ba1b5\",\"apps/mobile/src/pages.json\":\"949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518\",\"apps/mobile/src/platform/experience.ts\":\"8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575\",\"apps/mobile/src/platform/v2-foundation.ts\":\"8cbfe6c7665de68dfba0c281e3b0a2abc296d091dc043782e5ff7af775018c37\",\"apps/mobile/src/platform/b10-foundation.ts\":\"cb0839d7a66efa2f3cf342364c63d9a4118a00763cd6768d6f9d9e203ebb65ba\"}"
+    },
+    {
+      "label": "run",
+      "name": "run: built index hash matches manifest",
+      "ok": true,
+      "detail": "{\"built\":\"d82a2e880620ba1d63177d1e2e226b6f9aff5988086bb81c52025b608f262b76\",\"manifest\":\"d82a2e880620ba1d63177d1e2e226b6f9aff5988086bb81c52025b608f262b76\"}"
+    },
+    {
+      "label": "run",
+      "name": "run: artifact requests were served",
+      "ok": true,
+      "detail": "493"
+    },
+    {
+      "label": "run",
+      "name": "run: no external network blocked",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "label": "run",
+      "name": "run: no unknown API overall",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "pageErrors": [],
+  "blocked": [],
+  "unknown": [],
+  "artifactMisses": [],
+  "sourceHashesStart": {
+    "apps/mobile/src/pages/support/support.vue": "5a55baa420c1c6a39965e7a1080b7aa3bc7777b0baaa4835cc724009cadfd041",
+    "apps/mobile/tests/support-page.test.mjs": "c0e6e8a007cb23d047871d1a5bd910bddb8c1bc74d0f539ea18a969c453de7e7",
+    "packages/i18n/src/mobile-resources/support-page.ts": "f7e568ea5c204efe272f25935b21e2d75836cdeb116aefbf6493272031197091",
+    "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+    "apps/mobile/src/api/support.ts": "8a40819f7dfed8c5fcd8c4e1e43a846ad32cd3cbdba9d7276b6de1e8099bdf9b",
+    "apps/mobile/src/api/client.ts": "561604d193bd29efb1bb087f18e4621faeea804522117d2a152ebae7cd3a3039",
+    "apps/mobile/src/platform/gateway.ts": "75409dfb3a50ac619f0a8dbc8d0db8c3dd9c077c6b57c3c1c25e6f884201e6e0",
+    "apps/mobile/src/auth/navigation.ts": "7365fec07c55857445fdb1d87b60659734e9e94dc06cfb65afabcb3e8863a4b5",
+    "apps/mobile/src/auth/gateway-auth.ts": "746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277",
+    "apps/mobile/src/stores/session.ts": "d944c9e84617af5ad553d2fbc1fd0c07120ce790411dbe02603f9338333f8931",
+    "apps/mobile/src/App.vue": "04e93a75561f2f6e9aa1ced6b67564f1c04de253524f1896bfbfd9a968e9b6a8",
+    "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+    "apps/mobile/src/components/AppIcon.vue": "01384fdd9388e4ef5b6b5bb10bbad87ef33029302c3eedd902d675ce563ba1b5",
+    "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518",
+    "apps/mobile/src/platform/experience.ts": "8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575",
+    "apps/mobile/src/platform/v2-foundation.ts": "8cbfe6c7665de68dfba0c281e3b0a2abc296d091dc043782e5ff7af775018c37",
+    "apps/mobile/src/platform/b10-foundation.ts": "cb0839d7a66efa2f3cf342364c63d9a4118a00763cd6768d6f9d9e203ebb65ba"
+  },
+  "sourceHashesEnd": {
+    "apps/mobile/src/pages/support/support.vue": "5a55baa420c1c6a39965e7a1080b7aa3bc7777b0baaa4835cc724009cadfd041",
+    "apps/mobile/tests/support-page.test.mjs": "c0e6e8a007cb23d047871d1a5bd910bddb8c1bc74d0f539ea18a969c453de7e7",
+    "packages/i18n/src/mobile-resources/support-page.ts": "f7e568ea5c204efe272f25935b21e2d75836cdeb116aefbf6493272031197091",
+    "packages/i18n/src/mobile-experience.ts": "c9892749b118516b219525126b002ff477ce4a19ef506488b76d3b689ad35263",
+    "apps/mobile/src/api/support.ts": "8a40819f7dfed8c5fcd8c4e1e43a846ad32cd3cbdba9d7276b6de1e8099bdf9b",
+    "apps/mobile/src/api/client.ts": "561604d193bd29efb1bb087f18e4621faeea804522117d2a152ebae7cd3a3039",
+    "apps/mobile/src/platform/gateway.ts": "75409dfb3a50ac619f0a8dbc8d0db8c3dd9c077c6b57c3c1c25e6f884201e6e0",
+    "apps/mobile/src/auth/navigation.ts": "7365fec07c55857445fdb1d87b60659734e9e94dc06cfb65afabcb3e8863a4b5",
+    "apps/mobile/src/auth/gateway-auth.ts": "746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277",
+    "apps/mobile/src/stores/session.ts": "d944c9e84617af5ad553d2fbc1fd0c07120ce790411dbe02603f9338333f8931",
+    "apps/mobile/src/App.vue": "04e93a75561f2f6e9aa1ced6b67564f1c04de253524f1896bfbfd9a968e9b6a8",
+    "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93",
+    "apps/mobile/src/components/AppIcon.vue": "01384fdd9388e4ef5b6b5bb10bbad87ef33029302c3eedd902d675ce563ba1b5",
+    "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518",
+    "apps/mobile/src/platform/experience.ts": "8c0ea391e3c21e425549642f5758de31d5c2c4356d13d9f2a3b31614b8504575",
+    "apps/mobile/src/platform/v2-foundation.ts": "8cbfe6c7665de68dfba0c281e3b0a2abc296d091dc043782e5ff7af775018c37",
+    "apps/mobile/src/platform/b10-foundation.ts": "cb0839d7a66efa2f3cf342364c63d9a4118a00763cd6768d6f9d9e203ebb65ba"
+  },
+  "sourceHashesStable": true,
+  "guardObservations": [
+    {
+      "label": "390-detail-403",
+      "status": 403,
+      "url": "https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport",
+      "supportState": null,
+      "rows": 0,
+      "detailFields": 0,
+      "ticketRows": 0,
+      "text": "语学星\n暂时无法访问这项内容\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\n管理账号\n帮助与反馈\n退出登录"
+    },
+    {
+      "label": "390-page2-401",
+      "status": 401,
+      "url": "https://support-ui.synthetic.invalid/#/pages/login/login?returnTo=%252Fpages%252Fsupport%252Fsupport",
+      "supportState": null,
+      "rows": 0,
+      "detailFields": 0,
+      "ticketRows": 0,
+      "text": "语学星\nPhraseStar\n欢迎回来\n从上次停下的地方继续\n登录\n账号\n输入邮箱或账号\n密码\n输入密码\n忘记密码\n信息仅用于登录与学习进度，可随时在设置中管理\n登录并继续\n还没有账号？\n注册\n查看协议和隐私政策，后续按提示确认\n用户协议\n隐私政策"
+    },
+    {
+      "label": "390-page2-403",
+      "status": 403,
+      "url": "https://support-ui.synthetic.invalid/#/pages/forbidden/forbidden?returnTo=%252Fpages%252Fsupport%252Fsupport",
+      "supportState": null,
+      "rows": 0,
+      "detailFields": 0,
+      "ticketRows": 0,
+      "text": "语学星\n暂时无法访问这项内容\n当前账号无法打开这项内容。你仍可管理账号或查看帮助。\n管理账号\n帮助与反馈\n退出登录"
+    }
+  ],
+  "consoleErrors": [
+    {
+      "label": "390-loadmore-500",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    },
+    {
+      "label": "390-list-failure",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    },
+    {
+      "label": "390-list-failure",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    },
+    {
+      "label": "390-detail-404",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "label": "390-detail-403",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "label": "390-page2-401",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "label": "390-page2-401",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "label": "390-page2-403",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    }
+  ],
+  "corsProbe": {
+    "get": {
+      "ok": true,
+      "status": 200,
+      "type": "cors"
+    },
+    "options": {
+      "ok": true,
+      "status": 204,
+      "type": "cors"
+    },
+    "observedOptions": 1
+  },
+  "scope": "ROOT_INTEGRATION_REVIEW_SYNTHETIC_NOT_REAL_SERVICE",
+  "sourceTests": 49,
+  "mobileTypesExit": 0,
+  "i18nTypesExit": 0,
+  "h5BuildExit": 0,
+  "screenshotFiles": [
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-ready.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loading.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-busy.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-final.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-500.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-500-retry.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-empty.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-list-failure.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-list-failure-recovered.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-detail.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-detail-404.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-detail-403.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-detail-mismatch.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-page2-401.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-page2-403.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-legacy.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-en-detail.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-cycle.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-loadmore-cycle-recovered.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-320-short.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-320-short-bottom.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-text-200.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-text-200-bottom.png"
+    },
+    {
+      "label": null,
+      "file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support/screenshots/390-hc.png"
+    }
+  ],
+  "rootEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-24-support",
+  "authorMatrixB26": {
+    "sourceUnchanged": true,
+    "cases": 13,
+    "checks": 220,
+    "shots": 13,
+    "notRootReexecuted": true,
+    "tabletVisualLimit": "768/1024 page/bar fullwidth;no overflow;design-specific tablet signoff pending"
+  }
+}
