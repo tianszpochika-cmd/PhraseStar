@@ -16,7 +16,7 @@
 | `apps/mobile/src/components/MobilePageHeader.vue` | DSH | Grok B02 冻结发布后，由 Root 转交给 DSH 收口八页组合中的页头尺寸、原素材、文本放大及视觉问题；此文件优先于 components 常规归属。保持已发布 props 和默认导航行为，Grok 后续不写本文件 |
 | `apps/mobile/src/pages/{login,register,reset-password,onboarding,forbidden,assessment,home,today,learn,practice}/**` | Grok | MB-001…010；定级 DEC-04 未定，不能自行确立新策略 |
 | `apps/mobile/src/pages/{b4-games,b4-social,b4-offline,b3-listening,b11-listening,b3-speaking,b11-speaking,b3-writing}/**` | DSH | D1；只做页面与专属测试；复用已存在或经交接稳定的共享接口 |
-| `apps/mobile/src/pages/{report-share,devices,b5-commerce,b6-platform,support}/**` | DSH | D2；状态/持久化/权限事实必须沿用契约与真实 owner，不因设计开放 |
+| `apps/mobile/src/pages/{report-share,b5-commerce,b6-platform,support}/**` | DSH | D2；状态/持久化/权限事实必须沿用契约与真实 owner，不因设计开放 |
 | `apps/mobile/src/pages/profile/profile.vue`、`apps/mobile/tests/profile-page.test.mjs`、`src/static/figma-profile-{169-9356,169-9446,169-9544,169-9707,248-4123}/**` | DSH-PROFILE | 同一 DSH CLI/provider 的独立任务与工作树；主 DSH 会话不再写此页。已从 Grok 冻结包预载三个共享文件，不能在本任务中修改；实际会话与进程见 CHECKPOINT |
 | MB-011…016/018/021 页面 | 暂不分配 | 由 Root 根据负载、依赖和额度转交前指定单一 owner，并更新本账 |
 | `apps/mobile/src/{api,auth,domain,platform,stores}/**`；`packages/contracts/**`、服务与迁移 | 暂无授权写者 | 本轮先只读；发现必需改动提交具体文件和原因给 Root，按 contract-first/owner 指定唯一写者；不能让两个 CLI 随意改同一工具 |
@@ -42,3 +42,11 @@
 ## MB-024 transfer 2026-11-04
 
 DSH_PROFILE is now the sole author for apps/mobile/src/pages/settings/settings.vue and its dedicated settings-page tests/assets/resource module. Main DSH no longer writes settings. First preparation task is read-only; implementation starts after immutable registry publication is copied by Root. Central mobile-experience.ts and design tokens remain Grok owned.
+
+## MB-025 transfer 2026-11-04
+
+DSH_DEVICES is the sole author of devices.vue, devices-page.test.mjs, mobile-resources/devices-page.ts and dedicated figma-devices assets. Its isolated worktree is based on 3a91f6ec, with a distinct DSH CLI session; main DSH no longer writes devices. Shared mobile-settings-devices tests and all API/domain/auth/store/contracts remain read-only. Browser lease is pending.
+
+## Support adapter exception - batch15
+
+Main DSH alone may update apps/mobile/src/api/support.ts for existing formal GET list/detail contract adaptation and validated legacy IT7 compatibility. readMobileClosureBoard public behavior must stay compatible for settings. No create/message/upload/auth/server/contract writes. Dedicated support-page resources/assets/tests belong to main DSH.

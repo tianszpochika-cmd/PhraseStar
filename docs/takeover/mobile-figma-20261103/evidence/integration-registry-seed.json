@@ -1,0 +1,51 @@
+{
+  "at": "2026-11-03T18:56:07.478572+00:00",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-07-registry-frozen-publication",
+  "destination": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+  "files": [
+    {
+      "path": "packages/i18n/src/mobile-resources/settings-page.ts",
+      "sha256": "a54bc696507d70a8bc4f09bb8de7106f6a4232f6ff7c5787924278baa21d93db",
+      "before": null,
+      "after": "a54bc696507d70a8bc4f09bb8de7106f6a4232f6ff7c5787924278baa21d93db"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/devices-page.ts",
+      "sha256": "10eb73f356a62e86f5d31395e92f2e3ad930bcd858542363cb0cdf8bdd21ebeb",
+      "before": null,
+      "after": "10eb73f356a62e86f5d31395e92f2e3ad930bcd858542363cb0cdf8bdd21ebeb"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/commerce-page.ts",
+      "sha256": "78975f8ed3ff055af34da3a9034584cc2c3716809a18c03732d14dc29d764046",
+      "before": null,
+      "after": "78975f8ed3ff055af34da3a9034584cc2c3716809a18c03732d14dc29d764046"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/platform-page.ts",
+      "sha256": "a63dbacfc15923ba8979ce0636306772501ecd99ea8de10728d4f81113552115",
+      "before": null,
+      "after": "a63dbacfc15923ba8979ce0636306772501ecd99ea8de10728d4f81113552115"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/support-page.ts",
+      "sha256": "59e702a031f20d95c5242a75599b1c644c8d1a635d3cca046619b1966402665a",
+      "before": null,
+      "after": "59e702a031f20d95c5242a75599b1c644c8d1a635d3cca046619b1966402665a"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/report-share-page.ts",
+      "sha256": "2c6d07c3f558b2bc1d1401bc2a462e5b0865f5a364131fdd51e89b84368d7bbe",
+      "before": null,
+      "after": "2c6d07c3f558b2bc1d1401bc2a462e5b0865f5a364131fdd51e89b84368d7bbe"
+    },
+    {
+      "path": "packages/i18n/src/mobile-experience.ts",
+      "sha256": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+      "before": "4e5a0c3ce5dbf506fe3e31a3b03b05130cb4b25e4ce9e05feefc189667c5994f",
+      "after": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3"
+    }
+  ],
+  "product_code_authored_by": "Grok immutable registry",
+  "old_leaf_values": "unchanged by source-only six empty registry diff"
+}

@@ -2,7 +2,8 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
-- [首批七页组合审核](reviews/INTEGRATION-B01.md): 109 source/asset files; typecheck, H5 build and 55 tests pass; combined browser pending.
+- [七页组合浏览器复核](reviews/INTEGRATION-B13.md): compiled source commit 3a91f6ec,599 synthetic UI checks/39 images; real services/devices remain NOT_RUN.
+- [首批七页组合审核](reviews/INTEGRATION-B01.md): 109 source/asset files; typecheck, H5 build and 55 tests pass; combined599 checks/39 screenshots passed with open negative-gate exception.
 - [任务与追溯](TASKS.md)：逐页范围、原始编号、初步来源和未完成字段。
 - [文件与进程所有权](OWNERSHIP.md)：唯一写者、交接与 18183 串行租约。
 - [机器检查点](CHECKPOINT.json)：初始基线、候选所有权、额度状态、各层证据和待办。仅将实测结果写入，不预填 PASS。

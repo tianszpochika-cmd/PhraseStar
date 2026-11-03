@@ -1,0 +1,641 @@
+{
+  "schema_version": "B14-trace-1",
+  "base_commit": "3a91f6ec48022e9564268e126427c0410cde2f86",
+  "scope": "7 pages only: MB-022/023/029-033",
+  "source_hashes_from": "B13 integration results",
+  "trace_status": "TRACE_PENDING",
+  "ui_evidence": "B13 synthetic candidate only; 599/599 checks, 39 screenshots",
+  "pages": [
+    {
+      "id": "MB-029",
+      "name": "听力旧入口",
+      "file": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+      "route": "#/pages/b3-listening/b3-listening",
+      "sha": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+      "task": "TASKS.md:38",
+      "checkpoint": "CHECKPOINT.json:2280-2352",
+      "scope": "旧入口关闭说明与安全出口；不得假装提供音频",
+      "owners": [
+        "media-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-LISTENING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-026"
+        ],
+        "feat_v2": [
+          "FEAT-LST-001→V2-980-0107"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0476→V2-980-0238"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "impl": {
+        "route_file": "apps/mobile/src/pages.json:53",
+        "page_lines": "b3-listening.vue:28-50,56-68",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "session.restore; unauthenticated -> login (b3-listening.vue:50)",
+          "closed notice + alternatives (b3-listening.vue:56-68)",
+          "legacy load/submit/audio functions remain defined but mount has no live load (b3-listening.vue:23-27,50)",
+          "no audio request/permission on candidate mount"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/b2-vocabulary/b2-vocabulary",
+          "/pages/b3-reading/b3-reading",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed notice replaces live listening as candidate boundary; old media surface not counted",
+        "functions": [
+          "backToLearning",
+          "openRelated",
+          "alternatives"
+        ]
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; 390-b3-listening; 320/430/dark/HC/en/text200 variants for writing/offline only",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ],
+      "source_sha256": "87f67b305cf55b4fdcfab45df005f29b187f5066e1546667208db4376e78ffcc",
+      "task_row_ref": "TASKS.md:37",
+      "checkpoint_ref": "CHECKPOINT.json:2207-2279"
+    },
+    {
+      "id": "MB-022",
+      "name": "离线服务边界",
+      "file": "apps/mobile/src/pages/b4-offline/b4-offline.vue",
+      "route": "#/pages/b4-offline/b4-offline",
+      "source_sha256": "3f1c87247e3b3b7133869f11d8f08ecb8b2f9953c9d18307a8dd9781ca243ba4",
+      "task_row_ref": "TASKS.md:30",
+      "checkpoint_ref": "CHECKPOINT.json:1702-1767",
+      "scope": "未开放不显示可点必败下载；不把 PWA 当离线可学",
+      "service_data_owners": [
+        "learning-service",
+        "media-service",
+        "workflow-service（恢复编排，具体 owner 待逐项核对）"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER",
+          "ACT-P1-SYSTEM"
+        ],
+        "jny": [
+          "JNY-P1-14"
+        ],
+        "rule": [
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-014"
+        ],
+        "e2e": [
+          "E2E-P1-NOTIFICATION-SYNC"
+        ],
+        "arch": [
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SYNC-OFFLINE"
+        ],
+        "r1": [],
+        "bc": [],
+        "ic": [
+          "IC-062"
+        ],
+        "feat_v2": [
+          "FEAT-INF-004→V2-980-0408"
+        ],
+        "prd_atom_v2": [],
+        "rule_note": "TIME-SYNC 是相关链路，不是下载/离线学习完整规则",
+        "trace_status": "TRACE_PENDING"
+      },
+      "implementation": {
+        "route_file": "apps/mobile/src/pages.json:137",
+        "page_lines": "b4-offline.vue:20-31,36,38-64",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "session.restore; unauthenticated -> /pages/login/login (b4-offline.vue:20-25)",
+          "b4.restore + b4.loadWorld adjacent read (b4-offline.vue:23-24)",
+          "b4.syncOffline only for existing queue slot (b4-offline.vue:31,49-63)",
+          "no download permission/request, no PWA offline learning"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed header + closed notice + optional pending-sync queue; no download CTA",
+        "functions": [
+          "onShow",
+          "backToLearning",
+          "syncPending",
+          "queueStatusKey"
+        ]
+      },
+      "coverage": {
+        "page": "shared_page_or_parent_anchor, not a canonical seven-page ID set",
+        "feat_prd": "parent/partial anchors; exact feature scope not revalidated",
+        "r1_bc_ic": "related/shared cards or adjacent chains, not full page acceptance"
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; MB-022 390 screenshot 390-offline",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "status": "TRACE_PENDING",
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-005",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ]
+    },
+    {
+      "id": "MB-023",
+      "name": "我的",
+      "file": "apps/mobile/src/pages/profile/profile.vue",
+      "route": "#/pages/profile/profile",
+      "source_sha256": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944",
+      "task_row_ref": "TASKS.md:31",
+      "checkpoint_ref": "CHECKPOINT.json:1768-1839",
+      "scope": "账号和入口、会话状态、退出反馈；页面身份映射待核",
+      "service_data_owners": [
+        "iam-service",
+        "learner-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-VISITOR",
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-01"
+        ],
+        "rule": [],
+        "rule_note": "IAM 生命周期；无独立学习规则",
+        "int_ids": [
+          "INT-P1-001"
+        ],
+        "e2e": [
+          "E2E-P1-AUTH-LIFECYCLE"
+        ],
+        "arch": [
+          "ARCH-IAM-001",
+          "ARCH-IAM-002"
+        ],
+        "page": [
+          "PAGE-P1-ONB-GOAL",
+          "PAGE-P1-SETTINGS"
+        ],
+        "r1": [
+          "R1-004",
+          "R1-010"
+        ],
+        "bc": [
+          "BC-004",
+          "BC-010"
+        ],
+        "ic": [],
+        "feat_v2": [
+          "FEAT-USR-006→V2-980-0364"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-1052→V2-980-0373"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "implementation": {
+        "route_file": "apps/mobile/src/pages.json:144",
+        "page_lines": "profile.vue:17-18,56-69,128-139,153-183,242-266,278-301,303-327,331-464",
+        "component_lines": "profile.vue:331-464",
+        "operations": [
+          "ensureMobilePageAccess -> refreshAccount (profile.vue:278-301)",
+          "GET /learner/profile + /learner/targets + /learner/preferences via readAccount (api/learner-content.ts:633-640; profile.vue:242-266)",
+          "POST /auth/logout via session.logout (stores/session.ts:278; profile.vue:164-183)",
+          "openUniPage for 8 rows (profile.vue:128-139,424-464)",
+          "theme subscription resolvedTheme (profile.vue:17-18)"
+        ],
+        "routes": [
+          "/pages/b10-report/b10-report",
+          "/pages/b5-commerce/b5-commerce",
+          "/pages/b4-avatar/b4-avatar",
+          "/pages/today/today",
+          "/pages/b4-offline/b4-offline",
+          "/pages/b6-platform/b6-platform",
+          "/pages/settings/settings",
+          "/pages/support/support"
+        ],
+        "ui_delta": "account facts + 8 preserved navigation rows + loading/error/ready + logout confirm; no nickname/avatar/stats"
+      },
+      "coverage": {
+        "page": "shared_page_or_parent_anchor, not a canonical seven-page ID set",
+        "feat_prd": "parent/partial anchors; exact feature scope not revalidated",
+        "r1_bc_ic": "related/shared cards or adjacent chains, not full page acceptance"
+      },
+      "evidence": {
+        "synthetic": "B13 profile 123/15; 390/320/430/iPad/dark/HC/media-contrast/reduced/200",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "status": "TRACE_PENDING",
+      "gaps": [
+        "GAP-B14-001",
+        "GAP-B14-002",
+        "GAP-B14-003",
+        "GAP-B14-008",
+        "GAP-B14-009",
+        "GAP-B14-010",
+        "GAP-B14-011"
+      ]
+    },
+    {
+      "id": "MB-030",
+      "name": "听力与 Clips",
+      "file": "apps/mobile/src/pages/b11-listening/b11-listening.vue",
+      "route": "#/pages/b11-listening/b11-listening",
+      "sha": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+      "task": "TASKS.md:38",
+      "checkpoint": "CHECKPOINT.json:2280-2352",
+      "scope": "旧入口关闭说明与安全出口；不得假装提供音频",
+      "owners": [
+        "media-service",
+        "content-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-LISTENING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-026"
+        ],
+        "feat_v2": [
+          "FEAT-LST-001→V2-980-0107"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0476→V2-980-0238"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "impl": {
+        "route_file": "apps/mobile/src/pages.json:74",
+        "page_lines": "b11-listening.vue:91-114,120-131",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "closed notice + alternatives (b11-listening.vue:120-131)",
+          "onMounted explicitly no live load (b11-listening.vue:114)",
+          "session.identityRevision / clear stale data; no media request"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/b2-vocabulary/b2-vocabulary",
+          "/pages/b3-reading/b3-reading",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed notice replaces live listening as candidate boundary; old media surface not counted",
+        "functions": [
+          "backToLearning",
+          "openRelated",
+          "alternatives"
+        ]
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; 390-b3-listening; 320/430/dark/HC/en/text200 variants for writing/offline only",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ]
+    },
+    {
+      "id": "MB-031",
+      "name": "口语旧入口",
+      "file": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+      "route": "#/pages/b3-speaking/b3-speaking",
+      "sha": "e9054fa597d3e88c3c743d4fd87d46973a0ba68ee274af20f2a2075f27f2ef19",
+      "task": "TASKS.md:39",
+      "checkpoint": "CHECKPOINT.json:2353-2425",
+      "scope": "旧入口不可用说明与返回，不伪造语音评分",
+      "owners": [
+        "media-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SPEAKING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-027"
+        ],
+        "feat_v2": [
+          "FEAT-SPK-004→V2-980-0162"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0170→V2-980-0063"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "impl": {
+        "route_file": "apps/mobile/src/pages.json:67",
+        "page_lines": "b3-speaking.vue:35-57,62-73",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "closed notice + alternatives (b3-speaking.vue:62-73)",
+          "onMounted session restore only, no live recording/load (b3-speaking.vue:57)",
+          "legacy speaking/recording functions remain defined but not invoked from mount"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/b2-vocabulary/b2-vocabulary",
+          "/pages/b3-reading/b3-reading",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed notice replaces live listening as candidate boundary; old media surface not counted",
+        "functions": [
+          "backToLearning",
+          "openRelated",
+          "alternatives"
+        ]
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; 390-b3-listening; 320/430/dark/HC/en/text200 variants for writing/offline only",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ]
+    },
+    {
+      "id": "MB-032",
+      "name": "音标与跟读",
+      "file": "apps/mobile/src/pages/b11-speaking/b11-speaking.vue",
+      "route": "#/pages/b11-speaking/b11-speaking",
+      "sha": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7",
+      "task": "TASKS.md:40",
+      "checkpoint": "CHECKPOINT.json:2426-2498",
+      "scope": "关闭说明与返回，不提前申请麦克风或伪造评分",
+      "owners": [
+        "media-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-SPEAKING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-027"
+        ],
+        "feat_v2": [
+          "FEAT-SPK-004→V2-980-0162"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0170→V2-980-0063"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "impl": {
+        "route_file": "apps/mobile/src/pages.json:88",
+        "page_lines": "b11-speaking.vue:99-121,127-138",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "closed notice + alternatives (b11-speaking.vue:127-138)",
+          "onMounted no live load, no permission request (b11-speaking.vue:121)",
+          "legacy recording/load functions remain defined but not invoked from mount"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/b2-vocabulary/b2-vocabulary",
+          "/pages/b3-reading/b3-reading",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed notice replaces live listening as candidate boundary; old media surface not counted",
+        "functions": [
+          "backToLearning",
+          "openRelated",
+          "alternatives"
+        ]
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; 390-b3-listening; 320/430/dark/HC/en/text200 variants for writing/offline only",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ]
+    },
+    {
+      "id": "MB-033",
+      "name": "写作",
+      "file": "apps/mobile/src/pages/b3-writing/b3-writing.vue",
+      "route": "#/pages/b3-writing/b3-writing",
+      "sha": "f881392908301f35798c27183133f28bb1815a9bb90d2111202ba545c053b8d8",
+      "task": "TASKS.md:41",
+      "checkpoint": "CHECKPOINT.json:2499-2565",
+      "scope": "当前关闭说明/返回；无题或提交链不得提供虚假编辑成功",
+      "owners": [
+        "content-service",
+        "assessment-service"
+      ],
+      "trace": {
+        "act": [
+          "ACT-P1-LEARNER"
+        ],
+        "jny": [
+          "JNY-P1-06"
+        ],
+        "rule": [
+          "RULE-P1-SESSION",
+          "RULE-P1-TIME-SYNC"
+        ],
+        "int_ids": [
+          "INT-P1-005",
+          "INT-P1-006"
+        ],
+        "e2e": [
+          "E2E-P1-MULTISKILL"
+        ],
+        "arch": [
+          "ARCH-API-001",
+          "ARCH-REL-001"
+        ],
+        "page": [
+          "PAGE-P1-WRITING"
+        ],
+        "r1": [
+          "R1-048"
+        ],
+        "bc": [
+          "BC-043"
+        ],
+        "ic": [
+          "IC-028"
+        ],
+        "feat_v2": [
+          "FEAT-WRT-002→V2-980-0190"
+        ],
+        "prd_atom_v2": [
+          "PRD-ATOM-0454→V2-980-0195"
+        ],
+        "trace_status": "TRACE_PENDING"
+      },
+      "impl": {
+        "route_file": "apps/mobile/src/pages.json:46",
+        "page_lines": "b3-writing.vue:38-59,119,125-135",
+        "component_lines": "MobileClosedPracticeNotice.vue:71,89",
+        "operations": [
+          "closed notice + alternatives (b3-writing.vue:125-135)",
+          "onMounted no live load (b3-writing.vue:119)",
+          "legacy writing prompt/draft/submit functions remain defined but not invoked from mount"
+        ],
+        "routes": [
+          "/pages/login/login",
+          "/pages/b2-vocabulary/b2-vocabulary",
+          "/pages/b3-reading/b3-reading",
+          "/pages/today/today"
+        ],
+        "ui_delta": "closed notice replaces live listening as candidate boundary; old media surface not counted",
+        "functions": [
+          "backToLearning",
+          "openRelated",
+          "alternatives"
+        ]
+      },
+      "evidence": {
+        "synthetic": "B13 closed 476/24; 390-b3-listening; 320/430/dark/HC/en/text200 variants for writing/offline only",
+        "real": "NOT_RUN",
+        "source_stable": true
+      },
+      "gaps": [
+        "GAP-B14-004",
+        "GAP-B14-006",
+        "GAP-B14-007"
+      ]
+    }
+  ]
+}

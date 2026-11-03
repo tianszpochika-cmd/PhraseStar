@@ -1,0 +1,609 @@
+{
+  "batch": "integration-batch-13",
+  "status": "PASS",
+  "note": "Read-only browser QA on integration tree; product and tests unchanged. Synthentic UI only.",
+  "integration": {
+    "root": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+    "head": "3a91f6ec48022e9564268e126427c0410cde2f86",
+    "commit": "3a91f6ec48022e9564268e126427c0410cde2f86",
+    "worktreeStatus": "docs/takeover/mobile-figma-20261103/{CHECKPOINT.json,OWNERSHIP.md} only; no product writes",
+    "server": {
+      "base": "http://127.0.0.1:18183",
+      "http": 200,
+      "listenerPid": 53949,
+      "pty": "RootPTY4326",
+      "lease": "integration tree only"
+    }
+  },
+  "totals": {
+    "checks": 599,
+    "failures": 0,
+    "screenshots": 39
+  },
+  "closed": {
+    "status": "PASS",
+    "checks": 476,
+    "failed": 0,
+    "screenshots": 24,
+    "root": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+    "commit": "3a91f6ec48022e9564268e126427c0410cde2f86",
+    "sourceHashes": {
+      "apps/mobile/src/pages/b4-offline/b4-offline.vue": "3f1c87247e3b3b7133869f11d8f08ecb8b2f9953c9d18307a8dd9781ca243ba4",
+      "apps/mobile/src/pages/b3-writing/b3-writing.vue": "f881392908301f35798c27183133f28bb1815a9bb90d2111202ba545c053b8d8",
+      "apps/mobile/src/pages/b3-listening/b3-listening.vue": "87f67b305cf55b4fdcfab45df005f29b187f5066e1546667208db4376e78ffcc",
+      "apps/mobile/src/pages/b11-listening/b11-listening.vue": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+      "apps/mobile/src/pages/b3-speaking/b3-speaking.vue": "e9054fa597d3e88c3c743d4fd87d46973a0ba68ee274af20f2a2075f27f2ef19",
+      "apps/mobile/src/pages/b11-speaking/b11-speaking.vue": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7",
+      "apps/mobile/src/components/MobileClosedPracticeNotice.vue": "6d4a539810fa533d68b6e8c7fb612056066902e1033d0b4d0001e7863627c4f6",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93"
+    },
+    "sourceHashesEnd": {
+      "apps/mobile/src/pages/b4-offline/b4-offline.vue": "3f1c87247e3b3b7133869f11d8f08ecb8b2f9953c9d18307a8dd9781ca243ba4",
+      "apps/mobile/src/pages/b3-writing/b3-writing.vue": "f881392908301f35798c27183133f28bb1815a9bb90d2111202ba545c053b8d8",
+      "apps/mobile/src/pages/b3-listening/b3-listening.vue": "87f67b305cf55b4fdcfab45df005f29b187f5066e1546667208db4376e78ffcc",
+      "apps/mobile/src/pages/b11-listening/b11-listening.vue": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+      "apps/mobile/src/pages/b3-speaking/b3-speaking.vue": "e9054fa597d3e88c3c743d4fd87d46973a0ba68ee274af20f2a2075f27f2ef19",
+      "apps/mobile/src/pages/b11-speaking/b11-speaking.vue": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7",
+      "apps/mobile/src/components/MobileClosedPracticeNotice.vue": "6d4a539810fa533d68b6e8c7fb612056066902e1033d0b4d0001e7863627c4f6",
+      "apps/mobile/src/components/MobilePageHeader.vue": "99d0faeae5de53e0ef59208d6a4bbc4a0b5bef49029abf2670d7148f9de17d93"
+    },
+    "sourceStable": true,
+    "pageErrors": [
+      {
+        "label": "gate-writing",
+        "message": "Object",
+        "stack": "",
+        "url": "http://127.0.0.1:18183/#/pages/login/login?returnTo=%252Fpages%252Fb3-writing%252Fb3-writing",
+        "requests": []
+      }
+    ],
+    "console": {
+      "total": 106,
+      "resource404": 106,
+      "other": 0
+    },
+    "network": 335,
+    "matrix": [
+      "390-offline",
+      "390-writing",
+      "390-b3-listening",
+      "390-b11-listening",
+      "390-b3-speaking",
+      "390-b11-speaking",
+      "320-writing",
+      "430-writing",
+      "dark-writing",
+      "contrast-writing",
+      "theme-high-contrast-writing",
+      "en-US-writing",
+      "reduced-motion-writing",
+      "text-200-writing",
+      "320-offline",
+      "430-offline",
+      "dark-offline",
+      "contrast-offline",
+      "theme-high-contrast-offline",
+      "en-US-offline",
+      "reduced-motion-offline",
+      "text-200-offline"
+    ],
+    "screenshotMeta": [
+      {
+        "name": "390-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-offline.png",
+        "bytes": 106062,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "390-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-writing.png",
+        "bytes": 87874,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "390-b3-listening",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-b3-listening.png",
+        "bytes": 87499,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "390-b11-listening",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-b11-listening.png",
+        "bytes": 87568,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "390-b3-speaking",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-b3-speaking.png",
+        "bytes": 88204,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "390-b11-speaking",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/390-b11-speaking.png",
+        "bytes": 89107,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "320-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/320-writing.png",
+        "bytes": 77231,
+        "viewport": {
+          "width": 320,
+          "height": 640
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "430-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/430-writing.png",
+        "bytes": 97061,
+        "viewport": {
+          "width": 430,
+          "height": 932
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "dark-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/dark-writing.png",
+        "bytes": 87091,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "contrast-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/contrast-writing.png",
+        "bytes": 88210,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "theme-high-contrast-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/theme-high-contrast-writing.png",
+        "bytes": 73422,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "en-US-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/en-US-writing.png",
+        "bytes": 89397,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "reduced-motion-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/reduced-motion-writing.png",
+        "bytes": 87874,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "text-200-writing",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/text-200-writing.png",
+        "bytes": 87874,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "text-200-writing-after",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/text-200-writing-after.png",
+        "bytes": 97117,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "320-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/320-offline.png",
+        "bytes": 79433,
+        "viewport": {
+          "width": 320,
+          "height": 640
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "430-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/430-offline.png",
+        "bytes": 113714,
+        "viewport": {
+          "width": 430,
+          "height": 932
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "dark-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/dark-offline.png",
+        "bytes": 104422,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "contrast-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/contrast-offline.png",
+        "bytes": 106438,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "theme-high-contrast-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/theme-high-contrast-offline.png",
+        "bytes": 93394,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "en-US-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/en-US-offline.png",
+        "bytes": 109664,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "reduced-motion-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/reduced-motion-offline.png",
+        "bytes": 106062,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "text-200-offline",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/text-200-offline.png",
+        "bytes": 106062,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      },
+      {
+        "name": "text-200-offline-after",
+        "file": "/tmp/dsh-integration-batch-13/closed/screenshots/text-200-offline-after.png",
+        "bytes": 130325,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "state": "closed"
+      }
+    ]
+  },
+  "profile": {
+    "status": "PASS",
+    "checks": 123,
+    "failed": 0,
+    "screenshots": 15,
+    "root": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+    "base": "http://127.0.0.1:18183",
+    "sourceHashes": {
+      "apps/mobile/src/pages/profile/profile.vue": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944",
+      "apps/mobile/tests/profile-page.test.mjs": "e13dd94cef3dfffc456896a695874c56ade42384d30fbaaa810ea41f19dae8a8",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518",
+      "packages/i18n/src/mobile-resources/profile.ts": "7ee03fe70b08aeddad87005fe947542ee333ace6a82686f7a429935e2c2c8995",
+      "packages/i18n/src/mobile-experience.ts": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+      "packages/design-tokens/src/mobile.ts": "aaf6127f5a4e0a87aea2db1963c517203a9b2caa328aafd28cfbd66ddc9c0bd6"
+    },
+    "sourceHashesStart": {
+      "apps/mobile/src/pages/profile/profile.vue": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944",
+      "apps/mobile/tests/profile-page.test.mjs": "e13dd94cef3dfffc456896a695874c56ade42384d30fbaaa810ea41f19dae8a8",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518",
+      "packages/i18n/src/mobile-resources/profile.ts": "7ee03fe70b08aeddad87005fe947542ee333ace6a82686f7a429935e2c2c8995",
+      "packages/i18n/src/mobile-experience.ts": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+      "packages/design-tokens/src/mobile.ts": "aaf6127f5a4e0a87aea2db1963c517203a9b2caa328aafd28cfbd66ddc9c0bd6"
+    },
+    "sourceHashesEnd": {
+      "apps/mobile/src/pages/profile/profile.vue": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944",
+      "apps/mobile/tests/profile-page.test.mjs": "e13dd94cef3dfffc456896a695874c56ade42384d30fbaaa810ea41f19dae8a8",
+      "apps/mobile/src/pages.json": "949f390c7c3c8b127c980a0f53fc61e3e54459fdf4169bbb1597b065d9dc6518",
+      "packages/i18n/src/mobile-resources/profile.ts": "7ee03fe70b08aeddad87005fe947542ee333ace6a82686f7a429935e2c2c8995",
+      "packages/i18n/src/mobile-experience.ts": "77d2a016c9b5b77cf57103c5317aabbee552313d7a23cfd594ffdb6051352ad3",
+      "packages/design-tokens/src/mobile.ts": "aaf6127f5a4e0a87aea2db1963c517203a9b2caa328aafd28cfbd66ddc9c0bd6"
+    },
+    "sourceStable": true,
+    "pageErrors": [],
+    "console": [
+      {
+        "label": "390-error-retry",
+        "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      }
+    ],
+    "network": 102,
+    "matrix": [
+      "390-ready",
+      "390-en",
+      "320",
+      "430",
+      "ipad-portrait",
+      "ipad-landscape",
+      "dark",
+      "dark",
+      "theme-high-contrast",
+      "theme-high-contrast",
+      "media-contrast",
+      "media-contrast",
+      "reduced-motion",
+      "reduced-motion"
+    ],
+    "screenshotMeta": [
+      {
+        "name": "390-ready",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-ready.png",
+        "bytes": 92871,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "390-loading",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-loading.png",
+        "bytes": 92871,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "loading"
+      },
+      {
+        "name": "390-error",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-error.png",
+        "bytes": 64888,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "error"
+      },
+      {
+        "name": "390-ready-after-retry",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-ready-after-retry.png",
+        "bytes": 92871,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "390-login-after-logout",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-login-after-logout.png",
+        "bytes": 29783,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "login"
+      },
+      {
+        "name": "390-en",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/390-en.png",
+        "bytes": 94180,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "320",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/320.png",
+        "bytes": 67194,
+        "viewport": {
+          "width": 320,
+          "height": 640
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "430",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/430.png",
+        "bytes": 102511,
+        "viewport": {
+          "width": 430,
+          "height": 932
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "ipad-portrait",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/ipad-portrait.png",
+        "bytes": 124612,
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "ipad-landscape",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/ipad-landscape.png",
+        "bytes": 118638,
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "dark",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/dark.png",
+        "bytes": 87304,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "dark",
+        "state": "ready"
+      },
+      {
+        "name": "theme-high-contrast",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/theme-high-contrast.png",
+        "bytes": 60855,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "high-contrast",
+        "state": "ready"
+      },
+      {
+        "name": "media-contrast",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/media-contrast.png",
+        "bytes": 92871,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "reduced-motion",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/reduced-motion.png",
+        "bytes": 92871,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      },
+      {
+        "name": "text-200",
+        "file": "/tmp/dsh-integration-batch-13/profile/screenshots/text-200.png",
+        "bytes": 93072,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1,
+        "theme": "light",
+        "state": "ready"
+      }
+    ]
+  },
+  "excluded": [
+    "b4-games new稿 not integrated/tested",
+    "b4-social new稿 not integrated/tested",
+    "login/home new稿 not integrated/tested"
+  ],
+  "notRun": [
+    "real service/API",
+    "native app",
+    "iPad hardware",
+    "screen reader",
+    "deployment"
+  ],
+  "trace": "TRACE_PENDING; formal requirements/1:1 differences remain"
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": "B14-gaps-1",
+  "scope": "MB-022/023/029-033 only; local observation IDs are not canonical requirement IDs",
+  "items": [
+    {
+      "id": "GAP-B14-001",
+      "severity": "TRACE",
+      "blocking_full_acceptance": true,
+      "title": "profile 无 canonical PAGE-P1-PROFILE/ME",
+      "evidence": [
+        "TASKS.md:31",
+        "CHECKPOINT.json:1768-1839"
+      ],
+      "detail": "MB-023 的 PAGE 仅为 PAGE-P1-ONB-GOAL、PAGE-P1-SETTINGS 父/邻接；仓库没有 PAGE-P1-PROFILE/ME。需要文档注册或明确 MB-023 是多 PAGE 导航壳。",
+      "disposition": "DOC_REGISTRATION_OR_PRODUCT_DECISION"
+    },
+    {
+      "id": "GAP-B14-002",
+      "severity": "SCOPE",
+      "blocking_full_acceptance": true,
+      "title": "profile FEAT-USR-006 仅部分覆盖",
+      "evidence": [
+        "TASKS.md:31",
+        "CHECKPOINT.json:1768-1839",
+        "profile.vue:369-397"
+      ],
+      "detail": "候选覆盖账号/目标/语言事实与 8 导航、logout；昵称、头像上传/裁剪、发音偏好、直接目标编辑未覆盖。页面用「学」占位，不伪造。",
+      "disposition": "PARTIAL_FEATURE_SCOPE"
+    },
+    {
+      "id": "GAP-B14-003",
+      "severity": "SCOPE_NOT_P0",
+      "blocking_full_acceptance": false,
+      "title": "PRD 18.1 个人中心大范围未纳入本 UI 边界",
+      "evidence": [
+        "requirements/product-requirements.md:2237-2284",
+        "TASKS.md:31"
+      ],
+      "detail": "顶部等级/CEFR/XP/Streak/本周时长/VIP/Household 与我的学习/我的空间大部分不在候选；不能把 18.1 全量未来功能都贴成本包 P0，也不能把窄壳称完整个人中心。",
+      "disposition": "PRODUCT_SCOPE_DECISION"
+    },
+    {
+      "id": "GAP-B14-004",
+      "severity": "SCOPE",
+      "blocking_full_acceptance": true,
+      "title": "六关闭页只是关闭边界，不是原媒体/AI业务完成",
+      "evidence": [
+        "TASKS.md:30,37-41",
+        "b3-listening.vue:50",
+        "b3-speaking.vue:57",
+        "b11-listening.vue:114",
+        "b11-speaking.vue:121",
+        "b3-writing.vue:119"
+      ],
+      "detail": "页面是准确未开放告知 + 替代入口；听力/口语/写作/AI 的原始练习、音频、录音、评分/提交链未因新 UI 完成，不能以关闭页 PASS 代替业务验收。",
+      "disposition": "NOT_ACCEPTED_AS_ORIGINAL_FEATURE"
+    },
+    {
+      "id": "GAP-B14-005",
+      "severity": "TRACE",
+      "blocking_full_acceptance": true,
+      "title": "offline 缺 PRD-ATOM/V2 原子锚点",
+      "evidence": [
+        "CHECKPOINT.json:1702-1767",
+        "TASKS.md:30"
+      ],
+      "detail": "CHECKPOINT MB-022 的 prd_atom_v2 为空，只有 FEAT-INF-004 parent；没有下载/PWA 完成的原子覆盖。",
+      "disposition": "DOC_REGISTRATION_OR_NEW_FEATURE_BINDING"
+    },
+    {
+      "id": "GAP-B14-006",
+      "severity": "TRACE",
+      "blocking_full_acceptance": true,
+      "title": "关闭页仍保留 legacy live controls/functions",
+      "evidence": [
+        "b3-listening.vue:23-27,71-83",
+        "b3-speaking.vue:23-34,77-81",
+        "b11-speaking.vue:51-90",
+        "b3-writing.vue:82-119"
+      ],
+      "detail": "源码保留旧媒体/录音/写作函数与条件 UI；candidate mount 明确 no live load，但旧能力可能在某些状态渲染。应作为 source scope 记录，不能当作已验收或已删除。",
+      "disposition": "SOURCE_SCOPE_AUDIT"
+    },
+    {
+      "id": "GAP-B14-007",
+      "severity": "TRACE",
+      "blocking_full_acceptance": true,
+      "title": "R1/BC/IC 多为共享/邻接，不是页级完整卡",
+      "evidence": [
+        "CHECKPOINT.json:1702-1767,2207-2565",
+        "TASKS.md:30,37-41"
+      ],
+      "detail": "R1-048/BC-043/IC-026-028 描述关闭/媒体边界，不能覆盖原练习全链；profile R1-004/010、BC-004/010、INT/E2E 也是父/邻接。",
+      "disposition": "TRACE_PENDING"
+    },
+    {
+      "id": "GAP-B14-008",
+      "severity": "EVIDENCE",
+      "blocking_full_acceptance": true,
+      "title": "profile guest 不可达（AUTH_ONLY）",
+      "evidence": [
+        "auth/navigation.ts:15-22,249",
+        "profile.vue:56-59",
+        "B13 profile results"
+      ],
+      "detail": "未登录先被 guard 送 login；guest UI 仅是 fallback，不可作为浏览器 guest 证据，也不改 guard 放行。",
+      "disposition": "NOT_CONNECTED"
+    },
+    {
+      "id": "GAP-B14-009",
+      "severity": "EVIDENCE",
+      "blocking_full_acceptance": true,
+      "title": "B13 证据仅 synthetic candidate environment",
+      "evidence": [
+        "/tmp/dsh-integration-batch-13/results-summary.json",
+        "/tmp/dsh-integration-batch-13/closed/results.json",
+        "/tmp/dsh-integration-batch-13/profile/results.json"
+      ],
+      "detail": "599/599、39 图是 fixture 浏览器候选证据；真实 API/原生/iPad 硬件/读屏/部署均 NOT_RUN。",
+      "disposition": "NOT_RUN_REAL"
+    },
+    {
+      "id": "GAP-B14-010",
+      "severity": "TRACE",
+      "blocking_full_acceptance": true,
+      "title": "TASKS 七行仍是准备锚点而非完成签收",
+      "evidence": [
+        "TASKS.md:3-9,30-31,37-41"
+      ],
+      "detail": "TASKS 明确每行是准备锚点，不是完整实现范围或验收结论；所有七页保持 TRACE_PENDING。",
+      "disposition": "DOC_REGISTRATION"
+    },
+    {
+      "id": "GAP-B14-011",
+      "severity": "SCOPE",
+      "blocking_full_acceptance": false,
+      "title": "profile 目标/偏好写操作不在此壳",
+      "evidence": [
+        "profile.vue:242-266,278-301",
+        "api/learner-content.ts:633-640",
+        "TASKS.md:31"
+      ],
+      "detail": "profile 只读 profile/targets/preferences 并跳 onboarding/settings；FEAT 的直接目标修改/偏好写不在本页。",
+      "disposition": "SCOPE_BOUNDARY"
+    },
+    {
+      "id": "GAP-B14-012",
+      "severity": "EVIDENCE",
+      "blocking_full_acceptance": false,
+      "title": "A 的 social tile 44px 无浏览器实测",
+      "evidence": [
+        "apps/mobile/src/pages/b4-social/b4-social.vue:320",
+        "B14 static checks"
+      ],
+      "detail": "B14 无 18183 租约；44×44 仅源码/SFC/typecheck，不声称浏览器实测；后续需有租约复跑 rooms/joined 两槽位。",
+      "disposition": "NOT_RUN_BROWSER"
+    }
+  ]
+}
