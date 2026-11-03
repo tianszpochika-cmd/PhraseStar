@@ -1,9 +1,8 @@
-
-
-### Mobile B4 画质共享（2026-11-04）
-
-- B4 store 消费唯一共享画质控制器；不再创建或销毁私有控制器，保留业务与身份边界。Root23项测试、类型、H5构建与原生滚轮15项本地浏览器检查通过；原超时已归为测试点按错误并保留。全局偏好恢复、游戏溢出/热区、权益按钮高对比缺陷继续按作者推进，未作真机或部署签收。
 # Changelog
+
+- [MOBILE-FIGMA-B29-20261104] Clip the original games glow within the positioned page and enlarge quality picker target to44px. Root4 tests, H5 build and27 compiled-artifact browser checks passed at320/390/768; original assets/business boundaries unchanged. No real-device/deployment signoff.
+
+- [MOBILE-FIGMA-B28-20261104] B4 store uses the sole shared quality controller; owner, API and queue boundaries preserved. Root23 tests, types, H5 build and15 native-wheel browser checks passed; original QA click timeout retained. Shared startup hydration and commerce HC contrast remain open; no real-device/deployment signoff.
 
 - [MOBILE-FIGMA-B27-20261104] 注册形象、私有报告、成长世界三个空文案模块供唯一作者填充，保留当前10个资源模块、官网词条与包导出；Root旧叶值比较、mobile/i18n类型与现有16项文案/主题检查通过，不计页面完成或业务验收。
 

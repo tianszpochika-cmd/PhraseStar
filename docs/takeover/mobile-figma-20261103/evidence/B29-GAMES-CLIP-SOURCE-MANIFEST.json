@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-03T22:45:11.003328+00:00",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/avatar-games-batch-30-source-snapshot",
+  "method": "exact bytes verified before and after; frozen author file only",
+  "file": {
+    "path": "apps/mobile/src/pages/b4-games/b4-games.vue",
+    "sha256": "3e3fe3376d3c742dd6e15d66eea85ea77aef7ba06d088db21970ec12a5000529",
+    "bytes": 30654
+  },
+  "before": "c77eeb23aa9b1257428deba69c3b01ad0fec992ca9cc6efdabda34b8a067cd94"
+}

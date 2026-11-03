@@ -1,0 +1,33 @@
+{
+  "status": "PASS_LOCAL_SYNTHETIC_SCOPE",
+  "at": "2026-11-03T22:48:32.211137+00:00",
+  "source": "3e3fe3376d3c742dd6e15d66eea85ea77aef7ba06d088db21970ec12a5000529",
+  "productChange": "Only games page position:relative and quality chip min-height44px. Original glow/SVG size, business/auth/API/route unchanged.",
+  "rootTests": 4,
+  "buildExit": 0,
+  "index": "42b82ddbe1b994d2f54b04aecb4f9258c1d2e3e2e3d4a87f274d9f2769decf31",
+  "rootBrowser": {
+    "checks": 27,
+    "failed": 0,
+    "screenshots": 6,
+    "sourceStable": true,
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-29-games-clip",
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "observations": "html/body fit viewport; original540x480 glow clipped to positioned page; picker chip and host>=44px; real touch wheel plus quality cross-read."
+  },
+  "authorSeparateEvidence": {
+    "avatarChecks": 196,
+    "gamesChecks": 31,
+    "note": "Not combined with Root counts or each other."
+  },
+  "limits": [
+    "Avatar candidate not included.",
+    "Global early preference hydration still open Grok task.",
+    "Real service/account/device/reader/deployment NOT_RUN."
+  ],
+  "remotePush": false
+}
