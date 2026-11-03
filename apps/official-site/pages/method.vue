@@ -59,7 +59,7 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
           <p>{{ t("official.v1.core.method.answerNote") }}</p>
         </aside>
       </section>
-      <CoreFeatureCards :cards="features" icon="/figma-v1/assets/method-desktop-168-1502/imgFrame1.svg" :action="t('official.v1.core.method.viewSteps')" target="#recall-loop" />
+      <CoreFeatureCards variant="method" :cards="features" icon="/figma-v1/assets/method-desktop-168-1502/imgFrame1.svg" :action="t('official.v1.core.method.viewSteps')" target="#recall-loop" />
       <section id="recall-loop" class="v1-core-method__loop" aria-labelledby="method-loop-title">
         <p class="v1-core-method__eyebrow">{{ t("official.v1.core.method.loopEyebrow") }}</p>
         <h2 id="method-loop-title">{{ t("official.v1.core.method.loopTitle") }}</h2>
@@ -86,7 +86,7 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
 .v1-core-method__practice { min-width: 0; }
 .v1-core-method__eyebrow { color: var(--v1-brand); font: 600 12px/1.3 var(--v1-font-display); }
 .v1-core-method__sample h2 { margin-top: 18px; font-size: 29px; }
-.v1-core-method__prompt { margin-top: 14px; color: var(--v1-muted); font-size: 15px; }
+.v1-core-method__prompt { margin-top: 14px; color: var(--v1-copy-secondary); font-size: 15px; }
 .v1-core-method__words { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 33px; }
 .v1-core-method__words button { position: relative; min-width: 0; min-height: 48px; border: 2px solid transparent; border-radius: 12px; background: var(--v1-surface); color: var(--v1-brand); font: 600 16px var(--v1-font-display); }
 .v1-core-method__words button[aria-pressed="true"] { border-color: var(--v1-brand); }
@@ -99,11 +99,11 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
 .v1-core-method__reset { border: 1px solid var(--v1-brand); background: var(--v1-surface); color: var(--v1-brand); }
 .v1-core-method__notice { margin-top: 12px; color: var(--v1-muted); font-size: 12px; }
 .v1-core-method__answer { min-width: 0; padding: 18px 20px; border-radius: 23px; background: var(--v1-surface); }
-.v1-core-method__tick { display: grid; place-items: center; width: 49px; height: 49px; margin-top: 18px; border-radius: 15px; background: var(--v1-tint-mint); color: var(--v1-brand); font-size: 28px; }
+.v1-core-method__tick { display: grid; place-items: center; width: 49px; height: 49px; margin-top: 18px; border-radius: 15px; background: var(--v1-method-complete-bg); color: var(--v1-brand); font-size: 28px; }
 .v1-core-method__answer h3 { margin-top: 12px; font-size: 20px; }
-.v1-core-method__answer > strong { display: flex; align-items: center; min-height: 72px; margin-top: 12px; padding: 14px; border-radius: 13px; background: var(--v1-brand-soft); color: var(--v1-brand); font: 600 16px/1.4 var(--v1-font-display); }
+.v1-core-method__answer > strong { display: flex; align-items: center; min-height: 72px; margin-top: 12px; padding: 14px; border-radius: 13px; background: var(--v1-hero-art-surface); color: var(--v1-brand); font: 600 16px/1.4 var(--v1-font-display); }
 .v1-core-method__answer > p:last-child { margin-top: 20px; color: var(--v1-muted); font-size: 13px; }
-.v1-core-method__loop { margin-top: 46px; padding: 24px 22px 26px; border-radius: 25px; background: color-mix(in srgb, var(--v1-brand-soft) 25%, var(--v1-surface)); }
+.v1-core-method__loop { margin-top: 46px; padding: 24px 22px 26px; border-radius: 25px; background: var(--v1-section-soft); }
 .v1-core-method__loop > .v1-core-method__eyebrow, .v1-core-method__loop > h2, .v1-core-method__loop > p:not(.v1-core-method__eyebrow) { margin-left: 6px; }
 .v1-core-method__loop > h2 { margin-top: 16px; font-size: 29px; }
 .v1-core-method__loop > p:not(.v1-core-method__eyebrow) { margin-top: 10px; color: var(--v1-muted); font-size: 13px; }
@@ -111,20 +111,20 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
 .v1-core-method__stages, .v1-core-method__repair { min-width: 0; min-height: 243px; padding: 18px; border-radius: 18px; background: var(--v1-surface); }
 .v1-core-method__stages h3 { font-size: 16px; }
 .v1-core-method__stages ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 30px 0 0; padding: 0; list-style: none; }
-.v1-core-method__stages li { min-width: 0; min-height: 70px; padding: 10px; border-radius: 13px; background: var(--v1-brand-soft); }
-.v1-core-method__stages li:nth-child(2) { background: var(--v1-tint-sky); }
-.v1-core-method__stages li:nth-child(3) { background: var(--v1-tint-mint); }
+.v1-core-method__stages li { min-width: 0; min-height: 70px; padding: 10px; border-radius: 13px; background: var(--v1-goal-lilac); }
+.v1-core-method__stages li:nth-child(2) { background: var(--v1-goal-sky); }
+.v1-core-method__stages li:nth-child(3) { background: var(--v1-goal-mint); }
 .v1-core-method__stages strong, .v1-core-method__stages small { display: block; }
 .v1-core-method__stages strong { color: var(--v1-brand); font-size: 15px; }
 .v1-core-method__stages small { margin-top: 8px; color: var(--v1-muted); font-size: 11px; }
 .v1-core-method__repair h3 { font-size: 19px; }
-.v1-core-method__repair > div { min-height: 96px; margin-top: 18px; padding: 15px 17px; border-radius: 15px; background: var(--v1-brand-soft); }
+.v1-core-method__repair > div { min-height: 96px; margin-top: 18px; padding: 15px 17px; border-radius: 15px; background: var(--v1-goal-lilac); }
 .v1-core-method__repair > div strong { font-size: 16px; }
 .v1-core-method__repair > div p { margin-top: 8px; color: var(--v1-muted); font-size: 13px; }
 .v1-core-method__repair > p { margin-top: 26px; color: var(--v1-muted); font-size: 13px; }
 .v1-core-method :is(button, a):focus-visible { outline-color: var(--v1-focus); }
-:global(:root[data-theme="high-contrast"]) .v1-core-method__words button, :global(:root[data-theme="high-contrast"]) .v1-core-method__stages li { border: 1px solid var(--v1-border); }
-:global(:root[data-theme="high-contrast"]) .v1-core-method__words button[aria-pressed="true"] { border: 2px solid var(--v1-focus); }
+:root[data-theme="high-contrast"] .v1-core-method__words button, :root[data-theme="high-contrast"] .v1-core-method__stages li { border: 1px solid var(--v1-border); }
+:root[data-theme="high-contrast"] .v1-core-method__words button[aria-pressed="true"] { border: 2px solid var(--v1-focus); }
 @media (max-width: 850px) { .v1-core-method__sample { grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; } }
 @media (max-width: 700px) {
   .v1-core-method__container { padding-top: 43px; }

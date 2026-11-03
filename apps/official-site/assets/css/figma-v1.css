@@ -32,7 +32,7 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  unicode-range: U+0000-024F;
+  unicode-range: U+0000-024F, U+2192;
 }
 @font-face {
   font-family: "Outfit Full";
@@ -40,7 +40,7 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  unicode-range: U+0000-024F;
+  unicode-range: U+0000-024F, U+2192;
 }
 
 /* Website V1 shell. Semantic values are provided by @englishflow/design-tokens. */
@@ -732,7 +732,7 @@ dialog.v1-dialog-bare {
   .v1-site-footer--interior .v1-site-footer__mobile-links {
     margin: 14px 0 0;
     padding: 4px 0 20px;
-    border-top: 1px solid var(--v1-footer-border);
+    border-top: 1px solid var(--v1-footer-mobile-divider);
   }
 
   .v1-site-footer--information .v1-site-footer__mobile-links {

@@ -54,7 +54,7 @@ onMounted(() => {
 .v1-info-error__text { margin-top: 35px; color: var(--v1-muted); font-size: 15px; }
 .v1-info-error__card button { display: grid; width: 229px; min-height: 52px; place-items: center; margin-top: 50px; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); font-size: 15px; font-weight: 700; }
 .v1-info-error :is(a, button):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
-:global(html[data-theme="high-contrast"]) .v1-info-error__card { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-error__card { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) {
  .v1-info-error { padding-top: min(14.46vh, 122px); }
  .v1-info-error__card h1 { font-size: 23px; }

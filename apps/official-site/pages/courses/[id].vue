@@ -37,7 +37,7 @@ useOfficialSeo({ title: `${title.value} · 语学星`, description: t(directionT
           <small>{{ t("official.v1.core.detail.exampleMeaning") }}</small><span>{{ t("official.v1.core.detail.exampleFoot") }}</span>
         </div>
       </section>
-      <CoreFeatureCards class="v1-core-detail__features" :cards="features" icon="/figma-v1/assets/course-detail-desktop-168-1006/imgFrame1.svg" :action="t('official.v1.core.detail.learnMore')" target="/method" />
+      <CoreFeatureCards class="v1-core-detail__features" variant="detail" :cards="features" icon="/figma-v1/assets/course-detail-desktop-168-1006/imgFrame1.svg" :action="t('official.v1.core.detail.learnMore')" target="/method" />
       <section id="lessons" class="v1-core-detail__lessons" aria-labelledby="detail-lessons-title">
         <h2 id="detail-lessons-title">{{ t("official.v1.core.detail.lessons") }}</h2>
         <details v-for="(step, index) in steps" :key="step">
@@ -73,23 +73,23 @@ useOfficialSeo({ title: `${title.value} · 语学星`, description: t(directionT
 .v1-core-detail__intro-copy { min-width: 0; }
 .v1-core-detail__eyebrow { color: var(--v1-brand); font: 600 13px/1.3 var(--v1-font-display); }
 .v1-core-detail__intro h2 { margin-top: 27px; font: 600 37px/1.2 var(--v1-font-display); }
-.v1-core-detail__intro-copy > p:not(.v1-core-detail__eyebrow) { margin-top: 25px; color: var(--v1-muted); font-size: 15px; }
+.v1-core-detail__intro-copy > p:not(.v1-core-detail__eyebrow) { margin-top: 25px; color: var(--v1-copy-secondary); font-size: 15px; }
 .v1-core-detail__intro-copy :deep(.btn) { width: 216px; margin-top: 40px; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); }
 .v1-core-detail__example { min-width: 0; padding: 16px; border-radius: 22px; background: var(--v1-surface); }
-.v1-core-detail__example p { padding: 15px 12px; border-radius: 14px; background: var(--v1-brand-soft); color: var(--v1-brand); font: 600 14px/1.3 var(--v1-font-display); }
+.v1-core-detail__example p { padding: 15px 12px; border-radius: 14px; background: var(--v1-hero-art-surface); color: var(--v1-brand); font: 600 14px/1.3 var(--v1-font-display); }
 .v1-core-detail__example strong { display: block; margin: 18px 12px 0; font: 600 41px/1.1 var(--v1-font-display); }
 .v1-core-detail__example small { display: block; margin: 5px 12px 0; color: var(--v1-muted); font-size: 14px; }
 .v1-core-detail__example span { display: block; margin: 23px 10px 0; padding-top: 12px; border-top: 1px solid var(--v1-border); color: var(--v1-brand); font-size: 13px; }
 .v1-core-detail__features { margin-top: 28px; }
 .v1-core-detail__lessons { margin-top: 30px; }
 .v1-core-detail__lessons h2 { margin-bottom: 16px; font-size: 29px; }
-.v1-core-detail__lessons details { margin-top: 12px; border-radius: 14px; background: color-mix(in srgb, var(--v1-brand-soft) 22%, var(--v1-surface)); }
+.v1-core-detail__lessons details { margin-top: 12px; border-radius: 14px; background: var(--v1-field-surface); }
 .v1-core-detail__lessons summary { display: flex; align-items: center; justify-content: flex-start; gap: 5px; min-height: 60px; padding: 15px 19px; cursor: pointer; font-size: 16px; font-weight: 500; list-style: none; }
 .v1-core-detail__lessons summary::-webkit-details-marker { display: none; }
 .v1-core-detail__lessons summary span:last-child { transition: transform .18s; }
 .v1-core-detail__lessons details[open] summary span:last-child { transform: rotate(180deg); }
 .v1-core-detail__lessons details > p { padding: 0 19px 18px; color: var(--v1-muted); font-size: 14px; }
-.v1-core-detail__path { margin-top: 50px; padding: 24px 22px 26px; border-radius: 25px; background: color-mix(in srgb, var(--v1-brand-soft) 25%, var(--v1-surface)); }
+.v1-core-detail__path { margin-top: 50px; padding: 24px 22px 26px; border-radius: 25px; background: var(--v1-section-soft); }
 .v1-core-detail__path > .v1-core-detail__eyebrow, .v1-core-detail__path > h2, .v1-core-detail__path > p:not(.v1-core-detail__eyebrow) { margin-left: 6px; }
 .v1-core-detail__path > h2 { margin-top: 16px; font-size: 29px; }
 .v1-core-detail__path > p:not(.v1-core-detail__eyebrow) { margin-top: 10px; color: var(--v1-muted); font-size: 13px; }
@@ -97,18 +97,19 @@ useOfficialSeo({ title: `${title.value} · 语学星`, description: t(directionT
 .v1-core-detail__structure, .v1-core-detail__word-card { min-width: 0; min-height: 243px; padding: 18px; border-radius: 18px; background: var(--v1-surface); }
 .v1-core-detail__structure h3 { font-size: 17px; }
 .v1-core-detail__structure ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
-.v1-core-detail__structure li { min-width: 0; min-height: 76px; padding: 8px 12px; border-radius: 12px; background: var(--v1-brand-soft); }
-.v1-core-detail__structure li:last-child { background: var(--v1-tint-mint); }
+.v1-core-detail__structure li { min-width: 0; min-height: 76px; padding: 8px 12px; border-radius: 12px; background: var(--v1-goal-lilac); }
+.v1-core-detail__structure li:last-child { background: var(--v1-goal-mint); }
 .v1-core-detail__structure li span, .v1-core-detail__structure li strong { display: block; font-size: 13px; }
 .v1-core-detail__structure li span { color: var(--v1-brand); font-family: var(--v1-font-display); font-weight: 600; }
 .v1-core-detail__structure li strong { margin-top: 12px; }
 .v1-core-detail__structure > small { display: block; margin-top: 54px; color: var(--v1-muted); font-size: 12px; }
-.v1-core-detail__word-card > span { display: block; width: min(209px, 100%); padding: 7px 12px; border-radius: 12px; background: var(--v1-brand-soft); color: var(--v1-brand); text-align: center; font: 500 13px var(--v1-font-display); }
+.v1-core-detail__word-card > span { display: block; width: min(209px, 100%); padding: 7px 12px; border-radius: 12px; background: var(--v1-goal-lilac); color: var(--v1-brand); text-align: center; font: 500 13px var(--v1-font-display); }
 .v1-core-detail__word-card > strong { display: block; margin-top: 23px; font: 600 34px/1.2 var(--v1-font-display); }
 .v1-core-detail__word-card > small { display: block; margin-top: 5px; color: var(--v1-muted); font-size: 13px; }
 .v1-core-detail__word-card > p { margin-top: 23px; padding-top: 12px; border-top: 1px solid var(--v1-border); color: var(--v1-brand); font-size: 13px; }
 .v1-core-detail :is(a, summary):focus-visible { outline-color: var(--v1-focus); }
-:global(:root[data-theme="high-contrast"]) .v1-core-detail__structure li { border: 1px solid var(--v1-border); }
+:root[data-theme="high-contrast"] .v1-core-detail__structure li { border: 1px solid var(--v1-border); }
+:root[data-theme="high-contrast"] .v1-core-detail__lessons details { outline: 1px solid var(--v1-border); }
 @media (max-width: 850px) { .v1-core-detail__intro { grid-template-columns: minmax(0, 1fr) minmax(220px, 35%); } }
 @media (max-width: 700px) {
   .v1-core-detail__container { padding-top: 43px; }

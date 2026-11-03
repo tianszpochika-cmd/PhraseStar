@@ -45,8 +45,8 @@ const mobile = computed(() => `/figma-v1/assets/${props.variant === "detail" ? "
 </template>
 <style scoped>
 .v1-core-hero { overflow: hidden; color: var(--v1-text); font-family: var(--v1-font-sans); }
-.v1-core-hero--detail { --v1-core-hero-decor: var(--v1-hero-detail-decor); background: linear-gradient(100deg, var(--v1-hero-detail-from), var(--v1-hero-detail-to)); }
-.v1-core-hero--method { --v1-core-hero-decor: var(--v1-hero-method-decor); background: linear-gradient(100deg, var(--v1-hero-method-from), var(--v1-hero-method-to)); }
+.v1-core-hero--detail { --v1-core-hero-decor: var(--v1-hero-detail-decor); background: linear-gradient(90deg, var(--v1-hero-detail-from), var(--v1-hero-detail-to)); }
+.v1-core-hero--method { --v1-core-hero-decor: var(--v1-hero-method-decor); background: linear-gradient(90deg, var(--v1-hero-method-from), var(--v1-hero-method-to)); }
 .v1-core-hero__inner { position: relative; width: min(1192px, calc(100% - 48px)); min-height: 338px; margin-inline: auto; }
 .v1-core-hero__copy { position: relative; z-index: 2; padding-top: 32px; }
 .v1-core-hero__eyebrow { color: var(--v1-brand); font: 600 13px/1.3 var(--v1-font-display); }
@@ -55,7 +55,7 @@ const mobile = computed(() => `/figma-v1/assets/${props.variant === "detail" ? "
 .v1-core-hero__rule { position: absolute; top: 300px; left: 0; display: block; width: 184px; height: 3px; border-radius: 2px; background: var(--v1-core-hero-decor); opacity: .25; }
 .v1-core-hero__art { position: absolute; z-index: 1; top: 0; right: 0; width: 368px; height: 338px; }
 .v1-core-hero__art-card { position: absolute; top: 67px; left: -8px; width: 368px; height: 220px; padding: 18px; border-radius: 24px; background: var(--v1-surface); }
-.v1-core-hero__art-face { position: relative; height: 184px; padding: 20px 21px; overflow: hidden; border-radius: 19px; background: var(--v1-brand-soft); color: var(--v1-brand); }
+.v1-core-hero__art-face { position: relative; height: 184px; padding: 20px 21px; overflow: hidden; border-radius: 19px; background: var(--v1-hero-art-surface); color: var(--v1-brand); }
 .v1-core-hero__art-icon { position: relative; z-index: 1; }
 .v1-core-hero__art-face > span { display: block; margin-top: 26px; font: 600 13px/1.2 var(--v1-font-display); }
 .v1-core-hero__art-face strong { display: block; margin-top: 8px; color: var(--v1-text); font-size: 23px; }

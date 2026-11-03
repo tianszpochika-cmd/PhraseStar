@@ -37,11 +37,11 @@ useOfficialSeo({ title: t("official.v1.info.status.seoTitle"), description: t("o
 .v1-info-status__notice h2 { margin-top: 38px; font-size: 34px; }
 .v1-info-status__notice-text { margin-top: 38px; margin-bottom: 16px; color: var(--v1-muted) !important; font-size: 15px; line-height: 1.6; }
 .v1-info-status__button { display: grid; width: 229px; min-height: 52px; place-items: center; margin-top: auto; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); font-size: 15px; font-weight: 700; }
-.v1-info-status__help { display: block; min-height: 163px; margin-top: 26px; padding: 29px 22px; border-radius: 20px; background: var(--v1-bg); }
+.v1-info-status__help { display: block; min-height: 163px; margin-top: 26px; padding: 29px 22px; border-radius: 20px; background: var(--v1-field-surface, var(--v1-bg)); }
 .v1-info-status__help h2 { font-size: 21px; }
 .v1-info-status__help p { margin-top: 19px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-info-status__useful { margin-top: 30px; }
-:global(html[data-theme="high-contrast"]) .v1-info-status__notice, :global(html[data-theme="high-contrast"]) .v1-info-status__help { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-status__notice, html[data-theme="high-contrast"] .v1-info-status__help { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) {
  .v1-info-status__body { padding-top: 50px; }
  .v1-info-status__notice { min-height: 330px; }

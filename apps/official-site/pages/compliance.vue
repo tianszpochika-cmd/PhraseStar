@@ -35,7 +35,7 @@ const stateMessage = computed(() => {
   </InfoLegal>
 </template>
 <style scoped>
-.v1-info-compliance-notices { min-height: 145px; margin-top: 24px; padding: 29px 22px; border-radius: 20px; background: var(--v1-bg); color: var(--v1-text); }
+.v1-info-compliance-notices { min-height: 145px; margin-top: 24px; padding: 29px 22px; border-radius: 20px; background: var(--v1-field-surface, var(--v1-bg)); color: var(--v1-text); }
 .v1-info-compliance-notices h2 { font-size: 21px; }
 .v1-info-compliance-notices > p { margin-top: 18px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-info-compliance-notices__recovery button { min-height: 44px; margin-left: 8px; color: var(--v1-brand); font-weight: 700; }
@@ -48,6 +48,6 @@ const stateMessage = computed(() => {
 .v1-info-compliance-notices__state p { color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-info-compliance-notices__state button { min-height: 44px; padding: 0 12px; border: 1px solid var(--v1-border); border-radius: 12px; color: var(--v1-brand); font-size: 13px; font-weight: 700; }
 .v1-info-compliance-notices :is(a, button):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
-:global(html[data-theme="high-contrast"]) .v1-info-compliance-notices { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-compliance-notices { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) { .v1-info-compliance-notices { min-height: 142px; } }
 </style>

@@ -111,7 +111,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 
 <style scoped>
 .v1-world { color: var(--v1-text); background: var(--v1-surface); }
-.v1-world-heading { padding: 0; overflow: hidden; background: linear-gradient(110deg, var(--v1-world-hero-from, var(--v1-brand-soft)), var(--v1-world-hero-to, var(--v1-bg))); }
+.v1-world-heading { padding: 0; overflow: hidden; background: linear-gradient(to right, var(--v1-world-hero-from, var(--v1-brand-soft)), var(--v1-world-hero-to, var(--v1-bg))); }
 .v1-world-heading :deep(.container), .v1-world-content { max-width: 1192px; }
 .v1-world-heading :deep(.v1-page-heading__body) { min-height: 338px; position: relative; align-items: flex-start; }
 .v1-world-heading :deep(.v1-page-heading__copy) { max-width: 700px; padding-top: 32px; }
@@ -119,7 +119,7 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 .v1-world-heading :deep(.v1-page-heading__copy h1) { font-size: 48px; font-weight: 900; letter-spacing: normal; line-height: 1.33; margin: 39px 0 30px; }
 .v1-world-heading :deep(.v1-page-heading__copy > p) { font-size: 17px; }
 .v1-world-heading :deep(.v1-page-heading__artwork) { position: static; flex: 0 0 368px; align-self: center; }
-.v1-world-heading-card { position: relative; overflow: hidden; width: 368px; height: 220px; padding: 0; border: 18px solid var(--v1-surface); border-radius: 24px; transform: translate(-8px, 8px); background: var(--v1-world-hero-to, var(--v1-brand-soft)); display: block; }
+.v1-world-heading-card { position: relative; overflow: hidden; width: 368px; height: 220px; padding: 0; border: 18px solid var(--v1-surface); border-radius: 24px; transform: translate(-8px, 8px); background: var(--v1-rose-bg, var(--v1-brand-soft)); display: block; }
 .v1-world-heading-icon { display: block; position: absolute; left: 21px; top: 20px; margin: 0; }
 .v1-world-card-ellipse { position: absolute; left: 188px; top: -38px; }
 .v1-world-heading-ambient { position: absolute; inset: 0; pointer-events: none; }
@@ -159,19 +159,20 @@ useOfficialSeo({ title: t("official.v1.experience.world.seoTitle"), description:
 .v1-world-game button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--v1-scene-detail, var(--v1-brand-soft)); border-radius: 12px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
 .v1-world-game button:disabled { opacity: .45; cursor: default; }
 .v1-world-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; margin-top: 28px; }
-.v1-world-card { position: relative; overflow: hidden; min-height: 181px; padding: 18px; border: 1px solid var(--v1-border); border-radius: 20px; background: var(--v1-card-lilac, var(--v1-brand-soft)); }
+.v1-world-card { position: relative; overflow: hidden; min-height: 181px; padding: 18px; border: 1px solid var(--v1-card-border, var(--v1-border)); border-radius: 20px; background: var(--v1-card-lilac, var(--v1-brand-soft)); }
 .v1-world-card::before { content: ""; position: absolute; left: 0; top: 18px; width: 3px; height: 22px; border-radius: 2px; background: var(--v1-card-lilac-accent, var(--v1-brand)); }
 .v1-world-card--game { background: var(--v1-card-mint, var(--v1-bg)); }.v1-world-card--game::before { background: var(--v1-card-mint-accent, var(--v1-brand)); }.v1-world-card--wall { background: var(--v1-card-sand, var(--v1-bg)); }.v1-world-card--wall::before { background: var(--v1-card-sand-accent, var(--v1-brand)); }
 .v1-world-card > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }.v1-world-card h2 { margin: 0; font-size: 21px; }.v1-world-card > div > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: var(--v1-surface); }
 .v1-world-card p { min-height: 38px; margin: 4px 0 12px; color: var(--v1-muted); font-size: 14px; }
-.v1-world-card > button { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 44px; padding: 7px 16px; border: 0; border-top: 1px solid var(--v1-border); border-radius: 12px; color: var(--v1-brand); background: var(--v1-surface); font: inherit; font-size: 13px; cursor: pointer; }
+.v1-world-card > button { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 44px; padding: 7px 16px; border: 0; position: relative; margin-top: 3px; border-radius: 12px; color: var(--v1-brand); background: var(--v1-surface); font: inherit; font-size: 13px; cursor: pointer; }
+.v1-world-card > button::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 1px; background: var(--v1-card-divider, var(--v1-border)); }
 .v1-world-note { margin: 22px 0 0; padding: 17px 18px; border-radius: 17px; background: var(--v1-brand-soft); color: var(--v1-muted); font-size: 14px; }
-.v1-world-example { margin-top: 28px; padding: 24px 22px 26px; border-radius: 25px; background: color-mix(in srgb,var(--v1-brand-soft) 23%,var(--v1-surface)); }
+.v1-world-example { margin-top: 28px; padding: 24px 22px 26px; border-radius: 25px; background: var(--v1-section-soft, var(--v1-bg)); }
 .v1-world-example > h2 { margin: 16px 6px 8px; font-size: 29px; }.v1-world-example > p:not(.v1-world-eyebrow) { margin: 0 6px; color: var(--v1-muted); font-size: 13px; }
 .v1-world-example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 25px; }.v1-world-train,.v1-world-maturity { min-height: 243px; padding: 17px; border-radius: 18px; background: var(--v1-surface); }.v1-world-example-grid h3 { margin: 0; font-size: 17px; }
-.v1-world-train { display: flex; flex-direction: column; }.v1-world-wagons { display: flex; gap: 14px; margin-top: 18px; }.v1-world-wagons > span { display: flex; flex-direction: column; justify-content: center; gap: 2px; width: 147px; height: 61px; padding: 8px 11px; border-radius: 13px; background: var(--v1-brand-soft); font-size: 15px; }.v1-world-wagons > span:nth-child(2) { background: var(--v1-download-hero-from, var(--v1-brand-soft)); }.v1-world-wagons i { color: var(--v1-brand); font-style: normal; }.v1-world-train > p { margin-top: auto; color: var(--v1-muted); font-size: 12px; }
+.v1-world-train { display: flex; flex-direction: column; }.v1-world-wagons { display: flex; gap: 14px; margin-top: 18px; }.v1-world-wagons > span { display: flex; flex-direction: column; justify-content: center; gap: 2px; width: 147px; height: 61px; padding: 8px 11px; border-radius: 13px; background: var(--v1-goal-lilac, var(--v1-brand-soft)); font-size: 15px; }.v1-world-wagons > span:nth-child(2) { background: var(--v1-goal-sky, var(--v1-brand-soft)); }.v1-world-wagons i { color: var(--v1-brand); font-style: normal; }.v1-world-train > p { margin-top: auto; color: var(--v1-muted); font-size: 12px; }
 .v1-world-maturity-short { display: none; }
-.v1-world-maturity ol { display: grid; gap: 14px; padding: 0; margin: 15px 0 0; list-style: none; }.v1-world-maturity li { display: flex; gap: 12px; align-items: start; font-size: 14px; }.v1-world-maturity li > span { display: grid; place-items: center; flex: 0 0 53px; height: 35px; border-radius: 12px; color: var(--v1-brand); background: var(--v1-brand-soft); }.v1-world-maturity li:first-child > span { background: var(--v1-card-mint, var(--v1-brand-soft)); }.v1-world-maturity li p { margin: 4px 0 0; color: var(--v1-muted); font-size: 12px; }
+.v1-world-maturity ol { display: grid; gap: 14px; padding: 0; margin: 15px 0 0; list-style: none; }.v1-world-maturity li { display: flex; gap: 12px; align-items: start; font-size: 14px; }.v1-world-maturity li > span { display: grid; place-items: center; flex: 0 0 53px; height: 35px; border-radius: 12px; color: var(--v1-brand); background: var(--v1-goal-lilac, var(--v1-brand-soft)); }.v1-world-maturity li:first-child > span { background: var(--v1-goal-mint, var(--v1-brand-soft)); }.v1-world-maturity li p { margin: 4px 0 0; color: var(--v1-muted); font-size: 12px; }
 .v1-world :is(button,a):focus-visible,.v1-world-panel:focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
 @media (max-width: 768px) {
   .v1-world-heading :deep(.container), .v1-world-content { width: calc(100% - 48px); }

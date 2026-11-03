@@ -30,8 +30,8 @@ const { t } = useSiteText();
 .v1-world-scene > div,.v1-world-scene > img,.v1-world-scene > picture,.scene-label { position: absolute; }
 .v1-world-scene img { display: block; max-width: none; }
 .scene-depth { top: 0; left: 0; }
-.scene-window { left: 3.58%; top: 25px; width: 26.36%; height: 160px; border-radius: 22px; background: var(--v1-scene-bg, var(--v1-text)); }
-.scene-sky { left: 4.61%; top: 36px; width: 24.39%; height: 138px; border-radius: 16px; background: color-mix(in srgb,var(--v1-scene-surface, var(--v1-brand-strong)) 84%,var(--v1-scene-bg, var(--v1-text))); }
+.scene-window { left: 3.58%; top: 25px; width: 26.36%; height: 160px; border-radius: 22px; background: var(--v1-scene-window, var(--v1-scene-bg)); }
+.scene-sky { left: 4.61%; top: 36px; width: 24.39%; height: 138px; border-radius: 16px; background: var(--v1-scene-sky, var(--v1-scene-surface)); }
 .scene-moon { left: 9.13%; top: 61px; }
 .scene-star-one { left: 22.03%; top: 70px; }
 .scene-star-two { left: 19.59%; top: 116px; }
@@ -42,8 +42,8 @@ const { t } = useSiteText();
 .scene-desk { left: 34.84%; top: 176px; width: 58.95%; height: 15px; border-radius: 6px; background: var(--v1-scene-detail, var(--v1-brand-soft)); }
 .scene-leg-left,.scene-leg-right { top: 191px; width: 10px; height: 41px; border-radius: 4px; background: var(--v1-scene-detail, var(--v1-brand-soft)); opacity: .75; }
 .scene-leg-left { left: 39.17%; }.scene-leg-right { left: 87.38%; }
-.scene-laptop { left: 51.6%; top: 63px; width: 18.45%; height: 110px; border-radius: 13px; background: color-mix(in srgb,var(--v1-scene-detail, var(--v1-brand-soft)) 85%,var(--v1-scene-surface, var(--v1-brand))); }
-.scene-display { left: 52.64%; top: 73px; width: 16.48%; height: 92px; border-radius: 8px; background: var(--v1-scene-surface, var(--v1-brand-strong)); }
+.scene-laptop { left: 51.6%; top: 63px; width: 18.45%; height: 110px; border-radius: 13px; background: var(--v1-scene-laptop, var(--v1-scene-detail)); }
+.scene-display { left: 52.64%; top: 73px; width: 16.48%; height: 92px; border-radius: 8px; background: var(--v1-scene-display, var(--v1-scene-surface)); }
 .scene-line { left: 54.61%; height: 6px; border-radius: 3px; background: var(--v1-scene-detail, var(--v1-brand-soft)); opacity: .8; }
 .scene-line-one { top: 97px; width: 11.11%; }.scene-line-two { top: 117px; width: 9.04%; }.scene-line-three { top: 137px; width: 6.97%; }
 .scene-keyboard { left: 49.91%; top: 171px; width: 21.75%; height: 12px; border-radius: 5px; background: var(--v1-scene-warm, var(--v1-scene-detail)); }

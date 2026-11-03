@@ -74,18 +74,18 @@ useOfficialSeo({ title: t("official.v1.info.about.seoTitle"), description: t("of
 .v1-info-about__tiny-progress { display: none; }
 .v1-info-about__values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 29px; }
 .v1-info-about__values article { min-height: 158px; padding: 21px 22px; border-radius: 20px; background: var(--v1-tint-mint, var(--v1-brand-soft)); }
-.v1-info-about__values article:nth-child(2) { background: var(--v1-tint-sky, var(--v1-brand-soft)); }
-.v1-info-about__values article:nth-child(3) { background: var(--v1-tint-rose, var(--v1-brand-soft)); }
+.v1-info-about__values article:nth-child(2) { background: var(--v1-info-about-value-sky, var(--v1-tint-sky)); }
+.v1-info-about__values article:nth-child(3) { background: var(--v1-info-about-value-rose, var(--v1-tint-rose)); }
 .v1-info-about__values h2 { margin-top: 19px; font-size: 21px; }
 .v1-info-about__values article > p:last-child { margin-top: 20px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
-.v1-info-about__cta { min-height: 138px; margin-top: 28px; padding: 21px 24px 13px; border-radius: 19px; background: var(--v1-bg); }
+.v1-info-about__cta { min-height: 138px; margin-top: 28px; padding: 21px 24px 13px; border-radius: 19px; background: var(--v1-info-about-cta-bg, var(--v1-bg)); }
 .v1-info-about__cta h2 { font-size: 22px; }
 .v1-info-about__cta :deep(.btn) { min-width: 230px; min-height: 52px; margin-top: 17px; border-radius: 14px; color: var(--v1-on-brand); background: var(--v1-brand); }
 .v1-info-about__useful { margin-top: 30px; }
-:global(html[data-theme="high-contrast"]) .v1-info-about__story,
-:global(html[data-theme="high-contrast"]) .v1-info-about__sample,
-:global(html[data-theme="high-contrast"]) .v1-info-about__values article,
-:global(html[data-theme="high-contrast"]) .v1-info-about__cta { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-about__story,
+html[data-theme="high-contrast"] .v1-info-about__sample,
+html[data-theme="high-contrast"] .v1-info-about__values article,
+html[data-theme="high-contrast"] .v1-info-about__cta { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) {
  .v1-info-about__body { padding-top: 50px; }
  .v1-info-about__story { min-height: 346px; }

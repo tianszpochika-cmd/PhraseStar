@@ -70,9 +70,9 @@ const { t } = useSiteText();
 .v1-info-hero__orbit { position: absolute; right: -77px; top: 11px; width: 277px; height: 277px; }
 .v1-info-hero__orbit-small { position: absolute; right: -12px; top: 55px; width: 165px; height: 165px; }
 .v1-info-hero__card { position: absolute; right: 9px; top: 70px; width: 371px; height: 204px; padding: 15px; border-radius: 23px; background: var(--v1-surface); }
-.v1-info-hero__card-inner { position: relative; height: 174px; overflow: hidden; padding: 22px; border-radius: 18px; background: var(--v1-tint-sky, var(--v1-brand-soft)); }
-.v1-info-hero__card-inner--rose { background: var(--v1-tint-rose, var(--v1-brand-soft)); }
-.v1-info-hero__card-inner--mint { background: var(--v1-tint-mint, var(--v1-brand-soft)); }
+.v1-info-hero__card-inner { position: relative; height: 174px; overflow: hidden; padding: 22px; border-radius: 18px; background: var(--v1-info-hero-card-sky, var(--v1-tint-sky)); }
+.v1-info-hero__card-inner--rose { background: var(--v1-rose-bg, var(--v1-tint-rose)); }
+.v1-info-hero__card-inner--mint { background: var(--v1-info-hero-card-mint, var(--v1-tint-mint)); }
 .v1-info-hero__card-inner--brand { background: var(--v1-brand-soft); }
 .v1-info-hero__ellipse { position: absolute; right: -30px; top: -30px; width: 131px; height: 131px; }
 .v1-info-hero__icon { position: relative; width: 24px; height: 24px; }

@@ -98,7 +98,7 @@ useOfficialSeo({
         <div class="v1-info-help__faq-layout">
           <div>
             <div v-if="filtered.length" class="v1-info-help__faqs">
-              <article v-for="item in filtered" :key="item.id" class="v1-info-help__faq" :class="{ 'is-open': openQuestion === item.id, 'is-neutral': item.id >= 7 }">
+              <article v-for="item in filtered" :key="item.id" class="v1-info-help__faq" :class="{ 'is-open': openQuestion === item.id, 'is-neutral': item.id >= 7 || item.id % 2 === 0 }">
                 <h3>
                   <button type="button" :aria-expanded="openQuestion === item.id" :aria-controls="`help-answer-${item.id}`" @click="openQuestion = openQuestion === item.id ? null : item.id">
                     <span>{{ t(`official.v1.info.help.question${item.id}`) }}</span><span class="v1-info-help__chevron" aria-hidden="true">⌄</span>
@@ -170,7 +170,7 @@ useOfficialSeo({
 .v1-info-help__orbit { position: absolute; width: 277px; height: 277px; right: -77px; top: 11px; }
 .v1-info-help__orbit-small { position: absolute; width: 165px; height: 165px; right: -12px; top: 55px; }
 .v1-info-help__hero-card { position: absolute; right: 9px; top: 70px; width: 371px; height: 204px; padding: 15px; border-radius: 23px; background: var(--v1-surface); }
-.v1-info-help__hero-card-content { position: relative; height: 174px; overflow: hidden; border-radius: 18px; background: var(--v1-brand-soft); padding: 22px; }
+.v1-info-help__hero-card-content { position: relative; height: 174px; overflow: hidden; border-radius: 18px; background: var(--v1-hero-art-surface, var(--v1-brand-soft)); padding: 22px; }
 .v1-info-help__hero-ellipse { position: absolute; right: -30px; top: -30px; width: 131px; height: 131px; }
 .v1-info-help__hero-icon { position: relative; width: 24px; height: 24px; }
 .v1-info-help__hero-card p { position: relative; margin-top: 23px; color: var(--v1-brand); font: 600 13px/1.3 var(--v1-font-display); }
@@ -179,7 +179,7 @@ useOfficialSeo({
 .v1-info-help__hero-caption { position: absolute; top: 269px; left: 94px; width: 401px; color: color-mix(in srgb, var(--v1-decor-lilac, var(--v1-brand)) 39%, transparent); font: 600 23px/1 var(--v1-font-display); }
 .v1-info-help__mobile-art, .v1-info-help__mobile-caption { display: none; }
 .v1-info-help__body { padding: 68px 0 38px; background: var(--v1-surface); }
-.v1-info-help__search { height: 58px; display: flex; align-items: center; gap: 10px; padding: 0 18px; border-radius: 17px; background: color-mix(in srgb, var(--v1-bg) 75%, var(--v1-border)); color: var(--v1-muted); }
+.v1-info-help__search { height: 58px; display: flex; align-items: center; gap: 10px; padding: 0 18px; border-radius: 17px; background: var(--v1-field-surface, var(--v1-bg)); color: var(--v1-muted); }
 .v1-info-help__search :deep(.icon) { width: 16px; height: 16px; }
 .v1-info-help__search input { width: 100%; min-width: 0; padding: 0; border: 0; outline-offset: 5px; background: transparent; font-size: 15px; }
 .v1-info-help__search input::placeholder { color: var(--v1-muted); opacity: 1; }
@@ -190,10 +190,9 @@ useOfficialSeo({
 .v1-info-help__faq-title { margin: 39px 0 28px; font-size: 29px; line-height: 1.2; font-weight: 700; }
 .v1-info-help__faq-layout { display: grid; grid-template-columns: minmax(0, 762fr) minmax(300px, 398fr); gap: 32px; align-items: start; }
 .v1-info-help__faqs { display: grid; gap: 11px; }
-.v1-info-help__faq { position: relative; overflow: hidden; border: 1px solid var(--v1-border); border-radius: 14px; background: color-mix(in srgb, var(--v1-brand-soft) 44%, var(--v1-bg)); }
-.v1-info-help__faq:nth-child(even) { background: var(--v1-bg); }
+.v1-info-help__faq { position: relative; overflow: hidden; border: 1px solid var(--v1-info-faq-border, var(--v1-border)); border-radius: 14px; background: var(--v1-info-faq-soft, var(--v1-brand-soft)); }
 .v1-info-help__faq.is-neutral { background: var(--v1-info-faq-neutral, var(--v1-bg)); }
-.v1-info-help__faq::before { content: ""; position: absolute; top: 20px; left: 7px; width: 4px; height: 25px; border-radius: 2px; background: color-mix(in srgb, var(--v1-brand) 45%, var(--v1-surface)); }
+.v1-info-help__faq::before { content: ""; position: absolute; top: 20px; left: 7px; width: 4px; height: 25px; border-radius: 2px; background: var(--v1-info-faq-accent, var(--v1-brand)); }
 .v1-info-help__faq h3 { font-size: inherit; }
 .v1-info-help__faq h3 button { width: 100%; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 22px; text-align: left; font-size: 15px; font-weight: 500; }
 .v1-info-help__chevron { color: var(--v1-brand); font-size: 18px; line-height: 1; }
@@ -217,26 +216,26 @@ useOfficialSeo({
 .v1-info-help__contact h2 { font-size: 21px; }
 .v1-info-help__contact p { margin: 18px 0 13px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-info-help__contact :deep(.btn) { min-width: 205px; min-height: 52px; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); }
-.v1-info-help__useful { margin-top: 28px; padding: 26px 22px 29px; border-radius: 25px; background: var(--v1-bg); }
+.v1-info-help__useful { margin-top: 28px; padding: 26px 22px 29px; border-radius: 25px; background: var(--v1-info-useful-bg, var(--v1-bg)); }
 .v1-info-help__useful h2 { margin-top: 19px; font-size: 27px; line-height: 38px; }
 .v1-info-help__useful-intro { margin-top: 7px; color: var(--v1-muted) !important; font-size: 13px; line-height: 20px; }
 .v1-info-help__useful-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; margin-top: 35px; }
 .v1-info-help__useful-card { padding: 16px 18px 20px; border-radius: 17px; background: var(--v1-surface); }
 .v1-info-help__useful-card h3 { margin-bottom: 16px; font-size: 17px; }
-.v1-info-help__useful-row { display: flex; align-items: center; gap: 13px; min-height: 43px; margin-top: 8px; padding: 5px 7px; border-radius: 12px; background: var(--v1-brand-soft); font-size: 14px; font-weight: 500; }
-.v1-info-help__useful-row:nth-of-type(2) { background: var(--v1-tint-sky, var(--v1-bg)); }
-.v1-info-help__useful-row:nth-of-type(3) { background: var(--v1-tint-mint, var(--v1-bg)); }
+.v1-info-help__useful-row { display: flex; align-items: center; gap: 13px; min-height: 43px; margin-top: 8px; padding: 5px 7px; border-radius: 12px; background: var(--v1-info-topic-lilac, var(--v1-brand-soft)); font-size: 14px; font-weight: 500; }
+.v1-info-help__useful-row:nth-of-type(2) { background: var(--v1-info-topic-sky, var(--v1-tint-sky)); }
+.v1-info-help__useful-row:nth-of-type(3) { background: var(--v1-info-topic-mint, var(--v1-tint-mint)); }
 .v1-info-help__useful-row > span { display: grid; place-items: center; flex: 0 0 46px; min-height: 29px; border-radius: 11px; background: var(--v1-surface); color: var(--v1-brand); font: 600 12px/1 var(--v1-font-display); }
-.v1-info-help__steps .v1-info-help__useful-row { background: var(--v1-bg); font-weight: 700; }
-.v1-info-help__steps .v1-info-help__useful-row:first-of-type { background: var(--v1-brand-soft); }
+.v1-info-help__steps .v1-info-help__useful-row { background: var(--v1-info-useful-bg, var(--v1-bg)); font-weight: 700; }
+.v1-info-help__steps .v1-info-help__useful-row:first-of-type { background: var(--v1-info-topic-lilac, var(--v1-brand-soft)); }
 .v1-info-help__steps .v1-info-help__useful-row > span { background: transparent; }
-:global(html[data-theme="high-contrast"]) .v1-info-help__search,
-:global(html[data-theme="high-contrast"]) .v1-info-help__topics,
-:global(html[data-theme="high-contrast"]) .v1-info-help__contact,
-:global(html[data-theme="high-contrast"]) .v1-info-help__useful,
-:global(html[data-theme="high-contrast"]) .v1-info-help__useful-card { border: 1px solid var(--v1-border); }
-:global(html[data-theme="high-contrast"]) .v1-info-help__categories button { border: 1px solid var(--v1-border); }
-:global(html[data-theme="high-contrast"]) .v1-info-help__useful-row > span { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-help__search,
+html[data-theme="high-contrast"] .v1-info-help__topics,
+html[data-theme="high-contrast"] .v1-info-help__contact,
+html[data-theme="high-contrast"] .v1-info-help__useful,
+html[data-theme="high-contrast"] .v1-info-help__useful-card { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-help__categories button { border: 1px solid var(--v1-border); }
+html[data-theme="high-contrast"] .v1-info-help__useful-row > span { border: 1px solid var(--v1-border); }
 @media (max-width: 800px) {
   .v1-info-help__hero-inner { height: 300px; }
   .v1-info-help__hero-copy { padding-top: 33px; }
@@ -273,9 +272,9 @@ useOfficialSeo({
   .v1-info-help__useful-row { min-height: 30px; margin-top: 5px; padding: 0; background: transparent !important; font-size: 12px; }
   .v1-info-help__useful-row:first-of-type { margin-top: 0; }
   .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row + .v1-info-help__useful-row { margin-top: 8px; }
-  .v1-info-help__useful-row > span { flex-basis: 40px; min-height: 30px; background: var(--v1-brand-soft); }
-  .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(2) > span { background: var(--v1-tint-sky, var(--v1-brand-soft)); }
-  .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(3) > span { background: var(--v1-tint-mint, var(--v1-brand-soft)); }
+  .v1-info-help__useful-row > span { flex-basis: 40px; min-height: 30px; background: var(--v1-info-topic-lilac, var(--v1-brand-soft)); }
+  .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(2) > span { background: var(--v1-info-topic-sky, var(--v1-tint-sky)); }
+  .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(3) > span { background: var(--v1-info-topic-mint, var(--v1-tint-mint)); }
   .v1-info-help__steps .v1-info-help__useful-row { min-height: 32px; font-size: 13px; font-weight: 500; }
   .v1-info-help__steps .v1-info-help__useful-row > span { flex-basis: 27px; }
   .v1-info-help__steps .v1-info-help__useful-row:first-of-type { color: var(--v1-brand); }
