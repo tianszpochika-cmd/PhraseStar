@@ -1,0 +1,41 @@
+{
+  "status": "OPEN_ATOM_LEVEL_REVIEW_REQUIRED",
+  "warnings": [
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WS-VOC-02",
+      "requirementCount": 13,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    },
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WS-GRM-01",
+      "requirementCount": 13,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    },
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WG-02",
+      "requirementCount": 23,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    },
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WG-04",
+      "requirementCount": 16,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    },
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WG-06",
+      "requirementCount": 14,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    },
+    {
+      "kind": "REVIEW_BROAD_ATOM_GROUPING",
+      "id": "WG-09",
+      "requirementCount": 14,
+      "reason": "Source grouping is retained, but each meaningful business obligation/state must receive semantic review; no common template closes these atoms automatically."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "scope": "Selected native responsive screenshots and one fixed browser sample; no whole-project acceptance",
+  "writingBeforeImage": "writing-768.png retains the observed wrong hint before the separately recorded native text fix; it is not a final passing screenshot",
+  "files": [
+    {
+      "file": "browser-expression-confirmed.jpg",
+      "sha256": "6b8399d1c6aef5b5f00796fdc3bed9d29e63ab4021fa964c303f03f8f8528657",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "browser-expression-source.jpg",
+      "sha256": "81d5722f646cbabd6ada779b8aca37f2ebb8e1bd3f1ede7329f1530bdf2553fe",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "browser-reading-return.jpg",
+      "sha256": "6fc8f761d2ca5b2a8dbe6bbc9e7fd584b37df2135093cc5fd5688fa7ec57445c",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "header-reading-1024.png",
+      "sha256": "801e632ab09fe90b36bf3ea3a37a172a92a47bb043a1de9e108eb2f364d400c6",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "header-reading-1440.png",
+      "sha256": "a6e96402d7d1627adb940fa2b2e73a66a199fe91018d5a5a462fa8098adfdcf0",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "header-reading-200.png",
+      "sha256": "ebcd1ca074ddcc4f9105af9342c9043e5a18004441bb9834b86806749ad47990",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "header-reading-768.png",
+      "sha256": "d567eeaeaa159a2873a9c786bd11e9f84f231d037f4934a5b49561b9f20d6225",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "orders-768.png",
+      "sha256": "88fce53b013ebeb55533e8cb753681daac1fe07ae965d2aa06521ae1755cec20",
+      "status": "PASS_SELECTED_LAYOUT_OR_FIXED_BROWSER_SAMPLE_ONLY"
+    },
+    {
+      "file": "writing-768.png",
+      "sha256": "8326f84201d32e58c45dc0b6460d3c620dfdf7854b8bf71c67ec8b72295e552a",
+      "status": "BEFORE_NORMAL_HINT_CORRECTION_NOT_FINAL"
+    },
+    {
+      "file": "speaking-pending-after-ui.txt",
+      "sha256": "5872bf4fd29ce60417190eaa8eeb0c2dc6f9d1eec71513bb023d104fbb62ad78",
+      "status": "Figma_UI_DIALOG_BEFORE_AFTER_LABELS_ONLY_NATIVE_ACTIONS_PENDING"
+    },
+    {
+      "file": "speaking-pending-before-ui.txt",
+      "sha256": "672d695995341cc3d1b9eb6b3b39173bc0d55107440a379bb0dac67582dbb1d0",
+      "status": "Figma_UI_DIALOG_BEFORE_AFTER_LABELS_ONLY_NATIVE_ACTIONS_PENDING"
+    },
+    {
+      "file": "speaking-query-after-ui.txt",
+      "sha256": "5872bf4fd29ce60417190eaa8eeb0c2dc6f9d1eec71513bb023d104fbb62ad78",
+      "status": "Figma_UI_DIALOG_BEFORE_AFTER_LABELS_ONLY_NATIVE_ACTIONS_PENDING"
+    },
+    {
+      "file": "speaking-query-before-ui-menu.txt",
+      "sha256": "781b11a2c417bf3aaaf7ba643ed00be69011172618804133c7b5f8e58a9fbd0b",
+      "status": "Figma_UI_DIALOG_BEFORE_AFTER_LABELS_ONLY_NATIVE_ACTIONS_PENDING"
+    }
+  ]
+}

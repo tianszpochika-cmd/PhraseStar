@@ -1,0 +1,13 @@
+{
+  "status": "COMPACT_SOURCE_REFERENCES_VALID_DESIGN_CLOSURE_PENDING",
+  "requirements": 484,
+  "obligations": 291,
+  "excluded": 496,
+  "sourceRecords": 2625,
+  "errors": [],
+  "warnings": [],
+  "limits": [
+    "Source/reference validation only. No native/browser/service acceptance is created.",
+    "External raw receipt references retain filename/hash; only explicit scoped native evidence can close design."
+  ]
+}

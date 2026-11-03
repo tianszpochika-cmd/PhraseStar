@@ -1,0 +1,112 @@
+{
+  "status": "PARTIAL_BROWSER_QA_WITH_OPEN_SYSTEMIC_ISSUES",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "date": "2026-11-03",
+  "testedIn": "Authenticated Chrome Figma prototype; synthetic design data only",
+  "actualGuiMutations": [
+    {
+      "rootId": "378:9826",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null
+    },
+    {
+      "rootId": "378:9884",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null
+    },
+    {
+      "rootId": "378:14435",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "PENDING_QUOTA",
+      "proofBefore": "evidence/speaking-pending-before-ui.txt",
+      "proofAfter": "evidence/speaking-pending-after-ui.txt"
+    },
+    {
+      "rootId": "378:14493",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "PENDING_QUOTA",
+      "proofBefore": "evidence/speaking-query-before-ui-menu.txt",
+      "proofAfter": "evidence/speaking-query-after-ui.txt"
+    }
+  ],
+  "successfulFlow": {
+    "name": "READING_COLLECTION_SAVE_RETURN",
+    "roots": [
+      "379:18925",
+      "379:19105",
+      "378:9122",
+      "378:9826",
+      "378:9942",
+      "378:8870",
+      "380:9937",
+      "379:18925"
+    ],
+    "sentence": "She chooses a book and reads by the window.",
+    "article": "A day at the library",
+    "version": "1",
+    "paragraph": "2",
+    "receiptReachedViaUrlWait": true,
+    "observedSaveToReceiptElapsedMs": 1004,
+    "elapsedMeaning": "Input, rendering and navigation-wait duration; not a precise network latency",
+    "result": "PASS_THIS_FIXED_SAMPLE_ONLY",
+    "proof": [
+      "evidence/browser-expression-confirmed.jpg",
+      "evidence/browser-expression-source.jpg",
+      "evidence/browser-reading-return.jpg"
+    ]
+  },
+  "openIssues": [
+    {
+      "id": "WEB-BROWSER-TIMER-UNIT",
+      "status": "OPEN_SYSTEMIC",
+      "observed": "MCP authored timeout800 rendered in Figma UI as800000ms. Two roots GUI corrected to800ms; actual native readback pending quota.",
+      "mustDo": "Calibrate current connector using fresh native value plus GUI and browser evidence; migrate existing timers in place; rebuild unexecuted scripts. Do not change global SDK claims."
+    },
+    {
+      "id": "WEB-BROWSER-CHOICE-STATE",
+      "rootId": "378:9122",
+      "status": "OPEN_FIX_PREPARED",
+      "observed": "Static 未选择 conflicts with ✓已标记我想会说 after reading-origin input.",
+      "fix": "skills-expression-choice-state-v2-tool.js NOT_RUN"
+    },
+    {
+      "id": "WEB-PATCH-TRIGGER",
+      "status": "GUI_RESTORED_PENDING_NATIVE_AND_BROWSER",
+      "observed": "patchExact hardcodes ON_CLICK; SpeakingB recording patch changed pending/query frame triggers.",
+      "roots": [
+        "378:14435",
+        "378:14493"
+      ],
+      "mustDo": "Read both current triggers/timing and full take snapshot actions; GUI restoration retained18 action labels per root. Fix helper and audit other FRAME patches; do not overwrite from old receipt."
+    }
+  ],
+  "nativeReadbackAfterGuiMutation": "NOT_RUN_FIGMA_MCP_DAILY_LIMIT",
+  "queryAutoTransitionAfterGuiFix": "NOT_RUN",
+  "keyboardAndScreenReader": "NOT_RUN; Figma prototype announced its screenreader support disabled",
+  "realIamPersistenceMediaAndDeviceAcceptance": "NOT_RUN",
+  "responsiveVisualEvidence": [
+    "evidence/header-reading-1440.png",
+    "evidence/header-reading-1024.png",
+    "evidence/header-reading-768.png",
+    "evidence/header-reading-200.png",
+    "evidence/orders-768.png",
+    "evidence/writing-768.png"
+  ],
+  "wholeDesignAccepted": false,
+  "sourceLocalArtifactSha256": "fcff4db48996d7eb52d6573d5cf2c5981ebb1eef40c0c973a052c7c1472c6a9b",
+  "sourceLocalArtifactPolicy": "Publication copy uses repository-relative proof paths; original source digest retained here."
+}

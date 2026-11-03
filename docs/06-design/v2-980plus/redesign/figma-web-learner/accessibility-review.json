@@ -1,0 +1,1951 @@
+{
+  "schemaVersion": "web-design-a11y-review-v1",
+  "date": "2026-11-03",
+  "platform": "apps/learner-web",
+  "status": "PARTIAL_DESIGN_REVIEW_TIMING_HOLD_NOT_WHOLE_PRODUCT_PASS",
+  "execution": {
+    "figmaCalls": 0,
+    "browserCalls": 0,
+    "repoWrites": 0,
+    "localArtifactsOnly": true
+  },
+  "conclusion": "不能确认全量无障碍或响应式已通过。已证实部分截图样例（写作768为提示修正前布局图、修后待验）和一个固定保存返回样例；26个静态Choice按实际语义分类并准备精确修复。其它焦点、读屏、全局偏好先读现有稿，不能靠名称或说明段落核销。",
+  "sourceReview": "a11y-source-specific-review.json",
+  "cases": [
+    {
+      "id": "A11Y-SRC-FOCUS",
+      "topic": "Visible focus",
+      "sourceRefs": [
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 431,
+          "endLine": 435,
+          "authority": "current-v2",
+          "excerpt": "保留高对比、三档字号、320 宽度和减少动效；增加贯穿主学习链的键盘操作、可见焦点、文字状态、错误定位、读屏可感知反馈。不能只测书架截图就认定整个产品通过。\n\n按键盘完成登录/目标/答题/提交/返回；弹层打开后焦点到合理位置，关闭后回原触发点；错误指出具体字段；不以颜色或撒花作为唯一反馈。局部异步更新避免重置输入焦点和滚动位置，重要错误可感知但不要每个流式字都强制播报。\n\n字体放大、移动端软键盘、长题干、长价格/语言文本、横竖屏变化都不能遮挡主要按钮。离开会丢未提交输入时才做确认，已提交内容返回不反复弹窗。具体实现和标准符合性需实际界面测试，本稿不是无障碍认证。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+          "startLine": 107,
+          "endLine": 107,
+          "authority": "current-v2",
+          "excerpt": "焦点顺序与阅读顺序一致；触控目标不小于设计系统要求；颜色之外同时使用文字/图标；媒体有字幕或文本替代；错误文案说明原因和动作；敏感和 Gate 文案不诱导绕过限制。",
+          "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7"
+        },
+        {
+          "path": "packages/design-tokens/src/index.ts",
+          "startLine": 196,
+          "endLine": 204,
+          "authority": "shared-token-policy",
+          "excerpt": "  accessibility: {\n    minTouchTarget: '44px',\n    focusRing: '#3B8DFF',\n    maxTextScale: 2,\n    contrast: accessibilityThresholds,\n    focusOutlineWidth: '3px',\n    focusOutlineOffset: '2px',\n    focusOutlineStyle: 'solid',\n    statusSemantics,",
+          "sha256": "22daf8a3f06ea779d0b4f61b7386f6bbdf01e5e2d482174336a7b2f9af481879"
+        }
+      ],
+      "explicitRequirement": "Visible focus throughout the learning journey; focus order follows reading order. Shared policy has 3px outline and 2px offset.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/shared-foundation-ids.json",
+          "pointer": "/variables/focus",
+          "supports": "Existing focus-color variable VariableID:203:2033.",
+          "limit": "A token is not a focused visual variant."
+        },
+        {
+          "path": "local-workbench/shared-foundation-ids.json",
+          "pointer": "/components/choiceVariants",
+          "supports": "New Choice has Default/Selected/Disabled only.",
+          "limit": "This statement is restricted to the new shared Choice set, not all upstream components."
+        },
+        {
+          "path": "local-workbench/shared-web-builders.js",
+          "startLine": 64,
+          "endLine": 69,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "Normal secondary buttons and example inputs use a focus-color border.",
+          "limit": "Not native or browser acceptance."
+        }
+      ],
+      "designFinding": "PARTIAL_FOUNDATION_EXISTING_FOCUS_NOTES_UNREAD",
+      "gapBoundary": "Normal borders and Selected are not focus-visible evidence. Existing named focus pages must be read before declaring a global gap.",
+      "minimalAction": "Read35:382/35:302 first. If missing, add Normal/FocusVisible/Disabled specimens, non-clipped outline, initial-focus and Tab/reading-order targets.",
+      "runtimeStatus": "KEYBOARD_NOT_RUN",
+      "titleZh": "可见焦点",
+      "findingZh": "当前新Choice集只有Default/Selected/Disabled，focus颜色Token已存在；正常蓝色边框或Selected状态均不能算键盘焦点。已有焦点审阅稿须先读正文。",
+      "boundaryZh": "新Choice库焦点态未证实；现有焦点稿未精读，不能判全局缺失。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-KEYBOARD",
+      "topic": "Keyboard path",
+      "sourceRefs": [
+        {
+          "path": "requirements/product-requirements.md",
+          "startLine": 2963,
+          "endLine": 2972,
+          "authority": "product-requirements",
+          "excerpt": "Phase 1 P1：\n\n- 大字号\n- 高对比\n- 屏幕阅读标签\n- 键盘操作（Web）\n- 字幕\n- 音频文本\n- 减少动画\n- 色弱不只依赖颜色表达正确/错误",
+          "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/02-全端信息架构与交互模式.md",
+          "startLine": 53,
+          "endLine": 57,
+          "authority": "current-v2",
+          "excerpt": "| 单步卡片 | 目标选择、词卡、短练习 | 单列、底部 CTA | 卡片或工作区右栏 | 当前选择、保存、错误和恢复 |\n| 连续练习 | SRS、专项、模考 | 顶部进度 + 底部提交 | 顶部进度 + 键盘操作 | 会话、checkpoint、提交幂等 |\n| 媒体精练 | 听力、录音、阅读 | 播放条/抽屉 | 固定播放器/双栏 | 缓冲、权限、离线、字幕缺失 |\n| 结构图/图谱 | 地图、语法、知识图谱 | 2.5D/可缩放画布 | Vue Flow/AntV G6 | 性能档、聚焦节点、无法渲染替代 |\n| 抽屉审阅 | 反馈、通知、后台编辑 | bottom sheet | drawer/side panel | 不丢草稿、可回到来源 |",
+          "sha256": "915cd38f980fbb7152088bdce13626366b758a17c88e5f68fd46dfceef776c3a"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/02-全端信息架构与交互模式.md",
+          "startLine": 64,
+          "endLine": 64,
+          "authority": "current-v2",
+          "excerpt": "- 移动 H5 必须避免依赖 hover、右键和宽表；PC 工作区必须提供键盘可达、批量筛选和可复制的审阅上下文。",
+          "sha256": "915cd38f980fbb7152088bdce13626366b758a17c88e5f68fd46dfceef776c3a"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 433,
+          "endLine": 433,
+          "authority": "current-v2",
+          "excerpt": "按键盘完成登录/目标/答题/提交/返回；弹层打开后焦点到合理位置，关闭后回原触发点；错误指出具体字段；不以颜色或撒花作为唯一反馈。局部异步更新避免重置输入焦点和滚动位置，重要错误可感知但不要每个流式字都强制播报。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        }
+      ],
+      "explicitRequirement": "Web keyboard must cover login, goal, answering, submit, and return; continuous practice and PC workspace are keyboard reachable.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/shared-web-builders.js",
+          "startLine": 161,
+          "endLine": 161,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "Delivery boundary explicitly excludes real keyboard, arbitrary text entry, and SR acceptance.",
+          "limit": "Not native or browser acceptance."
+        },
+        {
+          "path": "local-workbench/BROWSER-QA-CURRENT.json",
+          "pointer": "/keyboardAndScreenReader",
+          "supports": "Actual browser record says keyboard/SR NOT_RUN and Figma announced SR disabled.",
+          "limit": "Click/NAV does not prove keyboard support."
+        }
+      ],
+      "designFinding": "CONTROL_CONTRACT_REQUIRED",
+      "gapBoundary": "Current skills authoring does not specify a complete per-control keyboard contract; older dedicated notes remain unread.",
+      "minimalAction": "Specify actual button/checkbox/radio/tree/input/player keys and order. Exploration controls must not be blindly turned into radio groups.",
+      "runtimeStatus": "KEYBOARD_AND_SR_NOT_RUN",
+      "titleZh": "键盘路径",
+      "findingZh": "需求明确登录→目标→作答→提交→返回。26项业务语义已逐一分类，按钮、radio、checkbox、定位字幕和结构探索不能共用一种选择模型。",
+      "boundaryZh": "已准备具体控件合同；真实Tab/方向键/空格/Enter操作未跑。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-ERROR",
+      "topic": "Error localization and messages",
+      "sourceRefs": [
+        {
+          "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+          "startLine": 107,
+          "endLine": 107,
+          "authority": "current-v2",
+          "excerpt": "焦点顺序与阅读顺序一致；触控目标不小于设计系统要求；颜色之外同时使用文字/图标；媒体有字幕或文本替代；错误文案说明原因和动作；敏感和 Gate 文案不诱导绕过限制。",
+          "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 431,
+          "endLine": 433,
+          "authority": "current-v2",
+          "excerpt": "保留高对比、三档字号、320 宽度和减少动效；增加贯穿主学习链的键盘操作、可见焦点、文字状态、错误定位、读屏可感知反馈。不能只测书架截图就认定整个产品通过。\n\n按键盘完成登录/目标/答题/提交/返回；弹层打开后焦点到合理位置，关闭后回原触发点；错误指出具体字段；不以颜色或撒花作为唯一反馈。局部异步更新避免重置输入焦点和滚动位置，重要错误可感知但不要每个流式字都强制播报。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        }
+      ],
+      "explicitRequirement": "Errors explain cause and action, identify the field, support localization, and remain perceptible.",
+      "existingDesignEvidence": [
+        {
+          "evidenceClass": "INVENTORY_ONLY",
+          "rootIds": [
+            "73:234",
+            "73:546"
+          ],
+          "supports": "Existing error/focus and handoff candidates.",
+          "limit": "Names do not prove field associations or focus targets."
+        }
+      ],
+      "designFinding": "TARGETED_EXISTING_ERROR_NOTES_REQUIRED",
+      "gapBoundary": "Choosing first-invalid-field versus error summary is a design decision derived from the requirement, not wording mandated by the source.",
+      "minimalAction": "Read73:234/73:546, then annotate real field association, submit error target, retained input, and correction/recovery actions; generic error cards do not substitute.",
+      "runtimeStatus": "KEYBOARD_AND_SR_NOT_RUN",
+      "titleZh": "错误定位与提示",
+      "findingZh": "既有失败状态有原因和恢复动作，但须核具体字段关联、保留输入、提交后错误焦点位置与纠正后反馈。",
+      "boundaryZh": "原因文案不等于错误焦点或读屏关联；旧错误与焦点说明稿优先回读。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-ASYNC",
+      "topic": "Asynchronous feedback and focus preservation",
+      "sourceRefs": [
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 16,
+          "endLine": 16,
+          "authority": "current-v2",
+          "excerpt": "| loading 加载/提交 | 页面读取可用骨架；局部提交只影响该动作；避免全页抖动 | 允许安全返回；重复提交防抖但不丢焦点 |",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 22,
+          "endLine": 22,
+          "authority": "current-v2",
+          "excerpt": "成功也必须基于真实回执；另区分**已保存、同步中、部分成功、处理中、全部完成**。接口 200、页面跳转、撒花动画都不是业务成功的替代证据。消息、奖励、支付和导出等异步结果不要强行装成同步完成。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 431,
+          "endLine": 433,
+          "authority": "current-v2",
+          "excerpt": "保留高对比、三档字号、320 宽度和减少动效；增加贯穿主学习链的键盘操作、可见焦点、文字状态、错误定位、读屏可感知反馈。不能只测书架截图就认定整个产品通过。\n\n按键盘完成登录/目标/答题/提交/返回；弹层打开后焦点到合理位置，关闭后回原触发点；错误指出具体字段；不以颜色或撒花作为唯一反馈。局部异步更新避免重置输入焦点和滚动位置，重要错误可感知但不要每个流式字都强制播报。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        }
+      ],
+      "explicitRequirement": "Local async updates preserve input focus and scroll; important errors are perceptible; do not announce every streaming character; duplicate prevention must not lose focus.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/shared-foundations-READY.js",
+          "startLine": 47,
+          "endLine": 47,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "InformationRow requires explicit status text.",
+          "limit": "Not native or browser acceptance."
+        },
+        {
+          "path": "local-workbench/BROWSER-QA-CURRENT.json",
+          "pointer": "/successfulFlow",
+          "supports": "One actual save sample reaches receipt and returns to the same reading paragraph.",
+          "limit": "This is not SR, focus preservation, or all-timer acceptance."
+        }
+      ],
+      "designFinding": "VISUAL_STATUS_PARTIAL_SEMANTICS_UNVERIFIED",
+      "gapBoundary": "Visible pending/receipt text does not prove SR feedback or focus preservation. Actual status/alert semantics are unverified.",
+      "minimalAction": "Annotate real pending/query/receipt/error messages, announcement priority/deduplication, preserved focus/scroll, and manual query. status/alert are suggested implementation semantics, not verbatim source requirements.",
+      "runtimeStatus": "SR_NOT_RUN; TIMING_HOLD",
+      "titleZh": "异步声明和焦点保持",
+      "findingZh": "可见的正在保存/查询/确认回执是视觉反馈；尚无真实读屏声明、去重和不打断输入的验收。",
+      "boundaryZh": "固定阅读收藏样例已通过保存回执及同来源返回；查询和其它计时仍待校准，焦点/滚动保持未验。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-MODAL",
+      "topic": "Modal focus entry and return",
+      "sourceRefs": [
+        {
+          "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+          "startLine": 433,
+          "endLine": 435,
+          "authority": "current-v2",
+          "excerpt": "按键盘完成登录/目标/答题/提交/返回；弹层打开后焦点到合理位置，关闭后回原触发点；错误指出具体字段；不以颜色或撒花作为唯一反馈。局部异步更新避免重置输入焦点和滚动位置，重要错误可感知但不要每个流式字都强制播报。\n\n字体放大、移动端软键盘、长题干、长价格/语言文本、横竖屏变化都不能遮挡主要按钮。离开会丢未提交输入时才做确认，已提交内容返回不反复弹窗。具体实现和标准符合性需实际界面测试，本稿不是无障碍认证。",
+          "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d"
+        }
+      ],
+      "explicitRequirement": "Opening a modal moves focus appropriately; closing restores its trigger. Confirm leaving only when unsent input would be lost.",
+      "existingDesignEvidence": [
+        {
+          "evidenceClass": "INVENTORY_ONLY",
+          "rootIds": [
+            "73:311",
+            "73:387",
+            "73:546"
+          ],
+          "supports": "Existing focus-return/leave-confirm samples.",
+          "limit": "Exact opener and return targets are not body-read in this task."
+        }
+      ],
+      "designFinding": "EXISTING_MODAL_CANDIDATES_REQUIRE_READ",
+      "gapBoundary": "Full-frame confirmation NAV is not evidence of real modal focus behavior. Do not add leave modals everywhere.",
+      "minimalAction": "Read73:311/73:387/73:546. Actual modals need opener ID, initial focus, close/Esc behavior, and fallback if opener disappears. Preserve pending locks and operation identity.",
+      "runtimeStatus": "KEYBOARD_AND_SR_NOT_RUN",
+      "titleZh": "模态初始焦点和返回",
+      "findingZh": "真正弹层需定义初始焦点、Tab范围、关闭/Esc与原触发点返回；整页NAV确认不能冒充模态已验证。只在丢失未提交输入时确认离开。",
+      "boundaryZh": "既有关闭/离开焦点稿未精读；当前全页闭环不自动升级为模态焦点通过。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-NONCOLOR",
+      "topic": "State beyond color",
+      "sourceRefs": [
+        {
+          "path": "AGENTS.md",
+          "startLine": 36,
+          "endLine": 36,
+          "authority": "workspace-rules",
+          "excerpt": "- **主题与设计 Token**：`packages/design-tokens` 必须输出原子 Token 与语义 Token（颜色、字体、间距、圆角、阴影、动效、断点、焦点态）；至少支持亮色、暗色、跟随系统和高对比模式。Web/Nuxt、uni-app 和 Element Plus 只消费适配后的变量，不得在业务页面新增品牌/状态色硬编码；颜色不能成为状态表达的唯一信号。",
+          "sha256": "0becc2ecd22fc7b8ad16f77112d3b91e42cfb6c6b68f7defcd3222fdcd10c197"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+          "startLine": 94,
+          "endLine": 95,
+          "authority": "current-v2",
+          "excerpt": "- Token 必须区分原子值和语义值，覆盖颜色、字体、间距、圆角、阴影、动效、断点与焦点态；支持亮色、暗色、跟随系统和高对比主题。Nuxt SSR 使用稳定的首屏主题/locale 来源以避免 hydration 闪烁；uni-app、Element Plus 和 Web 使用各自变量适配层。\n- 主题偏好可以本地持久化；与学习档案同步前必须由 `learner-service` 的偏好契约显式允许。颜色之外必须同时使用文案、图标、形状或状态属性表达成功、错误、权限和处理中状态。",
+          "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7"
+        },
+        {
+          "path": "requirements/product-requirements.md",
+          "startLine": 2972,
+          "endLine": 2972,
+          "authority": "product-requirements",
+          "excerpt": "- 色弱不只依赖颜色表达正确/错误",
+          "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb"
+        },
+        {
+          "path": "packages/design-tokens/src/index.ts",
+          "startLine": 64,
+          "endLine": 74,
+          "authority": "shared-token-policy",
+          "excerpt": "/**\n * Every status has a non-color marker. Components should render the marker and\n * accessible text together with the status color so grayscale/high-contrast\n * rendering does not lose meaning.\n */\nexport const statusSemantics = {\n  success: { marker: 'check', pattern: 'solid', labelKey: 'common.state.success' },\n  warning: { marker: 'warning', pattern: 'striped', labelKey: 'common.state.warning' },\n  danger: { marker: 'error', pattern: 'dashed', labelKey: 'common.state.error' },\n  info: { marker: 'info', pattern: 'dotted', labelKey: 'common.state.info' },\n} as const",
+          "sha256": "22daf8a3f06ea779d0b4f61b7386f6bbdf01e5e2d482174336a7b2f9af481879"
+        }
+      ],
+      "explicitRequirement": "Success/error/permission/processing and correctness require text, icon, shape, or state attributes beyond color.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/shared-foundations-READY.js",
+          "startLine": 47,
+          "endLine": 54,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "Explicit status, Selected check and label, Disabled reason.",
+          "limit": "Not native or browser acceptance."
+        },
+        {
+          "path": "local-workbench/skills-static-choice-marker-audit.json",
+          "pointer": "/status",
+          "supports": "26 actual native candidates need business-specific classification.",
+          "limit": "Do not treat exploration, radio, and checkbox identically."
+        },
+        {
+          "path": "local-workbench/BROWSER-QA-CURRENT.json",
+          "pointer": "/openIssues",
+          "supports": "Actual Reading expression-edit shows intent=true with an unselected marker.",
+          "limit": "This does not prove the same defect in all26 candidates."
+        }
+      ],
+      "designFinding": "KNOWN_BROWSER_SELECTION_MARKER_CONTRADICTION",
+      "gapBoundary": "Static unselected text contradicting actual state is not valid non-color feedback; exploration state differs from answer selection.",
+      "minimalAction": "Parent should precisely repair actual IDs with existing variables: state-driven selected markers for radio/checkbox; current/explore labels for exploration. Keep pending guards.",
+      "runtimeStatus": "PARTIAL_BROWSER_FAIL; REMAINING_TARGETED_QA",
+      "titleZh": "颜色之外的状态",
+      "findingZh": "已证实表达编辑器两项静态“未选择”与实际布尔状态矛盾；其余24项按radio/探索/字幕定位分别修补。",
+      "boundaryZh": "已准备精确补丁；尚未写入或回读，不计修复完成。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-MOTION",
+      "topic": "Reduced motion and static alternatives",
+      "sourceRefs": [
+        {
+          "path": "requirements/product-requirements.md",
+          "startLine": 2553,
+          "endLine": 2562,
+          "authority": "product-requirements",
+          "excerpt": "### 显示\n\n- 浅色\n- 深色\n- 跟随系统\n- 字号\n- 高对比\n- 减少动画\n- 关闭粒子\n- 关闭震动",
+          "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb"
+        },
+        {
+          "path": "requirements/product-requirements.md",
+          "startLine": 2971,
+          "endLine": 2971,
+          "authority": "product-requirements",
+          "excerpt": "- 减少动画",
+          "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+          "startLine": 88,
+          "endLine": 88,
+          "authority": "current-v2",
+          "excerpt": "布局只使用 design-system 的 token；复杂 3D、粒子、波形和图谱必须接入 AdaptivePerformanceEngine 的 Ultra/High/Medium/Performance 四级档位。低配设备可退到 2.5D SVG、2D 切片、静态图或文本结果。",
+          "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/phase1-business-operation/08-验收与追溯规范.md",
+          "startLine": 128,
+          "endLine": 129,
+          "authority": "current-v2",
+          "excerpt": "7. locale fallback、四主题、键盘/读屏、对比度、触控目标和减少动效；\n8. Ultra/High/Medium/Performance 降级，以及媒体/图谱/3D 的静态替代；",
+          "sha256": "68094074693b8143669332e6412f93061f58b790cb06601caebcfdec093bf403"
+        }
+      ],
+      "explicitRequirement": "Provide reduced-animation/particle preferences; complex3D/graphs/waveforms support four quality tiers and2D/static/text alternatives.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/account-source-entry-live-a3.json",
+          "pointer": "/roots/0/nodes/25",
+          "supports": "Actual quality/motion entry235:2036 targets235:2445.",
+          "limit": "Target body235:2445 not read in this task."
+        },
+        {
+          "path": "local-workbench/skills-word-phoneme-links-v1.body.js",
+          "startLine": 7,
+          "endLine": 10,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "Word phoneme defaults to static2D, has a reduced-motion control and text alternatives.",
+          "limit": "Not native or browser acceptance."
+        }
+      ],
+      "designFinding": "SPECIFIC_STATIC_DESIGN_GLOBAL_LINK_UNVERIFIED",
+      "gapBoundary": "One static phoneme example does not prove all graphs/media/feedback consume one global preference. A specific OS API is not mandated verbatim.",
+      "minimalAction": "Read existing235:2445 first; check selection, return/preservation, and shared preference consumption by media/graph/feedback. Missing media stays readable/static.",
+      "runtimeStatus": "GLOBAL_REDUCED_MOTION_NOT_RUN",
+      "titleZh": "减少动效和静态替代",
+      "findingZh": "词条音素稿有静态2D和文本替代；全局画质/动效入口已连到235:2445，目标正文未读。",
+      "boundaryZh": "不能由单个静态页推定图谱、媒体、反馈共用偏好；先回读现有设置，不另造平行设置页。",
+      "wholeRequirementPass": false
+    },
+    {
+      "id": "A11Y-SRC-SYSTEM",
+      "topic": "Theme FollowSystem",
+      "sourceRefs": [
+        {
+          "path": "AGENTS.md",
+          "startLine": 36,
+          "endLine": 36,
+          "authority": "workspace-rules",
+          "excerpt": "- **主题与设计 Token**：`packages/design-tokens` 必须输出原子 Token 与语义 Token（颜色、字体、间距、圆角、阴影、动效、断点、焦点态）；至少支持亮色、暗色、跟随系统和高对比模式。Web/Nuxt、uni-app 和 Element Plus 只消费适配后的变量，不得在业务页面新增品牌/状态色硬编码；颜色不能成为状态表达的唯一信号。",
+          "sha256": "0becc2ecd22fc7b8ad16f77112d3b91e42cfb6c6b68f7defcd3222fdcd10c197"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+          "startLine": 94,
+          "endLine": 95,
+          "authority": "current-v2",
+          "excerpt": "- Token 必须区分原子值和语义值，覆盖颜色、字体、间距、圆角、阴影、动效、断点与焦点态；支持亮色、暗色、跟随系统和高对比主题。Nuxt SSR 使用稳定的首屏主题/locale 来源以避免 hydration 闪烁；uni-app、Element Plus 和 Web 使用各自变量适配层。\n- 主题偏好可以本地持久化；与学习档案同步前必须由 `learner-service` 的偏好契约显式允许。颜色之外必须同时使用文案、图标、形状或状态属性表达成功、错误、权限和处理中状态。",
+          "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7"
+        },
+        {
+          "path": "requirements/product-requirements.md",
+          "startLine": 2553,
+          "endLine": 2560,
+          "authority": "product-requirements",
+          "excerpt": "### 显示\n\n- 浅色\n- 深色\n- 跟随系统\n- 字号\n- 高对比\n- 减少动画",
+          "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/phase1-business-operation/03-全端页面功能登记册.md",
+          "startLine": 115,
+          "endLine": 115,
+          "authority": "current-v2",
+          "excerpt": "| 性能与可访问性 | settings 已有主题、动效、高对比入口；性能还需贯穿 media/world | 至少验证亮/暗/跟随系统/高对比、键盘/读屏、Ultra/High/Medium/Performance 降级和低网恢复 |",
+          "sha256": "49dec04b396cdb732c61c210b6d4473dc37dedef21c8620bf4b59f1c39356625"
+        },
+        {
+          "path": "docs/06-design/v2-980plus/phase1-business-operation/08-验收与追溯规范.md",
+          "startLine": 128,
+          "endLine": 128,
+          "authority": "current-v2",
+          "excerpt": "7. locale fallback、四主题、键盘/读屏、对比度、触控目标和减少动效；",
+          "sha256": "68094074693b8143669332e6412f93061f58b790cb06601caebcfdec093bf403"
+        }
+      ],
+      "explicitRequirement": "Light/Dark/FollowSystem/HighContrast preferences; local persistence permitted; learner-service contract must explicitly permit profile synchronization.",
+      "existingDesignEvidence": [
+        {
+          "path": "local-workbench/shared-foundation-ids.json",
+          "pointer": "/themeModes",
+          "supports": "Existing resolved color modes Light/Dark/HighContrast.",
+          "limit": "FollowSystem can resolve to Light/Dark; a fourth literal Figma color mode is not required."
+        },
+        {
+          "path": "local-workbench/skills-reading-a-v1.body.js",
+          "startLine": 15,
+          "endLine": 15,
+          "evidenceClass": "AUTHORING_ONLY",
+          "supports": "Reader has Light/Dark/HighContrast controls; FollowSystem appears only as explanatory text.",
+          "limit": "Not native or browser acceptance."
+        },
+        {
+          "path": "local-workbench/account-source-entry-live-a3.json",
+          "pointer": "/reactionTable/1",
+          "supports": "Actual appearance entry235:2032 targets235:2182.",
+          "limit": "Target235:2182 body not read; no global absence conclusion."
+        }
+      ],
+      "designFinding": "GLOBAL_FOLLOW_SYSTEM_TARGET_REQUIRED",
+      "gapBoundary": "Three resolved color modes do not mean missing FollowSystem; reader explanatory prose is not an operable4-preference flow.",
+      "minimalAction": "Read235:2182 only: four preferences, current resolved system appearance, system light-to-dark example, return/preservation. Add precise missing control only if confirmed.",
+      "runtimeStatus": "FOLLOW_SYSTEM_BEHAVIOR_NOT_RUN",
+      "titleZh": "跟随系统与四主题偏好",
+      "findingZh": "Light/Dark/HighContrast是解析后的颜色模式；FollowSystem可解析为亮或暗，不强制新增第四颜色Mode。阅读设置只写了说明，全局外观入口已到235:2182。",
+      "boundaryZh": "需查四偏好可操作选择、当前系统解析状态、系统变化示例与返回保持；现有目标未读，不能判全局缺失。",
+      "wholeRequirementPass": false
+    }
+  ],
+  "responsive": {
+    "sampleEvidence": [
+      "header-reading-1440.png",
+      "header-reading-1024.png",
+      "header-reading-768.png",
+      "header-reading-200.png",
+      "orders-768.png",
+      "writing-768.png"
+    ],
+    "sampleStatusOverrides": {
+      "writing-768.png": "BEFORE_NORMAL_HINT_CORRECTION_NOT_FINAL; layout example only, hint fix has actual receipt, corrected screenshot pending"
+    },
+    "status": "LISTED_LAYOUT_SAMPLES_ONLY_WRITING768_BEFORE_HINT_CORRECTION_NOT_FINAL",
+    "widths": [
+      1440,
+      1024,
+      768
+    ],
+    "textScale": 2,
+    "notProven": [
+      "Whole page/state inventory at every breakpoint",
+      "Actual browser CSS zoom/reflow",
+      "device and assistive technology",
+      "keyboard and screen reader",
+      "all modal/error/long-content conditions"
+    ],
+    "rule": "768 native reflow samples count for Web; mobile counts do not."
+  },
+  "browser": {
+    "currentEvidence": "BROWSER-QA-CURRENT.json",
+    "fixedFlowResult": "PASS_THIS_FIXED_SAMPLE_ONLY",
+    "flow": {
+      "name": "READING_COLLECTION_SAVE_RETURN",
+      "roots": [
+        "379:18925",
+        "379:19105",
+        "378:9122",
+        "378:9826",
+        "378:9942",
+        "378:8870",
+        "380:9937",
+        "379:18925"
+      ],
+      "sentence": "She chooses a book and reads by the window.",
+      "article": "A day at the library",
+      "version": "1",
+      "paragraph": "2",
+      "receiptReachedViaUrlWait": true,
+      "observedSaveToReceiptElapsedMs": 1004,
+      "elapsedMeaning": "Input, rendering and navigation-wait duration; not a precise network latency",
+      "result": "PASS_THIS_FIXED_SAMPLE_ONLY",
+      "proof": [
+        "browser-expression-confirmed.jpg",
+        "browser-expression-source.jpg",
+        "browser-reading-return.jpg"
+      ]
+    },
+    "keyboardAndScreenReader": "NOT_RUN; Figma prototype announced its screenreader support disabled",
+    "knownChoiceIssue": {
+      "id": "WEB-BROWSER-CHOICE-STATE",
+      "rootId": "378:9122",
+      "status": "OPEN_FIX_PREPARED",
+      "observed": "Static 未选择 conflicts with ✓已标记我想会说 after reading-origin input.",
+      "fix": "skills-expression-choice-state-v2-tool.js NOT_RUN"
+    },
+    "timing": "SYSTEMIC_CALIBRATION_PENDING_GUI_FIXED4_ROOTS; native values afterGUI unknown"
+  },
+  "draftBoundary": {
+    "status": "CONFIRMED_SOURCE_NATIVE_GAPS_FRAMEWORK_NOT_NATIVE_READY",
+    "audit": "skills-draft-ingress-source-audit.json",
+    "plan": "skills-expression-draft-guard-v1-manifest.json",
+    "findings": [
+      "Cross-entity ingress has no dirty/entity guard",
+      "Note378:9777 is static unbound text",
+      "Save378:9780 freezes expression only, not full draft/source/intent"
+    ],
+    "localCases": 18,
+    "nativeRepair": "NOT_RUN_TIMING_HOLD_AUTH3_DEPENDENCY"
+  },
+  "choiceCounts": {
+    "total": 26,
+    "checkbox": 2,
+    "categoryRadio": 8,
+    "answerRadio": 3,
+    "exploration": 10,
+    "seekNavigation": 3
+  },
+  "choiceGroups": [
+    {
+      "id": "grammar-exploration",
+      "semanticKind": "explanation-button",
+      "controlIds": [
+        "354:3721",
+        "354:3725",
+        "354:3729",
+        "354:3739",
+        "354:3743",
+        "354:3747"
+      ],
+      "canonicalVariables": {
+        "VariableID:354:3181": {
+          "name": "component",
+          "value": "主语",
+          "type": "STRING"
+        }
+      },
+      "meaning": "Constituent explanation, not a graded answer.",
+      "repair": "Use explore/current-explanation text. If flags are added, include xray and768 writers; do not reset grammar input.",
+      "evidence": [
+        {
+          "controlId": "354:3721",
+          "rootId": "354:3673",
+          "parentId": "354:3718",
+          "reactionSha256": "5b70e395e0418aa7006498c9f440697e8e5dd984a05bd5f567ab101d5f6bef67",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/13"
+          },
+          "markers": [
+            {
+              "id": "I354:3721;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3721",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/25"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "354:3725",
+          "rootId": "354:3673",
+          "parentId": "354:3719",
+          "reactionSha256": "8fe8941f93d629aea3947f8799151aa1cf473cd8fbff686efcdf023dcd1e0677",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/14"
+          },
+          "markers": [
+            {
+              "id": "I354:3725;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3725",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/29"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "354:3729",
+          "rootId": "354:3673",
+          "parentId": "354:3720",
+          "reactionSha256": "9a422e59264c9d740b24d5187c8a58c10e0fc3026f2d1327ded7456ee8038db8",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/15"
+          },
+          "markers": [
+            {
+              "id": "I354:3729;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3729",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/33"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "354:3739",
+          "rootId": "354:3673",
+          "parentId": "354:3738",
+          "reactionSha256": "07c4c4fe94d55d289da2e4609ed52bd09b3a3e3396cd9193b44d4dee17fcac24",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/16"
+          },
+          "markers": [
+            {
+              "id": "I354:3739;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3739",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/40"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "354:3743",
+          "rootId": "354:3673",
+          "parentId": "354:3738",
+          "reactionSha256": "6f0c18db020d64e04df203b7b392949c077dcf0b86d06473d38358dcb483ba84",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/17"
+          },
+          "markers": [
+            {
+              "id": "I354:3743;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3743",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/44"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "354:3747",
+          "rootId": "354:3673",
+          "parentId": "354:3738",
+          "reactionSha256": "724a4284eed405888116f2b0daf0991a94535de157cd19528f3b27b958564058",
+          "reactionEvidence": {
+            "path": "native-skills-grammar-syntax-a.json",
+            "pointer": "/reactionTable/18"
+          },
+          "markers": [
+            {
+              "id": "I354:3747;350:3180",
+              "type": "TEXT",
+              "parentId": "354:3747",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-grammar-syntax-a.json",
+                "pointer": "/frames/1/nodes/48"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    },
+    {
+      "id": "subtitle-seek",
+      "semanticKind": "seek-navigation-button",
+      "controlIds": [
+        "378:10665",
+        "378:10670",
+        "378:10675"
+      ],
+      "canonicalVariables": {
+        "VariableID:378:10180": {
+          "name": "cueIndex",
+          "value": 0,
+          "type": "FLOAT"
+        }
+      },
+      "meaning": "Seek cueIndex0/1/2 with synchronized cue/time/translation.",
+      "repair": "Use seek action text, not radio. Optional current-cue follows cueIndex and previous/next; no fake playback.",
+      "evidence": [
+        {
+          "controlId": "378:10665",
+          "rootId": "378:10268",
+          "parentId": "378:10661",
+          "reactionSha256": "67472e99864fa08ee922ab374b0eedc0751bb56e981baaf70ac43b86d4254b05",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-a-a.json",
+            "pointer": "/reactionTable/12"
+          },
+          "markers": [
+            {
+              "id": "I378:10665;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10665",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-a-a.json",
+                "pointer": "/frames/0/nodes/48"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10670",
+          "rootId": "378:10268",
+          "parentId": "378:10661",
+          "reactionSha256": "d51c36d6f23e81ee288b8bdb8706c8570345f6aa678d274768106d3ae0360088",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-a-a.json",
+            "pointer": "/reactionTable/13"
+          },
+          "markers": [
+            {
+              "id": "I378:10670;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10670",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-a-a.json",
+                "pointer": "/frames/0/nodes/52"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10675",
+          "rootId": "378:10268",
+          "parentId": "378:10661",
+          "reactionSha256": "4b110d52925efd50af2d53bda3aeb67b9251edd17e8612b4f34680a5a4ad72ef",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-a-a.json",
+            "pointer": "/reactionTable/14"
+          },
+          "markers": [
+            {
+              "id": "I378:10675;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10675",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-a-a.json",
+                "pointer": "/frames/0/nodes/56"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    },
+    {
+      "id": "radar-filter",
+      "semanticKind": "single-choice-category-filter",
+      "controlIds": [
+        "378:10963",
+        "378:10967",
+        "378:10971",
+        "378:10975",
+        "378:10980",
+        "378:10984",
+        "378:10988",
+        "378:10992"
+      ],
+      "canonicalVariables": {
+        "VariableID:378:10188": {
+          "name": "soundFocus",
+          "value": "连读",
+          "type": "STRING"
+        }
+      },
+      "meaning": "Eight mutually exclusive active sound categories, not a score.",
+      "repair": "Selected/current-category derives from soundFocus. Preserve radar target/example/hint writes.",
+      "evidence": [
+        {
+          "controlId": "378:10963",
+          "rootId": "378:10412",
+          "parentId": "378:10962",
+          "reactionSha256": "28f50eeb0c7bd0dc3d98c78e279abddfc2dc2b7e8b87ff4c5286f6d3c5fb8d7d",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/6"
+          },
+          "markers": [
+            {
+              "id": "I378:10963;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10963",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/22"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10967",
+          "rootId": "378:10412",
+          "parentId": "378:10962",
+          "reactionSha256": "8bd36f0aa71bb32463143958b96aff44744c241bd3a57a9d6c8670c4608ae656",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/7"
+          },
+          "markers": [
+            {
+              "id": "I378:10967;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10967",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/26"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10971",
+          "rootId": "378:10412",
+          "parentId": "378:10962",
+          "reactionSha256": "81b70338786ef59c11a8052b1085e4f1c6501e6f83b4627e677734fa18834d84",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/8"
+          },
+          "markers": [
+            {
+              "id": "I378:10971;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10971",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/30"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10975",
+          "rootId": "378:10412",
+          "parentId": "378:10962",
+          "reactionSha256": "5ff1989f73f61b45cb6c853278f9777c3b0bacdb319864c9c2895a07d28a98ae",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/9"
+          },
+          "markers": [
+            {
+              "id": "I378:10975;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10975",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/34"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10980",
+          "rootId": "378:10412",
+          "parentId": "378:10979",
+          "reactionSha256": "0eef9cadf6a340cf635aecb9d9e5b4e0936e956cb69bcd1b50bf90b4633d1a08",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/10"
+          },
+          "markers": [
+            {
+              "id": "I378:10980;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10980",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/38"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10984",
+          "rootId": "378:10412",
+          "parentId": "378:10979",
+          "reactionSha256": "f8631c4156c26e15c0cd381b693de48c8ad5e5966decf50439df7857fc3a9a27",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/11"
+          },
+          "markers": [
+            {
+              "id": "I378:10984;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10984",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/42"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10988",
+          "rootId": "378:10412",
+          "parentId": "378:10979",
+          "reactionSha256": "56617c5c161310f903bb1a5313840441a44145cfef759c1adcdb484588b891f6",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/12"
+          },
+          "markers": [
+            {
+              "id": "I378:10988;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10988",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/46"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:10992",
+          "rootId": "378:10412",
+          "parentId": "378:10979",
+          "reactionSha256": "6ad6c7d7441285329696fcd632433767096e5131891c3b237f9a485d732d9340",
+          "reactionEvidence": {
+            "path": "native-skills-listening-controls-b-b.json",
+            "pointer": "/reactionTable/13"
+          },
+          "markers": [
+            {
+              "id": "I378:10992;350:3180",
+              "type": "TEXT",
+              "parentId": "378:10992",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-listening-controls-b-b.json",
+                "pointer": "/frames/0/nodes/50"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    },
+    {
+      "id": "syntax-exploration",
+      "semanticKind": "explanation-button",
+      "controlIds": [
+        "379:20209",
+        "379:20213",
+        "379:20218",
+        "379:20222"
+      ],
+      "canonicalVariables": {
+        "VariableID:379:18839": {
+          "name": "analysisLabel",
+          "value": "She · 主语",
+          "type": "STRING"
+        }
+      },
+      "meaning": "Four sentence spans change explanation, not a checked answer.",
+      "repair": "Use explore/current-explanation text. Preserve analysisLabel and analysisText.",
+      "evidence": [
+        {
+          "controlId": "379:20209",
+          "rootId": "379:19069",
+          "parentId": "379:20208",
+          "reactionSha256": "2ab2fc5f9796890b3cbda485f523b327969b1e731643a4e8cc9336755c6357dc",
+          "reactionEvidence": {
+            "path": "native-skills-reading-core-b.json",
+            "pointer": "/reactionTable/6"
+          },
+          "markers": [
+            {
+              "id": "I379:20209;350:3183",
+              "type": "TEXT",
+              "parentId": "379:20209",
+              "expectedText": "✓ 已选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-reading-core-b.json",
+                "pointer": "/frames/0/nodes/23"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "379:20213",
+          "rootId": "379:19069",
+          "parentId": "379:20208",
+          "reactionSha256": "dac3b9bb42390ec71d718f1428def71385fd1ba6c13047462be4f509de703b0c",
+          "reactionEvidence": {
+            "path": "native-skills-reading-core-b.json",
+            "pointer": "/reactionTable/7"
+          },
+          "markers": [
+            {
+              "id": "I379:20213;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20213",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-reading-core-b.json",
+                "pointer": "/frames/0/nodes/27"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "379:20218",
+          "rootId": "379:19069",
+          "parentId": "379:20217",
+          "reactionSha256": "b22beb34237120ea8cdd65af2b5f67ab817d67a02fcd588fda8936b9ec693664",
+          "reactionEvidence": {
+            "path": "native-skills-reading-core-b.json",
+            "pointer": "/reactionTable/8"
+          },
+          "markers": [
+            {
+              "id": "I379:20218;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20218",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-reading-core-b.json",
+                "pointer": "/frames/0/nodes/31"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "379:20222",
+          "rootId": "379:19069",
+          "parentId": "379:20217",
+          "reactionSha256": "a57bc00c2b6371449346f491709b45ab0bc3142ab48377a114e09f286d187453",
+          "reactionEvidence": {
+            "path": "native-skills-reading-core-b.json",
+            "pointer": "/reactionTable/9"
+          },
+          "markers": [
+            {
+              "id": "I379:20222;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20222",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-reading-core-b.json",
+                "pointer": "/frames/0/nodes/35"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    },
+    {
+      "id": "story-answer",
+      "semanticKind": "single-choice-answer",
+      "controlIds": [
+        "379:20929",
+        "379:20933",
+        "379:20937"
+      ],
+      "canonicalVariables": {
+        "VariableID:379:20401": {
+          "name": "answer",
+          "value": "尚未作答",
+          "type": "STRING"
+        }
+      },
+      "meaning": "Three mutually exclusive scored answers; initially unanswered.",
+      "repair": "Keep idle/accepted guard and correctness/score/validation writes. New path confirmation379:20902 clears answer and must reset visuals.",
+      "evidence": [
+        {
+          "controlId": "379:20929",
+          "rootId": "379:20624",
+          "parentId": "379:20928",
+          "reactionSha256": "38228c1a326916f1c12117f7deb1dba704c25354b54cd14957bbcb4fbb348c53",
+          "reactionEvidence": {
+            "path": "native-skills-story-path-b.json",
+            "pointer": "/reactionTable/8"
+          },
+          "markers": [
+            {
+              "id": "I379:20929;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20929",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-story-path-b.json",
+                "pointer": "/frames/1/nodes/23"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "379:20933",
+          "rootId": "379:20624",
+          "parentId": "379:20928",
+          "reactionSha256": "3b88f9a692626bdfe623d1a248306c1b4ed242a631187665a2504e3a7999aee1",
+          "reactionEvidence": {
+            "path": "native-skills-story-path-b.json",
+            "pointer": "/reactionTable/9"
+          },
+          "markers": [
+            {
+              "id": "I379:20933;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20933",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-story-path-b.json",
+                "pointer": "/frames/1/nodes/27"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "379:20937",
+          "rootId": "379:20624",
+          "parentId": "379:20928",
+          "reactionSha256": "b199a6cf7d0c413a38ff29b010a81b64000c724316e140cf3b78cf6ed95ea757",
+          "reactionEvidence": {
+            "path": "native-skills-story-path-b.json",
+            "pointer": "/reactionTable/10"
+          },
+          "markers": [
+            {
+              "id": "I379:20937;350:3180",
+              "type": "TEXT",
+              "parentId": "379:20937",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-story-path-b.json",
+                "pointer": "/frames/1/nodes/31"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    },
+    {
+      "id": "expression-switches",
+      "semanticKind": "independent-checkbox",
+      "controlIds": [
+        "378:9762",
+        "378:9767"
+      ],
+      "canonicalVariables": {
+        "VariableID:378:8849": {
+          "name": "wantToSay",
+          "value": true,
+          "type": "BOOLEAN"
+        },
+        "VariableID:378:8851": {
+          "name": "reviewExpression",
+          "value": false,
+          "type": "BOOLEAN"
+        }
+      },
+      "meaning": "Two independent booleans; wantToSay starts true, reviewExpression false.",
+      "repair": "Prefer marker text bound directly to existing wantStatus378:8850/reviewStatus378:8852. Keep all original phase/temp snapshot and operation actions.",
+      "evidence": [
+        {
+          "controlId": "378:9762",
+          "rootId": "378:9122",
+          "parentId": "378:9761",
+          "reactionSha256": "d49b02eeceafd048825e42fe0b2ff02756874d6b9867b4c31de9419cdc31d307",
+          "reactionEvidence": {
+            "path": "native-skills-vocabulary-selection-b-a.json",
+            "pointer": "/reactionTable/6"
+          },
+          "markers": [
+            {
+              "id": "I378:9762;350:3180",
+              "type": "TEXT",
+              "parentId": "378:9762",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-vocabulary-selection-b-a.json",
+                "pointer": "/frames/0/nodes/24"
+              }
+            }
+          ]
+        },
+        {
+          "controlId": "378:9767",
+          "rootId": "378:9122",
+          "parentId": "378:9766",
+          "reactionSha256": "2c9a63b3c455e9437ec1c4e577e9fef02773f645a26e037148c7e5c6744e48c6",
+          "reactionEvidence": {
+            "path": "native-skills-vocabulary-selection-b-a.json",
+            "pointer": "/reactionTable/7"
+          },
+          "markers": [
+            {
+              "id": "I378:9767;350:3180",
+              "type": "TEXT",
+              "parentId": "378:9767",
+              "expectedText": "未选择",
+              "expectedBoundVariables": {
+                "fills": [
+                  {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:203:2030"
+                  }
+                ]
+              },
+              "evidence": {
+                "path": "evidence-skills-vocabulary-selection-b-a.json",
+                "pointer": "/frames/0/nodes/28"
+              }
+            }
+          ]
+        }
+      ],
+      "nativeStatus": "ACTUAL_READBACK_CLASSIFIED_NOT_REPAIRED",
+      "repairStatus": "TIMING_HOLD_NOT_RUN"
+    }
+  ],
+  "choiceFactory": {
+    "status": "TIMING_HOLD_NOT_RUN",
+    "file": "a11y-choice-repair-factory-v1-tool.js",
+    "body": "a11y-choice-repair-factory-v1.body.js",
+    "runtime": "a11y-choice-factory-runtime.js",
+    "config": "a11y-choice-factory-config.json",
+    "classification": "a11y-choice-classification-input.json",
+    "localValidation": "a11y-choice-factory-local-validation.json",
+    "exactScope": {
+      "controls": 26,
+      "independentCheckbox": 2,
+      "categoryRadio": 8,
+      "answerRadio": 3,
+      "explanationButtons": 10,
+      "seekButtons": 3,
+      "newRoots": 0,
+      "selectedClones": 11,
+      "privateMirrorBooleans": 22,
+      "writerPrograms": 12,
+      "ownDomainRootBounds": 26
+    },
+    "guardPolicy": [
+      "Default mode returns before native read/write",
+      "Exact ID/root name/rootId/parent/type/component properties and complete reaction SHA",
+      "Exact marker ID/text/characters binding; correct prior two-checkbox binding is a skip",
+      "Radio visible=true with no visibility Gate binding; otherwise BLOCKED",
+      "Fresh bounded scan of10 Listening A +16 Reading B roots; unknown writers or nonliteral values block",
+      "Story reset379:20902 included",
+      "No page-global scan or unlisted menu rewrites"
+    ],
+    "preserve": [
+      "All original trigger/conditions/business SET/NAV equal original complete program after stripping only newly added visual mirror SETs",
+      "Operation identity, requestRevision, recording take snapshots, inputs, pending guards untouched",
+      "No timers, default navigation, shared master, global preferences or root GUI changes touched"
+    ],
+    "repair": [
+      "Two checkbox state labels bind existing wantStatus/reviewStatus STRING, compatible with existing expression-choice-v2 patch",
+      "Eleven radio options get Default/Selected visibility mirrors inserted only beside existing canonical SET in same guarded branch",
+      "Ten exploration and three seek buttons get neutral purpose markers; do not call them answers or checked options"
+    ],
+    "rollback": "Backups restore only touched instance masters, text props, marker bindings/text, visibility, metadata and full reactions. Every restore/remove failure reported; clone/collection cleanup per-item guarded.",
+    "resume": [
+      "Resolve an old pending request before a fresh prototype session",
+      "After hold lifted, compile modePROBE to read exact current guards",
+      "Then compile modeAPPLY only from reviewed same config; do not replay after success",
+      "Read actual markers/clone variants/mirror flags/reset and all12 full writer reactions",
+      "Browser test radio choose/change/reset, checkbox toggle/retention, exploration and seek; keyboard/SR remain separate"
+    ]
+  },
+  "componentContracts": {
+    "status": "DESIGN_CONTRACT_ONLY_NOT_HTML_OR_ARIA_RUNTIME",
+    "sourceRequirement": "U9 demands visible focus, keyboard, errors, feedback and return; the role names below are implementation suggestions that realize it, not verbatim source text.",
+    "components": [
+      {
+        "id": "12:2",
+        "kind": "button",
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "focusVisual": {
+          "widthPx": 3,
+          "offsetPx": 2,
+          "token": "VariableID:203:2033",
+          "separateFromSelected": true,
+          "notClipped": true
+        },
+        "contract": "可访问名称与可见动作一致；禁用有原因；焦点不依赖hover。"
+      },
+      {
+        "id": "12:4",
+        "kind": "text-input",
+        "keys": [
+          "Tab",
+          "Shift+Tab",
+          "text editing"
+        ],
+        "contract": "标签常驻；错误消息关联具体字段；提交失败先定位第一个无效字段或错误摘要；纠正不丢文本。原型示例文本不证明真实输入或读屏。"
+      },
+      {
+        "id": "350:3179",
+        "kind": "Choice master set",
+        "existingVariants": [
+          "Default",
+          "Selected",
+          "Disabled"
+        ],
+        "contract": "按业务分radio/checkbox/button；焦点与选择分别表达。radio组的方向键/Home/End/Space，checkbox的Space，探索/定位的Enter/Space均需真实界面验证。"
+      }
+    ],
+    "async": {
+      "pending": "只播报一次“正在保存”，保留当前输入焦点和上下文；同一请求查询不反复重播。",
+      "confirmed": "只在新确认事实到达时提示已保存；不要因重新渲染反复播报。",
+      "error": "可感知的明确原因、恢复动作，重要错误可用较高优先级；不抢走正在编辑的焦点。",
+      "implementationExamples": [
+        "status/live polite for normal progress",
+        "alert or assertive only for important error as appropriate"
+      ],
+      "boundary": "HTML role/live-region仅合同建议；Figma文字和pluginData不等于实际读屏语义。"
+    },
+    "modal": {
+      "requiredOnlyForActualOverlay": true,
+      "contract": "记录实际opener ID、合理initial focus、Tab边界、Esc/关闭语义、关闭回opener；opener消失时回稳定的来源标题或安全操作。pending期间不能绕开未决请求保护。"
+    },
+    "fullPageReturnTargets": [
+      {
+        "nodeId": "379:19565",
+        "name": "操作 / 查词 book",
+        "rootId": "379:18925",
+        "purpose": "关闭查词或词条后回到查词触发点",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/28"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      },
+      {
+        "nodeId": "379:19567",
+        "name": "操作 / 查看句子结构",
+        "rootId": "379:18925",
+        "purpose": "关闭结构探索后回到原句结构触发点",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/30"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      },
+      {
+        "nodeId": "379:19569",
+        "name": "操作 / 收藏这句话",
+        "rootId": "379:18925",
+        "purpose": "取消收藏预览后回到原句收藏触发点",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/32"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      },
+      {
+        "nodeId": "379:19598",
+        "name": "操作 / 阅读设置",
+        "rootId": "379:18925",
+        "purpose": "阅读设置返回保留同一段落与阅读设置触发点",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/51"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      },
+      {
+        "nodeId": "379:19600",
+        "name": "操作 / 为第2段写私人笔记",
+        "rootId": "379:18925",
+        "purpose": "私人笔记返回保留同一段落与笔记触发点",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/53"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      },
+      {
+        "nodeId": "379:19607",
+        "name": "操作 / 进入阅读理解",
+        "rootId": "379:18925",
+        "purpose": "阅读理解结果返回保留原文阅读位置",
+        "evidence": {
+          "path": "evidence-skills-reading-core-a-a.json",
+          "pointer": "/frames/0/nodes/59"
+        },
+        "status": "SPECIFIC_DESIGN_TARGET_RUNTIME_NOT_RUN"
+      }
+    ],
+    "scroll": {
+      "observedAuthoringDefault": "W.go default and actual return NODE actions use resetScrollPosition:true.",
+      "status": "POTENTIAL_REQUIREMENT_CONFLICT_NOT_REPRODUCED_FOCUS_OR_SCROLL_FAILURE",
+      "boundary": "同文章v1第2段样例已浏览器通过；不代表真实DOM focus或scroll restore。不要盲目把全部NAV改为SCROLL_TO。",
+      "followup": "在查词/结构/预览/设置/笔记/题后返回分别核源控件及阅读上下文；只修确证的返回目标。"
+    }
+  },
+  "conditionalFocusReviewSpec": {
+    "status": "CONDITIONAL_TIMING_HOLD_NO_NATIVE_WRITE_PREPARED",
+    "reason": "新共享Choice集没有独立FocusVisible变体，但旧焦点审阅页未读，尚不能断言需要新建。先读现有稿，复用或补其具体缺失区。",
+    "entryPoint": "35:382 or61:388 existing review frame, after fresh exact-body read",
+    "maxNewReviewRootCount": 1,
+    "maxNewBusinessRootCount": 0,
+    "mutateSharedMaster": false,
+    "notAcceptance": "一张组件审阅稿不能替代每条业务键盘、错误与返回闭环。",
+    "focusedSpecimens": [
+      {
+        "sourceMasterId": "12:2",
+        "states": [
+          "Normal",
+          "FocusVisible",
+          "Disabled with reason"
+        ]
+      },
+      {
+        "sourceMasterId": "350:3176",
+        "states": [
+          "Default",
+          "Default+FocusVisible"
+        ]
+      },
+      {
+        "sourceMasterId": "350:3177",
+        "states": [
+          "Selected",
+          "Selected+FocusVisible"
+        ]
+      },
+      {
+        "sourceMasterId": "12:4",
+        "states": [
+          "Normal",
+          "FocusVisible",
+          "Invalid+FocusVisible with linked explanation"
+        ]
+      }
+    ],
+    "geometry": {
+      "focusOutlineWidthPx": 3,
+      "focusOutlineOffsetPx": 2,
+      "minTargetPx": 44,
+      "textScaleMax": 2,
+      "layout": "Keep outline outside control, reserve surrounding space, never clip focus at a scroll boundary."
+    },
+    "semanticTargets": [
+      {
+        "actualIds": [
+          "378:9762",
+          "378:9767"
+        ],
+        "kind": "checkbox",
+        "target": "label, checked state, pending disabled reason, help text"
+      },
+      {
+        "actualIds": [
+          "378:10963",
+          "378:10967",
+          "378:10971",
+          "378:10975",
+          "378:10980",
+          "378:10984",
+          "378:10988",
+          "378:10992"
+        ],
+        "kind": "radio-filter",
+        "target": "group label, one current option, preserved detail context"
+      },
+      {
+        "actualIds": [
+          "379:20929",
+          "379:20933",
+          "379:20937"
+        ],
+        "kind": "radio-answer",
+        "target": "question label, unanswered/error target, one selected option, reset after new path"
+      }
+    ],
+    "requiredPrewriteGuards": [
+      "Complete old review body read and exact node/parent/type/text guards",
+      "No duplicate focus section already present",
+      "No shared master mutation",
+      "Root owns write and timing hold lifted",
+      "Use current semantic tokens; no new brand or state color"
+    ]
+  },
+  "existingCandidates": [
+    {
+      "rootId": "31:185",
+      "name": "50 / 登录 · 键盘焦点",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/49",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "35:302",
+      "name": "59 / 练习 · 键盘焦点",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/58",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "35:382",
+      "name": "60 / 设计说明 · 焦点与触达",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/59",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "56:420",
+      "name": "77 / 显示与语言设置",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/76",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "61:388",
+      "name": "100 / 设计交接 · 响应式与无障碍",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/99",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "73:234",
+      "name": "132 / 练习未保存 · 错误与可见焦点",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/131",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "73:311",
+      "name": "133 / 关闭确认后 · 焦点返回",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/132",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "73:387",
+      "name": "134 / 离开练习确认 · 焦点示例",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/133",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    },
+    {
+      "rootId": "73:546",
+      "name": "136 / 交接 · 错误与焦点返回",
+      "evidenceFile": "live-web-top-level-inventory.json",
+      "pointer": "/rows/135",
+      "status": "ID_NAME_ONLY_NOT_COVERAGE"
+    }
+  ],
+  "minimumReadOrder": [
+    {
+      "priority": 1,
+      "rootIds": [
+        "35:382",
+        "73:546"
+      ],
+      "purpose": "Read existing focus/error/return notes before adding specimens",
+      "status": "TIMING_HOLD_READ_ONLY_AFTER_QUOTA"
+    },
+    {
+      "priority": 2,
+      "rootIds": [
+        "35:302",
+        "73:234",
+        "73:311",
+        "73:387"
+      ],
+      "purpose": "Verify actual practice/error/modal opener targets",
+      "status": "TIMING_HOLD_READ_ONLY_AFTER_QUOTA"
+    },
+    {
+      "priority": 3,
+      "rootIds": [
+        "235:2182",
+        "235:2445"
+      ],
+      "purpose": "Resolve FollowSystem and reduced-motion uncertainty",
+      "status": "TIMING_HOLD_READ_ONLY_AFTER_QUOTA"
+    }
+  ],
+  "remainingMinimalActions": [
+    {
+      "priority": 0,
+      "action": "原位回读4根GUI已改timer，保留take snapshot；校准connector真实时间值后再迁移其它timer。",
+      "targets": [
+        "378:9826",
+        "378:9884",
+        "378:14435",
+        "378:14493"
+      ],
+      "status": "TIMING_HOLD",
+      "reason": "实际GUI外部修改不能从旧native证据覆写；本轮新增a11y工厂不动timer。"
+    },
+    {
+      "priority": 1,
+      "action": "只读现有焦点与错误返回说明，再读对应真实状态。",
+      "readGroups": [
+        {
+          "priority": 1,
+          "rootIds": [
+            "35:382",
+            "73:546"
+          ],
+          "purpose": "Read existing focus/error/return notes before adding specimens",
+          "status": "TIMING_HOLD_READ_ONLY_AFTER_QUOTA"
+        },
+        {
+          "priority": 2,
+          "rootIds": [
+            "35:302",
+            "73:234",
+            "73:311",
+            "73:387"
+          ],
+          "purpose": "Verify actual practice/error/modal opener targets",
+          "status": "TIMING_HOLD_READ_ONLY_AFTER_QUOTA"
+        }
+      ],
+      "status": "TIMING_HOLD"
+    },
+    {
+      "priority": 2,
+      "action": "执行26项精确choice工厂PROBE/APPLY；表达2项已由旧v2修过则跳过；成功后不得重放。",
+      "artifact": "a11y-choice-repair-factory-v1-tool.js",
+      "status": "TIMING_HOLD"
+    },
+    {
+      "priority": 3,
+      "action": "只读已有全局外观/动效设置，证实4偏好及减少动效覆盖；有明确缺口才精确补现有设置。",
+      "targets": [
+        "235:2182",
+        "235:2445"
+      ],
+      "status": "TIMING_HOLD"
+    },
+    {
+      "priority": 4,
+      "action": "按实际业务完成登录/目标/作答/提交/返回键盘与读屏验收，包含错误、异步和真正模态。",
+      "status": "NOT_RUN",
+      "constraint": "Figma不支持的真实输入/SR在实现界面验；设计合同不能冒充通过。"
+    },
+    {
+      "priority": 5,
+      "action": "对表达编辑跨来源切换核未保存草稿；idle/accepted仅表示无未决提交，不表示草稿可覆盖。",
+      "status": "CONFIRMED_NATIVE_SOURCE_GAP_FIX_FRAMEWORK_TIMING_HOLD",
+      "coordination": "Global搜索已改只读入口；skills-expression-draft-guard-v1-manifest.json冻结4目标与Auth3依赖。原备注为静态文本、原保存payload不全均保留确证缺口。"
+    }
+  ],
+  "acceptance": {
+    "wholeDesignAccepted": false,
+    "keyboard": "NOT_RUN",
+    "screenReader": "NOT_RUN",
+    "focusBehavior": "NOT_RUN",
+    "modalFocusReturn": "NOT_RUN",
+    "asyncAnnouncement": "NOT_RUN",
+    "themeFollowSystem": "TARGET_BODY_NOT_READ",
+    "reducedMotion": "GLOBAL_TARGET_BODY_NOT_READ",
+    "choiceRepair": "NOT_RUN_TIMING_HOLD"
+  },
+  "evidenceRules": [
+    "Name only is not coverage",
+    "Authoring/body or local model is not actual native/browser execution",
+    "Static text is not DOM role, checked attribute, live region or focus management",
+    "One shared specimen cannot close every business journey",
+    "Exact quoted source requirement stays separate from suggested HTML semantics"
+  ],
+  "sourceLocalArtifactSha256": "0d52e131da6e500ef9b0ed5075ef40664ae17916f6a4bca4d4ac858452fc0fec",
+  "portableEvidencePolicy": {
+    "repoSourceRefs": "Relative paths, exact excerpts and whole-file SHA; independently checkable.",
+    "localWorkbench": "local-workbench/* and named scripts are operator references held in the RESUME.md local package, not portable proof or accepted design.",
+    "browser": "Use BROWSER-QA-CURRENT.json and evidence/manifest.json; writing-768 remains before correction.",
+    "semanticAcceptance": false
+  }
+}

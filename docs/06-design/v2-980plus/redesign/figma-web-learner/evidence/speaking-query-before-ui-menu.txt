@@ -1,0 +1,519 @@
+- application
+- status: Screenreader support for the board is currently disabled. To enable it via Accessibility settings, press ⌘K, type Accessibility Settings, and press Enter. To see available keyboard shortcuts, enter ⌃⇧Question mark .
+- status
+- region "Comments on canvas":
+  - button "Create new comment"
+- region "Left sidebar":
+  - toolbar "Navigation Bar":
+    - button "Main menu":
+    - separator
+    - button "File" [expanded]:
+      - generic: File
+    - button "Agents":
+      - generic: Agents
+    - button "Assets":
+      - generic: Assets
+    - button "Tools":
+      - generic: Tools
+    - separator
+    - button "Variables":
+      - generic: Variables
+  - button "PhraseStar｜语学星 · Web 学习端 UIUX v1, file name": PhraseStar｜语学星 · Web 学习端 UIUX v1
+  - generic: File name
+  - button "Edit file menu":
+  - button "Minimize UI":
+  - link "Team folder":
+    - /url: https://www.figma.com/files/team/1672192726659130326/project/642076942
+  - heading "Pages Find Add new page" [level=2]:
+    - button "Pages" [expanded]:
+      - generic: Pages
+    - button "Find":
+    - button "Add new page":
+  - grid:
+    - row "01 · Core Learning Flows / Desktop":
+      - gridcell "01 · Core Learning Flows / Desktop":
+        - button "01 · Core Learning Flows / Desktop":
+          - generic: 01 · Core Learning Flows / Desktop
+    - row "02 · Design System / Tokens & Components":
+      - gridcell "02 · Design System / Tokens & Components":
+        - button "02 · Design System / Tokens & Components":
+          - generic: 02 · Design System / Tokens & Components
+    - row "03 · 学员端业务目录 / Review":
+      - gridcell "03 · 学员端业务目录 / Review":
+        - button "03 · 学员端业务目录 / Review":
+          - generic: 03 · 学员端业务目录 / Review
+  - slider "Resize handle"
+  - heading "Layers" [level=2]:
+    - button "Layers" [expanded]:
+      - generic: Layers
+  - treegrid:
+    - row "Codex / Web全量补稿 / focus-command / review Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / review":
+        - generic: Codex / Web全量补稿 / focus-command / review
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / paused-768 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / paused-768":
+        - generic: Codex / Web全量补稿 / focus-command / paused-768
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / paused-1024 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / paused-1024":
+        - generic: Codex / Web全量补稿 / focus-command / paused-1024
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / latest-read Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / latest-read":
+        - generic: Codex / Web全量补稿 / focus-command / latest-read
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / safe Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / safe":
+        - generic: Codex / Web全量补稿 / focus-command / safe
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / forbidden Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / forbidden":
+        - generic: Codex / Web全量补稿 / focus-command / forbidden
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / lease-expired Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / lease-expired":
+        - generic: Codex / Web全量补稿 / focus-command / lease-expired
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / conflict Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / conflict":
+        - generic: Codex / Web全量补稿 / focus-command / conflict
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / notreceived Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / notreceived":
+        - generic: Codex / Web全量补稿 / focus-command / notreceived
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / query-failed Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / query-failed":
+        - generic: Codex / Web全量补稿 / focus-command / query-failed
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / receipt Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / receipt":
+        - generic: Codex / Web全量补稿 / focus-command / receipt
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / query Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / query":
+        - generic: Codex / Web全量补稿 / focus-command / query
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / unknown Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / unknown":
+        - generic: Codex / Web全量补稿 / focus-command / unknown
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / confirm Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / confirm":
+        - generic: Codex / Web全量补稿 / focus-command / confirm
+      - generic: Light
+    - row "Codex / Web全量补稿 / focus-command / paused Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / focus-command / paused":
+        - generic: Codex / Web全量补稿 / focus-command / paused
+      - generic: Light
+    - row "Codex / Web全量补稿 / skills-listening-cloze / word-cloze-768 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / skills-listening-cloze / word-cloze-768":
+        - generic: Codex / Web全量补稿 / skills-listening-cloze / word-cloze-768
+      - generic: Light
+    - row "Codex / Web全量补稿 / skills-listening-cloze / word-cloze-1024 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / skills-listening-cloze / word-cloze-1024":
+        - generic: Codex / Web全量补稿 / skills-listening-cloze / word-cloze-1024
+      - generic: Light
+    - row "Codex / Web全量补稿 / skills-listening-cloze / word-cloze Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / skills-listening-cloze / word-cloze":
+        - generic: Codex / Web全量补稿 / skills-listening-cloze / word-cloze
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / state-review Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / state-review":
+        - generic: Codex / Web全量补稿 / quick-next-round / state-review
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / safehome Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / safehome":
+        - generic: Codex / Web全量补稿 / quick-next-round / safehome
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / queryfailed Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / queryfailed":
+        - generic: Codex / Web全量补稿 / quick-next-round / queryfailed
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / notreceived Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / notreceived":
+        - generic: Codex / Web全量补稿 / quick-next-round / notreceived
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / allocation Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / allocation":
+        - generic: Codex / Web全量补稿 / quick-next-round / allocation
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / query Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / query":
+        - generic: Codex / Web全量补稿 / quick-next-round / query
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / unknown Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / unknown":
+        - generic: Codex / Web全量补稿 / quick-next-round / unknown
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / confirm Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / confirm":
+        - generic: Codex / Web全量补稿 / quick-next-round / confirm
+      - generic: Light
+    - row "Codex / Web全量补稿 / quick-next-round / config Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / quick-next-round / config":
+        - generic: Codex / Web全量补稿 / quick-next-round / config
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / review Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / review":
+        - generic: Codex / Web全量补稿 / global-search / review
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / results-768 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / results-768":
+        - generic: Codex / Web全量补稿 / global-search / results-768
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / results-1024 Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / results-1024":
+        - generic: Codex / Web全量补稿 / global-search / results-1024
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / missing Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / missing":
+        - generic: Codex / Web全量补稿 / global-search / missing
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / revoked Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / revoked":
+        - generic: Codex / Web全量补稿 / global-search / revoked
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / forbidden Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / forbidden":
+        - generic: Codex / Web全量补稿 / global-search / forbidden
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / signed-out Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / signed-out":
+        - generic: Codex / Web全量补稿 / global-search / signed-out
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / offline Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / offline":
+        - generic: Codex / Web全量补稿 / global-search / offline
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / error Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / error":
+        - generic: Codex / Web全量补稿 / global-search / error
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / empty Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / empty":
+        - generic: Codex / Web全量补稿 / global-search / empty
+      - generic: Light
+    - row "Codex / Web全量补稿 / global-search / target-check Light":
+      - button:
+      - gridcell:
+      - gridcell "Codex / Web全量补稿 / global-search / target-check":
+        - generic: Codex / Web全量补稿 / global-search / target-check
+      - generic: Light
+  - slider "Resize handle"
+- region "Right sidebar":
+  - button "Multiplayer tools":
+  - group "Prototype view":
+    - button "Present":
+    - button "Prototype view":
+  - button "Share":
+    - generic: Share
+  - tablist:
+    - tab "Design":
+      - generic: Design
+      - generic: Design
+    - tab "Prototype" [selected]:
+      - generic: Prototype
+      - generic: Prototype
+  - button "74%, zoom and view options":
+    - text: 74%
+  - button "Build this with code":
+    - generic: Build this with code
+  - button "Flow starting point"
+  - button "Add flow starting point":
+  - heading "Interactions" [level=2]
+  - button "Add action":
+  - grid:
+    - row "Click Conditional Remove click interaction" [selected]:
+      - gridcell "Click Conditional":
+        - button "Click Conditional" [expanded]:
+          - generic: Click
+          - generic: Conditional
+      - gridcell "Remove click interaction":
+        - button "Remove click interaction":
+  - heading "Scroll behavior" [level=2]
+  - generic: Overflow
+  - combobox "Overflow":
+    - generic: No scrolling
+  - button "Show prototype settings":
+    - generic: Show prototype settings
+  - text: Removing a connection
+  - button "Close":
+  - generic: To delete a connection, click and drag on either end.
+  - text: Running your prototype
+  - button "Close":
+  - generic: Use the play button in the toolbar to play your prototype. If there are no connections, the play button can be used to play a presentation of your frames.
+  - slider "Resize handle"
+- region "Application toolbar":
+  - toolbar "Editor":
+    - group "Move":
+      - button "Move" [pressed]:
+      - button "Move tools":
+    - group "Frame":
+      - button "Frame":
+      - button "Region tools":
+    - group "Rectangle":
+      - button "Rectangle":
+      - button "Shape tools":
+    - group "Pen":
+      - button "Pen":
+      - button "Creation tools":
+    - group "Text":
+      - button "Text":
+      - button "Type tools":
+    - button "Code":
+    - group "Comment":
+      - button "Comment":
+      - button "Comment tools":
+    - button "Actions":
+    - radiogroup "Toolbelt Mode":
+      - generic: Toolbelt Mode
+      - radio "Draw"
+      - generic: Draw
+      - radio "Design" [checked]
+      - generic: Design
+      - radio "Motion"
+      - generic: Motion
+      - radio "Dev Mode"
+      - generic: Dev Mode
+- region "Help/zoom toolbar":
+  - toolbar "Help/zoom toolbar":
+    - button "Help":
+- dialog "Interaction":
+  - generic: Interaction
+  - button "Close":
+  - generic: Trigger
+  - combobox "Trigger" [expanded]:
+    - generic: On click
+  - listbox:
+    - option "None":
+      - text: None
+    - separator
+    - option "On click" [active] [selected]:
+      - text: On click
+    - option "On drag":
+      - text: On drag
+    - option "While hovering":
+      - text: While hovering
+    - option "While pressing":
+      - text: While pressing
+    - option "Key/Gamepad":
+      - text: Key/Gamepad
+    - separator
+    - option "Mouse enter":
+      - text: Mouse enter
+    - option "Mouse leave":
+      - text: Mouse leave
+    - option "Mouse down":
+      - text: Mouse down
+    - option "Mouse up":
+      - text: Mouse up
+    - separator
+    - option "After delay":
+      - text: After delay
+  - button "if stage == \"pending\" or stage == \"unknown\"":
+    - generic: if
+    - generic "stage"
+    - generic: ==
+    - generic: "\"pending\""
+    - generic: or
+    - generic "stage"
+    - generic: ==
+    - generic: "\"unknown\""
+  - button "Set Recording and self rating/assetState to nextAssetState":
+    - text: Set
+    - button "Recording and self rating/assetState":
+      - generic "Recording and self rating/assetState"
+    - text: to
+    - generic "nextAssetState"
+  - button "Set Recording and self rating/attemptState to nextAttemptState":
+    - text: Set
+    - button "Recording and self rating/attemptState":
+      - generic "Recording and self rating/attemptState"
+    - text: to
+    - generic "nextAttemptState"
+  - button "Set Recording and self rating/lastSavedRecordingId to nextSavedRecordingId":
+    - text: Set
+    - button "Recording and self rating/lastSavedRecordingId":
+      - generic "Recording and self rating/lastSavedRecordingId"
+    - text: to
+    - generic "nextSavedRecordingId"
+  - button "Set Recording and self rating/remoteHistoryState to nextRemoteState":
+    - text: Set
+    - button "Recording and self rating/remoteHistoryState":
+      - generic "Recording and self rating/remoteHistoryState"
+    - text: to
+    - generic "nextRemoteState"
+  - button "Set Request identity/receiptConfirmed to true":
+    - text: Set
+    - button "Request identity/receiptConfirmed":
+      - generic "Request identity/receiptConfirmed"
+    - text: to
+    - generic: "true"
+  - button "Set Request identity/receiptUnconfirmed to false":
+    - text: Set
+    - button "Request identity/receiptUnconfirmed":
+      - generic "Request identity/receiptUnconfirmed"
+    - text: to
+    - generic: "false"
+  - button "Set Recording asset versions/previousNamespace to nextPreviousNamespace":
+    - text: Set
+    - button "Recording asset versions/previousNamespace":
+      - generic "Recording asset versions/previousNamespace"
+    - text: to
+    - generic "nextPreviousNamespace"
+  - button "Set Recording asset versions/previousSeq to nextPreviousSeq":
+    - text: Set
+    - button "Recording asset versions/previousSeq":
+      - generic "Recording asset versions/previousSeq"
+    - text: to
+    - generic "nextPreviousSeq"
+  - button "Set Recording asset versions/previousContext to nextPreviousContext":
+    - text: Set
+    - button "Recording asset versions/previousContext":
+      - generic "Recording asset versions/previousContext"
+    - text: to
+    - generic "nextPreviousContext"
+  - button "Set Recording asset versions/hasPrevious to nextHasPrevious":
+    - text: Set
+    - button "Recording asset versions/hasPrevious":
+      - generic "Recording asset versions/hasPrevious"
+    - text: to
+    - generic "nextHasPrevious"
+  - button "Set Recording asset versions/olderRetained to nextOlderRetained":
+    - text: Set
+    - button "Recording asset versions/olderRetained":
+      - generic "Recording asset versions/olderRetained"
+    - text: to
+    - generic "nextOlderRetained"
+  - button "Set Recording asset versions/savedNamespace to nextSavedNamespace":
+    - text: Set
+    - button "Recording asset versions/savedNamespace":
+      - generic "Recording asset versions/savedNamespace"
+    - text: to
+    - generic "nextSavedNamespace"
+  - button "Set Recording asset versions/savedSeq to nextSavedSeq":
+    - text: Set
+    - button "Recording asset versions/savedSeq":
+      - generic "Recording asset versions/savedSeq"
+    - text: to
+    - generic "nextSavedSeq"
+  - button "Set Recording asset versions/savedContext to nextSavedContext":
+    - text: Set
+    - button "Recording asset versions/savedContext":
+      - generic "Recording asset versions/savedContext"
+    - text: to
+    - generic "nextSavedContext"
+  - button "Set Recording asset versions/hasSaved to nextHasSaved":
+    - text: Set
+    - button "Recording asset versions/hasSaved":
+      - generic "Recording asset versions/hasSaved"
+    - text: to
+    - generic "nextHasSaved"
+  - button "Set Recording and self rating/stage to \"accepted\"":
+    - text: Set
+    - button "Recording and self rating/stage":
+      - generic "Recording and self rating/stage"
+    - text: to
+    - generic: "\"accepted\""
+  - button "Navigate to Codex / Web全量补稿 / skills-speaking-b / operation-receipt":
+    - generic: Navigate to
+    - generic: Codex / Web全量补稿 / skills-speaking-b / operation-receipt
+  - button "else":
+    - generic: else
+  - button "Navigate to Codex / Web全量补稿 / skills-speaking-b / remote-history":
+    - generic: Navigate to
+    - generic: Codex / Web全量补稿 / skills-speaking-b / remote-history
+  - button "Create action":
+  - button "Delete" [disabled]:
+  - generic: Action
+  - generic: Action
+  - combobox "Action":
+    - generic: Conditional
+  - generic: Condition
+  - button "stage == \"pending\" or stage == \"unknown\"":
+    - generic "stage"
+    - generic: ==
+    - generic: "\"pending\""
+    - generic: or
+    - generic "stage"
+    - generic: ==
+    - generic: "\"unknown\""
+- status
+- alert
+- alert

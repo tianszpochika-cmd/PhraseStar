@@ -1,0 +1,70 @@
+{
+  "status": "ACTUAL_USER_AUTHORIZED_FIGMA_UI_MUTATIONS_PENDING_NATIVE_RECONCILIATION",
+  "mutations": [
+    {
+      "rootId": "378:9826",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null
+    },
+    {
+      "rootId": "378:9884",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null
+    },
+    {
+      "rootId": "378:14435",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "PENDING_QUOTA",
+      "proofBefore": "evidence/speaking-pending-before-ui.txt",
+      "proofAfter": "evidence/speaking-pending-after-ui.txt"
+    },
+    {
+      "rootId": "378:14493",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": null,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "PENDING_QUOTA",
+      "proofBefore": "evidence/speaking-query-before-ui-menu.txt",
+      "proofAfter": "evidence/speaking-query-after-ui.txt"
+    }
+  ],
+  "browserProof": {
+    "name": "READING_COLLECTION_SAVE_RETURN",
+    "roots": [
+      "379:18925",
+      "379:19105",
+      "378:9122",
+      "378:9826",
+      "378:9942",
+      "378:8870",
+      "380:9937",
+      "379:18925"
+    ],
+    "sentence": "She chooses a book and reads by the window.",
+    "article": "A day at the library",
+    "version": "1",
+    "paragraph": "2",
+    "receiptReachedViaUrlWait": true,
+    "observedSaveToReceiptElapsedMs": 1004,
+    "elapsedMeaning": "Input, rendering and navigation-wait duration; not a precise network latency",
+    "result": "PASS_THIS_FIXED_SAMPLE_ONLY",
+    "proof": [
+      "evidence/browser-expression-confirmed.jpg",
+      "evidence/browser-expression-source.jpg",
+      "evidence/browser-reading-return.jpg"
+    ]
+  },
+  "warning": "All native after-GUI timeout values unknown until minimal read after quota restoration"
+}
