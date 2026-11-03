@@ -1,0 +1,1092 @@
+{
+  "schemaVersion": "web-learner-publication-review-v3",
+  "generatedAt": "2026-11-03T14:36:07.194383+00:00",
+  "status": "READY_SCOPED_RECOVERY_REVIEW_BUSINESS_OPEN",
+  "figma": {
+    "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+    "pageId": "0:1",
+    "url": "https://www.figma.com/design/cbUQgN4Kdd3GrYeDVfF7sk"
+  },
+  "denominator": {
+    "requirements": 484,
+    "allRegistryRows": 980,
+    "obligations": 291,
+    "designStatusCounts": {
+      "UNVERIFIED": 291
+    },
+    "semanticAccepted": 0,
+    "unchanged": true
+  },
+  "sourceIntegrity": "source-integrity.json",
+  "nativeRootSnapshot": {
+    "originalBase": 1000,
+    "Auth": 16,
+    "Core": 14,
+    "Consent": 16,
+    "FirstDay": 16,
+    "GlobalScope": 12,
+    "uniqueCreatedRoots": 1074,
+    "previousPublicationRootCount": 1046,
+    "addedSincePreviousPublication": 28,
+    "notIndependentPageOrCompletionRate": true
+  },
+  "successfulWriteLedger": "actual-receipt-index.json",
+  "successfulReceiptCountWithOriginal97": 121,
+  "newActualWritesSinceV2": [
+    {
+      "key": "FIRSTDAY16",
+      "status": "CREATED_NATIVE_WEB_DOMAIN_NEEDS_VISUAL_AND_BROWSER_QA",
+      "raw": {
+        "path": "evidence/access-firstday-recovery-v2-calibrated-v1-write-result.json",
+        "sha256": "4304e0d37f88d923dfded697d644fe220c596b15cf869d453011af873221ee18"
+      },
+      "parsed": {
+        "path": "evidence/access-firstday-recovery-v2-calibrated-v1-parsed.json",
+        "sha256": "45d71cdbdf147a4e02329b05fdb1a1211a6c8db200a40f45380a354e43958af1"
+      },
+      "createdRootIds": [
+        "461:15550",
+        "461:15584",
+        "461:15621",
+        "461:15663",
+        "461:15713",
+        "461:15763",
+        "461:15813",
+        "461:15867",
+        "461:15930",
+        "461:15978",
+        "461:16017",
+        "461:16054",
+        "461:16093",
+        "461:16127",
+        "461:16166",
+        "461:16206"
+      ],
+      "createdRootCount": 16,
+      "createdNativeNodeCount": 705,
+      "createdVariableCount": 68,
+      "mutatedNodeIds": [
+        "116:916",
+        "116:1036",
+        "116:1154",
+        "116:1156",
+        "116:1158",
+        "116:1038",
+        "116:1149",
+        "116:1151",
+        "116:1152"
+      ],
+      "nativeReceiptActuallySuccessful": true,
+      "semanticClosure": "UNVERIFIED",
+      "doNotReplay": true,
+      "limits": [
+        "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+        "Native example fields do not accept arbitrary keyboard input.",
+        "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+      ],
+      "privateVariableIds": {
+        "originalRequest": "VariableID:461:15482",
+        "viewMode": "VariableID:461:15483",
+        "hasOriginal": "VariableID:461:15484",
+        "queryKind": "VariableID:461:15485",
+        "readInFlight": "VariableID:461:15486",
+        "readOutcome": "VariableID:461:15487",
+        "ownerVerified": "VariableID:461:15488",
+        "schemaValid": "VariableID:461:15489",
+        "privateContextVisible": "VariableID:461:15490",
+        "currentAuthEpoch": "VariableID:461:15491",
+        "frozenAuthEpoch": "VariableID:461:15492",
+        "currentActor": "VariableID:461:15493",
+        "frozenActor": "VariableID:461:15494",
+        "currentDevice": "VariableID:461:15495",
+        "frozenDevice": "VariableID:461:15496",
+        "projectionState": "VariableID:461:15497",
+        "taskCount": "VariableID:461:15498",
+        "hasTasks": "VariableID:461:15499",
+        "taskRefValid": "VariableID:461:15500",
+        "expectedOriginalRequest": "VariableID:461:15501",
+        "blocker": "VariableID:461:15502",
+        "degradedReason": "VariableID:461:15503",
+        "inputId": "VariableID:461:15504",
+        "inputVersion": "VariableID:461:15505",
+        "inputWatermark": "VariableID:461:15506",
+        "inputDigest": "VariableID:461:15507",
+        "expectedInputId": "VariableID:461:15508",
+        "expectedInputVersion": "VariableID:461:15509",
+        "expectedWatermark": "VariableID:461:15510",
+        "jobId": "VariableID:461:15511",
+        "jobInputId": "VariableID:461:15512",
+        "jobInputVersion": "VariableID:461:15513",
+        "jobWatermark": "VariableID:461:15514",
+        "jobStatus": "VariableID:461:15515",
+        "recoveryRef": "VariableID:461:15516",
+        "expectedRecoveryRef": "VariableID:461:15517",
+        "recoveryJobId": "VariableID:461:15518",
+        "recoveryStatus": "VariableID:461:15519",
+        "recoveryLabel": "VariableID:461:15520",
+        "recoveryRetryable": "VariableID:461:15521",
+        "recoverySafeCode": "VariableID:461:15522",
+        "recoverySafeLabel": "VariableID:461:15523",
+        "recoveryUpdated": "VariableID:461:15524",
+        "planRef": "VariableID:461:15525",
+        "planVersion": "VariableID:461:15526",
+        "planInputId": "VariableID:461:15527",
+        "planInputVersion": "VariableID:461:15528",
+        "planWatermark": "VariableID:461:15529",
+        "planDigest": "VariableID:461:15530",
+        "contentEpoch": "VariableID:461:15531",
+        "planContentEpoch": "VariableID:461:15532",
+        "projectionVersion": "VariableID:461:15533",
+        "planProjectionVersion": "VariableID:461:15534",
+        "pinDisplay": "VariableID:461:15535",
+        "eligibilityState": "VariableID:461:15536",
+        "returnWidth": "VariableID:461:15537",
+        "errorDescription": "VariableID:461:15538",
+        "d0": "VariableID:461:15539",
+        "d1": "VariableID:461:15540",
+        "d2": "VariableID:461:15541",
+        "d3": "VariableID:461:15542",
+        "d4": "VariableID:461:15543",
+        "d5": "VariableID:461:15544",
+        "b0": "VariableID:461:15545",
+        "b1": "VariableID:461:15546",
+        "b2": "VariableID:461:15547",
+        "b3": "VariableID:461:15548",
+        "b4": "VariableID:461:15549"
+      },
+      "privateMasks": [
+        {
+          "variableId": "VariableID:461:15490",
+          "initialValue": false,
+          "nodeIds": [
+            "461:15610",
+            "461:15647",
+            "461:15652",
+            "461:15689",
+            "461:15694",
+            "461:15702",
+            "461:15739",
+            "461:15744",
+            "461:15752",
+            "461:15789",
+            "461:15794",
+            "461:15802",
+            "461:15917",
+            "461:15922",
+            "461:15956",
+            "461:15961",
+            "461:16004",
+            "461:16043",
+            "461:16080",
+            "461:16157",
+            "461:16192",
+            "461:16198",
+            "461:16232"
+          ],
+          "role": "FirstDay private cards",
+          "requiredExternalInvalidation": "Clear before AuthResponse or actor/epoch change; trusted same-owner rebind only."
+        }
+      ],
+      "actualSourcePatches": [
+        "116:916",
+        "116:1036",
+        "116:1038",
+        "116:1154",
+        "116:1156",
+        "116:1158"
+      ],
+      "integrationRequests": [
+        {
+          "kind": "FIRSTDAY_AUTH_PRIVATE_CONTEXT_BINDING",
+          "sourceKey": "entry"
+        },
+        {
+          "kind": "FIRSTDAY_AVAILABLE_TASK_BINDING",
+          "sourceKey": "bindings"
+        },
+        {
+          "kind": "FIRSTDAY_NOT_READY_TARGETS",
+          "sourceKey": "not-ready"
+        },
+        {
+          "kind": "FIRSTDAY_GENERATED_PREPARING",
+          "sourceRootId": "116:1401",
+          "sourceControlId": "116:1519",
+          "oldTargetId": "116:1523"
+        }
+      ],
+      "sourceProvenance": "access-firstday-recovery-v2-calibrated-v1-manifest.json",
+      "coverageStatus": "CREATED_SOURCE_ENTRY_PATCHES_RECORDED_FURTHER_PRIVATE_TASK_BINDINGS_QA_OPEN"
+    },
+    {
+      "key": "GLOBAL_SCOPE12",
+      "status": "CREATED_DESIGN_SCOPE_RETURN_TARGETS_NEEDS_EXACT_SOURCE_BINDINGS",
+      "raw": {
+        "path": "evidence/global-scope-ui12-v2-write-result.json",
+        "sha256": "7c172feababf052489380509fcb0ee6e763cdb14d4740ee51fc30194c9d6aac6"
+      },
+      "parsed": {
+        "path": "evidence/global-scope-ui12-v2-parsed.json",
+        "sha256": "8fe39b233c7ac407c8f6d9d35c7f730c3245b6e31a76da861818f6cfecf26ae1"
+      },
+      "createdRootIds": [
+        "462:15643",
+        "462:15660",
+        "462:15677",
+        "462:15694",
+        "462:15711",
+        "462:15728",
+        "462:15745",
+        "462:15762",
+        "462:15779",
+        "462:15796",
+        "462:15813",
+        "462:15830"
+      ],
+      "createdRootCount": 12,
+      "createdNativeNodeCount": 354,
+      "createdVariableCount": 35,
+      "mutatedNodeIds": [],
+      "nativeReceiptActuallySuccessful": true,
+      "semanticClosure": "UNVERIFIED",
+      "doNotReplay": true,
+      "limits": [
+        "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+        "Native example fields do not accept arbitrary keyboard input.",
+        "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+      ],
+      "scopeVariableIds": {
+        "schema": "VariableID:462:15608",
+        "expectedPrincipal": "VariableID:462:15609",
+        "expectedDevice": "VariableID:462:15610",
+        "expectedEpoch": "VariableID:462:15611",
+        "privateAllowed": "VariableID:462:15612",
+        "historyAllowed": "VariableID:462:15613",
+        "historyCleared": "VariableID:462:15614",
+        "historyNewRecordConfirmed": "VariableID:462:15615",
+        "historyNewRecordVisible": "VariableID:462:15616",
+        "historyNewRecordTerm": "VariableID:462:15617",
+        "historyNewRecordPrincipal": "VariableID:462:15618",
+        "historyNewRecordDevice": "VariableID:462:15619",
+        "historyNewRecordEpoch": "VariableID:462:15620",
+        "historyContextVisible": "VariableID:462:15621",
+        "historyContextHidden": "VariableID:462:15622",
+        "scopeUnknown": "VariableID:462:15623",
+        "privateSnapshotUnavailable": "VariableID:462:15624",
+        "privateNoSnapshotInfo": "VariableID:462:15625",
+        "authBootstrapNeeded": "VariableID:462:15626",
+        "authSafeSuccessSeen": "VariableID:462:15627",
+        "capturedSuccess": "VariableID:462:15628",
+        "capturedDestination": "VariableID:462:15629",
+        "historyBlock": "VariableID:462:15630",
+        "authReturnWanted": "VariableID:462:15631",
+        "returnPurpose": "VariableID:462:15632",
+        "summary": "VariableID:462:15633",
+        "hasFrozenHistory": "VariableID:462:15634",
+        "historyPrincipal": "VariableID:462:15635",
+        "historyDevice": "VariableID:462:15636",
+        "historyEpoch": "VariableID:462:15637",
+        "historyQueryEpoch": "VariableID:462:15638",
+        "historyRequestSequence": "VariableID:462:15639",
+        "historyOriginalOperation": "VariableID:462:15640",
+        "historyReceiptSequence": "VariableID:462:15641",
+        "historySourceMarker": "VariableID:462:15642"
+      },
+      "sourceDeps": [
+        {
+          "path": "global-scope-current-actual-deps-v2.json",
+          "sha256": "4120a14093702acbfe65aa62baef6a3484c96e22890b2aeff57444a5b9079f7f"
+        }
+      ],
+      "defaultPrivateAllowed": false,
+      "defaultHistoryAllowed": false,
+      "proofBoundary": "Twelve native Web target layouts, including1024/768. No authority fields are seeded here; Auth review owns fixture initialization. Exact global/private/history/auth source patches follow using current reaction hashes.",
+      "coverageStatus": "TWELVE_TARGETS_CREATED_EXACT_SOURCE_BINDINGS_OPEN"
+    },
+    {
+      "key": "SOURCE19_read-controls-r2",
+      "status": "PATCHED_EXACT_ORIGINAL_PRACTICE_SOURCE_V2_read-controls-r2_NEEDS_NATIVE_READBACK",
+      "raw": {
+        "path": "evidence/practice-source19-v2-read-controls-r2-write-result.json",
+        "sha256": "2d08dc099ab4a8959e850b02819c90df4b8d4fdec72f867ef5ef1e1651c91ec6"
+      },
+      "parsed": {
+        "path": "evidence/practice-source19-v2-read-controls-r2-parsed.json",
+        "sha256": "ea2cb4db471fd1579a64474c20450b64ac7f86a0c30e42d28dfddb88a945d695"
+      },
+      "createdRootIds": [],
+      "createdRootCount": 0,
+      "createdNativeNodeCount": 0,
+      "createdVariableCount": 0,
+      "mutatedNodeIds": [
+        "161:7207",
+        "161:7211",
+        "161:7330",
+        "161:7336",
+        "161:7458",
+        "161:7580",
+        "I161:7211;12:3",
+        "I161:7336;12:3",
+        "I161:7458;12:3",
+        "I161:7580;12:3"
+      ],
+      "nativeReceiptActuallySuccessful": true,
+      "semanticClosure": "UNVERIFIED",
+      "doNotReplay": true,
+      "limits": [
+        "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+        "Native example fields do not accept arbitrary keyboard input.",
+        "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+      ],
+      "source19Key": "read-controls-r2",
+      "selectedReactionIndices": [
+        {
+          "id": "161:7207",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:7211",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:7330",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:7336",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:7458",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:7580",
+          "reactionIndex": 0
+        }
+      ],
+      "preservedControls": [
+        "161:8063",
+        "161:6319"
+      ],
+      "scope": "Exact existing source only; no recreated roots or variables. All unselected reactions preserved. Same first payload/query/grade/whole/report; body inputs become read only after submit.",
+      "nativeReadbackStatus": "PENDING_FULL_CURRENT_NATIVE_FLOW_QA"
+    },
+    {
+      "key": "SOURCE19_read-views-r1-input",
+      "status": "PATCHED_EXACT_ORIGINAL_PRACTICE_SOURCE_V2_read-views-r1-input_NEEDS_NATIVE_READBACK",
+      "raw": {
+        "path": "evidence/practice-source19-v2-read-views-r1-input-write-result.json",
+        "sha256": "7b599d5c4473f7e404c8fcafe3eed2eb730f88a2ad7265529e728a34ee840536"
+      },
+      "parsed": {
+        "path": "evidence/practice-source19-v2-read-views-r1-input-parsed.json",
+        "sha256": "4f44c50ad177362fe008ac54e9cebe8f090ae82ae3d116dcaf4aa5426ce5b068"
+      },
+      "createdRootIds": [],
+      "createdRootCount": 0,
+      "createdNativeNodeCount": 0,
+      "createdVariableCount": 0,
+      "mutatedNodeIds": [
+        "161:6350",
+        "161:6472",
+        "161:6597",
+        "161:6463",
+        "161:6462",
+        "161:6585",
+        "161:6584",
+        "161:6710",
+        "161:6709"
+      ],
+      "nativeReceiptActuallySuccessful": true,
+      "semanticClosure": "UNVERIFIED",
+      "doNotReplay": true,
+      "limits": [
+        "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+        "Native example fields do not accept arbitrary keyboard input.",
+        "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+      ],
+      "source19Key": "read-views-r1-input",
+      "selectedReactionIndices": [
+        {
+          "id": "161:6350",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:6472",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:6597",
+          "reactionIndex": 0
+        }
+      ],
+      "preservedControls": [
+        "161:8063",
+        "161:6319"
+      ],
+      "scope": "Exact existing source only; no recreated roots or variables. All unselected reactions preserved. Same first payload/query/grade/whole/report; body inputs become read only after submit.",
+      "nativeReadbackStatus": "PENDING_FULL_CURRENT_NATIVE_FLOW_QA"
+    },
+    {
+      "key": "SOURCE19_read-views-r1-feedback",
+      "status": "PATCHED_EXACT_ORIGINAL_PRACTICE_SOURCE_V2_read-views-r1-feedback_NEEDS_NATIVE_READBACK",
+      "raw": {
+        "path": "evidence/practice-source19-v2-read-views-r1-feedback-write-result.json",
+        "sha256": "cbc699546bdf2fec5727f89cb8bb961b7e92af69e6e15171972c8768b8cbc5f9"
+      },
+      "parsed": {
+        "path": "evidence/practice-source19-v2-read-views-r1-feedback-parsed.json",
+        "sha256": "484034da838ad98bdcf09cce6ba64140f63769edc619fc2fb78d18f1de83105e"
+      },
+      "createdRootIds": [],
+      "createdRootCount": 0,
+      "createdNativeNodeCount": 0,
+      "createdVariableCount": 0,
+      "mutatedNodeIds": [
+        "161:6722",
+        "161:6844",
+        "161:6835",
+        "161:6834",
+        "161:6957",
+        "161:6956"
+      ],
+      "nativeReceiptActuallySuccessful": true,
+      "semanticClosure": "UNVERIFIED",
+      "doNotReplay": true,
+      "limits": [
+        "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+        "Native example fields do not accept arbitrary keyboard input.",
+        "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+      ],
+      "source19Key": "read-views-r1-feedback",
+      "selectedReactionIndices": [
+        {
+          "id": "161:6722",
+          "reactionIndex": 0
+        },
+        {
+          "id": "161:6844",
+          "reactionIndex": 0
+        }
+      ],
+      "preservedControls": [
+        "161:8063",
+        "161:6319"
+      ],
+      "scope": "Exact existing source only; no recreated roots or variables. All unselected reactions preserved. Same first payload/query/grade/whole/report; body inputs become read only after submit.",
+      "nativeReadbackStatus": "PENDING_FULL_CURRENT_NATIVE_FLOW_QA"
+    }
+  ],
+  "source19": {
+    "actualSuccessfulBatchKeys": [
+      "read-controls-r1",
+      "read-controls-r2",
+      "read-views-r1-input",
+      "read-views-r1-feedback"
+    ],
+    "actualWriteBatches": 4,
+    "requiredBatches": 19,
+    "remaining": [
+      "read-views-r2-input",
+      "read-views-r2-feedback",
+      "gr-controls-g1",
+      "gr-controls-g2",
+      "gr-controls-g3",
+      "gr-views-g1-input",
+      "gr-views-g1-feedback",
+      "gr-views-g2-input",
+      "gr-views-g2-feedback",
+      "gr-views-g3-input",
+      "gr-views-g3-feedback",
+      "read-legacy",
+      "read-summary",
+      "gr-legacy",
+      "gr-summary"
+    ],
+    "allNeedCurrentFlowSemanticQA": true
+  },
+  "core20CopyFreshVerification": {
+    "kind": "CORE_THREE_PROGRAMS_TWENTY_LITERAL_NATIVE_HASH_COMPARISON",
+    "raw": {
+      "path": "evidence/practice-core-position-copy-after-native-v1-raw.json",
+      "sha256": "147c3dfc8b429d549c039abbe51e00edf417ebde1e9b449c434fe8adc3c1a86c"
+    },
+    "parsed": {
+      "path": "evidence/practice-core-position-copy-after-native-v1.json",
+      "sha256": "3860ac856883ee0c709f43d62eecb64ac93e6c3bacfe26a4ae720f59a21fe38c"
+    },
+    "expected": {
+      "path": "evidence/practice-core-position-copy-after-expected-v1.json",
+      "sha256": "bb2fad8aeaa78abdfaba0e3b1e9c72c7adf966a974aa907b72bf89bd57de80c4"
+    },
+    "roots": [
+      {
+        "rootId": "435:15472",
+        "name": "Codex / Web全量补稿 / original-practice-facts / grading",
+        "parentId": "0:1",
+        "trigger": {
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        },
+        "reactionCount": 1,
+        "beforeSha256": "cd292d1d25447b6334cd6830d35c72a931d99ce752c69e759ca665dbca7d0e4b",
+        "expectedAfterSha256": "2a52e4d5ea9c57beff7d27d9905de54c000910bfc81a23bb7f9deb56c3984518",
+        "currentCanonicalSha256": "2a52e4d5ea9c57beff7d27d9905de54c000910bfc81a23bb7f9deb56c3984518",
+        "currentCanonicalUtf8Bytes": 97907,
+        "completeProgramMatchesExpectedAfter": true,
+        "triggerPreserved": true,
+        "oldLiteralCount": 0,
+        "positionStringsMatch": true,
+        "progressRows": [
+          {
+            "path": [
+              0,
+              "actions",
+              6,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第1题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              7,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第1题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              13,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第2题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              14,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第2题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              20,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第1题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              21,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第1题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              27,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第2题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              28,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第2题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              34,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第3题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              35,
+              "conditionalBlocks",
+              0,
+              "actions",
+              6
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第3题已保存并评分；整轮完成状态见进度",
+            "valueType": "STRING"
+          }
+        ]
+      },
+      {
+        "rootId": "435:15424",
+        "name": "Codex / Web全量补稿 / original-practice-facts / unknown",
+        "parentId": "0:1",
+        "trigger": {
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        },
+        "reactionCount": 1,
+        "beforeSha256": "ba14f3d6838206d4b6c368e2bc1f4b3213a17243041e9559c79cc53bab5e049a",
+        "expectedAfterSha256": "833e4b33ed26c5ea2a65e943046de5f321f36a350c3eab540e3b987a411ebe12",
+        "currentCanonicalSha256": "833e4b33ed26c5ea2a65e943046de5f321f36a350c3eab540e3b987a411ebe12",
+        "currentCanonicalUtf8Bytes": 114655,
+        "completeProgramMatchesExpectedAfter": true,
+        "triggerPreserved": true,
+        "oldLiteralCount": 0,
+        "positionStringsMatch": true,
+        "progressRows": [
+          {
+            "path": [
+              0,
+              "actions",
+              9,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第1题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              18,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第2题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              27,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第1题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              36,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第2题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              45,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第3题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          }
+        ]
+      },
+      {
+        "rootId": "435:15448",
+        "name": "Codex / Web全量补稿 / original-practice-facts / query",
+        "parentId": "0:1",
+        "trigger": {
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        },
+        "reactionCount": 1,
+        "beforeSha256": "d818826492fb025e098e977cb3bffbcece755fb4ec611283ff7f067e8b755dc1",
+        "expectedAfterSha256": "cccaa78fee9ee3dfa2ce5901b42dbf255dd2c93430e23d87c8536b11ab312a9e",
+        "currentCanonicalSha256": "cccaa78fee9ee3dfa2ce5901b42dbf255dd2c93430e23d87c8536b11ab312a9e",
+        "currentCanonicalUtf8Bytes": 115355,
+        "completeProgramMatchesExpectedAfter": true,
+        "triggerPreserved": true,
+        "oldLiteralCount": 0,
+        "positionStringsMatch": true,
+        "progressRows": [
+          {
+            "path": [
+              0,
+              "actions",
+              9,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第1题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              18,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15378",
+            "text": "第2题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              27,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第1题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              36,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第2题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          },
+          {
+            "path": [
+              0,
+              "actions",
+              45,
+              "conditionalBlocks",
+              0,
+              "actions",
+              3
+            ],
+            "variableId": "VariableID:435:15420",
+            "text": "第3题已保存；整轮完成状态见进度",
+            "valueType": "STRING"
+          }
+        ]
+      }
+    ],
+    "totalProgressStrings": 20,
+    "fullActionsExported": false,
+    "businessAcceptance": false
+  },
+  "readOnlyVerificationIndex": "native-read-verification.json",
+  "failureRecovery": "failure-and-recovery.json",
+  "authPublicationGate": "AUTH_CURRENT_NATIVE_RECHECK_CLEAR_VISUAL_BUSINESS_OPEN",
+  "authCreationAndCurrentIntegrityAreSeparate": true,
+  "oldNestedScan": {
+    "createdRootsScanned": 1000,
+    "descendantsVisited": 57611,
+    "reactionDescendants": 8856,
+    "nestedTimers": 0,
+    "includeHidden": true,
+    "scopedToHistorical1000CreatedRoots": true,
+    "excludedOriginalSourceAncestorsAndSubtrees": true,
+    "excludedNewRootCount": 74,
+    "excludedNew74RootIds": [
+      "426:15265",
+      "426:15282",
+      "426:15299",
+      "426:15316",
+      "426:15333",
+      "426:15350",
+      "426:15367",
+      "426:15384",
+      "426:15401",
+      "426:15418",
+      "426:15435",
+      "426:15452",
+      "426:15469",
+      "426:15486",
+      "426:15503",
+      "426:15520",
+      "435:15424",
+      "435:15448",
+      "435:15472",
+      "435:15496",
+      "435:15520",
+      "435:15544",
+      "435:15568",
+      "435:15592",
+      "435:15616",
+      "435:15640",
+      "435:15664",
+      "435:15688",
+      "435:15712",
+      "435:15736",
+      "439:15453",
+      "439:15479",
+      "439:15505",
+      "439:15531",
+      "439:15557",
+      "439:15583",
+      "439:15609",
+      "439:15635",
+      "439:15661",
+      "439:15687",
+      "439:15713",
+      "439:15739",
+      "439:15765",
+      "439:15791",
+      "439:15817",
+      "439:15843",
+      "461:15550",
+      "461:15584",
+      "461:15621",
+      "461:15663",
+      "461:15713",
+      "461:15763",
+      "461:15813",
+      "461:15867",
+      "461:15930",
+      "461:15978",
+      "461:16017",
+      "461:16054",
+      "461:16093",
+      "461:16127",
+      "461:16166",
+      "461:16206",
+      "462:15643",
+      "462:15660",
+      "462:15677",
+      "462:15694",
+      "462:15711",
+      "462:15728",
+      "462:15745",
+      "462:15762",
+      "462:15779",
+      "462:15796",
+      "462:15813",
+      "462:15830"
+    ],
+    "doesNotCover1074Roots": true
+  },
+  "currentRootSnapshots": {
+    "CURRENT-WEB-COVERAGE-CHECKPOINT-v3.json": {
+      "path": "evidence/CURRENT-WEB-COVERAGE-CHECKPOINT-v3-source-v3-20261103T143607.json",
+      "sha256": "b7ce9153bfe8e4f120b7a4a76d3a1a892549b255e603bdf4db05170b33a9f0b6"
+    },
+    "BROWSER-QA-CURRENT.json": {
+      "path": "evidence/BROWSER-QA-CURRENT-source-v3-20261103T143607.json",
+      "sha256": "5f9f6e28500519a49f12f7b6bbfabb19f1714a15940f29efc817d80ed16d612c"
+    },
+    "WEB-ROOT-UI-MUTATIONS.json": {
+      "path": "evidence/WEB-ROOT-UI-MUTATIONS-source-v3-20261103T143607.json",
+      "sha256": "4bc57c6694fc5e04901d14536679dfb54d94254e0d9aca6cc58c507e278b0a58"
+    },
+    "RESUME-WEB-COVERAGE-v4.md": {
+      "path": "evidence/RESUME-WEB-COVERAGE-v4-source-v3-20261103T143607.md",
+      "sha256": "3baefad7589c59f07930f50e6f269c50dcb29f03d014ad562e0031e190811b9c"
+    }
+  },
+  "previousFixedBrowserSamples": [
+    {
+      "name": "SPEAKING_SELF_RATING_CHOICE_SAVE_RETURN",
+      "status": "PASS_THIS_FIXED_SAMPLE_ONLY",
+      "roots": [
+        "378:13903",
+        "378:14551",
+        "378:13867",
+        "378:13903"
+      ],
+      "observed": [
+        "A/B/C selected visuals remain in original slots",
+        "Only one selected",
+        "C survives confirmed receipt and return/reentry"
+      ],
+      "proof": [
+        {
+          "path": "evidence/speaking-choice-placement-middle-pass.png",
+          "sha256": "11bb2aa2e06015e30503ea51915efcfdc98214c4c7c3708130f9d6356ee249f7"
+        },
+        {
+          "path": "evidence/speaking-choice-placement-first-pass.png",
+          "sha256": "e5f6447f4625bb531bfca52e86b9fb21def6691fb2f9fb37899c551c326b155b"
+        },
+        {
+          "path": "evidence/speaking-choice-placement-third-pass.png",
+          "sha256": "fc921a42ab1a0d816d4c68b077fe1712610023c1582db11ab3ba1a0442c6532d"
+        },
+        {
+          "path": "evidence/speaking-choice-placement-save-receipt.png",
+          "sha256": "6e17d5b705ddd03c13a5c7dc3814fc3e7f200138a9992e6e0dd37a16a888e178"
+        },
+        {
+          "path": "evidence/speaking-choice-placement-reentry-pass.png",
+          "sha256": "fc921a42ab1a0d816d4c68b077fe1712610023c1582db11ab3ba1a0442c6532d"
+        }
+      ],
+      "notProven": [
+        "Other radar/story groups",
+        "Real audio/permissions/persistence",
+        "Keyboard/screenreader"
+      ],
+      "timingAccepted": false,
+      "timingReason": "Choice/save/return state verified for exact selfrating example; no latency conclusion published."
+    },
+    {
+      "name": "WRITING_TRANSLATION_MATCHED_SAVE_FACT",
+      "status": "PASS_THIS_FIXED_NINETEEN_WORD_EXAMPLE_ONLY",
+      "roots": [
+        "381:10060",
+        "381:10116",
+        "381:10174",
+        "381:11759",
+        "381:11797",
+        "381:11837",
+        "381:11955",
+        "381:10174"
+      ],
+      "observed": [
+        "Unknown original request can be queried",
+        "Confirmed return preserves same19word body",
+        "Recent confirmed save fact v5 visible",
+        "Old static modification-pending line removed"
+      ],
+      "proof": [
+        {
+          "path": "evidence/writing-save-fact-current-unknown.png",
+          "sha256": "8f3f1b265519caa2b87367fe798665d1ce36eece6b40df8296416ff94fb227f7"
+        },
+        {
+          "path": "evidence/writing-save-fact-current-confirmed.png",
+          "sha256": "9ec673530a661b078ffa714d41b3608e759a227e61e0b0a37830340b93314163"
+        },
+        {
+          "path": "evidence/writing-save-fact-current-return-v5.png",
+          "sha256": "762ddcd92b59dd254bb1243df67e763509974dfc011211e13d68cd08e7b2ac61"
+        }
+      ],
+      "notProven": [
+        "Arbitrary editing",
+        "Full freeform draft payload",
+        "Current dirty state",
+        "Real persistence"
+      ],
+      "timingAccepted": false,
+      "timingReason": "An initialURLwait timed out; subsequent freshURL and screenshots confirmed state. No delay number published."
+    }
+  ],
+  "fixedBrowserSamplesAreNotAuthRecoveryProof": true,
+  "currentQA": "BROWSER-QA-CURRENT.json",
+  "currentDependentHashes": "dependency-hash-index.json",
+  "authDependentGuardChronology": "FirstDay/Global dependency receipt SHA remains valid provenance, but captured Auth hook/program hashes predate failed cleanform. Fresh exact Auth/Consent hooks must be re-read after accepted recovery before dependent source patches; no reuse of stale guards.",
+  "openItems": [
+    "Authcurrentnative recheckclear by57/146/27RX9rows11props2hooks55metadata; visual remainsOPEN, oldmain permanentlyforbidden",
+    "FirstDay16 privateactor/task/notready binding andfullquery/restorecycleQA",
+    "GlobalScope12 defaultprivate/historyfalse; exactAuth/Consent/private/history/logout/switchsourcebridges stillOPEN",
+    "Source19 remaininggroups inexactorder; existingpatches needcurrentnativewholeflow+originalroundQA",
+    "Expressioncompleteentity/note/intent/source/return dirtypayload; otherChoicegroups andgeneralWriting",
+    "All484requirements/291semantic obligations, fullresponsive/theme/keyboard/SR/media/IAM/persistence"
+  ],
+  "execution": {
+    "McpCalls": 0,
+    "browserCalls": 0,
+    "repoWrites": 0,
+    "DConcurrentRootFilesModified": false,
+    "v2CandidateOverwritten": false
+  },
+  "worktreeReadOnlyBasis": {
+    "repoRootLocalSupplementary": "/Users/Admin/.codex/worktrees/figma-web-coverage-20261103/cloudstudy",
+    "originBasisReportedByParent": "58711c87",
+    "noFetchMergeRebaseOrCommitPerformed": true,
+    "READMEWasReadOnlyReference": "Current worktree README already has corrected scoped timer/rough state; proposals only"
+  },
+  "wholeDesignAccepted": false
+}

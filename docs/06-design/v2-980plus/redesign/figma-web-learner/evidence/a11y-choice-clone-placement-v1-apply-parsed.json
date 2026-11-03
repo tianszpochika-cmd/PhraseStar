@@ -1,0 +1,189 @@
+{
+  "status": "REPARENTED_EXISTING_FOURTEEN_SELECTED_CLONES_NEEDS_BROWSER_QA",
+  "createdNodeIdCount": 0,
+  "createdNodeIdsCsv": "",
+  "createdVariableIds": [],
+  "mutatedNodeIds": [
+    "430:15385",
+    "430:15393",
+    "430:15401",
+    "430:15409",
+    "430:15417",
+    "430:15425",
+    "430:15433",
+    "430:15441",
+    "430:15456",
+    "430:15464",
+    "430:15472",
+    "430:15480",
+    "430:15488",
+    "430:15496"
+  ],
+  "targetParentIds": [
+    "378:10962",
+    "378:10979",
+    "379:20928",
+    "378:14404"
+  ],
+  "rows": [
+    {
+      "originalId": "378:10963",
+      "selectedId": "430:15385",
+      "parentId": "378:10962",
+      "selectedIndex": 1,
+      "programHash": "df2bcbd5:2726",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15348"
+      }
+    },
+    {
+      "originalId": "378:10967",
+      "selectedId": "430:15393",
+      "parentId": "378:10962",
+      "selectedIndex": 3,
+      "programHash": "f0c38ba9:2726",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15350"
+      }
+    },
+    {
+      "originalId": "378:10971",
+      "selectedId": "430:15401",
+      "parentId": "378:10962",
+      "selectedIndex": 5,
+      "programHash": "14356773:2719",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15352"
+      }
+    },
+    {
+      "originalId": "378:10975",
+      "selectedId": "430:15409",
+      "parentId": "378:10962",
+      "selectedIndex": 7,
+      "programHash": "12ef2e25:2718",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15354"
+      }
+    },
+    {
+      "originalId": "378:10980",
+      "selectedId": "430:15417",
+      "parentId": "378:10979",
+      "selectedIndex": 1,
+      "programHash": "f6081684:2734",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15356"
+      }
+    },
+    {
+      "originalId": "378:10984",
+      "selectedId": "430:15425",
+      "parentId": "378:10979",
+      "selectedIndex": 3,
+      "programHash": "68eef932:2750",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15358"
+      }
+    },
+    {
+      "originalId": "378:10988",
+      "selectedId": "430:15433",
+      "parentId": "378:10979",
+      "selectedIndex": 5,
+      "programHash": "ddfcc922:2731",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15360"
+      }
+    },
+    {
+      "originalId": "378:10992",
+      "selectedId": "430:15441",
+      "parentId": "378:10979",
+      "selectedIndex": 7,
+      "programHash": "a0e11b3b:2726",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15362"
+      }
+    },
+    {
+      "originalId": "379:20929",
+      "selectedId": "430:15456",
+      "parentId": "379:20928",
+      "selectedIndex": 1,
+      "programHash": "2d90a843:2281",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15364"
+      }
+    },
+    {
+      "originalId": "379:20933",
+      "selectedId": "430:15464",
+      "parentId": "379:20928",
+      "selectedIndex": 3,
+      "programHash": "6dbd7346:2293",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15366"
+      }
+    },
+    {
+      "originalId": "379:20937",
+      "selectedId": "430:15472",
+      "parentId": "379:20928",
+      "selectedIndex": 5,
+      "programHash": "a0d3b05f:2283",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15368"
+      }
+    },
+    {
+      "originalId": "378:14405",
+      "selectedId": "430:15480",
+      "parentId": "378:14404",
+      "selectedIndex": 1,
+      "programHash": "268f303:2006",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15370"
+      }
+    },
+    {
+      "originalId": "378:14409",
+      "selectedId": "430:15488",
+      "parentId": "378:14404",
+      "selectedIndex": 3,
+      "programHash": "30666b77:2006",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15372"
+      }
+    },
+    {
+      "originalId": "378:14413",
+      "selectedId": "430:15496",
+      "parentId": "378:14404",
+      "selectedIndex": 5,
+      "programHash": "d62052eb:2006",
+      "visibleBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15374"
+      }
+    }
+  ],
+  "allCompleteProgramsUnchanged": true,
+  "allBindingsAndBooleanDefinitionsUnchanged": true,
+  "sizesAndLayoutPropertiesUnchanged": true,
+  "timersChanged": false,
+  "claim": "Native parent/order repaired only. Browser selected-middle/reset/re-entry/save tests remain required."
+}

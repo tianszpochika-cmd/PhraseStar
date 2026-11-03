@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "a11y-choice-clone-placement-v1",
+  "status": "PREPARED_EXACT_REPARENT_14_EXISTING_CLONES_NOT_RUN",
+  "execution": {
+    "figmaCalls": 0,
+    "browserCalls": 0,
+    "repoWrites": 0
+  },
+  "actualFailure": {
+    "rootId": "378:13903",
+    "screenshot": "speaking-choice-v3-middle-selected.png",
+    "observed": "Selectingmiddle基本跟上hidtheoriginal butclone didnotappear inslot; remainingchoiceCshiftedleft."
+  },
+  "actualDiagnosis": {
+    "source": "choice-v3-clone-reparent-fresh-native.json",
+    "allSelectedParents": "0:1",
+    "actualPairs": 14,
+    "bothOriginalAndSelectedLayoutPositioning": "AUTO",
+    "allCompleteProgramsEqual": true,
+    "visibleAliasesCorrect": true,
+    "limit": "Observed currenthost result only; no global SDK clone default claim."
+  },
+  "repairScope": {
+    "operation": "await originalParent.insertChild(currentOriginalIndex+1,existingSelectedClone)",
+    "newNodes": 0,
+    "newVariables": 0,
+    "timersChanged": false,
+    "rebuildClonesOrFlags": false,
+    "mutatedExistingIds": [
+      "430:15385",
+      "430:15393",
+      "430:15401",
+      "430:15409",
+      "430:15417",
+      "430:15425",
+      "430:15433",
+      "430:15441",
+      "430:15456",
+      "430:15464",
+      "430:15472",
+      "430:15480",
+      "430:15488",
+      "430:15496"
+    ],
+    "targetRows": [
+      "378:10962",
+      "378:10979",
+      "379:20928",
+      "378:14404"
+    ],
+    "doNotWrite": [
+      "reactions",
+      "visibilitybinding orvisiblevalue",
+      "canonicalrating/answer/filter",
+      "any28Boolean definitions",
+      "originalsaveoperationidentity",
+      "timertrigger"
+    ]
+  },
+  "exactPrewriteGuards": [
+    "All14actualsource/cloneIDs,names,originalroot,parent andselectedpageindex",
+    "ExactoriginalparentchildrenIDs andsourceindexbeforeanymove",
+    "Exact checked/uncheckedaliasIDs,existingBoolean type/name/collection",
+    "Default/Selectedmaster andcomponentTEXT/Stateproperties",
+    "Currentwidth/height/layoutSizing andAUTO positioning",
+    "CompleteoriginalandclonecanonicalprogramJSON equal;hashmatchesfresh rootFNV1a32:UTF16length"
+  ],
+  "fontPolicy": "Collectcurrentfontsfromsource/cloneTEXTs;loadallbeforefirstmove. No hardcodedfontchanges.",
+  "insertionPolicy": "Findoriginalcurrentindexaftereachprecedingmove; neveruseinitialindexforforwardinsert. Finalrowlistsmustinterleave original/selected; unrelatedpagechildren retainedinorder.",
+  "rollback": "Capturemove-timeoldparent/index/x/y/size;reverseattemptedmoves,restoreexactoldpage/rows. No businessprogram/binding/Booleanrestorewrites. Ifunexpectedbusinessdriftobserved,reportPARTIALanddo notoverwriteit.",
+  "programHashAlgorithm": "JSON.stringify(n.reactions.map({trigger,actions})), SDKpropertyorderunchanged; FNV1a32 overUTF16codeunits + colon+stringlength. FullJSON before/after comparedbyte-for-byte.",
+  "preflight": "a11y-choice-clone-placement-v1-preflight-tool.js",
+  "apply": "a11y-choice-clone-placement-v1-apply-tool.js",
+  "toolChars": 26375,
+  "localModelChecks": 8,
+  "localBoundary": "Syntheticprogramstrings exerciseexactruntimeguard,full14placement/dynamicindex/inverserollback. Preparedtoolsretainactualfreshhashes. Notnative/browseracceptance.",
+  "artifacts": {
+    "a11y-choice-clone-placement-v1-preflight-tool.js": {
+      "sha256": "8517f984dae52e870d1cf83793d54c18bf4815c1f3c4802873f1eb35d23f3def",
+      "chars": 26375,
+      "utf8Bytes": 27559
+    },
+    "a11y-choice-clone-placement-v1-apply-tool.js": {
+      "sha256": "018746c9dc458800d249bd330bf55278c424737dae9a68faf7d813ca5b86fbd1",
+      "chars": 26375,
+      "utf8Bytes": 27559
+    },
+    "a11y-choice-clone-placement-v1-config.json": {
+      "sha256": "63769a9cf2cef6324539a9674f4c1803938ec20c73ba0224fe3bfdc69ad9b444",
+      "chars": 31486,
+      "utf8Bytes": 32670
+    },
+    "a11y-choice-clone-placement-v1-runtime.js": {
+      "sha256": "643fed0010fb5812fe0a34f52e60761fdc00b985f19c05c61bc529b4185d8917",
+      "chars": 10486,
+      "utf8Bytes": 10486
+    },
+    "a11y-choice-clone-placement-v1-local-check.json": {
+      "sha256": "8367fdcf0ec62795a5cdae5043dc043575ba8503c183a7979e7e908877ee1330",
+      "chars": 1867,
+      "utf8Bytes": 1867
+    },
+    "choice-v3-clone-reparent-fresh-native.json": {
+      "sha256": "ad27254fec0a1b4bcf9d6fc89eefb02a3824bd6db703a22a421de4a29b2e3b8b",
+      "chars": 20131,
+      "utf8Bytes": 20571
+    },
+    "choice-v3-clone-reparent-pairs.json": {
+      "sha256": "089bea20e71e9f969d7cce9c56009cb47cd8f8d80da3de1ecaea70f5c14638d2",
+      "chars": 4503,
+      "utf8Bytes": 4859
+    }
+  },
+  "afterNativeWrite": [
+    "Freshparent/index/rowlists,completeprogramhash andaliases/geometry readback",
+    "BrowsermiddlechoiceA→B→C withthreevisiblepositions andselectedmarker",
+    "Speakingpending/save/receipt/re-entry retainsoriginaltuple andselection",
+    "RadarcategoryandStoryanswer/reset alsoverifyafterreparent",
+    "No needreplayChoice27repair orcreatenewclone/flags"
+  ],
+  "acceptance": {
+    "nativePlacementRepair": "NOT_RUN_BY_CHILD",
+    "browserFix": "NOT_RUN",
+    "wholeDesign": "NOT_ACCEPTED"
+  }
+}

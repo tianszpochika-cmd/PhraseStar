@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "a11y-choice-repair-factory-v3",
+  "status": "PREPARED_29_SCOPE_NO_PLUGIN_DATA_NATIVE_NOT_RUN",
+  "execution": {
+    "figmaCalls": 0,
+    "browserCalls": 0,
+    "repoWrites": 0
+  },
+  "actualFailurePreserved": {
+    "file": "a11y-choice-repair-factory-v2-preflight-parsed.json",
+    "status": "BLOCKED_OR_ROLLED_BACK",
+    "errorAPI": "getPluginData unsupported",
+    "restoreErrors": [],
+    "rootCauseInFactory": "Directmetadata API access, not fullNode JSONclone/objectspread reflection"
+  },
+  "sourceDiagnosis": {
+    "directGetCallsRemoved": 4,
+    "directSetCallsRemoved": 5,
+    "removedSites": [
+      "PROBE preflight marker check",
+      "instance backup metadata",
+      "radio clone metadata copy",
+      "extra writer backup metadata",
+      "checkbox/radio/explore/seek metadata writes",
+      "rollback metadata restore"
+    ],
+    "noWholeNodeSerializationFound": true,
+    "jsonCloneInputs": "plain reaction trigger/actions/source only; Object.entries oncomponentProperties isexplicitpropertybag, array node spread retainsreferences only.",
+    "sharedPluginDataAdded": false,
+    "metadataStateReplacement": false
+  },
+  "behaviorPreserved": [
+    "CanonicalSTRING/BOOLEAN learningstate andprivatevisualmirror variables",
+    "2alreadycorrectcheckboxSTRINGbindings safe-skip",
+    "Exactnode/root/parent/component/marker/program guards",
+    "44rootboundedcanonicalwriter scan; unknown/reset/dynamicwriter blocks",
+    "Selfratingsave14419/back14421program locks",
+    "Selectiongeometry, reset synchronization, pendingguards andoriginaloperationidentities",
+    "Awaitedsource restore/cleanup withfreshlocalenumeration; traversalflag finallyrestore"
+  ],
+  "scope": {
+    "total": 29,
+    "alreadyFixedSkip": 2,
+    "remainingTargets": 27,
+    "newSelfRating": [
+      "378:14405",
+      "378:14409",
+      "378:14413"
+    ],
+    "radioClones": 14,
+    "privateBooleans": 28,
+    "newRoots": 0
+  },
+  "idempotency": "No replacementmetadata marker isneeded: existingcollection,fullprogramSHA,visibilitybindings andmarkertext/bindingguards blockduplicatewrites.",
+  "preflight": "a11y-choice-repair-factory-v3-preflight-tool.js",
+  "apply": "a11y-choice-repair-factory-v3-apply-tool.js",
+  "nativeToolChars": 42422,
+  "localResult": "PASS_10_LOCAL_CHOICE29_V3_CHECKS_ONLY",
+  "localChecks": {
+    "baseline": 8,
+    "fullHostProbeWithForbiddenMetadataAndNodeReflection": 1,
+    "unknownWriterBlocksBeforeWrites": 1,
+    "hostCounters": {
+      "unsupportedReads": 0,
+      "nodeReflection": 0,
+      "nativeWrites": 0
+    }
+  },
+  "runOrder": [
+    "Root executesv3PROBE; keepv2failureartifact untouched.",
+    "Ifactualpreflightpasses, root executesv3APPLY once; neverreplay successfulapply.",
+    "Saveactualreceipt/readback, thenbrowserselection/reset/pending/save/re-entry QA.",
+    "Resolveoldpending andfreshprototype sessioninitializesnewmirrorflags withoutdiscardingoriginalrequests."
+  ],
+  "artifacts": {
+    "a11y-choice-factory-v3-config.json": {
+      "sha256": "bbf4b8e1208c3d5e0df7f0c98f7e2358fea57efba33d99f4ba55bac43167f884",
+      "chars": 46046,
+      "utf8Bytes": 48145
+    },
+    "a11y-choice-factory-v3-runtime.js": {
+      "sha256": "39e16f96d313a561ee3be76ec10d455df61232fa92b079f40e725560ecb0e32d",
+      "chars": 17301,
+      "utf8Bytes": 17345
+    },
+    "a11y-choice-repair-factory-v3-preflight-tool.js": {
+      "sha256": "815ebfc8a84d3e686ae69523d865d10e5df445ad8b5fa30d5711c71cca17390e",
+      "chars": 42422,
+      "utf8Bytes": 44565
+    },
+    "a11y-choice-repair-factory-v3-apply-tool.js": {
+      "sha256": "9aa95ca5db02c65afef1976e66b4b79a93c39ead6d9a00532bc8455c8f1e9e64",
+      "chars": 42422,
+      "utf8Bytes": 44565
+    },
+    "a11y-choice-v3-local-check.json": {
+      "sha256": "7f88eb71fc90376941fa17f8642d83c0cf4184087fa4ee421dee40809add6bb4",
+      "chars": 2291,
+      "utf8Bytes": 2291
+    },
+    "a11y-choice-v3-baseline-local-check.json": {
+      "sha256": "2847c23aead8199a88b0e99f914472d58b85401ee40937597b3218aee5ad8311",
+      "chars": 1689,
+      "utf8Bytes": 1689
+    }
+  },
+  "supersedes": "Choicev2part ofskills-browser-state-repair-v1-manifest only; writingcounterfactory unchanged",
+  "acceptance": {
+    "actualV3Preflight": "NOT_RUN_BY_CHILD",
+    "actualV3Apply": "NOT_RUN",
+    "browser": "NOT_RUN",
+    "keyboardAndSr": "NOT_RUN"
+  }
+}

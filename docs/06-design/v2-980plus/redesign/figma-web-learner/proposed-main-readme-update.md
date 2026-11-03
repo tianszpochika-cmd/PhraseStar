@@ -1,0 +1,7 @@
+# 主README状态更新建议
+
+保留当前worktreeREADME已修正的计时范围与业务未签收说明。补充：累计1074个唯一顶层根=1000+Auth16+Core14+Consent16+FirstDay16+GlobalScope12，较v2增加28根，不是1074个独立页面。Source19当前4/19仅有实际patch回执，其余与完整返流/语义仍待核。FirstDay和Global12仅原生目标/局部来源已建，默认权限不自动开放。
+
+原Auth整理失败rollbackComplete=false历史保留；0恢复写的4份连续fresh原生读验证当前指定范围无残差，仅解除P0复核门。其它54变量before值未持久化，不能称精确前后对比；visual与业务仍OPEN，旧main永久禁重放。
+
+保留所有484/291UNVERIFIED及原1000子树扫描范围；该扫描不含新74根或旧source祖先，不外推1074。旧Speaking/Writing固定浏览器PASS不代表Auth恢复。

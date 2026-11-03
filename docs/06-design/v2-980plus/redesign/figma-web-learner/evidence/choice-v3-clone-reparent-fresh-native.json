@@ -1,0 +1,784 @@
+{
+  "status": "FRESH_EXACT_CLONE_SIBLING_LAYOUT_AND_PROGRAMS",
+  "rows": [
+    {
+      "originalId": "378:10963",
+      "originalName": "选择项 / 连读",
+      "expectedParentId": "378:10962",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15385",
+      "selectedName": "选择项 / 连读 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15348"
+      },
+      "original": {
+        "id": "378:10963",
+        "parentId": "378:10962",
+        "index": 0,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15349"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15385",
+        "parentId": "0:1",
+        "index": 2306,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15348"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10962",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10963",
+          "378:10967",
+          "378:10971",
+          "378:10975"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "df2bcbd5:2726"
+    },
+    {
+      "originalId": "378:10967",
+      "originalName": "选择项 / 弱读",
+      "expectedParentId": "378:10962",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15393",
+      "selectedName": "选择项 / 弱读 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15350"
+      },
+      "original": {
+        "id": "378:10967",
+        "parentId": "378:10962",
+        "index": 1,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15351"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15393",
+        "parentId": "0:1",
+        "index": 2307,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15350"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10962",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10963",
+          "378:10967",
+          "378:10971",
+          "378:10975"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "f0c38ba9:2726"
+    },
+    {
+      "originalId": "378:10971",
+      "originalName": "选择项 / 失爆",
+      "expectedParentId": "378:10962",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15401",
+      "selectedName": "选择项 / 失爆 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15352"
+      },
+      "original": {
+        "id": "378:10971",
+        "parentId": "378:10962",
+        "index": 2,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15353"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15401",
+        "parentId": "0:1",
+        "index": 2308,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15352"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10962",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10963",
+          "378:10967",
+          "378:10971",
+          "378:10975"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "14356773:2719"
+    },
+    {
+      "originalId": "378:10975",
+      "originalName": "选择项 / 重音",
+      "expectedParentId": "378:10962",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15409",
+      "selectedName": "选择项 / 重音 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15354"
+      },
+      "original": {
+        "id": "378:10975",
+        "parentId": "378:10962",
+        "index": 3,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15355"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15409",
+        "parentId": "0:1",
+        "index": 2309,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15354"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10962",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10963",
+          "378:10967",
+          "378:10971",
+          "378:10975"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "12ef2e25:2718"
+    },
+    {
+      "originalId": "378:10980",
+      "originalName": "选择项 / 数字",
+      "expectedParentId": "378:10979",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15417",
+      "selectedName": "选择项 / 数字 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15356"
+      },
+      "original": {
+        "id": "378:10980",
+        "parentId": "378:10979",
+        "index": 0,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15357"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15417",
+        "parentId": "0:1",
+        "index": 2310,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15356"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10979",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10980",
+          "378:10984",
+          "378:10988",
+          "378:10992"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "f6081684:2734"
+    },
+    {
+      "originalId": "378:10984",
+      "originalName": "选择项 / 时间",
+      "expectedParentId": "378:10979",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15425",
+      "selectedName": "选择项 / 时间 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15358"
+      },
+      "original": {
+        "id": "378:10984",
+        "parentId": "378:10979",
+        "index": 1,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15359"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15425",
+        "parentId": "0:1",
+        "index": 2311,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15358"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10979",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10980",
+          "378:10984",
+          "378:10988",
+          "378:10992"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "68eef932:2750"
+    },
+    {
+      "originalId": "378:10988",
+      "originalName": "选择项 / 人名地名",
+      "expectedParentId": "378:10979",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15433",
+      "selectedName": "选择项 / 人名地名 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15360"
+      },
+      "original": {
+        "id": "378:10988",
+        "parentId": "378:10979",
+        "index": 2,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15361"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15433",
+        "parentId": "0:1",
+        "index": 2312,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15360"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10979",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10980",
+          "378:10984",
+          "378:10988",
+          "378:10992"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "ddfcc922:2731"
+    },
+    {
+      "originalId": "378:10992",
+      "originalName": "选择项 / 最小对立音",
+      "expectedParentId": "378:10979",
+      "expectedRootId": "378:10412",
+      "selectedId": "430:15441",
+      "selectedName": "选择项 / 最小对立音 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15362"
+      },
+      "original": {
+        "id": "378:10992",
+        "parentId": "378:10979",
+        "index": 3,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15363"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15441",
+        "parentId": "0:1",
+        "index": 2313,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15362"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 270,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:10979",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:10980",
+          "378:10984",
+          "378:10988",
+          "378:10992"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "a0e11b3b:2726"
+    },
+    {
+      "originalId": "379:20929",
+      "originalName": "选择项 / Sam",
+      "expectedParentId": "379:20928",
+      "expectedRootId": "379:20624",
+      "selectedId": "430:15456",
+      "selectedName": "选择项 / Sam / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15364"
+      },
+      "original": {
+        "id": "379:20929",
+        "parentId": "379:20928",
+        "index": 0,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15365"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15456",
+        "parentId": "0:1",
+        "index": 2314,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15364"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "379:20928",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "379:20929",
+          "379:20933",
+          "379:20937"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "2d90a843:2281"
+    },
+    {
+      "originalId": "379:20933",
+      "originalName": "选择项 / The librarian",
+      "expectedParentId": "379:20928",
+      "expectedRootId": "379:20624",
+      "selectedId": "430:15464",
+      "selectedName": "选择项 / The librarian / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15366"
+      },
+      "original": {
+        "id": "379:20933",
+        "parentId": "379:20928",
+        "index": 1,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15367"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15464",
+        "parentId": "0:1",
+        "index": 2315,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15366"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "379:20928",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "379:20929",
+          "379:20933",
+          "379:20937"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "6dbd7346:2293"
+    },
+    {
+      "originalId": "379:20937",
+      "originalName": "选择项 / Tom",
+      "expectedParentId": "379:20928",
+      "expectedRootId": "379:20624",
+      "selectedId": "430:15472",
+      "selectedName": "选择项 / Tom / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15368"
+      },
+      "original": {
+        "id": "379:20937",
+        "parentId": "379:20928",
+        "index": 2,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15369"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15472",
+        "parentId": "0:1",
+        "index": 2316,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15368"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "379:20928",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "379:20929",
+          "379:20933",
+          "379:20937"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "a0d3b05f:2283"
+    },
+    {
+      "originalId": "378:14405",
+      "originalName": "选择项 / 还需练习",
+      "expectedParentId": "378:14404",
+      "expectedRootId": "378:13903",
+      "selectedId": "430:15480",
+      "selectedName": "选择项 / 还需练习 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15370"
+      },
+      "original": {
+        "id": "378:14405",
+        "parentId": "378:14404",
+        "index": 0,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15371"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15480",
+        "parentId": "0:1",
+        "index": 2317,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15370"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:14404",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:14405",
+          "378:14409",
+          "378:14413"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "268f303:2006"
+    },
+    {
+      "originalId": "378:14409",
+      "originalName": "选择项 / 基本跟上",
+      "expectedParentId": "378:14404",
+      "expectedRootId": "378:13903",
+      "selectedId": "430:15488",
+      "selectedName": "选择项 / 基本跟上 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15372"
+      },
+      "original": {
+        "id": "378:14409",
+        "parentId": "378:14404",
+        "index": 1,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15373"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15488",
+        "parentId": "0:1",
+        "index": 2318,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15372"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:14404",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:14405",
+          "378:14409",
+          "378:14413"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "30666b77:2006"
+    },
+    {
+      "originalId": "378:14413",
+      "originalName": "选择项 / 比较流畅",
+      "expectedParentId": "378:14404",
+      "expectedRootId": "378:13903",
+      "selectedId": "430:15496",
+      "selectedName": "选择项 / 比较流畅 / 已选",
+      "expectedSelectedBinding": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15374"
+      },
+      "original": {
+        "id": "378:14413",
+        "parentId": "378:14404",
+        "index": 2,
+        "layoutPositioning": "AUTO",
+        "visible": true,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15375"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 116
+      },
+      "selected": {
+        "id": "430:15496",
+        "parentId": "0:1",
+        "index": 2319,
+        "layoutPositioning": "AUTO",
+        "visible": false,
+        "visibleBinding": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:430:15374"
+        },
+        "hSize": "FIXED",
+        "vSize": "HUG",
+        "width": 364,
+        "height": 118
+      },
+      "parent": {
+        "id": "378:14404",
+        "type": "FRAME",
+        "name": "选择行",
+        "layoutMode": "HORIZONTAL",
+        "childrenIds": [
+          "378:14405",
+          "378:14409",
+          "378:14413"
+        ]
+      },
+      "completeProgramsEqual": true,
+      "programHash": "d62052eb:2006"
+    }
+  ],
+  "mutatedNodeIds": []
+}

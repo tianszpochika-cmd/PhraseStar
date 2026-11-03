@@ -1,0 +1,795 @@
+{
+  "status": "MIGRATED_OWNED_TIMEOUT_METADATA_ONLY_NEEDS_BROWSER_QA",
+  "applied": true,
+  "fullProgramsExported": false,
+  "fullProgramComparison": "Complete canonical programs compared exactly in native context; only selected timeout fields differ. Programs remain native; no business semantic acceptance.",
+  "mutatedNodeIds": [
+    "385:14928",
+    "388:14568",
+    "388:14592",
+    "388:14616",
+    "388:14640",
+    "388:14898",
+    "388:14946",
+    "388:15042",
+    "388:15090",
+    "388:15162",
+    "388:15210",
+    "388:15949",
+    "388:15997",
+    "389:14884",
+    "389:14980",
+    "390:15044",
+    "391:15304",
+    "391:15417",
+    "391:15694"
+  ],
+  "plannedNodeIds": [
+    "385:14928",
+    "388:14568",
+    "388:14592",
+    "388:14616",
+    "388:14640",
+    "388:14898",
+    "388:14946",
+    "388:15042",
+    "388:15090",
+    "388:15162",
+    "388:15210",
+    "388:15949",
+    "388:15997",
+    "389:14884",
+    "389:14980",
+    "390:15044",
+    "391:15304",
+    "391:15417",
+    "391:15694"
+  ],
+  "rows": [
+    {
+      "id": "385:14928",
+      "name": "Codex / Web全量补稿 / srs-supplement / queue-error",
+      "rootId": "385:14928",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "f1e2a64f:1173",
+      "afterHash": "9e05d81e:1187",
+      "beforeBytes": 1173,
+      "afterBytes": 1187,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 2,
+          "total": 2,
+          "sets": 2,
+          "nodes": 0,
+          "conditions": 0
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14568",
+      "name": "Codex / Web全量补稿 / question-recovery / query-multi",
+      "rootId": "388:14568",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "3e0dd997:3849",
+      "afterHash": "6fbd6026:3863",
+      "beforeBytes": 3859,
+      "afterBytes": 3873,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 9,
+          "total": 16,
+          "sets": 2,
+          "nodes": 7,
+          "conditions": 7
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14592",
+      "name": "Codex / Web全量补稿 / question-recovery / query-fill",
+      "rootId": "388:14592",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "d049e133:474",
+      "afterHash": "45e00b2a:488",
+      "beforeBytes": 484,
+      "afterBytes": 498,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 3,
+          "total": 3,
+          "sets": 2,
+          "nodes": 1,
+          "conditions": 0
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14616",
+      "name": "Codex / Web全量补稿 / question-recovery / query-correction",
+      "rootId": "388:14616",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "b97b3c0e:474",
+      "afterHash": "4ae9717f:488",
+      "beforeBytes": 484,
+      "afterBytes": 498,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 3,
+          "total": 3,
+          "sets": 2,
+          "nodes": 1,
+          "conditions": 0
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14640",
+      "name": "Codex / Web全量补稿 / question-recovery / query-spelling",
+      "rootId": "388:14640",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "869a7fc3:474",
+      "afterHash": "59c7c9da:488",
+      "beforeBytes": 484,
+      "afterBytes": 498,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 3,
+          "total": 3,
+          "sets": 2,
+          "nodes": 1,
+          "conditions": 0
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14898",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / q2-saving",
+      "rootId": "388:14898",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "b96a8b2d:1770",
+      "afterHash": "76f89000:1784",
+      "beforeBytes": 1788,
+      "afterBytes": 1802,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 5,
+          "sets": 2,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:14946",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / q2-query",
+      "rootId": "388:14946",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "3699bd10:18323",
+      "afterHash": "c9e54cc5:18337",
+      "beforeBytes": 18571,
+      "afterBytes": 18585,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 6,
+          "total": 28,
+          "sets": 17,
+          "nodes": 5,
+          "conditions": 6
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15042",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / q3-saving",
+      "rootId": "388:15042",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "5c97d550:1770",
+      "afterHash": "5e8dd505:1784",
+      "beforeBytes": 1788,
+      "afterBytes": 1802,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 5,
+          "sets": 2,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15090",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / q3-query",
+      "rootId": "388:15090",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "84261ca0:18361",
+      "afterHash": "cb7b4935:18375",
+      "beforeBytes": 18681,
+      "afterBytes": 18695,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 6,
+          "total": 28,
+          "sets": 17,
+          "nodes": 5,
+          "conditions": 6
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15162",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / round-submitting",
+      "rootId": "388:15162",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "cf945ced:1391",
+      "afterHash": "4d028fc0:1405",
+      "beforeBytes": 1409,
+      "afterBytes": 1423,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 5,
+          "sets": 2,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15210",
+      "name": "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / round-query",
+      "rootId": "388:15210",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "880f516b:8640",
+      "afterHash": "92b44b82:8654",
+      "beforeBytes": 8920,
+      "afterBytes": 8934,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 6,
+          "total": 23,
+          "sets": 13,
+          "nodes": 4,
+          "conditions": 6
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15949",
+      "name": "Codex / Web全量补稿 / grammar-interactions / saving",
+      "rootId": "388:15949",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "9c325359:2662",
+      "afterHash": "be197b74:2676",
+      "beforeBytes": 2662,
+      "afterBytes": 2676,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 3,
+          "sets": 0,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "388:15997",
+      "name": "Codex / Web全量补稿 / grammar-interactions / query",
+      "rootId": "388:15997",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "73f339a5:37393",
+      "afterHash": "d88e7598:37407",
+      "beforeBytes": 38809,
+      "afterBytes": 38823,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 12,
+          "total": 101,
+          "sets": 77,
+          "nodes": 12,
+          "conditions": 12
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "389:14884",
+      "name": "Codex / Web全量补稿 / global-search / loading",
+      "rootId": "389:14884",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "00e490ea:67959",
+      "afterHash": "eebae823:67973",
+      "beforeBytes": 68311,
+      "afterBytes": 68325,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 55,
+          "total": 143,
+          "sets": 93,
+          "nodes": 8,
+          "conditions": 42
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "389:14980",
+      "name": "Codex / Web全量补稿 / global-search / target-check",
+      "rootId": "389:14980",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "6c980f00:34604",
+      "afterHash": "66ba4d95:34618",
+      "beforeBytes": 34670,
+      "afterBytes": 34684,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 16,
+          "total": 101,
+          "sets": 69,
+          "nodes": 16,
+          "conditions": 16
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "390:15044",
+      "name": "Codex / Web全量补稿 / quick-next-round / query",
+      "rootId": "390:15044",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "6d1b592f:11788",
+      "afterHash": "930ceffe:11802",
+      "beforeBytes": 11814,
+      "afterBytes": 11828,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 7,
+          "total": 16,
+          "sets": 2,
+          "nodes": 7,
+          "conditions": 7
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "391:15304",
+      "name": "Codex / Web全量补稿 / focus-command / query",
+      "rootId": "391:15304",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "848dddca:39645",
+      "afterHash": "ba355b83:39659",
+      "beforeBytes": 39933,
+      "afterBytes": 39947,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 12,
+          "total": 36,
+          "sets": 17,
+          "nodes": 7,
+          "conditions": 12
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "391:15417",
+      "name": "Codex / Web全量补稿 / focus-command / query-failed",
+      "rootId": "391:15417",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "9b6e9f6f:1399",
+      "afterHash": "6902d23e:1413",
+      "beforeBytes": 1405,
+      "afterBytes": 1419,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 2,
+          "sets": 1,
+          "nodes": 0,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "391:15694",
+      "name": "Codex / Web全量补稿 / focus-command / latest-read",
+      "rootId": "391:15694",
+      "parentId": "0:1",
+      "authorityKind": "CREATED_SUCCESS_ROOT",
+      "beforeHash": "f8589be4:11414",
+      "afterHash": "42935a91:11428",
+      "beforeBytes": 11432,
+      "afterBytes": 11446,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 11,
+          "sets": 3,
+          "nodes": 4,
+          "conditions": 4
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    }
+  ],
+  "skipped": [],
+  "createdNodeIdCount": 0,
+  "createdNodeIdsCsv": "",
+  "errors": []
+}

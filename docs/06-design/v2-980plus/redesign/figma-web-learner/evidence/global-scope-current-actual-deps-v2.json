@@ -1,0 +1,326 @@
+{
+  "status": "CURRENT_ACTUAL_RECEIPT_DEPENDENCIES_READ_SCRIPT_ONLY_NOT_NATIVE",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "authVariables": {
+    "fixtureIdentifier": "VariableID:426:15243",
+    "fixturePrincipalId": "VariableID:426:15244",
+    "fixtureDeviceId": "VariableID:426:15245",
+    "fixtureSessionEpoch": "VariableID:426:15246",
+    "fixtureSourceMarker": "VariableID:426:15247",
+    "fixtureResponsePrincipalId": "VariableID:426:15248",
+    "fixtureResponseDeviceId": "VariableID:426:15249",
+    "fixtureResponseSessionEpoch": "VariableID:426:15250",
+    "fixtureResponseSourceMarker": "VariableID:426:15251",
+    "fixtureResponseOperationSequence": "VariableID:426:15252",
+    "fixtureAuthenticated": "VariableID:426:15253",
+    "requestPrincipalId": "VariableID:426:15254",
+    "requestDeviceId": "VariableID:426:15255",
+    "requestSessionEpoch": "VariableID:426:15256",
+    "requestScopeSourceMarker": "VariableID:426:15257",
+    "requestOperationSequence": "VariableID:426:15258",
+    "confirmedPrincipalId": "VariableID:426:15259",
+    "confirmedDeviceId": "VariableID:426:15260",
+    "confirmedSessionEpoch": "VariableID:426:15261",
+    "confirmedScopeSourceMarker": "VariableID:426:15262",
+    "confirmedScopeValid": "VariableID:426:15263",
+    "authBaseSessionStage": "VariableID:426:15241",
+    "operationStage": "VariableID:426:15222",
+    "operationKind": "VariableID:426:15223",
+    "registrationUnknown": "VariableID:426:15228",
+    "resetUnknown": "VariableID:426:15230",
+    "servicesSessionStage": "VariableID:367:3974",
+    "servicesPrivateVisible": "VariableID:367:3975"
+  },
+  "consentVariables": {
+    "privateContextVisible": "VariableID:439:15398",
+    "formContextVisible": "VariableID:439:15399",
+    "privateMasks": [
+      {
+        "id": "VariableID:439:15398",
+        "invalidValue": false
+      },
+      {
+        "id": "VariableID:439:15399",
+        "invalidValue": false
+      }
+    ],
+    "eligibility": {
+      "state": "VariableID:439:15386",
+      "principalId": "VariableID:439:15387",
+      "deviceId": "VariableID:439:15388",
+      "sessionEpoch": "VariableID:439:15389",
+      "sourceMarker": "VariableID:439:15390"
+    },
+    "terms": {
+      "receiptDurable": "VariableID:439:15419",
+      "currentVersion": "VariableID:439:15405",
+      "receivedVersion": "VariableID:439:15408",
+      "currentDigest": "VariableID:439:15406",
+      "receivedDigest": "VariableID:439:15409",
+      "principalId": "VariableID:439:15410",
+      "deviceId": "VariableID:439:15411",
+      "sessionEpoch": "VariableID:439:15412",
+      "sourceMarker": "VariableID:439:15413"
+    },
+    "privacy": {
+      "receiptDurable": "VariableID:439:15435",
+      "currentVersion": "VariableID:439:15421",
+      "receivedVersion": "VariableID:439:15424",
+      "currentDigest": "VariableID:439:15422",
+      "receivedDigest": "VariableID:439:15425",
+      "principalId": "VariableID:439:15426",
+      "deviceId": "VariableID:439:15427",
+      "sessionEpoch": "VariableID:439:15428",
+      "sourceMarker": "VariableID:439:15429"
+    },
+    "adultLearning": {
+      "receiptDurable": "VariableID:439:15451",
+      "currentVersion": "VariableID:439:15437",
+      "receivedVersion": "VariableID:439:15440",
+      "currentDigest": "VariableID:439:15438",
+      "receivedDigest": "VariableID:439:15441",
+      "principalId": "VariableID:439:15442",
+      "deviceId": "VariableID:439:15443",
+      "sessionEpoch": "VariableID:439:15444",
+      "sourceMarker": "VariableID:439:15445"
+    }
+  },
+  "hooks": [
+    {
+      "id": "426:15350",
+      "name": "Codex / Web全量补稿 / access-auth-forms / pending",
+      "parentId": "0:1",
+      "reactionGuard": {
+        "scheme": "canonical-sorted-trigger-actions/fnv1a32:js-string-length",
+        "hash": "60281d1b:39822",
+        "count": 1
+      },
+      "key": "authResponse",
+      "rootId": "426:15350",
+      "rootName": "Codex / Web全量补稿 / access-auth-forms / pending",
+      "expectedHash": "60281d1b:39822"
+    },
+    {
+      "id": "426:15888",
+      "name": "操作 / 继续安全处理",
+      "parentId": "426:15518",
+      "rootId": "426:15503",
+      "reactionGuard": {
+        "scheme": "canonical-sorted-trigger-actions/fnv1a32:js-string-length",
+        "hash": "d1f8b7f0:22553",
+        "count": 1
+      },
+      "key": "authSafe",
+      "rootName": "Codex / Web全量补稿 / access-auth-forms / safe",
+      "expectedHash": "d1f8b7f0:22553"
+    },
+    {
+      "id": "439:16174",
+      "name": "操作 / 读取最新资格并继续",
+      "parentId": "439:15737",
+      "rootId": "439:15713",
+      "reactionGuard": {
+        "scheme": "canonical-sorted-trigger-actions/fnv1a32:js-string-length",
+        "hash": "52eff24b:66485",
+        "count": 1
+      },
+      "key": "consentSuccess",
+      "rootName": "Codex / Web全量补稿 / access-consent / receipt",
+      "expectedHash": "52eff24b:66485"
+    }
+  ],
+  "authRootDescriptors": {
+    "login": {
+      "id": "426:15265",
+      "name": "Codex / Web全量补稿 / access-auth-forms / login",
+      "width": 1440,
+      "height": 900
+    },
+    "safe": {
+      "id": "426:15503",
+      "name": "Codex / Web全量补稿 / access-auth-forms / safe",
+      "width": 1440,
+      "height": 900
+    },
+    "review": {
+      "id": "426:15520",
+      "name": "Codex / Web全量补稿 / access-auth-forms / review",
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "consentEntryRoot": {
+    "id": "439:15453",
+    "name": "Codex / Web全量补稿 / access-consent / loading",
+    "width": 1440,
+    "height": 900
+  },
+  "readingArticleRoot": {
+    "id": "379:18925",
+    "name": "Codex / Web全量补稿 / skills-reading-a / reader",
+    "width": 1440,
+    "height": 900
+  },
+  "globalRootDescriptors": {
+    "start": {
+      "id": "389:14848",
+      "name": "Codex / Web全量补稿 / global-search / start",
+      "width": 1440,
+      "height": 900
+    },
+    "loading": {
+      "id": "389:14884",
+      "name": "Codex / Web全量补稿 / global-search / loading",
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "globalVariableIds": {
+    "draftQuery": "VariableID:389:14790",
+    "query": "VariableID:389:14791",
+    "normalized": "VariableID:389:14792",
+    "category": "VariableID:389:14793",
+    "width": "VariableID:389:14794",
+    "selectedId": "VariableID:389:14795",
+    "selectedType": "VariableID:389:14796",
+    "selectedTarget": "VariableID:389:14797",
+    "previewAction": "VariableID:389:14798",
+    "readStatus": "VariableID:389:14799",
+    "auth": "VariableID:389:14800",
+    "rights": "VariableID:389:14801",
+    "blockedId": "VariableID:389:14802",
+    "revision": "VariableID:389:14803",
+    "requestRevision": "VariableID:389:14804",
+    "resultCount": "VariableID:389:14805",
+    "resultLabel": "VariableID:389:14806",
+    "emptyQuery": "VariableID:389:14807",
+    "emptyCategory": "VariableID:389:14808",
+    "draftError": "VariableID:389:14809",
+    "emptyFilter": "VariableID:389:14810",
+    "searchActive": "VariableID:389:14811",
+    "disclosure": "VariableID:389:14812",
+    "historyVisible": "VariableID:389:14813",
+    "historyActive": "VariableID:389:14814",
+    "showMistake": "VariableID:389:14815",
+    "previewMistake": "VariableID:389:14816",
+    "show_word": "VariableID:389:14817",
+    "preview_word": "VariableID:389:14818",
+    "show_phrase": "VariableID:389:14819",
+    "preview_phrase": "VariableID:389:14820",
+    "show_collocation": "VariableID:389:14821",
+    "preview_collocation": "VariableID:389:14822",
+    "show_pattern": "VariableID:389:14823",
+    "preview_pattern": "VariableID:389:14824",
+    "show_grammar": "VariableID:389:14825",
+    "preview_grammar": "VariableID:389:14826",
+    "show_sentence": "VariableID:389:14827",
+    "preview_sentence": "VariableID:389:14828",
+    "show_reading": "VariableID:389:14829",
+    "preview_reading": "VariableID:389:14830",
+    "show_listening": "VariableID:389:14831",
+    "preview_listening": "VariableID:389:14832",
+    "show_scenario": "VariableID:389:14833",
+    "preview_scenario": "VariableID:389:14834",
+    "show_private": "VariableID:389:14835",
+    "preview_private": "VariableID:389:14836",
+    "label_all": "VariableID:389:14837",
+    "label_word": "VariableID:389:14838",
+    "label_phrase": "VariableID:389:14839",
+    "label_collocation": "VariableID:389:14840",
+    "label_pattern": "VariableID:389:14841",
+    "label_grammar": "VariableID:389:14842",
+    "label_sentence": "VariableID:389:14843",
+    "label_reading": "VariableID:389:14844",
+    "label_listening": "VariableID:389:14845",
+    "label_scenario": "VariableID:389:14846",
+    "label_private": "VariableID:389:14847"
+  },
+  "globalNoHistoryVariableId": "VariableID:389:15333",
+  "pwaVariables": {
+    "owner": "VariableID:385:14272",
+    "epoch": "VariableID:385:14273",
+    "responseOwner": "VariableID:385:14274",
+    "responseEpoch": "VariableID:385:14275",
+    "responseOperation": "VariableID:385:14276",
+    "responseRequestState": "VariableID:385:14277",
+    "responseDraftState": "VariableID:385:14278",
+    "knownActor": "VariableID:385:14279",
+    "privateUiVisible": "VariableID:385:14280",
+    "cacheQuarantined": "VariableID:385:14281",
+    "cacheStatus": "VariableID:385:14282",
+    "installState": "VariableID:385:14283",
+    "canInstall": "VariableID:385:14284",
+    "showUnsupported": "VariableID:385:14285",
+    "showInstalled": "VariableID:385:14286",
+    "showDismissed": "VariableID:385:14287",
+    "currentVersion": "VariableID:385:14288",
+    "nextVersion": "VariableID:385:14289",
+    "updateNotice": "VariableID:385:14290",
+    "originalOperation": "VariableID:385:14291",
+    "originalPending": "VariableID:385:14292",
+    "draftDirty": "VariableID:385:14293",
+    "draftStatus": "VariableID:385:14294",
+    "schemaCompatible": "VariableID:385:14295",
+    "updateOutcome": "VariableID:385:14296",
+    "updateRead": "VariableID:385:14297",
+    "oldVersionUsable": "VariableID:385:14298",
+    "showNetworkFailure": "VariableID:385:14299",
+    "showSchemaFailure": "VariableID:385:14300"
+  },
+  "pwaScreenIds": {
+    "workspace": "385:14301",
+    "workspace-1024": "385:14337",
+    "workspace-768": "385:14373",
+    "install-help": "385:14409",
+    "update-ready": "385:14445",
+    "save-before-update": "385:14481",
+    "update-blocked": "385:14505",
+    "updating": "385:14529",
+    "update-failed": "385:14553",
+    "account-isolation": "385:14589"
+  },
+  "evidence": [
+    {
+      "path": "access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+      "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362"
+    },
+    {
+      "path": "access-auth-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "643ec948033e3fab06a057bbb2dd79e42226dafa8dd723a1db02bfbb724af814"
+    },
+    {
+      "path": "access-consent-v3-UI-actual-v2-write-result.json",
+      "sha256": "3613b3bc714e27947134e61267e57032df5d684dc24e461867c736ab18d4de4b"
+    },
+    {
+      "path": "access-consent-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "13be3ef1cc673ce19ca4451365fbc4b1c485355c9ea3c9e94ac698c3876bfa24"
+    },
+    {
+      "path": "global-search-v4-write-result.json",
+      "sha256": "3a211e1a2e5bd9bacf8f41cfc70703a6f67bacf6b65ee7fb7bdef1fa401365e4"
+    },
+    {
+      "path": "pwa-workspace-v2-write-result.json",
+      "sha256": "e710cbd5b9ad17d30a85a57bc88649f3a585ced83043d36383ed55509809f499"
+    },
+    {
+      "path": "skills-reading-a-v1-write-result.json",
+      "sha256": "22ace2fc1c6302dfb55d0af72af3495e5a3a0a693243236283ea64bf91b95fd9"
+    },
+    {
+      "path": "timeout-calibration.verified.json",
+      "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+    },
+    {
+      "path": "shared-web-builders.js",
+      "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+    }
+  ],
+  "missingActualDependencies": [
+    "scope12 UI is NOT_RUN",
+    "access-web-narrow-time-sync-v1 UI13 NOT_RUN; normalContinuationRoot/input IDs absent",
+    "registered private mask registry needs actual native source binding verification",
+    "global/header/endings current hashes not yet read"
+  ]
+}

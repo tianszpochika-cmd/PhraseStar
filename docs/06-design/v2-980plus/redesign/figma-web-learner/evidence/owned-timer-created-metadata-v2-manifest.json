@@ -1,0 +1,658 @@
+{
+  "status": "PREPARED_METADATA_ONLY_TIMER_MIGRATION_NOT_EXECUTED",
+  "apply": true,
+  "fullProgramsExported": false,
+  "rootSoleFigmaWriter": true,
+  "sourceIndex": "owned-timer-root-index-v2-native-complete.json",
+  "sourceIndexSha256": "1b2492135338a4c1ab89edcb0e1181e144cbb8b19fab7872ca24536010c01830",
+  "allowlist": "owned-timer-source-allowlist-v1.json",
+  "allowlistSha256": "f234660181ae0f4bed287f12028552c3a7e800a3322ef096ab93c0f395ab0286",
+  "contract": "timeout-calibration.verified.json",
+  "contractSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+  "body": "owned-timer-migrate-metadata-v2.CANDIDATE.js",
+  "bodySha256": "3566debcc24ea153aebf90e9c6e7353f006ada5ba30599552cae13910fa5113c",
+  "scope": "139 current top-level CREATED_SUCCESS_ROOT timers only; not nested timer/business acceptance",
+  "batchSize": 40,
+  "batches": [
+    {
+      "batch": 1,
+      "count": 40,
+      "ids": [
+        "359:3807",
+        "364:4118",
+        "367:4064",
+        "367:4132",
+        "367:4149",
+        "368:4207",
+        "368:4255",
+        "369:4459",
+        "369:5193",
+        "370:5611",
+        "373:5509",
+        "376:5871",
+        "376:6802",
+        "376:6926",
+        "377:6214",
+        "377:6968",
+        "378:14551",
+        "378:6322",
+        "378:6976",
+        "378:8520",
+        "378:8578",
+        "378:8636",
+        "378:9942",
+        "379:10898",
+        "379:10922",
+        "379:11474",
+        "379:11498",
+        "379:11690",
+        "379:13443",
+        "379:13491",
+        "379:13611",
+        "379:14186",
+        "379:15082",
+        "379:15922",
+        "379:17213",
+        "379:17329",
+        "379:17951",
+        "379:18507",
+        "379:18565",
+        "379:18623"
+      ],
+      "tool": "owned-timer-created-metadata-v2-batch-01-tool.js",
+      "toolChars": 28277,
+      "toolBytes": 29237,
+      "sha256": "a4d7409fe266456cea2d1a60f526b0e212db0146763e94bb384014ce704599ad",
+      "nativeStatus": "NOT_RUN"
+    },
+    {
+      "batch": 2,
+      "count": 40,
+      "ids": [
+        "379:18925",
+        "379:19249",
+        "379:19285",
+        "379:19393",
+        "379:20976",
+        "379:21034",
+        "379:21092",
+        "379:21994",
+        "379:22052",
+        "379:22110",
+        "379:7423",
+        "379:7875",
+        "379:7926",
+        "379:8700",
+        "379:8748",
+        "379:8928",
+        "380:10637",
+        "380:10668",
+        "380:10699",
+        "380:10730",
+        "381:11759",
+        "381:11837",
+        "381:12041",
+        "381:12987",
+        "381:13453",
+        "381:13511",
+        "381:13569",
+        "381:14760",
+        "381:14832",
+        "381:14856",
+        "381:15000",
+        "382:11830",
+        "382:12737",
+        "382:12761",
+        "382:12833",
+        "383:11625",
+        "383:11672",
+        "383:11722",
+        "383:11770",
+        "383:11816"
+      ],
+      "tool": "owned-timer-created-metadata-v2-batch-02-tool.js",
+      "toolChars": 28902,
+      "toolBytes": 29790,
+      "sha256": "dc8e8221b090c3b7320e84b6910eae9453c13972b88c43ecce630843c1b0f58b",
+      "nativeStatus": "NOT_RUN"
+    },
+    {
+      "batch": 3,
+      "count": 40,
+      "ids": [
+        "383:11857",
+        "383:11894",
+        "383:11942",
+        "383:11991",
+        "383:12036",
+        "383:12077",
+        "383:12143",
+        "383:12190",
+        "383:12882",
+        "383:13392",
+        "383:14556",
+        "383:14794",
+        "383:16146",
+        "383:16848",
+        "383:16918",
+        "383:16966",
+        "383:17012",
+        "383:17056",
+        "383:17102",
+        "383:17149",
+        "383:17197",
+        "383:17243",
+        "383:17287",
+        "383:17335",
+        "383:17381",
+        "383:17428",
+        "383:18058",
+        "383:19067",
+        "383:20085",
+        "383:21309",
+        "383:23893",
+        "383:24644",
+        "383:24937",
+        "383:24973",
+        "383:25009",
+        "385:14445",
+        "385:14529",
+        "385:14856",
+        "385:14880",
+        "385:14904"
+      ],
+      "tool": "owned-timer-created-metadata-v2-batch-03-tool.js",
+      "toolChars": 28593,
+      "toolBytes": 29553,
+      "sha256": "e9bf85ec57063aad60d50b1e968b29a1426271358f30eddc261ed833970126a8",
+      "nativeStatus": "NOT_RUN"
+    },
+    {
+      "batch": 4,
+      "count": 19,
+      "ids": [
+        "385:14928",
+        "388:14568",
+        "388:14592",
+        "388:14616",
+        "388:14640",
+        "388:14898",
+        "388:14946",
+        "388:15042",
+        "388:15090",
+        "388:15162",
+        "388:15210",
+        "388:15949",
+        "388:15997",
+        "389:14884",
+        "389:14980",
+        "390:15044",
+        "391:15304",
+        "391:15417",
+        "391:15694"
+      ],
+      "tool": "owned-timer-created-metadata-v2-batch-04-tool.js",
+      "toolChars": 17491,
+      "toolBytes": 17803,
+      "sha256": "bf86536c6582e4d07bc6ed9cbce0e6942c97143f6b3fc2d9ae1c7d0d3348b2ca",
+      "nativeStatus": "NOT_RUN"
+    }
+  ],
+  "excludedExplicitOriginalRoots": [
+    {
+      "id": "206:4154",
+      "name": "Codex / Web游戏目标态 / queryRB",
+      "parentId": "0:1",
+      "rootId": "206:4154",
+      "rootName": "Codex / Web游戏目标态 / queryRB",
+      "type": "FRAME",
+      "authorityScopeId": "206:4154",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "47ddf58f:2839",
+      "reactionCount": 1,
+      "reactionBytes": 2857,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "206:4762",
+      "name": "Codex / Web游戏目标态 / queryBR",
+      "parentId": "0:1",
+      "rootId": "206:4762",
+      "rootName": "Codex / Web游戏目标态 / queryBR",
+      "type": "FRAME",
+      "authorityScopeId": "206:4762",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "1f61417e:2839",
+      "reactionCount": 1,
+      "reactionBytes": 2857,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "225:2554",
+      "name": "Codex / Web自习室目标态 / recover45",
+      "parentId": "0:1",
+      "rootId": "225:2554",
+      "rootName": "Codex / Web自习室目标态 / recover45",
+      "type": "FRAME",
+      "authorityScopeId": "225:2554",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "b9ef8de2:15150",
+      "reactionCount": 1,
+      "reactionBytes": 15270,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "225:2674",
+      "name": "Codex / Web自习室目标态 / complete45",
+      "parentId": "0:1",
+      "rootId": "225:2674",
+      "rootName": "Codex / Web自习室目标态 / complete45",
+      "type": "FRAME",
+      "authorityScopeId": "225:2674",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "3e555a8b:3623",
+      "reactionCount": 1,
+      "reactionBytes": 3623,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "225:2913",
+      "name": "Codex / Web自习室目标态 / recover25",
+      "parentId": "0:1",
+      "rootId": "225:2913",
+      "rootName": "Codex / Web自习室目标态 / recover25",
+      "type": "FRAME",
+      "authorityScopeId": "225:2913",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "cf34ad0f:15150",
+      "reactionCount": 1,
+      "reactionBytes": 15270,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "225:3153",
+      "name": "Codex / Web自习室目标态 / complete25",
+      "parentId": "0:1",
+      "rootId": "225:3153",
+      "rootName": "Codex / Web自习室目标态 / complete25",
+      "type": "FRAME",
+      "authorityScopeId": "225:3153",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "e90f3648:3623",
+      "reactionCount": 1,
+      "reactionBytes": 3623,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "225:3752",
+      "name": "Codex / Web自习室目标态 / leaveQuery",
+      "parentId": "0:1",
+      "rootId": "225:3752",
+      "rootName": "Codex / Web自习室目标态 / leaveQuery",
+      "type": "FRAME",
+      "authorityScopeId": "225:3752",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "748b9abf:2841",
+      "reactionCount": 1,
+      "reactionBytes": 2859,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "251:10295",
+      "name": "Codex / Web社交举报 / query_safety",
+      "parentId": "0:1",
+      "rootId": "251:10295",
+      "rootName": "Codex / Web社交举报 / query_safety",
+      "type": "FRAME",
+      "authorityScopeId": "251:10295",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "b1dcb47b:2845",
+      "reactionCount": 1,
+      "reactionBytes": 2863,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "251:11139",
+      "name": "Codex / Web社交举报 / query_impersonation",
+      "parentId": "0:1",
+      "rootId": "251:11139",
+      "rootName": "Codex / Web社交举报 / query_impersonation",
+      "type": "FRAME",
+      "authorityScopeId": "251:11139",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "f4ba9df3:2852",
+      "reactionCount": 1,
+      "reactionBytes": 2870,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "251:7763",
+      "name": "Codex / Web社交举报 / query_harassment",
+      "parentId": "0:1",
+      "rootId": "251:7763",
+      "rootName": "Codex / Web社交举报 / query_harassment",
+      "type": "FRAME",
+      "authorityScopeId": "251:7763",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "d10a9e94:2848",
+      "reactionCount": 1,
+      "reactionBytes": 2866,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "251:8607",
+      "name": "Codex / Web社交举报 / query_spam",
+      "parentId": "0:1",
+      "rootId": "251:8607",
+      "rootName": "Codex / Web社交举报 / query_spam",
+      "type": "FRAME",
+      "authorityScopeId": "251:8607",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "15a19940:2842",
+      "reactionCount": 1,
+      "reactionBytes": 2860,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "251:9451",
+      "name": "Codex / Web社交举报 / query_inappropriate",
+      "parentId": "0:1",
+      "rootId": "251:9451",
+      "rootName": "Codex / Web社交举报 / query_inappropriate",
+      "type": "FRAME",
+      "authorityScopeId": "251:9451",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "2a6aea4b:2851",
+      "reactionCount": 1,
+      "reactionBytes": 2869,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "255:2815",
+      "name": "Codex / Web社交其他举报目标 / query_room",
+      "parentId": "0:1",
+      "rootId": "255:2815",
+      "rootName": "Codex / Web社交其他举报目标 / query_room",
+      "type": "FRAME",
+      "authorityScopeId": "255:2815",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "6f9cb1dd:2842",
+      "reactionCount": 1,
+      "reactionBytes": 2860,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "255:3658",
+      "name": "Codex / Web社交其他举报目标 / query_preset",
+      "parentId": "0:1",
+      "rootId": "255:3658",
+      "rootName": "Codex / Web社交其他举报目标 / query_preset",
+      "type": "FRAME",
+      "authorityScopeId": "255:3658",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "c2f42d15:2844",
+      "reactionCount": 1,
+      "reactionBytes": 2862,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:3535",
+      "name": "Codex / Web SRS两卡批次 / query-1",
+      "parentId": "0:1",
+      "rootId": "306:3535",
+      "rootName": "Codex / Web SRS两卡批次 / query-1",
+      "type": "FRAME",
+      "authorityScopeId": "306:3535",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "58101aa3:6520",
+      "reactionCount": 1,
+      "reactionBytes": 6528,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:3783",
+      "name": "Codex / Web SRS两卡批次 / receipt-1",
+      "parentId": "0:1",
+      "rootId": "306:3783",
+      "rootName": "Codex / Web SRS两卡批次 / receipt-1",
+      "type": "FRAME",
+      "authorityScopeId": "306:3783",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "7b8bd352:2600",
+      "reactionCount": 1,
+      "reactionBytes": 2600,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:4653",
+      "name": "Codex / Web SRS两卡批次 / query-2",
+      "parentId": "0:1",
+      "rootId": "306:4653",
+      "rootName": "Codex / Web SRS两卡批次 / query-2",
+      "type": "FRAME",
+      "authorityScopeId": "306:4653",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "e3315ec4:6752",
+      "reactionCount": 1,
+      "reactionBytes": 6760,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:4901",
+      "name": "Codex / Web SRS两卡批次 / receipt-2",
+      "parentId": "0:1",
+      "rootId": "306:4901",
+      "rootName": "Codex / Web SRS两卡批次 / receipt-2",
+      "type": "FRAME",
+      "authorityScopeId": "306:4901",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "7f64aaa9:2991",
+      "reactionCount": 1,
+      "reactionBytes": 2991,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:5637",
+      "name": "Codex / Web SRS两卡批次 / report",
+      "parentId": "0:1",
+      "rootId": "306:5637",
+      "rootName": "Codex / Web SRS两卡批次 / report",
+      "type": "FRAME",
+      "authorityScopeId": "306:5637",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "7f64aaa9:2991",
+      "reactionCount": 1,
+      "reactionBytes": 2991,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    },
+    {
+      "id": "306:5767",
+      "name": "Codex / Web SRS两卡批次 / history",
+      "parentId": "0:1",
+      "rootId": "306:5767",
+      "rootName": "Codex / Web SRS两卡批次 / history",
+      "type": "FRAME",
+      "authorityScopeId": "306:5767",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "reactionHash": "8dd0e72e:3381",
+      "reactionCount": 1,
+      "reactionBytes": 3381,
+      "timers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "classification": "AFTER_TIMEOUT_REVIEW",
+      "legacyMigrationCandidate": true
+    }
+  ],
+  "explicitRule": "20 original roots require separate actual writer proof of logical milliseconds; never name inference.",
+  "alreadyCorrectSkippedIds": [
+    "378:14435",
+    "378:14493",
+    "378:9826",
+    "378:9884"
+  ],
+  "guards": [
+    "Fresh complete canonical RX hash/bytes/root/name/timer list before all writes",
+    "OnlyAFTER_TIMEOUT>=100 divided1000; all actions and other reactions compared exactly",
+    "Exact fullcanonical afterreadback; hash/trigger/actioncounts output",
+    "Complete memory backups and reverse exactrestore on any failure",
+    "Output budget checked before first write; never silentlytruncate mutatedIDs"
+  ],
+  "acceptanceBoundary": "Unit repair only; fullProgramsExported:false and no business semantic acceptance."
+}

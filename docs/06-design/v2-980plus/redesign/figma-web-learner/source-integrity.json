@@ -1,0 +1,121 @@
+{
+  "status": "PASS_ISOLATED_WORKTREE_16_SOURCE_SHA_UNCHANGED",
+  "generatedAt": "2026-11-03T14:36:07.194383+00:00",
+  "files": [
+    {
+      "fileRef": "FILE-001",
+      "path": "config/p1r-commerce-contract.v1.json",
+      "sha256": "26535e674b5bdf6cfe4e304b3db0a0e64d82099a2b146cc7c541bf8f68e69a61",
+      "currentSha256": "26535e674b5bdf6cfe4e304b3db0a0e64d82099a2b146cc7c541bf8f68e69a61",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-002",
+      "path": "config/p1r-gamification-social-contract.v1.json",
+      "sha256": "371e2bb707c96ddad1586e5c62ad39d512f5bb8d7db4de2a1775a553e41ad62c",
+      "currentSha256": "371e2bb707c96ddad1586e5c62ad39d512f5bb8d7db4de2a1775a553e41ad62c",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-003",
+      "path": "config/p1r-notification-sync-support-contract.v1.json",
+      "sha256": "5e65244538d2df344e09ea8609146eff4ebd757b398a5f0c1e977df42420d0e2",
+      "currentSha256": "5e65244538d2df344e09ea8609146eff4ebd757b398a5f0c1e977df42420d0e2",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-004",
+      "path": "docs/06-design/v2-980plus/01-统一交互与页面状态设计.md",
+      "sha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7",
+      "currentSha256": "c4f7bc86f15778e6ff4bfc0b9d70412d21d25ade559b776fe1f345e6806bfce7",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-005",
+      "path": "docs/06-design/v2-980plus/02-全端信息架构与交互模式.md",
+      "sha256": "915cd38f980fbb7152088bdce13626366b758a17c88e5f68fd46dfceef776c3a",
+      "currentSha256": "915cd38f980fbb7152088bdce13626366b758a17c88e5f68fd46dfceef776c3a",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-006",
+      "path": "docs/06-design/v2-980plus/04-Phase1-成长社群商业后台功能设计.md",
+      "sha256": "30c0c7c8c5278369a1d4b50486c193f8b1f5e679ff70b3845f8b5e39b5f7b5a6",
+      "currentSha256": "30c0c7c8c5278369a1d4b50486c193f8b1f5e679ff70b3845f8b5e39b5f7b5a6",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-007",
+      "path": "docs/06-design/v2-980plus/08-980plus-功能点设计登记册.md",
+      "sha256": "c96f3587c7e825c4d961cc56a44a15e5f198c59f8bdaa9cea11ba105956b526c",
+      "currentSha256": "c96f3587c7e825c4d961cc56a44a15e5f198c59f8bdaa9cea11ba105956b526c",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-008",
+      "path": "docs/06-design/v2-980plus/phase1-business-operation/02-端到端业务旅程台账.md",
+      "sha256": "3f9b6b30054aa708319e7c9830b8745609568440d4a1aa4cff75599c724e9b02",
+      "currentSha256": "3f9b6b30054aa708319e7c9830b8745609568440d4a1aa4cff75599c724e9b02",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-009",
+      "path": "docs/06-design/v2-980plus/phase1-business-operation/03-全端页面功能登记册.md",
+      "sha256": "49dec04b396cdb732c61c210b6d4473dc37dedef21c8620bf4b59f1c39356625",
+      "currentSha256": "49dec04b396cdb732c61c210b6d4473dc37dedef21c8620bf4b59f1c39356625",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-010",
+      "path": "docs/06-design/v2-980plus/phase1-business-operation/04-学习机制与学习引擎规则.md",
+      "sha256": "f88882d32b56bbc31b3ffa553f5f83dd2a687c2caedc0d5aaadb9d120f8222bc",
+      "currentSha256": "f88882d32b56bbc31b3ffa553f5f83dd2a687c2caedc0d5aaadb9d120f8222bc",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-011",
+      "path": "docs/06-design/v2-980plus/phase1-business-operation/07-状态权限异常恢复矩阵.md",
+      "sha256": "807022b67ad0c4d6a19b4130d3e4711a0a02415be0ae3b083c179591fb006fd7",
+      "currentSha256": "807022b67ad0c4d6a19b4130d3e4711a0a02415be0ae3b083c179591fb006fd7",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-012",
+      "path": "docs/06-design/v2-980plus/phase1-business-operation/m1-017-privacy-lifecycle-contract.md",
+      "sha256": "088b5716fda6a416df2c23635958feac6bb30051be3c1d78fe5649dfd40685e0",
+      "currentSha256": "088b5716fda6a416df2c23635958feac6bb30051be3c1d78fe5649dfd40685e0",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-013",
+      "path": "docs/06-design/v2-980plus/redesign/business-chains.md",
+      "sha256": "33d68d345464c17d5bfdc5255c477c035f02c041ed1f82245c9052f82a757000",
+      "currentSha256": "33d68d345464c17d5bfdc5255c477c035f02c041ed1f82245c9052f82a757000",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-014",
+      "path": "docs/06-design/v2-980plus/redesign/interaction-chains.md",
+      "sha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d",
+      "currentSha256": "b5ff5136e561afac88ac47c64958eb98dd5fdaa16af7bebb42e70d33bfd92a4d",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-015",
+      "path": "requirements/feature-matrix.md",
+      "sha256": "63b273a604917da6455234bae722149449edd39f1841f847cf69eb9197d429cd",
+      "currentSha256": "63b273a604917da6455234bae722149449edd39f1841f847cf69eb9197d429cd",
+      "unchanged": true
+    },
+    {
+      "fileRef": "FILE-016",
+      "path": "requirements/product-requirements.md",
+      "sha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb",
+      "currentSha256": "e7e67ca41916b74f78267c5276b77483da0b28a99ae24d9b4908be3d9b3248cb",
+      "unchanged": true
+    }
+  ],
+  "requirements": 484,
+  "obligations": 291,
+  "allSemanticUNVERIFIED": true
+}

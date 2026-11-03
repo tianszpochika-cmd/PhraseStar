@@ -1,0 +1,326 @@
+{
+  "status": "CREATED_DESIGN_SCOPE_RETURN_TARGETS_NEEDS_EXACT_SOURCE_BINDINGS",
+  "prefix": "Codex / Web全量补稿 / global-scope-bridge / ",
+  "createdNodeIdsCsv": "462:15643,462:15644,462:15646,462:15647,462:15648,462:15649,462:15650,462:15645,462:15651,462:15652,462:15653,462:15654,462:15655,462:15656,462:15847,I462:15847;350:3173,I462:15847;350:3174,I462:15847;350:3175,462:15851,462:15852,462:15657,462:15658,462:15853,I462:15853;12:3,462:15855,I462:15855;12:3,462:15857,I462:15857;12:3,462:15659,462:15660,462:15661,462:15663,462:15664,462:15665,462:15666,462:15667,462:15662,462:15668,462:15669,462:15670,462:15671,462:15672,462:15673,462:15859,I462:15859;350:3173,I462:15859;350:3174,I462:15859;350:3175,462:15863,462:15674,462:15675,462:15864,I462:15864;12:3,462:15866,I462:15866;12:3,462:15676,462:15677,462:15678,462:15680,462:15681,462:15682,462:15683,462:15684,462:15679,462:15685,462:15686,462:15687,462:15688,462:15689,462:15690,462:15868,I462:15868;350:3173,I462:15868;350:3174,I462:15868;350:3175,462:15872,462:15691,462:15692,462:15873,I462:15873;12:3,462:15875,I462:15875;12:3,462:15693,462:15694,462:15695,462:15697,462:15698,462:15699,462:15700,462:15701,462:15696,462:15702,462:15703,462:15704,462:15705,462:15706,462:15707,462:15877,I462:15877;350:3173,I462:15877;350:3174,I462:15877;350:3175,462:15881,462:15708,462:15709,462:15882,I462:15882;12:3,462:15884,I462:15884;12:3,462:15710,462:15711,462:15712,462:15714,462:15715,462:15716,462:15717,462:15718,462:15713,462:15719,462:15720,462:15721,462:15722,462:15723,462:15724,462:15886,I462:15886;350:3173,I462:15886;350:3174,I462:15886;350:3175,462:15890,462:15725,462:15726,462:15891,I462:15891;12:3,462:15893,I462:15893;12:3,462:15727,462:15728,462:15729,462:15731,462:15732,462:15733,462:15734,462:15735,462:15730,462:15736,462:15737,462:15738,462:15739,462:15740,462:15741,462:15895,I462:15895;350:3173,I462:15895;350:3174,I462:15895;350:3175,462:15899,462:15742,462:15743,462:15900,I462:15900;12:3,462:15902,I462:15902;12:3,462:15744,462:15745,462:15746,462:15748,462:15749,462:15750,462:15751,462:15752,462:15747,462:15753,462:15754,462:15755,462:15756,462:15757,462:15758,462:15904,I462:15904;350:3173,I462:15904;350:3174,I462:15904;350:3175,462:15908,462:15759,462:15760,462:15909,I462:15909;12:3,462:15911,I462:15911;12:3,462:15913,I462:15913;12:3,462:15761,462:15762,462:15763,462:15765,462:15766,462:15767,462:15768,462:15769,462:15764,462:15770,462:15771,462:15772,462:15773,462:15774,462:15775,462:15915,I462:15915;350:3173,I462:15915;350:3174,I462:15915;350:3175,462:15919,462:15776,462:15777,462:15920,I462:15920;12:3,462:15922,I462:15922;12:3,462:15924,I462:15924;12:3,462:15778,462:15779,462:15780,462:15782,462:15783,462:15784,462:15785,462:15786,462:15781,462:15787,462:15788,462:15789,462:15790,462:15791,462:15792,462:15926,462:15927,462:15928,462:15929,462:15930,I462:15930;350:3173,I462:15930;350:3174,I462:15930;350:3175,462:15793,462:15794,462:15934,I462:15934;12:3,462:15936,I462:15936;12:3,462:15938,I462:15938;12:3,462:15795,462:15796,462:15797,462:15799,462:15800,462:15801,462:15802,462:15803,462:15798,462:15804,462:15805,462:15806,462:15807,462:15808,462:15809,462:15940,462:15941,462:15942,462:15943,462:15944,I462:15944;350:3173,I462:15944;350:3174,I462:15944;350:3175,462:15810,462:15811,462:15948,I462:15948;12:3,462:15950,I462:15950;12:3,462:15952,I462:15952;12:3,462:15812,462:15813,462:15814,462:15816,462:15817,462:15818,462:15819,462:15820,462:15815,462:15821,462:15822,462:15823,462:15824,462:15825,462:15826,462:15954,462:15955,462:15956,462:15957,462:15958,I462:15958;350:3173,I462:15958;350:3174,I462:15958;350:3175,462:15827,462:15828,462:15962,I462:15962;12:3,462:15964,I462:15964;12:3,462:15966,I462:15966;12:3,462:15829,462:15830,462:15831,462:15833,462:15834,462:15835,462:15836,462:15837,462:15832,462:15838,462:15839,462:15840,462:15841,462:15842,462:15843,462:15968,I462:15968;350:3173,I462:15968;350:3174,I462:15968;350:3175,462:15972,462:15973,I462:15973;12:3,462:15975,I462:15975;12:3,462:15977,I462:15977;12:3,462:15979,I462:15979;12:3,462:15981,I462:15981;12:3,462:15983,I462:15983;12:3,462:15985,I462:15985;12:3,462:15987,I462:15987;12:3,462:15989,I462:15989;12:3,462:15991,I462:15991;12:3,462:15993,I462:15993;12:3,462:15844,462:15845,462:15995,I462:15995;12:3,462:15846",
+  "createdNodeIdCount": 354,
+  "mutatedNodeIds": [],
+  "createdVariableIds": [
+    "VariableID:462:15608",
+    "VariableID:462:15609",
+    "VariableID:462:15610",
+    "VariableID:462:15611",
+    "VariableID:462:15612",
+    "VariableID:462:15613",
+    "VariableID:462:15614",
+    "VariableID:462:15615",
+    "VariableID:462:15616",
+    "VariableID:462:15617",
+    "VariableID:462:15618",
+    "VariableID:462:15619",
+    "VariableID:462:15620",
+    "VariableID:462:15621",
+    "VariableID:462:15622",
+    "VariableID:462:15623",
+    "VariableID:462:15624",
+    "VariableID:462:15625",
+    "VariableID:462:15626",
+    "VariableID:462:15627",
+    "VariableID:462:15628",
+    "VariableID:462:15629",
+    "VariableID:462:15630",
+    "VariableID:462:15631",
+    "VariableID:462:15632",
+    "VariableID:462:15633",
+    "VariableID:462:15634",
+    "VariableID:462:15635",
+    "VariableID:462:15636",
+    "VariableID:462:15637",
+    "VariableID:462:15638",
+    "VariableID:462:15639",
+    "VariableID:462:15640",
+    "VariableID:462:15641",
+    "VariableID:462:15642"
+  ],
+  "createdVariableCollectionIds": [
+    "VariableCollectionId:462:15607"
+  ],
+  "roots": [
+    {
+      "id": "462:15643",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / scope-check",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15660",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / return-ready",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15677",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / return-ready-1024",
+      "width": 1024,
+      "height": 900
+    },
+    {
+      "id": "462:15694",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / return-ready-768",
+      "width": 768,
+      "height": 900
+    },
+    {
+      "id": "462:15711",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / account-changed",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15728",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / session-changed",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15745",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / history-owner-blocked",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15762",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / private-unavailable",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15779",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / private-expression-detail",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "462:15796",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / private-expression-detail-1024",
+      "width": 1024,
+      "height": 900
+    },
+    {
+      "id": "462:15813",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / private-expression-detail-768",
+      "width": 768,
+      "height": 900
+    },
+    {
+      "id": "462:15830",
+      "name": "Codex / Web全量补稿 / global-scope-bridge / scope-review",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "screens": [
+    {
+      "id": "462:15643",
+      "key": "scope-check",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 253,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15660",
+      "key": "return-ready",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 213,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15677",
+      "key": "return-ready-1024",
+      "width": 1024,
+      "height": 900,
+      "bodyHeight": 237,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15694",
+      "key": "return-ready-768",
+      "width": 768,
+      "height": 900,
+      "bodyHeight": 237,
+      "viewportHeight": 576,
+      "fixedFooterHeight": 175,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15711",
+      "key": "account-changed",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 213,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15728",
+      "key": "session-changed",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 213,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15745",
+      "key": "history-owner-blocked",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 213,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15762",
+      "key": "private-unavailable",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 213,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15779",
+      "key": "private-expression-detail",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 48,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15796",
+      "key": "private-expression-detail-1024",
+      "width": 1024,
+      "height": 900,
+      "bodyHeight": 48,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15813",
+      "key": "private-expression-detail-768",
+      "width": 768,
+      "height": 900,
+      "bodyHeight": 48,
+      "viewportHeight": 576,
+      "fixedFooterHeight": 175,
+      "primaryCount": 1
+    },
+    {
+      "id": "462:15830",
+      "key": "scope-review",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 941,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    }
+  ],
+  "types": {
+    "FRAME": 111,
+    "TEXT": 191,
+    "INSTANCE": 52
+  },
+  "imageFilledNodes": [],
+  "fontFamilies": [
+    "Noto Sans SC"
+  ],
+  "controls": 40,
+  "errors": [],
+  "timingCalibrationStatus": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "timerConnectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "adaptedTimeouts": [],
+  "limits": [
+    "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+    "Native example fields do not accept arbitrary keyboard input.",
+    "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+  ],
+  "outputUtf8BytesBeforeSizeField": 9066,
+  "domain": "global-scope-bridge",
+  "screenIds": {
+    "scope-check": "462:15643",
+    "return-ready": "462:15660",
+    "return-ready-1024": "462:15677",
+    "return-ready-768": "462:15694",
+    "account-changed": "462:15711",
+    "session-changed": "462:15728",
+    "history-owner-blocked": "462:15745",
+    "private-unavailable": "462:15762",
+    "private-expression-detail": "462:15779",
+    "private-expression-detail-1024": "462:15796",
+    "private-expression-detail-768": "462:15813",
+    "scope-review": "462:15830"
+  },
+  "scopeVariableIds": {
+    "schema": "VariableID:462:15608",
+    "expectedPrincipal": "VariableID:462:15609",
+    "expectedDevice": "VariableID:462:15610",
+    "expectedEpoch": "VariableID:462:15611",
+    "privateAllowed": "VariableID:462:15612",
+    "historyAllowed": "VariableID:462:15613",
+    "historyCleared": "VariableID:462:15614",
+    "historyNewRecordConfirmed": "VariableID:462:15615",
+    "historyNewRecordVisible": "VariableID:462:15616",
+    "historyNewRecordTerm": "VariableID:462:15617",
+    "historyNewRecordPrincipal": "VariableID:462:15618",
+    "historyNewRecordDevice": "VariableID:462:15619",
+    "historyNewRecordEpoch": "VariableID:462:15620",
+    "historyContextVisible": "VariableID:462:15621",
+    "historyContextHidden": "VariableID:462:15622",
+    "scopeUnknown": "VariableID:462:15623",
+    "privateSnapshotUnavailable": "VariableID:462:15624",
+    "privateNoSnapshotInfo": "VariableID:462:15625",
+    "authBootstrapNeeded": "VariableID:462:15626",
+    "authSafeSuccessSeen": "VariableID:462:15627",
+    "capturedSuccess": "VariableID:462:15628",
+    "capturedDestination": "VariableID:462:15629",
+    "historyBlock": "VariableID:462:15630",
+    "authReturnWanted": "VariableID:462:15631",
+    "returnPurpose": "VariableID:462:15632",
+    "summary": "VariableID:462:15633",
+    "hasFrozenHistory": "VariableID:462:15634",
+    "historyPrincipal": "VariableID:462:15635",
+    "historyDevice": "VariableID:462:15636",
+    "historyEpoch": "VariableID:462:15637",
+    "historyQueryEpoch": "VariableID:462:15638",
+    "historyRequestSequence": "VariableID:462:15639",
+    "historyOriginalOperation": "VariableID:462:15640",
+    "historyReceiptSequence": "VariableID:462:15641",
+    "historySourceMarker": "VariableID:462:15642"
+  },
+  "scopeSourceMarker": "DESIGN_SAMPLE_ONLY_NOT_REAL_IAM",
+  "sourceDeps": [
+    {
+      "path": "global-scope-current-actual-deps-v2.json",
+      "sha256": "4120a14093702acbfe65aa62baef6a3484c96e22890b2aeff57444a5b9079f7f"
+    }
+  ],
+  "defaultPrivateAllowed": false,
+  "defaultHistoryAllowed": false,
+  "proofBoundary": "Twelve native Web target layouts, including1024/768. No authority fields are seeded here; Auth review owns fixture initialization. Exact global/private/history/auth source patches follow using current reaction hashes."
+}

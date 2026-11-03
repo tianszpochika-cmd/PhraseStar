@@ -1,0 +1,38 @@
+{
+  "status": "PATCHED_NATIVE_TRANSLATION_SAVE_FACT_NEEDS_BROWSER_QA",
+  "createdRootCount": 0,
+  "createdNodeIdsCsv": "428:15345,428:15346,428:15347",
+  "createdNodeIdCount": 3,
+  "createdVariableIds": [
+    "VariableID:428:15342",
+    "VariableID:428:15343",
+    "VariableID:428:15344"
+  ],
+  "createdVariableCollectionIds": [
+    "VariableCollectionId:428:15341"
+  ],
+  "mutatedNodeIds": [
+    "381:10212",
+    "381:10215",
+    "381:11837"
+  ],
+  "counterId": "381:10215",
+  "counterText": "19 词 · 当前示例译文",
+  "bodyPreserved": true,
+  "globalMailBodyAndCountNotBound": true,
+  "preservedSourceControlIds": [
+    "381:10218",
+    "381:11873",
+    "381:11991",
+    "381:11993"
+  ],
+  "originalQueryTriggerAndAllActionsPreserved": true,
+  "addedProjectionConditionalCount": 1,
+  "timersChanged": false,
+  "projectionVariableIds": {
+    "savedBody": "VariableID:428:15342",
+    "savedVersion": "VariableID:428:15343",
+    "saveState": "VariableID:428:15344"
+  },
+  "claim": "Latest matching save of this fixed visible translation only; not current dirty status or real persistence"
+}

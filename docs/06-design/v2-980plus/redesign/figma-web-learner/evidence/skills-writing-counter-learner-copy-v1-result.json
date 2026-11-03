@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"PATCHED_LEARNER_COPY_PRESERVED_MATCHED_SAVE_FACT\",\"mutatedNodeIds\":[\"381:10212\",\"381:10215\",\"428:15346\",\"428:15345\",\"381:11837\"],\"mutatedVariableIds\":[\"VariableID:428:15344\"],\"createdNodeIds\":[],\"texts\":[{\"id\":\"381:10212\",\"before\":\"你的英文译文（固定示例）\",\"after\":\"你的英文译文\"},{\"id\":\"381:10215\",\"before\":\"19 词 · 当前示例译文\",\"after\":\"19 词\"},{\"id\":\"428:15346\",\"before\":\"最近一次此译文的匹配保存版本\",\"after\":\"最近确认保存的版本\"}],\"originalQueryActionsAndTriggerPreserved\":true,\"oneProjectionStatusLiteralChanged\":true,\"matchingConditionsPreserved\":true}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

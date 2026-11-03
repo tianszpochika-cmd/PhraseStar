@@ -1,0 +1,38 @@
+{
+  "status": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "pageId": "0:1",
+  "verifiedAt": "2026-11-03T11:26:07.082033+00:00",
+  "connectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "guiMilliseconds": 800,
+  "nativeTimeout": 0.800000011920929,
+  "writtenNativeTimeout": 0.8,
+  "browserConfirmed": true,
+  "nativeEvidence": {
+    "path": "timer-connector-point8-calibration-v1-parsed.json",
+    "pointer": "/after/reactions/0/trigger",
+    "sha256": "ad90c6a9b4710494fa119a86763ea0c16c2fab58c4f900421ac19c6152aa403b"
+  },
+  "browserEvidence": {
+    "path": "timer-calibration-browser-evidence.json",
+    "pointer": "/speakingSaveSample",
+    "sha256": "7056d8a47a73a0bb32b7c28640eb30306f7a1f76294da0a05650e747721337ef"
+  },
+  "guiEvidence": {
+    "path": "timer-calibration-query-verified-ui.txt",
+    "pointer": "textbox After delay timeout:800ms",
+    "sha256": "ad9e2bec8a849e0934607b32964a1ee7d24ed738a606b9ce3bafcd29a452885c"
+  },
+  "scope": "Current use_figma connector for this file/session only. Logical milliseconds divided by1000 for transport. Not a global Figma SDK units claim.",
+  "allFourGuiRootsNativeRead": true,
+  "currentFourRoots": [
+    "378:9826",
+    "378:9884",
+    "378:14435",
+    "378:14493"
+  ],
+  "actionsPreserved": true,
+  "systemTimerMigrationComplete": false,
+  "allBusinessFlowsAccepted": false
+}

@@ -1,0 +1,404 @@
+{
+  "status": "PASS_CURRENT_EXACT_ADDED_DEPENDENCIES",
+  "items": [
+    {
+      "label": "access-auth-source-integration-v3-actual-v2-manifest.json.helperSha256",
+      "evidence": {
+        "path": "evidence/shared-web-builders.js",
+        "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+      },
+      "expectedSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "currentSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "shaMatches": true,
+      "role": "Installed full v5.2 helper"
+    },
+    {
+      "label": "access-auth-source-integration-v3-actual-v2-manifest.json.calibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "expectedSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "currentSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "shaMatches": true,
+      "role": "Actual connector contract"
+    },
+    {
+      "label": "access-auth-source-integration-v3-actual-v2-manifest.json.actualAuthReceipt",
+      "evidence": {
+        "path": "evidence/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+        "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362"
+      },
+      "expectedSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "currentSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "shaMatches": true,
+      "role": "Exact actual Auth16 dependency, not old417variables"
+    },
+    {
+      "label": "access-auth-source-integration-v3-actual-v2-manifest.json.domain",
+      "evidence": {
+        "path": "evidence/access-auth-source-integration-v3-actual-v2-DOMAIN.js",
+        "sha256": "a7e54cfd17f05214fe3a0ae148c140e0914d92ccb77c766a569c33bfef67f6ca"
+      },
+      "expectedSha256": "a7e54cfd17f05214fe3a0ae148c140e0914d92ccb77c766a569c33bfef67f6ca",
+      "currentSha256": "a7e54cfd17f05214fe3a0ae148c140e0914d92ccb77c766a569c33bfef67f6ca",
+      "shaMatches": true,
+      "role": "Pre-execution actual dependency-bound domain source; not semantic acceptance"
+    },
+    {
+      "label": "access-consent-source-integration-v3-actual-v2-manifest.json.helperSha256",
+      "evidence": {
+        "path": "evidence/shared-web-builders.js",
+        "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+      },
+      "expectedSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "currentSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "shaMatches": true,
+      "role": "Installed full v5.2 helper"
+    },
+    {
+      "label": "access-consent-source-integration-v3-actual-v2-manifest.json.calibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "expectedSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "currentSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "shaMatches": true,
+      "role": "Actual connector contract"
+    },
+    {
+      "label": "access-consent-source-integration-v3-actual-v2-manifest.json.actualAuthReceipt",
+      "evidence": {
+        "path": "evidence/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+        "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362"
+      },
+      "expectedSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "currentSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "shaMatches": true,
+      "role": "Exact actual Auth16 dependency, not old417variables"
+    },
+    {
+      "label": "access-consent-source-integration-v3-actual-v2-manifest.json.domain",
+      "evidence": {
+        "path": "evidence/access-consent-source-integration-v3-actual-v2-DOMAIN.js",
+        "sha256": "afe54da330f580f2f3253b612b164e0053de3dbec78e81a5c7be7f50a6389024"
+      },
+      "expectedSha256": "afe54da330f580f2f3253b612b164e0053de3dbec78e81a5c7be7f50a6389024",
+      "currentSha256": "afe54da330f580f2f3253b612b164e0053de3dbec78e81a5c7be7f50a6389024",
+      "shaMatches": true,
+      "role": "Pre-execution actual dependency-bound domain source; not semantic acceptance"
+    },
+    {
+      "label": "access-consent-v3-UI-actual-v2-manifest.json.helperSha256",
+      "evidence": {
+        "path": "evidence/shared-web-builders.js",
+        "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+      },
+      "expectedSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "currentSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+      "shaMatches": true,
+      "role": "Installed full v5.2 helper"
+    },
+    {
+      "label": "access-consent-v3-UI-actual-v2-manifest.json.calibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "expectedSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "currentSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "shaMatches": true,
+      "role": "Actual connector contract"
+    },
+    {
+      "label": "access-consent-v3-UI-actual-v2-manifest.json.actualAuthReceipt",
+      "evidence": {
+        "path": "evidence/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+        "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362"
+      },
+      "expectedSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "currentSha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "shaMatches": true,
+      "role": "Exact actual Auth16 dependency, not old417variables"
+    },
+    {
+      "label": "access-consent-v3-UI-actual-v2-manifest.json.domain",
+      "evidence": {
+        "path": "evidence/access-consent-v3-UI-actual-v2-DOMAIN.js",
+        "sha256": "387fb0da6e1c811c1ca889166ba6f6b9eebe50ad4f9b65f5d5610475be534ac2"
+      },
+      "expectedSha256": "387fb0da6e1c811c1ca889166ba6f6b9eebe50ad4f9b65f5d5610475be534ac2",
+      "currentSha256": "387fb0da6e1c811c1ca889166ba6f6b9eebe50ad4f9b65f5d5610475be534ac2",
+      "shaMatches": true,
+      "role": "Pre-execution actual dependency-bound domain source; not semantic acceptance"
+    },
+    {
+      "label": "ConsentSource.actualInjectedReceiptAnd78vars",
+      "evidence": {
+        "path": "evidence/access-consent-source-integration-v3-actual-v2-prepared.js",
+        "sha256": "8c4fd5dcbc0081ae5ae09a23a09dcd8436fd274bf290f0c4fa82620e4108ffb2"
+      },
+      "expectedSha256": "8c4fd5dcbc0081ae5ae09a23a09dcd8436fd274bf290f0c4fa82620e4108ffb2",
+      "currentSha256": "8c4fd5dcbc0081ae5ae09a23a09dcd8436fd274bf290f0c4fa82620e4108ffb2",
+      "shaMatches": true,
+      "role": "Actual prepared source injects current Consent78var actualreceipt; generic DOMAIN is an injection template without literalIDs"
+    },
+    {
+      "label": "source19r1.coreReceiptSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-core-v2-UI14-calibrated-v1-parsed.json",
+        "sha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4"
+      },
+      "expectedSha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4",
+      "currentSha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4",
+      "shaMatches": true,
+      "role": "Exact receipt-reported original facts/source dependency"
+    },
+    {
+      "label": "source19r1.timingCalibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "expectedSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "currentSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+      "shaMatches": true,
+      "role": "Exact receipt-reported original facts/source dependency"
+    },
+    {
+      "label": "source19r1.sourceGuardsSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-source-guards.json",
+        "sha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21"
+      },
+      "expectedSha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21",
+      "currentSha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21",
+      "shaMatches": true,
+      "role": "Exact receipt-reported original facts/source dependency"
+    },
+    {
+      "label": "source19r1.sourceEngineSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-engine.js",
+        "sha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed"
+      },
+      "expectedSha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed",
+      "currentSha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed",
+      "shaMatches": true,
+      "role": "Exact receipt-reported original facts/source dependency"
+    },
+    {
+      "label": "coreLiteral.sourceGuardSha256",
+      "evidence": {
+        "path": "evidence/practice-core-grading-position-literal-live-v1.json",
+        "sha256": "c0cdab07dd5a1e34c7b403e0e6f611f06129abde961271724d8f16c48dc2ee74"
+      },
+      "expectedSha256": "c0cdab07dd5a1e34c7b403e0e6f611f06129abde961271724d8f16c48dc2ee74",
+      "currentSha256": "c0cdab07dd5a1e34c7b403e0e6f611f06129abde961271724d8f16c48dc2ee74",
+      "shaMatches": true,
+      "role": "Actual fresh native guard before exact literal-only source mutation"
+    },
+    {
+      "label": "coreLiteral.sourceGuardSha256",
+      "evidence": {
+        "path": "evidence/practice-core-save-position-literal-live-v1.json",
+        "sha256": "dda8ff542ba5ed929cd8f91e685e312efad7343494b88e2059501e96e1c2ee82"
+      },
+      "expectedSha256": "dda8ff542ba5ed929cd8f91e685e312efad7343494b88e2059501e96e1c2ee82",
+      "currentSha256": "dda8ff542ba5ed929cd8f91e685e312efad7343494b88e2059501e96e1c2ee82",
+      "shaMatches": true,
+      "role": "Actual fresh native guard before exact literal-only source mutation"
+    },
+    {
+      "sourceBatch": "read-controls-r2",
+      "field": "coreReceiptSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-core-v2-UI14-calibrated-v1-parsed.json",
+        "sha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-controls-r2",
+      "field": "timingCalibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-controls-r2",
+      "field": "sourceGuardsSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-source-guards.json",
+        "sha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-controls-r2",
+      "field": "sourceEngineSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-engine.js",
+        "sha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-input",
+      "field": "coreReceiptSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-core-v2-UI14-calibrated-v1-parsed.json",
+        "sha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-input",
+      "field": "timingCalibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-input",
+      "field": "sourceGuardsSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-source-guards.json",
+        "sha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-input",
+      "field": "sourceEngineSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-engine.js",
+        "sha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-feedback",
+      "field": "coreReceiptSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-core-v2-UI14-calibrated-v1-parsed.json",
+        "sha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-feedback",
+      "field": "timingCalibrationSha256",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-feedback",
+      "field": "sourceGuardsSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-source-guards.json",
+        "sha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "read-views-r1-feedback",
+      "field": "sourceEngineSha256",
+      "evidence": {
+        "path": "evidence/practice-original-facts-engine.js",
+        "sha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "helper",
+      "evidence": {
+        "path": "evidence/shared-web-builders.js",
+        "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "calibration",
+      "evidence": {
+        "path": "evidence/timeout-calibration.verified.json",
+        "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "source13raw",
+      "evidence": {
+        "path": "evidence/access-firstday-recovery-v2-calibrated-v1-current-source13-raw.json",
+        "sha256": "0adc5c0a2fa937fdb6aab8766585c76b77a6dd569a3b485a2fec315876da4e3d"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "source13parsed",
+      "evidence": {
+        "path": "evidence/access-firstday-recovery-v2-calibrated-v1-current-source13-parsed.json",
+        "sha256": "f9b69ecee6ef079796d2f58c4059888f90840982940759a50dc399aa4a56a158"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "AuthUI",
+      "evidence": {
+        "path": "evidence/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+        "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "AuthSource",
+      "evidence": {
+        "path": "evidence/access-auth-source-integration-v3-actual-v2-write-result.json",
+        "sha256": "643ec948033e3fab06a057bbb2dd79e42226dafa8dd723a1db02bfbb724af814"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "ConsentUI",
+      "evidence": {
+        "path": "evidence/access-consent-v3-UI-actual-v2-write-result.json",
+        "sha256": "3613b3bc714e27947134e61267e57032df5d684dc24e461867c736ab18d4de4b"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "FIRSTDAY16",
+      "field": "ConsentSource",
+      "evidence": {
+        "path": "evidence/access-consent-source-integration-v3-actual-v2-write-result.json",
+        "sha256": "13be3ef1cc673ce19ca4451365fbc4b1c485355c9ea3c9e94ac698c3876bfa24"
+      },
+      "shaMatches": true
+    },
+    {
+      "sourceBatch": "GLOBAL12",
+      "evidence": {
+        "path": "evidence/global-scope-current-actual-deps-v2.json",
+        "sha256": "4120a14093702acbfe65aa62baef6a3484c96e22890b2aeff57444a5b9079f7f"
+      },
+      "shaMatches": true
+    }
+  ],
+  "allSourceSemanticStatus": "UNVERIFIED",
+  "preparedManifestNOTRUNIsHistoricalNotActualOverride": true
+}

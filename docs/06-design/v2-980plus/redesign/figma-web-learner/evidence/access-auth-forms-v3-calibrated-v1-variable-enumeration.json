@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"FRESH_LOCAL_VARIABLE_ENUMERATION\",\"collections\":[],\"variables\":[],\"allCollectionCount\":103,\"allVariableCount\":2312}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

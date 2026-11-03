@@ -1,43 +1,49 @@
 {
-  "status": "ACTUAL_USER_AUTHORIZED_FIGMA_UI_MUTATIONS_PENDING_NATIVE_RECONCILIATION",
+  "status": "GUI_MUTATIONS_RECONCILED_WITH_CURRENT_NATIVE_READ_AND_BROWSER_SAMPLES",
   "mutations": [
     {
       "rootId": "378:9826",
       "kind": "AFTER_TIMEOUT",
       "beforeGuiMilliseconds": 800000,
       "afterGuiMilliseconds": 800,
-      "nativeValueAfterGui": null
+      "nativeValueAfterGui": 0.800000011920929,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "nativeProof": "evidence/heartbeat-20261103T1005-timer-probe.json"
     },
     {
       "rootId": "378:9884",
       "kind": "AFTER_TIMEOUT",
       "beforeGuiMilliseconds": 800000,
       "afterGuiMilliseconds": 800,
-      "nativeValueAfterGui": null
+      "nativeValueAfterGui": 0.800000011920929,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "nativeProof": "evidence/heartbeat-20261103T1005-timer-probe.json"
     },
     {
       "rootId": "378:14435",
       "triggerBefore": "ON_CLICK",
       "triggerAfter": "AFTER_TIMEOUT",
       "afterGuiMilliseconds": 800,
-      "nativeValueAfterGui": null,
+      "nativeValueAfterGui": 0.800000011920929,
       "preservedUiActionLabels": 18,
       "actionLabelsUnchanged": true,
-      "fullNativeActionReadback": "PENDING_QUOTA",
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
       "proofBefore": "evidence/speaking-pending-before-ui.txt",
-      "proofAfter": "evidence/speaking-pending-after-ui.txt"
+      "proofAfter": "evidence/speaking-pending-after-ui.txt",
+      "nativeProof": "evidence/timer-connector-point8-calibration-v1-parsed.json"
     },
     {
       "rootId": "378:14493",
       "triggerBefore": "ON_CLICK",
       "triggerAfter": "AFTER_TIMEOUT",
       "afterGuiMilliseconds": 800,
-      "nativeValueAfterGui": null,
+      "nativeValueAfterGui": 0.800000011920929,
       "preservedUiActionLabels": 18,
       "actionLabelsUnchanged": true,
-      "fullNativeActionReadback": "PENDING_QUOTA",
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
       "proofBefore": "evidence/speaking-query-before-ui-menu.txt",
-      "proofAfter": "evidence/speaking-query-after-ui.txt"
+      "proofAfter": "evidence/speaking-query-after-ui.txt",
+      "nativeProof": "evidence/timer-connector-point8-calibration-v1-parsed.json"
     }
   ],
   "browserProof": {
@@ -66,5 +72,14 @@
       "evidence/browser-reading-return.jpg"
     ]
   },
-  "warning": "All native after-GUI timeout values unknown until minimal read after quota restoration"
+  "warning": "Scope is exact scoped timers and fixed prototype samples; full business/responsive/accessibility acceptance remains open.",
+  "updatedAt": "2026-11-03T13:53:28.164480+00:00",
+  "calibration": {
+    "path": "evidence/timeout-calibration.verified.json",
+    "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+  },
+  "timerMigration": {
+    "path": "evidence/owned-timer-migration-current.json",
+    "sha256": "eb1e7f92004af003b5ef6f006625dd898395a77cc619103390ed81426fc06636"
+  }
 }

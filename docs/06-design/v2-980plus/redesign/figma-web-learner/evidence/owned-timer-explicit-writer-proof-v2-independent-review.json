@@ -1,0 +1,203 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_IDENTITY_AND_FULL_REACTION_PROOF_REVIEW",
+  "proofFile": "owned-timer-explicit-writer-proof-v2.json",
+  "proofSha256": "1e284e93aec5452d2127f9e1d07458ffc1c1684961947a0e7cb87a4ba91cfa9f",
+  "count": 20,
+  "errors": [],
+  "checks": [
+    "Exactly20 EXPLICIT_MUTATED_NODE IDs, no name/threshold ownership inference",
+    "5actual successful receipts with explicit mutated IDs; receipt/writer/index/contract SHA match",
+    "Literal writer line/excerpt and exact setReactionsAsync JS offset with AFTER_TIMEOUT800 verified; logical millisecond intent traced",
+    "Independent complete actions reconstructed from source+actual variable IDs; all20 canonical hashes exactly match native index"
+  ],
+  "independentAdjudication": "owned-timer-original20-source-adjudication.json",
+  "independentAdjudicationSha256": "92d52099e7d05990c26c3ef5ace26fab32384608a9919bf7fd49ba84642a31dc",
+  "rows": [
+    {
+      "id": "206:4154",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "47ddf58f:2839",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "206:4762",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "1f61417e:2839",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "225:2554",
+      "actualWriter": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 195,
+      "actualReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "currentFullReactionHash": "b9ef8de2:15150",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "225:2674",
+      "actualWriter": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 196,
+      "actualReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "currentFullReactionHash": "3e555a8b:3623",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "225:2913",
+      "actualWriter": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 195,
+      "actualReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "currentFullReactionHash": "cf34ad0f:15150",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "225:3153",
+      "actualWriter": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 196,
+      "actualReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "currentFullReactionHash": "e90f3648:3623",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "225:3752",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "748b9abf:2841",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "251:10295",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "b1dcb47b:2845",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "251:11139",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "f4ba9df3:2852",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "251:7763",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "d10a9e94:2848",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "251:8607",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "15a19940:2842",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "251:9451",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "2a6aea4b:2851",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "255:2815",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "6f9cb1dd:2842",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "255:3658",
+      "actualWriter": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "actualReceipt": "legacy-query-patch-v1-write-result.json",
+      "currentFullReactionHash": "c2f42d15:2844",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:3535",
+      "actualWriter": "practice-srs-query1-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-query1-safety-v1-write-result.json",
+      "currentFullReactionHash": "58101aa3:6520",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:3783",
+      "actualWriter": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "currentFullReactionHash": "7b8bd352:2600",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:4653",
+      "actualWriter": "practice-srs-query2-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-query2-safety-v1-write-result.json",
+      "currentFullReactionHash": "e3315ec4:6752",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:4901",
+      "actualWriter": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "currentFullReactionHash": "7f64aaa9:2991",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:5637",
+      "actualWriter": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "currentFullReactionHash": "7f64aaa9:2991",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    },
+    {
+      "id": "306:5767",
+      "actualWriter": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "actualReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "currentFullReactionHash": "8dd0e72e:3381",
+      "independentFullActionReconstructionMatches": true,
+      "allowSameDivide1000": "Only runtime fresh complete hash unchanged; change timeout800 to0.8 only."
+    }
+  ],
+  "execution": {
+    "figmaCalls": 0,
+    "uiCalls": 0,
+    "repoWrites": 0
+  },
+  "boundary": "Does not execute migration or business acceptance. Runtime drift blocks exact node; preserve fresh complete actions and mutate timeout field only."
+}

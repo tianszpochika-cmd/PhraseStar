@@ -1,0 +1,216 @@
+{
+  "status": "PARTIAL_BROWSER_QA_WITH_OPEN_SYSTEMIC_ISSUES",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "date": "2026-11-03",
+  "testedIn": "Authenticated Chrome Figma prototype; synthetic design data only",
+  "actualGuiMutations": [
+    {
+      "rootId": "378:9826",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": 0.800000011920929,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "nativeProof": "heartbeat-20261103T1005-timer-probe.json"
+    },
+    {
+      "rootId": "378:9884",
+      "kind": "AFTER_TIMEOUT",
+      "beforeGuiMilliseconds": 800000,
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": 0.800000011920929,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "nativeProof": "heartbeat-20261103T1005-timer-probe.json"
+    },
+    {
+      "rootId": "378:14435",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": 0.800000011920929,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "proofBefore": "speaking-pending-before-ui.txt",
+      "proofAfter": "speaking-pending-after-ui.txt",
+      "nativeProof": "timer-connector-point8-calibration-v1-parsed.json"
+    },
+    {
+      "rootId": "378:14493",
+      "triggerBefore": "ON_CLICK",
+      "triggerAfter": "AFTER_TIMEOUT",
+      "afterGuiMilliseconds": 800,
+      "nativeValueAfterGui": 0.800000011920929,
+      "preservedUiActionLabels": 18,
+      "actionLabelsUnchanged": true,
+      "fullNativeActionReadback": "VERIFIED_FULL_PROGRAM_CURRENT_NATIVE",
+      "proofBefore": "speaking-query-before-ui-menu.txt",
+      "proofAfter": "speaking-query-after-ui.txt",
+      "nativeProof": "timer-connector-point8-calibration-v1-parsed.json"
+    }
+  ],
+  "successfulFlow": {
+    "name": "READING_COLLECTION_SAVE_RETURN",
+    "roots": [
+      "379:18925",
+      "379:19105",
+      "378:9122",
+      "378:9826",
+      "378:9942",
+      "378:8870",
+      "380:9937",
+      "379:18925"
+    ],
+    "sentence": "She chooses a book and reads by the window.",
+    "article": "A day at the library",
+    "version": "1",
+    "paragraph": "2",
+    "receiptReachedViaUrlWait": true,
+    "observedSaveToReceiptElapsedMs": 1004,
+    "elapsedMeaning": "Input, rendering and navigation-wait duration; not a precise network latency",
+    "result": "PASS_THIS_FIXED_SAMPLE_ONLY",
+    "proof": [
+      "browser-expression-confirmed.jpg",
+      "browser-expression-source.jpg",
+      "browser-reading-return.jpg"
+    ]
+  },
+  "openIssues": [
+    {
+      "id": "WEB-BROWSER-TIMER-UNIT",
+      "status": "FIXED_IN_EXACT_SCOPED_159_TIMERS_REMAINING_FLOW_QA_OPEN",
+      "observed": "Current connector write0.8/native Float32 corresponds to GUI800ms;159 legacy timers migrated with exact full-program equality except timing.",
+      "mustDo": "Preserve migrated timers; recompile all unexecuted tools with verified contract; browser-test each business flow."
+    },
+    {
+      "id": "WEB-BROWSER-CHOICE-STATE",
+      "rootId": "378:9122",
+      "status": "NATIVE_FIXED_TWO_CHECKBOXES_BROWSER_THREE_COMBINATIONS_PASS",
+      "observed": "Both checkbox marker states follow bound booleans across unchecked/review-only/both-selected fixed examples.",
+      "fix": "skills-expression-choice-state-v2-write-result.json"
+    },
+    {
+      "id": "WEB-PATCH-TRIGGER",
+      "status": "SCOPED_NATIVE_TRIGGER_AND_PROGRAM_VERIFIED_HELPER_V5_2_INSTALLED",
+      "observed": "patchExact hardcodes ON_CLICK; SpeakingB recording patch changed pending/query frame triggers.",
+      "roots": [
+        "378:14435",
+        "378:14493"
+      ],
+      "mustDo": "Use calibrated v5.2 helper, preserve full triggers/actions on future source patches; whole business acceptance remains open."
+    },
+    {
+      "id": "WEB-AUTH-NORMAL-FORM-VISUAL",
+      "status": "FAILED_VISUAL_BATCH_CURRENT_NATIVE_SCOPED_RECOVERY_VERIFIED_VISUAL_STILL_OPEN",
+      "observed": "After the failed batch, fresh readback including hidden original4TEXT confirms146 text layouts/copy,27 programs,9 rows,11 properties and2hooks match saved baselines;57 explicit new nodes absent.55 metadata and notice match; other54 prewrite values were not persisted. No recovery canvas writes were required. Failed main tool must not be replayed.",
+      "proof": [
+        "auth-login-1440-native.png",
+        "auth-reset-confirm-768-native.png"
+      ],
+      "actualReceipt": "access-auth-cleanform-v1-write-result.json",
+      "recoveryEvidence": [
+        "access-auth-cleanform-recovery-READ01-native-v2.json",
+        "access-auth-cleanform-recovery-READ02-native-v2.json",
+        "access-auth-cleanform-recovery-READ03-native-v2.json",
+        "access-auth-cleanform-recovery-READ04-hidden-native-v1.json"
+      ]
+    },
+    {
+      "id": "WEB-CHOICE-OTHER-GROUPS",
+      "status": "NATIVE_PLACEMENT_FIXED_BROWSER_QA_PARTIAL",
+      "observed": "14selected clones reparented to exact option containers; self-rating tested, radar/story/reset pending"
+    },
+    {
+      "id": "WEB-STATIC-EXPRESSION-NOTE-PAYLOAD",
+      "status": "OPEN",
+      "observed": "Note remains static and full source/entity/draft snapshot pending; save labels alone do not close the loop"
+    }
+  ],
+  "nativeReadbackAfterGuiMutation": "VERIFIED_CURRENT_NATIVE_AND_GUI_800MS",
+  "queryAutoTransitionAfterGuiFix": "OBSERVED_SPEAKING_FIXED_DEFAULT_QUERY_RETURN_AND_SAVE_RECEIPT",
+  "keyboardAndScreenReader": "NOT_RUN; Figma prototype announced its screenreader support disabled",
+  "realIamPersistenceMediaAndDeviceAcceptance": "NOT_RUN",
+  "responsiveVisualEvidence": [
+    "header-reading-1440.png",
+    "header-reading-1024.png",
+    "header-reading-768.png",
+    "header-reading-200.png",
+    "orders-768.png",
+    "writing-768.png"
+  ],
+  "wholeDesignAccepted": false,
+  "updatedAt": "2026-11-03T13:53:28.164480+00:00",
+  "timerMigration": {
+    "path": "owned-timer-migration-current.json",
+    "sha256": "eb1e7f92004af003b5ef6f006625dd898395a77cc619103390ed81426fc06636"
+  },
+  "calibration": {
+    "path": "timeout-calibration.verified.json",
+    "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01"
+  },
+  "newSuccessfulFixedSamples": [
+    {
+      "name": "SPEAKING_SELF_RATING_CHOICE_SAVE_RETURN",
+      "roots": [
+        "378:13903",
+        "378:14551",
+        "378:13867",
+        "378:13903"
+      ],
+      "result": "PASS_THIS_FIXED_SAMPLE_ONLY",
+      "choiceRepair": "a11y-choice-clone-placement-v1-apply-result.json",
+      "observedSaveToReceiptElapsedMs": 909,
+      "elapsedMeaning": "Includes input/render/navigation wait; not precise network latency",
+      "observed": [
+        "A/B/C selected visuals remain in original slots",
+        "Only one selected",
+        "C survives confirmed receipt and return/reentry"
+      ],
+      "proof": [
+        "speaking-choice-placement-middle-pass.png",
+        "speaking-choice-placement-first-pass.png",
+        "speaking-choice-placement-third-pass.png",
+        "speaking-choice-placement-save-receipt.png",
+        "speaking-choice-placement-reentry-pass.png"
+      ],
+      "beforeFailureProof": "speaking-choice-v3-middle-selected.png",
+      "notProven": [
+        "Other radar/story groups",
+        "Real audio/permissions/persistence",
+        "Keyboard/screenreader"
+      ]
+    },
+    {
+      "name": "WRITING_TRANSLATION_MATCHED_SAVE_FACT",
+      "roots": [
+        "381:10060",
+        "381:10116",
+        "381:10174",
+        "381:11759",
+        "381:11797",
+        "381:11837",
+        "381:11955",
+        "381:10174"
+      ],
+      "result": "PASS_THIS_FIXED_NINETEEN_WORD_EXAMPLE_ONLY",
+      "observed": [
+        "Unknown original request can be queried",
+        "Confirmed return preserves same19word body",
+        "Recent confirmed save fact v5 visible",
+        "Old static modification-pending line removed"
+      ],
+      "proof": [
+        "writing-save-fact-current-unknown.png",
+        "writing-save-fact-current-confirmed.png",
+        "writing-save-fact-current-return-v5.png"
+      ],
+      "timing": "URL wait timed out before subsequent fresh URL and screenshot confirmed unknown; no precise timing accepted",
+      "notProven": [
+        "Arbitrary editing",
+        "Full freeform draft payload",
+        "Current dirty state",
+        "Real persistence"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"PATCHED_NATIVE_VARIABLE_BINDINGS_NEEDS_BROWSER_QA\",\"domain\":\"skills-expression-choice-state\",\"patchOnly\":true,\"createdNodeIdsCsv\":\"\",\"createdNodeIdCount\":0,\"createdVariableIds\":[],\"mutatedNodeIds\":[\"I378:9762;350:3180\",\"I378:9767;350:3180\"],\"bindings\":[{\"rootId\":\"378:9122\",\"choiceId\":\"378:9762\",\"textId\":\"I378:9762;350:3180\",\"textName\":\"Choice state\",\"variableId\":\"VariableID:378:8850\",\"characters\":\"✓ 已标记：我想会说\",\"completeReactionsPreserved\":true},{\"rootId\":\"378:9122\",\"choiceId\":\"378:9767\",\"textId\":\"I378:9767;350:3180\",\"textName\":\"Choice state\",\"variableId\":\"VariableID:378:8852\",\"characters\":\"暂不安排表达复习\",\"completeReactionsPreserved\":true}],\"businessRule\":\"The marker inside each choice and its explanatory status now read the same existing STRING. Existing guarded actions update this STRING beside its BOOLEAN; no inverse state, extra request or source tuple is introduced.\"}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

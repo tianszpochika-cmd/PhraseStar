@@ -1,0 +1,53 @@
+{
+  "status": "CONNECTOR_SCALE_SAMPLE_CONFIRMED_NOT_SYSTEM_ACCEPTANCE",
+  "query": {
+    "sourceRoot": "378:14493",
+    "writtenConnectorValue": 0.8,
+    "guiMillisecondsAfterNativeWrite": 800,
+    "nativeAfter": 0.800000011920929,
+    "uiProof": {
+      "path": "timer-calibration-query-verified-ui.txt",
+      "sha256": "ad9e2bec8a849e0934607b32964a1ee7d24ed738a606b9ce3bafcd29a452885c"
+    },
+    "uiScreenshot": {
+      "path": "timer-calibration-query-verified-ui.png",
+      "sha256": "a78076a69cded334418daf0046cce811cbdd6a53753757977f6aadcf966dc10c"
+    },
+    "automaticIdleFallbackRoot": "378:13867",
+    "fallbackProof": {
+      "path": "timer-calibration-query-browser-return.png",
+      "sha256": "f658628bf4c2e1cba6efc501edb628fa16eb6e9d156266a0b167dd2c9ab27dfd"
+    },
+    "initialLoadUrlWait": "TIMED_OUT_DURING_LOAD_THEN_ACTUAL_URL_AND_SCREENSHOT_CONFIRMED",
+    "preciseElapsedTiming": false
+  },
+  "speakingSaveSample": {
+    "path": [
+      "378:13867",
+      "378:13903",
+      "378:14435",
+      "378:14551"
+    ],
+    "selection": "基本跟上",
+    "observedSaveToReceiptElapsedMs": 981,
+    "elapsedMeaning": "Input/render/navigation wait; not network latency or exact timeout duration",
+    "receiptText": "本轮自评已确认",
+    "proof": {
+      "path": "speaking-selfrating-receipt-after-calibration.png",
+      "sha256": "7079b3c24f86eca109df331c240d7e544f2921afafd3a828674d600ae88c9f1c"
+    },
+    "result": "PASS_THIS_FIXED_SELF_RATING_SAVE_SAMPLE_ONLY"
+  },
+  "additionalIssue": {
+    "root": "378:13903",
+    "status": "OPEN",
+    "issue": "Three self-rating Choice markers stay 未选择 while bound selection label becomes 基本跟上",
+    "proof": {
+      "path": "speaking-selfrating-choice-open.png",
+      "sha256": "71dfc24fc695ca97940341b6c4e520b38957a3e0914d57c593dce51dce58e43c"
+    }
+  },
+  "realRecordingUploadOrMedia": "NOT_RUN",
+  "originalUnknownQueryAndStaleActorMatrix": "NOT_RUN",
+  "wholeDesignAccepted": false
+}

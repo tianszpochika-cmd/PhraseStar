@@ -1,0 +1,70 @@
+{
+  "status": "PASS_REFERENCE_INTEGRITY_SCOPED_RECOVERY_ACCEPTED_BUSINESS_OPEN",
+  "generatedAt": "2026-11-03T14:36:07.194383+00:00",
+  "authRecoveryGate": "AUTH_CURRENT_NATIVE_RECHECK_CLEAR_VISUAL_BUSINESS_OPEN",
+  "roots": 1074,
+  "v2RootSnapshot": 1046,
+  "newSinceV2": 28,
+  "source19ActualBatches": 4,
+  "source19Total": 19,
+  "source19Remaining": 15,
+  "nativeSuccessfulWriteReceiptsIndexed": 121,
+  "failedCleanformInSuccessfulReceipts": false,
+  "fullActionsExportedForCore20": false,
+  "source16ShaUnchanged": true,
+  "all291UNVERIFIED": true,
+  "rawParsedChecks": 40,
+  "allRawParsedEqual": true,
+  "evidenceFiles": 173,
+  "evidenceBytes": 5295384,
+  "v2AndConcurrentRootFilesUnchanged": true,
+  "repoWrites": 0,
+  "McpCalls": 0,
+  "browserCalls": 0,
+  "artifacts": {
+    "review-v3.md": {
+      "sha256": "95ba1cc9ba91d47cac893ca4efa0fad93f2b5c17d95c767c48e8f536abb4116e",
+      "bytes": 2312
+    },
+    "review-v3.json": {
+      "sha256": "e69b1950743790cd1b147b823ef99a6589e86faf6b844b1b496d22173f26065a",
+      "bytes": 36633
+    },
+    "actual-receipt-index.json": {
+      "sha256": "65a196ecd3b464e1277ea0ff7294d96ba2c7fa9543699ff45718ae3699128f23",
+      "bytes": 652420
+    },
+    "failure-and-recovery.json": {
+      "sha256": "2e5c565dbc6d864ea7138b1ec0b22ed3f50aed9055570f94b88a5642c52c64b9",
+      "bytes": 8776
+    },
+    "native-read-verification.json": {
+      "sha256": "0fe47d9f7edb521fec5a3e50f77a792f5a6d1729d212eea437207682f5f748fe",
+      "bytes": 12487
+    },
+    "dependency-hash-index.json": {
+      "sha256": "2d522c445e7305b3f4c23c5c051f3d756171fce7b5ac1908570da092b47136f4",
+      "bytes": 16951
+    },
+    "evidence-index.json": {
+      "sha256": "e7b45b27fc836c900c80090aa086562a5511c370dc156f062a85a8aa09fba7f8",
+      "bytes": 92909
+    },
+    "source-integrity.json": {
+      "sha256": "bdcc933f849c52d841d4555a3efa5b20f83b713ca45ea8afedf87dfe913291c7",
+      "bytes": 5374
+    },
+    "evidence-copy-plan.json": {
+      "sha256": "27adef10e7a2bc14218451194610c281198af4ab74d02327907161c14eb3808f",
+      "bytes": 51145
+    },
+    "REBUILD.md": {
+      "sha256": "5f773a047c4692b2d614ba10d2816dc7c6b2c29e476cfad414927d9808d61277",
+      "bytes": 1170
+    },
+    "build-publication-candidate-v3.py": {
+      "sha256": "73152f8db900fa3902ea5f8a479c591c63d3a3123a3841f10bba5e3301819f23",
+      "bytes": 34133
+    }
+  }
+}

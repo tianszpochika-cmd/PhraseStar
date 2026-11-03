@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"sourceMutatedNodeIds\":[\"90:376\",\"90:445\",\"90:446\",\"165:1787\",\"165:1792\",\"165:1800\",\"165:1805\",\"165:1808\",\"165:1815\",\"165:1817\",\"165:2150\",\"165:2152\",\"165:2227\",\"165:2228\",\"165:2229\",\"165:2231\",\"165:2233\",\"165:2235\",\"165:2237\",\"165:2240\",\"165:2242\",\"165:2664\"],\"sourceHiddenReviewControls\":[\"165:2231\",\"165:2233\",\"165:2235\",\"165:2237\",\"165:2240\",\"165:2242\"],\"sourceAutomaticQueryRoots\":[\"90:376\",\"165:2152\"],\"requiresUiReceipt\":\"access-consent-v3-UI-write-result.json\",\"unresolvedIntegrationRequests\":[\"CONSENT_ELIGIBLE_SAME_ACTOR_RETURN\"],\"scope\":\"Exactlegacyentry/unknown/queryreviewremoval; noindependentIAMorlearninggrant.\",\"status\":\"CREATED_NATIVE_WEB_DOMAIN_NEEDS_VISUAL_AND_BROWSER_QA\",\"prefix\":\"Codex / Web全量补稿 / access-consent-source-integration / \",\"createdNodeIdsCsv\":\"\",\"createdNodeIdCount\":0,\"mutatedNodeIds\":[\"90:376\",\"90:445\",\"90:446\",\"165:1792\",\"165:1800\",\"165:1808\",\"165:1815\",\"165:1817\",\"165:2150\",\"165:2152\",\"165:2664\"],\"createdVariableIds\":[],\"createdVariableCollectionIds\":[],\"roots\":[],\"screens\":[],\"types\":{},\"imageFilledNodes\":[],\"fontFamilies\":[],\"controls\":0,\"errors\":[],\"timingCalibrationStatus\":\"VERIFIED_GUI_AND_NATIVE_READBACK\",\"timerConnectorUnit\":\"seconds\",\"logicalMillisecondsPerConnectorUnit\":1000,\"adaptedTimeouts\":[{\"id\":\"90:376\",\"kind\":\"PATCH_CALIBRATED_TIMEOUT\",\"timers\":[{\"reactionIndex\":0,\"nativeTimeout\":1,\"milliseconds\":1000}]},{\"id\":\"165:2152\",\"kind\":\"PATCH_CALIBRATED_TIMEOUT\",\"timers\":[{\"reactionIndex\":0,\"nativeTimeout\":1,\"milliseconds\":1000}]}],\"limits\":[\"Editable Figma prototype, not real IAM/service persistence or policy approval.\",\"Native example fields do not accept arbitrary keyboard input.\",\"Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate.\"],\"outputUtf8BytesBeforeSizeField\":1766}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

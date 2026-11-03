@@ -1,0 +1,1645 @@
+{
+  "mode": "PROBE",
+  "rootId": "381:10174",
+  "rootName": "Codex / Learner Web Full Coverage 20261103 / Writing / translation-draft",
+  "counter": {
+    "id": "381:10215",
+    "name": "正文 / 19 词 · v4 · 修改尚待保存",
+    "parentId": "381:10211",
+    "text": "19 词 · v4 · 修改尚待保存",
+    "boundVariables": {
+      "fills": [
+        {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:203:2029"
+        }
+      ]
+    }
+  },
+  "body": {
+    "id": "381:10214",
+    "name": "英文正文 / 原生多段文字",
+    "parentId": "381:10213",
+    "text": "Every morning, I spend fifteen minutes review new words.\n\nThen I read a short text before going to class.",
+    "boundVariables": {
+      "fills": [
+        {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:203:2028"
+        }
+      ]
+    }
+  },
+  "title": {
+    "id": "381:10212",
+    "name": "正文 / 你的英文译文",
+    "parentId": "381:10211",
+    "text": "你的英文译文",
+    "boundVariables": {
+      "fills": [
+        {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:203:2028"
+        }
+      ]
+    }
+  },
+  "save": {
+    "id": "381:10218",
+    "name": "操作 / 保存草稿",
+    "parentId": "381:10195",
+    "reactions": [
+      {
+        "trigger": {
+          "type": "ON_CLICK"
+        },
+        "actions": [
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "save",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10048",
+                    "variableValue": {
+                      "value": "save",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10047",
+                    "variableValue": {
+                      "value": "保存汉译英草稿",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10049",
+                    "variableValue": {
+                      "value": {
+                        "type": "VARIABLE_ALIAS",
+                        "id": "VariableID:381:10045"
+                      },
+                      "type": "VARIABLE_ALIAS",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10050",
+                    "variableValue": {
+                      "value": {
+                        "type": "VARIABLE_ALIAS",
+                        "id": "VariableID:381:10043"
+                      },
+                      "type": "VARIABLE_ALIAS",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10055",
+                    "variableValue": {
+                      "value": "editor",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11759",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "none",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": [
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:12073",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "query": {
+    "id": "381:11837",
+    "name": "Codex / Learner Web Full Coverage 20261103 / Writing / operation-query",
+    "reactions": [
+      {
+        "trigger": {
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        },
+        "actions": [
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10056",
+                    "variableValue": {
+                      "value": "本轮作答已接收",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:12041",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "submit",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11613",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "expressionArguments": [
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10046"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            },
+                            {
+                              "value": "save",
+                              "type": "STRING",
+                              "resolvedType": "STRING"
+                            }
+                          ],
+                          "expressionFunction": "EQUALS"
+                        },
+                        "type": "EXPRESSION",
+                        "resolvedType": "BOOLEAN"
+                      },
+                      {
+                        "value": {
+                          "expressionArguments": [
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10043"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            },
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10050"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            }
+                          ],
+                          "expressionFunction": "NOT_EQUAL"
+                        },
+                        "type": "EXPRESSION",
+                        "resolvedType": "BOOLEAN"
+                      }
+                    ],
+                    "expressionFunction": "AND"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10045",
+                    "variableValue": {
+                      "value": "v5",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11955",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "expressionArguments": [
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10046"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            },
+                            {
+                              "value": "save",
+                              "type": "STRING",
+                              "resolvedType": "STRING"
+                            }
+                          ],
+                          "expressionFunction": "EQUALS"
+                        },
+                        "type": "EXPRESSION",
+                        "resolvedType": "BOOLEAN"
+                      },
+                      {
+                        "value": {
+                          "expressionArguments": [
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10043"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            },
+                            {
+                              "value": {
+                                "type": "VARIABLE_ALIAS",
+                                "id": "VariableID:381:10050"
+                              },
+                              "type": "VARIABLE_ALIAS",
+                              "resolvedType": "STRING"
+                            }
+                          ],
+                          "expressionFunction": "EQUALS"
+                        },
+                        "type": "EXPRESSION",
+                        "resolvedType": "BOOLEAN"
+                      }
+                    ],
+                    "expressionFunction": "AND"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10053",
+                    "variableValue": {
+                      "value": "已收藏",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11955",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "favorite",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10051",
+                    "variableValue": {
+                      "value": {
+                        "type": "VARIABLE_ALIAS",
+                        "id": "VariableID:381:10052"
+                      },
+                      "type": "VARIABLE_ALIAS",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11955",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "self",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10045",
+                    "variableValue": {
+                      "value": "v5",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11955",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "restore",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10045",
+                    "variableValue": {
+                      "value": "v6",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "SET_VARIABLE",
+                    "variableId": "VariableID:381:10046",
+                    "variableValue": {
+                      "value": "none",
+                      "type": "STRING",
+                      "resolvedType": "STRING"
+                    }
+                  },
+                  {
+                    "type": "NODE",
+                    "destinationId": "381:11955",
+                    "navigation": "NAVIGATE",
+                    "transition": null,
+                    "resetVideoPosition": false,
+                    "resetScrollPosition": true
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:381:10046"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "STRING"
+                      },
+                      {
+                        "value": "conflict",
+                        "type": "STRING",
+                        "resolvedType": "STRING"
+                      }
+                    ],
+                    "expressionFunction": "EQUALS"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "id": "381:11873",
+        "name": "操作 / 稍后处理",
+        "parentId": "381:11858",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "381:12073",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "lockedConfirmedControls": [
+    {
+      "id": "381:11991",
+      "name": "操作 / 继续原任务",
+      "parentId": "381:11976",
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:11514",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:381:10048"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "STRING"
+                        },
+                        {
+                          "value": "restore",
+                          "type": "STRING",
+                          "resolvedType": "STRING"
+                        }
+                      ],
+                      "expressionFunction": "EQUALS"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:11655",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:381:10048"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "STRING"
+                        },
+                        {
+                          "value": "conflict",
+                          "type": "STRING",
+                          "resolvedType": "STRING"
+                        }
+                      ],
+                      "expressionFunction": "EQUALS"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:11129",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:381:10048"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "STRING"
+                        },
+                        {
+                          "value": "favorite",
+                          "type": "STRING",
+                          "resolvedType": "STRING"
+                        }
+                      ],
+                      "expressionFunction": "EQUALS"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10281",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:381:10048"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "STRING"
+                        },
+                        {
+                          "value": "self",
+                          "type": "STRING",
+                          "resolvedType": "STRING"
+                        }
+                      ],
+                      "expressionFunction": "EQUALS"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10060",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10048"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "save",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10055"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "catalog",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10174",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10048"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "save",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "EQUALS"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              },
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10055"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "catalog",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "NOT_EQUAL"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "AND"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10042"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "translation",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10454",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10048"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "save",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "EQUALS"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              },
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10055"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "catalog",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "NOT_EQUAL"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "AND"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10042"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "template",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10651",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10048"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "save",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "EQUALS"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              },
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10055"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "catalog",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "NOT_EQUAL"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "AND"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10042"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "essay",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:10917",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10048"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "save",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "EQUALS"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              },
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10055"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "catalog",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "NOT_EQUAL"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "AND"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10042"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "correction",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "381:11358",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10048"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "save",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "EQUALS"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              },
+                              {
+                                "value": {
+                                  "expressionArguments": [
+                                    {
+                                      "value": {
+                                        "type": "VARIABLE_ALIAS",
+                                        "id": "VariableID:381:10055"
+                                      },
+                                      "type": "VARIABLE_ALIAS",
+                                      "resolvedType": "STRING"
+                                    },
+                                    {
+                                      "value": "catalog",
+                                      "type": "STRING",
+                                      "resolvedType": "STRING"
+                                    }
+                                  ],
+                                  "expressionFunction": "NOT_EQUAL"
+                                },
+                                "type": "EXPRESSION",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "AND"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:381:10042"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "STRING"
+                              },
+                              {
+                                "value": "editor",
+                                "type": "STRING",
+                                "resolvedType": "STRING"
+                              }
+                            ],
+                            "expressionFunction": "EQUALS"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "381:11993",
+      "name": "操作 / 查看草稿历史",
+      "parentId": "381:11976",
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "381:11411",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "confirmedRootId": "381:11955",
+  "confirmedRootName": "Codex / Learner Web Full Coverage 20261103 / Writing / operation-confirmed",
+  "variables": [
+    {
+      "id": "VariableID:381:10042",
+      "name": "writing/task",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "translation"
+      }
+    },
+    {
+      "id": "VariableID:381:10043",
+      "name": "writing/draftBody",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "Dear librarian,\n\nI am writing to suggest extending the library opening hours. Many students have classes during the day, so they need a quiet place to read in the evening.\n\nThe library could stay open until nine on weekdays. This small change would give us more time to study. Thank you for considering this suggestion.\n\nYours sincerely,\nLin"
+      }
+    },
+    {
+      "id": "VariableID:381:10044",
+      "name": "writing/wordCount",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "58"
+      }
+    },
+    {
+      "id": "VariableID:381:10045",
+      "name": "writing/draftVersion",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "v4"
+      }
+    },
+    {
+      "id": "VariableID:381:10046",
+      "name": "writing/operation",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "none"
+      }
+    },
+    {
+      "id": "VariableID:381:10047",
+      "name": "writing/operationTitle",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "暂无待确认操作"
+      }
+    },
+    {
+      "id": "VariableID:381:10048",
+      "name": "writing/lastOperation",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "none"
+      }
+    },
+    {
+      "id": "VariableID:381:10049",
+      "name": "writing/requestVersion",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "v4"
+      }
+    },
+    {
+      "id": "VariableID:381:10050",
+      "name": "writing/requestBody",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": ""
+      }
+    },
+    {
+      "id": "VariableID:381:10051",
+      "name": "writing/rating",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "尚未记录自评"
+      }
+    },
+    {
+      "id": "VariableID:381:10052",
+      "name": "writing/selectedRating",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "尚未选择"
+      }
+    },
+    {
+      "id": "VariableID:381:10053",
+      "name": "writing/favorite",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "未收藏"
+      }
+    },
+    {
+      "id": "VariableID:381:10054",
+      "name": "writing/resolution",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "保留本机为副本"
+      }
+    },
+    {
+      "id": "VariableID:381:10055",
+      "name": "writing/afterSaveReturn",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "editor"
+      }
+    },
+    {
+      "id": "VariableID:381:10056",
+      "name": "writing/feedback",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "参考对照已返回"
+      }
+    },
+    {
+      "id": "VariableID:381:10057",
+      "name": "writing/located1",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "尚未定位"
+      }
+    },
+    {
+      "id": "VariableID:381:10058",
+      "name": "writing/located2",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "尚未定位"
+      }
+    },
+    {
+      "id": "VariableID:381:10059",
+      "name": "writing/located3",
+      "type": "STRING",
+      "valuesByMode": {
+        "381:0": "尚未定位"
+      }
+    }
+  ],
+  "collectionName": "Codex / Web精准修补 / translation-save-fact / State",
+  "resultVersion": "v5",
+  "sourceFiles": {
+    "writing-save-status-fresh-editor.json": "809d1e393b706909f6424fba8d4293b0cbd5d3de302b370c52602868e42a0c0f",
+    "writing-save-status-fresh-query-confirmed.json": "9f0857fb4750e622ec91489171b8ba6f2662fc16510eca3a6743fbef0288fbea"
+  }
+}

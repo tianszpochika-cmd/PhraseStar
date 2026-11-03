@@ -1,0 +1,389 @@
+{
+  "status": "LOCAL_READY_CURRENT_SOURCE_BOUND_NOT_NATIVE_EXECUTED",
+  "stem": "access-firstday-recovery-v2-calibrated-v1",
+  "nativeStatus": "NOT_RUN",
+  "rootOnlyExecution": "Tool includes required actual foundations + v5.2 full-function helper projection + verified duration contract + domain. Execute only tool once; do not prepend/append helper or run oldv1/v2 TOOL-HOLD. Do not rebuild any successful Auth/Consent/Core/legacy batch.",
+  "domain": "access-firstday-recovery-v2-calibrated-v1-DOMAIN.js",
+  "tool": "access-firstday-recovery-v2-calibrated-v1-tool.js",
+  "toolChars": 49955,
+  "toolUtf8Bytes": 54727,
+  "toolLimitExclusiveCharacters": 49999,
+  "plannedNewRoots": 16,
+  "plannedNewVariables": 68,
+  "plannedSourceChanges": {
+    "reactionControlIds": [
+      "116:916",
+      "116:1036",
+      "116:1038",
+      "116:1154",
+      "116:1156",
+      "116:1158"
+    ],
+    "textIds": [
+      "116:1149",
+      "116:1151",
+      "116:1152"
+    ],
+    "hiddenDebugIds": [
+      "116:1154",
+      "116:1156",
+      "116:1158"
+    ],
+    "notPatched": [
+      "116:1519",
+      "367:3996",
+      "367:4013",
+      "367:4030",
+      "426:15888",
+      "439:16174"
+    ]
+  },
+  "currentSource13": {
+    "raw": "access-firstday-recovery-v2-calibrated-v1-current-source13-raw.json",
+    "rawSha256": "0adc5c0a2fa937fdb6aab8766585c76b77a6dd569a3b485a2fec315876da4e3d",
+    "parsed": "access-firstday-recovery-v2-calibrated-v1-current-source13-parsed.json",
+    "sha256": "f9b69ecee6ef079796d2f58c4059888f90840982940759a50dc399aa4a56a158",
+    "capturedAt": "2026-11-03T13:56:13.872Z",
+    "guard": "Exact13 source node full type/name/parent/root/size/visibility/text and canonical program FNV1a32+JS-length; tested zero helper creation on mismatch. Complete original snapshot+SHA retained.",
+    "onDrift": "Throw HOLD_SOURCE13_DRIFT_BEFORE_CREATE before helper or new vars/frames. Do not weaken guard/rewrite changed source."
+  },
+  "helper": {
+    "path": "shared-web-builders.js",
+    "version": "v5.2",
+    "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+    "allFunctionBodiesPreservedBytewiseBeforeMinification": true,
+    "onlyExportedApiProjected": true,
+    "projectedFile": "access-firstday-recovery-v2-calibrated-v1-helper-v5_2.js"
+  },
+  "calibration": {
+    "path": "timeout-calibration.verified.json",
+    "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+    "status": "VERIFIED_GUI_AND_NATIVE_READBACK",
+    "logicalDomainMilliseconds": 800,
+    "nativeSeconds": 0.8,
+    "newQuery": "W.afterTimeout",
+    "legacyQuery": "W.patchExact(timeoutMs:800), full authored program registration; no raw external FIRSTDAY_TIMER_ADAPTER",
+    "evidenceShaAll3Checked": true,
+    "systemMigrationScope": "Use actual current root checkpoint; this domain model does not claim entire system timer acceptance."
+  },
+  "actualDependencies": {
+    "AuthUI": {
+      "receipt": "access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+      "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+      "roots": 16,
+      "vars": 55,
+      "safeRoot": "426:15503",
+      "scopeHook": {
+        "id": "426:15888",
+        "name": "操作 / 继续安全处理",
+        "parentId": "426:15518",
+        "rootId": "426:15503",
+        "reactionGuard": {
+          "scheme": "canonical-sorted-trigger-actions/fnv1a32:js-string-length",
+          "hash": "d1f8b7f0:22553",
+          "count": 1
+        }
+      },
+      "modifiedByThisBatch": false
+    },
+    "AuthSource": {
+      "receipt": "access-auth-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "643ec948033e3fab06a057bbb2dd79e42226dafa8dd723a1db02bfbb724af814",
+      "modifiedByThisBatch": false
+    },
+    "ConsentUI": {
+      "receipt": "access-consent-v3-UI-actual-v2-write-result.json",
+      "sha256": "3613b3bc714e27947134e61267e57032df5d684dc24e461867c736ab18d4de4b",
+      "roots": 16,
+      "vars": 78,
+      "eligibleHook": {
+        "id": "439:16174",
+        "name": "操作 / 读取最新资格并继续",
+        "parentId": "439:15737",
+        "rootId": "439:15713",
+        "reactionGuard": {
+          "scheme": "canonical-sorted-trigger-actions/fnv1a32:js-string-length",
+          "hash": "52eff24b:66485",
+          "count": 1
+        }
+      },
+      "scopeVariableIds": {
+        "privateContextVisible": "VariableID:439:15398",
+        "formContextVisible": "VariableID:439:15399",
+        "privateMasks": [
+          {
+            "id": "VariableID:439:15398",
+            "invalidValue": false
+          },
+          {
+            "id": "VariableID:439:15399",
+            "invalidValue": false
+          }
+        ],
+        "eligibility": {
+          "state": "VariableID:439:15386",
+          "principalId": "VariableID:439:15387",
+          "deviceId": "VariableID:439:15388",
+          "sessionEpoch": "VariableID:439:15389",
+          "sourceMarker": "VariableID:439:15390"
+        },
+        "terms": {
+          "receiptDurable": "VariableID:439:15419",
+          "currentVersion": "VariableID:439:15405",
+          "receivedVersion": "VariableID:439:15408",
+          "currentDigest": "VariableID:439:15406",
+          "receivedDigest": "VariableID:439:15409",
+          "principalId": "VariableID:439:15410",
+          "deviceId": "VariableID:439:15411",
+          "sessionEpoch": "VariableID:439:15412",
+          "sourceMarker": "VariableID:439:15413"
+        },
+        "privacy": {
+          "receiptDurable": "VariableID:439:15435",
+          "currentVersion": "VariableID:439:15421",
+          "receivedVersion": "VariableID:439:15424",
+          "currentDigest": "VariableID:439:15422",
+          "receivedDigest": "VariableID:439:15425",
+          "principalId": "VariableID:439:15426",
+          "deviceId": "VariableID:439:15427",
+          "sessionEpoch": "VariableID:439:15428",
+          "sourceMarker": "VariableID:439:15429"
+        },
+        "adultLearning": {
+          "receiptDurable": "VariableID:439:15451",
+          "currentVersion": "VariableID:439:15437",
+          "receivedVersion": "VariableID:439:15440",
+          "currentDigest": "VariableID:439:15438",
+          "receivedDigest": "VariableID:439:15441",
+          "principalId": "VariableID:439:15442",
+          "deviceId": "VariableID:439:15443",
+          "sessionEpoch": "VariableID:439:15444",
+          "sourceMarker": "VariableID:439:15445"
+        }
+      },
+      "modifiedByThisBatch": false
+    },
+    "ConsentSource": {
+      "receipt": "access-consent-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "13be3ef1cc673ce19ca4451365fbc4b1c485355c9ea3c9e94ac698c3876bfa24",
+      "modifiedByThisBatch": false
+    }
+  },
+  "businessStates": {
+    "NOT_READY": [
+      "PROFILE_INCOMPLETE",
+      "TARGET_INCOMPLETE",
+      "PLACEMENT_REQUIRED",
+      "CONSENT_REQUIRED",
+      "POLICY_DENIED"
+    ],
+    "PROCESSING": "zero tasks +same immutable input/job, revisit same record",
+    "READY": "taskCount1==one B9TaskRef,positive pinned contentVersion31001,valid contentCode; bindings match plan digest/epoch/projection",
+    "DEGRADED": [
+      "CONTENT_PROJECTION_STALE",
+      "LEGACY_SHADOW_ONLY",
+      "DEPENDENCY_UNAVAILABLE",
+      "PLAN_FAILED",
+      "RIGHTS_DENIED",
+      "POLICY_DENIED"
+    ],
+    "recoveryReadStates": [
+      "QUEUED",
+      "PROCESSING",
+      "RETRYABLE",
+      "FAILED",
+      "COMPLETED",
+      "CANCELLED"
+    ],
+    "transportReadStates": [
+      "UNKNOWN",
+      "NETWORK_ERROR",
+      "INCONSISTENT",
+      "FORBIDDEN"
+    ],
+    "knownFailure": "PLAN_FAILED plusFAILED recovery/job path remains read-only; recovery COMPLETED never directly grantsREADY"
+  },
+  "sourceRefs": [
+    "docs/06-design/v2-980plus/phase1-business-operation/03-全端页面功能登记册.md:76-78",
+    "docs/06-design/v2-980plus/phase1-business-operation/02-端到端业务旅程台账.md:67,75,81",
+    "docs/06-design/v2-980plus/phase1-business-operation/04-学习机制与学习引擎规则.md:54,79-84",
+    "config/p1r-learner-planning-contract.v1.json:158-210",
+    "packages/contracts/fragments/b9/b9-learner.openapi.json:2222-2615",
+    "packages/contracts/generated/openapi.ts:1448,3028-3043",
+    "docs/02-architecture/v2-microservices-architecture.md:85,91,93,110-120"
+  ],
+  "trace": [
+    "PAGE-P1-PLAN-MAP",
+    "PAGE-P1-LEARN-HOME",
+    "PAGE-P1-TODAY",
+    "JNY-P1-05",
+    "RULE-P1-DAILY-PLAN",
+    "BC-023",
+    "BC-024",
+    "IC-013",
+    "INT-P1-003",
+    "E2E-INT-P1-003"
+  ],
+  "coverage": {
+    "coveredObligationIds": [
+      "PLAN-02"
+    ],
+    "requirementIds": [],
+    "reason": "PLAN-02 is a canonical source-only first-day supplement; no invented V2-980/FEAT ID or extra denominator unit.",
+    "semanticStatus": "UNVERIFIED"
+  },
+  "frames": [
+    "entry",
+    "query",
+    "processing",
+    "ready",
+    "ready-1024",
+    "ready-768",
+    "not-ready",
+    "degraded",
+    "recovery",
+    "unknown",
+    "query-failed",
+    "inconsistent",
+    "forbidden",
+    "safe",
+    "bindings",
+    "state-review"
+  ],
+  "preservedAndTightenedGuards": {
+    "allV2BusinessStateBranches": "Kept all four projection states, six degraded reasons, five blockers, six read-only recovery states, transport/error/pin/plan/task conditions. No generation/retry/approve/close command.",
+    "defaultOwner": "privateContextVisible=false,ownerVerified=false,current/frozenAuthEpoch0,eligibilityState UNKNOWN; all16newroots restricted account/privacy/support navigation.",
+    "expectedReference": "Renamed unused readyTargetBound boolean to expectedOriginalRequest string; requires nonempty original==expected original. Legacy source/review retain PLAN-GEN-DEMO-01 solely as old fixture correlation. Never assign it as a newly registered real user plan.",
+    "eligibility": "Renamed unused taskStatusLabel string to eligibilityState UNKNOWN. Only independent review seeds ELIGIBLE; normal source never grants it.",
+    "privateMasks": "23current/private/reference cards bound to defaultfalse mask; receipt exports privateMasks IDs+entry/query tuple contract. Scope must clear before AuthResponse/actor/epoch changes. Equal stale actor/device cannot reopen cleared mask.",
+    "uiCopy": "All new normal product roots exclude actor/pin/schema/job/epoch/DESIGN_SAMPLE/technical refs; those fields/preset controls are review-only. Oldquery3text cleaned; other oldroot copy not reviewed beyond13source snapshot."
+  },
+  "crossDomainBoundary": {
+    "authHookWriter": "web_scope_bridge",
+    "FirstDayDoesNotPatchAuthOrConsentHooks": true,
+    "normalContinuation": "OPEN; FirstDay16 cannot replace access-web-narrow-time-sync-v1 actual13root normalContinuationRoot. No new-user plan/original fact invented.",
+    "remainingExactBindings": [
+      "Same-owner real projection/input/original reference and current eligibility/consent required before enabling normal private context",
+      "NOT_READY PROFILE/TARGET/PLACEMENT/CONSENT exact repair→read-only return loops OPEN; current367safe exits only",
+      "READY same-task/content rights exact route remains Disabled; sample B9TaskRef is synthetic metadata",
+      "Generated-preparing1161401 /1161519 remain distinct fromREADY and unmodified"
+    ],
+    "integrationRequests": [
+      "FIRSTDAY_AUTH_PRIVATE_CONTEXT_BINDING",
+      "FIRSTDAY_AVAILABLE_TASK_BINDING",
+      "FIRSTDAY_NOT_READY_TARGETS",
+      "FIRSTDAY_GENERATED_PREPARING"
+    ]
+  },
+  "validation": {
+    "localModel": {
+      "stem": "access-firstday-recovery-v2-calibrated-v1",
+      "status": "PASS_LOCAL_MODEL_CALIBRATED_CONNECTOR_DOMAIN_BROWSER_NOT_RUN",
+      "roots": 16,
+      "nodeEstimate": 1117,
+      "variables": 68,
+      "controlModels": 64,
+      "outputBytesEstimate": 16020,
+      "timing": "NOT_TESTED: numeric mock timeout is not elapsed-time/browser proof; current connector calibrated externally; domain timing/browser not tested by this model.",
+      "caseCount": 24,
+      "allModelledPrograms": 64,
+      "allModelledLeafAndConditionalActions": 1824,
+      "conditionalCount": 60,
+      "staticSelfNavCount": 0,
+      "safetyCases": [
+        "fresh source13 hash drift rejects before helper creation or variables/pages",
+        "legacy original query attaches known old reference without manufacturing owner permission",
+        "PROCESSING refresh keeps same request/input/job and does not create tasks or generation",
+        "NOT_READY five explicit blockers,zero tasks and safe account exits",
+        "six real DEGRADED reasons keep original input/recovery/job links without pretending empty READY",
+        "six recovery states remain read-only and refresh the same recovery reference",
+        "completed recovery alone cannot promote stale DEGRADED projection to READY",
+        "READY exactly one legal task reference and native1440/1024/768 return contexts",
+        "task ref sample matches B9TaskRef required fields and content pin types",
+        "pin mismatch,empty READY and actor-device mismatch fail closed",
+        "unknown recovery error code or unbound recovery reference cannot be displayed as valid progress",
+        "unknown and query failure retain original read context and never fake no-request or regeneration",
+        "normal legacy entry clears independent DESIGN_SAMPLE owner/pin state,preventing fixture permission contamination",
+        "old response-debug buttons are hidden/cleared and old selector becomes automatic read-only query structure",
+        "all original/input/job/recovery/plan/task cards bind default-private mask and public entry carries no private reference",
+        "Auth invalidation clearing mask blocks stale equal actor/device tuple from self-reenabling private state",
+        "missing/nonmatching auth epoch failsclosed and masks old private references",
+        "legacy query clears mask and auth epochs before normal navigation even after independent review",
+        "UNKNOWN eligibility never grants private FirstDay state",
+        "new actor reference cannot reuse legacy original correlation without matching expected reference",
+        "no front-end generation,retry,approve or close recovery commands",
+        "normal product roots have only safe navigation and no actor/pin/schema/job/epoch/debug copy",
+        "all modelled domain action branches scanned with zero NODE-to-current-root navigation",
+        "injected post-program failure restores all13 old source programs/text/visibility and removes new roots/vars in local rollback model"
+      ]
+    },
+    "pool": {
+      "status": "EXACT_CONST_STRING_ALIAS_AST_ROUNDTRIP_PASS",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/access-firstday-recovery-v2-calibrated-v1-prepared.js",
+      "sourceSha256": "ce9ab971836892f9bc0e52c4b9733e16bf85134b3f976f067de4845bd44a07a7",
+      "prepoolMinifiedSha256": "ac4824d23a892519b96db3fd1a5dae20c95953a05e9ec5806a57c032c287b0ce",
+      "prepoolMinifiedChars": 53147,
+      "tool": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/access-firstday-recovery-v2-calibrated-v1-tool.js",
+      "toolSha256": "6e910fa14ede2112d2c06b5fe139480034c070f35089d5f4500adf5f9ae0973a",
+      "poolEntries": 95,
+      "replacedStringLiterals": 459,
+      "toolChars": 49955,
+      "toolUtf8Bytes": 54727,
+      "sourceFunctionBodiesAndActions": "No deletion/reordering; AST is exactly equal after replacing pool lookups back to original string literals",
+      "businessOrGuardRemoved": false,
+      "limitExclusive": 49999,
+      "budgetPass": true
+    },
+    "rollback": "Private model injected failure after all source programs and text/visibility mutations; original13source restored/newroots+vars removed. Actual v5.2 rollback complete function kept bytewise; actual native failure behavior not manufactured as PASS.",
+    "output": "Mock16KB estimate; actual W.finish hard-guards UTF8<40000 and rollback on budget/geometry/program mismatch. Full completeIDsCSV retained.",
+    "browser": "NOT_RUN",
+    "nativeFullReadback": "NOT_RUN",
+    "visualResponsiveKeyboardScreenReaderRuntime": "NOT_RUN"
+  },
+  "artifacts": {
+    "access-firstday-recovery-v2-calibrated-v1-DOMAIN.js": {
+      "sha256": "a8e20ee536db51f7fd9b6ce385c5a25015849ae748a566dd2f71cbfdf9557691",
+      "bytes": 31843
+    },
+    "access-firstday-recovery-v2-calibrated-v1-tool.js": {
+      "sha256": "6e910fa14ede2112d2c06b5fe139480034c070f35089d5f4500adf5f9ae0973a",
+      "bytes": 54727
+    },
+    "access-firstday-recovery-v2-calibrated-v1-prepared.js": {
+      "sha256": "ce9ab971836892f9bc0e52c4b9733e16bf85134b3f976f067de4845bd44a07a7",
+      "bytes": 71540
+    },
+    "access-firstday-recovery-v2-calibrated-v1-helper-v5_2.js": {
+      "sha256": "4ea61aa1a64195c8aa7d04469c6a5e26a82a427b89dd6b03be76a5e76abef192",
+      "bytes": 37817
+    },
+    "access-firstday-recovery-v2-calibrated-v1-pool-check.json": {
+      "sha256": "aed365e149a6fb2730d810980bb2a927e0a8e7ea21f162a3bcbbbda5cfdc7b7d",
+      "bytes": 976
+    },
+    "access-firstday-recovery-v2-calibrated-v1.model-test.cjs": {
+      "sha256": "c5b4d2e0b3186e5be3950a501052d91841970d0cc91b661e9f36a8bed63e1880",
+      "bytes": 12825
+    },
+    "access-firstday-recovery-v2-calibrated-v1.model-result.json": {
+      "sha256": "0f26ef9482057681f3af81cd17675b6289030ecf2aed64ab80a1d77e5dd14822",
+      "bytes": 2880
+    },
+    "access-firstday-recovery-v2-calibrated-v1.fixtures.json": {
+      "sha256": "0c93357559c82c317501ae038e738f2e319b510576979d752682b72f416bb0f2",
+      "bytes": 10279
+    },
+    "firstday-calibrated-preflight.cjs": {
+      "sha256": "960c7ccdf7d2fd4c462703a198350748c6d3722fc4e850b3c9752dfb251511bb",
+      "bytes": 12136
+    },
+    "build-firstday-v2-calibrated-v1.py": {
+      "sha256": "668eec943707c4e5a651df79aa5ed88fbaf55bdd01c0026e1e9f3658926f681c",
+      "bytes": 20717
+    },
+    "access-firstday-recovery-v2-calibrated-v1-fresh13-read.js": {
+      "sha256": "d02eeba8e0dbaf588f704dcc958460d789127e91ae5cf15014bda85f253aa29b",
+      "bytes": 1280
+    }
+  }
+}

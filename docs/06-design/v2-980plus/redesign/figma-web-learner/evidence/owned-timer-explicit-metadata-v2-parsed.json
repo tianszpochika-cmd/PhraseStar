@@ -1,0 +1,896 @@
+{
+  "status": "MIGRATED_EXACT_ORIGINAL_TIMEOUT_METADATA_ONLY_NEEDS_BROWSER_QA",
+  "applied": true,
+  "fullProgramsExported": false,
+  "fullProgramComparison": "Complete canonical programs compared exactly in native context; only selected timeout fields differ. Programs remain native; no business semantic acceptance.",
+  "mutatedNodeIds": [
+    "206:4154",
+    "206:4762",
+    "225:2554",
+    "225:2674",
+    "225:2913",
+    "225:3153",
+    "225:3752",
+    "251:10295",
+    "251:11139",
+    "251:7763",
+    "251:8607",
+    "251:9451",
+    "255:2815",
+    "255:3658",
+    "306:3535",
+    "306:3783",
+    "306:4653",
+    "306:4901",
+    "306:5637",
+    "306:5767"
+  ],
+  "plannedNodeIds": [
+    "206:4154",
+    "206:4762",
+    "225:2554",
+    "225:2674",
+    "225:2913",
+    "225:3153",
+    "225:3752",
+    "251:10295",
+    "251:11139",
+    "251:7763",
+    "251:8607",
+    "251:9451",
+    "255:2815",
+    "255:3658",
+    "306:3535",
+    "306:3783",
+    "306:4653",
+    "306:4901",
+    "306:5637",
+    "306:5767"
+  ],
+  "rows": [
+    {
+      "id": "206:4154",
+      "name": "Codex / Web游戏目标态 / queryRB",
+      "rootId": "206:4154",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "47ddf58f:2839",
+      "afterHash": "07b4505e:2853",
+      "beforeBytes": 2857,
+      "afterBytes": 2871,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "206:4762",
+      "name": "Codex / Web游戏目标态 / queryBR",
+      "rootId": "206:4762",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "1f61417e:2839",
+      "afterHash": "eda58d8f:2853",
+      "beforeBytes": 2857,
+      "afterBytes": 2871,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "225:2554",
+      "name": "Codex / Web自习室目标态 / recover45",
+      "rootId": "225:2554",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "b9ef8de2:15150",
+      "afterHash": "191ecc9b:15164",
+      "beforeBytes": 15270,
+      "afterBytes": 15284,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 15,
+          "sets": 7,
+          "nodes": 4,
+          "conditions": 4
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 195,
+      "successfulReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "225:2674",
+      "name": "Codex / Web自习室目标态 / complete45",
+      "rootId": "225:2674",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "3e555a8b:3623",
+      "afterHash": "fa691722:3637",
+      "beforeBytes": 3623,
+      "afterBytes": 3637,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 2,
+          "sets": 0,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 196,
+      "successfulReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "225:2913",
+      "name": "Codex / Web自习室目标态 / recover25",
+      "rootId": "225:2913",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "cf34ad0f:15150",
+      "afterHash": "850d3bde:15164",
+      "beforeBytes": 15270,
+      "afterBytes": 15284,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 15,
+          "sets": 7,
+          "nodes": 4,
+          "conditions": 4
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 195,
+      "successfulReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "225:3153",
+      "name": "Codex / Web自习室目标态 / complete25",
+      "rootId": "225:3153",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "e90f3648:3623",
+      "afterHash": "b176d17d:3637",
+      "beforeBytes": 3623,
+      "afterBytes": 3637,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 2,
+          "sets": 0,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "focus-exact-cleanup-v1-executed.js",
+      "writerLine": 196,
+      "successfulReceipt": "focus-exact-cleanup-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "225:3752",
+      "name": "Codex / Web自习室目标态 / leaveQuery",
+      "rootId": "225:3752",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "748b9abf:2841",
+      "afterHash": "e0e17d2e:2855",
+      "beforeBytes": 2859,
+      "afterBytes": 2873,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "251:10295",
+      "name": "Codex / Web社交举报 / query_safety",
+      "rootId": "251:10295",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "b1dcb47b:2845",
+      "afterHash": "f7c488f2:2859",
+      "beforeBytes": 2863,
+      "afterBytes": 2877,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "251:11139",
+      "name": "Codex / Web社交举报 / query_impersonation",
+      "rootId": "251:11139",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "f4ba9df3:2852",
+      "afterHash": "c86c1bea:2866",
+      "beforeBytes": 2870,
+      "afterBytes": 2884,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "251:7763",
+      "name": "Codex / Web社交举报 / query_harassment",
+      "rootId": "251:7763",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "d10a9e94:2848",
+      "afterHash": "4b7f4621:2862",
+      "beforeBytes": 2866,
+      "afterBytes": 2880,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "251:8607",
+      "name": "Codex / Web社交举报 / query_spam",
+      "rootId": "251:8607",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "15a19940:2842",
+      "afterHash": "d2f11cd5:2856",
+      "beforeBytes": 2860,
+      "afterBytes": 2874,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "251:9451",
+      "name": "Codex / Web社交举报 / query_inappropriate",
+      "rootId": "251:9451",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "2a6aea4b:2851",
+      "afterHash": "713cf8e2:2865",
+      "beforeBytes": 2869,
+      "afterBytes": 2883,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "255:2815",
+      "name": "Codex / Web社交其他举报目标 / query_room",
+      "rootId": "255:2815",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "6f9cb1dd:2842",
+      "afterHash": "ff9130d0:2856",
+      "beforeBytes": 2860,
+      "afterBytes": 2874,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "255:3658",
+      "name": "Codex / Web社交其他举报目标 / query_preset",
+      "rootId": "255:3658",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "c2f42d15:2844",
+      "afterHash": "75b454e8:2858",
+      "beforeBytes": 2862,
+      "afterBytes": 2876,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 1,
+          "total": 4,
+          "sets": 1,
+          "nodes": 2,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "legacy-query-patch-v1-executed.js",
+      "writerLine": 200,
+      "successfulReceipt": "legacy-query-patch-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:3535",
+      "name": "Codex / Web SRS两卡批次 / query-1",
+      "rootId": "306:3535",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "58101aa3:6520",
+      "afterHash": "f579583a:6534",
+      "beforeBytes": 6528,
+      "afterBytes": 6542,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 14,
+          "sets": 6,
+          "nodes": 4,
+          "conditions": 4
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-query1-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-query1-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:3783",
+      "name": "Codex / Web SRS两卡批次 / receipt-1",
+      "rootId": "306:3783",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "7b8bd352:2600",
+      "afterHash": "e0a85ceb:2614",
+      "beforeBytes": 2600,
+      "afterBytes": 2614,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 5,
+          "sets": 3,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:4653",
+      "name": "Codex / Web SRS两卡批次 / query-2",
+      "rootId": "306:4653",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "e3315ec4:6752",
+      "afterHash": "1a76bc71:6766",
+      "beforeBytes": 6760,
+      "afterBytes": 6774,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 14,
+          "sets": 6,
+          "nodes": 4,
+          "conditions": 4
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-query2-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-query2-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:4901",
+      "name": "Codex / Web SRS两卡批次 / receipt-2",
+      "rootId": "306:4901",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "7f64aaa9:2991",
+      "afterHash": "27a5ed24:3005",
+      "beforeBytes": 2991,
+      "afterBytes": 3005,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 5,
+          "sets": 3,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:5637",
+      "name": "Codex / Web SRS两卡批次 / report",
+      "rootId": "306:5637",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "7f64aaa9:2991",
+      "afterHash": "27a5ed24:3005",
+      "beforeBytes": 2991,
+      "afterBytes": 3005,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 5,
+          "sets": 3,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    },
+    {
+      "id": "306:5767",
+      "name": "Codex / Web SRS两卡批次 / history",
+      "rootId": "306:5767",
+      "parentId": "0:1",
+      "authorityKind": "EXPLICIT_MUTATED_NODE",
+      "beforeHash": "8dd0e72e:3381",
+      "afterHash": "27f6039f:3395",
+      "beforeBytes": 3381,
+      "afterBytes": 3395,
+      "beforeTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 800
+        }
+      ],
+      "afterTimers": [
+        {
+          "index": 0,
+          "type": "AFTER_TIMEOUT",
+          "timeout": 0.800000011920929
+        }
+      ],
+      "actionCounts": [
+        {
+          "topLevel": 4,
+          "total": 5,
+          "sets": 3,
+          "nodes": 1,
+          "conditions": 1
+        }
+      ],
+      "changedReactionIndices": [
+        0
+      ],
+      "writerSource": "practice-srs-history-safety-v1-executed.js",
+      "writerLine": 169,
+      "successfulReceipt": "practice-srs-history-safety-v1-write-result.json",
+      "nativeReadbackVerified": true,
+      "fullProgramsExported": false
+    }
+  ],
+  "skipped": [],
+  "createdNodeIdCount": 0,
+  "createdNodeIdsCsv": "",
+  "errors": []
+}

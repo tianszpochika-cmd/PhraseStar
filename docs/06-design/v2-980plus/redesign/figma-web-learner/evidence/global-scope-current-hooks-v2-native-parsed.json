@@ -1,0 +1,480 @@
+{
+  "status": "CURRENT_EXACT_AUTH_CONSENT_HOOK_METADATA_AND_UI_DEP_ROOTS",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "pageId": "0:1",
+  "roots": [
+    {
+      "id": "379:18925",
+      "name": "Codex / Web全量补稿 / skills-reading-a / reader",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true,
+      "containsExactWindowSentence": true
+    },
+    {
+      "id": "426:15265",
+      "name": "Codex / Web全量补稿 / access-auth-forms / login",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    },
+    {
+      "id": "426:15503",
+      "name": "Codex / Web全量补稿 / access-auth-forms / safe",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    },
+    {
+      "id": "426:15520",
+      "name": "Codex / Web全量补稿 / access-auth-forms / review",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    },
+    {
+      "id": "439:15453",
+      "name": "Codex / Web全量补稿 / access-consent / loading",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    },
+    {
+      "id": "389:14848",
+      "name": "Codex / Web全量补稿 / global-search / start",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    },
+    {
+      "id": "389:14884",
+      "name": "Codex / Web全量补稿 / global-search / loading",
+      "parentId": "0:1",
+      "width": 1440,
+      "height": 900,
+      "visible": true
+    }
+  ],
+  "hooks": [
+    {
+      "key": "authResponse",
+      "id": "426:15350",
+      "name": "Codex / Web全量补稿 / access-auth-forms / pending",
+      "parentId": "0:1",
+      "rootId": "426:15350",
+      "rootName": "Codex / Web全量补稿 / access-auth-forms / pending",
+      "reactionCount": 1,
+      "triggers": [
+        {
+          "type": "AFTER_TIMEOUT",
+          "timeout": 1
+        }
+      ],
+      "canonicalSha256": "6833570d4d088b80d74732e96e81dc6b47a7af664ea9600d24c41b08f403829f",
+      "canonicalUtf8Bytes": 40120,
+      "canonicalFnvHash": "60281d1b:39822",
+      "expectedCreationHash": "60281d1b:39822",
+      "currentMatchesActualCreationProgram": true,
+      "leafCount": 44,
+      "confirmedScopeTrueWrites": [
+        {
+          "path": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "parentGuardPath": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0
+          ],
+          "conditionSha256": "b9d15d2722591e18fb29e4a0c2e8a0c5cc57aa360fe2e1bf2de242d4580d76f1"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            8,
+            "conditionalBlocks",
+            0,
+            "actions",
+            4
+          ],
+          "parentGuardPath": [
+            0,
+            "actions",
+            8,
+            "conditionalBlocks",
+            0
+          ],
+          "conditionSha256": "c2e81b354b570e7dff98f662e6df506f52e6d51e2620c0a108332735a74e465a"
+        }
+      ],
+      "successNoticeLeaves": [],
+      "navigationLeaves": [
+        {
+          "path": [
+            0,
+            "actions",
+            1,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "426:15503"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            3,
+            "conditionalBlocks",
+            0,
+            "actions",
+            1
+          ],
+          "destinationId": "367:4132"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            4,
+            "conditionalBlocks",
+            0,
+            "actions",
+            1
+          ],
+          "destinationId": "367:4166"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            5,
+            "conditionalBlocks",
+            0,
+            "actions",
+            4
+          ],
+          "destinationId": "426:15503"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            6,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "destinationId": "426:15503"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0,
+            "actions",
+            10
+          ],
+          "destinationId": "426:15503"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            8,
+            "conditionalBlocks",
+            0,
+            "actions",
+            8
+          ],
+          "destinationId": "426:15503"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            2
+          ],
+          "destinationId": "426:15452"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            10,
+            "conditionalBlocks",
+            0,
+            "actions",
+            4
+          ],
+          "destinationId": "426:15469"
+        }
+      ],
+      "completeActionsExported": false
+    },
+    {
+      "key": "authSafe",
+      "id": "426:15888",
+      "name": "操作 / 继续安全处理",
+      "parentId": "426:15518",
+      "rootId": "426:15503",
+      "rootName": "Codex / Web全量补稿 / access-auth-forms / safe",
+      "reactionCount": 1,
+      "triggers": [
+        {
+          "type": "ON_CLICK"
+        }
+      ],
+      "canonicalSha256": "78239c60505ca17967885f425bd531dee2f3d9df679bc29dff1cd5057aabbfdf",
+      "canonicalUtf8Bytes": 22655,
+      "canonicalFnvHash": "d1f8b7f0:22553",
+      "expectedCreationHash": "d1f8b7f0:22553",
+      "currentMatchesActualCreationProgram": true,
+      "leafCount": 17,
+      "confirmedScopeTrueWrites": [],
+      "successNoticeLeaves": [
+        {
+          "path": [
+            0,
+            "actions",
+            4,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "parentGuardPath": [
+            0,
+            "actions",
+            4,
+            "conditionalBlocks",
+            0
+          ],
+          "conditionSha256": "4bd5b16a425f8c207a5b67f649bce17eb4b5de317328a003b1608f41f1e01d9c",
+          "noticeVariableId": "VariableID:426:15221",
+          "noticeText": "身份已确认，正在准备当前学习空间。"
+        }
+      ],
+      "navigationLeaves": [
+        {
+          "path": [
+            0,
+            "actions",
+            0,
+            "conditionalBlocks",
+            0,
+            "actions",
+            1
+          ],
+          "destinationId": "367:4132"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            1,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "426:15350"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            2,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "426:15384"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            3,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "426:15435"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            6,
+            "conditionalBlocks",
+            0,
+            "actions",
+            8
+          ],
+          "destinationId": "426:15265"
+        }
+      ],
+      "completeActionsExported": false
+    },
+    {
+      "key": "consentSuccess",
+      "id": "439:16174",
+      "name": "操作 / 读取最新资格并继续",
+      "parentId": "439:15737",
+      "rootId": "439:15713",
+      "rootName": "Codex / Web全量补稿 / access-consent / receipt",
+      "reactionCount": 1,
+      "triggers": [
+        {
+          "type": "ON_CLICK"
+        }
+      ],
+      "canonicalSha256": "665dcf356b3b344a6b9f0435b254320c8c4cada3255aea3c2c434e73427b7721",
+      "canonicalUtf8Bytes": 66675,
+      "canonicalFnvHash": "52eff24b:66485",
+      "expectedCreationHash": "52eff24b:66485",
+      "currentMatchesActualCreationProgram": true,
+      "leafCount": 16,
+      "confirmedScopeTrueWrites": [],
+      "successNoticeLeaves": [
+        {
+          "path": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "parentGuardPath": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0
+          ],
+          "conditionSha256": "b5a110aa52d9125fa16df6b868a4e35fbc322f7b403cea6726a8f555e7dfaaab",
+          "noticeVariableId": "VariableID:439:15404",
+          "noticeText": "当前资格与必要文档已核对，正在准备学习空间。"
+        }
+      ],
+      "navigationLeaves": [
+        {
+          "path": [
+            0,
+            "actions",
+            2,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "367:4132"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            3,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "367:4166"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            4,
+            "conditionalBlocks",
+            0,
+            "actions",
+            1
+          ],
+          "destinationId": "439:15739"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            5,
+            "conditionalBlocks",
+            0,
+            "actions",
+            2
+          ],
+          "destinationId": "439:15739"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            6,
+            "conditionalBlocks",
+            0,
+            "actions",
+            2
+          ],
+          "destinationId": "439:15739"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            8,
+            "conditionalBlocks",
+            0,
+            "actions",
+            1
+          ],
+          "destinationId": "439:15791"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            0
+          ],
+          "destinationId": "439:15739"
+        }
+      ],
+      "completeActionsExported": false
+    }
+  ],
+  "documentMutations": 0,
+  "scope": "Only3 hooks and7 exact dependency roots; full canonical SHA/FNV and precise eligible/confirmed success branch locator. No authority facts seeded, no full >40KB hook export.",
+  "outputUtf8Bytes": 6010
+}

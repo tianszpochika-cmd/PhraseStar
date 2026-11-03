@@ -1,0 +1,33 @@
+{
+  "status": "LOCAL_BOUND_CANDIDATE_NOT_NATIVE_EXECUTED",
+  "base": "access-consent-v3-UI",
+  "domain": "access-consent-v3-UI-actual-v2-DOMAIN.js",
+  "tool": "access-consent-v3-UI-actual-v2-tool.js",
+  "toolChars": 49983,
+  "toolUtf8Bytes": 55296,
+  "newRootCount": 16,
+  "actualAuthReceipt": {
+    "path": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+    "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+    "stateVariableCount": 55,
+    "frameCount": 16,
+    "designOnlyNotRuntimeIam": true
+  },
+  "actualUIDepsBound": true,
+  "freshSourceBound": true,
+  "sourceGuardSetFromActualCurrentRead": false,
+  "noOldAuth417Ids": true,
+  "helperSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+  "calibrationSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+  "allActionsAndGuardsRetained": true,
+  "exactStringPoolAstRoundtrip": true,
+  "nativeStatus": "NOT_RUN",
+  "sourceReadRequirement": null,
+  "files": {
+    "access-consent-v3-UI-actual-v2-DOMAIN.js": "387fb0da6e1c811c1ca889166ba6f6b9eebe50ad4f9b65f5d5610475be534ac2",
+    "access-consent-v3-UI-actual-v2-prepared.js": "a34e1fc500fb6a7812662855c8f590510eef7fbfa7b6b28cb702c5132cd80f3e",
+    "access-consent-v3-UI-actual-v2-tool.js": "7e28205856990b0630a7580c53c31eb1840a77885a669660546fb3ebd1d95a0d",
+    "access-consent-v3-UI-actual-v2-helper-v5_2.js": "3cdf1f4aa0fa219989841ff8fedd11676d006aecd316fdacb048a5375115d917",
+    "access-consent-v3-UI-actual-v2-pool-check.json": "bce5c91d0563a6f839e6875e14c5c2227c0f9ec6b4ebe5eef6727da86ccd0fbc"
+  }
+}

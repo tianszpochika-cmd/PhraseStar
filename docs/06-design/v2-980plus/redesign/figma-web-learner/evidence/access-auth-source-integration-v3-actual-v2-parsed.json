@@ -1,0 +1,104 @@
+{
+  "sourcePatchedControlIds": [
+    "12:74",
+    "12:77",
+    "12:80",
+    "12:151",
+    "12:154",
+    "12:157",
+    "206:7119",
+    "206:6946",
+    "206:6948",
+    "14:311",
+    "14:388",
+    "225:7625",
+    "225:7626",
+    "12:79",
+    "12:82",
+    "12:159",
+    "206:7123",
+    "14:310",
+    "14:312",
+    "14:389"
+  ],
+  "sourceVisibilityChanges": [
+    {
+      "id": "225:7635",
+      "from": true,
+      "to": false
+    },
+    {
+      "id": "225:7638",
+      "from": true,
+      "to": false
+    },
+    {
+      "id": "206:7121",
+      "from": true,
+      "to": false
+    }
+  ],
+  "sourceLabelChanges": [
+    {
+      "id": "206:7119",
+      "from": "模拟提交中",
+      "to": "继续设置新密码"
+    },
+    {
+      "id": "206:6948",
+      "from": "返回注册说明",
+      "to": "查看安全处理"
+    }
+  ],
+  "requiresUiReceipt": "access-auth-forms-v3-UI-write-result.json",
+  "unresolvedIntegrationRequests": [
+    "AUTH_CONFIRMED_ACTOR_SCOPE_RETURN",
+    "LOGOUT_SWITCH_INVALIDATES_CONFIRMED_SCOPE"
+  ],
+  "scope": "Exact23legacysourceguards;20controlsretargeted+3legacyproductreviewentryhidden. DoesnotbootstrapIAMscopeorgrantlearning.",
+  "status": "CREATED_NATIVE_WEB_DOMAIN_NEEDS_VISUAL_AND_BROWSER_QA",
+  "prefix": "Codex / Web全量补稿 / access-auth-source-integration / ",
+  "createdNodeIdsCsv": "",
+  "createdNodeIdCount": 0,
+  "mutatedNodeIds": [
+    "12:74",
+    "12:77",
+    "12:80",
+    "12:151",
+    "12:154",
+    "12:157",
+    "206:7119",
+    "206:6946",
+    "206:6948",
+    "14:311",
+    "14:388",
+    "225:7625",
+    "225:7626",
+    "12:79",
+    "12:82",
+    "12:159",
+    "206:7123",
+    "14:310",
+    "14:312",
+    "14:389"
+  ],
+  "createdVariableIds": [],
+  "createdVariableCollectionIds": [],
+  "roots": [],
+  "screens": [],
+  "types": {},
+  "imageFilledNodes": [],
+  "fontFamilies": [],
+  "controls": 0,
+  "errors": [],
+  "timingCalibrationStatus": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "timerConnectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "adaptedTimeouts": [],
+  "limits": [
+    "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+    "Native example fields do not accept arbitrary keyboard input.",
+    "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+  ],
+  "outputUtf8BytesBeforeSizeField": 1810
+}

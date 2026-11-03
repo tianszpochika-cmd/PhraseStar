@@ -1,0 +1,8 @@
+{
+  "error": {
+    "message": "TypeError: node.overflowDirection: no such property 'overflowDirection' on TEXT node\n    at get (<input>:63:28)\n    at fields (PLUGIN_1_SOURCE:5:759)\n    at <anonymous> (PLUGIN_1_SOURCE:7:84)\n",
+    "debugUuid": "fab981af-c94d-4c95-9971-e716d123806c"
+  },
+  "safeToRetryWithoutCanvasRead": true,
+  "error_code": "INVALID_ARGUMENT"
+}

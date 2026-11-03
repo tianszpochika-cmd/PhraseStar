@@ -1,0 +1,648 @@
+{
+  "status": "CREATED_READING2_GRAMMAR3_PINNED_ORIGINAL_FACTS_CORE_REQUIRES_EXACT_SOURCE_PATCHES",
+  "prefix": "Codex / Web全量补稿 / original-practice-facts / ",
+  "createdNodeIdsCsv": "435:15424,435:15425,435:15427,435:15428,435:15429,435:15430,435:15431,435:15432,435:15433,435:15434,435:15435,435:15436,435:15437,435:15438,435:15426,435:15439,435:15440,435:15441,435:15442,435:15443,435:15444,435:15760,435:15761,435:15762,435:15763,435:15764,435:15765,435:15766,435:15767,435:15768,435:15769,435:15870,435:15871,435:15872,435:15873,435:15445,435:15446,435:15875,I435:15875;12:3,435:15878,I435:15878;12:3,435:15447,435:15448,435:15449,435:15451,435:15452,435:15453,435:15454,435:15455,435:15456,435:15457,435:15458,435:15459,435:15460,435:15461,435:15462,435:15450,435:15463,435:15464,435:15465,435:15466,435:15467,435:15468,435:15770,435:15771,435:15772,435:15773,435:15774,435:15775,435:15776,435:15777,435:15778,435:15779,435:15469,435:15470,435:15882,I435:15882;12:3,435:15471,435:15472,435:15473,435:15475,435:15476,435:15477,435:15478,435:15479,435:15480,435:15481,435:15482,435:15483,435:15484,435:15485,435:15486,435:15474,435:15487,435:15488,435:15489,435:15490,435:15491,435:15492,435:15780,435:15781,435:15782,435:15783,435:15784,435:15785,435:15786,435:15787,435:15788,435:15789,435:15493,435:15494,435:15886,I435:15886;12:3,435:15889,I435:15889;12:3,435:15495,435:15496,435:15497,435:15499,435:15500,435:15501,435:15502,435:15503,435:15504,435:15505,435:15506,435:15507,435:15508,435:15509,435:15510,435:15498,435:15511,435:15512,435:15513,435:15514,435:15515,435:15516,435:15790,435:15791,435:15792,435:15793,435:15794,435:15795,435:15796,435:15797,435:15798,435:15799,435:15517,435:15518,435:15892,I435:15892;12:3,435:15895,I435:15895;12:3,435:15519,435:15520,435:15521,435:15523,435:15524,435:15525,435:15526,435:15527,435:15528,435:15529,435:15530,435:15531,435:15532,435:15533,435:15534,435:15522,435:15535,435:15536,435:15537,435:15538,435:15539,435:15540,435:15800,435:15801,435:15802,435:15803,435:15804,435:15805,435:15806,435:15807,435:15808,435:15809,435:15541,435:15542,435:15898,I435:15898;12:3,435:15901,I435:15901;12:3,435:15543,435:15544,435:15545,435:15547,435:15548,435:15549,435:15550,435:15551,435:15552,435:15553,435:15554,435:15555,435:15556,435:15557,435:15558,435:15546,435:15559,435:15560,435:15561,435:15562,435:15563,435:15564,435:15904,435:15905,435:15906,435:15907,435:15908,435:15565,435:15566,435:15909,I435:15909;12:3,435:15912,I435:15912;12:3,435:15567,435:15568,435:15569,435:15571,435:15572,435:15573,435:15574,435:15575,435:15576,435:15577,435:15578,435:15579,435:15580,435:15581,435:15582,435:15570,435:15583,435:15584,435:15585,435:15586,435:15587,435:15588,435:15810,435:15811,435:15812,435:15813,435:15814,435:15815,435:15816,435:15817,435:15818,435:15819,435:15589,435:15590,435:15915,I435:15915;12:3,435:15918,I435:15918;12:3,435:15921,I435:15921;12:3,435:15591,435:15592,435:15593,435:15595,435:15596,435:15597,435:15598,435:15599,435:15600,435:15601,435:15602,435:15603,435:15604,435:15605,435:15606,435:15594,435:15607,435:15608,435:15609,435:15610,435:15611,435:15612,435:15924,435:15925,435:15926,435:15927,435:15928,435:15929,435:15930,435:15931,435:15932,435:15933,435:15934,435:15935,435:15936,435:15937,I435:15937;12:3,435:15940,435:15941,435:15942,435:15943,435:15944,435:15945,435:15946,435:15947,435:15948,I435:15948;12:3,435:15951,435:15952,435:15953,435:15954,435:15955,I435:15955;12:3,435:15958,435:15959,435:15960,435:15961,435:15962,435:15963,435:15964,435:15965,435:15966,435:15967,435:15968,435:15969,435:15970,435:15971,I435:15971;12:3,435:15974,435:15975,435:15976,435:15977,435:15978,435:15979,435:15980,435:15981,435:15982,I435:15982;12:3,435:15985,435:15986,435:15987,435:15988,435:15989,435:15990,435:15991,435:15992,435:15993,I435:15993;12:3,435:15996,435:15997,435:15998,435:15999,435:16000,I435:16000;12:3,435:15613,435:15614,435:16003,I435:16003;12:3,435:16006,I435:16006;12:3,435:15615,435:15616,435:15617,435:15619,435:15620,435:15621,435:15622,435:15623,435:15624,435:15625,435:15626,435:15627,435:15628,435:15629,435:15630,435:15618,435:15631,435:15632,435:15633,435:15634,435:15635,435:15636,435:15820,435:15821,435:15822,435:15823,435:15824,435:15825,435:15826,435:15827,435:15828,435:15829,435:16009,435:16010,435:16011,435:16012,435:16013,435:16014,435:16015,435:16016,435:16017,435:16018,435:16019,435:15637,435:15638,435:16020,I435:16020;12:3,435:16023,I435:16023;12:3,435:15639,435:15640,435:15641,435:15643,435:15644,435:15645,435:15646,435:15647,435:15648,435:15649,435:15650,435:15651,435:15652,435:15653,435:15654,435:15642,435:15655,435:15656,435:15657,435:15658,435:15659,435:15660,435:15830,435:15831,435:15832,435:15833,435:15834,435:15835,435:15836,435:15837,435:15838,435:15839,435:15661,435:15662,435:16027,I435:16027;12:3,435:15663,435:15664,435:15665,435:15667,435:15668,435:15669,435:15670,435:15671,435:15672,435:15673,435:15674,435:15675,435:15676,435:15677,435:15678,435:15666,435:15679,435:15680,435:15681,435:15682,435:15683,435:15684,435:15840,435:15841,435:15842,435:15843,435:15844,435:15845,435:15846,435:15847,435:15848,435:15849,435:15685,435:15686,435:16031,I435:16031;12:3,435:16034,I435:16034;12:3,435:15687,435:15688,435:15689,435:15691,435:15692,435:15693,435:15694,435:15695,435:15696,435:15697,435:15698,435:15699,435:15700,435:15701,435:15702,435:15690,435:15703,435:15704,435:15705,435:15706,435:15707,435:15708,435:15850,435:15851,435:15852,435:15853,435:15854,435:15855,435:15856,435:15857,435:15858,435:15859,435:15709,435:15710,435:16038,I435:16038;12:3,435:15711,435:15712,435:15713,435:15715,435:15716,435:15717,435:15718,435:15719,435:15720,435:15721,435:15722,435:15723,435:15724,435:15725,435:15726,435:15714,435:15727,435:15728,435:15729,435:15730,435:15731,435:15732,435:15860,435:15861,435:15862,435:15863,435:15864,435:15865,435:15866,435:15867,435:15868,435:15869,435:15733,435:15734,435:16042,I435:16042;12:3,435:16045,I435:16045;12:3,435:15735,435:15736,435:15737,435:15739,435:15740,435:15741,435:15742,435:15743,435:15744,435:15745,435:15746,435:15747,435:15748,435:15749,435:15750,435:15738,435:15751,435:15752,435:15753,435:15754,435:15755,435:15756,435:16048,435:16049,435:16050,435:16051,I435:16051;12:3,435:16054,I435:16054;12:3,435:16057,I435:16057;12:3,435:16060,I435:16060;12:3,435:15757,435:15758,435:16063,I435:16063;12:3,435:15759",
+  "createdNodeIdCount": 599,
+  "mutatedNodeIds": [],
+  "createdVariableIds": [
+    "VariableID:435:15342",
+    "VariableID:435:15343",
+    "VariableID:435:15344",
+    "VariableID:435:15345",
+    "VariableID:435:15346",
+    "VariableID:435:15347",
+    "VariableID:435:15348",
+    "VariableID:435:15349",
+    "VariableID:435:15350",
+    "VariableID:435:15351",
+    "VariableID:435:15352",
+    "VariableID:435:15353",
+    "VariableID:435:15354",
+    "VariableID:435:15355",
+    "VariableID:435:15356",
+    "VariableID:435:15357",
+    "VariableID:435:15358",
+    "VariableID:435:15359",
+    "VariableID:435:15360",
+    "VariableID:435:15361",
+    "VariableID:435:15362",
+    "VariableID:435:15363",
+    "VariableID:435:15364",
+    "VariableID:435:15365",
+    "VariableID:435:15366",
+    "VariableID:435:15367",
+    "VariableID:435:15368",
+    "VariableID:435:15369",
+    "VariableID:435:15370",
+    "VariableID:435:15371",
+    "VariableID:435:15372",
+    "VariableID:435:15373",
+    "VariableID:435:15374",
+    "VariableID:435:15375",
+    "VariableID:435:15376",
+    "VariableID:435:15377",
+    "VariableID:435:15378",
+    "VariableID:435:15379",
+    "VariableID:435:15380",
+    "VariableID:435:15381",
+    "VariableID:435:15382",
+    "VariableID:435:15383",
+    "VariableID:435:15384",
+    "VariableID:435:15385",
+    "VariableID:435:15386",
+    "VariableID:435:15387",
+    "VariableID:435:15388",
+    "VariableID:435:15389",
+    "VariableID:435:15390",
+    "VariableID:435:15391",
+    "VariableID:435:15392",
+    "VariableID:435:15393",
+    "VariableID:435:15394",
+    "VariableID:435:15395",
+    "VariableID:435:15396",
+    "VariableID:435:15397",
+    "VariableID:435:15398",
+    "VariableID:435:15399",
+    "VariableID:435:15400",
+    "VariableID:435:15401",
+    "VariableID:435:15402",
+    "VariableID:435:15403",
+    "VariableID:435:15404",
+    "VariableID:435:15405",
+    "VariableID:435:15406",
+    "VariableID:435:15407",
+    "VariableID:435:15408",
+    "VariableID:435:15409",
+    "VariableID:435:15410",
+    "VariableID:435:15411",
+    "VariableID:435:15412",
+    "VariableID:435:15413",
+    "VariableID:435:15414",
+    "VariableID:435:15415",
+    "VariableID:435:15416",
+    "VariableID:435:15417",
+    "VariableID:435:15418",
+    "VariableID:435:15419",
+    "VariableID:435:15420",
+    "VariableID:435:15421",
+    "VariableID:435:15422",
+    "VariableID:435:15423"
+  ],
+  "createdVariableCollectionIds": [
+    "VariableCollectionId:435:15341"
+  ],
+  "roots": [
+    {
+      "id": "435:15424",
+      "name": "Codex / Web全量补稿 / original-practice-facts / unknown",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15448",
+      "name": "Codex / Web全量补稿 / original-practice-facts / query",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15472",
+      "name": "Codex / Web全量补稿 / original-practice-facts / grading",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15496",
+      "name": "Codex / Web全量补稿 / original-practice-facts / queryfailed",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15520",
+      "name": "Codex / Web全量补稿 / original-practice-facts / notreceived",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15544",
+      "name": "Codex / Web全量补稿 / original-practice-facts / context",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15568",
+      "name": "Codex / Web全量补稿 / original-practice-facts / safehome",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15592",
+      "name": "Codex / Web全量补稿 / original-practice-facts / progress",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15616",
+      "name": "Codex / Web全量补稿 / original-practice-facts / round-confirm",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15640",
+      "name": "Codex / Web全量补稿 / original-practice-facts / round-submitting",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15664",
+      "name": "Codex / Web全量补稿 / original-practice-facts / round-unknown",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15688",
+      "name": "Codex / Web全量补稿 / original-practice-facts / round-query",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15712",
+      "name": "Codex / Web全量补稿 / original-practice-facts / report-processing",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "435:15736",
+      "name": "Codex / Web全量补稿 / original-practice-facts / state-review",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "screens": [
+    {
+      "id": "435:15424",
+      "key": "unknown",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 569,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15448",
+      "key": "query",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 0
+    },
+    {
+      "id": "435:15472",
+      "key": "grading",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15496",
+      "key": "queryfailed",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15520",
+      "key": "notreceived",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15544",
+      "key": "context",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 233,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15568",
+      "key": "safehome",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15592",
+      "key": "progress",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 2625,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15616",
+      "key": "round-confirm",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 812,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15640",
+      "key": "round-submitting",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 0
+    },
+    {
+      "id": "435:15664",
+      "key": "round-unknown",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15688",
+      "key": "round-query",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 0
+    },
+    {
+      "id": "435:15712",
+      "key": "report-processing",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    },
+    {
+      "id": "435:15736",
+      "key": "state-review",
+      "width": 1440,
+      "height": 900,
+      "bodyHeight": 404,
+      "viewportHeight": 640,
+      "fixedFooterHeight": 111,
+      "primaryCount": 1
+    }
+  ],
+  "types": {
+    "FRAME": 162,
+    "TEXT": 401,
+    "INSTANCE": 36
+  },
+  "imageFilledNodes": [],
+  "fontFamilies": [
+    "Noto Sans SC"
+  ],
+  "controls": 43,
+  "errors": [],
+  "timingCalibrationStatus": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "timerConnectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "adaptedTimeouts": [
+    {
+      "id": "435:15424",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15448",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15472",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15640",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15664",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15688",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    },
+    {
+      "id": "435:15712",
+      "kind": "NEW_HELPER_REACTION",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.8,
+          "milliseconds": 800
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+    "Native example fields do not accept arbitrary keyboard input.",
+    "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+  ],
+  "outputUtf8BytesBeforeSizeField": 13426,
+  "variables": {
+    "session": "VariableID:435:15342",
+    "question": "VariableID:435:15343",
+    "operation": "VariableID:435:15344",
+    "title": "VariableID:435:15345",
+    "prompt": "VariableID:435:15346",
+    "choice": "VariableID:435:15347",
+    "request": "VariableID:435:15348",
+    "response": "VariableID:435:15349",
+    "issue": "VariableID:435:15350",
+    "R1_stage": "VariableID:435:15351",
+    "R1_grade": "VariableID:435:15352",
+    "R1_choice": "VariableID:435:15353",
+    "R1_request": "VariableID:435:15354",
+    "R1_payload": "VariableID:435:15355",
+    "R1_score": "VariableID:435:15356",
+    "R1_label": "VariableID:435:15357",
+    "R1_status": "VariableID:435:15358",
+    "R1_editable": "VariableID:435:15359",
+    "R1_visibleA": "VariableID:435:15360",
+    "R1_visibleB": "VariableID:435:15361",
+    "R2_stage": "VariableID:435:15362",
+    "R2_grade": "VariableID:435:15363",
+    "R2_choice": "VariableID:435:15364",
+    "R2_request": "VariableID:435:15365",
+    "R2_payload": "VariableID:435:15366",
+    "R2_score": "VariableID:435:15367",
+    "R2_label": "VariableID:435:15368",
+    "R2_status": "VariableID:435:15369",
+    "R2_editable": "VariableID:435:15370",
+    "R2_visibleA": "VariableID:435:15371",
+    "R2_visibleB": "VariableID:435:15372",
+    "READ_stage": "VariableID:435:15373",
+    "READ_report": "VariableID:435:15374",
+    "READ_request": "VariableID:435:15375",
+    "READ_payload": "VariableID:435:15376",
+    "READ_score": "VariableID:435:15377",
+    "READ_progress": "VariableID:435:15378",
+    "READ_status": "VariableID:435:15379",
+    "READ_reportStatus": "VariableID:435:15380",
+    "READ_ready": "VariableID:435:15381",
+    "G1_stage": "VariableID:435:15382",
+    "G1_grade": "VariableID:435:15383",
+    "G1_choice": "VariableID:435:15384",
+    "G1_request": "VariableID:435:15385",
+    "G1_payload": "VariableID:435:15386",
+    "G1_score": "VariableID:435:15387",
+    "G1_label": "VariableID:435:15388",
+    "G1_status": "VariableID:435:15389",
+    "G1_editable": "VariableID:435:15390",
+    "G1_visibleA": "VariableID:435:15391",
+    "G1_visibleB": "VariableID:435:15392",
+    "G2_stage": "VariableID:435:15393",
+    "G2_grade": "VariableID:435:15394",
+    "G2_choice": "VariableID:435:15395",
+    "G2_request": "VariableID:435:15396",
+    "G2_payload": "VariableID:435:15397",
+    "G2_score": "VariableID:435:15398",
+    "G2_label": "VariableID:435:15399",
+    "G2_status": "VariableID:435:15400",
+    "G2_editable": "VariableID:435:15401",
+    "G2_visibleA": "VariableID:435:15402",
+    "G2_visibleB": "VariableID:435:15403",
+    "G3_stage": "VariableID:435:15404",
+    "G3_grade": "VariableID:435:15405",
+    "G3_choice": "VariableID:435:15406",
+    "G3_request": "VariableID:435:15407",
+    "G3_payload": "VariableID:435:15408",
+    "G3_score": "VariableID:435:15409",
+    "G3_label": "VariableID:435:15410",
+    "G3_status": "VariableID:435:15411",
+    "G3_editable": "VariableID:435:15412",
+    "G3_visibleA": "VariableID:435:15413",
+    "G3_visibleB": "VariableID:435:15414",
+    "GR_stage": "VariableID:435:15415",
+    "GR_report": "VariableID:435:15416",
+    "GR_request": "VariableID:435:15417",
+    "GR_payload": "VariableID:435:15418",
+    "GR_score": "VariableID:435:15419",
+    "GR_progress": "VariableID:435:15420",
+    "GR_status": "VariableID:435:15421",
+    "GR_reportStatus": "VariableID:435:15422",
+    "GR_ready": "VariableID:435:15423"
+  },
+  "screenIds": {
+    "unknown": "435:15424",
+    "query": "435:15448",
+    "grading": "435:15472",
+    "queryfailed": "435:15496",
+    "notreceived": "435:15520",
+    "context": "435:15544",
+    "safehome": "435:15568",
+    "progress": "435:15592",
+    "round-confirm": "435:15616",
+    "round-submitting": "435:15640",
+    "round-unknown": "435:15664",
+    "round-query": "435:15688",
+    "report-processing": "435:15712",
+    "state-review": "435:15736"
+  },
+  "config": {
+    "READ": {
+      "name": "阅读两题",
+      "ref": "READ-01",
+      "entry": "161:6350",
+      "summary": "161:7945",
+      "questions": [
+        {
+          "key": "R1",
+          "index": "1",
+          "prompt": "Where does Mia read?",
+          "A": "By the window",
+          "B": "On the train",
+          "correct": "A",
+          "entry": "161:6350",
+          "selected": {
+            "A": "161:6472",
+            "B": "161:6597"
+          },
+          "feedback": {
+            "A": "161:6722",
+            "B": "161:6844"
+          },
+          "rule": "文章第2段：She chooses a book and reads by the window."
+        },
+        {
+          "key": "R2",
+          "index": "2",
+          "prompt": "What is the story about?",
+          "A": "A small garden",
+          "B": "A train",
+          "correct": "A",
+          "entry": "161:6966",
+          "selected": {
+            "A": "161:7088",
+            "B": "161:7213"
+          },
+          "feedback": {
+            "A": "161:7338",
+            "B": "161:7460"
+          },
+          "rule": "文章第3段：Today she finds a story about a small garden."
+        }
+      ]
+    },
+    "GR": {
+      "name": "语法三题",
+      "ref": "GR-01",
+      "entry": "161:3999",
+      "summary": "161:6201",
+      "questions": [
+        {
+          "key": "G1",
+          "index": "1",
+          "prompt": "She ___ to school every day.",
+          "A": "go",
+          "B": "goes",
+          "correct": "B",
+          "entry": "161:3999",
+          "selected": {
+            "A": "161:4120",
+            "B": "161:4244"
+          },
+          "feedback": {
+            "A": "161:4368",
+            "B": "161:4490"
+          },
+          "rule": "She是第三人称单数，一般现在时使用goes。"
+        },
+        {
+          "key": "G2",
+          "index": "2",
+          "prompt": "They ___ English on Mondays.",
+          "A": "study",
+          "B": "studies",
+          "correct": "A",
+          "entry": "161:4612",
+          "selected": {
+            "A": "161:4733",
+            "B": "161:4857"
+          },
+          "feedback": {
+            "A": "161:4981",
+            "B": "161:5103"
+          },
+          "rule": "They是复数，一般现在时使用动词原形study。"
+        },
+        {
+          "key": "G3",
+          "index": "3",
+          "prompt": "My brother ___ coffee in the morning.",
+          "A": "drink",
+          "B": "drinks",
+          "correct": "B",
+          "entry": "161:5225",
+          "selected": {
+            "A": "161:5346",
+            "B": "161:5470"
+          },
+          "feedback": {
+            "A": "161:5594",
+            "B": "161:5716"
+          },
+          "rule": "My brother是第三人称单数，一般现在时使用drinks。"
+        }
+      ]
+    }
+  },
+  "integrationRequests": [
+    {
+      "kind": "REQUIRED_READING_AND_GRAMMAR_PRECISE_SOURCE_PATCHES",
+      "sourceRootIds": [
+        "161:6472",
+        "161:6597",
+        "161:7088",
+        "161:7213",
+        "161:4120",
+        "161:4244",
+        "161:4733",
+        "161:4857",
+        "161:5346",
+        "161:5470"
+      ],
+      "note": "BindactualCoreIDs:submits,next,summarygates.Preservereturns."
+    }
+  ],
+  "scope": "14UIstates,5pinnedquestions/2sessions;AA/BAB;exactsourcepatchesrequired.No realserviceproof."
+}

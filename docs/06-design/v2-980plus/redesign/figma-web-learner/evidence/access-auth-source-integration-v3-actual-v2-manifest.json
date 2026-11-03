@@ -1,0 +1,33 @@
+{
+  "status": "LOCAL_BOUND_CANDIDATE_NOT_NATIVE_EXECUTED",
+  "base": "access-auth-source-integration-v3",
+  "domain": "access-auth-source-integration-v3-actual-v2-DOMAIN.js",
+  "tool": "access-auth-source-integration-v3-actual-v2-tool.js",
+  "toolChars": 34998,
+  "toolUtf8Bytes": 35776,
+  "newRootCount": 0,
+  "actualAuthReceipt": {
+    "path": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+    "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+    "stateVariableCount": 55,
+    "frameCount": 16,
+    "designOnlyNotRuntimeIam": true
+  },
+  "actualUIDepsBound": true,
+  "freshSourceBound": true,
+  "sourceGuardSetFromActualCurrentRead": true,
+  "noOldAuth417Ids": true,
+  "helperSha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006",
+  "calibrationSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+  "allActionsAndGuardsRetained": true,
+  "exactStringPoolAstRoundtrip": true,
+  "nativeStatus": "NOT_RUN",
+  "sourceReadRequirement": "actualcurrent fullsource shape/properties/reactions; only reviewedtimeout/1000 drift accepted",
+  "files": {
+    "access-auth-source-integration-v3-actual-v2-DOMAIN.js": "a7e54cfd17f05214fe3a0ae148c140e0914d92ccb77c766a569c33bfef67f6ca",
+    "access-auth-source-integration-v3-actual-v2-prepared.js": "c63629d4a535be9c1b0e858613523513311ec79e302212b73ed47ebfe8737036",
+    "access-auth-source-integration-v3-actual-v2-tool.js": "a8752ea71f46eb73eb1ca3c5cd3c177993956ee72b955c3139ea4cdfd516e7bc",
+    "access-auth-source-integration-v3-actual-v2-helper-v5_2.js": "5a3f77346f92b377318d0edde2ac074eaf3c9a0dff24fe1b56206392a8b98990",
+    "access-auth-source-integration-v3-actual-v2-pool-check.json": "24a0558976828f52d2225f15c2f1b50f7f274d0fb5f9c9b00cfda2f6e1ee5fbd"
+  }
+}

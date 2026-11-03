@@ -1,0 +1,187 @@
+{
+  "status": "READ_HIDDEN_ORIGINAL4_TEXT_EXACT_BASELINE_MATCH",
+  "readOnlyDocument": true,
+  "documentWrites": 0,
+  "environmentTraversalFlagOnly": {
+    "before": true,
+    "temporarilyDisabledSkipping": true,
+    "restored": true,
+    "after": true
+  },
+  "rows": [
+    {
+      "id": "I426:15571;12:3",
+      "current": {
+        "id": "I426:15571;12:3",
+        "parent": "426:15571",
+        "type": "TEXT",
+        "w": 242,
+        "h": 24,
+        "H": "FILL",
+        "V": "HUG",
+        "visible": true,
+        "effectiveVisible": false,
+        "auto": "HEIGHT",
+        "bound": null,
+        "characters": "隐藏示例密码",
+        "fonts": [
+          {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        ]
+      },
+      "parentInstance": {
+        "id": "426:15571",
+        "name": "操作 / 隐藏示例密码",
+        "parent": "426:15537",
+        "visible": false,
+        "props": {
+          "文案#12:0": {
+            "type": "TEXT",
+            "value": "隐藏示例密码"
+          }
+        },
+        "childIds": [
+          "I426:15571;12:3"
+        ]
+      },
+      "listedInParent": true,
+      "diff": []
+    },
+    {
+      "id": "I426:15614;12:3",
+      "current": {
+        "id": "I426:15614;12:3",
+        "parent": "426:15614",
+        "type": "TEXT",
+        "w": 242,
+        "h": 24,
+        "H": "FILL",
+        "V": "HUG",
+        "visible": true,
+        "effectiveVisible": false,
+        "auto": "HEIGHT",
+        "bound": null,
+        "characters": "隐藏示例密码",
+        "fonts": [
+          {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        ]
+      },
+      "parentInstance": {
+        "id": "426:15614",
+        "name": "操作 / 隐藏示例密码",
+        "parent": "426:15580",
+        "visible": false,
+        "props": {
+          "文案#12:0": {
+            "type": "TEXT",
+            "value": "隐藏示例密码"
+          }
+        },
+        "childIds": [
+          "I426:15614;12:3"
+        ]
+      },
+      "listedInParent": true,
+      "diff": []
+    },
+    {
+      "id": "I426:15671;12:3",
+      "current": {
+        "id": "I426:15671;12:3",
+        "parent": "426:15671",
+        "type": "TEXT",
+        "w": 242,
+        "h": 24,
+        "H": "FILL",
+        "V": "HUG",
+        "visible": true,
+        "effectiveVisible": false,
+        "auto": "HEIGHT",
+        "bound": null,
+        "characters": "隐藏示例密码",
+        "fonts": [
+          {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        ]
+      },
+      "parentInstance": {
+        "id": "426:15671",
+        "name": "操作 / 隐藏示例密码",
+        "parent": "426:15648",
+        "visible": false,
+        "props": {
+          "文案#12:0": {
+            "type": "TEXT",
+            "value": "隐藏示例密码"
+          }
+        },
+        "childIds": [
+          "I426:15671;12:3"
+        ]
+      },
+      "listedInParent": true,
+      "diff": []
+    },
+    {
+      "id": "I426:15718;12:3",
+      "current": {
+        "id": "I426:15718;12:3",
+        "parent": "426:15718",
+        "type": "TEXT",
+        "w": 242,
+        "h": 24,
+        "H": "FILL",
+        "V": "HUG",
+        "visible": true,
+        "effectiveVisible": false,
+        "auto": "HEIGHT",
+        "bound": null,
+        "characters": "隐藏示例密码",
+        "fonts": [
+          {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        ]
+      },
+      "parentInstance": {
+        "id": "426:15718",
+        "name": "操作 / 隐藏示例密码",
+        "parent": "426:15695",
+        "visible": false,
+        "props": {
+          "文案#12:0": {
+            "type": "TEXT",
+            "value": "隐藏示例密码"
+          }
+        },
+        "childIds": [
+          "I426:15718;12:3"
+        ]
+      },
+      "listedInParent": true,
+      "diff": []
+    }
+  ],
+  "errors": [],
+  "scope": "Four exact pre-existing hidden INSTANCE virtual TEXT only. No visibility/property/geometry/RX/variable mutations; no removals."
+}

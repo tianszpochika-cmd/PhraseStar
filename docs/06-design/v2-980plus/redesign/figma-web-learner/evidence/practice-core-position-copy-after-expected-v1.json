@@ -1,0 +1,72 @@
+{
+  "status": "LOCAL_EXPECTED_AFTER_FROM_ACTUAL_BEFORE_EXACT_LITERAL_PATCH_NOT_NATIVE_READBACK",
+  "canonical": "sorted object keys UTF8 SHA256 over [{trigger,actions}]",
+  "roots": [
+    {
+      "rootId": "435:15472",
+      "name": "Codex / Web全量补稿 / original-practice-facts / grading",
+      "parentId": "0:1",
+      "beforeSha256": "cd292d1d25447b6334cd6830d35c72a931d99ce752c69e759ca665dbca7d0e4b",
+      "expectedAfterSha256": "2a52e4d5ea9c57beff7d27d9905de54c000910bfc81a23bb7f9deb56c3984518",
+      "expectedAfterUtf8Bytes": 97907,
+      "expectedTrigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "expectedProgressCount": 10,
+      "expectedProgressStrings": [
+        "第1题已保存并评分；整轮完成状态见进度",
+        "第1题已保存并评分；整轮完成状态见进度",
+        "第2题已保存并评分；整轮完成状态见进度",
+        "第2题已保存并评分；整轮完成状态见进度",
+        "第1题已保存并评分；整轮完成状态见进度",
+        "第1题已保存并评分；整轮完成状态见进度",
+        "第2题已保存并评分；整轮完成状态见进度",
+        "第2题已保存并评分；整轮完成状态见进度",
+        "第3题已保存并评分；整轮完成状态见进度",
+        "第3题已保存并评分；整轮完成状态见进度"
+      ]
+    },
+    {
+      "rootId": "435:15424",
+      "name": "Codex / Web全量补稿 / original-practice-facts / unknown",
+      "parentId": "0:1",
+      "beforeSha256": "ba14f3d6838206d4b6c368e2bc1f4b3213a17243041e9559c79cc53bab5e049a",
+      "expectedAfterSha256": "833e4b33ed26c5ea2a65e943046de5f321f36a350c3eab540e3b987a411ebe12",
+      "expectedAfterUtf8Bytes": 114655,
+      "expectedTrigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "expectedProgressCount": 5,
+      "expectedProgressStrings": [
+        "第1题已保存；整轮完成状态见进度",
+        "第2题已保存；整轮完成状态见进度",
+        "第1题已保存；整轮完成状态见进度",
+        "第2题已保存；整轮完成状态见进度",
+        "第3题已保存；整轮完成状态见进度"
+      ]
+    },
+    {
+      "rootId": "435:15448",
+      "name": "Codex / Web全量补稿 / original-practice-facts / query",
+      "parentId": "0:1",
+      "beforeSha256": "d818826492fb025e098e977cb3bffbcece755fb4ec611283ff7f067e8b755dc1",
+      "expectedAfterSha256": "cccaa78fee9ee3dfa2ce5901b42dbf255dd2c93430e23d87c8536b11ab312a9e",
+      "expectedAfterUtf8Bytes": 115355,
+      "expectedTrigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "expectedProgressCount": 5,
+      "expectedProgressStrings": [
+        "第1题已保存；整轮完成状态见进度",
+        "第2题已保存；整轮完成状态见进度",
+        "第1题已保存；整轮完成状态见进度",
+        "第2题已保存；整轮完成状态见进度",
+        "第3题已保存；整轮完成状态见进度"
+      ]
+    }
+  ],
+  "allowedDifference": "Only20 progress string values total across3 exact roots; all native before graphs were reconstructed and matched actual live SHA+bytes."
+}

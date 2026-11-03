@@ -1,0 +1,300 @@
+{
+  "status": "READ_CURRENT_SELECTED_CLONES_LAYOUT",
+  "rows": [
+    {
+      "id": "430:15385",
+      "name": "选择项 / 连读 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15385",
+      "rootType": "INSTANCE",
+      "visible": true,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15348"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 0,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15393",
+      "name": "选择项 / 弱读 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15393",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15350"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 0,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15401",
+      "name": "选择项 / 失爆 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15401",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15352"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 282,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15409",
+      "name": "选择项 / 重音 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15409",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15354"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 564,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15417",
+      "name": "选择项 / 数字 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15417",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15356"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 0,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15425",
+      "name": "选择项 / 时间 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15425",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15358"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 282,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15433",
+      "name": "选择项 / 人名地名 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15433",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15360"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 564,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15441",
+      "name": "选择项 / 最小对立音 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15441",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15362"
+      },
+      "width": 270,
+      "height": 118,
+      "x": 846,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15456",
+      "name": "选择项 / Sam / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15456",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15364"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 0,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15464",
+      "name": "选择项 / The librarian / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15464",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15366"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 376,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15472",
+      "name": "选择项 / Tom / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15472",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15368"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 752,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15480",
+      "name": "选择项 / 还需练习 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15480",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15370"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 0,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15488",
+      "name": "选择项 / 基本跟上 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15488",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15372"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 376,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    },
+    {
+      "id": "430:15496",
+      "name": "选择项 / 比较流畅 / 已选",
+      "parentId": "0:1",
+      "parentName": "01 · Core Learning Flows / Desktop",
+      "rootId": "430:15496",
+      "rootType": "INSTANCE",
+      "visible": false,
+      "boundVisible": {
+        "type": "VARIABLE_ALIAS",
+        "id": "VariableID:430:15374"
+      },
+      "width": 364,
+      "height": 118,
+      "x": 752,
+      "y": 0,
+      "hSize": "FIXED",
+      "vSize": "HUG",
+      "mainComponentId": "350:3177",
+      "reactionCount": 1
+    }
+  ],
+  "mutatedNodeIds": []
+}

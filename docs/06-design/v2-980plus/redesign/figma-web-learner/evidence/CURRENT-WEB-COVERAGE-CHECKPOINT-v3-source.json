@@ -1,0 +1,128 @@
+{
+  "status": "ACTIVE_CONTINUATION_NATIVE_MCP_RESTORED",
+  "updatedAt": "2026-11-03T13:53:28.164480+00:00",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "pageId": "0:1",
+  "sessionId": "9aab2fae-20f1-41aa-ab02-2b5143800bd4",
+  "soleFigmaWriter": "root",
+  "previousCheckpoint": "CURRENT-WEB-COVERAGE-CHECKPOINT-v2.json",
+  "denominator": {
+    "currentWebRequirements": 484,
+    "obligations": 291,
+    "allRegistry": 980,
+    "semanticAccepted": 0
+  },
+  "calibration": {
+    "path": "timeout-calibration.verified.json",
+    "sha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+    "scope": "Current connector seconds; logical ms/1000; not global SDK change"
+  },
+  "installedHelper": {
+    "path": "shared-web-builders.js",
+    "version": "v5.2",
+    "sha256": "247f25140a027da3e7d092c1276bbb2aa3c5ea3aad1ca09bf6514f3f6551c006"
+  },
+  "timerMigration": {
+    "path": "owned-timer-migration-current.json",
+    "sha256": "eb1e7f92004af003b5ef6f006625dd898395a77cc619103390ed81426fc06636",
+    "migrated159": true,
+    "old1000SubtreesNestedTimerCount": 0,
+    "newAuth16ExcludedFromOldNestedScan": true
+  },
+  "newActualRootCount": 46,
+  "totalCreatedRootsFromBaseline": 1046,
+  "auth16": {
+    "success": "access-auth-forms-v3-UI-calibrated-v2-write-result.json",
+    "sha256": "bce693225bcf549df821510c09aa239bdf5ced348864ed53ab074fcc53ef4362",
+    "firstRoot": "426:15265",
+    "semanticStatus": "UNVERIFIED",
+    "visualIssues": "Scenario preset buttons in ordinary forms need move to review; normal copy and narrow form QA pending",
+    "originalEntryIntegration": "access-auth-source-integration-v3-actual-v2-write-result.json"
+  },
+  "failedAuthV1": {
+    "failureReceipt": "access-auth-forms-v3-UI-calibrated-v1-write-result.json",
+    "createdNodes561Absent": true,
+    "vars55AndCollection1AbsentInCurrentEnumerationAndGui": true,
+    "byIdProxyMayShowStaleWrappers": true,
+    "doNotReplay": true
+  },
+  "otherSuccessfulMutations": [
+    {
+      "path": "skills-expression-choice-state-v2-write-result.json",
+      "sha256": "5f23e472dcf32c610cde14d8fd16f30c75ca860ef325ace6c259249a9f17ad15"
+    },
+    {
+      "path": "skills-writing-counter-v1-apply-result.json",
+      "sha256": "0d06a67e38339921e331a80c3d2eb72f8b284b1e3fe1987c6dadde2b299d45b9"
+    },
+    {
+      "path": "skills-writing-counter-learner-copy-v1-result.json",
+      "sha256": "6904cb6a80b3402a78766ddbef9d0f66bdce003ae4b037f9846da0b2c9781a1d"
+    },
+    {
+      "path": "a11y-choice-repair-factory-v3-apply-result.json",
+      "sha256": "67dc4a38b3989070111e83996db73404e618c4dd51134540bfa3067dc6965239"
+    },
+    {
+      "path": "access-auth-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "643ec948033e3fab06a057bbb2dd79e42226dafa8dd723a1db02bfbb724af814"
+    },
+    {
+      "path": "access-consent-source-integration-v3-actual-v2-write-result.json",
+      "sha256": "13be3ef1cc673ce19ca4451365fbc4b1c485355c9ea3c9e94ac698c3876bfa24"
+    },
+    {
+      "path": "a11y-choice-clone-placement-v1-apply-result.json",
+      "sha256": "3b329866c978d2a4118bd8f826ba548749dd07aab8b33afb99b5adfe313fc113"
+    },
+    {
+      "path": "practice-core-grading-position-literal-v1-result.json",
+      "sha256": "836684d445be951f480b0b42011ed537e029cb9add4bbb1dbd4e7d8e9a24cd37"
+    },
+    {
+      "path": "practice-core-save-position-literal-v1-result.json",
+      "sha256": "88781c8ed41a0c375371539056f030f751ebaf42605f90334f2d3eac4165b70d"
+    },
+    {
+      "path": "practice-source19-v2-read-controls-r1-write-result.json",
+      "sha256": "dadbb4c4483cc5d499fd589fb78d822d6a66831ff7c795d39cc1b9bf7f5ac05d"
+    }
+  ],
+  "pendingNext": [
+    "Auth in-place normal form visual cleanup and1440/768 browser QA",
+    "Consent source fresh integration done; visual and browser state checks pending",
+    "Practice Source19 remaining18 exact batches; source readback/browser full round",
+    "FirstDayv2 actual dependencies and fresh13 source read; remaining business queues per v4/v3",
+    "Full responsive/accessibility and484requirements/291obligations semantic acceptance"
+  ],
+  "notAccepted": [
+    "Whole291semantic",
+    "RealIAM/services/media/persistence",
+    "Fullresponsive/a11y/keyboard/SR"
+  ],
+  "doNotReplay": "Preserve97baseline successes and newer159timer/Auth16/Choice/Writingpatches; actual receipts authoritative.",
+  "core14": {
+    "success": "practice-original-facts-core-v2-UI14-calibrated-v1-write-result.json",
+    "sha256": "38ce3aa7111ddca17a3760740155a4f8e77f13f8cd8a13fb35e5a08c78611ada",
+    "status": "CREATED_READING2_GRAMMAR3_PINNED_ORIGINAL_FACTS_CORE_REQUIRES_EXACT_SOURCE_PATCHES",
+    "roots": 14,
+    "firstRoot": "435:15424",
+    "source19": "1_OF_19_BATCHES_ACTUALLY_PATCHED_NEEDS_FULL_READBACK_AND_BROWSER_QA",
+    "semanticStatus": "UNVERIFIED"
+  },
+  "consent16": {
+    "path": "access-consent-v3-UI-actual-v2-write-result.json",
+    "sha256": "3613b3bc714e27947134e61267e57032df5d684dc24e461867c736ab18d4de4b",
+    "roots": 16,
+    "semanticStatus": "UNVERIFIED",
+    "sourceIntegration": "access-consent-source-integration-v3-actual-v2-write-result.json"
+  },
+  "browserQa": {
+    "path": "BROWSER-QA-CURRENT.json",
+    "sha256": "1e5d35e3eb90a48eb0f5487cf86609d5f735dba49c174f9be21490a6d23561ad"
+  },
+  "rootUiMutations": {
+    "path": "WEB-ROOT-UI-MUTATIONS.json",
+    "sha256": "4bc57c6694fc5e04901d14536679dfb54d94254e0d9aca6cc58c507e278b0a58"
+  }
+}

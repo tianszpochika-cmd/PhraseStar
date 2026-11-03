@@ -1,0 +1,73 @@
+{
+  "status": "PATCHED_EXACT_ORIGINAL_PRACTICE_SOURCE_V2_read-controls-r2_NEEDS_NATIVE_READBACK",
+  "prefix": "Codex / Web全量精准补丁 / original-facts-v2 / read-controls-r2 / ",
+  "createdNodeIdsCsv": "",
+  "createdNodeIdCount": 0,
+  "mutatedNodeIds": [
+    "161:7207",
+    "161:7211",
+    "161:7330",
+    "161:7336",
+    "161:7458",
+    "161:7580",
+    "I161:7211;12:3",
+    "I161:7336;12:3",
+    "I161:7458;12:3",
+    "I161:7580;12:3"
+  ],
+  "createdVariableIds": [],
+  "createdVariableCollectionIds": [],
+  "roots": [],
+  "screens": [],
+  "types": {},
+  "imageFilledNodes": [],
+  "fontFamilies": [],
+  "controls": 0,
+  "errors": [],
+  "timingCalibrationStatus": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "timerConnectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "adaptedTimeouts": [],
+  "limits": [
+    "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+    "Native example fields do not accept arbitrary keyboard input.",
+    "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+  ],
+  "outputUtf8BytesBeforeSizeField": 859,
+  "mutatedNodeIdsCsv": "161:7207,161:7211,161:7330,161:7336,161:7458,161:7580,I161:7211;12:3,I161:7336;12:3,I161:7458;12:3,I161:7580;12:3",
+  "coreReceiptSha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4",
+  "timingCalibrationSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+  "sourceGuardsSha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21",
+  "sourceEngineSha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed",
+  "selectedReactionIndices": [
+    {
+      "id": "161:7207",
+      "reactionIndex": 0
+    },
+    {
+      "id": "161:7211",
+      "reactionIndex": 0
+    },
+    {
+      "id": "161:7330",
+      "reactionIndex": 0
+    },
+    {
+      "id": "161:7336",
+      "reactionIndex": 0
+    },
+    {
+      "id": "161:7458",
+      "reactionIndex": 0
+    },
+    {
+      "id": "161:7580",
+      "reactionIndex": 0
+    }
+  ],
+  "preservedControls": [
+    "161:8063",
+    "161:6319"
+  ],
+  "scope": "Exact existing source only; no recreated roots or variables. All unselected reactions preserved. Same first payload/query/grade/whole/report; body inputs become read only after submit."
+}

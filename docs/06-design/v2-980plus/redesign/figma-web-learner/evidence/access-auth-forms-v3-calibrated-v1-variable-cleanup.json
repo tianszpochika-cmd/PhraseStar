@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"FAILED_BATCH_VARIABLE_CLEANUP_AWAITED_REQUIRES_FRESH_READ\",\"removedVariableIds\":[\"VariableID:417:15210\",\"VariableID:417:15211\",\"VariableID:417:15212\",\"VariableID:417:15213\",\"VariableID:417:15214\",\"VariableID:417:15215\",\"VariableID:417:15216\",\"VariableID:417:15217\",\"VariableID:417:15218\",\"VariableID:417:15219\",\"VariableID:417:15220\",\"VariableID:417:15221\",\"VariableID:417:15222\",\"VariableID:417:15223\",\"VariableID:417:15224\",\"VariableID:417:15225\",\"VariableID:417:15226\",\"VariableID:417:15227\",\"VariableID:417:15228\",\"VariableID:417:15229\",\"VariableID:417:15230\",\"VariableID:417:15231\",\"VariableID:417:15232\",\"VariableID:417:15233\",\"VariableID:417:15234\",\"VariableID:417:15235\",\"VariableID:417:15236\",\"VariableID:417:15237\",\"VariableID:417:15238\",\"VariableID:417:15239\",\"VariableID:417:15240\",\"VariableID:417:15241\",\"VariableID:417:15242\",\"VariableID:417:15243\",\"VariableID:417:15244\",\"VariableID:417:15245\",\"VariableID:417:15246\",\"VariableID:417:15247\",\"VariableID:417:15248\",\"VariableID:417:15249\",\"VariableID:417:15250\",\"VariableID:417:15251\",\"VariableID:417:15252\",\"VariableID:417:15253\",\"VariableID:417:15254\",\"VariableID:417:15255\",\"VariableID:417:15256\",\"VariableID:417:15257\",\"VariableID:417:15258\",\"VariableID:417:15259\",\"VariableID:417:15260\",\"VariableID:417:15261\",\"VariableID:417:15262\",\"VariableID:417:15263\",\"VariableID:417:15264\"],\"removedVariableCollectionIds\":[\"VariableCollectionId:417:15209\"],\"errors\":[],\"mutatedNodeIds\":[]}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

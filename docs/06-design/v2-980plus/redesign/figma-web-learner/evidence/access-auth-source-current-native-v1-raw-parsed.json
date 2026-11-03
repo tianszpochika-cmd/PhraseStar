@@ -1,0 +1,655 @@
+{
+  "status": "READ_CURRENT_AUTH_LEGACY23",
+  "rowCount": 23,
+  "rows": [
+    {
+      "id": "12:74",
+      "name": "输入 / 账号",
+      "type": "INSTANCE",
+      "parentId": "12:72",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 720,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:1": {
+          "type": "TEXT",
+          "value": "请输入账号"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "14:239",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:77",
+      "name": "输入 / 密码",
+      "type": "INSTANCE",
+      "parentId": "12:72",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 720,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:1": {
+          "type": "TEXT",
+          "value": "请输入密码"
+        }
+      },
+      "text": null,
+      "reactions": []
+    },
+    {
+      "id": "12:80",
+      "name": "按钮 / 登录",
+      "type": "INSTANCE",
+      "parentId": "12:72",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 180,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "登录"
+        }
+      },
+      "text": null,
+      "reactions": []
+    },
+    {
+      "id": "225:7635",
+      "name": "补充 / 查看安全状态示例",
+      "type": "INSTANCE",
+      "parentId": "12:6",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 220,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "查看安全状态示例"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "206:6098",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:151",
+      "name": "输入 / 账号",
+      "type": "INSTANCE",
+      "parentId": "12:149",
+      "rootId": "12:83",
+      "rootName": "12 / 注册",
+      "width": 720,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:1": {
+          "type": "TEXT",
+          "value": "设置账号"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "14:316",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:154",
+      "name": "输入 / 密码",
+      "type": "INSTANCE",
+      "parentId": "12:149",
+      "rootId": "12:83",
+      "rootName": "12 / 注册",
+      "width": 720,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:1": {
+          "type": "TEXT",
+          "value": "设置密码"
+        }
+      },
+      "text": null,
+      "reactions": []
+    },
+    {
+      "id": "12:157",
+      "name": "按钮 / 创建账号",
+      "type": "INSTANCE",
+      "parentId": "12:149",
+      "rootId": "12:83",
+      "rootName": "12 / 注册",
+      "width": 180,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "创建账号"
+        }
+      },
+      "text": null,
+      "reactions": []
+    },
+    {
+      "id": "225:7638",
+      "name": "补充 / 查看安全状态示例",
+      "type": "INSTANCE",
+      "parentId": "12:83",
+      "rootId": "12:83",
+      "rootName": "12 / 注册",
+      "width": 220,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "查看安全状态示例"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "206:6606",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206:7119",
+      "name": "操作 / 模拟提交中",
+      "type": "INSTANCE",
+      "parentId": "206:7118",
+      "rootId": "206:7033",
+      "rootName": "Codex / 账户安全业务补齐 / reset",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "模拟提交中"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "206:7125",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206:7121",
+      "name": "操作 / 链接状态示例",
+      "type": "INSTANCE",
+      "parentId": "206:7118",
+      "rootId": "206:7033",
+      "rootName": "Codex / 账户安全业务补齐 / reset",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "链接状态示例"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "206:7206",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206:6946",
+      "name": "操作 / 返回登录",
+      "type": "INSTANCE",
+      "parentId": "206:6945",
+      "rootId": "206:6866",
+      "rootName": "Codex / 账户安全业务补齐 / reg-unknown",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "返回登录"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "12:6",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206:6948",
+      "name": "操作 / 返回注册说明",
+      "type": "INSTANCE",
+      "parentId": "206:6945",
+      "rootId": "206:6866",
+      "rootName": "Codex / 账户安全业务补齐 / reg-unknown",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "返回注册说明"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "206:6606",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "14:311",
+      "name": "按钮 / 登录",
+      "type": "INSTANCE",
+      "parentId": "14:305",
+      "rootId": "14:239",
+      "rootName": "25 / 登录 · 示例已填写",
+      "width": 180,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "登录"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "160:3572",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "14:388",
+      "name": "按钮 / 创建账号",
+      "type": "INSTANCE",
+      "parentId": "14:382",
+      "rootId": "14:316",
+      "rootName": "26 / 注册 · 示例已填写",
+      "width": 180,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "创建账号"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "12:160",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "225:7625",
+      "name": "操作 / 重新申请",
+      "type": "INSTANCE",
+      "parentId": "225:7624",
+      "rootId": "225:7609",
+      "rootName": "Codex / 账户安全业务补齐 / reset-unknown",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "重新申请"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "25:34",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "225:7626",
+      "name": "操作 / 返回登录",
+      "type": "INSTANCE",
+      "parentId": "225:7624",
+      "rootId": "225:7609",
+      "rootName": "Codex / 账户安全业务补齐 / reset-unknown",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "返回登录"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "12:6",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:79",
+      "name": "忘记密码？",
+      "type": "TEXT",
+      "parentId": "12:72",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 75,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "忘记密码？",
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "25:34",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:82",
+      "name": "还没有账号？注册账号",
+      "type": "TEXT",
+      "parentId": "12:72",
+      "rootId": "12:6",
+      "rootName": "11 / 登录",
+      "width": 150,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "还没有账号？注册账号",
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "12:83",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12:159",
+      "name": "已有账号？返回登录",
+      "type": "TEXT",
+      "parentId": "12:149",
+      "rootId": "12:83",
+      "rootName": "12 / 注册",
+      "width": 135,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "已有账号？返回登录",
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "12:6",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206:7123",
+      "name": "操作 / 重新申请",
+      "type": "INSTANCE",
+      "parentId": "206:7118",
+      "rootId": "206:7033",
+      "rootName": "Codex / 账户安全业务补齐 / reset",
+      "width": 200,
+      "height": 48,
+      "visible": true,
+      "properties": {
+        "文案#12:0": {
+          "type": "TEXT",
+          "value": "重新申请"
+        }
+      },
+      "text": null,
+      "reactions": [
+        {
+          "trigger": {
+            "type": "ON_CLICK"
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "25:34",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "14:310",
+      "name": "忘记密码？",
+      "type": "TEXT",
+      "parentId": "14:305",
+      "rootId": "14:239",
+      "rootName": "25 / 登录 · 示例已填写",
+      "width": 75,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "忘记密码？",
+      "reactions": []
+    },
+    {
+      "id": "14:312",
+      "name": "还没有账号？注册账号",
+      "type": "TEXT",
+      "parentId": "14:305",
+      "rootId": "14:239",
+      "rootName": "25 / 登录 · 示例已填写",
+      "width": 150,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "还没有账号？注册账号",
+      "reactions": []
+    },
+    {
+      "id": "14:389",
+      "name": "已有账号？返回登录",
+      "type": "TEXT",
+      "parentId": "14:382",
+      "rootId": "14:316",
+      "rootName": "26 / 注册 · 示例已填写",
+      "width": 135,
+      "height": 18,
+      "visible": true,
+      "properties": {},
+      "text": "已有账号？返回登录",
+      "reactions": []
+    }
+  ],
+  "mutatedNodeIds": [],
+  "note": "Actual current complete trigger/actions. Do not inferpost159migration values fromold source guards; materializer must reject any non-timer drift until reviewed."
+}

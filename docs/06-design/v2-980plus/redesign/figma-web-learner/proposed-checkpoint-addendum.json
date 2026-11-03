@@ -1,0 +1,36 @@
+{
+  "status": "SUGGESTION_ONLY_NO_D_CURRENT_WRITES",
+  "sourceSnapshot": {
+    "path": "evidence/CURRENT-WEB-COVERAGE-CHECKPOINT-v3-source-v3-20261103T143607.json",
+    "sha256": "b7ce9153bfe8e4f120b7a4a76d3a1a892549b255e603bdf4db05170b33a9f0b6"
+  },
+  "totalCreatedRoots": 1074,
+  "successfulReceipts": 121,
+  "source19Actual": 4,
+  "source19Remaining": [
+    "read-views-r2-input",
+    "read-views-r2-feedback",
+    "gr-controls-g1",
+    "gr-controls-g2",
+    "gr-controls-g3",
+    "gr-views-g1-input",
+    "gr-views-g1-feedback",
+    "gr-views-g2-input",
+    "gr-views-g2-feedback",
+    "gr-views-g3-input",
+    "gr-views-g3-feedback",
+    "read-legacy",
+    "read-summary",
+    "gr-legacy",
+    "gr-summary"
+  ],
+  "authRecoveryGate": "AUTH_CURRENT_NATIVE_RECHECK_CLEAR_VISUAL_BUSINESS_OPEN",
+  "failuresSeparate": "failure-and-recovery.json",
+  "resumeFirst": [
+    "Authcurrentnative recovery recheckclear; nextpurecopy/layout/preset splitdrafts, oldmain permanentlyforbidden",
+    "Preserve all successful1074bodyroots/timers andsourcepatches; no replay",
+    "FirstDay/GlobalScope actual dependency/sourcebridges andremainingSource19freshgroups"
+  ],
+  "all291SemanticUNVERIFIED": true,
+  "old1000NestedScanNotNew74": true
+}

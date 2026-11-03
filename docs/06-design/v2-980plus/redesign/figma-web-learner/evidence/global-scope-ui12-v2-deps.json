@@ -1,0 +1,125 @@
+{
+  "auth": {
+    "variables": {
+      "operationStage": "VariableID:426:15222",
+      "registrationUnknown": "VariableID:426:15228",
+      "resetUnknown": "VariableID:426:15230",
+      "requestPrincipalId": "VariableID:426:15254",
+      "requestDeviceId": "VariableID:426:15255",
+      "requestSessionEpoch": "VariableID:426:15256",
+      "requestScopeSourceMarker": "VariableID:426:15257",
+      "confirmedScopeValid": "VariableID:426:15263",
+      "confirmedPrincipalId": "VariableID:426:15259",
+      "confirmedDeviceId": "VariableID:426:15260",
+      "confirmedSessionEpoch": "VariableID:426:15261",
+      "confirmedScopeSourceMarker": "VariableID:426:15262",
+      "requestOperationSequence": "VariableID:426:15258",
+      "fixtureResponseOperationSequence": "VariableID:426:15252",
+      "authBaseSessionStage": "VariableID:426:15241",
+      "servicesSessionStage": "VariableID:367:3974",
+      "servicesPrivateVisible": "VariableID:367:3975"
+    },
+    "loginRoot": {
+      "id": "426:15265",
+      "name": "Codex / Web全量补稿 / access-auth-forms / login"
+    },
+    "safeRoot": {
+      "id": "426:15503",
+      "name": "Codex / Web全量补稿 / access-auth-forms / safe"
+    },
+    "reviewRoot": {
+      "id": "426:15520",
+      "name": "Codex / Web全量补稿 / access-auth-forms / review"
+    }
+  },
+  "consent": {
+    "variables": {
+      "eligibilityState": "VariableID:439:15386",
+      "eligibilityPrincipalId": "VariableID:439:15387",
+      "eligibilityDeviceId": "VariableID:439:15388",
+      "eligibilitySessionEpoch": "VariableID:439:15389",
+      "eligibilitySourceMarker": "VariableID:439:15390"
+    },
+    "purposes": {
+      "terms": {
+        "receiptDurable": "VariableID:439:15419",
+        "currentVersion": "VariableID:439:15405",
+        "receivedVersion": "VariableID:439:15408",
+        "currentDigest": "VariableID:439:15406",
+        "receivedDigest": "VariableID:439:15409",
+        "principalId": "VariableID:439:15410",
+        "deviceId": "VariableID:439:15411",
+        "sessionEpoch": "VariableID:439:15412",
+        "sourceMarker": "VariableID:439:15413"
+      },
+      "privacy": {
+        "receiptDurable": "VariableID:439:15435",
+        "currentVersion": "VariableID:439:15421",
+        "receivedVersion": "VariableID:439:15424",
+        "currentDigest": "VariableID:439:15422",
+        "receivedDigest": "VariableID:439:15425",
+        "principalId": "VariableID:439:15426",
+        "deviceId": "VariableID:439:15427",
+        "sessionEpoch": "VariableID:439:15428",
+        "sourceMarker": "VariableID:439:15429"
+      },
+      "adultLearning": {
+        "receiptDurable": "VariableID:439:15451",
+        "currentVersion": "VariableID:439:15437",
+        "receivedVersion": "VariableID:439:15440",
+        "currentDigest": "VariableID:439:15438",
+        "receivedDigest": "VariableID:439:15441",
+        "principalId": "VariableID:439:15442",
+        "deviceId": "VariableID:439:15443",
+        "sessionEpoch": "VariableID:439:15444",
+        "sourceMarker": "VariableID:439:15445"
+      }
+    },
+    "entryRoot": {
+      "id": "439:15453",
+      "name": "Codex / Web全量补稿 / access-consent / loading"
+    }
+  },
+  "global": {
+    "variableIds": {
+      "auth": "VariableID:389:14800",
+      "category": "VariableID:389:14793",
+      "disclosure": "VariableID:389:14812",
+      "draftQuery": "VariableID:389:14790",
+      "historyVisible": "VariableID:389:14813",
+      "normalized": "VariableID:389:14792",
+      "previewMistake": "VariableID:389:14816",
+      "preview_private": "VariableID:389:14836",
+      "query": "VariableID:389:14791",
+      "readStatus": "VariableID:389:14799",
+      "requestRevision": "VariableID:389:14804",
+      "revision": "VariableID:389:14803",
+      "searchActive": "VariableID:389:14811",
+      "selectedId": "VariableID:389:14795",
+      "selectedTarget": "VariableID:389:14797",
+      "showMistake": "VariableID:389:14815",
+      "show_private": "VariableID:389:14835"
+    },
+    "screenIds": {
+      "start": "389:14848",
+      "loading": "389:14884"
+    },
+    "noHistoryVariableId": "VariableID:389:15333"
+  },
+  "pwa": {
+    "variables": {
+      "owner": "VariableID:385:14272",
+      "knownActor": "VariableID:385:14279"
+    }
+  },
+  "readingArticleRoot": {
+    "id": "379:18925",
+    "name": "Codex / Web全量补稿 / skills-reading-a / reader"
+  },
+  "sourceEvidence": [
+    {
+      "path": "global-scope-current-actual-deps-v2.json",
+      "sha256": "4120a14093702acbfe65aa62baef6a3484c96e22890b2aeff57444a5b9079f7f"
+    }
+  ]
+}

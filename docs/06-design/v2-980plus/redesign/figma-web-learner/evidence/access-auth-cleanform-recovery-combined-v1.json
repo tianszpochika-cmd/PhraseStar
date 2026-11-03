@@ -1,0 +1,106 @@
+{
+  "status": "NATIVE_RECOVERY_RECHECK_CLEAR_VISUAL_REMAINS_OPEN",
+  "p0RecoveryHold": "CLEAR_BY_SEQUENTIAL_FRESH_NATIVE_EVIDENCE_NO_INTERVENING_DOCUMENT_WRITES",
+  "actualImmediateTransactionResult": {
+    "path": "access-auth-cleanform-v1-write-result.json",
+    "sha256": "bac20aef0f6bc361fd107b460bab09bb102dd2acaaa6bf8c956f7831ec563cae",
+    "status": "PARTIAL_FAILURE_READ_BEFORE_RETRY",
+    "rollbackComplete": false,
+    "preserveAsFailureHistory": true,
+    "notReclassifiedAsInstantRollbackSuccess": true
+  },
+  "combinedFreshEvidence": [
+    {
+      "path": "access-auth-cleanform-recovery-READ01-native-v2.json",
+      "sha256": "ccb00f91ba81c84f3d678e1858cc0bd56f8d0bcb3fdf13dc81a8914276e473d7",
+      "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_GEOMETRY_V2",
+      "documentWrites": 0
+    },
+    {
+      "path": "access-auth-cleanform-recovery-READ02-native-v2.json",
+      "sha256": "34e2c4ac036dfc8f98577dbd35c0ec845ba222babe1e588241ec423bb489ea41",
+      "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_TEXT_AND_PRESET_V2",
+      "documentWrites": 0
+    },
+    {
+      "path": "access-auth-cleanform-recovery-READ03-native-v2.json",
+      "sha256": "28a45ec223990434d0cb659fb250601c7a0fdf681c3ff3c21af8f2f95268aea6",
+      "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_VARIABLES_AND_HOOKS_V2",
+      "documentWrites": 0
+    },
+    {
+      "path": "access-auth-cleanform-recovery-READ04-hidden-native-v1.json",
+      "sha256": "c9c82be44a510e6f155469b804e458d9c2ea3bcb2203e0e886a0e988c7c48f35",
+      "status": "READ_HIDDEN_ORIGINAL4_TEXT_EXACT_BASELINE_MATCH",
+      "documentWrites": 0
+    }
+  ],
+  "checks": {
+    "explicitCreated463Candidates57": {
+      "checked": 57,
+      "currentAbsent": 57,
+      "residuals": []
+    },
+    "originalText146": {
+      "normalLookupExact": 142,
+      "hiddenTraversalExact": 4,
+      "unreadableRemaining": 0,
+      "actualFieldOrFontBindingDiffs": 0,
+      "hiddenTraversalEnvironmentRestored": true,
+      "expectedBeforeFlag": true,
+      "afterFlag": true,
+      "method": "READ02 normal142 + READ04 exact4 hidden TEXT current nonnull, each listed in original current parent. READ01 null/diff-empty was not counted as success."
+    },
+    "presetOriginal27": {
+      "fullCanonicalRXHashesMatched": 27,
+      "propsParentsIndicesDimensionsMatched": 27
+    },
+    "rowsOriginal9": {
+      "visibleChildrenOrderGeometryAndConstraintsMatched": 9
+    },
+    "componentCopyProperties11": {
+      "toggles": 8,
+      "info": 3,
+      "diffs": 0
+    },
+    "protectedAuthHooks2": {
+      "identityAndFullCanonicalRXHashesMatch": true,
+      "ids": [
+        "426:15350",
+        "426:15888"
+      ],
+      "hashes": [
+        "60281d1b:39822",
+        "d1f8b7f0:22553"
+      ]
+    },
+    "authVariables55": {
+      "currentMembershipIDsTypesScopesCollectionsHiddenMatched": true,
+      "all55CurrentValuesPersistedInRead03": true,
+      "noticeSavedNativePreWriteValueMatched": true,
+      "other54ExactBeforeAfterValueComparison": "NOT_AVAILABLE_PREWRITE_RUNTIME_SNAPSHOT_NOT_SERIALIZED",
+      "other54WasNotAuthoredByCleanform": true,
+      "noCreationDefaultsUsedForRepair": true,
+      "noVariableRepairPerformed": true
+    },
+    "knownLayoutFocus": {
+      "knownReadable20FocusFieldDiffs": 0,
+      "originalHiddenErrorCardsFIXED": "Expected recovered baseline, not a residual requiring FILL fix",
+      "failedCompoundPostWriteGeometryCause": "UNRESOLVED: immediate composite failure did not identify subcondition; no proof of enduring layout damage"
+    }
+  },
+  "recoveryDocumentWrites": 0,
+  "noRepairNeededForCurrentObservedSourceState": true,
+  "mainToolReplay": "PERMANENTLY_FORBIDDEN_KEEP_FAILED_HISTORY",
+  "visualDesignStatus": "OPEN: test controls remain on product forms; ordinary copy/840 columns/error FILL not delivered by failed transaction",
+  "nextDesignApproach": [
+    "Independent pure copy batch, no hierarchy/geometry/program changes",
+    "Independent layout batch with authored ancestor constraints only; do not delete/resize INSTANCE descendants, no strict immediate derived-geometry rollback gate",
+    "Independent preset migration batch with exact explicit new-node ownership and preserved guarded117SET/return branches"
+  ],
+  "limits": [
+    "This is current native recovery recheck, not proof the original rollback completed synchronously.",
+    "No true IAM/token/credential/consent/runtime/WCAG/device acceptance.",
+    "Do not reinterpret all54 source creation defaults as the lost before-values."
+  ]
+}

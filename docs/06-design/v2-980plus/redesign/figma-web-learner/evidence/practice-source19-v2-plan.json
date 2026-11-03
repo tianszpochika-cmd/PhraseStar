@@ -1,0 +1,4440 @@
+{
+  "status": "ACTUAL_CORE_SOURCE19_PLAN_NOT_NATIVE",
+  "coreReceipt": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/practice-original-facts-core-v2-UI14-calibrated-v1-parsed.json",
+  "coreReceiptSha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4",
+  "source3": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/practice-original-facts-source3-native-v1.json",
+  "source3Sha256": "be825edce057eda7f156905171eac7167997073697586a00e0e2997ad3628c40",
+  "batches": [
+    {
+      "key": "read-controls-r1",
+      "items": [
+        {
+          "kind": "choice",
+          "question": "R1",
+          "currentAnswer": "A",
+          "id": "161:6591",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "R1",
+          "answer": "A",
+          "id": "161:6595",
+          "textId": "I161:6595;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "choice",
+          "question": "R1",
+          "currentAnswer": "B",
+          "id": "161:6714",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "R1",
+          "answer": "B",
+          "id": "161:6720",
+          "textId": "I161:6720;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "R1",
+          "id": "161:6842",
+          "final": false,
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "R1",
+          "id": "161:6964",
+          "final": false,
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:6591",
+          "type": "INSTANCE",
+          "name": "选项 / B　On the train",
+          "parentId": "161:6585",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　B　On the train"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6597",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6472",
+          "visible": true
+        },
+        {
+          "id": "161:6595",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:6594",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6722",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6472",
+          "visible": true
+        },
+        {
+          "id": "I161:6595;12:3",
+          "type": "TEXT",
+          "parentId": "161:6595",
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:6472",
+          "name": "文字",
+          "width": 56,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6714",
+          "type": "INSTANCE",
+          "name": "选项 / A　By the window",
+          "parentId": "161:6710",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　A　By the window"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6472",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6597",
+          "visible": true
+        },
+        {
+          "id": "161:6720",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:6719",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7582",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6597",
+          "visible": true
+        },
+        {
+          "id": "I161:6720;12:3",
+          "type": "TEXT",
+          "parentId": "161:6720",
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:6597",
+          "name": "文字",
+          "width": 56,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6842",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:6841",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6966",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6722",
+          "visible": true
+        },
+        {
+          "id": "161:6964",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:6963",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6966",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6844",
+          "visible": true
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-controls-r2",
+      "items": [
+        {
+          "kind": "choice",
+          "question": "R2",
+          "currentAnswer": "A",
+          "id": "161:7207",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "R2",
+          "answer": "A",
+          "id": "161:7211",
+          "textId": "I161:7211;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "choice",
+          "question": "R2",
+          "currentAnswer": "B",
+          "id": "161:7330",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "R2",
+          "answer": "B",
+          "id": "161:7336",
+          "textId": "I161:7336;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "R2",
+          "id": "161:7458",
+          "final": true,
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "R2",
+          "id": "161:7580",
+          "final": true,
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:7207",
+          "type": "INSTANCE",
+          "name": "选项 / B　A train",
+          "parentId": "161:7201",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　B　A train"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7213",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7088",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "161:7211",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:7210",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7338",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7088",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "I161:7211;12:3",
+          "type": "TEXT",
+          "parentId": "161:7211",
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:7088",
+          "name": "文字",
+          "width": 56,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:7330",
+          "type": "INSTANCE",
+          "name": "选项 / A　A small garden",
+          "parentId": "161:7326",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　A　A small garden"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7088",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7213",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "161:7336",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:7335",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7460",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7213",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "I161:7336;12:3",
+          "type": "TEXT",
+          "parentId": "161:7336",
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:7213",
+          "name": "文字",
+          "width": 56,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:7458",
+          "type": "INSTANCE",
+          "name": "操作 / 查看练习小结",
+          "parentId": "161:7457",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查看练习小结"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7945",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7338",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "I161:7458;12:3",
+          "type": "TEXT",
+          "parentId": "161:7458",
+          "text": "查看练习小结",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:7338",
+          "name": "文字",
+          "width": 84,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:7580",
+          "type": "INSTANCE",
+          "name": "操作 / 查看练习小结",
+          "parentId": "161:7579",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查看练习小结"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7945",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7460",
+          "visible": true,
+          "boundVariables": {}
+        },
+        {
+          "id": "I161:7580;12:3",
+          "type": "TEXT",
+          "parentId": "161:7580",
+          "text": "查看练习小结",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:7460",
+          "name": "文字",
+          "width": 84,
+          "height": 17,
+          "visible": true,
+          "reactions": []
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-views-r1-input",
+      "items": [
+        {
+          "kind": "question-view",
+          "id": "161:6350",
+          "question": "R1",
+          "answer": null,
+          "bodyId": "161:6463",
+          "promptId": "161:6465",
+          "captionId": "161:6462",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:6472",
+          "question": "R1",
+          "answer": "A",
+          "bodyId": "161:6585",
+          "promptId": "161:6587",
+          "captionId": "161:6584",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:6597",
+          "question": "R1",
+          "answer": "B",
+          "bodyId": "161:6710",
+          "promptId": "161:6712",
+          "captionId": "161:6709",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:6350",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q1",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": [],
+          "rootId": "161:6350",
+          "visible": true,
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:201"
+              }
+            ]
+          }
+        },
+        {
+          "id": "161:6465",
+          "type": "TEXT",
+          "parentId": "161:6463",
+          "text": "Where does Mia read?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6350",
+          "name": "Where does Mia read?",
+          "width": 1058,
+          "height": 33,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6462",
+          "type": "TEXT",
+          "parentId": "161:6460",
+          "text": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6350",
+          "name": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "width": 1122,
+          "height": 21,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6472",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q1a",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": [],
+          "rootId": "161:6472",
+          "visible": true,
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:201"
+              }
+            ]
+          }
+        },
+        {
+          "id": "161:6587",
+          "type": "TEXT",
+          "parentId": "161:6585",
+          "text": "Where does Mia read?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6472",
+          "name": "Where does Mia read?",
+          "width": 1058,
+          "height": 33,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6584",
+          "type": "TEXT",
+          "parentId": "161:6582",
+          "text": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6472",
+          "name": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "width": 1122,
+          "height": 21,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6597",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q1b",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": [],
+          "rootId": "161:6597",
+          "visible": true,
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:201"
+              }
+            ]
+          }
+        },
+        {
+          "id": "161:6712",
+          "type": "TEXT",
+          "parentId": "161:6710",
+          "text": "Where does Mia read?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6597",
+          "name": "Where does Mia read?",
+          "width": 1058,
+          "height": 33,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6709",
+          "type": "TEXT",
+          "parentId": "161:6707",
+          "text": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6597",
+          "name": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已确认 0 / 2 题",
+          "width": 1122,
+          "height": 21,
+          "visible": true,
+          "reactions": []
+        },
+        {
+          "id": "161:6463",
+          "type": "FRAME",
+          "name": "内容与操作 / 可编辑",
+          "parentId": "161:6460",
+          "rootId": "161:6350",
+          "width": 1122,
+          "height": 330,
+          "visible": true,
+          "reactions": [],
+          "boundVariables": {
+            "itemSpacing": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2:212"
+            },
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:202"
+              }
+            ]
+          }
+        },
+        {
+          "id": "161:6585",
+          "type": "FRAME",
+          "name": "内容与操作 / 可编辑",
+          "parentId": "161:6582",
+          "rootId": "161:6472",
+          "width": 1122,
+          "height": 394,
+          "visible": true,
+          "reactions": [],
+          "boundVariables": {
+            "itemSpacing": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2:212"
+            },
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:202"
+              }
+            ]
+          }
+        },
+        {
+          "id": "161:6710",
+          "type": "FRAME",
+          "name": "内容与操作 / 可编辑",
+          "parentId": "161:6707",
+          "rootId": "161:6597",
+          "width": 1122,
+          "height": 394,
+          "visible": true,
+          "reactions": [],
+          "boundVariables": {
+            "itemSpacing": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2:212"
+            },
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:202"
+              }
+            ]
+          }
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-views-r1-feedback",
+      "items": [
+        {
+          "kind": "feedback-view",
+          "id": "161:6722",
+          "question": "R1",
+          "answer": "A",
+          "bodyId": "161:6835",
+          "promptId": "161:6836",
+          "captionId": "161:6834",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "feedback-view",
+          "id": "161:6844",
+          "question": "R1",
+          "answer": "B",
+          "bodyId": "161:6957",
+          "promptId": "161:6958",
+          "captionId": "161:6956",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:6722",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q1fa",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:6836",
+          "type": "TEXT",
+          "parentId": "161:6835",
+          "text": "Where does Mia read?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6722"
+        },
+        {
+          "id": "161:6834",
+          "type": "TEXT",
+          "parentId": "161:6832",
+          "text": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6722"
+        },
+        {
+          "id": "161:6844",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q1fb",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:6958",
+          "type": "TEXT",
+          "parentId": "161:6957",
+          "text": "Where does Mia read?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6844"
+        },
+        {
+          "id": "161:6956",
+          "type": "TEXT",
+          "parentId": "161:6954",
+          "text": "本轮练习 READ-01（示例）· 第 1 / 2 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6844"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-views-r2-input",
+      "items": [
+        {
+          "kind": "question-view",
+          "id": "161:6966",
+          "question": "R2",
+          "answer": null,
+          "bodyId": "161:7079",
+          "promptId": "161:7081",
+          "captionId": "161:7078",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:7088",
+          "question": "R2",
+          "answer": "A",
+          "bodyId": "161:7201",
+          "promptId": "161:7203",
+          "captionId": "161:7200",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:7213",
+          "question": "R2",
+          "answer": "B",
+          "bodyId": "161:7326",
+          "promptId": "161:7328",
+          "captionId": "161:7325",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:6966",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q2",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7081",
+          "type": "TEXT",
+          "parentId": "161:7079",
+          "text": "What is the story about?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:6966"
+        },
+        {
+          "id": "161:7078",
+          "type": "TEXT",
+          "parentId": "161:7076",
+          "text": "本轮练习 READ-01（示例）· 第 2 / 2 题 · 已确认 1 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:6966"
+        },
+        {
+          "id": "161:7088",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q2a",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7203",
+          "type": "TEXT",
+          "parentId": "161:7201",
+          "text": "What is the story about?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7088"
+        },
+        {
+          "id": "161:7200",
+          "type": "TEXT",
+          "parentId": "161:7198",
+          "text": "本轮练习 READ-01（示例）· 第 2 / 2 题 · 已确认 1 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:7088"
+        },
+        {
+          "id": "161:7213",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q2b",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7328",
+          "type": "TEXT",
+          "parentId": "161:7326",
+          "text": "What is the story about?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7213"
+        },
+        {
+          "id": "161:7325",
+          "type": "TEXT",
+          "parentId": "161:7323",
+          "text": "本轮练习 READ-01（示例）· 第 2 / 2 题 · 已确认 1 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:7213"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-views-r2-feedback",
+      "items": [
+        {
+          "kind": "feedback-view",
+          "id": "161:7338",
+          "question": "R2",
+          "answer": "A",
+          "bodyId": "161:7451",
+          "promptId": "161:7452",
+          "captionId": "161:7450",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "feedback-view",
+          "id": "161:7460",
+          "question": "R2",
+          "answer": "B",
+          "bodyId": "161:7573",
+          "promptId": "161:7574",
+          "captionId": "161:7572",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:7338",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q2fa",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7452",
+          "type": "TEXT",
+          "parentId": "161:7451",
+          "text": "What is the story about?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7338"
+        },
+        {
+          "id": "161:7450",
+          "type": "TEXT",
+          "parentId": "161:7448",
+          "text": "本轮练习 READ-01（示例）· 第 2 / 2 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:7338"
+        },
+        {
+          "id": "161:7460",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / q2fb",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7574",
+          "type": "TEXT",
+          "parentId": "161:7573",
+          "text": "What is the story about?",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7460"
+        },
+        {
+          "id": "161:7572",
+          "type": "TEXT",
+          "parentId": "161:7570",
+          "text": "本轮练习 READ-01（示例）· 第 2 / 2 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:7460"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-controls-g1",
+      "items": [
+        {
+          "kind": "choice",
+          "question": "G1",
+          "currentAnswer": "A",
+          "id": "161:4238",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G1",
+          "answer": "A",
+          "id": "161:4242",
+          "textId": "I161:4242;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "choice",
+          "question": "G1",
+          "currentAnswer": "B",
+          "id": "161:4360",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G1",
+          "answer": "B",
+          "id": "161:4366",
+          "textId": "I161:4366;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G1",
+          "id": "161:4488",
+          "final": false,
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G1",
+          "id": "161:4610",
+          "final": false,
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:4238",
+          "type": "INSTANCE",
+          "name": "选项 / B　goes",
+          "parentId": "161:4233",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　B　goes"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4244",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4120"
+        },
+        {
+          "id": "161:4242",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:4241",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4368",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4120"
+        },
+        {
+          "id": "I161:4242;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:4242",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:4120"
+        },
+        {
+          "id": "161:4360",
+          "type": "INSTANCE",
+          "name": "选项 / A　go",
+          "parentId": "161:4357",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　A　go"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4120",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4244"
+        },
+        {
+          "id": "161:4366",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:4365",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5838",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4244"
+        },
+        {
+          "id": "I161:4366;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:4366",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:4244"
+        },
+        {
+          "id": "161:4488",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:4487",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4612",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4368"
+        },
+        {
+          "id": "161:4610",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:4609",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4612",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4490"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-controls-g2",
+      "items": [
+        {
+          "kind": "choice",
+          "question": "G2",
+          "currentAnswer": "A",
+          "id": "161:4851",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G2",
+          "answer": "A",
+          "id": "161:4855",
+          "textId": "I161:4855;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "choice",
+          "question": "G2",
+          "currentAnswer": "B",
+          "id": "161:4973",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G2",
+          "answer": "B",
+          "id": "161:4979",
+          "textId": "I161:4979;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G2",
+          "id": "161:5101",
+          "final": false,
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G2",
+          "id": "161:5223",
+          "final": false,
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:4851",
+          "type": "INSTANCE",
+          "name": "选项 / B　studies",
+          "parentId": "161:4846",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　B　studies"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4857",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4733"
+        },
+        {
+          "id": "161:4855",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:4854",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4981",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4733"
+        },
+        {
+          "id": "I161:4855;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:4855",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:4733"
+        },
+        {
+          "id": "161:4973",
+          "type": "INSTANCE",
+          "name": "选项 / A　study",
+          "parentId": "161:4970",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　A　study"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4733",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4857"
+        },
+        {
+          "id": "161:4979",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:4978",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5103",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4857"
+        },
+        {
+          "id": "I161:4979;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:4979",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:4857"
+        },
+        {
+          "id": "161:5101",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:5100",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5225",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:4981"
+        },
+        {
+          "id": "161:5223",
+          "type": "INSTANCE",
+          "name": "操作 / 下一题",
+          "parentId": "161:5222",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "下一题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5225",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5103"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-controls-g3",
+      "items": [
+        {
+          "kind": "choice",
+          "question": "G3",
+          "currentAnswer": "A",
+          "id": "161:5464",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G3",
+          "answer": "A",
+          "id": "161:5468",
+          "textId": "I161:5468;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "choice",
+          "question": "G3",
+          "currentAnswer": "B",
+          "id": "161:5586",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "submit",
+          "question": "G3",
+          "answer": "B",
+          "id": "161:5592",
+          "textId": "I161:5592;12:3",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G3",
+          "id": "161:5714",
+          "final": true,
+          "reactionIndex": 0
+        },
+        {
+          "kind": "next",
+          "question": "G3",
+          "id": "161:5836",
+          "final": true,
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:5464",
+          "type": "INSTANCE",
+          "name": "选项 / B　drinks",
+          "parentId": "161:5459",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　B　drinks"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5470",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5346"
+        },
+        {
+          "id": "161:5468",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:5467",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5594",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5346"
+        },
+        {
+          "id": "I161:5468;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:5468",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:5346"
+        },
+        {
+          "id": "161:5586",
+          "type": "INSTANCE",
+          "name": "选项 / A　drink",
+          "parentId": "161:5583",
+          "width": 700,
+          "height": 48,
+          "properties": {
+            "文案#32:1": {
+              "type": "TEXT",
+              "value": "○　A　drink"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5346",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5470"
+        },
+        {
+          "id": "161:5592",
+          "type": "INSTANCE",
+          "name": "操作 / 提交本题",
+          "parentId": "161:5591",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "提交本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5716",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5470"
+        },
+        {
+          "id": "I161:5592;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:5592",
+          "width": 56,
+          "height": 17,
+          "text": "提交本题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:5470"
+        },
+        {
+          "id": "161:5714",
+          "type": "INSTANCE",
+          "name": "操作 / 查看练习小结",
+          "parentId": "161:5713",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查看练习小结"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6201",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5594"
+        },
+        {
+          "id": "I161:5714;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:5714",
+          "width": 84,
+          "height": 17,
+          "text": "查看练习小结",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:5594"
+        },
+        {
+          "id": "161:5836",
+          "type": "INSTANCE",
+          "name": "操作 / 查看练习小结",
+          "parentId": "161:5835",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查看练习小结"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6201",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5716"
+        },
+        {
+          "id": "I161:5836;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:5836",
+          "width": 84,
+          "height": 17,
+          "text": "查看练习小结",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:5716"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g1-input",
+      "items": [
+        {
+          "kind": "question-view",
+          "id": "161:3999",
+          "question": "G1",
+          "answer": null,
+          "bodyId": "161:4112",
+          "promptId": "161:4113",
+          "captionId": "161:4111",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:4120",
+          "question": "G1",
+          "answer": "A",
+          "bodyId": "161:4233",
+          "promptId": "161:4234",
+          "captionId": "161:4232",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:4244",
+          "question": "G1",
+          "answer": "B",
+          "bodyId": "161:4357",
+          "promptId": "161:4358",
+          "captionId": "161:4356",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:3999",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q1",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4113",
+          "type": "TEXT",
+          "name": "She ___ to school every day.",
+          "parentId": "161:4112",
+          "width": 1058,
+          "height": 33,
+          "text": "She ___ to school every day.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:3999"
+        },
+        {
+          "id": "161:4111",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "parentId": "161:4109",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:3999"
+        },
+        {
+          "id": "161:4120",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q1a",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4234",
+          "type": "TEXT",
+          "name": "She ___ to school every day.",
+          "parentId": "161:4233",
+          "width": 1058,
+          "height": 33,
+          "text": "She ___ to school every day.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4120"
+        },
+        {
+          "id": "161:4232",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "parentId": "161:4230",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4120"
+        },
+        {
+          "id": "161:4244",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q1b",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4358",
+          "type": "TEXT",
+          "name": "She ___ to school every day.",
+          "parentId": "161:4357",
+          "width": 1058,
+          "height": 33,
+          "text": "She ___ to school every day.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4244"
+        },
+        {
+          "id": "161:4356",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "parentId": "161:4354",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已确认 0 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4244"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g1-feedback",
+      "items": [
+        {
+          "kind": "feedback-view",
+          "id": "161:4368",
+          "question": "G1",
+          "answer": "A",
+          "bodyId": "161:4481",
+          "promptId": "161:4482",
+          "captionId": "161:4480",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "feedback-view",
+          "id": "161:4490",
+          "question": "G1",
+          "answer": "B",
+          "bodyId": "161:4603",
+          "promptId": "161:4604",
+          "captionId": "161:4602",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:4368",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q1fa",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4482",
+          "type": "TEXT",
+          "name": "She ___ to school every day.",
+          "parentId": "161:4481",
+          "width": 1058,
+          "height": 33,
+          "text": "She ___ to school every day.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4368"
+        },
+        {
+          "id": "161:4480",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已保存",
+          "parentId": "161:4478",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4368"
+        },
+        {
+          "id": "161:4490",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q1fb",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4604",
+          "type": "TEXT",
+          "name": "She ___ to school every day.",
+          "parentId": "161:4603",
+          "width": 1058,
+          "height": 33,
+          "text": "She ___ to school every day.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4490"
+        },
+        {
+          "id": "161:4602",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已保存",
+          "parentId": "161:4600",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 1 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4490"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g2-input",
+      "items": [
+        {
+          "kind": "question-view",
+          "id": "161:4612",
+          "question": "G2",
+          "answer": null,
+          "bodyId": "161:4725",
+          "promptId": "161:4726",
+          "captionId": "161:4724",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:4733",
+          "question": "G2",
+          "answer": "A",
+          "bodyId": "161:4846",
+          "promptId": "161:4847",
+          "captionId": "161:4845",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:4857",
+          "question": "G2",
+          "answer": "B",
+          "bodyId": "161:4970",
+          "promptId": "161:4971",
+          "captionId": "161:4969",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:4612",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q2",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4726",
+          "type": "TEXT",
+          "name": "They ___ English on Mondays.",
+          "parentId": "161:4725",
+          "width": 1058,
+          "height": 33,
+          "text": "They ___ English on Mondays.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4612"
+        },
+        {
+          "id": "161:4724",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "parentId": "161:4722",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4612"
+        },
+        {
+          "id": "161:4733",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q2a",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4847",
+          "type": "TEXT",
+          "name": "They ___ English on Mondays.",
+          "parentId": "161:4846",
+          "width": 1058,
+          "height": 33,
+          "text": "They ___ English on Mondays.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4733"
+        },
+        {
+          "id": "161:4845",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "parentId": "161:4843",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4733"
+        },
+        {
+          "id": "161:4857",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q2b",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:4971",
+          "type": "TEXT",
+          "name": "They ___ English on Mondays.",
+          "parentId": "161:4970",
+          "width": 1058,
+          "height": 33,
+          "text": "They ___ English on Mondays.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4857"
+        },
+        {
+          "id": "161:4969",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "parentId": "161:4967",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已确认 1 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4857"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g2-feedback",
+      "items": [
+        {
+          "kind": "feedback-view",
+          "id": "161:4981",
+          "question": "G2",
+          "answer": "A",
+          "bodyId": "161:5094",
+          "promptId": "161:5095",
+          "captionId": "161:5093",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "feedback-view",
+          "id": "161:5103",
+          "question": "G2",
+          "answer": "B",
+          "bodyId": "161:5216",
+          "promptId": "161:5217",
+          "captionId": "161:5215",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:4981",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q2fa",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5095",
+          "type": "TEXT",
+          "name": "They ___ English on Mondays.",
+          "parentId": "161:5094",
+          "width": 1058,
+          "height": 33,
+          "text": "They ___ English on Mondays.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4981"
+        },
+        {
+          "id": "161:5093",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已保存",
+          "parentId": "161:5091",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:4981"
+        },
+        {
+          "id": "161:5103",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q2fb",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5217",
+          "type": "TEXT",
+          "name": "They ___ English on Mondays.",
+          "parentId": "161:5216",
+          "width": 1058,
+          "height": 33,
+          "text": "They ___ English on Mondays.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5103"
+        },
+        {
+          "id": "161:5215",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已保存",
+          "parentId": "161:5213",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 2 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5103"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g3-input",
+      "items": [
+        {
+          "kind": "question-view",
+          "id": "161:5225",
+          "question": "G3",
+          "answer": null,
+          "bodyId": "161:5338",
+          "promptId": "161:5339",
+          "captionId": "161:5337",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:5346",
+          "question": "G3",
+          "answer": "A",
+          "bodyId": "161:5459",
+          "promptId": "161:5460",
+          "captionId": "161:5458",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "question-view",
+          "id": "161:5470",
+          "question": "G3",
+          "answer": "B",
+          "bodyId": "161:5583",
+          "promptId": "161:5584",
+          "captionId": "161:5582",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:5225",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q3",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5339",
+          "type": "TEXT",
+          "name": "My brother ___ coffee in the morning.",
+          "parentId": "161:5338",
+          "width": 1058,
+          "height": 33,
+          "text": "My brother ___ coffee in the morning.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5225"
+        },
+        {
+          "id": "161:5337",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "parentId": "161:5335",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5225"
+        },
+        {
+          "id": "161:5346",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q3a",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5460",
+          "type": "TEXT",
+          "name": "My brother ___ coffee in the morning.",
+          "parentId": "161:5459",
+          "width": 1058,
+          "height": 33,
+          "text": "My brother ___ coffee in the morning.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5346"
+        },
+        {
+          "id": "161:5458",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "parentId": "161:5456",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5346"
+        },
+        {
+          "id": "161:5470",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q3b",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5584",
+          "type": "TEXT",
+          "name": "My brother ___ coffee in the morning.",
+          "parentId": "161:5583",
+          "width": 1058,
+          "height": 33,
+          "text": "My brother ___ coffee in the morning.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5470"
+        },
+        {
+          "id": "161:5582",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "parentId": "161:5580",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已确认 2 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5470"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "gr-views-g3-feedback",
+      "items": [
+        {
+          "kind": "feedback-view",
+          "id": "161:5594",
+          "question": "G3",
+          "answer": "A",
+          "bodyId": "161:5707",
+          "promptId": "161:5708",
+          "captionId": "161:5706",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "feedback-view",
+          "id": "161:5716",
+          "question": "G3",
+          "answer": "B",
+          "bodyId": "161:5829",
+          "promptId": "161:5830",
+          "captionId": "161:5828",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:5594",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q3fa",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5708",
+          "type": "TEXT",
+          "name": "My brother ___ coffee in the morning.",
+          "parentId": "161:5707",
+          "width": 1058,
+          "height": 33,
+          "text": "My brother ___ coffee in the morning.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5594"
+        },
+        {
+          "id": "161:5706",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已保存",
+          "parentId": "161:5704",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5594"
+        },
+        {
+          "id": "161:5716",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / q3fb",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5830",
+          "type": "TEXT",
+          "name": "My brother ___ coffee in the morning.",
+          "parentId": "161:5829",
+          "width": 1058,
+          "height": 33,
+          "text": "My brother ___ coffee in the morning.",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5716"
+        },
+        {
+          "id": "161:5828",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已保存",
+          "parentId": "161:5826",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 第 3 / 3 题 · 已保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5716"
+        }
+      ],
+      "missingSourceRootIds": []
+    },
+    {
+      "key": "read-legacy",
+      "items": [
+        {
+          "kind": "legacy-root",
+          "id": "161:7582",
+          "question": "R1",
+          "state": "unknown",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:7701",
+          "question": "R1",
+          "action": "query",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-root",
+          "id": "161:7703",
+          "question": "R1",
+          "state": "query",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:7820",
+          "question": "R1",
+          "action": "query",
+          "newLabel": "继续查询原请求",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:7822",
+          "question": "R1",
+          "action": "safe",
+          "newLabel": "稍后处理",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "text",
+          "id": "161:7818",
+          "value": "读取同一原提交的结果；结果未确认时不重复保存。"
+        },
+        {
+          "kind": "legacy-root",
+          "id": "161:7824",
+          "question": "R1",
+          "state": "notreceived",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:7943",
+          "question": "R1",
+          "action": "recover",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:7582",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / unknown",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7701",
+          "type": "INSTANCE",
+          "name": "操作 / 查询本次结果",
+          "parentId": "161:7700",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查询本次结果"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7703",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7582"
+        },
+        {
+          "id": "161:7703",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / query",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7820",
+          "type": "INSTANCE",
+          "name": "操作 / 示例：已确认保存",
+          "parentId": "161:7819",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "示例：已确认保存"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6844",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7703"
+        },
+        {
+          "id": "I161:7820;12:3",
+          "type": "TEXT",
+          "parentId": "161:7820",
+          "text": "示例：已确认保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "rootId": "161:7703"
+        },
+        {
+          "id": "161:7822",
+          "type": "INSTANCE",
+          "name": "操作 / 示例：确认未保存",
+          "parentId": "161:7819",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "示例：确认未保存"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:7824",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7703"
+        },
+        {
+          "id": "I161:7822;12:3",
+          "type": "TEXT",
+          "parentId": "161:7822",
+          "text": "示例：确认未保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:197"
+              }
+            ]
+          },
+          "rootId": "161:7703"
+        },
+        {
+          "id": "161:7818",
+          "type": "TEXT",
+          "parentId": "161:7816",
+          "text": "以下为设计审阅中的两种查询结果，实际状态以服务端回执为准。",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7703"
+        },
+        {
+          "id": "161:7824",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / notreceived",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:7943",
+          "type": "INSTANCE",
+          "name": "操作 / 返回本题",
+          "parentId": "161:7942",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "返回本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6597",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:7824"
+        }
+      ]
+    },
+    {
+      "key": "read-summary",
+      "items": [
+        {
+          "kind": "summary",
+          "id": "161:7945",
+          "session": "READ",
+          "bodyId": "161:8058",
+          "titleId": "161:8056",
+          "captionId": "161:8057",
+          "scoreId": "161:8059",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:7945",
+          "type": "FRAME",
+          "name": "Codex / Web阅读两题练习 / summary",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:8056",
+          "type": "TEXT",
+          "parentId": "161:8055",
+          "text": "阅读理解 · 已完成",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7945"
+        },
+        {
+          "id": "161:8057",
+          "type": "TEXT",
+          "parentId": "161:8055",
+          "text": "本轮练习 READ-01（示例）· 已确认 2 / 2 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "rootId": "161:7945"
+        },
+        {
+          "id": "161:8059",
+          "type": "TEXT",
+          "parentId": "161:8058",
+          "text": "两道题均已完成并保存。",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "rootId": "161:7945"
+        }
+      ]
+    },
+    {
+      "key": "gr-legacy",
+      "items": [
+        {
+          "kind": "legacy-root",
+          "id": "161:5838",
+          "question": "G1",
+          "state": "unknown",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:5957",
+          "question": "G1",
+          "action": "query",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-root",
+          "id": "161:5959",
+          "question": "G1",
+          "state": "query",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:6076",
+          "question": "G1",
+          "action": "query",
+          "newLabel": "继续查询原请求",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:6078",
+          "question": "G1",
+          "action": "safe",
+          "newLabel": "稍后处理",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "text",
+          "id": "161:6074",
+          "value": "读取同一原提交的结果；结果未确认时不重复保存。"
+        },
+        {
+          "kind": "legacy-root",
+          "id": "161:6080",
+          "question": "G1",
+          "state": "notreceived",
+          "reactionIndex": 0
+        },
+        {
+          "kind": "legacy-control",
+          "id": "161:6199",
+          "question": "G1",
+          "action": "recover",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:5838",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / unknown",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:5957",
+          "type": "INSTANCE",
+          "name": "操作 / 查询本次结果",
+          "parentId": "161:5956",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "查询本次结果"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:5959",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5838"
+        },
+        {
+          "id": "161:5959",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / query",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:6076",
+          "type": "INSTANCE",
+          "name": "操作 / 示例：已确认保存",
+          "parentId": "161:6075",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "示例：已确认保存"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4490",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5959"
+        },
+        {
+          "id": "I161:6076;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:6076",
+          "width": 112,
+          "height": 17,
+          "text": "示例：已确认保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {},
+          "reactions": [],
+          "rootId": "161:5959"
+        },
+        {
+          "id": "161:6078",
+          "type": "INSTANCE",
+          "name": "操作 / 示例：确认未保存",
+          "parentId": "161:6075",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "示例：确认未保存"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:6080",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:5959"
+        },
+        {
+          "id": "I161:6078;12:3",
+          "type": "TEXT",
+          "name": "文字",
+          "parentId": "161:6078",
+          "width": 112,
+          "height": 17,
+          "text": "示例：确认未保存",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:197"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5959"
+        },
+        {
+          "id": "161:6074",
+          "type": "TEXT",
+          "name": "以下为设计审阅中的两种查询结果，实际状态以服务端回执为准。",
+          "parentId": "161:6072",
+          "width": 1058,
+          "height": 23,
+          "text": "以下为设计审阅中的两种查询结果，实际状态以服务端回执为准。",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:5959"
+        },
+        {
+          "id": "161:6080",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / notreceived",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:6199",
+          "type": "INSTANCE",
+          "name": "操作 / 返回本题",
+          "parentId": "161:6198",
+          "width": 220,
+          "height": 48,
+          "properties": {
+            "文案#12:0": {
+              "type": "TEXT",
+              "value": "返回本题"
+            }
+          },
+          "reactions": [
+            {
+              "trigger": {
+                "type": "ON_CLICK"
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "161:4244",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false
+                }
+              ]
+            }
+          ],
+          "rootId": "161:6080"
+        }
+      ]
+    },
+    {
+      "key": "gr-summary",
+      "items": [
+        {
+          "kind": "summary",
+          "id": "161:6201",
+          "session": "GR",
+          "bodyId": "161:6314",
+          "titleId": "161:6312",
+          "captionId": "161:6313",
+          "scoreId": "161:6315",
+          "reactionIndex": 0
+        }
+      ],
+      "guards": [
+        {
+          "id": "161:6201",
+          "type": "FRAME",
+          "name": "Codex / Web语法三题练习 / summary",
+          "parentId": "0:1",
+          "width": 1440,
+          "height": 900,
+          "reactions": []
+        },
+        {
+          "id": "161:6312",
+          "type": "TEXT",
+          "name": "语法练习 · 已完成",
+          "parentId": "161:6311",
+          "width": 1122,
+          "height": 39,
+          "text": "语法练习 · 已完成",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:6201"
+        },
+        {
+          "id": "161:6313",
+          "type": "TEXT",
+          "name": "本轮练习 GR-01（示例）· 已确认 3 / 3 题",
+          "parentId": "161:6311",
+          "width": 1122,
+          "height": 21,
+          "text": "本轮练习 GR-01（示例）· 已确认 3 / 3 题",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:204"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:6201"
+        },
+        {
+          "id": "161:6315",
+          "type": "TEXT",
+          "name": "三道题均已完成并保存。",
+          "parentId": "161:6314",
+          "width": 1058,
+          "height": 30,
+          "text": "三道题均已完成并保存。",
+          "fonts": [
+            {
+              "family": "Noto Sans SC",
+              "style": "Bold",
+              "variationSettings": {
+                "wght": 700
+              }
+            }
+          ],
+          "boundVariables": {
+            "fills": [
+              {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:203"
+              }
+            ]
+          },
+          "reactions": [],
+          "rootId": "161:6201"
+        }
+      ]
+    }
+  ],
+  "guardNodes": 147,
+  "migrationAudit": {
+    "timerIndex": "owned-timer-root-index-v2-native-complete.json",
+    "timerIndexSha256": "1b2492135338a4c1ab89edcb0e1181e144cbb8b19fab7872ca24536010c01830",
+    "migrationSummary": "owned-timer-migration-current.json",
+    "migrationSummarySha256": "eb1e7f92004af003b5ef6f006625dd898395a77cc619103390ed81426fc06636",
+    "verifiedMigratedIds": 159,
+    "sourceGuardOverlap": [],
+    "rule": "Any overlap or business RX mismatch HOLD; no blind raw800 assumption or conversion."
+  },
+  "preservedSourceReturnControls": [
+    "161:8063",
+    "161:6319"
+  ],
+  "dependencies": {
+    "coreReceiptSha256": "6b601b2cb6873685250d27238c66862a18f1588a594e7b5c86b874b63394bdf4",
+    "variables": {
+      "session": "VariableID:435:15342",
+      "question": "VariableID:435:15343",
+      "operation": "VariableID:435:15344",
+      "title": "VariableID:435:15345",
+      "prompt": "VariableID:435:15346",
+      "choice": "VariableID:435:15347",
+      "request": "VariableID:435:15348",
+      "response": "VariableID:435:15349",
+      "issue": "VariableID:435:15350",
+      "R1_stage": "VariableID:435:15351",
+      "R1_grade": "VariableID:435:15352",
+      "R1_choice": "VariableID:435:15353",
+      "R1_request": "VariableID:435:15354",
+      "R1_payload": "VariableID:435:15355",
+      "R1_score": "VariableID:435:15356",
+      "R1_label": "VariableID:435:15357",
+      "R1_status": "VariableID:435:15358",
+      "R1_editable": "VariableID:435:15359",
+      "R1_visibleA": "VariableID:435:15360",
+      "R1_visibleB": "VariableID:435:15361",
+      "R2_stage": "VariableID:435:15362",
+      "R2_grade": "VariableID:435:15363",
+      "R2_choice": "VariableID:435:15364",
+      "R2_request": "VariableID:435:15365",
+      "R2_payload": "VariableID:435:15366",
+      "R2_score": "VariableID:435:15367",
+      "R2_label": "VariableID:435:15368",
+      "R2_status": "VariableID:435:15369",
+      "R2_editable": "VariableID:435:15370",
+      "R2_visibleA": "VariableID:435:15371",
+      "R2_visibleB": "VariableID:435:15372",
+      "READ_stage": "VariableID:435:15373",
+      "READ_report": "VariableID:435:15374",
+      "READ_request": "VariableID:435:15375",
+      "READ_payload": "VariableID:435:15376",
+      "READ_score": "VariableID:435:15377",
+      "READ_progress": "VariableID:435:15378",
+      "READ_status": "VariableID:435:15379",
+      "READ_reportStatus": "VariableID:435:15380",
+      "READ_ready": "VariableID:435:15381",
+      "G1_stage": "VariableID:435:15382",
+      "G1_grade": "VariableID:435:15383",
+      "G1_choice": "VariableID:435:15384",
+      "G1_request": "VariableID:435:15385",
+      "G1_payload": "VariableID:435:15386",
+      "G1_score": "VariableID:435:15387",
+      "G1_label": "VariableID:435:15388",
+      "G1_status": "VariableID:435:15389",
+      "G1_editable": "VariableID:435:15390",
+      "G1_visibleA": "VariableID:435:15391",
+      "G1_visibleB": "VariableID:435:15392",
+      "G2_stage": "VariableID:435:15393",
+      "G2_grade": "VariableID:435:15394",
+      "G2_choice": "VariableID:435:15395",
+      "G2_request": "VariableID:435:15396",
+      "G2_payload": "VariableID:435:15397",
+      "G2_score": "VariableID:435:15398",
+      "G2_label": "VariableID:435:15399",
+      "G2_status": "VariableID:435:15400",
+      "G2_editable": "VariableID:435:15401",
+      "G2_visibleA": "VariableID:435:15402",
+      "G2_visibleB": "VariableID:435:15403",
+      "G3_stage": "VariableID:435:15404",
+      "G3_grade": "VariableID:435:15405",
+      "G3_choice": "VariableID:435:15406",
+      "G3_request": "VariableID:435:15407",
+      "G3_payload": "VariableID:435:15408",
+      "G3_score": "VariableID:435:15409",
+      "G3_label": "VariableID:435:15410",
+      "G3_status": "VariableID:435:15411",
+      "G3_editable": "VariableID:435:15412",
+      "G3_visibleA": "VariableID:435:15413",
+      "G3_visibleB": "VariableID:435:15414",
+      "GR_stage": "VariableID:435:15415",
+      "GR_report": "VariableID:435:15416",
+      "GR_request": "VariableID:435:15417",
+      "GR_payload": "VariableID:435:15418",
+      "GR_score": "VariableID:435:15419",
+      "GR_progress": "VariableID:435:15420",
+      "GR_status": "VariableID:435:15421",
+      "GR_reportStatus": "VariableID:435:15422",
+      "GR_ready": "VariableID:435:15423"
+    },
+    "screenIds": {
+      "unknown": "435:15424",
+      "query": "435:15448",
+      "grading": "435:15472",
+      "queryfailed": "435:15496",
+      "notreceived": "435:15520",
+      "context": "435:15544",
+      "safehome": "435:15568",
+      "progress": "435:15592",
+      "round-confirm": "435:15616",
+      "round-submitting": "435:15640",
+      "round-unknown": "435:15664",
+      "round-query": "435:15688",
+      "report-processing": "435:15712",
+      "state-review": "435:15736"
+    },
+    "timingCalibrationSha256": "59f029adbcd0f84f328640d035ff07c86d17e87b27d8c9ffdbd95a0fe1c3bc01",
+    "sourceGuardsSha256": "98910c2dc1ed97cd67e2de63965f125b83fe04fdd7a9fe13ba39b13c5be1fe21",
+    "source3Sha256": "be825edce057eda7f156905171eac7167997073697586a00e0e2997ad3628c40",
+    "freshControlsReadSha256": null,
+    "sourceEngineSha256": "ea1ed43bceb664777494095175d5a67b33a33688938bbafeb332727b217bf5ed",
+    "freshReadIndex": [
+      {
+        "batch": "read-controls-r1",
+        "path": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/practice-source19-v2-read-controls-r1-live.json",
+        "sha256": "4d32f165bcdf1eedee444013667222aa004d49975e288b4973b24de11da97d29"
+      },
+      {
+        "batch": "read-controls-r2",
+        "path": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/practice-source19-v2-read-controls-r2-live.json",
+        "sha256": "7a930df4570ae1c1b7dc14bb05a8710f6bf705391ef7aa92b030bd82eaf2bd8d"
+      },
+      {
+        "batch": "read-views-r1-input",
+        "path": "/Users/Admin/.codex/visualizations/2026/11/03/web-learner-business-coverage/practice-source19-v2-read-views-r1-input-live.json",
+        "sha256": "f2db914d3e2ef1c66d0e71422ba70598fcb366f827e119ab7e82012f918e5d42"
+      }
+    ],
+    "timerIndexSha256": "1b2492135338a4c1ab89edcb0e1181e144cbb8b19fab7872ca24536010c01830",
+    "timerMigrationSha256": "eb1e7f92004af003b5ef6f006625dd898395a77cc619103390ed81426fc06636"
+  }
+}

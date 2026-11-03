@@ -1,0 +1,218 @@
+{
+  "status": "PATCHED_CORE_SAVE_POSITION_PROGRESS_LITERALS_NEEDS_READBACK",
+  "prefix": "Codex / Web全量精准补丁 / save-position-literal-v1 / ",
+  "createdNodeIdsCsv": "",
+  "createdNodeIdCount": 0,
+  "mutatedNodeIds": [
+    "435:15424",
+    "435:15448"
+  ],
+  "createdVariableIds": [],
+  "createdVariableCollectionIds": [],
+  "roots": [],
+  "screens": [],
+  "types": {},
+  "imageFilledNodes": [],
+  "fontFamilies": [],
+  "controls": 0,
+  "errors": [],
+  "timingCalibrationStatus": "VERIFIED_GUI_AND_NATIVE_READBACK",
+  "timerConnectorUnit": "seconds",
+  "logicalMillisecondsPerConnectorUnit": 1000,
+  "adaptedTimeouts": [
+    {
+      "id": "435:15424",
+      "kind": "PATCH_PRESERVED_TRIGGER",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.800000011920929,
+          "milliseconds": 800.000011920929
+        }
+      ]
+    },
+    {
+      "id": "435:15448",
+      "kind": "PATCH_PRESERVED_TRIGGER",
+      "timers": [
+        {
+          "reactionIndex": 0,
+          "nativeTimeout": 0.800000011920929,
+          "milliseconds": 800.000011920929
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Editable Figma prototype, not real IAM/service persistence or policy approval.",
+    "Native example fields do not accept arbitrary keyboard input.",
+    "Widths reflow independently; real CSS zoom, keyboard, screen-reader and device acceptance remain separate."
+  ],
+  "outputUtf8BytesBeforeSizeField": 1102,
+  "sourceGuardSha256": "dda8ff542ba5ed929cd8f91e685e312efad7343494b88e2059501e96e1c2ee82",
+  "mutatedNodeIdsCsv": "435:15424,435:15448",
+  "changedStringValues": 10,
+  "changedProgressLiterals": [
+    {
+      "rootId": "435:15424",
+      "rows": [
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "valueType": "STRING",
+          "oldValue": "已保存 1 / 2 题；正在判分",
+          "newValue": "第1题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            18,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "valueType": "STRING",
+          "oldValue": "已保存 2 / 2 题；正在判分",
+          "newValue": "第2题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            27,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 1 / 3 题；正在判分",
+          "newValue": "第1题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            36,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 2 / 3 题；正在判分",
+          "newValue": "第2题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            45,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 3 / 3 题；正在判分",
+          "newValue": "第3题已保存；整轮完成状态见进度"
+        }
+      ]
+    },
+    {
+      "rootId": "435:15448",
+      "rows": [
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "valueType": "STRING",
+          "oldValue": "已保存 1 / 2 题；正在判分",
+          "newValue": "第1题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            18,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "valueType": "STRING",
+          "oldValue": "已保存 2 / 2 题；正在判分",
+          "newValue": "第2题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            27,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 1 / 3 题；正在判分",
+          "newValue": "第1题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            36,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 2 / 3 题；正在判分",
+          "newValue": "第2题已保存；整轮完成状态见进度"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            45,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "valueType": "STRING",
+          "oldValue": "已保存 3 / 3 题；正在判分",
+          "newValue": "第3题已保存；整轮完成状态见进度"
+        }
+      ]
+    }
+  ],
+  "scope": "Only5 save progress strings on each of unknown/query. Full conditions, score/payload/firstanswer, action order and calibrated triggers preserved."
+}

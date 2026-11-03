@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "web-publication-failure-recovery-v3",
+  "status": "AUTH_CURRENT_NATIVE_RECHECK_CLEAR_VISUAL_BUSINESS_OPEN",
+  "failure": {
+    "raw": {
+      "path": "evidence/access-auth-cleanform-v1-write-result.json",
+      "sha256": "bac20aef0f6bc361fd107b460bab09bb102dd2acaaa6bf8c956f7831ec563cae"
+    },
+    "parsed": {
+      "path": "evidence/access-auth-cleanform-v1-parsed.json",
+      "sha256": "83a241e0edddac0ac2ad86e74cc0fed8d300c8a0c4a3bf0d5e38eeab14860b4e"
+    },
+    "status": "PARTIAL_FAILURE_READ_BEFORE_RETRY",
+    "error": "Error: FINAL_GEOMETRY_BASE 426:15265",
+    "rollbackComplete": false,
+    "failures": [
+      {
+        "id": "I426:15718;12:3",
+        "error": "Error: in remove: Removing this node is not allowed"
+      },
+      {
+        "id": "I426:15671;12:3",
+        "error": "Error: in remove: Removing this node is not allowed"
+      },
+      {
+        "id": "I426:15614;12:3",
+        "error": "Error: in remove: Removing this node is not allowed"
+      },
+      {
+        "id": "I426:15571;12:3",
+        "error": "Error: in remove: Removing this node is not allowed"
+      },
+      {
+        "id": "I426:15571;12:3",
+        "error": "Error: CREATED_RESIDUAL"
+      },
+      {
+        "id": "I426:15614;12:3",
+        "error": "Error: CREATED_RESIDUAL"
+      },
+      {
+        "id": "I426:15671;12:3",
+        "error": "Error: CREATED_RESIDUAL"
+      },
+      {
+        "id": "I426:15718;12:3",
+        "error": "Error: CREATED_RESIDUAL"
+      },
+      {
+        "id": "all-programs-and-55-variables",
+        "error": "Error: RESTORE_SOURCE_SHAPE I426:15541;12:5"
+      }
+    ],
+    "attemptedCreatedIdsCsv": "463:15671,463:15672,463:15673,463:15674,463:15675,463:15676,463:15677,463:15678,463:15679,463:15680,463:15681,463:15682,463:15683,463:15684,463:15685,463:15686,463:15687,463:15688,463:15689,463:15690,463:15691,463:15692,463:15693,463:15694,463:15695,463:15696,463:15697,463:15698,463:15699,463:15700,463:15701,463:15702,463:15703,463:15704,463:15705,463:15706,463:15707,463:15708,463:15709,463:15710,463:15711,463:15712,463:15713,463:15714,463:15715,463:15747,463:15748,463:15749,463:15750,463:15751,463:15752,463:15753,463:15754,463:15755,463:15756,463:15757,463:15758,I426:15571;12:3,I426:15614;12:3,I426:15671;12:3,I426:15718;12:3",
+    "reportedMutatedIdsCsv": "426:15545,426:15548,426:15551,426:15560,426:15563,426:15566,426:15588,426:15591,426:15594,426:15603,426:15606,426:15609,426:15635,426:15638,426:15641,426:15660,426:15663,426:15666,426:15682,426:15685,426:15688,426:15707,426:15710,426:15713,426:15729,426:15732,426:15735,426:15544,426:15559,426:15587,426:15602,426:15634,426:15659,426:15681,426:15706,426:15728,426:15271,426:15272,426:15276,426:15543,426:15558,426:15575,426:15288,426:15289,426:15293,426:15586,426:15601,426:15618,426:15305,426:15306,426:15310,426:15633,426:15322,426:15323,426:15327,426:15658,426:15675,426:15339,426:15340,426:15344,426:15705,426:15722,426:15569,426:15571,426:15612,426:15614,426:15669,426:15671,426:15716,426:15718,426:15619,426:15650,426:15697,VariableID:426:15221,426:15273,426:15274,426:15275,426:15278,426:15537,426:15576,426:15579,426:15279,426:15280,426:15281,426:15290,426:15291,426:15292,426:15295,426:15580,426:15623,426:15626,426:15296,426:15297,426:15298,426:15307,426:15308,426:15309,426:15312,426:15627,426:15644,426:15647,426:15313,426:15314,426:15315,426:15324,426:15325,426:15326,426:15329,426:15648,426:15691,426:15694,426:15330,426:15331,426:15332,426:15738",
+    "neverCountAsSuccessfulReceipt": true,
+    "neverCountAsSuccessfulNewRoot": true,
+    "interpretation": "Host rejected removal of4old nestedI426TEXT misclassified ascreated; this does not prove complete currentAuth programs/variables/layout restored. No blanket deletion or mainretry permitted from this report."
+  },
+  "diagnosticReads": [
+    {
+      "raw": {
+        "path": "evidence/access-auth-cleanform-recovery-READ01-native-v1-raw.json",
+        "sha256": "30e7474dd5439ee932b41c11953431276369c613a7692d93142fbdc717ac4209"
+      },
+      "parsed": {
+        "path": "evidence/access-auth-cleanform-recovery-READ01-native-v1-raw-normalized.json",
+        "sha256": "0601328a134c953b7e242a2dd2da2847d5ee23d1247430ecb4666023ee54adee"
+      },
+      "isError": true,
+      "status": "READ_FAILED_NO_INTEGRITY_ACCEPTANCE",
+      "message": "TypeError: node.overflowDirection: no such property 'overflowDirection' on TEXT node\n    at get (<input>:63:28)\n    at fields (PLUGIN_1_SOURCE:5:759)\n    at <anonymous> (PLUGIN_1_SOURCE:7:84)\n"
+    }
+  ],
+  "recovery": {
+    "raw": {
+      "path": "evidence/access-auth-cleanform-recovery-combined-v1.json",
+      "sha256": "fb3baf16b010665d5b4ae532be1175256968269ef94e75499561a255800f9099"
+    },
+    "reportedStatus": "NATIVE_RECOVERY_RECHECK_CLEAR_VISUAL_REMAINS_OPEN",
+    "readbacks": [
+      {
+        "evidence": {
+          "path": "evidence/access-auth-cleanform-recovery-READ01-native-v2.json",
+          "sha256": "ccb00f91ba81c84f3d678e1858cc0bd56f8d0bcb3fdf13dc81a8914276e473d7"
+        },
+        "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_GEOMETRY_V2"
+      },
+      {
+        "evidence": {
+          "path": "evidence/access-auth-cleanform-recovery-READ02-native-v2.json",
+          "sha256": "34e2c4ac036dfc8f98577dbd35c0ec845ba222babe1e588241ec423bb489ea41"
+        },
+        "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_TEXT_AND_PRESET_V2"
+      },
+      {
+        "evidence": {
+          "path": "evidence/access-auth-cleanform-recovery-READ03-native-v2.json",
+          "sha256": "28a45ec223990434d0cb659fb250601c7a0fdf681c3ff3c21af8f2f95268aea6"
+        },
+        "status": "READ_ONLY_AUTH_CLEANFORM_RECOVERY_VARIABLES_AND_HOOKS_V2"
+      },
+      {
+        "evidence": {
+          "path": "evidence/access-auth-cleanform-recovery-READ04-hidden-native-v1.json",
+          "sha256": "c9c82be44a510e6f155469b804e458d9c2ea3bcb2203e0e886a0e988c7c48f35"
+        },
+        "status": "READ_HIDDEN_ORIGINAL4_TEXT_EXACT_BASELINE_MATCH"
+      }
+    ],
+    "explicitRootAcceptanceFlag": true,
+    "errorsBlockingRelease": [],
+    "scopedRecoveryAccepted": true,
+    "businessSemanticsStillUNVERIFIED": true,
+    "recheckMethod": "SEQUENTIAL_READ_ONLY_CURRENT_STATE_RECHECK",
+    "recoveryDocumentWrites": 0,
+    "originalImmediateRollbackCompleteRemainsFalse": true,
+    "combinedChecks": {
+      "explicitCreated463Candidates57": {
+        "checked": 57,
+        "currentAbsent": 57,
+        "residuals": []
+      },
+      "originalText146": {
+        "normalLookupExact": 142,
+        "hiddenTraversalExact": 4,
+        "unreadableRemaining": 0,
+        "actualFieldOrFontBindingDiffs": 0,
+        "hiddenTraversalEnvironmentRestored": true,
+        "expectedBeforeFlag": true,
+        "afterFlag": true,
+        "method": "READ02 normal142 + READ04 exact4 hidden TEXT current nonnull, each listed in original current parent. READ01 null/diff-empty was not counted as success."
+      },
+      "presetOriginal27": {
+        "fullCanonicalRXHashesMatched": 27,
+        "propsParentsIndicesDimensionsMatched": 27
+      },
+      "rowsOriginal9": {
+        "visibleChildrenOrderGeometryAndConstraintsMatched": 9
+      },
+      "componentCopyProperties11": {
+        "toggles": 8,
+        "info": 3,
+        "diffs": 0
+      },
+      "protectedAuthHooks2": {
+        "identityAndFullCanonicalRXHashesMatch": true,
+        "ids": [
+          "426:15350",
+          "426:15888"
+        ],
+        "hashes": [
+          "60281d1b:39822",
+          "d1f8b7f0:22553"
+        ]
+      },
+      "authVariables55": {
+        "currentMembershipIDsTypesScopesCollectionsHiddenMatched": true,
+        "all55CurrentValuesPersistedInRead03": true,
+        "noticeSavedNativePreWriteValueMatched": true,
+        "other54ExactBeforeAfterValueComparison": "NOT_AVAILABLE_PREWRITE_RUNTIME_SNAPSHOT_NOT_SERIALIZED",
+        "other54WasNotAuthoredByCleanform": true,
+        "noCreationDefaultsUsedForRepair": true,
+        "noVariableRepairPerformed": true
+      },
+      "knownLayoutFocus": {
+        "knownReadable20FocusFieldDiffs": 0,
+        "originalHiddenErrorCardsFIXED": "Expected recovered baseline, not a residual requiring FILL fix",
+        "failedCompoundPostWriteGeometryCause": "UNRESOLVED: immediate composite failure did not identify subcondition; no proof of enduring layout damage"
+      }
+    },
+    "limits": [
+      "This is current native recovery recheck, not proof the original rollback completed synchronously.",
+      "No true IAM/token/credential/consent/runtime/WCAG/device acceptance.",
+      "Do not reinterpret all54 source creation defaults as the lost before-values."
+    ]
+  },
+  "currentAuth16Readiness": "CURRENT_NATIVE_RECHECK_CLEAR_VISUAL_OPEN",
+  "gateReasons": [],
+  "wholeBusinessAccepted": false
+}

@@ -1,0 +1,49 @@
+{
+  "status": "SCOPED_159_TIMEOUTS_MIGRATED_AND_NATIVE_VERIFIED_BUSINESS_QA_OPEN",
+  "fileKey": "cbUQgN4Kdd3GrYeDVfF7sk",
+  "pageId": "0:1",
+  "createdTopRootsMigrated": 139,
+  "exactOriginalRootsMigrated": 20,
+  "totalMigrated": 159,
+  "alreadyCorrectFourGuiRootsPreserved": true,
+  "fullProgramsExported": false,
+  "nativeIntegrityEvidence": "Every exact current full canonical program checked before and after; only timeout fields changed; all actions preserved. Local metadata does not close business semantics.",
+  "mutationReceipts": [
+    {
+      "path": "owned-timer-created-metadata-v2-batch-01-parsed.json",
+      "sha256": "f0073f7f1504bff2dc85f79e2c3f341f41ff8396a094dce379aaf27210f0ac6e"
+    },
+    {
+      "path": "owned-timer-created-metadata-v2-batch-02-parsed.json",
+      "sha256": "a22cb31bf6efecaeb74677202a0ecac41ef418600a3798e1d407b4da2930371f"
+    },
+    {
+      "path": "owned-timer-created-metadata-v2-batch-03-parsed.json",
+      "sha256": "5df95488a9b1ee37ab05e37237a30c153112485872e438dbcc9d2fe827959762"
+    },
+    {
+      "path": "owned-timer-created-metadata-v2-batch-04-parsed.json",
+      "sha256": "9df8acbd2fa8646bcbe1ef5a90284115953b4a429d77134338cb9b658c1e3b39"
+    },
+    {
+      "path": "owned-timer-explicit-metadata-v2-parsed.json",
+      "sha256": "4eade783c4535d2e3b832b17ecb4a13c2f9a2c2ee1d1c354c9c4870cfff13863"
+    }
+  ],
+  "nestedScan": {
+    "createdRoots": 1000,
+    "descendantNodesVisited": 57611,
+    "nonemptyReactionDescendants": 8856,
+    "nestedTimers": 0,
+    "allFourBatchesComplete": true,
+    "originalMutatedNodeSubtreesExcluded": true
+  },
+  "writingBrowserSample": {
+    "pendingToUnknownMs": 855,
+    "originalQueryToConfirmedMs": 858,
+    "returnedRoot": "381:10174",
+    "versionTextIssue": "OPEN: static pending-save label after confirmed; exact repair being prepared",
+    "onlyFixedTranslationExample": true
+  },
+  "wholeDesignAccepted": false
+}

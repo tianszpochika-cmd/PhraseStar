@@ -1,0 +1,349 @@
+{
+  "status": "READ_ONLY_CORE_POSITION_COPY_AFTER_FULL_PROGRAM_MATCH",
+  "roots": [
+    {
+      "rootId": "435:15472",
+      "name": "Codex / Web全量补稿 / original-practice-facts / grading",
+      "parentId": "0:1",
+      "trigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "reactionCount": 1,
+      "beforeSha256": "cd292d1d25447b6334cd6830d35c72a931d99ce752c69e759ca665dbca7d0e4b",
+      "expectedAfterSha256": "2a52e4d5ea9c57beff7d27d9905de54c000910bfc81a23bb7f9deb56c3984518",
+      "currentCanonicalSha256": "2a52e4d5ea9c57beff7d27d9905de54c000910bfc81a23bb7f9deb56c3984518",
+      "currentCanonicalUtf8Bytes": 97907,
+      "completeProgramMatchesExpectedAfter": true,
+      "triggerPreserved": true,
+      "oldLiteralCount": 0,
+      "positionStringsMatch": true,
+      "progressRows": [
+        {
+          "path": [
+            0,
+            "actions",
+            6,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第1题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            7,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第1题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            13,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第2题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            14,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第2题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            20,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第1题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            21,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第1题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            27,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第2题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            28,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第2题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            34,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第3题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            35,
+            "conditionalBlocks",
+            0,
+            "actions",
+            6
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第3题已保存并评分；整轮完成状态见进度",
+          "valueType": "STRING"
+        }
+      ]
+    },
+    {
+      "rootId": "435:15424",
+      "name": "Codex / Web全量补稿 / original-practice-facts / unknown",
+      "parentId": "0:1",
+      "trigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "reactionCount": 1,
+      "beforeSha256": "ba14f3d6838206d4b6c368e2bc1f4b3213a17243041e9559c79cc53bab5e049a",
+      "expectedAfterSha256": "833e4b33ed26c5ea2a65e943046de5f321f36a350c3eab540e3b987a411ebe12",
+      "currentCanonicalSha256": "833e4b33ed26c5ea2a65e943046de5f321f36a350c3eab540e3b987a411ebe12",
+      "currentCanonicalUtf8Bytes": 114655,
+      "completeProgramMatchesExpectedAfter": true,
+      "triggerPreserved": true,
+      "oldLiteralCount": 0,
+      "positionStringsMatch": true,
+      "progressRows": [
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第1题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            18,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第2题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            27,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第1题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            36,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第2题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            45,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第3题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        }
+      ]
+    },
+    {
+      "rootId": "435:15448",
+      "name": "Codex / Web全量补稿 / original-practice-facts / query",
+      "parentId": "0:1",
+      "trigger": {
+        "type": "AFTER_TIMEOUT",
+        "timeout": 0.800000011920929
+      },
+      "reactionCount": 1,
+      "beforeSha256": "d818826492fb025e098e977cb3bffbcece755fb4ec611283ff7f067e8b755dc1",
+      "expectedAfterSha256": "cccaa78fee9ee3dfa2ce5901b42dbf255dd2c93430e23d87c8536b11ab312a9e",
+      "currentCanonicalSha256": "cccaa78fee9ee3dfa2ce5901b42dbf255dd2c93430e23d87c8536b11ab312a9e",
+      "currentCanonicalUtf8Bytes": 115355,
+      "completeProgramMatchesExpectedAfter": true,
+      "triggerPreserved": true,
+      "oldLiteralCount": 0,
+      "positionStringsMatch": true,
+      "progressRows": [
+        {
+          "path": [
+            0,
+            "actions",
+            9,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第1题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            18,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15378",
+          "text": "第2题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            27,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第1题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            36,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第2题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        },
+        {
+          "path": [
+            0,
+            "actions",
+            45,
+            "conditionalBlocks",
+            0,
+            "actions",
+            3
+          ],
+          "variableId": "VariableID:435:15420",
+          "text": "第3题已保存；整轮完成状态见进度",
+          "valueType": "STRING"
+        }
+      ]
+    }
+  ],
+  "totalProgressStrings": 20,
+  "documentMutations": 0,
+  "fullActionsExported": false,
+  "businessAcceptance": false
+}

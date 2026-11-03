@@ -1,0 +1,623 @@
+
+      - generic: Collections
+      - button "Collections options":
+      - button "Create collection":
+      - grid:
+        - row "Codex / 定级演示状态 / 仅原型 21 variables":
+          - gridcell "Codex / 定级演示状态 / 仅原型 21 variables":
+            - button "Codex / 定级演示状态 / 仅原型 21 variables":
+              - generic "Codex / 定级演示状态 / 仅原型"
+              - generic: 21 variables
+              - text: "21"
+        - row "Codex / 三项同意演示状态 / 仅原型 4 variables":
+          - gridcell "Codex / 三项同意演示状态 / 仅原型 4 variables":
+            - button "Codex / 三项同意演示状态 / 仅原型 4 variables":
+              - generic "Codex / 三项同意演示状态 / 仅原型"
+              - generic: 4 variables
+              - text: "4"
+        - row "Codex / 学习目标演示状态 / 仅原型 3 variables":
+          - gridcell "Codex / 学习目标演示状态 / 仅原型 3 variables":
+            - button "Codex / 学习目标演示状态 / 仅原型 3 variables":
+              - generic "Codex / 学习目标演示状态 / 仅原型"
+              - generic: 3 variables
+              - text: "3"
+        - row "Codex / 学习偏好业务原型状态 / 仅演示 6 variables":
+          - gridcell "Codex / 学习偏好业务原型状态 / 仅演示 6 variables":
+            - button "Codex / 学习偏好业务原型状态 / 仅演示 6 variables":
+              - generic "Codex / 学习偏好业务原型状态 / 仅演示"
+              - generic: 6 variables
+              - text: "6"
+        - row "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / State / SESSION-SYNC-01 14 variables":
+          - gridcell "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / State / SESSION-SYNC-01 14 variables":
+            - button "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / State / SESSION-SYNC-01 14 variables":
+              - generic "Codex / Learner Web Full Coverage 20261103 / Practice Sync Closure / State / SESSION-SYNC-01"
+              - generic: 14 variables
+              - text: "14"
+        - row "Codex / Learner Web Full Coverage 20261103 / Writing / State / writing 18 variables":
+          - gridcell "Codex / Learner Web Full Coverage 20261103 / Writing / State / writing 18 variables":
+            - button "Codex / Learner Web Full Coverage 20261103 / Writing / State / writing 18 variables":
+              - generic "Codex / Learner Web Full Coverage 20261103 / Writing / State / writing"
+              - generic: 18 variables
+              - text: "18"
+        - row "Codex / SRS synthetic two-card state 20261103 22 variables":
+          - gridcell "Codex / SRS synthetic two-card state 20261103 22 variables":
+            - button "Codex / SRS synthetic two-card state 20261103 22 variables":
+              - generic "Codex / SRS synthetic two-card state 20261103"
+              - generic: 22 variables
+              - text: "22"
+        - row "Codex / Web全量补稿 / access-catchup / State / catchup-and-early-finish 30 variables":
+          - gridcell "Codex / Web全量补稿 / access-catchup / State / catchup-and-early-finish 30 variables":
+            - button "Codex / Web全量补稿 / access-catchup / State / catchup-and-early-finish 30 variables":
+              - generic "Codex / Web全量补稿 / access-catchup / State / catchup-and-early-finish"
+              - generic: 30 variables
+              - text: "30"
+        - row "Codex / Web全量补稿 / access-home / State / home-layout-and-original-save 42 variables":
+          - gridcell "Codex / Web全量补稿 / access-home / State / home-layout-and-original-save 42 variables":
+            - button "Codex / Web全量补稿 / access-home / State / home-layout-and-original-save 42 variables":
+              - generic "Codex / Web全量补稿 / access-home / State / home-layout-and-original-save"
+              - generic: 42 variables
+              - text: "42"
+        - row "Codex / Web全量补稿 / access-home-today-history / State / task-history-reader 6 variables":
+          - gridcell "Codex / Web全量补稿 / access-home-today-history / State / task-history-reader 6 variables":
+            - button "Codex / Web全量补稿 / access-home-today-history / State / task-history-reader 6 variables":
+              - generic "Codex / Web全量补稿 / access-home-today-history / State / task-history-reader"
+              - generic: 6 variables
+              - text: "6"
+        - row "Codex / Web全量补稿 / access-map / State / map-and-help-display 3 variables":
+          - gridcell "Codex / Web全量补稿 / access-map / State / map-and-help-display 3 variables":
+            - button "Codex / Web全量补稿 / access-map / State / map-and-help-display 3 variables":
+              - generic "Codex / Web全量补稿 / access-map / State / map-and-help-display"
+              - generic: 3 variables
+              - text: "3"
+        - row "Codex / Web全量补稿 / access-onboarding-profile / State / locale-profile-and-target-setup 30 variables":
+          - gridcell "Codex / Web全量补稿 / access-onboarding-profile / State / locale-profile-and-target-setup 30 variables":
+            - button "Codex / Web全量补稿 / access-onboarding-profile / State / locale-profile-and-target-setup 30 variables":
+              - generic "Codex / Web全量补稿 / access-onboarding-profile / State / locale-profile-and-target-setup"
+              - generic: 30 variables
+              - text: "30"
+        - row "Codex / Web全量补稿 / access-placement-life / State / placement-lifecycle-and-new-session 18 variables":
+          - gridcell "Codex / Web全量补稿 / access-placement-life / State / placement-lifecycle-and-new-session 18 variables":
+            - button "Codex / Web全量补稿 / access-placement-life / State / placement-lifecycle-and-new-session 18 variables":
+              - generic "Codex / Web全量补稿 / access-placement-life / State / placement-lifecycle-and-new-session"
+              - generic: 18 variables
+              - text: "18"
+        - row "Codex / Web全量补稿 / access-plan / State / calendar-and-plan 31 variables":
+          - gridcell "Codex / Web全量补稿 / access-plan / State / calendar-and-plan 31 variables":
+            - button "Codex / Web全量补稿 / access-plan / State / calendar-and-plan 31 variables":
+              - generic "Codex / Web全量补稿 / access-plan / State / calendar-and-plan"
+              - generic: 31 variables
+              - text: "31"
+        - row "Codex / Web全量补稿 / access-replan / State / replan-draft-and-original-request 31 variables":
+          - gridcell "Codex / Web全量补稿 / access-replan / State / replan-draft-and-original-request 31 variables":
+            - button "Codex / Web全量补稿 / access-replan / State / replan-draft-and-original-request 31 variables":
+              - generic "Codex / Web全量补稿 / access-replan / State / replan-draft-and-original-request"
+              - generic: 31 variables
+              - text: "31"
+        - row "Codex / Web全量补稿 / access-services / State / AccessAndServices 13 variables":
+          - gridcell "Codex / Web全量补稿 / access-services / State / AccessAndServices 13 variables":
+            - button "Codex / Web全量补稿 / access-services / State / AccessAndServices 13 variables":
+              - generic "Codex / Web全量补稿 / access-services / State / AccessAndServices"
+              - generic: 13 variables
+              - text: "13"
+        - row "Codex / Web全量补稿 / access-task-overlay / State / same-priority-task-order 32 variables":
+          - gridcell "Codex / Web全量补稿 / access-task-overlay / State / same-priority-task-order 32 variables":
+            - button "Codex / Web全量补稿 / access-task-overlay / State / same-priority-task-order 32 variables":
+              - generic "Codex / Web全量补稿 / access-task-overlay / State / same-priority-task-order"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / account-correction / 原型状态 / 非真实业务 43 variables":
+          - gridcell "Codex / Web全量补稿 / account-correction / 原型状态 / 非真实业务 43 variables":
+            - button "Codex / Web全量补稿 / account-correction / 原型状态 / 非真实业务 43 variables":
+              - generic "Codex / Web全量补稿 / account-correction / 原型状态 / 非真实业务"
+              - generic: 43 variables
+              - text: "43"
+        - row "Codex / Web全量补稿 / account-downloads / 原型状态 / 非真实业务 25 variables":
+          - gridcell "Codex / Web全量补稿 / account-downloads / 原型状态 / 非真实业务 25 variables":
+            - button "Codex / Web全量补稿 / account-downloads / 原型状态 / 非真实业务 25 variables":
+              - generic "Codex / Web全量补稿 / account-downloads / 原型状态 / 非真实业务"
+              - generic: 25 variables
+              - text: "25"
+        - row "Codex / Web全量补稿 / account-faq / 原型状态 / 非真实业务 34 variables":
+          - gridcell "Codex / Web全量补稿 / account-faq / 原型状态 / 非真实业务 34 variables":
+            - button "Codex / Web全量补稿 / account-faq / 原型状态 / 非真实业务 34 variables":
+              - generic "Codex / Web全量补稿 / account-faq / 原型状态 / 非真实业务"
+              - generic: 34 variables
+              - text: "34"
+        - row "Codex / Web全量补稿 / account-notifications / 原型状态 / 非真实业务 86 variables":
+          - gridcell "Codex / Web全量补稿 / account-notifications / 原型状态 / 非真实业务 86 variables":
+            - button "Codex / Web全量补稿 / account-notifications / 原型状态 / 非真实业务 86 variables":
+              - generic "Codex / Web全量补稿 / account-notifications / 原型状态 / 非真实业务"
+              - generic: 86 variables
+              - text: "86"
+        - row "Codex / Web全量补稿 / account-preferences-responsive / State / ReturnContext 4 variables":
+          - gridcell "Codex / Web全量补稿 / account-preferences-responsive / State / ReturnContext 4 variables":
+            - button "Codex / Web全量补稿 / account-preferences-responsive / State / ReturnContext 4 variables":
+              - generic "Codex / Web全量补稿 / account-preferences-responsive / State / ReturnContext"
+              - generic: 4 variables
+              - text: "4"
+        - row "Codex / Web全量补稿 / account-privacy-data / 原型状态 / 非真实业务 28 variables":
+          - gridcell "Codex / Web全量补稿 / account-privacy-data / 原型状态 / 非真实业务 28 variables":
+            - button "Codex / Web全量补稿 / account-privacy-data / 原型状态 / 非真实业务 28 variables":
+              - generic "Codex / Web全量补稿 / account-privacy-data / 原型状态 / 非真实业务"
+              - generic: 28 variables
+              - text: "28"
+        - row "Codex / Web全量补稿 / account-security-export-header / State / Scoped UI 24 variables":
+          - gridcell "Codex / Web全量补稿 / account-security-export-header / State / Scoped UI 24 variables":
+            - button "Codex / Web全量补稿 / account-security-export-header / State / Scoped UI 24 variables":
+              - generic "Codex / Web全量补稿 / account-security-export-header / State / Scoped UI"
+              - generic: 24 variables
+              - text: "24"
+        - row "Codex / Web全量补稿 / account-settings / 原型状态 / 非真实业务 122 variables":
+          - gridcell "Codex / Web全量补稿 / account-settings / 原型状态 / 非真实业务 122 variables":
+            - button "Codex / Web全量补稿 / account-settings / 原型状态 / 非真实业务 122 variables":
+              - generic "Codex / Web全量补稿 / account-settings / 原型状态 / 非真实业务"
+              - generic: 122 variables
+              - text: "122"
+        - row "Codex / Web全量补稿 / account-tickets / 原型状态 / 非真实业务 79 variables":
+          - gridcell "Codex / Web全量补稿 / account-tickets / 原型状态 / 非真实业务 79 variables":
+            - button "Codex / Web全量补稿 / account-tickets / 原型状态 / 非真实业务 79 variables":
+              - generic "Codex / Web全量补稿 / account-tickets / 原型状态 / 非真实业务"
+              - generic: 79 variables
+              - text: "79"
+        - row "Codex / Web全量补稿 / avatar-basics / State / Avatar 41 variables":
+          - gridcell "Codex / Web全量补稿 / avatar-basics / State / Avatar 41 variables":
+            - button "Codex / Web全量补稿 / avatar-basics / State / Avatar 41 variables":
+              - generic "Codex / Web全量补稿 / avatar-basics / State / Avatar"
+              - generic: 41 variables
+              - text: "41"
+        - row "Codex / Web全量补稿 / commerce-orders / State / Commerce 10 variables":
+          - gridcell "Codex / Web全量补稿 / commerce-orders / State / Commerce 10 variables":
+            - button "Codex / Web全量补稿 / commerce-orders / State / Commerce 10 variables":
+              - generic "Codex / Web全量补稿 / commerce-orders / State / Commerce"
+              - generic: 10 variables
+              - text: "10"
+        - row "Codex / Web全量补稿 / commerce-subscription / State / Subscription 2 variables":
+          - gridcell "Codex / Web全量补稿 / commerce-subscription / State / Subscription 2 variables":
+            - button "Codex / Web全量补稿 / commerce-subscription / State / Subscription 2 variables":
+              - generic "Codex / Web全量补稿 / commerce-subscription / State / Subscription"
+              - generic: 2 variables
+              - text: "2"
+        - row "Codex / Web全量补稿 / device-revoke-scope-adapter / State / Revoke original identity 17 variables":
+          - gridcell "Codex / Web全量补稿 / device-revoke-scope-adapter / State / Revoke original identity 17 variables":
+            - button "Codex / Web全量补稿 / device-revoke-scope-adapter / State / Revoke original identity 17 variables":
+              - generic "Codex / Web全量补稿 / device-revoke-scope-adapter / State / Revoke original identity"
+              - generic: 17 variables
+              - text: "17"
+        - row "Codex / Web全量补稿 / equipment / State / Equipment 15 variables":
+          - gridcell "Codex / Web全量补稿 / equipment / State / Equipment 15 variables":
+            - button "Codex / Web全量补稿 / equipment / State / Equipment 15 variables":
+              - generic "Codex / Web全量补稿 / equipment / State / Equipment"
+              - generic: 15 variables
+              - text: "15"
+        - row "Codex / Web全量补稿 / equipment / State / WardrobeCategory 3 variables":
+          - gridcell "Codex / Web全量补稿 / equipment / State / WardrobeCategory 3 variables":
+            - button "Codex / Web全量补稿 / equipment / State / WardrobeCategory 3 variables":
+              - generic "Codex / Web全量补稿 / equipment / State / WardrobeCategory"
+              - generic: 3 variables
+              - text: "3"
+        - row "Codex / Web全量补稿 / focus-command / State / FocusCommand 17 variables":
+          - gridcell "Codex / Web全量补稿 / focus-command / State / FocusCommand 17 variables":
+            - button "Codex / Web全量补稿 / focus-command / State / FocusCommand 17 variables":
+              - generic "Codex / Web全量补稿 / focus-command / State / FocusCommand"
+              - generic: 17 variables
+              - text: "17"
+        - row "Codex / Web全量补稿 / focus-exact-review / State / FocusTrustedRead 14 variables":
+          - gridcell "Codex / Web全量补稿 / focus-exact-review / State / FocusTrustedRead 14 variables":
+            - button "Codex / Web全量补稿 / focus-exact-review / State / FocusTrustedRead 14 variables":
+              - generic "Codex / Web全量补稿 / focus-exact-review / State / FocusTrustedRead"
+              - generic: 14 variables
+              - text: "14"
+        - row "Codex / Web全量补稿 / game-catalog / State / GameSupplement 8 variables":
+          - gridcell "Codex / Web全量补稿 / game-catalog / State / GameSupplement 8 variables":
+            - button "Codex / Web全量补稿 / game-catalog / State / GameSupplement 8 variables":
+              - generic "Codex / Web全量补稿 / game-catalog / State / GameSupplement"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / global-search / State / Global Search 58 variables":
+          - gridcell "Codex / Web全量补稿 / global-search / State / Global Search 58 variables":
+            - button "Codex / Web全量补稿 / global-search / State / Global Search 58 variables":
+              - generic "Codex / Web全量补稿 / global-search / State / Global Search"
+              - generic: 58 variables
+              - text: "58"
+        - row "Codex / Web全量补稿 / global-search / State / No history view 1 variable":
+          - gridcell "Codex / Web全量补稿 / global-search / State / No history view 1 variable":
+            - button "Codex / Web全量补稿 / global-search / State / No history view 1 variable":
+              - generic "Codex / Web全量补稿 / global-search / State / No history view"
+              - generic: 1 variable
+              - text: "1"
+        - row "Codex / Web全量补稿 / growth-tasks / State / GrowthTasks 8 variables":
+          - gridcell "Codex / Web全量补稿 / growth-tasks / State / GrowthTasks 8 variables":
+            - button "Codex / Web全量补稿 / growth-tasks / State / GrowthTasks 8 variables":
+              - generic "Codex / Web全量补稿 / growth-tasks / State / GrowthTasks"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / household-accept / State / HouseholdActors 10 variables":
+          - gridcell "Codex / Web全量补稿 / household-accept / State / HouseholdActors 10 variables":
+            - button "Codex / Web全量补稿 / household-accept / State / HouseholdActors 10 variables":
+              - generic "Codex / Web全量补稿 / household-accept / State / HouseholdActors"
+              - generic: 10 variables
+              - text: "10"
+        - row "Codex / Web全量补稿 / household-invite / State / Household 11 variables":
+          - gridcell "Codex / Web全量补稿 / household-invite / State / Household 11 variables":
+            - button "Codex / Web全量补稿 / household-invite / State / Household 11 variables":
+              - generic "Codex / Web全量补稿 / household-invite / State / Household"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / legacy-query-review / State / LegacyOriginalRequest 42 variables":
+          - gridcell "Codex / Web全量补稿 / legacy-query-review / State / LegacyOriginalRequest 42 variables":
+            - button "Codex / Web全量补稿 / legacy-query-review / State / LegacyOriginalRequest 42 variables":
+              - generic "Codex / Web全量补稿 / legacy-query-review / State / LegacyOriginalRequest"
+              - generic: 42 variables
+              - text: "42"
+        - row "Codex / Web全量补稿 / privacy-pending-slot-guard / State / Original processing receipt 8 variables":
+          - gridcell "Codex / Web全量补稿 / privacy-pending-slot-guard / State / Original processing receipt 8 variables":
+            - button "Codex / Web全量补稿 / privacy-pending-slot-guard / State / Original processing receipt 8 variables":
+              - generic "Codex / Web全量补稿 / privacy-pending-slot-guard / State / Original processing receipt"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / pwa-workspace / State / PWA UI context 29 variables":
+          - gridcell "Codex / Web全量补稿 / pwa-workspace / State / PWA UI context 29 variables":
+            - button "Codex / Web全量补稿 / pwa-workspace / State / PWA UI context 29 variables":
+              - generic "Codex / Web全量补稿 / pwa-workspace / State / PWA UI context"
+              - generic: 29 variables
+              - text: "29"
+        - row "Codex / Web全量补稿 / quick-next-round / State / IndependentNextQuickRequest 8 variables":
+          - gridcell "Codex / Web全量补稿 / quick-next-round / State / IndependentNextQuickRequest 8 variables":
+            - button "Codex / Web全量补稿 / quick-next-round / State / IndependentNextQuickRequest 8 variables":
+              - generic "Codex / Web全量补稿 / quick-next-round / State / IndependentNextQuickRequest"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / quick-safety / State / FrozenFirstQuickRequest 8 variables":
+          - gridcell "Codex / Web全量补稿 / quick-safety / State / FrozenFirstQuickRequest 8 variables":
+            - button "Codex / Web全量补稿 / quick-safety / State / FrozenFirstQuickRequest 8 variables":
+              - generic "Codex / Web全量补稿 / quick-safety / State / FrozenFirstQuickRequest"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / report-progress / State / ReportProgress 14 variables":
+          - gridcell "Codex / Web全量补稿 / report-progress / State / ReportProgress 14 variables":
+            - button "Codex / Web全量补稿 / report-progress / State / ReportProgress 14 variables":
+              - generic "Codex / Web全量补稿 / report-progress / State / ReportProgress"
+              - generic: 14 variables
+              - text: "14"
+        - row "Codex / Web全量补稿 / rewards / State / RewardRecords 10 variables":
+          - gridcell "Codex / Web全量补稿 / rewards / State / RewardRecords 10 variables":
+            - button "Codex / Web全量补稿 / rewards / State / RewardRecords 10 variables":
+              - generic "Codex / Web全量补稿 / rewards / State / RewardRecords"
+              - generic: 10 variables
+              - text: "10"
+        - row "Codex / Web全量补稿 / skills-grammar / State / Grammar view 4 variables":
+          - gridcell "Codex / Web全量补稿 / skills-grammar / State / Grammar view 4 variables":
+            - button "Codex / Web全量补稿 / skills-grammar / State / Grammar view 4 variables":
+              - generic "Codex / Web全量补稿 / skills-grammar / State / Grammar view"
+              - generic: 4 variables
+              - text: "4"
+        - row "Codex / Web全量补稿 / skills-listening-a / State / Listening controls 21 variables":
+          - gridcell "Codex / Web全量补稿 / skills-listening-a / State / Listening controls 21 variables":
+            - button "Codex / Web全量补稿 / skills-listening-a / State / Listening controls 21 variables":
+              - generic "Codex / Web全量补稿 / skills-listening-a / State / Listening controls"
+              - generic: 21 variables
+              - text: "21"
+        - row "Codex / Web全量补稿 / skills-listening-b / State / Dictation 22 variables":
+          - gridcell "Codex / Web全量补稿 / skills-listening-b / State / Dictation 22 variables":
+            - button "Codex / Web全量补稿 / skills-listening-b / State / Dictation 22 variables":
+              - generic "Codex / Web全量补稿 / skills-listening-b / State / Dictation"
+              - generic: 22 variables
+              - text: "22"
+        - row "Codex / Web全量补稿 / skills-listening-b / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-listening-b / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-listening-b / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-listening-b / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-listening-b / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-listening-b / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-listening-b / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-listening-b / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-listening-cloze / State / Word cloze and listening origin 14 variables":
+          - gridcell "Codex / Web全量补稿 / skills-listening-cloze / State / Word cloze and listening origin 14 variables":
+            - button "Codex / Web全量补稿 / skills-listening-cloze / State / Word cloze and listening origin 14 variables":
+              - generic "Codex / Web全量补稿 / skills-listening-cloze / State / Word cloze and listening origin"
+              - generic: 14 variables
+              - text: "14"
+        - row "Codex / Web全量补稿 / skills-reading-a / State / Reading workspace 21 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-a / State / Reading workspace 21 variables":
+            - button "Codex / Web全量补稿 / skills-reading-a / State / Reading workspace 21 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-a / State / Reading workspace"
+              - generic: 21 variables
+              - text: "21"
+        - row "Codex / Web全量补稿 / skills-reading-b / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-b / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-reading-b / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-b / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-reading-b / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-b / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-reading-b / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-b / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-reading-b / State / Story path 18 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-b / State / Story path 18 variables":
+            - button "Codex / Web全量补稿 / skills-reading-b / State / Story path 18 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-b / State / Story path"
+              - generic: 18 variables
+              - text: "18"
+        - row "Codex / Web全量补稿 / skills-reading-clips / State / Clip workspace 27 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-clips / State / Clip workspace 27 variables":
+            - button "Codex / Web全量补稿 / skills-reading-clips / State / Clip workspace 27 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-clips / State / Clip workspace"
+              - generic: 27 variables
+              - text: "27"
+        - row "Codex / Web全量补稿 / skills-reading-clips / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-clips / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-reading-clips / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-clips / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-reading-clips / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-reading-clips / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-reading-clips / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-reading-clips / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-recording-takes / State / Recording asset versions 26 variables":
+          - gridcell "Codex / Web全量补稿 / skills-recording-takes / State / Recording asset versions 26 variables":
+            - button "Codex / Web全量补稿 / skills-recording-takes / State / Recording asset versions 26 variables":
+              - generic "Codex / Web全量补稿 / skills-recording-takes / State / Recording asset versions"
+              - generic: 26 variables
+              - text: "26"
+        - row "Codex / Web全量补稿 / skills-scenarios-a / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-a / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-a / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-a / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-scenarios-a / State / Scenario workspace 56 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-a / State / Scenario workspace 56 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-a / State / Scenario workspace 56 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-a / State / Scenario workspace"
+              - generic: 56 variables
+              - text: "56"
+        - row "Codex / Web全量补稿 / skills-scenarios-b / State / Course test bank 20 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-b / State / Course test bank 20 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-b / State / Course test bank 20 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-b / State / Course test bank"
+              - generic: 20 variables
+              - text: "20"
+        - row "Codex / Web全量补稿 / skills-scenarios-b / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-b / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-b / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-b / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-scenarios-b / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-b / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-b / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-b / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-scenarios-b / State / Scenario assessment 56 variables":
+          - gridcell "Codex / Web全量补稿 / skills-scenarios-b / State / Scenario assessment 56 variables":
+            - button "Codex / Web全量补稿 / skills-scenarios-b / State / Scenario assessment 56 variables":
+              - generic "Codex / Web全量补稿 / skills-scenarios-b / State / Scenario assessment"
+              - generic: 56 variables
+              - text: "56"
+        - row "Codex / Web全量补稿 / skills-source-links / State / Expression source snapshot 6 variables":
+          - gridcell "Codex / Web全量补稿 / skills-source-links / State / Expression source snapshot 6 variables":
+            - button "Codex / Web全量补稿 / skills-source-links / State / Expression source snapshot 6 variables":
+              - generic "Codex / Web全量补稿 / skills-source-links / State / Expression source snapshot"
+              - generic: 6 variables
+              - text: "6"
+        - row "Codex / Web全量补稿 / skills-source-links / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-source-links / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-source-links / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-source-links / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-speaking-a / State / Speaking workspace 18 variables":
+          - gridcell "Codex / Web全量补稿 / skills-speaking-a / State / Speaking workspace 18 variables":
+            - button "Codex / Web全量补稿 / skills-speaking-a / State / Speaking workspace 18 variables":
+              - generic "Codex / Web全量补稿 / skills-speaking-a / State / Speaking workspace"
+              - generic: 18 variables
+              - text: "18"
+        - row "Codex / Web全量补稿 / skills-speaking-b / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-speaking-b / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-speaking-b / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-speaking-b / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-speaking-b / State / Recording and self rating 25 variables":
+          - gridcell "Codex / Web全量补稿 / skills-speaking-b / State / Recording and self rating 25 variables":
+            - button "Codex / Web全量补稿 / skills-speaking-b / State / Recording and self rating 25 variables":
+              - generic "Codex / Web全量补稿 / skills-speaking-b / State / Recording and self rating"
+              - generic: 25 variables
+              - text: "25"
+        - row "Codex / Web全量补稿 / skills-speaking-b / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-speaking-b / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-speaking-b / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-speaking-b / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-vocabulary-a / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-a / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-a / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-a / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-vocabulary-a / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-a / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-a / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-a / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-vocabulary-a / State / Vocabulary 15 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-a / State / Vocabulary 15 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-a / State / Vocabulary 15 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-a / State / Vocabulary"
+              - generic: 15 variables
+              - text: "15"
+        - row "Codex / Web全量补稿 / skills-vocabulary-b / State / Input guard snapshots 32 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-b / State / Input guard snapshots 32 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-b / State / Input guard snapshots 32 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-b / State / Input guard snapshots"
+              - generic: 32 variables
+              - text: "32"
+        - row "Codex / Web全量补稿 / skills-vocabulary-b / State / Personal library 36 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-b / State / Personal library 36 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-b / State / Personal library 36 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-b / State / Personal library"
+              - generic: 36 variables
+              - text: "36"
+        - row "Codex / Web全量补稿 / skills-vocabulary-b / State / Request identity 11 variables":
+          - gridcell "Codex / Web全量补稿 / skills-vocabulary-b / State / Request identity 11 variables":
+            - button "Codex / Web全量补稿 / skills-vocabulary-b / State / Request identity 11 variables":
+              - generic "Codex / Web全量补稿 / skills-vocabulary-b / State / Request identity"
+              - generic: 11 variables
+              - text: "11"
+        - row "Codex / Web全量补稿 / skills-word-phoneme / State / Word phoneme origin 6 variables":
+          - gridcell "Codex / Web全量补稿 / skills-word-phoneme / State / Word phoneme origin 6 variables":
+            - button "Codex / Web全量补稿 / skills-word-phoneme / State / Word phoneme origin 6 variables":
+              - generic "Codex / Web全量补稿 / skills-word-phoneme / State / Word phoneme origin"
+              - generic: 6 variables
+              - text: "6"
+        - row "Codex / Web全量补稿 / social-business / State / Social 62 variables":
+          - gridcell "Codex / Web全量补稿 / social-business / State / Social 62 variables":
+            - button "Codex / Web全量补稿 / social-business / State / Social 62 variables":
+              - generic "Codex / Web全量补稿 / social-business / State / Social"
+              - generic: 62 variables
+              - text: "62"
+        - row "Codex / Web全量补稿 / space-season / State / LearningSpace 12 variables":
+          - gridcell "Codex / Web全量补稿 / space-season / State / LearningSpace 12 variables":
+            - button "Codex / Web全量补稿 / space-season / State / LearningSpace 12 variables":
+              - generic "Codex / Web全量补稿 / space-season / State / LearningSpace"
+              - generic: 12 variables
+              - text: "12"
+        - row "Codex / Web全量补稿 / srs-history-safety / State / AcceptedReceiptVisibility 3 variables":
+          - gridcell "Codex / Web全量补稿 / srs-history-safety / State / AcceptedReceiptVisibility 3 variables":
+            - button "Codex / Web全量补稿 / srs-history-safety / State / AcceptedReceiptVisibility 3 variables":
+              - generic "Codex / Web全量补稿 / srs-history-safety / State / AcceptedReceiptVisibility"
+              - generic: 3 variables
+              - text: "3"
+        - row "Codex / Web全量补稿 / srs-supplement / State / AcceptedReceiptVisibility 3 variables":
+          - gridcell "Codex / Web全量补稿 / srs-supplement / State / AcceptedReceiptVisibility 3 variables":
+            - button "Codex / Web全量补稿 / srs-supplement / State / AcceptedReceiptVisibility 3 variables":
+              - generic "Codex / Web全量补稿 / srs-supplement / State / AcceptedReceiptVisibility"
+              - generic: 3 variables
+              - text: "3"
+        - row "Codex / Web全量补稿 / streak / State / StreakRecovery 8 variables":
+          - gridcell "Codex / Web全量补稿 / streak / State / StreakRecovery 8 variables":
+            - button "Codex / Web全量补稿 / streak / State / StreakRecovery 8 variables":
+              - generic "Codex / Web全量补稿 / streak / State / StreakRecovery"
+              - generic: 8 variables
+              - text: "8"
+        - row "Codex / Web全量补稿 / target-conflict-recovery / State / TargetConflict 19 variables":
+          - gridcell "Codex / Web全量补稿 / target-conflict-recovery / State / TargetConflict 19 variables":
+            - button "Codex / Web全量补稿 / target-conflict-recovery / State / TargetConflict 19 variables":
+              - generic "Codex / Web全量补稿 / target-conflict-recovery / State / TargetConflict"
+              - generic: 19 variables
+              - text: "19"
+        - row "Codex / Web全量补稿 / vocabulary-core-interactions / State / Vocabulary Core 129 variables":
+          - gridcell "Codex / Web全量补稿 / vocabulary-core-interactions / State / Vocabulary Core 129 variables":
+            - button "Codex / Web全量补稿 / vocabulary-core-interactions / State / Vocabulary Core 129 variables":
+              - generic "Codex / Web全量补稿 / vocabulary-core-interactions / State / Vocabulary Core"
+              - generic: 129 variables
+              - text: "129"
+        - row "Codex / Web全量补稿 / web-header-bridge / State / Identity guard 12 variables":
+          - gridcell "Codex / Web全量补稿 / web-header-bridge / State / Identity guard 12 variables":
+            - button "Codex / Web全量补稿 / web-header-bridge / State / Identity guard 12 variables":
+              - generic "Codex / Web全量补稿 / web-header-bridge / State / Identity guard"
+              - generic: 12 variables
+              - text: "12"
+        - row "Codex Course Catalog Loaded Filters 20261103 14 variables":
+          - gridcell "Codex Course Catalog Loaded Filters 20261103 14 variables":
+            - button "Codex Course Catalog Loaded Filters 20261103 14 variables":
+              - generic "Codex Course Catalog Loaded Filters 20261103"
+              - generic: 14 variables
+              - text: "14"
+        - row "Codex Course Cursor Fixture 20261103 35 variables":
+          - gridcell "Codex Course Cursor Fixture 20261103 35 variables":
+            - button "Codex Course Cursor Fixture 20261103 35 variables":
+              - generic "Codex Course Cursor Fixture 20261103"
+              - generic: 35 variables
+              - text: "35"
+        - row "Codex Report Share Conditional v1 20261103 10 variables":
+          - gridcell "Codex Report Share Conditional v1 20261103 10 variables":
+            - button "Codex Report Share Conditional v1 20261103 10 variables":
+              - generic "Codex Report Share Conditional v1 20261103"
+              - generic: 10 variables
+              - text: "10"
+        - row "Codex Web Message Bulk Synthetic 20261103 v2 9 variables":
+          - gridcell "Codex Web Message Bulk Synthetic 20261103 v2 9 variables":
+            - button "Codex Web Message Bulk Synthetic 20261103 v2 9 variables":
+              - generic "Codex Web Message Bulk Synthetic 20261103 v2"
+              - generic: 9 variables
+              - text: "9"
+        - row "Codex Web Message Management Conditional 20261103 v1 5 variables":
+          - gridcell "Codex Web Message Management Conditional 20261103 v1 5 variables":
+            - button "Codex Web Message Management Conditional 20261103 v1 5 variables":
+              - generic "Codex Web Message Management Conditional 20261103 v1"
+              - generic: 5 variables
+              - text: "5"
+        - row "PhraseStar / Learner Web / Adapted Radius 2 variables":
+          - gridcell "PhraseStar / Learner Web / Adapted Radius 2 variables":
+            - button "PhraseStar / Learner Web / Adapted Radius 2 variables":
+              - generic "PhraseStar / Learner Web / Adapted Radius"
+              - generic: 2 variables
+              - text: "2"
+        - row "PhraseStar / Learner Web / Semantic Themes 8 variables":
+          - gridcell "PhraseStar / Learner Web / Semantic Themes 8 variables":
+            - button "PhraseStar / Learner Web / Semantic Themes 8 variables":
+              - generic "PhraseStar / Learner Web / Semantic Themes"
+              - generic: 8 variables
+              - text: "8"
+        - row "PhraseStar / Web · Color 12 variables":
+          - gridcell "PhraseStar / Web · Color 12 variables":
+            - button "PhraseStar / Web · Color 12 variables":
+              - generic "PhraseStar / Web · Color"
+              - generic: 12 variables
+              - text: "12"
+        - row "PhraseStar / Web · Spacing 7 variables":
+          - gridcell "PhraseStar / Web · Spacing 7 variables":
+            - button "PhraseStar / Web · Spacing 7 variables":
+              - generic "PhraseStar / Web · Spacing"
+              - generic: 7 variables
+              - text: "7"
+        - row "Web全量补稿 / 语法交互模板 / Private 51 variables":
+          - gridcell "Web全量补稿 / 语法交互模板 / Private 51 variables":
+            - button "Web全量补稿 / 语法交互模板 / Private 51 variables":
+              - generic "Web全量补稿 / 语法交互模板 / Private"
+              - generic: 51 variables
+              - text: "51"
+        - row "Web全量补稿 / 原题提交恢复 / Private 17 variables":
+          - gridcell "Web全量补稿 / 原题提交恢复 / Private 17 variables":
+            - button "Web全量补稿 / 原题提交恢复 / Private 17 variables":
+              - generic "Web全量补稿 / 原题提交恢复 / Private"
+              - generic: 17 variables
+              - text: "17"
+        - row "Web全量补稿 / CET / Private 12 variables":
+          - gridcell "Web全量补稿 / CET / Private 12 variables":
+            - button "Web全量补稿 / CET / Private 12 variables":
+              - generic "Web全量补稿 / CET / Private"
+              - generic: 12 variables
+              - text: "12"
+        - row "Web全量补稿 / Memory与错题筛选 / Private 13 variables":
+          - gridcell "Web全量补稿 / Memory与错题筛选 / Private 13 variables":
+            - button "Web全量补稿 / Memory与错题筛选 / Private 13 variables":
+              - generic "Web全量补稿 / Memory与错题筛选 / Private"
+              - generic: 13 variables
+              - text: "13"
+        - row "Web全量补稿 / Quick / Private 7 variables":
+          - gridcell "Web全量补稿 / Quick / Private 7 variables":
+            - button "Web全量补稿 / Quick / Private 7 variables":
+              - generic "Web全量补稿 / Quick / Private"
+              - generic: 7 variables
+              - text: "7"
+        - row "Web全量补稿 / Stage / Private 3 variables":
+          - gridcell "Web全量补稿 / Stage / Private 3 variables":
+            - button "Web全量补稿 / Stage / Private 3 variables":
+              - generic "Web全量补稿 / Stage / Private"
+              - generic: 3 variables
+              - text: "3"
