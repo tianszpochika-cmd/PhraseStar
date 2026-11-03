@@ -1,0 +1,36 @@
+{
+  "fonts": [
+    {
+      "file": "fonts/NotoSansSC-variable.ttf",
+      "family": "Noto Sans SC",
+      "role": "font",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+      "bytes": 17772300,
+      "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da"
+    },
+    {
+      "file": "fonts/NotoSansSC-OFL.txt",
+      "family": "Noto Sans SC",
+      "role": "license",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/OFL.txt",
+      "bytes": 4388,
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "file": "fonts/Outfit-variable.ttf",
+      "family": "Outfit",
+      "role": "font",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/Outfit%5Bwght%5D.ttf",
+      "bytes": 110884,
+      "sha256": "fc7287273e66929776e2ba54f144fe699080bec29f61bf649d70d871468aeade"
+    },
+    {
+      "file": "fonts/Outfit-OFL.txt",
+      "family": "Outfit",
+      "role": "license",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/OFL.txt",
+      "bytes": 4389,
+      "sha256": "c676351bf8576b9aba743cd5eaa8c0e7ee0d51f805d720447b4df4ddb6a2e416"
+    }
+  ]
+}

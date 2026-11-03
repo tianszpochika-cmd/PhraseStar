@@ -1,0 +1,1372 @@
+{
+  "subsets": [
+    {
+      "family": "Noto Sans SC",
+      "file": "fonts/NotoSansSC-frozen-v1-subset.woff2",
+      "format": "woff2",
+      "weightRange": "100 900",
+      "source": "Google Fonts CSS2 text subset",
+      "sourceStylesheet": "https://fonts.googleapis.com/css2",
+      "sourceCorpus": "32 frozen main boards and trial/FAQ state text plus ASCII 32-126",
+      "corpusFile": "fonts/frozen-design-characters.txt",
+      "corpusCharacters": 728,
+      "unicodeRange": "U+20-7e, U+a9, U+b7, U+d7, U+251, U+259, U+26a, U+28c, U+2c8, U+2d0, U+2022, U+2026, U+2192, U+2197, U+221e, U+2303-2304, U+2315, U+25a3, U+25c7-25c9, U+25cb, U+25cf, U+2630, U+263e, U+2713, U+2726-2727, U+3001-3002, U+4e00, U+4e09-4e0b, U+4e0d-4e0e, U+4e16, U+4e2a, U+4e2d, U+4e3a-4e3b, U+4e45, U+4e48-4e49, U+4e4b, U+4e5f-4e60, U+4e70, U+4e86, U+4e8b-4e8c, U+4e8e, U+4e91-4e92, U+4e94, U+4e9b, U+4ea4, U+4ea7, U+4eab, U+4eba, U+4ec0, U+4ec5, U+4eca, U+4ecd-4ece, U+4ed8, U+4ee3, U+4ee5, U+4eec, U+4ef6-4ef7, U+4efb, U+4f18, U+4f1a, U+4f30, U+4f34, U+4f4f, U+4f53, U+4f55, U+4f59, U+4f5c, U+4f60, U+4f7f, U+4f8b, U+4f9b, U+4f9d, U+4fdd, U+4fe1, U+4fee, U+5019, U+503c, U+505a, U+5148-5149, U+514d, U+5165, U+5168, U+516c-516d, U+5173-5174, U+5176-5177, U+517c, U+5185, U+518c-518d, U+5199, U+51b3, U+51b5, U+51c6, U+51e0, U+51ed, U+51fa, U+5206-5207, U+5212, U+5217, U+5219, U+521b, U+5229, U+522b, U+5230, U+5236, U+523b, U+524d, U+529b, U+529f-52a1, U+52a8-52a9, U+52b1, U+5305, U+5316, U+5339-533a, U+5347-5348, U+534f, U+5355-5357, U+5361, U+5386, U+538b, U+539f, U+53c2, U+53ca, U+53cd, U+53d1, U+53d6-53d8, U+53e3, U+53e5-53e6, U+53ea, U+53ef-53f0, U+53f2, U+53f7-53f8, U+5404, U+5408, U+540c, U+540e, U+5411, U+5417, U+5426, U+542b-542c, U+542f, U+544a, U+5458, U+5468, U+548c, U+5496, U+54c1, U+54ea, U+5561, U+559c, U+5668, U+56db, U+56de, U+56f4, U+56fa, U+5728, U+5733, U+573a, U+575a, U+578b, U+57fa, U+5883, U+5899, U+589e, U+58f0, U+5904, U+5907, U+590d, U+591a, U+591c, U+5927, U+5929, U+5934, U+594f, U+5957, U+597d, U+5982, U+59cb, U+5b50, U+5b58, U+5b66, U+5b89, U+5b8c, U+5b98, U+5b9a, U+5b9e, U+5ba1-5ba2, U+5ba4, U+5bb9, U+5bc6, U+5bdf, U+5bf9, U+5bfc, U+5c06, U+5c0a, U+5c0f, U+5c11, U+5c1a, U+5c1d, U+5c31, U+5c40, U+5c55, U+5c5e, U+5c81, U+5de9, U+5df1-5df2, U+5e03, U+5e0c, U+5e10, U+5e2e, U+5e38, U+5e73-5e74, U+5e76, U+5e8f, U+5e94, U+5ea6, U+5efa, U+5f00, U+5f0f, U+5f15, U+5f3a, U+5f52-5f53, U+5f55, U+5f62, U+5f80, U+5f84-5f85, U+5f88, U+5f8b, U+5f97, U+5faa, U+5fc3, U+5fc6, U+5feb, U+5ff5, U+6001, U+600e, U+6025, U+606f, U+6089, U+60c5, U+60ef, U+60f3, U+611f, U+6162, U+61c2, U+620f-6211, U+6216, U+6237, U+623f-6240, U+624b, U+624e, U+6253, U+6269, U+626e, U+627e, U+6280, U+628a, U+6295, U+62a4-62a5, U+62c6, U+62e9, U+62fc, U+62fe-62ff, U+6301, U+6307, U+6309, U+6311, U+6362, U+636e, U+6388, U+638c, U+6392, U+63a2, U+63a5, U+63d0, U+63e1, U+641c, U+6458, U+64a4, U+64cd, U+652f, U+6536, U+653e-653f, U+6545, U+6548, U+6570, U+6574, U+6587, U+6599, U+65b0, U+65b9, U+65c5, U+65e0, U+65e5, U+65e7, U+65f6, U+660e, U+6613, U+661f, U+662f, U+663e, U+665a, U+6668, U+666f-6670, U+6682, U+6696, U+66f4, U+66ff-6700, U+6709, U+670d, U+671b, U+671f, U+672a-672c, U+673a, U+6742-6743, U+6761, U+6765, U+676f, U+677e-677f, U+6784, U+679c, U+67d0, U+67e5, U+6807, U+6821, U+6837-6839, U+683c, U+6848, U+6863, U+68c0, U+695a, U+6a21, U+6b21-6b22, U+6b3e, U+6b62-6b65, U+6bb5, U+6bcf, U+6c34, U+6c42, U+6c47, U+6ca1, U+6cbb, U+6cd5, U+6ce8, U+6d3b, U+6d41, U+6d4b, U+6d4f, U+6d88, U+6df1, U+6df7, U+6e05, U+6e10, U+6e20, U+6e29, U+6e38, U+6e90, U+6eaf, U+6ee1, U+6ee4, U+6f9c, U+706b, U+70b9, U+70ed, U+7136, U+719f, U+7231, U+7247-7248, U+724c, U+7262, U+72b6, U+73a9, U+73af-73b0, U+7406, U+751f, U+7528, U+7531, U+7535, U+753b, U+754c, U+7559, U+7565, U+767b, U+7684, U+76c8, U+76ca, U+76ee, U+76f4, U+76f8, U+770b, U+771f, U+7740, U+77e5, U+77ed, U+7801, U+7840, U+786e, U+793a, U+79c1, U+79cd, U+79d1, U+79ef, U+79fb, U+7a0b, U+7a3f, U+7a7a, U+7ad9, U+7ae0, U+7aef, U+7b2c, U+7b49, U+7b54, U+7b56, U+7b5b, U+7b80, U+7b97, U+7ba1, U+7c7b, U+7cbe, U+7cfb, U+7d22, U+7d2f, U+7ea6-7ea7, U+7ebf, U+7ec3-7ec4, U+7ec7, U+7ecf, U+7ed3, U+7ed9, U+7edf, U+7ee7, U+7eed, U+7ef4, U+7f51, U+7f6e, U+8005, U+800c, U+8054, U+80fd, U+8111, U+81ea, U+822a, U+822c, U+8282, U+82f1, U+8303, U+83b7, U+83dc, U+843d, U+884c, U+8868, U+88ab, U+88c5, U+8981, U+89c1-89c2, U+89c4, U+89c6, U+89c8, U+89e3, U+8a00, U+8ba1, U+8ba4, U+8ba9, U+8bad-8bae, U+8bb0, U+8bbe-8bbf, U+8bc1, U+8bc4, U+8bc6, U+8bcd, U+8bd5, U+8bdd, U+8be2, U+8be5-8be6, U+8bed, U+8bf4, U+8bf7, U+8bfb, U+8bfe, U+8c61, U+8d23, U+8d26, U+8d2d, U+8d39, U+8d44, U+8d70, U+8d77, U+8da3, U+8ddf, U+8de8, U+8def, U+8e2a, U+8f66, U+8f6c, U+8f7b, U+8f7d, U+8fb9, U+8fbe, U+8fc7, U+8fd8-8fd9, U+8fdb, U+8fde, U+8ff9, U+8ffd, U+9002, U+9009, U+900f-9010, U+901a-901b, U+901f-9020, U+9047, U+9053, U+907f, U+90e8, U+90fd, U+914d, U+91ca, U+91cc-91cd, U+949f, U+94c1, U+94fe, U+9500, U+9519, U+952e, U+957f, U+95e8, U+95ea, U+95ed-95ee, U+95f4, U+9605, U+961f, U+9636, U+9644-9645, U+9650, U+9664, U+966a, U+968f-9690, U+9694, U+96c6, U+9700, U+9752, U+9759, U+9762, U+97f3, U+9875, U+9879-987a, U+987e, U+9884, U+9898, U+9910, U+9970, U+9988, U+9996, U+9a8c, U+9aa4, U+9f13, U+9f84, U+ff0b-ff0c, U+ff1a-ff1b, U+ff1f",
+      "bytes": 188236,
+      "sha256": "07406d0badbced80531f167f3ec13bf70191e9fd274e53e457fb3999bc486982",
+      "license": "fonts/NotoSansSC-OFL.txt",
+      "dynamicContentPolicy": "Glyphs not in this subset must fall back; full original variable TTF is also available.",
+      "cssDeclaredRangeMissing": [],
+      "glyphCoverage": {
+        "method": "WOFF2 cmap format 4/12 via Brotli decompression",
+        "checkedCodepoints": 728,
+        "present": 715,
+        "missingCodepoints": [
+          "U+0259",
+          "U+026A",
+          "U+028C",
+          "U+02C8",
+          "U+02D0",
+          "U+2303",
+          "U+2304",
+          "U+2315",
+          "U+25C8",
+          "U+2630",
+          "U+263E",
+          "U+2726",
+          "U+2727"
+        ],
+        "missingAscii": [],
+        "notoChineseSample": true
+      },
+      "corpusSha256": "ea935f3cebac1a6954f91c83ffb694a7ddf8563a35c7d0f4d86c5c8b1008257c"
+    },
+    {
+      "family": "Outfit",
+      "file": "fonts/Outfit-frozen-v1-subset.woff2",
+      "format": "woff2",
+      "weightRange": "100 900",
+      "source": "Google Fonts CSS2 text subset",
+      "sourceStylesheet": "https://fonts.googleapis.com/css2",
+      "sourceCorpus": "32 frozen main boards and trial/FAQ state text plus ASCII 32-126",
+      "corpusFile": "fonts/frozen-design-characters.txt",
+      "corpusCharacters": 728,
+      "unicodeRange": "U+20-7e, U+a9, U+b7, U+d7, U+251, U+259, U+26a, U+28c, U+2c8, U+2d0, U+2022, U+2026, U+2192, U+2197, U+221e, U+2303-2304, U+2315, U+25a3, U+25c7-25c9, U+25cb, U+25cf, U+2630, U+263e, U+2713, U+2726-2727, U+3001-3002, U+4e00, U+4e09-4e0b, U+4e0d-4e0e, U+4e16, U+4e2a, U+4e2d, U+4e3a-4e3b, U+4e45, U+4e48-4e49, U+4e4b, U+4e5f-4e60, U+4e70, U+4e86, U+4e8b-4e8c, U+4e8e, U+4e91-4e92, U+4e94, U+4e9b, U+4ea4, U+4ea7, U+4eab, U+4eba, U+4ec0, U+4ec5, U+4eca, U+4ecd-4ece, U+4ed8, U+4ee3, U+4ee5, U+4eec, U+4ef6-4ef7, U+4efb, U+4f18, U+4f1a, U+4f30, U+4f34, U+4f4f, U+4f53, U+4f55, U+4f59, U+4f5c, U+4f60, U+4f7f, U+4f8b, U+4f9b, U+4f9d, U+4fdd, U+4fe1, U+4fee, U+5019, U+503c, U+505a, U+5148-5149, U+514d, U+5165, U+5168, U+516c-516d, U+5173-5174, U+5176-5177, U+517c, U+5185, U+518c-518d, U+5199, U+51b3, U+51b5, U+51c6, U+51e0, U+51ed, U+51fa, U+5206-5207, U+5212, U+5217, U+5219, U+521b, U+5229, U+522b, U+5230, U+5236, U+523b, U+524d, U+529b, U+529f-52a1, U+52a8-52a9, U+52b1, U+5305, U+5316, U+5339-533a, U+5347-5348, U+534f, U+5355-5357, U+5361, U+5386, U+538b, U+539f, U+53c2, U+53ca, U+53cd, U+53d1, U+53d6-53d8, U+53e3, U+53e5-53e6, U+53ea, U+53ef-53f0, U+53f2, U+53f7-53f8, U+5404, U+5408, U+540c, U+540e, U+5411, U+5417, U+5426, U+542b-542c, U+542f, U+544a, U+5458, U+5468, U+548c, U+5496, U+54c1, U+54ea, U+5561, U+559c, U+5668, U+56db, U+56de, U+56f4, U+56fa, U+5728, U+5733, U+573a, U+575a, U+578b, U+57fa, U+5883, U+5899, U+589e, U+58f0, U+5904, U+5907, U+590d, U+591a, U+591c, U+5927, U+5929, U+5934, U+594f, U+5957, U+597d, U+5982, U+59cb, U+5b50, U+5b58, U+5b66, U+5b89, U+5b8c, U+5b98, U+5b9a, U+5b9e, U+5ba1-5ba2, U+5ba4, U+5bb9, U+5bc6, U+5bdf, U+5bf9, U+5bfc, U+5c06, U+5c0a, U+5c0f, U+5c11, U+5c1a, U+5c1d, U+5c31, U+5c40, U+5c55, U+5c5e, U+5c81, U+5de9, U+5df1-5df2, U+5e03, U+5e0c, U+5e10, U+5e2e, U+5e38, U+5e73-5e74, U+5e76, U+5e8f, U+5e94, U+5ea6, U+5efa, U+5f00, U+5f0f, U+5f15, U+5f3a, U+5f52-5f53, U+5f55, U+5f62, U+5f80, U+5f84-5f85, U+5f88, U+5f8b, U+5f97, U+5faa, U+5fc3, U+5fc6, U+5feb, U+5ff5, U+6001, U+600e, U+6025, U+606f, U+6089, U+60c5, U+60ef, U+60f3, U+611f, U+6162, U+61c2, U+620f-6211, U+6216, U+6237, U+623f-6240, U+624b, U+624e, U+6253, U+6269, U+626e, U+627e, U+6280, U+628a, U+6295, U+62a4-62a5, U+62c6, U+62e9, U+62fc, U+62fe-62ff, U+6301, U+6307, U+6309, U+6311, U+6362, U+636e, U+6388, U+638c, U+6392, U+63a2, U+63a5, U+63d0, U+63e1, U+641c, U+6458, U+64a4, U+64cd, U+652f, U+6536, U+653e-653f, U+6545, U+6548, U+6570, U+6574, U+6587, U+6599, U+65b0, U+65b9, U+65c5, U+65e0, U+65e5, U+65e7, U+65f6, U+660e, U+6613, U+661f, U+662f, U+663e, U+665a, U+6668, U+666f-6670, U+6682, U+6696, U+66f4, U+66ff-6700, U+6709, U+670d, U+671b, U+671f, U+672a-672c, U+673a, U+6742-6743, U+6761, U+6765, U+676f, U+677e-677f, U+6784, U+679c, U+67d0, U+67e5, U+6807, U+6821, U+6837-6839, U+683c, U+6848, U+6863, U+68c0, U+695a, U+6a21, U+6b21-6b22, U+6b3e, U+6b62-6b65, U+6bb5, U+6bcf, U+6c34, U+6c42, U+6c47, U+6ca1, U+6cbb, U+6cd5, U+6ce8, U+6d3b, U+6d41, U+6d4b, U+6d4f, U+6d88, U+6df1, U+6df7, U+6e05, U+6e10, U+6e20, U+6e29, U+6e38, U+6e90, U+6eaf, U+6ee1, U+6ee4, U+6f9c, U+706b, U+70b9, U+70ed, U+7136, U+719f, U+7231, U+7247-7248, U+724c, U+7262, U+72b6, U+73a9, U+73af-73b0, U+7406, U+751f, U+7528, U+7531, U+7535, U+753b, U+754c, U+7559, U+7565, U+767b, U+7684, U+76c8, U+76ca, U+76ee, U+76f4, U+76f8, U+770b, U+771f, U+7740, U+77e5, U+77ed, U+7801, U+7840, U+786e, U+793a, U+79c1, U+79cd, U+79d1, U+79ef, U+79fb, U+7a0b, U+7a3f, U+7a7a, U+7ad9, U+7ae0, U+7aef, U+7b2c, U+7b49, U+7b54, U+7b56, U+7b5b, U+7b80, U+7b97, U+7ba1, U+7c7b, U+7cbe, U+7cfb, U+7d22, U+7d2f, U+7ea6-7ea7, U+7ebf, U+7ec3-7ec4, U+7ec7, U+7ecf, U+7ed3, U+7ed9, U+7edf, U+7ee7, U+7eed, U+7ef4, U+7f51, U+7f6e, U+8005, U+800c, U+8054, U+80fd, U+8111, U+81ea, U+822a, U+822c, U+8282, U+82f1, U+8303, U+83b7, U+83dc, U+843d, U+884c, U+8868, U+88ab, U+88c5, U+8981, U+89c1-89c2, U+89c4, U+89c6, U+89c8, U+89e3, U+8a00, U+8ba1, U+8ba4, U+8ba9, U+8bad-8bae, U+8bb0, U+8bbe-8bbf, U+8bc1, U+8bc4, U+8bc6, U+8bcd, U+8bd5, U+8bdd, U+8be2, U+8be5-8be6, U+8bed, U+8bf4, U+8bf7, U+8bfb, U+8bfe, U+8c61, U+8d23, U+8d26, U+8d2d, U+8d39, U+8d44, U+8d70, U+8d77, U+8da3, U+8ddf, U+8de8, U+8def, U+8e2a, U+8f66, U+8f6c, U+8f7b, U+8f7d, U+8fb9, U+8fbe, U+8fc7, U+8fd8-8fd9, U+8fdb, U+8fde, U+8ff9, U+8ffd, U+9002, U+9009, U+900f-9010, U+901a-901b, U+901f-9020, U+9047, U+9053, U+907f, U+90e8, U+90fd, U+914d, U+91ca, U+91cc-91cd, U+949f, U+94c1, U+94fe, U+9500, U+9519, U+952e, U+957f, U+95e8, U+95ea, U+95ed-95ee, U+95f4, U+9605, U+961f, U+9636, U+9644-9645, U+9650, U+9664, U+966a, U+968f-9690, U+9694, U+96c6, U+9700, U+9752, U+9759, U+9762, U+97f3, U+9875, U+9879-987a, U+987e, U+9884, U+9898, U+9910, U+9970, U+9988, U+9996, U+9a8c, U+9aa4, U+9f13, U+9f84, U+ff0b-ff0c, U+ff1a-ff1b, U+ff1f",
+      "bytes": 24196,
+      "sha256": "802297c46399cc11d8ce23ab9974276638bd9f8c282fc6352d7a9717fb63d1ce",
+      "license": "fonts/Outfit-OFL.txt",
+      "dynamicContentPolicy": "Use for Latin display text; route Chinese to Noto Sans SC or system fallbacks. Actual cmap coverage is recorded below.",
+      "cssDeclaredRangeMissing": [],
+      "glyphCoverage": {
+        "method": "WOFF2 cmap format 4/12 via Brotli decompression",
+        "checkedCodepoints": 728,
+        "present": 103,
+        "missingCodepoints": [
+          "U+0251",
+          "U+0259",
+          "U+026A",
+          "U+028C",
+          "U+02C8",
+          "U+02D0",
+          "U+221E",
+          "U+2303",
+          "U+2304",
+          "U+2315",
+          "U+25A3",
+          "U+25C7",
+          "U+25C8",
+          "U+25C9",
+          "U+25CB",
+          "U+25CF",
+          "U+2630",
+          "U+263E",
+          "U+2726",
+          "U+2727",
+          "U+3001",
+          "U+3002",
+          "U+4E00",
+          "U+4E09",
+          "U+4E0A",
+          "U+4E0B",
+          "U+4E0D",
+          "U+4E0E",
+          "U+4E16",
+          "U+4E2A",
+          "U+4E2D",
+          "U+4E3A",
+          "U+4E3B",
+          "U+4E45",
+          "U+4E48",
+          "U+4E49",
+          "U+4E4B",
+          "U+4E5F",
+          "U+4E60",
+          "U+4E70",
+          "U+4E86",
+          "U+4E8B",
+          "U+4E8C",
+          "U+4E8E",
+          "U+4E91",
+          "U+4E92",
+          "U+4E94",
+          "U+4E9B",
+          "U+4EA4",
+          "U+4EA7",
+          "U+4EAB",
+          "U+4EBA",
+          "U+4EC0",
+          "U+4EC5",
+          "U+4ECA",
+          "U+4ECD",
+          "U+4ECE",
+          "U+4ED8",
+          "U+4EE3",
+          "U+4EE5",
+          "U+4EEC",
+          "U+4EF6",
+          "U+4EF7",
+          "U+4EFB",
+          "U+4F18",
+          "U+4F1A",
+          "U+4F30",
+          "U+4F34",
+          "U+4F4F",
+          "U+4F53",
+          "U+4F55",
+          "U+4F59",
+          "U+4F5C",
+          "U+4F60",
+          "U+4F7F",
+          "U+4F8B",
+          "U+4F9B",
+          "U+4F9D",
+          "U+4FDD",
+          "U+4FE1",
+          "U+4FEE",
+          "U+5019",
+          "U+503C",
+          "U+505A",
+          "U+5148",
+          "U+5149",
+          "U+514D",
+          "U+5165",
+          "U+5168",
+          "U+516C",
+          "U+516D",
+          "U+5173",
+          "U+5174",
+          "U+5176",
+          "U+5177",
+          "U+517C",
+          "U+5185",
+          "U+518C",
+          "U+518D",
+          "U+5199",
+          "U+51B3",
+          "U+51B5",
+          "U+51C6",
+          "U+51E0",
+          "U+51ED",
+          "U+51FA",
+          "U+5206",
+          "U+5207",
+          "U+5212",
+          "U+5217",
+          "U+5219",
+          "U+521B",
+          "U+5229",
+          "U+522B",
+          "U+5230",
+          "U+5236",
+          "U+523B",
+          "U+524D",
+          "U+529B",
+          "U+529F",
+          "U+52A0",
+          "U+52A1",
+          "U+52A8",
+          "U+52A9",
+          "U+52B1",
+          "U+5305",
+          "U+5316",
+          "U+5339",
+          "U+533A",
+          "U+5347",
+          "U+5348",
+          "U+534F",
+          "U+5355",
+          "U+5356",
+          "U+5357",
+          "U+5361",
+          "U+5386",
+          "U+538B",
+          "U+539F",
+          "U+53C2",
+          "U+53CA",
+          "U+53CD",
+          "U+53D1",
+          "U+53D6",
+          "U+53D7",
+          "U+53D8",
+          "U+53E3",
+          "U+53E5",
+          "U+53E6",
+          "U+53EA",
+          "U+53EF",
+          "U+53F0",
+          "U+53F2",
+          "U+53F7",
+          "U+53F8",
+          "U+5404",
+          "U+5408",
+          "U+540C",
+          "U+540E",
+          "U+5411",
+          "U+5417",
+          "U+5426",
+          "U+542B",
+          "U+542C",
+          "U+542F",
+          "U+544A",
+          "U+5458",
+          "U+5468",
+          "U+548C",
+          "U+5496",
+          "U+54C1",
+          "U+54EA",
+          "U+5561",
+          "U+559C",
+          "U+5668",
+          "U+56DB",
+          "U+56DE",
+          "U+56F4",
+          "U+56FA",
+          "U+5728",
+          "U+5733",
+          "U+573A",
+          "U+575A",
+          "U+578B",
+          "U+57FA",
+          "U+5883",
+          "U+5899",
+          "U+589E",
+          "U+58F0",
+          "U+5904",
+          "U+5907",
+          "U+590D",
+          "U+591A",
+          "U+591C",
+          "U+5927",
+          "U+5929",
+          "U+5934",
+          "U+594F",
+          "U+5957",
+          "U+597D",
+          "U+5982",
+          "U+59CB",
+          "U+5B50",
+          "U+5B58",
+          "U+5B66",
+          "U+5B89",
+          "U+5B8C",
+          "U+5B98",
+          "U+5B9A",
+          "U+5B9E",
+          "U+5BA1",
+          "U+5BA2",
+          "U+5BA4",
+          "U+5BB9",
+          "U+5BC6",
+          "U+5BDF",
+          "U+5BF9",
+          "U+5BFC",
+          "U+5C06",
+          "U+5C0A",
+          "U+5C0F",
+          "U+5C11",
+          "U+5C1A",
+          "U+5C1D",
+          "U+5C31",
+          "U+5C40",
+          "U+5C55",
+          "U+5C5E",
+          "U+5C81",
+          "U+5DE9",
+          "U+5DF1",
+          "U+5DF2",
+          "U+5E03",
+          "U+5E0C",
+          "U+5E10",
+          "U+5E2E",
+          "U+5E38",
+          "U+5E73",
+          "U+5E74",
+          "U+5E76",
+          "U+5E8F",
+          "U+5E94",
+          "U+5EA6",
+          "U+5EFA",
+          "U+5F00",
+          "U+5F0F",
+          "U+5F15",
+          "U+5F3A",
+          "U+5F52",
+          "U+5F53",
+          "U+5F55",
+          "U+5F62",
+          "U+5F80",
+          "U+5F84",
+          "U+5F85",
+          "U+5F88",
+          "U+5F8B",
+          "U+5F97",
+          "U+5FAA",
+          "U+5FC3",
+          "U+5FC6",
+          "U+5FEB",
+          "U+5FF5",
+          "U+6001",
+          "U+600E",
+          "U+6025",
+          "U+606F",
+          "U+6089",
+          "U+60C5",
+          "U+60EF",
+          "U+60F3",
+          "U+611F",
+          "U+6162",
+          "U+61C2",
+          "U+620F",
+          "U+6210",
+          "U+6211",
+          "U+6216",
+          "U+6237",
+          "U+623F",
+          "U+6240",
+          "U+624B",
+          "U+624E",
+          "U+6253",
+          "U+6269",
+          "U+626E",
+          "U+627E",
+          "U+6280",
+          "U+628A",
+          "U+6295",
+          "U+62A4",
+          "U+62A5",
+          "U+62C6",
+          "U+62E9",
+          "U+62FC",
+          "U+62FE",
+          "U+62FF",
+          "U+6301",
+          "U+6307",
+          "U+6309",
+          "U+6311",
+          "U+6362",
+          "U+636E",
+          "U+6388",
+          "U+638C",
+          "U+6392",
+          "U+63A2",
+          "U+63A5",
+          "U+63D0",
+          "U+63E1",
+          "U+641C",
+          "U+6458",
+          "U+64A4",
+          "U+64CD",
+          "U+652F",
+          "U+6536",
+          "U+653E",
+          "U+653F",
+          "U+6545",
+          "U+6548",
+          "U+6570",
+          "U+6574",
+          "U+6587",
+          "U+6599",
+          "U+65B0",
+          "U+65B9",
+          "U+65C5",
+          "U+65E0",
+          "U+65E5",
+          "U+65E7",
+          "U+65F6",
+          "U+660E",
+          "U+6613",
+          "U+661F",
+          "U+662F",
+          "U+663E",
+          "U+665A",
+          "U+6668",
+          "U+666F",
+          "U+6670",
+          "U+6682",
+          "U+6696",
+          "U+66F4",
+          "U+66FF",
+          "U+6700",
+          "U+6709",
+          "U+670D",
+          "U+671B",
+          "U+671F",
+          "U+672A",
+          "U+672B",
+          "U+672C",
+          "U+673A",
+          "U+6742",
+          "U+6743",
+          "U+6761",
+          "U+6765",
+          "U+676F",
+          "U+677E",
+          "U+677F",
+          "U+6784",
+          "U+679C",
+          "U+67D0",
+          "U+67E5",
+          "U+6807",
+          "U+6821",
+          "U+6837",
+          "U+6838",
+          "U+6839",
+          "U+683C",
+          "U+6848",
+          "U+6863",
+          "U+68C0",
+          "U+695A",
+          "U+6A21",
+          "U+6B21",
+          "U+6B22",
+          "U+6B3E",
+          "U+6B62",
+          "U+6B63",
+          "U+6B64",
+          "U+6B65",
+          "U+6BB5",
+          "U+6BCF",
+          "U+6C34",
+          "U+6C42",
+          "U+6C47",
+          "U+6CA1",
+          "U+6CBB",
+          "U+6CD5",
+          "U+6CE8",
+          "U+6D3B",
+          "U+6D41",
+          "U+6D4B",
+          "U+6D4F",
+          "U+6D88",
+          "U+6DF1",
+          "U+6DF7",
+          "U+6E05",
+          "U+6E10",
+          "U+6E20",
+          "U+6E29",
+          "U+6E38",
+          "U+6E90",
+          "U+6EAF",
+          "U+6EE1",
+          "U+6EE4",
+          "U+6F9C",
+          "U+706B",
+          "U+70B9",
+          "U+70ED",
+          "U+7136",
+          "U+719F",
+          "U+7231",
+          "U+7247",
+          "U+7248",
+          "U+724C",
+          "U+7262",
+          "U+72B6",
+          "U+73A9",
+          "U+73AF",
+          "U+73B0",
+          "U+7406",
+          "U+751F",
+          "U+7528",
+          "U+7531",
+          "U+7535",
+          "U+753B",
+          "U+754C",
+          "U+7559",
+          "U+7565",
+          "U+767B",
+          "U+7684",
+          "U+76C8",
+          "U+76CA",
+          "U+76EE",
+          "U+76F4",
+          "U+76F8",
+          "U+770B",
+          "U+771F",
+          "U+7740",
+          "U+77E5",
+          "U+77ED",
+          "U+7801",
+          "U+7840",
+          "U+786E",
+          "U+793A",
+          "U+79C1",
+          "U+79CD",
+          "U+79D1",
+          "U+79EF",
+          "U+79FB",
+          "U+7A0B",
+          "U+7A3F",
+          "U+7A7A",
+          "U+7AD9",
+          "U+7AE0",
+          "U+7AEF",
+          "U+7B2C",
+          "U+7B49",
+          "U+7B54",
+          "U+7B56",
+          "U+7B5B",
+          "U+7B80",
+          "U+7B97",
+          "U+7BA1",
+          "U+7C7B",
+          "U+7CBE",
+          "U+7CFB",
+          "U+7D22",
+          "U+7D2F",
+          "U+7EA6",
+          "U+7EA7",
+          "U+7EBF",
+          "U+7EC3",
+          "U+7EC4",
+          "U+7EC7",
+          "U+7ECF",
+          "U+7ED3",
+          "U+7ED9",
+          "U+7EDF",
+          "U+7EE7",
+          "U+7EED",
+          "U+7EF4",
+          "U+7F51",
+          "U+7F6E",
+          "U+8005",
+          "U+800C",
+          "U+8054",
+          "U+80FD",
+          "U+8111",
+          "U+81EA",
+          "U+822A",
+          "U+822C",
+          "U+8282",
+          "U+82F1",
+          "U+8303",
+          "U+83B7",
+          "U+83DC",
+          "U+843D",
+          "U+884C",
+          "U+8868",
+          "U+88AB",
+          "U+88C5",
+          "U+8981",
+          "U+89C1",
+          "U+89C2",
+          "U+89C4",
+          "U+89C6",
+          "U+89C8",
+          "U+89E3",
+          "U+8A00",
+          "U+8BA1",
+          "U+8BA4",
+          "U+8BA9",
+          "U+8BAD",
+          "U+8BAE",
+          "U+8BB0",
+          "U+8BBE",
+          "U+8BBF",
+          "U+8BC1",
+          "U+8BC4",
+          "U+8BC6",
+          "U+8BCD",
+          "U+8BD5",
+          "U+8BDD",
+          "U+8BE2",
+          "U+8BE5",
+          "U+8BE6",
+          "U+8BED",
+          "U+8BF4",
+          "U+8BF7",
+          "U+8BFB",
+          "U+8BFE",
+          "U+8C61",
+          "U+8D23",
+          "U+8D26",
+          "U+8D2D",
+          "U+8D39",
+          "U+8D44",
+          "U+8D70",
+          "U+8D77",
+          "U+8DA3",
+          "U+8DDF",
+          "U+8DE8",
+          "U+8DEF",
+          "U+8E2A",
+          "U+8F66",
+          "U+8F6C",
+          "U+8F7B",
+          "U+8F7D",
+          "U+8FB9",
+          "U+8FBE",
+          "U+8FC7",
+          "U+8FD8",
+          "U+8FD9",
+          "U+8FDB",
+          "U+8FDE",
+          "U+8FF9",
+          "U+8FFD",
+          "U+9002",
+          "U+9009",
+          "U+900F",
+          "U+9010",
+          "U+901A",
+          "U+901B",
+          "U+901F",
+          "U+9020",
+          "U+9047",
+          "U+9053",
+          "U+907F",
+          "U+90E8",
+          "U+90FD",
+          "U+914D",
+          "U+91CA",
+          "U+91CC",
+          "U+91CD",
+          "U+949F",
+          "U+94C1",
+          "U+94FE",
+          "U+9500",
+          "U+9519",
+          "U+952E",
+          "U+957F",
+          "U+95E8",
+          "U+95EA",
+          "U+95ED",
+          "U+95EE",
+          "U+95F4",
+          "U+9605",
+          "U+961F",
+          "U+9636",
+          "U+9644",
+          "U+9645",
+          "U+9650",
+          "U+9664",
+          "U+966A",
+          "U+968F",
+          "U+9690",
+          "U+9694",
+          "U+96C6",
+          "U+9700",
+          "U+9752",
+          "U+9759",
+          "U+9762",
+          "U+97F3",
+          "U+9875",
+          "U+9879",
+          "U+987A",
+          "U+987E",
+          "U+9884",
+          "U+9898",
+          "U+9910",
+          "U+9970",
+          "U+9988",
+          "U+9996",
+          "U+9A8C",
+          "U+9AA4",
+          "U+9F13",
+          "U+9F84",
+          "U+FF0B",
+          "U+FF0C",
+          "U+FF1A",
+          "U+FF1B",
+          "U+FF1F"
+        ],
+        "missingAscii": [],
+        "notoChineseSample": false
+      },
+      "corpusSha256": "ea935f3cebac1a6954f91c83ffb694a7ddf8563a35c7d0f4d86c5c8b1008257c"
+    },
+    {
+      "family": "Noto Sans SC",
+      "file": "fonts/NotoSansSC-site-extra-v2.woff2",
+      "format": "woff2",
+      "weightRange": "100 900",
+      "source": "Google Fonts CSS2 text subset",
+      "sourceStylesheet": "https://fonts.googleapis.com/css2",
+      "sourceCorpus": "Figma frozen main boards and state text, all official-site i18n source, Vue SFC and utility source; source characters are an upper bound of visible copy",
+      "sourceSnapshots": [
+        {
+          "path": "packages/i18n/src/official-site-v1/common.ts",
+          "sha256": "90c0c93e48f63e28720e158668616bb9efae625569e8d58a66641742e39bd947"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/core.ts",
+          "sha256": "c7ce8213f584b1cbc7c429aab0736b716ad6703b85566bcb3eb4c12e1aab1456"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/experience.ts",
+          "sha256": "b664a9d605134ec03d6c4a8791b0e7d35950aa747e0f2c8952a4b0a43efb8c33"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/home.ts",
+          "sha256": "a1ff5275f5ab3ee2610afe1b36b3be76b35d61268180d6abe148fef9bcb38f2a"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/index.ts",
+          "sha256": "0b227d5acc3c76a64498ec96cffe458bab011ba3a947d81473d2a7a01639b26e"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/info.ts",
+          "sha256": "9176739c2a9d006f9e8396b93fca13f32b71233b8d2e7427db630341693f8884"
+        },
+        {
+          "path": "packages/i18n/src/official-site.ts",
+          "sha256": "04a5326ab72e1317603e300a0660bc00fd587204d7cc2cfe42d32589c1666f89"
+        },
+        {
+          "path": "apps/official-site/app.vue",
+          "sha256": "d1a1bc243e24662c985d07aa82e9e909930b5b326ba69d89c1c31eb40c90ce74"
+        },
+        {
+          "path": "apps/official-site/components/CourseCard.vue",
+          "sha256": "629fe095bcd0965b8b3a2e7fe6ab34ead683098ae04315c19b28890d5b8cff24"
+        },
+        {
+          "path": "apps/official-site/components/FreeBanner.vue",
+          "sha256": "6b0c0d2ccda622001f050efb8f4bbea86fcc3d393740e0e42bc2b67fd6990533"
+        },
+        {
+          "path": "apps/official-site/components/LearningMethodCard.vue",
+          "sha256": "9cf97eb5eb861719e0e744e669408104faf0a0587854d683d59942b90bec1cb7"
+        },
+        {
+          "path": "apps/official-site/components/MethodArtwork.vue",
+          "sha256": "6d064bd964ca5f9e1a7e66fe29753c15937e8a7f209ef1856cccc45466dce0c1"
+        },
+        {
+          "path": "apps/official-site/components/PageHeading.vue",
+          "sha256": "954568c639aded849109d84278e26d15c743c564212e34148d001cbc90d94c6d"
+        },
+        {
+          "path": "apps/official-site/components/PracticeSample.vue",
+          "sha256": "7b19717b917b25d9c04f07f69887438bf856489b76240fa46fe4d37af6b5cde5"
+        },
+        {
+          "path": "apps/official-site/components/PricingCard.vue",
+          "sha256": "7a3494ad77ee73c65dcec87f1e958d1166161444fa25ac35f4aa970ef3d94941"
+        },
+        {
+          "path": "apps/official-site/components/PublicCampaignCard.vue",
+          "sha256": "a49d44b88cc5c5346ab5acccab8ad472877b86f120081be5a81edac806fa1bfd"
+        },
+        {
+          "path": "apps/official-site/components/PublicDocument.vue",
+          "sha256": "3f38ae690457121178022a7b9cb842bcbb60ecedd09d319108016150c1415c8c"
+        },
+        {
+          "path": "apps/official-site/components/PublicSkuCard.vue",
+          "sha256": "18f797b50c9e9b066f9bafb4f5354f94e3b434d8e6349227e08532f806fac4bf"
+        },
+        {
+          "path": "apps/official-site/components/PublicStatus.vue",
+          "sha256": "2c6f32a706f243ef5d89555ebe17370c9965b26e46ab2143f72af9c8794d542e"
+        },
+        {
+          "path": "apps/official-site/components/RoomScene.vue",
+          "sha256": "d6a3f1cd4180945726da6c1ea27fb325fcc12804d24d8007a0536cbe8fb52775"
+        },
+        {
+          "path": "apps/official-site/components/SiteAvatar.vue",
+          "sha256": "2e42db770ac51bfefef78b87bb48af9c843b2fd84c5f5c0e3c26692bb5fd84c1"
+        },
+        {
+          "path": "apps/official-site/components/SiteBrand.vue",
+          "sha256": "cb4eb661305bed27ddd82bb6b94b8a2e1222111bffc1f074f661265d13ec9c34"
+        },
+        {
+          "path": "apps/official-site/components/SiteFaq.vue",
+          "sha256": "c1c675eec0c68308ddeb01c3c476b6817d16172eec87afe4d617a80c5d7755ca"
+        },
+        {
+          "path": "apps/official-site/components/SiteFooter.vue",
+          "sha256": "a173ac0d5c4bd316ab42e4db47c794c9c8079314d0d57527fb6d8deec8c3ad8a"
+        },
+        {
+          "path": "apps/official-site/components/SiteHeader.vue",
+          "sha256": "cd930031db23842f25f2467438abcb96c1e845dfa43987b1e8a2642d3b3e8963"
+        },
+        {
+          "path": "apps/official-site/components/SiteIcon.vue",
+          "sha256": "f2a32635c15397a60b7e82442bc54f9dd5c5f3e15f8516d92fbcfb6c9150ba3b"
+        },
+        {
+          "path": "apps/official-site/components/SiteModal.vue",
+          "sha256": "39ab2c9f319d031ce2cb12bb3e44ff8098bcebb59e181d7fa5b907716583bc45"
+        },
+        {
+          "path": "apps/official-site/components/SiteStartButton.vue",
+          "sha256": "70c0eb0e9425a6982755f00ff5196f5f1fab5c3df0058254e157713f7bad4269"
+        },
+        {
+          "path": "apps/official-site/components/WorldExperience.vue",
+          "sha256": "e10b990e1d403484a71c9a07028e7bc8c2fbfbd8a9d4098b0fa084b9a9287938"
+        },
+        {
+          "path": "apps/official-site/components/WorldSection.vue",
+          "sha256": "750da8ea9a70b8b135e6188c581b739725a0b1af55bd846885ece5b784f4b354"
+        },
+        {
+          "path": "apps/official-site/components/v1/core/FeatureCards.vue",
+          "sha256": "6bc9e7b84f745fdd01e3d46abfcd7f96c0ebb624cb03a8b3a16967348644b3c5"
+        },
+        {
+          "path": "apps/official-site/components/v1/core/Hero.vue",
+          "sha256": "5a01d2abbc26c3fb228e0ce9957bcfe53db62dba8dc4c97eee311ff5285051a2"
+        },
+        {
+          "path": "apps/official-site/components/v1/experience/CatalogView.vue",
+          "sha256": "fcd8cadf233f5702505300eff961ccbdf83edb17816c752e963cd4a7814a5a69"
+        },
+        {
+          "path": "apps/official-site/components/v1/experience/WorldScene.vue",
+          "sha256": "eac73f07238b3606113b07b8ce516d95cea9e032b8560a4a1e3bb9675ba3084b"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Explore.vue",
+          "sha256": "83363bfbf52f2d79dbfaa2a34a5c5fccd0a54f792d628ad1eb0f714030c9e4b0"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/FaqCta.vue",
+          "sha256": "a8f26368b77b427fe4891c6d10f2219a2cddbff5f54427f1c09a51b6cf74a86c"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Hero.vue",
+          "sha256": "623231696294e66fa5ab137164ef7cb22c88e06f5daf58fdbfa65183d7584e7e"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Method.vue",
+          "sha256": "4e2bebeb5cebafd2dd8d61f1a6959ca065af240f4c9479d87cf6f9c1dde448c2"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Pillars.vue",
+          "sha256": "2a2641a1bd5395392c8e799dc127ab7b3131c4c67a66a8d73e50f0b2ceb73009"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Practice.vue",
+          "sha256": "87f397cac4a9fcdeec97cc2b9134171b5cf06b5c07cb157b954765fceed0008e"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Promises.vue",
+          "sha256": "8280fa0f53e53ecb1032c69e67f1c1324db10ea8d379a1f35f982ee6a4a34c04"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/TrialDialog.vue",
+          "sha256": "88f32efc2221082410097314d4d0e93db299557f20ca642d282e5a0af3e62891"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoHero.vue",
+          "sha256": "200133309d19948346ba782d475f5b6e23bf9e1c9fadcc8c3b45783613d9e5c0"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoLegal.vue",
+          "sha256": "d1164cb12b58a5e3ea18123fd6c8bc8b0f5d569c3bb87d97c126e952a47d1cbd"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoUseful.vue",
+          "sha256": "2829b001249ae2580c43ef61ce0139ce844b78232dfa4e1b1ce5027d2458f48d"
+        },
+        {
+          "path": "apps/official-site/error.vue",
+          "sha256": "7a353db3a305cf68032cf86d867e716a1adfb96f41b54e0d1585f99b814b2373"
+        },
+        {
+          "path": "apps/official-site/layouts/default.vue",
+          "sha256": "3133bbf7be8b40bc51b7f1b820a0935dc2ec5113446d722271f93aa19c56e012"
+        },
+        {
+          "path": "apps/official-site/pages/about.vue",
+          "sha256": "0f9dd1be31b4fa1259a52ec8d336ae60998ca7d099225fbf521aca23240d1b3a"
+        },
+        {
+          "path": "apps/official-site/pages/announcements.vue",
+          "sha256": "ca0e14a855181e6d8321e23311e7642ecc2d3f9992afa4fee8f169b6cb853282"
+        },
+        {
+          "path": "apps/official-site/pages/compliance.vue",
+          "sha256": "5fc3cb12b7abf0493f36f5fc66826e1ff59006192b294982622c041f34bddd5c"
+        },
+        {
+          "path": "apps/official-site/pages/courses/[id].vue",
+          "sha256": "2b5cf7b7d1ee20e7a224e6cf23f260f616c1fe0fdf76e6ff7a7095a9f14c4d66"
+        },
+        {
+          "path": "apps/official-site/pages/courses/index.vue",
+          "sha256": "b7e708a1a9ff36a125173792bab75ae68cb291f40a5fc4b2a8ce0dc077cf4fbb"
+        },
+        {
+          "path": "apps/official-site/pages/download.vue",
+          "sha256": "f11a6dc633d23a0086341b2e6c686bae45f40b6c71bbe1d2ef9855d34f3051ef"
+        },
+        {
+          "path": "apps/official-site/pages/help.vue",
+          "sha256": "d1f57f03aa9c276b622e3d2245ed40b43dd2e97e8ce2dec4553ca3f5020cdfe2"
+        },
+        {
+          "path": "apps/official-site/pages/index.vue",
+          "sha256": "062634c9c76b7d0006049cf23a824340da737f535c73ae6552b283f0a999cae5"
+        },
+        {
+          "path": "apps/official-site/pages/method.vue",
+          "sha256": "a00104bd93a2066e1256b43e9cc097bca1b322fad083f3d4ec8747097228c2f7"
+        },
+        {
+          "path": "apps/official-site/pages/minors.vue",
+          "sha256": "2172d03e643afe3e1b926cf36ad604fab1738eb38c03e864b6434db323472757"
+        },
+        {
+          "path": "apps/official-site/pages/pricing.vue",
+          "sha256": "3c8fa2f754c16461e494a4f05a7e83c05d05f57b35cdf8e529938a863bc1622b"
+        },
+        {
+          "path": "apps/official-site/pages/privacy.vue",
+          "sha256": "e0c0a974b27f86fd6976eb8d3797f05db0dc3e0203d50189b43d88e612729af1"
+        },
+        {
+          "path": "apps/official-site/pages/start.vue",
+          "sha256": "3999a34f8ebe939926a6fe12fc8588c1ea4fede99cff3dc56bc9e7065171896e"
+        },
+        {
+          "path": "apps/official-site/pages/status.vue",
+          "sha256": "5ee7646d57aa4a90c88edefb8be62c834ca927f64acc1b2b589c9285af6c49f3"
+        },
+        {
+          "path": "apps/official-site/pages/terms.vue",
+          "sha256": "8609597b00d12afcbdad25c233df23f4b0cc135e61a1eb91d590478ee5a0dbe1"
+        },
+        {
+          "path": "apps/official-site/pages/world.vue",
+          "sha256": "231836d0aeae97dc2d8bbd07aaa7d6e85c1c5afbe19171069cfc9b23c56c89f3"
+        },
+        {
+          "path": "apps/official-site/utils/avatar-art.ts",
+          "sha256": "ce0beebec1d6c3caff04aa64e5793377a9699455e2e483a3c84a714af6cc7018"
+        },
+        {
+          "path": "apps/official-site/utils/design-system.ts",
+          "sha256": "2d5b3df0cc48dbdddef61a2ec93f2f926128158f3f0ebc261720c48b4b97878d"
+        },
+        {
+          "path": "apps/official-site/utils/experience-content.ts",
+          "sha256": "165f778b70c311747c395a9a0e69835a4db0c0aae326fae00ee68e9d67d724f8"
+        },
+        {
+          "path": "apps/official-site/utils/feature-gates.ts",
+          "sha256": "9702dfbefd73ece81605232a5e4c5b7ec10d0acbac88a1a7c0fce8b91d78d20f"
+        },
+        {
+          "path": "apps/official-site/utils/gateway.ts",
+          "sha256": "b94b030b592ee6938b581c7ce19c25954b63772285ac72fd8d6f296ff9aaaeef"
+        },
+        {
+          "path": "apps/official-site/utils/public-projection.ts",
+          "sha256": "3eddb6196a19b9bf5d33d5828214daa24e255a62ea6e1c1288a0648a1f5988e2"
+        },
+        {
+          "path": "apps/official-site/utils/seo.ts",
+          "sha256": "2f8acd4eeb81979da76eee96e48073ca6e7f08d8d9ad49fc94ae18577c515864"
+        },
+        {
+          "path": "apps/official-site/utils/site-icons.ts",
+          "sha256": "5124c18e2c5c197aed513c490ed09b9c5323cfce22d6f8597449dd813d8a8e4b"
+        },
+        {
+          "path": "apps/official-site/utils/site-layout.ts",
+          "sha256": "d5ca14b585b1ed1ab2cd45dcaf35285f969274fbfe0a8907811b65c6430a4703"
+        },
+        {
+          "path": "apps/official-site/utils/v2-foundation.ts",
+          "sha256": "e167bc404c029bcf036de0f56c185446dfb97b215fd078bf9e95197e583ccc5b"
+        },
+        {
+          "path": "apps/official-site/utils/public-links.mjs",
+          "sha256": "406c31b07d872f5b50f8b900e840fcb9eb587f65246740d4e19f219fdf6fc06d"
+        },
+        {
+          "path": "apps/official-site/utils/public-state.mjs",
+          "sha256": "d19a0f01cbf5051d1ecc77e88efeb15b5a974a59d047d19732fd1616a295f6a8"
+        },
+        {
+          "path": "apps/official-site/utils/site-content.mjs",
+          "sha256": "57f1dbe0353aa27565a3fe2e36a5ec0d2fc3a701259209ec732286dabbe5a361"
+        },
+        {
+          "path": "apps/official-site/utils/ui-state.mjs",
+          "sha256": "0fd92cde59c219c83eae3d1808b36073558cd6a675f561591fae5d0e8ae81235"
+        }
+      ],
+      "sourceChangedDuringGeneration": [],
+      "corpusFile": "fonts/site-extra-characters.txt",
+      "corpusSha256": "073c863ca96bb898b23cf6c20c50b2174884e87dd28ceb31feb880b52f47b381",
+      "corpusCharacters": 175,
+      "combinedCorpusFile": "fonts/site-static-characters.txt",
+      "combinedCorpusSha256": "31835cc1b1d2880570db010ebc750af5d58bb950350fa1568a998b4f50a7d722",
+      "unicodeRange": "U+a5, U+2013-2014, U+203a, U+2190, U+2193, U+21bb, U+22ef, U+2301, U+24d8, U+25d0, U+25f7, U+4e13, U+4e1a, U+4e66, U+4eac, U+4ecb, U+4ed6, U+4f4d, U+4fbf, U+501f, U+504f, U+50cf, U+513f, U+5141, U+5145, U+5171, U+51cf, U+51fb, U+521d, U+5220, U+5224, U+5317, U+5373, U+53a2, U+53bb, U+53f3, U+540d, U+5448, U+54a8, U+54cd, U+552e, U+5546, U+56e0, U+56e2, U+56fe, U+5730, U+5740, U+5747, U+5757, U+57df, U+586b, U+5916, U+592a, U+5956, U+5976, U+5b57, U+5b63, U+5b83, U+5bb6, U+5bfb, U+5c42, U+5c9a, U+5de5-5de6, U+5dee, U+5e26, U+5e55, U+5e72, U+5e97, U+5f02, U+5f20, U+5f71, U+5fae, U+5fbd, U+5fc5, U+5fd9, U+601d, U+6027, U+6062, U+610f, U+624d, U+6267, U+62d2, U+62f1, U+6361, U+63a8, U+63d2, U+64ad, U+6539, U+656c, U+65ad, U+6708, U+675f, U+684c, U+68b0, U+690d, U+6bd4, U+6c1b, U+6cb9, U+6d45, U+6f88, U+706f, U+7167, U+7269, U+7279, U+72ec, U+731c, U+767d, U+76cf, U+76d1, U+76d8, U+7701, U+793c, U+79bb, U+79be, U+79f0, U+7a0d, U+7a97, U+7acb, U+7ae5, U+7bc7, U+7d2b, U+7ec6, U+7ecd, U+7ed1, U+7ed5, U+7edd, U+7eff, U+7f16, U+7f72, U+7ffb, U+8003, U+80cc, U+8272, U+8349, U+8350, U+8377, U+8584, U+85cf, U+865a, U+8865, U+89d2, U+89e6, U+8ba2, U+8bb8, U+8bd1, U+8bef, U+8bf5, U+8c03, U+8c8c, U+8db3, U+8df3, U+8f68, U+8f83, U+8f85, U+8f93, U+8fd0-8fd1, U+8fd4, U+9000, U+904d, U+9192, U+91cf, U+9501, U+95ef, U+963f, U+975e, U+9891, U+98ce, U+9986, U+9ad8, U+ff01, U+ff08-ff09",
+      "bytes": 54288,
+      "sha256": "7b4b5e953a3e536f7ee63552232c6f509c75087536b56b02cffa09feaf0a49c2",
+      "license": "fonts/NotoSansSC-OFL.txt",
+      "combinedGlyphCoverage": {
+        "method": "WOFF2 and source TTF cmap format 4/12 via Brotli decompression",
+        "checkedCodepoints": 903,
+        "present": 887,
+        "missingCodepoints": [
+          "U+0259",
+          "U+026A",
+          "U+028C",
+          "U+02C8",
+          "U+02D0",
+          "U+21BB",
+          "U+2301",
+          "U+2303",
+          "U+2304",
+          "U+2315",
+          "U+25C8",
+          "U+25F7",
+          "U+2630",
+          "U+263E",
+          "U+2726",
+          "U+2727"
+        ],
+        "missingSupportedByFullNoto": [],
+        "requiredArrowAndChevron": [
+          "U+2190",
+          "U+203A"
+        ]
+      },
+      "dynamicContentPolicy": "Outside the combined static corpus uses full original family or system fallback.",
+      "generatedFromSourceSnapshots": [
+        {
+          "path": "packages/i18n/src/official-site-v1/common.ts",
+          "sha256": "90c0c93e48f63e28720e158668616bb9efae625569e8d58a66641742e39bd947"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/core.ts",
+          "sha256": "34363e32cce5caa64f6f2f9ac126554a315d4f2d2bb5c19a6e1d199119336208"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/experience.ts",
+          "sha256": "9116b034a141cb65f3ea03ecd19f163f307d786cab59e629cae5cf3e5ec1e852"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/home.ts",
+          "sha256": "a1ff5275f5ab3ee2610afe1b36b3be76b35d61268180d6abe148fef9bcb38f2a"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/index.ts",
+          "sha256": "0b227d5acc3c76a64498ec96cffe458bab011ba3a947d81473d2a7a01639b26e"
+        },
+        {
+          "path": "packages/i18n/src/official-site-v1/info.ts",
+          "sha256": "d9815053f102e74321e2053d532e95855c9f7f2394b5c5f75d02f525e715cc49"
+        },
+        {
+          "path": "packages/i18n/src/official-site.ts",
+          "sha256": "04a5326ab72e1317603e300a0660bc00fd587204d7cc2cfe42d32589c1666f89"
+        },
+        {
+          "path": "apps/official-site/app.vue",
+          "sha256": "d1a1bc243e24662c985d07aa82e9e909930b5b326ba69d89c1c31eb40c90ce74"
+        },
+        {
+          "path": "apps/official-site/components/CourseCard.vue",
+          "sha256": "629fe095bcd0965b8b3a2e7fe6ab34ead683098ae04315c19b28890d5b8cff24"
+        },
+        {
+          "path": "apps/official-site/components/FreeBanner.vue",
+          "sha256": "6b0c0d2ccda622001f050efb8f4bbea86fcc3d393740e0e42bc2b67fd6990533"
+        },
+        {
+          "path": "apps/official-site/components/LearningMethodCard.vue",
+          "sha256": "9cf97eb5eb861719e0e744e669408104faf0a0587854d683d59942b90bec1cb7"
+        },
+        {
+          "path": "apps/official-site/components/MethodArtwork.vue",
+          "sha256": "6d064bd964ca5f9e1a7e66fe29753c15937e8a7f209ef1856cccc45466dce0c1"
+        },
+        {
+          "path": "apps/official-site/components/PageHeading.vue",
+          "sha256": "954568c639aded849109d84278e26d15c743c564212e34148d001cbc90d94c6d"
+        },
+        {
+          "path": "apps/official-site/components/PracticeSample.vue",
+          "sha256": "7b19717b917b25d9c04f07f69887438bf856489b76240fa46fe4d37af6b5cde5"
+        },
+        {
+          "path": "apps/official-site/components/PricingCard.vue",
+          "sha256": "7a3494ad77ee73c65dcec87f1e958d1166161444fa25ac35f4aa970ef3d94941"
+        },
+        {
+          "path": "apps/official-site/components/PublicCampaignCard.vue",
+          "sha256": "a49d44b88cc5c5346ab5acccab8ad472877b86f120081be5a81edac806fa1bfd"
+        },
+        {
+          "path": "apps/official-site/components/PublicDocument.vue",
+          "sha256": "3f38ae690457121178022a7b9cb842bcbb60ecedd09d319108016150c1415c8c"
+        },
+        {
+          "path": "apps/official-site/components/PublicSkuCard.vue",
+          "sha256": "18f797b50c9e9b066f9bafb4f5354f94e3b434d8e6349227e08532f806fac4bf"
+        },
+        {
+          "path": "apps/official-site/components/PublicStatus.vue",
+          "sha256": "2c6f32a706f243ef5d89555ebe17370c9965b26e46ab2143f72af9c8794d542e"
+        },
+        {
+          "path": "apps/official-site/components/RoomScene.vue",
+          "sha256": "d6a3f1cd4180945726da6c1ea27fb325fcc12804d24d8007a0536cbe8fb52775"
+        },
+        {
+          "path": "apps/official-site/components/SiteAvatar.vue",
+          "sha256": "2e42db770ac51bfefef78b87bb48af9c843b2fd84c5f5c0e3c26692bb5fd84c1"
+        },
+        {
+          "path": "apps/official-site/components/SiteBrand.vue",
+          "sha256": "cb4eb661305bed27ddd82bb6b94b8a2e1222111bffc1f074f661265d13ec9c34"
+        },
+        {
+          "path": "apps/official-site/components/SiteFaq.vue",
+          "sha256": "c1c675eec0c68308ddeb01c3c476b6817d16172eec87afe4d617a80c5d7755ca"
+        },
+        {
+          "path": "apps/official-site/components/SiteFooter.vue",
+          "sha256": "b58b7c8989b0a118ff852847b0a4372ebf61a5056bdee9b8faa1db97cee91414"
+        },
+        {
+          "path": "apps/official-site/components/SiteHeader.vue",
+          "sha256": "c84f96030ad6a0aa6efb81e5a0f33ec04d2fd8e472275e002a88ba3d7b529320"
+        },
+        {
+          "path": "apps/official-site/components/SiteIcon.vue",
+          "sha256": "f2a32635c15397a60b7e82442bc54f9dd5c5f3e15f8516d92fbcfb6c9150ba3b"
+        },
+        {
+          "path": "apps/official-site/components/SiteModal.vue",
+          "sha256": "39ab2c9f319d031ce2cb12bb3e44ff8098bcebb59e181d7fa5b907716583bc45"
+        },
+        {
+          "path": "apps/official-site/components/SiteStartButton.vue",
+          "sha256": "576afd9a9a9d13ae0aad2cd5a761818d9a031f94257b47fb352221b15702efaa"
+        },
+        {
+          "path": "apps/official-site/components/WorldExperience.vue",
+          "sha256": "e10b990e1d403484a71c9a07028e7bc8c2fbfbd8a9d4098b0fa084b9a9287938"
+        },
+        {
+          "path": "apps/official-site/components/WorldSection.vue",
+          "sha256": "750da8ea9a70b8b135e6188c581b739725a0b1af55bd846885ece5b784f4b354"
+        },
+        {
+          "path": "apps/official-site/components/v1/core/FeatureCards.vue",
+          "sha256": "b9d3c34287867f1e5ae4332a15753f286b10766e1b1e0ac3099800e127b7fba4"
+        },
+        {
+          "path": "apps/official-site/components/v1/core/Hero.vue",
+          "sha256": "c8f3da3c0822d95098fa834b1436f670992e43b0710f2be5bfdcbfab01b8fae2"
+        },
+        {
+          "path": "apps/official-site/components/v1/experience/CatalogView.vue",
+          "sha256": "34e348ec5fe043292ed7e6de1cadcb87c462df2f7a42c63e1ba6eaa9a84aac55"
+        },
+        {
+          "path": "apps/official-site/components/v1/experience/WorldScene.vue",
+          "sha256": "6a2ff85458a46d479846699840a05cf4a6995ca32a6f84a38e9f1ba77d80f977"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Explore.vue",
+          "sha256": "aca6cfc7b1cdc0df077b36caf31a43bf541b75f03d2afc70dc072dce55393876"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/FaqCta.vue",
+          "sha256": "b7381d1717100540abf2cd6866aaf3a89db25178f4f1b299fdb702282ad33473"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Hero.vue",
+          "sha256": "5b654577d6a6f47065ab7fec6d67870fff2b9a847f32b2705d3548a6cefadb53"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Method.vue",
+          "sha256": "c1a8826277c617d628001323b45ed2fe7cbad99881f52eef35b4a905ad968990"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Pillars.vue",
+          "sha256": "fc2ac22a74f3c09dfd6149f00e6b9dcdf8752fb982be1fdf73ab1452ddeac2b8"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Practice.vue",
+          "sha256": "75c081a516b1b4a751d8c406dfae893465d8f77dfe7799836972ed86530ae48c"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/Promises.vue",
+          "sha256": "f56a2ed092960cff3c3c72c9b9cc4926d65db3f06f0dfe63f3b5d35b150cbc12"
+        },
+        {
+          "path": "apps/official-site/components/v1/home/TrialDialog.vue",
+          "sha256": "155faffcd8851046a6e0419efe065e6c52db1bc4d893106ebbf88622e2782473"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoHero.vue",
+          "sha256": "3cee6f11e03e012927dc4ae47189fc15fa7a94de22175e601314fc71ea3b37bf"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoLegal.vue",
+          "sha256": "cd259c59d86d2ab7163de644b9f2fec4fb83d24a42eea46aaad9fc79879c254d"
+        },
+        {
+          "path": "apps/official-site/components/v1/info/InfoUseful.vue",
+          "sha256": "ff24bc991dea90ee68b66e1b237f09b12b088db2d6f19b3db28548e7af4fb903"
+        },
+        {
+          "path": "apps/official-site/error.vue",
+          "sha256": "b671d9e60b17567df0a3846e24f9a161fd5fd4281b74e431f7eba6092ffdaf24"
+        },
+        {
+          "path": "apps/official-site/layouts/default.vue",
+          "sha256": "3133bbf7be8b40bc51b7f1b820a0935dc2ec5113446d722271f93aa19c56e012"
+        },
+        {
+          "path": "apps/official-site/pages/about.vue",
+          "sha256": "13aad5f5f7b1c064e27118a0a8e11f91a25bad289d29faba92fe64059505ed00"
+        },
+        {
+          "path": "apps/official-site/pages/announcements.vue",
+          "sha256": "4fae71077804b5e1af09820c0bda9f5cee514df6b0762017acd0596d91d11f47"
+        },
+        {
+          "path": "apps/official-site/pages/compliance.vue",
+          "sha256": "b4bad933ab5487fed4192c868db0330f309cd56122fe1cb6eb7e331b7ee33297"
+        },
+        {
+          "path": "apps/official-site/pages/courses/[id].vue",
+          "sha256": "6a616b139a3c3cc7d87340f1af5a4ddf60a7c76845dce90ee7c01379dcb6a4bb"
+        },
+        {
+          "path": "apps/official-site/pages/courses/index.vue",
+          "sha256": "2fe25aec74074da83f4570c914cd7f478adfeab50364e2dfbbbae4a9f5fdaeef"
+        },
+        {
+          "path": "apps/official-site/pages/download.vue",
+          "sha256": "f11a6dc633d23a0086341b2e6c686bae45f40b6c71bbe1d2ef9855d34f3051ef"
+        },
+        {
+          "path": "apps/official-site/pages/help.vue",
+          "sha256": "07e4d12bddc41d2bd088b25535838bcb1e3621faf57d2cb74186e09ea6340a7c"
+        },
+        {
+          "path": "apps/official-site/pages/index.vue",
+          "sha256": "654cc1d5bde7e1355354b4b99a926fb903601a4a80ac1824965474fd3c0cc1dc"
+        },
+        {
+          "path": "apps/official-site/pages/method.vue",
+          "sha256": "96a389521cfee4024dfb65ad4297ef3a898aa2b2c0f7e009f2e7ead2b2bf68f7"
+        },
+        {
+          "path": "apps/official-site/pages/minors.vue",
+          "sha256": "2172d03e643afe3e1b926cf36ad604fab1738eb38c03e864b6434db323472757"
+        },
+        {
+          "path": "apps/official-site/pages/pricing.vue",
+          "sha256": "3c8fa2f754c16461e494a4f05a7e83c05d05f57b35cdf8e529938a863bc1622b"
+        },
+        {
+          "path": "apps/official-site/pages/privacy.vue",
+          "sha256": "e0c0a974b27f86fd6976eb8d3797f05db0dc3e0203d50189b43d88e612729af1"
+        },
+        {
+          "path": "apps/official-site/pages/start.vue",
+          "sha256": "49006898bcc4e91b9f896a23f285d121dd7a0e2fc739b55548dd633200ab8b68"
+        },
+        {
+          "path": "apps/official-site/pages/status.vue",
+          "sha256": "6bc02cf0f7a1847e83767c90cedfdf769e177e9628b936e53b98bbc8196495d9"
+        },
+        {
+          "path": "apps/official-site/pages/terms.vue",
+          "sha256": "8609597b00d12afcbdad25c233df23f4b0cc135e61a1eb91d590478ee5a0dbe1"
+        },
+        {
+          "path": "apps/official-site/pages/world.vue",
+          "sha256": "abbaedd883fd892fbdd0c72542f5cd4b461d45004a096beb109b068ff7a7b8eb"
+        },
+        {
+          "path": "apps/official-site/utils/avatar-art.ts",
+          "sha256": "ce0beebec1d6c3caff04aa64e5793377a9699455e2e483a3c84a714af6cc7018"
+        },
+        {
+          "path": "apps/official-site/utils/design-system.ts",
+          "sha256": "2d5b3df0cc48dbdddef61a2ec93f2f926128158f3f0ebc261720c48b4b97878d"
+        },
+        {
+          "path": "apps/official-site/utils/experience-content.ts",
+          "sha256": "165f778b70c311747c395a9a0e69835a4db0c0aae326fae00ee68e9d67d724f8"
+        },
+        {
+          "path": "apps/official-site/utils/feature-gates.ts",
+          "sha256": "9702dfbefd73ece81605232a5e4c5b7ec10d0acbac88a1a7c0fce8b91d78d20f"
+        },
+        {
+          "path": "apps/official-site/utils/gateway.ts",
+          "sha256": "b94b030b592ee6938b581c7ce19c25954b63772285ac72fd8d6f296ff9aaaeef"
+        },
+        {
+          "path": "apps/official-site/utils/public-projection.ts",
+          "sha256": "3eddb6196a19b9bf5d33d5828214daa24e255a62ea6e1c1288a0648a1f5988e2"
+        },
+        {
+          "path": "apps/official-site/utils/seo.ts",
+          "sha256": "2f8acd4eeb81979da76eee96e48073ca6e7f08d8d9ad49fc94ae18577c515864"
+        },
+        {
+          "path": "apps/official-site/utils/site-icons.ts",
+          "sha256": "5124c18e2c5c197aed513c490ed09b9c5323cfce22d6f8597449dd813d8a8e4b"
+        },
+        {
+          "path": "apps/official-site/utils/v2-foundation.ts",
+          "sha256": "e167bc404c029bcf036de0f56c185446dfb97b215fd078bf9e95197e583ccc5b"
+        },
+        {
+          "path": "apps/official-site/utils/public-links.mjs",
+          "sha256": "406c31b07d872f5b50f8b900e840fcb9eb587f65246740d4e19f219fdf6fc06d"
+        },
+        {
+          "path": "apps/official-site/utils/public-state.mjs",
+          "sha256": "d19a0f01cbf5051d1ecc77e88efeb15b5a974a59d047d19732fd1616a295f6a8"
+        },
+        {
+          "path": "apps/official-site/utils/site-content.mjs",
+          "sha256": "57f1dbe0353aa27565a3fe2e36a5ec0d2fc3a701259209ec732286dabbe5a361"
+        },
+        {
+          "path": "apps/official-site/utils/ui-state.mjs",
+          "sha256": "0fd92cde59c219c83eae3d1808b36073558cd6a675f561591fae5d0e8ae81235"
+        }
+      ],
+      "revalidation": {
+        "sourceCount": 77,
+        "currentSourceCharacterCount": 902,
+        "generatedCharacterCorpusCount": 903,
+        "sourceCharacterSetIsSubsetOfGeneratedFontRequest": true,
+        "generatedOnlyCodepoints": [
+          "U+2190"
+        ],
+        "currentSourceCharacterSetSha256": "8edc641bcb02cacddaa3f5bc56698da80a03bfcc4425a128a2a69e0ebbd81a3f",
+        "fontBinaryUnchanged": true,
+        "atUtc": "2026-11-03T10:01:18.716976+00:00"
+      }
+    }
+  ]
+}

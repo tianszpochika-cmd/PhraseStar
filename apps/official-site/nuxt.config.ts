@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     "~/assets/css/main.css",
     "~/assets/css/world.css",
     "~/assets/css/production.css",
+    "~/assets/css/figma-v1.css",
   ],
   runtimeConfig: {
     gatewayInternalBaseUrl,
@@ -47,11 +48,6 @@ export default defineNuxtConfig({
         { name: "format-detection", content: "telephone=no" },
       ],
       link: [{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
-    },
-  },
-  nitro: {
-    prerender: {
-      routes: ["/robots.txt", "/sitemap.xml"],
     },
   },
 });

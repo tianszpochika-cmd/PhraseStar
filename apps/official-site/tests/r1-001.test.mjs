@@ -1,9 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createI18n } from "@englishflow/i18n";
-import { officialWebsiteMessages } from "@englishflow/i18n/official-site";
+import { register } from "node:module";
 import { publicRoutes } from "../utils/site-content.mjs";
 import { buildPublicLearningEntry } from "../utils/public-links.mjs";
+
+register("./website-typescript-loader.mjs", import.meta.url);
+const [{ createI18n }, { officialWebsiteMessages }] = await Promise.all([
+  import("@englishflow/i18n"), import("@englishflow/i18n/official-site"),
+]);
 
 // Current-source R1 contract. Uses the already running fixed-port site; never starts a runner.
 const origin = "http://127.0.0.1:18182";
@@ -41,7 +45,15 @@ test("R1-001 honest course, price and download messages do not promise approved 
 
 test("R1-001 handoff to learner registration has adult boundary and controlled URL preferences", async () => {
   const query = "?locale=zh-CN&theme=dark&utm_source=r1-audit&returnTo=%2F%2Fevil.test&redirect=https%3A%2F%2Fevil.test&access_token=forbidden";
-  const html = await read("/start" + query);
+  const home = await read("/" + query);
+  const homeHrefs = [...home.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replaceAll("&amp;", "&"));
+  const start = homeHrefs.map((href) => new URL(href, origin)).find((url) =>
+    url.origin === origin && url.pathname === "/start" && url.searchParams.get("utm_source") === "r1-audit");
+  assert.ok(start, "header CTA first navigates to the official start page");
+  assert.equal(start.searchParams.get("locale"), "zh-CN");
+  assert.equal(start.searchParams.get("theme"), "dark");
+  for (const key of ["access_token", "redirect", "returnTo", "owner", "tenant", "role"]) assert.equal(start.searchParams.has(key), false);
+  const html = await read(start.pathname + start.search);
   assert.match(html, /18 岁以上成人与大学生/);
   assert.match(html, /通过前不开放学习能力/);
   const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replaceAll("&amp;", "&"));

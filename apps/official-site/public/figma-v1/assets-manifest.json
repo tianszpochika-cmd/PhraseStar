@@ -1,0 +1,6274 @@
+{
+  "figmaFileKey": "UdONc7ziqIJAiUDSQRyDG2",
+  "assets": [
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2652"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/about-desktop-168-2639/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "bee87b672400469707e01809e9f6476ed7effe6e1c5333d4d598ff5104843ac2",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2659"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/about-desktop-168-2639/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2673"
+      ],
+      "variable": "imgEllipse1",
+      "file": "assets/about-desktop-168-2639/imgEllipse1.svg",
+      "bytes": 244,
+      "sha256": "07f5007d9eaf2a29b3df2681c0b9cb9ccac067cdfd6aca55a3f1758eb2add618",
+      "dimensions": {
+        "width": "139",
+        "height": "139",
+        "viewBox": "0 0 139 139"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2678",
+        "168:2687"
+      ],
+      "variable": "imgEllipse2",
+      "file": "assets/about-desktop-168-2639/imgEllipse2.svg",
+      "bytes": 234,
+      "sha256": "f38ec277438ba0442782f5cfb121e86aabaccca677cd36b1d19f7f9279c18fc3",
+      "dimensions": {
+        "width": "36",
+        "height": "36",
+        "viewBox": "0 0 36 36"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2681",
+        "168:2684",
+        "168:2690"
+      ],
+      "variable": "imgEllipse3",
+      "file": "assets/about-desktop-168-2639/imgEllipse3.svg",
+      "bytes": 234,
+      "sha256": "ee1c6db7173836cdae70d1708e4fe6a4acc602134a681dae2e778203b281182f",
+      "dimensions": {
+        "width": "36",
+        "height": "36",
+        "viewBox": "0 0 36 36"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2693",
+        "168:2695"
+      ],
+      "variable": "imgEllipse4",
+      "file": "assets/about-desktop-168-2639/imgEllipse4.svg",
+      "bytes": 234,
+      "sha256": "9ac12deb6c915b3432e0d7ee21a604ca029a9e9f6fbc4fdaac83f22c0b454b27",
+      "dimensions": {
+        "width": "36",
+        "height": "36",
+        "viewBox": "0 0 36 36"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2660",
+        "168:2674"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/about-desktop-168-2639/imgFrame.svg",
+      "bytes": 365,
+      "sha256": "25225fe76beb3f951e05fdf81f4e34d2e3d7f098d09b0781df1fcc8e466a5949",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2653"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/about-desktop-168-2639/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "069a2acc50fb56d3c9d22f41af2016a99ca39e266091c146d2088435bcb42b50",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "168:2654"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/about-desktop-168-2639/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "cc5e9c058b26207702922cb4fd6adbcec8b3fd71b527b22744bb9363ead70d80",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/about-desktop-168-2639/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "about-desktop-168-2639",
+      "sourceFrame": "168:2639",
+      "sourceNodes": [
+        "201:228"
+      ],
+      "variable": "imgV10",
+      "file": "assets/about-desktop-168-2639/imgV10.svg",
+      "bytes": 613,
+      "sha256": "78a03266cbda4467a9de69ad1b6be6f21f73bf2069c7150b0488b701fead1964",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "168:2765"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/about-mobile-168-2757/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "d4e66f8de73e1c24f4d72ca6e721fcd370a6dc86128d362657f635441727234a",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "168:2770"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/about-mobile-168-2757/imgFrame.svg",
+      "bytes": 365,
+      "sha256": "25225fe76beb3f951e05fdf81f4e34d2e3d7f098d09b0781df1fcc8e466a5949",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "201:231"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/about-mobile-168-2757/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "168:2766"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/about-mobile-168-2757/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "71e3c64fd051bec3966ee6583ed70abbd82194433e80723f7bc40d31fd0b5e12",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/about-mobile-168-2757/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "about-mobile-168-2757",
+      "sourceFrame": "168:2757",
+      "sourceNodes": [
+        "201:229"
+      ],
+      "variable": "imgV10",
+      "file": "assets/about-mobile-168-2757/imgV10.svg",
+      "bytes": 601,
+      "sha256": "9dfa3989d002214563cb2a03ee3e2a9300306c6e11fb1c2f3bb62c95ef9679fc",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2843"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/announcements-desktop-168-2830/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "2663e77f153225bf65cf829469cc3b694f1e1f1d0fd5e6d08c0d4d21f3b84590",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2850"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/announcements-desktop-168-2830/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2851",
+        "168:2869",
+        "168:2880"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/announcements-desktop-168-2830/imgFrame.svg",
+      "bytes": 605,
+      "sha256": "124e93b93eec234db1061db1c85d55e9519078a0ecb335b46b5ec70de6e0ef72",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2891"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/announcements-desktop-168-2830/imgFrame1.svg",
+      "bytes": 551,
+      "sha256": "d6bc92b4ec94ee460ec57b9aa61929826c51d66a97bb95340d900bc5451d7342",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2844"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/announcements-desktop-168-2830/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "f4587187ea0f900d8e5c4454ee66e8cd1fb23c1e111062914276ce3fef216224",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "168:2845"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/announcements-desktop-168-2830/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "aca0d581e78aaa917f643895d5352d5da73dff5d717fb700adc4ae0e75ebc8b9",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/announcements-desktop-168-2830/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "announcements-desktop-168-2830",
+      "sourceFrame": "168:2830",
+      "sourceNodes": [
+        "201:233"
+      ],
+      "variable": "imgV10",
+      "file": "assets/announcements-desktop-168-2830/imgV10.svg",
+      "bytes": 613,
+      "sha256": "1997c64aa3c815c27b7029bcbf8d1869778afeb7c475633b2d4b79f974d477f7",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "168:2938"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/announcements-mobile-168-2930/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "bc432f905bd5958907af890a093ecfa74e6bee9751e70b564fff6f0a557a978e",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "168:2943",
+        "168:2958",
+        "168:2969"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/announcements-mobile-168-2930/imgFrame.svg",
+      "bytes": 605,
+      "sha256": "124e93b93eec234db1061db1c85d55e9519078a0ecb335b46b5ec70de6e0ef72",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "168:2980"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/announcements-mobile-168-2930/imgFrame1.svg",
+      "bytes": 551,
+      "sha256": "d6bc92b4ec94ee460ec57b9aa61929826c51d66a97bb95340d900bc5451d7342",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "201:236"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/announcements-mobile-168-2930/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "168:2939"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/announcements-mobile-168-2930/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "e1fd41b24931cbe257dd889b31200f4868cf87d9bdcb28550f6f3b0a1935cef5",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/announcements-mobile-168-2930/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "announcements-mobile-168-2930",
+      "sourceFrame": "168:2930",
+      "sourceNodes": [
+        "201:234"
+      ],
+      "variable": "imgV10",
+      "file": "assets/announcements-mobile-168-2930/imgV10.svg",
+      "bytes": 601,
+      "sha256": "82c9dc872a20f9fdf5e0267615e5f90ef9ab5846902608ffb725910e07d5c8c1",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3684"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/compliance-desktop-168-3671/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "5589367c2cfe632ba3f6570bead9a0a66af3d7061f9c7b11940b81279228c25b",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3691"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/compliance-desktop-168-3671/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3692",
+        "168:3721"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/compliance-desktop-168-3671/imgFrame.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3739"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/compliance-desktop-168-3671/imgFrame1.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3685"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/compliance-desktop-168-3671/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "090be53012ddd16881df15c10ea16f8c0eddca2436efe3d63bcc583a32919779",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "168:3686"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/compliance-desktop-168-3671/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "6ac2ccd35ef6a680fee137b43f9a03bd597c702741872ea13cedd3219e899e8a",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/compliance-desktop-168-3671/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "compliance-desktop-168-3671",
+      "sourceFrame": "168:3671",
+      "sourceNodes": [
+        "201:258"
+      ],
+      "variable": "imgV10",
+      "file": "assets/compliance-desktop-168-3671/imgV10.svg",
+      "bytes": 613,
+      "sha256": "78a03266cbda4467a9de69ad1b6be6f21f73bf2069c7150b0488b701fead1964",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "168:3794"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/compliance-mobile-168-3786/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "5c47b30ef6d5d5dcc9cbbb9a83eb4255b94ec3ec2c3585e6aaeb5cf31b8506a2",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "168:3799"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/compliance-mobile-168-3786/imgFrame.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "201:261"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/compliance-mobile-168-3786/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "168:3795"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/compliance-mobile-168-3786/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "227598597b2930801d4195528b185a1e114fa8cdd8133920abc56511a0aafd9a",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/compliance-mobile-168-3786/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "compliance-mobile-168-3786",
+      "sourceFrame": "168:3786",
+      "sourceNodes": [
+        "201:259"
+      ],
+      "variable": "imgV10",
+      "file": "assets/compliance-mobile-168-3786/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1031"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/course-detail-desktop-168-1006/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "455d92a36dab5968996610f3b518fe1fae25c19c4908dc79b3cac6e496cf8193",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1030"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/course-detail-desktop-168-1006/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "789ca3448b351d54dd0ca8703f97c0f2784d0559f91f9d095ebd11048fc549c2",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1029"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/course-detail-desktop-168-1006/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "64d339113a88979f5987e75501a023394136bca099b911f57bcbd5b4f32a5e2e",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1020"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/course-detail-desktop-168-1006/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1021"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/course-detail-desktop-168-1006/imgFrame.svg",
+      "bytes": 343,
+      "sha256": "3e15483b6721b476bf5217ab7fa6a6881ecd0c78d2a9e482024ed69a8c26aab3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "168:1056",
+        "168:1073",
+        "168:1090"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/course-detail-desktop-168-1006/imgFrame1.svg",
+      "bytes": 507,
+      "sha256": "b7ca8e7b49023dfb532da294edbc04f53974914e5ef4e186846212bbabe0ec8c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/course-detail-desktop-168-1006/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "course-detail-desktop-168-1006",
+      "sourceFrame": "168:1006",
+      "sourceNodes": [
+        "201:189"
+      ],
+      "variable": "imgV10",
+      "file": "assets/course-detail-desktop-168-1006/imgV10.svg",
+      "bytes": 613,
+      "sha256": "49e706f9bd0f644c0fafdc9adb6cda92ff4a2a9a4a825d3babe680cfa267d41a",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "168:1153"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/course-detail-mobile-168-1139/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "a69f4dece9e25c74ad2fe849bd7d3496bb1394b4b24afe4a267eaeb67f703079",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "168:1151"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/course-detail-mobile-168-1139/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "9154223739c7d8a060e359382c3af194443e43cc8b0b6679b92011b7b4950bd7",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "168:1152"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/course-detail-mobile-168-1139/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "50a6a8a8ee35fb9607edb94de52d34b5436a1fe101c5f56eab01fc11460840a1",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "168:1149"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/course-detail-mobile-168-1139/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "e15d55f5546240d41ed64688b5b4276d793575ed2d310a8f1fcfd279982229cb",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "168:1147"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/course-detail-mobile-168-1139/imgFrame.svg",
+      "bytes": 343,
+      "sha256": "3e15483b6721b476bf5217ab7fa6a6881ecd0c78d2a9e482024ed69a8c26aab3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "201:193"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/course-detail-mobile-168-1139/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/course-detail-mobile-168-1139/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "course-detail-mobile-168-1139",
+      "sourceFrame": "168:1139",
+      "sourceNodes": [
+        "201:191"
+      ],
+      "variable": "imgV10",
+      "file": "assets/course-detail-mobile-168-1139/imgV10.svg",
+      "bytes": 601,
+      "sha256": "a7ffa2927333b2a2a41f5b487432153a9f56a8dbef980624481d213f29339d4c",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "168:708"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/courses-desktop-168-682/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "0cb58960f41f3b2a18fdd258466f994472dfbf53c56a8e5e61e8ae8890c8abc8",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "168:707"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/courses-desktop-168-682/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "01fe2a423ccf6be742ab560025af1fc906a19fc30cac66901e8eec5adb7a1caf",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "168:706"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/courses-desktop-168-682/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "8e9b2fc84f194bbe7b74ffacf1f3e134cd80eab462202287b8776e8fc12c654b",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "168:696"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/courses-desktop-168-682/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "168:697",
+        "168:730",
+        "168:748",
+        "168:766",
+        "168:784",
+        "168:802",
+        "168:820"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/courses-desktop-168-682/imgFrame.svg",
+      "bytes": 507,
+      "sha256": "b7ca8e7b49023dfb532da294edbc04f53974914e5ef4e186846212bbabe0ec8c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/courses-desktop-168-682/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "courses-desktop-168-682",
+      "sourceFrame": "168:682",
+      "sourceNodes": [
+        "201:183"
+      ],
+      "variable": "imgV10",
+      "file": "assets/courses-desktop-168-682/imgV10.svg",
+      "bytes": 613,
+      "sha256": "d24a9dff068b162c86bab2b072f45b0d65f81a32bb94d05cb005632b79f23a89",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "182:804"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/courses-empty-desktop-182-773/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "0cb58960f41f3b2a18fdd258466f994472dfbf53c56a8e5e61e8ae8890c8abc8",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "182:803"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/courses-empty-desktop-182-773/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "01fe2a423ccf6be742ab560025af1fc906a19fc30cac66901e8eec5adb7a1caf",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "182:802"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/courses-empty-desktop-182-773/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "8e9b2fc84f194bbe7b74ffacf1f3e134cd80eab462202287b8776e8fc12c654b",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "182:792"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/courses-empty-desktop-182-773/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "182:793"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/courses-empty-desktop-182-773/imgFrame.svg",
+      "bytes": 507,
+      "sha256": "b7ca8e7b49023dfb532da294edbc04f53974914e5ef4e186846212bbabe0ec8c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/courses-empty-desktop-182-773/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "courses-empty-desktop-182-773",
+      "sourceFrame": "182:773",
+      "sourceNodes": [
+        "201:401"
+      ],
+      "variable": "imgV10",
+      "file": "assets/courses-empty-desktop-182-773/imgV10.svg",
+      "bytes": 613,
+      "sha256": "50d179caca3f131d528d334572a4e0a360a72838b397c1b0282332ffd1f89abc",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "182:1465"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/courses-empty-mobile-182-1448/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "5e03d905d3a16786676b9a13ed880a025aaacf2182354f941de54960ee74a4a2",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "182:1463"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/courses-empty-mobile-182-1448/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "724e0e6fa6f6fc54496b65196f8a697d644f9886f2f59c8761603b28b39b1a48",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "182:1464"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/courses-empty-mobile-182-1448/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "babc5e53792507d126714210be0dacd9e4b679d164fff0a002d755c2c510f694",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "182:1461"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/courses-empty-mobile-182-1448/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "e15d55f5546240d41ed64688b5b4276d793575ed2d310a8f1fcfd279982229cb",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "182:1458"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/courses-empty-mobile-182-1448/imgFrame.svg",
+      "bytes": 507,
+      "sha256": "b7ca8e7b49023dfb532da294edbc04f53974914e5ef4e186846212bbabe0ec8c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "201:417"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/courses-empty-mobile-182-1448/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/courses-empty-mobile-182-1448/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "courses-empty-mobile-182-1448",
+      "sourceFrame": "182:1448",
+      "sourceNodes": [
+        "201:415"
+      ],
+      "variable": "imgV10",
+      "file": "assets/courses-empty-mobile-182-1448/imgV10.svg",
+      "bytes": 601,
+      "sha256": "a7ffa2927333b2a2a41f5b487432153a9f56a8dbef980624481d213f29339d4c",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "168:887"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/courses-mobile-168-872/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "5e03d905d3a16786676b9a13ed880a025aaacf2182354f941de54960ee74a4a2",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "168:885"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/courses-mobile-168-872/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "724e0e6fa6f6fc54496b65196f8a697d644f9886f2f59c8761603b28b39b1a48",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "168:886"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/courses-mobile-168-872/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "babc5e53792507d126714210be0dacd9e4b679d164fff0a002d755c2c510f694",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "168:883"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/courses-mobile-168-872/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "e15d55f5546240d41ed64688b5b4276d793575ed2d310a8f1fcfd279982229cb",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "168:880"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/courses-mobile-168-872/imgFrame.svg",
+      "bytes": 507,
+      "sha256": "b7ca8e7b49023dfb532da294edbc04f53974914e5ef4e186846212bbabe0ec8c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "201:187"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/courses-mobile-168-872/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/courses-mobile-168-872/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "courses-mobile-168-872",
+      "sourceFrame": "168:872",
+      "sourceNodes": [
+        "201:185"
+      ],
+      "variable": "imgV10",
+      "file": "assets/courses-mobile-168-872/imgV10.svg",
+      "bytes": 601,
+      "sha256": "d876aa0e0e0dfc5e7ebdb6610f33e22e0ed1db155f0dc6bd5d9e1dcfcd48da34",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "168:2197"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/download-desktop-168-2171/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "05d369a07a89f1384b0f165d4b11e71718a5c9bb2d0d85d5a0f2887a339b50c2",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "168:2196"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/download-desktop-168-2171/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "6bf57334ef3ed41625916d50a7fb537b253b22b8c761f0b8e0e1c44c7e589086",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "168:2195"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/download-desktop-168-2171/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "821cf82c25d77850aea6847c3044a24ca969c29b25843001aec535f1e4af08b3",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "168:2185"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/download-desktop-168-2171/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "168:2186",
+        "168:2230",
+        "168:2247",
+        "168:2264"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/download-desktop-168-2171/imgFrame.svg",
+      "bytes": 450,
+      "sha256": "ffba9545720d2d3d33daf3077ef1f2c8de3f71829e2a4ad7f55c995f6525afd6",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/download-desktop-168-2171/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "211:189"
+      ],
+      "variable": "imgPs",
+      "file": "assets/download-desktop-168-2171/imgPs.svg",
+      "bytes": 3490,
+      "sha256": "0552495b6e216888aa1361e7061eeaf54d4db8ca3363e8afd1a115685f8f9af9",
+      "dimensions": {
+        "width": "44",
+        "height": "44",
+        "viewBox": "0 0 44 44"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "211:201"
+      ],
+      "variable": "imgPs1",
+      "file": "assets/download-desktop-168-2171/imgPs1.svg",
+      "bytes": 2891,
+      "sha256": "b0625770cb04a918d511bb7f812a4200ff7d7edebadd67a6f2418e7382dd1cad",
+      "dimensions": {
+        "width": "44",
+        "height": "44",
+        "viewBox": "0 0 44 44"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "211:213"
+      ],
+      "variable": "imgPs2",
+      "file": "assets/download-desktop-168-2171/imgPs2.svg",
+      "bytes": 2761,
+      "sha256": "670548d582b086162a90adeb334358b539d030fc4c57c3bd44a7f144ffe9a997",
+      "dimensions": {
+        "width": "44",
+        "height": "44",
+        "viewBox": "0 0 44 44"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "213:189"
+      ],
+      "variable": "imgPs3",
+      "file": "assets/download-desktop-168-2171/imgPs3.svg",
+      "bytes": 1621,
+      "sha256": "11c0a970b46a60b8d1414237c2a2704adb41269ebe911c6758c935191d099948",
+      "dimensions": {
+        "width": "64",
+        "height": "48",
+        "viewBox": "0 0 64 48"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "211:223"
+      ],
+      "variable": "imgPs4",
+      "file": "assets/download-desktop-168-2171/imgPs4.svg",
+      "bytes": 3480,
+      "sha256": "e2f7c2853a2d4ef151ffc694cc777fc5e76b664c38465412a7dbfe7437aaafa7",
+      "dimensions": {
+        "width": "35",
+        "height": "35",
+        "viewBox": "0 0 35 35"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "211:235"
+      ],
+      "variable": "imgPs5",
+      "file": "assets/download-desktop-168-2171/imgPs5.svg",
+      "bytes": 2894,
+      "sha256": "04b290653dec15b64b042f20647fb5bb7ea783843b6633e3e1df96100017073e",
+      "dimensions": {
+        "width": "35",
+        "height": "35",
+        "viewBox": "0 0 35 35"
+      }
+    },
+    {
+      "context": "download-desktop-168-2171",
+      "sourceFrame": "168:2171",
+      "sourceNodes": [
+        "201:217"
+      ],
+      "variable": "imgV10",
+      "file": "assets/download-desktop-168-2171/imgV10.svg",
+      "bytes": 613,
+      "sha256": "2654af9064492d7a5bc3f801e8d42f30e18247e847b00cc112c226525a9df7e9",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "168:2326"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/download-mobile-168-2311/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "7446ebb6d8d2d8adf517f1911c60ef01f16d3fa99c959242ad29984b48472f86",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "168:2324"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/download-mobile-168-2311/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "51827fbaa02b3006b45528f1663753e0f2d1d7d7618cba58fce8d5a4736b46aa",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "168:2325"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/download-mobile-168-2311/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "946fcd5d89bff832e536e0c242b414c38dd30961d536c8e63fd57030c6ad178b",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "168:2322"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/download-mobile-168-2311/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "c747dde5e620578a8018900d87efbeaf57318b20edf1be47160b2d7ce4b05175",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "168:2319"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/download-mobile-168-2311/imgFrame.svg",
+      "bytes": 450,
+      "sha256": "ffba9545720d2d3d33daf3077ef1f2c8de3f71829e2a4ad7f55c995f6525afd6",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "201:220"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/download-mobile-168-2311/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/download-mobile-168-2311/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "211:247"
+      ],
+      "variable": "imgPs",
+      "file": "assets/download-mobile-168-2311/imgPs.svg",
+      "bytes": 3501,
+      "sha256": "a293d0e8439eefafc28c1710336a82c62890984dcf2b0519b19b837b4e728ff6",
+      "dimensions": {
+        "width": "33",
+        "height": "33",
+        "viewBox": "0 0 33 33"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "211:259"
+      ],
+      "variable": "imgPs1",
+      "file": "assets/download-mobile-168-2311/imgPs1.svg",
+      "bytes": 2895,
+      "sha256": "a4ec9cb836bd6ebf6136a7c66915e58981597045e44f0c1a706899895b18b78e",
+      "dimensions": {
+        "width": "33",
+        "height": "33",
+        "viewBox": "0 0 33 33"
+      }
+    },
+    {
+      "context": "download-mobile-168-2311",
+      "sourceFrame": "168:2311",
+      "sourceNodes": [
+        "201:218"
+      ],
+      "variable": "imgV10",
+      "file": "assets/download-mobile-168-2311/imgV10.svg",
+      "bytes": 601,
+      "sha256": "24d9612362aa9647900a25105f3fe87dff5625dcb429487ea803bcbdffa82784",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "error-404-desktop-176-76",
+      "sourceFrame": "176:76",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/error-404-desktop-176-76/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "error-404-mobile-176-104",
+      "sourceFrame": "176:104",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/error-404-mobile-176-104/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "error-500-desktop-176-90",
+      "sourceFrame": "176:90",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/error-500-desktop-176-90/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "error-500-mobile-176-118",
+      "sourceFrame": "176:118",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/error-500-mobile-176-118/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "footer-desktop-168-389",
+      "sourceFrame": "168:389",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/footer-desktop-168-389/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "footer-mobile-168-666",
+      "sourceFrame": "168:666",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/footer-mobile-168-666/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "header-desktop-168-75",
+      "sourceFrame": "168:75",
+      "sourceNodes": [
+        "168:87"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/header-desktop-168-75/imgFrame.svg",
+      "bytes": 367,
+      "sha256": "1fee349e043bf0ae4061a17d2bb14cbe639826ca5e7c6c7dd1f04725310d5162",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "header-desktop-168-75",
+      "sourceFrame": "168:75",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/header-desktop-168-75/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "header-desktop-168-75",
+      "sourceFrame": "168:75",
+      "sourceNodes": [
+        "201:180"
+      ],
+      "variable": "imgV10",
+      "file": "assets/header-desktop-168-75/imgV10.svg",
+      "bytes": 611,
+      "sha256": "8a04532c0204f39ee15b0d0f127f8667afe14330103744f706b9b6d5e2b0c3ee",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "header-mobile-168-410",
+      "sourceFrame": "168:410",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/header-mobile-168-410/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "header-mobile-168-410",
+      "sourceFrame": "168:410",
+      "sourceNodes": [
+        "201:182"
+      ],
+      "variable": "imgV10",
+      "file": "assets/header-mobile-168-410/imgV10.svg",
+      "bytes": 599,
+      "sha256": "cda45cb05e65ddb7ab80bcc72ff2f86e85378d2f8096b3541abdda9a8632bc9b",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:102"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/help-desktop-180-84/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "9301c85112d0d33c5d77a955e24022dc216d052b0c0bcc7d3cec3c55223c5d4b",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:109"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/help-desktop-180-84/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:110",
+        "180:167"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/help-desktop-180-84/imgFrame.svg",
+      "bytes": 532,
+      "sha256": "fbd3514b56bece1056bd1e2191b58d576a740784b522719cec5c8370da3a6522",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:173"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/help-desktop-180-84/imgFrame1.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:179"
+      ],
+      "variable": "imgFrame2",
+      "file": "assets/help-desktop-180-84/imgFrame2.svg",
+      "bytes": 493,
+      "sha256": "a9234f517978d142d46646d77aafa1143aac6745e904bafde3860786fc0c4bbd",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:185"
+      ],
+      "variable": "imgFrame3",
+      "file": "assets/help-desktop-180-84/imgFrame3.svg",
+      "bytes": 551,
+      "sha256": "d6bc92b4ec94ee460ec57b9aa61929826c51d66a97bb95340d900bc5451d7342",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:191"
+      ],
+      "variable": "imgFrame4",
+      "file": "assets/help-desktop-180-84/imgFrame4.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:103"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/help-desktop-180-84/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "8049255fa3d8b7fcc06b84cfc7492da86fce5b3440c3bd9cc44a447375a3bfbc",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "180:104"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/help-desktop-180-84/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "f7f58a22cde0f34d10409d662a6f89996dabc16fe0c8500a77d61323fb7773d4",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/help-desktop-180-84/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "help-desktop-180-84",
+      "sourceFrame": "180:84",
+      "sourceNodes": [
+        "201:275"
+      ],
+      "variable": "imgV10",
+      "file": "assets/help-desktop-180-84/imgV10.svg",
+      "bytes": 613,
+      "sha256": "1a7d3407bb67f6131338b127747622b4821db491a45ba4ccae7b870106778c4e",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "180:252"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/help-mobile-180-242/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "9e5aae665b567791dcefa733e6edf93dbd39616b78469fa22dccf8fe1707422f",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "180:257"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/help-mobile-180-242/imgFrame.svg",
+      "bytes": 532,
+      "sha256": "fbd3514b56bece1056bd1e2191b58d576a740784b522719cec5c8370da3a6522",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "201:279"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/help-mobile-180-242/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "180:253"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/help-mobile-180-242/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "05a7f727bf32bf52278ec69efcfda76c8a6cf04855c2a10af73d283e36258eb6",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/help-mobile-180-242/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "help-mobile-180-242",
+      "sourceFrame": "180:242",
+      "sourceNodes": [
+        "201:277"
+      ],
+      "variable": "imgV10",
+      "file": "assets/help-mobile-180-242/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:91"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/home-desktop-168-74/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "c965dcb94e47ddeddcaff3bf09f72137c49fb5eb889739f2b5811a11a87ee4c8",
+      "dimensions": {
+        "width": "492",
+        "height": "492",
+        "viewBox": "0 0 492 492"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:92"
+      ],
+      "variable": "imgEllipse1",
+      "file": "assets/home-desktop-168-74/imgEllipse1.svg",
+      "bytes": 267,
+      "sha256": "bcd3199ac9b8e147fd7687e80707807945c7f04c9338195b5e36b2cff70709f4",
+      "dimensions": {
+        "width": "380",
+        "height": "260",
+        "viewBox": "0 0 380 260"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:286"
+      ],
+      "variable": "imgEllipse10",
+      "file": "assets/home-desktop-168-74/imgEllipse10.svg",
+      "bytes": 481,
+      "sha256": "7c66c391f88406a481dcdd21c952d049058f4346388ebc6bb166921d9ed6d792",
+      "dimensions": {
+        "width": "486",
+        "height": "486",
+        "viewBox": "0 0 486 486"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:287"
+      ],
+      "variable": "imgEllipse11",
+      "file": "assets/home-desktop-168-74/imgEllipse11.svg",
+      "bytes": 255,
+      "sha256": "9250cfda3c21183c7914e58c028c5da430632203baefbf39d384e3f557a840c7",
+      "dimensions": {
+        "width": "390",
+        "height": "390",
+        "viewBox": "0 0 390 390"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:93"
+      ],
+      "variable": "imgEllipse2",
+      "file": "assets/home-desktop-168-74/imgEllipse2.svg",
+      "bytes": 264,
+      "sha256": "ae8a545b1baeb8cfbd5cad0b9f65731845e965614ae8d70deb9e9ed3c476c3d6",
+      "dimensions": {
+        "width": "250",
+        "height": "220",
+        "viewBox": "0 0 250 220"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:111"
+      ],
+      "variable": "imgEllipse3",
+      "file": "assets/home-desktop-168-74/imgEllipse3.svg",
+      "bytes": 468,
+      "sha256": "6d101a025c4c9eeb9e6dba6904b46d35f8b89ecbfe667990728447e6af0fd9bc",
+      "dimensions": {
+        "width": "478",
+        "height": "478",
+        "viewBox": "0 0 478 478"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:112"
+      ],
+      "variable": "imgEllipse4",
+      "file": "assets/home-desktop-168-74/imgEllipse4.svg",
+      "bytes": 377,
+      "sha256": "44418bab8e7aaee41d20f3573b5d0646cdbc9ea03a0440f08babbf2e7c57ccb7",
+      "dimensions": {
+        "width": "540",
+        "height": "540",
+        "viewBox": "0 0 540 540"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:113"
+      ],
+      "variable": "imgEllipse5",
+      "file": "assets/home-desktop-168-74/imgEllipse5.svg",
+      "bytes": 385,
+      "sha256": "3e69c13e0d4e14ff5d42da72b05bc9e12cd63a60a05a7edf0c4ec7a17c9e5cb6",
+      "dimensions": {
+        "width": "442",
+        "height": "442",
+        "viewBox": "0 0 442 442"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:162"
+      ],
+      "variable": "imgEllipse6",
+      "file": "assets/home-desktop-168-74/imgEllipse6.svg",
+      "bytes": 413,
+      "sha256": "02ac5db606dcfd53896a743f6fc917c1ed2448fc1e6239d56d5e328b8d4ab95b",
+      "dimensions": {
+        "width": "182",
+        "height": "182",
+        "viewBox": "0 0 182 182"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:219"
+      ],
+      "variable": "imgEllipse7",
+      "file": "assets/home-desktop-168-74/imgEllipse7.svg",
+      "bytes": 234,
+      "sha256": "a5d7aed9c59bcc6c25a606724e5f5e425fdb149609c701d7032af1423bd25b23",
+      "dimensions": {
+        "width": "76",
+        "height": "76",
+        "viewBox": "0 0 76 76"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:251"
+      ],
+      "variable": "imgEllipse8",
+      "file": "assets/home-desktop-168-74/imgEllipse8.svg",
+      "bytes": 238,
+      "sha256": "6facae7753692dd3a1064a208fc6f956c16c6ed4fa4cec1f3b457db001a74907",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:252"
+      ],
+      "variable": "imgEllipse9",
+      "file": "assets/home-desktop-168-74/imgEllipse9.svg",
+      "bytes": 234,
+      "sha256": "66c3ea14add9798e127a02b890c1d3bb4b4c054d32f5c31e63759bb63252378f",
+      "dimensions": {
+        "width": "76",
+        "height": "76",
+        "viewBox": "0 0 76 76"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:87",
+        "168:101",
+        "168:386"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/home-desktop-168-74/imgFrame.svg",
+      "bytes": 367,
+      "sha256": "1fee349e043bf0ae4061a17d2bb14cbe639826ca5e7c6c7dd1f04725310d5162",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:105",
+        "168:211",
+        "168:228",
+        "168:243",
+        "168:257",
+        "168:293"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/home-desktop-168-74/imgFrame1.svg",
+      "bytes": 369,
+      "sha256": "9a7ae1657be924b84b1fb034bed302e95dc60fde162fe0fa16b537c1458c1670",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:165"
+      ],
+      "variable": "imgFrame10",
+      "file": "assets/home-desktop-168-74/imgFrame10.svg",
+      "bytes": 483,
+      "sha256": "d9f0d2c106c4b5dc6f2a3a3cd196c5c094d5b5d328343380d042598108f1c680",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:167"
+      ],
+      "variable": "imgFrame11",
+      "file": "assets/home-desktop-168-74/imgFrame11.svg",
+      "bytes": 445,
+      "sha256": "0b726f965aadba99dbc4f68f087544983f5720a88aff400bdd352f91204b8299",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:173"
+      ],
+      "variable": "imgFrame12",
+      "file": "assets/home-desktop-168-74/imgFrame12.svg",
+      "bytes": 644,
+      "sha256": "9a5198cf26b4c32478e63a1594da1462586b76b4c3ebbe66f8b5da9a5af7554a",
+      "dimensions": {
+        "width": "29",
+        "height": "29",
+        "viewBox": "0 0 29 29"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:178"
+      ],
+      "variable": "imgFrame13",
+      "file": "assets/home-desktop-168-74/imgFrame13.svg",
+      "bytes": 417,
+      "sha256": "836ba5b7c7d4280772d6ea521fd46830e915fd4fe82c0505d7472c9ed504e9d8",
+      "dimensions": {
+        "width": "29",
+        "height": "29",
+        "viewBox": "0 0 29 29"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:182"
+      ],
+      "variable": "imgFrame14",
+      "file": "assets/home-desktop-168-74/imgFrame14.svg",
+      "bytes": 634,
+      "sha256": "cee1ad8613ee7cac12cb7700cb0c968cb98d0bdedad6bf68894698f0ee9bb37a",
+      "dimensions": {
+        "width": "29",
+        "height": "29",
+        "viewBox": "0 0 29 29"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:190"
+      ],
+      "variable": "imgFrame15",
+      "file": "assets/home-desktop-168-74/imgFrame15.svg",
+      "bytes": 492,
+      "sha256": "f19a84e6742f1916742b72fad35d537fa517b51c5f7c160f22d1fad4d6de646b",
+      "dimensions": {
+        "width": "29",
+        "height": "29",
+        "viewBox": "0 0 29 29"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:220"
+      ],
+      "variable": "imgFrame16",
+      "file": "assets/home-desktop-168-74/imgFrame16.svg",
+      "bytes": 1142,
+      "sha256": "819943b75e9860ebde06517d42f9e82a471f01adb283d20278e1be37889deb2a",
+      "dimensions": {
+        "width": "28",
+        "height": "28",
+        "viewBox": "0 0 28 28"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:316"
+      ],
+      "variable": "imgFrame17",
+      "file": "assets/home-desktop-168-74/imgFrame17.svg",
+      "bytes": 537,
+      "sha256": "28b69d2519760a1792f0aa27ab07d507334b67c9deb356f187b86186ca143aa3",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:107"
+      ],
+      "variable": "imgFrame2",
+      "file": "assets/home-desktop-168-74/imgFrame2.svg",
+      "bytes": 594,
+      "sha256": "0f76e7a580755d52a9bb89114fa0f9327d91e2f6a1b509942ad0db96216f0522",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:114"
+      ],
+      "variable": "imgFrame3",
+      "file": "assets/home-desktop-168-74/imgFrame3.svg",
+      "bytes": 545,
+      "sha256": "731c83c409053c98afda209dee992b8e3c8f00326cba0bc0ab9d340afc370aad",
+      "dimensions": {
+        "width": "34",
+        "height": "34",
+        "viewBox": "0 0 34 34"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:116"
+      ],
+      "variable": "imgFrame4",
+      "file": "assets/home-desktop-168-74/imgFrame4.svg",
+      "bytes": 539,
+      "sha256": "4103e9974e01343d4fa65f9edf70acbe7bb71074e784e770b6fa74a037a454d9",
+      "dimensions": {
+        "width": "28",
+        "height": "28",
+        "viewBox": "0 0 28 28"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:134"
+      ],
+      "variable": "imgFrame5",
+      "file": "assets/home-desktop-168-74/imgFrame5.svg",
+      "bytes": 611,
+      "sha256": "f5ec3f41ada258b52132e90c4f543a3834042c27da369759dde7bcfbac40c426",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:141"
+      ],
+      "variable": "imgFrame6",
+      "file": "assets/home-desktop-168-74/imgFrame6.svg",
+      "bytes": 919,
+      "sha256": "601e4cb29fb1d0d173e54bbecaa558ee7971d6cb12331fb4c3234207b4f3e444",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:153"
+      ],
+      "variable": "imgFrame7",
+      "file": "assets/home-desktop-168-74/imgFrame7.svg",
+      "bytes": 333,
+      "sha256": "6bd928e87507f7aa47a9930c4f90ac208b550f40619e92378f64c91e5d164a63",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:158",
+        "168:203"
+      ],
+      "variable": "imgFrame8",
+      "file": "assets/home-desktop-168-74/imgFrame8.svg",
+      "bytes": 545,
+      "sha256": "173be7af41b1046306c50c8a5d2b2d9240bf7399f35790330e338bece7f64ca3",
+      "dimensions": {
+        "width": "26",
+        "height": "26",
+        "viewBox": "0 0 26 26"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:163"
+      ],
+      "variable": "imgFrame9",
+      "file": "assets/home-desktop-168-74/imgFrame9.svg",
+      "bytes": 477,
+      "sha256": "172280539bd96122d8c5642c5ee101e1e5695ff749acc16e15b3a4a0300157db",
+      "dimensions": {
+        "width": "32",
+        "height": "32",
+        "viewBox": "0 0 32 32"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "227:307"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/home-desktop-168-74/imgGroup.svg",
+      "bytes": 1880,
+      "sha256": "5b9207e6e595f7cbab7c395630e0b82d34544cf174948a17b399151a908fa4d1",
+      "dimensions": {
+        "width": "142.028",
+        "height": "140.127",
+        "viewBox": "0 0 142.028 140.127"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "227:311"
+      ],
+      "variable": "imgGroup1",
+      "file": "assets/home-desktop-168-74/imgGroup1.svg",
+      "bytes": 1594,
+      "sha256": "10ea46c451b7b6e6c778cb5de308d774fec7c943eceea7a8a09c75514593d255",
+      "dimensions": {
+        "width": "123.569",
+        "height": "141.525",
+        "viewBox": "0 0 123.569 141.525"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "227:317"
+      ],
+      "variable": "imgGroup2",
+      "file": "assets/home-desktop-168-74/imgGroup2.svg",
+      "bytes": 1077,
+      "sha256": "86ba7d9c28bc9355af7fcaefefff48a4e9eec06c53a6285a0aff57b0ff2c9d4a",
+      "dimensions": {
+        "width": "150.45",
+        "height": "79.7938",
+        "viewBox": "0 0 150.45 79.7938"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:327"
+      ],
+      "variable": "imgMoon",
+      "file": "assets/home-desktop-168-74/imgMoon.svg",
+      "bytes": 237,
+      "sha256": "e4c5690db861501613533e84caaa9bf4457bd9418991a3d9e98b0728930ae5c1",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/home-desktop-168-74/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:338"
+      ],
+      "variable": "imgPlant",
+      "file": "assets/home-desktop-168-74/imgPlant.svg",
+      "bytes": 246,
+      "sha256": "7c8b0cfcb96822509ec261bcfe81bc5bfac6a95c47a96f1ec9a05f05e6208940",
+      "dimensions": {
+        "width": "23",
+        "height": "44",
+        "viewBox": "0 0 23 44"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "168:339"
+      ],
+      "variable": "imgPlant2",
+      "file": "assets/home-desktop-168-74/imgPlant2.svg",
+      "bytes": 251,
+      "sha256": "9b55533e30c540913c7b5c8abe937ff752ae58a55d69b850c0fa40b8c3e10b88",
+      "dimensions": {
+        "width": "27",
+        "height": "35",
+        "viewBox": "0 0 27 35"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "192:202"
+      ],
+      "variable": "imgPsDiscover",
+      "file": "assets/home-desktop-168-74/imgPsDiscover.svg",
+      "bytes": 2006,
+      "sha256": "49ffffb5ecb7e6bfc1e06f2a8a9475c3a07136da47b967a9c63659a85558ed1b",
+      "dimensions": {
+        "width": "68",
+        "height": "68",
+        "viewBox": "0 0 68 68"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "192:180"
+      ],
+      "variable": "imgPsLatte",
+      "file": "assets/home-desktop-168-74/imgPsLatte.svg",
+      "bytes": 2189,
+      "sha256": "0b4b26ea82a10841dd155bcf384fa8ff96f1a879295425ce2e7a8e2de19cf01a",
+      "dimensions": {
+        "width": "70",
+        "height": "70",
+        "viewBox": "0 0 70 70"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "227:303"
+      ],
+      "variable": "imgPsStudio",
+      "file": "assets/home-desktop-168-74/imgPsStudio.svg",
+      "bytes": 2789,
+      "sha256": "370943f36e3fc55e2ddd060134536ce533424a699d4bcd6c0146307e4865f7d4",
+      "dimensions": {
+        "width": "125",
+        "height": "89.0625",
+        "viewBox": "0 0 125 89.0625"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "227:189"
+      ],
+      "variable": "imgPsStudioCafe01",
+      "file": "assets/home-desktop-168-74/imgPsStudioCafe01.svg",
+      "bytes": 16892,
+      "sha256": "5d7ff4c34d84ea5566a455c07b820018fb5e4176c77d647f3194c41f65507349",
+      "dimensions": {
+        "width": "180.898",
+        "height": "133.35",
+        "viewBox": "0 0 180.898 133.35"
+      }
+    },
+    {
+      "context": "home-desktop-168-74",
+      "sourceFrame": "168:74",
+      "sourceNodes": [
+        "201:180"
+      ],
+      "variable": "imgV10",
+      "file": "assets/home-desktop-168-74/imgV10.svg",
+      "bytes": 615,
+      "sha256": "6fdaf39e2f20598ddd7006981170a45cac37a09e7cf1bc0e6e3817b3c5954f9c",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:91"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "c965dcb94e47ddeddcaff3bf09f72137c49fb5eb889739f2b5811a11a87ee4c8",
+      "dimensions": {
+        "width": "492",
+        "height": "492",
+        "viewBox": "0 0 492 492"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:92"
+      ],
+      "variable": "imgEllipse1",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse1.svg",
+      "bytes": 267,
+      "sha256": "bcd3199ac9b8e147fd7687e80707807945c7f04c9338195b5e36b2cff70709f4",
+      "dimensions": {
+        "width": "380",
+        "height": "260",
+        "viewBox": "0 0 380 260"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:93"
+      ],
+      "variable": "imgEllipse2",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse2.svg",
+      "bytes": 264,
+      "sha256": "ae8a545b1baeb8cfbd5cad0b9f65731845e965614ae8d70deb9e9ed3c476c3d6",
+      "dimensions": {
+        "width": "250",
+        "height": "220",
+        "viewBox": "0 0 250 220"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:111"
+      ],
+      "variable": "imgEllipse3",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse3.svg",
+      "bytes": 466,
+      "sha256": "b8a89a63cca51da77f6d1da9a6f5e90fcdcabfd0926baa7625a68f549e0d76ce",
+      "dimensions": {
+        "width": "478",
+        "height": "478",
+        "viewBox": "0 0 478 478"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:112"
+      ],
+      "variable": "imgEllipse4",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse4.svg",
+      "bytes": 377,
+      "sha256": "44418bab8e7aaee41d20f3573b5d0646cdbc9ea03a0440f08babbf2e7c57ccb7",
+      "dimensions": {
+        "width": "540",
+        "height": "540",
+        "viewBox": "0 0 540 540"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:113"
+      ],
+      "variable": "imgEllipse5",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse5.svg",
+      "bytes": 385,
+      "sha256": "3e69c13e0d4e14ff5d42da72b05bc9e12cd63a60a05a7edf0c4ec7a17c9e5cb6",
+      "dimensions": {
+        "width": "442",
+        "height": "442",
+        "viewBox": "0 0 442 442"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:162"
+      ],
+      "variable": "imgEllipse6",
+      "file": "assets/home-desktop-hero-168-90/imgEllipse6.svg",
+      "bytes": 413,
+      "sha256": "02ac5db606dcfd53896a743f6fc917c1ed2448fc1e6239d56d5e328b8d4ab95b",
+      "dimensions": {
+        "width": "182",
+        "height": "182",
+        "viewBox": "0 0 182 182"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:101"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/home-desktop-hero-168-90/imgFrame.svg",
+      "bytes": 367,
+      "sha256": "1fee349e043bf0ae4061a17d2bb14cbe639826ca5e7c6c7dd1f04725310d5162",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:105"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/home-desktop-hero-168-90/imgFrame1.svg",
+      "bytes": 369,
+      "sha256": "9a7ae1657be924b84b1fb034bed302e95dc60fde162fe0fa16b537c1458c1670",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:165"
+      ],
+      "variable": "imgFrame10",
+      "file": "assets/home-desktop-hero-168-90/imgFrame10.svg",
+      "bytes": 483,
+      "sha256": "c338726bd1f62ec1db1b3fba744b393ff66a4e9bdd2c75c29e78ecbefabcd04f",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:167"
+      ],
+      "variable": "imgFrame11",
+      "file": "assets/home-desktop-hero-168-90/imgFrame11.svg",
+      "bytes": 443,
+      "sha256": "06bda1acdaf181c465e6e06261d72ed12abaa12d0a16d97e0de81c25c445e19e",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:107"
+      ],
+      "variable": "imgFrame2",
+      "file": "assets/home-desktop-hero-168-90/imgFrame2.svg",
+      "bytes": 594,
+      "sha256": "0f76e7a580755d52a9bb89114fa0f9327d91e2f6a1b509942ad0db96216f0522",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:114"
+      ],
+      "variable": "imgFrame3",
+      "file": "assets/home-desktop-hero-168-90/imgFrame3.svg",
+      "bytes": 543,
+      "sha256": "16774df539ed86c3a51fbedb8e775be1b005d253881bac3e77823cae383da79a",
+      "dimensions": {
+        "width": "34",
+        "height": "34",
+        "viewBox": "0 0 34 34"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:116"
+      ],
+      "variable": "imgFrame4",
+      "file": "assets/home-desktop-hero-168-90/imgFrame4.svg",
+      "bytes": 537,
+      "sha256": "1baf78a63380576c08f1efe751e740563635e164732aea4f46439aa80e858c18",
+      "dimensions": {
+        "width": "28",
+        "height": "28",
+        "viewBox": "0 0 28 28"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:134"
+      ],
+      "variable": "imgFrame5",
+      "file": "assets/home-desktop-hero-168-90/imgFrame5.svg",
+      "bytes": 611,
+      "sha256": "f5ec3f41ada258b52132e90c4f543a3834042c27da369759dde7bcfbac40c426",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:141"
+      ],
+      "variable": "imgFrame6",
+      "file": "assets/home-desktop-hero-168-90/imgFrame6.svg",
+      "bytes": 917,
+      "sha256": "b59a007962b20a9d22f496714be5057167e37d958e3ac5b5f9502064a4157540",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:153"
+      ],
+      "variable": "imgFrame7",
+      "file": "assets/home-desktop-hero-168-90/imgFrame7.svg",
+      "bytes": 333,
+      "sha256": "6bd928e87507f7aa47a9930c4f90ac208b550f40619e92378f64c91e5d164a63",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:158"
+      ],
+      "variable": "imgFrame8",
+      "file": "assets/home-desktop-hero-168-90/imgFrame8.svg",
+      "bytes": 541,
+      "sha256": "11e8268adf3e98fbfd21fdf3d570bc3d546779dc22b9ef638adc0882717c60d2",
+      "dimensions": {
+        "width": "26",
+        "height": "26",
+        "viewBox": "0 0 26 26"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "168:163"
+      ],
+      "variable": "imgFrame9",
+      "file": "assets/home-desktop-hero-168-90/imgFrame9.svg",
+      "bytes": 475,
+      "sha256": "68b59d3c68235c3afaa95dff721d5fab083927c7b488757f8d693f9d4e991925",
+      "dimensions": {
+        "width": "32",
+        "height": "32",
+        "viewBox": "0 0 32 32"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "192:180"
+      ],
+      "variable": "imgPsLatte",
+      "file": "assets/home-desktop-hero-168-90/imgPsLatte.svg",
+      "bytes": 2189,
+      "sha256": "0b4b26ea82a10841dd155bcf384fa8ff96f1a879295425ce2e7a8e2de19cf01a",
+      "dimensions": {
+        "width": "70",
+        "height": "70",
+        "viewBox": "0 0 70 70"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "227:303"
+      ],
+      "variable": "imgPsStudio",
+      "file": "assets/home-desktop-hero-168-90/imgPsStudio.svg",
+      "bytes": 2789,
+      "sha256": "370943f36e3fc55e2ddd060134536ce533424a699d4bcd6c0146307e4865f7d4",
+      "dimensions": {
+        "width": "125",
+        "height": "89.0625",
+        "viewBox": "0 0 125 89.0625"
+      }
+    },
+    {
+      "context": "home-desktop-hero-168-90",
+      "sourceFrame": "168:90",
+      "sourceNodes": [
+        "227:189"
+      ],
+      "variable": "imgPsStudioCafe01",
+      "file": "assets/home-desktop-hero-168-90/imgPsStudioCafe01.svg",
+      "bytes": 16892,
+      "sha256": "32d60e14e0f8af2197140ee6ec633d08f4f4071e90125eb5c6daa8d85db12b93",
+      "dimensions": {
+        "width": "180.898",
+        "height": "133.35",
+        "viewBox": "0 0 180.898 133.35"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:420"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/home-mobile-168-409/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "86cfed1ec8892e4925f7f44bd43a4a6641aa92851d2fec42269c8ef6de5d360e",
+      "dimensions": {
+        "width": "350",
+        "height": "350",
+        "viewBox": "0 0 350 350"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:421"
+      ],
+      "variable": "imgEllipse1",
+      "file": "assets/home-mobile-168-409/imgEllipse1.svg",
+      "bytes": 266,
+      "sha256": "5e9ca7b1aec699429269dd259d0e64ae8b7fdcf7a02fc7d76907e94c785ff002",
+      "dimensions": {
+        "width": "240",
+        "height": "210",
+        "viewBox": "0 0 240 210"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:586"
+      ],
+      "variable": "imgEllipse2",
+      "file": "assets/home-mobile-168-409/imgEllipse2.svg",
+      "bytes": 480,
+      "sha256": "3c139172087bd4be9a1661b37fead2034e2ac28d0998b3e068d0391a1cc8da7e",
+      "dimensions": {
+        "width": "310",
+        "height": "310",
+        "viewBox": "0 0 310 310"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:423"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/home-mobile-168-409/imgFrame.svg",
+      "bytes": 532,
+      "sha256": "d0b21da0b590896a88969a9ba6a9ccf7d444198ac46e8dc6abc1c9310dfb43e8",
+      "dimensions": {
+        "width": "15",
+        "height": "15",
+        "viewBox": "0 0 15 15"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:431",
+        "168:663"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/home-mobile-168-409/imgFrame1.svg",
+      "bytes": 367,
+      "sha256": "1fee349e043bf0ae4061a17d2bb14cbe639826ca5e7c6c7dd1f04725310d5162",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:517",
+        "168:533",
+        "168:547",
+        "168:562"
+      ],
+      "variable": "imgFrame10",
+      "file": "assets/home-mobile-168-409/imgFrame10.svg",
+      "bytes": 365,
+      "sha256": "84f317d8c58cc542bad3e771c06f7dff99f360e7f50a40993bb3ccb75aeba743",
+      "dimensions": {
+        "width": "20",
+        "height": "20",
+        "viewBox": "0 0 20 20"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:521"
+      ],
+      "variable": "imgFrame11",
+      "file": "assets/home-mobile-168-409/imgFrame11.svg",
+      "bytes": 1196,
+      "sha256": "03d40260e2647c936464d7b916deadee54153cb4eac0061224ab8e6ab4e41999",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:537"
+      ],
+      "variable": "imgFrame12",
+      "file": "assets/home-mobile-168-409/imgFrame12.svg",
+      "bytes": 815,
+      "sha256": "3bcce18fc15b22d0a922a42941314ae74e76fdb4c8542d5ceeae394369eeebd7",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:551"
+      ],
+      "variable": "imgFrame13",
+      "file": "assets/home-mobile-168-409/imgFrame13.svg",
+      "bytes": 637,
+      "sha256": "23b06049c27f32eb97bc4aaf314cec186258edbfd46cd9ff451880b0f68dd53e",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:447"
+      ],
+      "variable": "imgFrame2",
+      "file": "assets/home-mobile-168-409/imgFrame2.svg",
+      "bytes": 573,
+      "sha256": "3b1209b119185a83ae27e5085497bb35bed586199df0f785f6bc6aa245f3fde5",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:454"
+      ],
+      "variable": "imgFrame3",
+      "file": "assets/home-mobile-168-409/imgFrame3.svg",
+      "bytes": 879,
+      "sha256": "3c5d50a7839d51a231f7adf4e5ad6459f00d30778b582a8ea7f37dd9cc0690af",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:465"
+      ],
+      "variable": "imgFrame4",
+      "file": "assets/home-mobile-168-409/imgFrame4.svg",
+      "bytes": 503,
+      "sha256": "231f1cafbe14e2156aaae94b891bdb9417d2c51b3ac37c87f5adbe8bc2d45ebb",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "200:182"
+      ],
+      "variable": "imgFrame5",
+      "file": "assets/home-mobile-168-409/imgFrame5.svg",
+      "bytes": 369,
+      "sha256": "9a7ae1657be924b84b1fb034bed302e95dc60fde162fe0fa16b537c1458c1670",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:479"
+      ],
+      "variable": "imgFrame6",
+      "file": "assets/home-mobile-168-409/imgFrame6.svg",
+      "bytes": 521,
+      "sha256": "ee836aa33c5c014f9f6e34fddd42fe7a131464074b3cd1f0a2ea625459dd8826",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:485"
+      ],
+      "variable": "imgFrame7",
+      "file": "assets/home-mobile-168-409/imgFrame7.svg",
+      "bytes": 337,
+      "sha256": "997e9c3ce4d90d0f90182f509a4b1684b56c1d21ff04f899b21e7d551644c15d",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:490"
+      ],
+      "variable": "imgFrame8",
+      "file": "assets/home-mobile-168-409/imgFrame8.svg",
+      "bytes": 546,
+      "sha256": "1aa51c77c5cb3e43c1adef6fe42e764a71211c9860542f25d4a3b5cb1d80b63c",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:506"
+      ],
+      "variable": "imgFrame9",
+      "file": "assets/home-mobile-168-409/imgFrame9.svg",
+      "bytes": 644,
+      "sha256": "0c4d4a6536ea93e330e0933db4042390a876a718f58923624c4e9b20cf4888c6",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "227:323"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/home-mobile-168-409/imgGroup.svg",
+      "bytes": 1887,
+      "sha256": "7551c1425493ea2b012e071cc0358f22d314418d2e4fdf5921bd85a6b367fec3",
+      "dimensions": {
+        "width": "70.6926",
+        "height": "69.7465",
+        "viewBox": "0 0 70.6926 69.7465"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "227:327"
+      ],
+      "variable": "imgGroup1",
+      "file": "assets/home-mobile-168-409/imgGroup1.svg",
+      "bytes": 1626,
+      "sha256": "1227df154bef9bd49753fac25effd6ff0f383887190ffccd508d76660c46e91e",
+      "dimensions": {
+        "width": "61.5048",
+        "height": "70.4423",
+        "viewBox": "0 0 61.5048 70.4423"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "227:333"
+      ],
+      "variable": "imgGroup2",
+      "file": "assets/home-mobile-168-409/imgGroup2.svg",
+      "bytes": 1195,
+      "sha256": "c5954e48d4b7b00712e4d11ffcaf1219fa7b970f5c87ef40ba3e4cb550efd955",
+      "dimensions": {
+        "width": "74.8846",
+        "height": "39.7166",
+        "viewBox": "0 0 74.8846 39.7166"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:618"
+      ],
+      "variable": "imgMoon",
+      "file": "assets/home-mobile-168-409/imgMoon.svg",
+      "bytes": 237,
+      "sha256": "0e1d7f81d1c18baef71118db3f2a6687fe92d8e46993be44eee56d03228152cd",
+      "dimensions": {
+        "width": "35",
+        "height": "35",
+        "viewBox": "0 0 35 35"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:474"
+      ],
+      "variable": "imgMotionGlimmer",
+      "file": "assets/home-mobile-168-409/imgMotionGlimmer.svg",
+      "bytes": 262,
+      "sha256": "b8d223fe58a0f2d476cc5f54d20918050983e18077916f9b278707dba7c076ad",
+      "dimensions": {
+        "width": "9",
+        "height": "9",
+        "viewBox": "0 0 9 9"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:475"
+      ],
+      "variable": "imgMotionGlimmer1",
+      "file": "assets/home-mobile-168-409/imgMotionGlimmer1.svg",
+      "bytes": 255,
+      "sha256": "13c5ff851293b5e199a9d6f39b1f63f4d678abf45b01c624a2eb82323e40ea61",
+      "dimensions": {
+        "width": "6",
+        "height": "6",
+        "viewBox": "0 0 6 6"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:469"
+      ],
+      "variable": "imgMotionPathOrbitalRing",
+      "file": "assets/home-mobile-168-409/imgMotionPathOrbitalRing.svg",
+      "bytes": 303,
+      "sha256": "b27762bdcda7718a9fcd3e94b10a08e76ceb50c4c9e2658cd867c302b39f78f5",
+      "dimensions": {
+        "width": "164",
+        "height": "164",
+        "viewBox": "0 0 164 164"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/home-mobile-168-409/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:626"
+      ],
+      "variable": "imgPlant",
+      "file": "assets/home-mobile-168-409/imgPlant.svg",
+      "bytes": 242,
+      "sha256": "ef4a0688f951e78f05afbe007255dfc64f002473fe2a812765eaf7711141c1b6",
+      "dimensions": {
+        "width": "20",
+        "height": "30",
+        "viewBox": "0 0 20 30"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "192:210"
+      ],
+      "variable": "imgPsDiscover",
+      "file": "assets/home-mobile-168-409/imgPsDiscover.svg",
+      "bytes": 2204,
+      "sha256": "3ed4a1793fd9c3dbf36a152a25a4b6f46f8b974c3befc67c609d732767e629aa",
+      "dimensions": {
+        "width": "69",
+        "height": "69",
+        "viewBox": "0 0 69 69"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "192:191"
+      ],
+      "variable": "imgPsLatte",
+      "file": "assets/home-mobile-168-409/imgPsLatte.svg",
+      "bytes": 2334,
+      "sha256": "9bf94c9851956291b17e12c21d87ae22a0ff6f1e6b0a40058f66a75c33013612",
+      "dimensions": {
+        "width": "33",
+        "height": "33",
+        "viewBox": "0 0 33 33"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "227:246"
+      ],
+      "variable": "imgPsStudioCafe01",
+      "file": "assets/home-mobile-168-409/imgPsStudioCafe01.svg",
+      "bytes": 16805,
+      "sha256": "519aaa997b93b903624620e19066cc2fb355cd72234ac0dc893ffaac3a1d3e2e",
+      "dimensions": {
+        "width": "95.3077",
+        "height": "72.2308",
+        "viewBox": "0 0 95.3077 72.2308"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:470"
+      ],
+      "variable": "imgStarlightMotionTwinkle",
+      "file": "assets/home-mobile-168-409/imgStarlightMotionTwinkle.svg",
+      "bytes": 432,
+      "sha256": "c321d64916eb310f52847d6572f5878aff13f911fe35e73715c65014be00f751",
+      "dimensions": {
+        "width": "22",
+        "height": "22",
+        "viewBox": "0 0 22 22"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:472"
+      ],
+      "variable": "imgStarlightMotionTwinkle1",
+      "file": "assets/home-mobile-168-409/imgStarlightMotionTwinkle1.svg",
+      "bytes": 443,
+      "sha256": "1fd744e679cb1bb60b8798fbeb91d6892b4d4a792eb20536f62d70149592b33a",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "168:497"
+      ],
+      "variable": "imgStarlightMotionTwinkle2",
+      "file": "assets/home-mobile-168-409/imgStarlightMotionTwinkle2.svg",
+      "bytes": 566,
+      "sha256": "58ea371809a354ff446f6f4bc430ede082eb020b2012b561447508faf195bdfd",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-mobile-168-409",
+      "sourceFrame": "168:409",
+      "sourceNodes": [
+        "201:182"
+      ],
+      "variable": "imgV10",
+      "file": "assets/home-mobile-168-409/imgV10.svg",
+      "bytes": 603,
+      "sha256": "4386752f0c9883c829fdeba9b7f370d7718e73fe07c042c7f7613f692e935f2a",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:420"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/home-mobile-hero-168-419/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "86cfed1ec8892e4925f7f44bd43a4a6641aa92851d2fec42269c8ef6de5d360e",
+      "dimensions": {
+        "width": "350",
+        "height": "350",
+        "viewBox": "0 0 350 350"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:421"
+      ],
+      "variable": "imgEllipse1",
+      "file": "assets/home-mobile-hero-168-419/imgEllipse1.svg",
+      "bytes": 266,
+      "sha256": "5e9ca7b1aec699429269dd259d0e64ae8b7fdcf7a02fc7d76907e94c785ff002",
+      "dimensions": {
+        "width": "240",
+        "height": "210",
+        "viewBox": "0 0 240 210"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:423"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/home-mobile-hero-168-419/imgFrame.svg",
+      "bytes": 530,
+      "sha256": "48466cfbeaca40df109086b1dea1bb85527c8ac73f975ba0e742ae2a273989b4",
+      "dimensions": {
+        "width": "15",
+        "height": "15",
+        "viewBox": "0 0 15 15"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:431"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/home-mobile-hero-168-419/imgFrame1.svg",
+      "bytes": 367,
+      "sha256": "1fee349e043bf0ae4061a17d2bb14cbe639826ca5e7c6c7dd1f04725310d5162",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:447"
+      ],
+      "variable": "imgFrame2",
+      "file": "assets/home-mobile-hero-168-419/imgFrame2.svg",
+      "bytes": 573,
+      "sha256": "3b1209b119185a83ae27e5085497bb35bed586199df0f785f6bc6aa245f3fde5",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:454"
+      ],
+      "variable": "imgFrame3",
+      "file": "assets/home-mobile-hero-168-419/imgFrame3.svg",
+      "bytes": 877,
+      "sha256": "cda6c7786ce0ef7c10ddb88bc1308a9b803a31c7a50bb79b57dce31cffaaaa2f",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:465"
+      ],
+      "variable": "imgFrame4",
+      "file": "assets/home-mobile-hero-168-419/imgFrame4.svg",
+      "bytes": 503,
+      "sha256": "6ba990f0cb1e6d2dc121583473afdfcad7fe05cdf0c4edc697b53b92a1363180",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "200:182"
+      ],
+      "variable": "imgFrame5",
+      "file": "assets/home-mobile-hero-168-419/imgFrame5.svg",
+      "bytes": 369,
+      "sha256": "9a7ae1657be924b84b1fb034bed302e95dc60fde162fe0fa16b537c1458c1670",
+      "dimensions": {
+        "width": "19",
+        "height": "19",
+        "viewBox": "0 0 19 19"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:474"
+      ],
+      "variable": "imgMotionGlimmer",
+      "file": "assets/home-mobile-hero-168-419/imgMotionGlimmer.svg",
+      "bytes": 262,
+      "sha256": "b8d223fe58a0f2d476cc5f54d20918050983e18077916f9b278707dba7c076ad",
+      "dimensions": {
+        "width": "9",
+        "height": "9",
+        "viewBox": "0 0 9 9"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:475"
+      ],
+      "variable": "imgMotionGlimmer1",
+      "file": "assets/home-mobile-hero-168-419/imgMotionGlimmer1.svg",
+      "bytes": 255,
+      "sha256": "13c5ff851293b5e199a9d6f39b1f63f4d678abf45b01c624a2eb82323e40ea61",
+      "dimensions": {
+        "width": "6",
+        "height": "6",
+        "viewBox": "0 0 6 6"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:469"
+      ],
+      "variable": "imgMotionPathOrbitalRing",
+      "file": "assets/home-mobile-hero-168-419/imgMotionPathOrbitalRing.svg",
+      "bytes": 303,
+      "sha256": "b27762bdcda7718a9fcd3e94b10a08e76ceb50c4c9e2658cd867c302b39f78f5",
+      "dimensions": {
+        "width": "164",
+        "height": "164",
+        "viewBox": "0 0 164 164"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "192:191"
+      ],
+      "variable": "imgPsLatte",
+      "file": "assets/home-mobile-hero-168-419/imgPsLatte.svg",
+      "bytes": 2334,
+      "sha256": "9bf94c9851956291b17e12c21d87ae22a0ff6f1e6b0a40058f66a75c33013612",
+      "dimensions": {
+        "width": "33",
+        "height": "33",
+        "viewBox": "0 0 33 33"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "227:246"
+      ],
+      "variable": "imgPsStudioCafe01",
+      "file": "assets/home-mobile-hero-168-419/imgPsStudioCafe01.svg",
+      "bytes": 16801,
+      "sha256": "05074822ec534824ba3bc71a88e5b1910f78ab3a3bf28910db6107c48eaada01",
+      "dimensions": {
+        "width": "95.3077",
+        "height": "72.2308",
+        "viewBox": "0 0 95.3077 72.2308"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:470"
+      ],
+      "variable": "imgStarlightMotionTwinkle",
+      "file": "assets/home-mobile-hero-168-419/imgStarlightMotionTwinkle.svg",
+      "bytes": 432,
+      "sha256": "c321d64916eb310f52847d6572f5878aff13f911fe35e73715c65014be00f751",
+      "dimensions": {
+        "width": "22",
+        "height": "22",
+        "viewBox": "0 0 22 22"
+      }
+    },
+    {
+      "context": "home-mobile-hero-168-419",
+      "sourceFrame": "168:419",
+      "sourceNodes": [
+        "168:472"
+      ],
+      "variable": "imgStarlightMotionTwinkle1",
+      "file": "assets/home-mobile-hero-168-419/imgStarlightMotionTwinkle1.svg",
+      "bytes": 443,
+      "sha256": "1fd744e679cb1bb60b8798fbeb91d6892b4d4a792eb20536f62d70149592b33a",
+      "dimensions": {
+        "width": "23",
+        "height": "23",
+        "viewBox": "0 0 23 23"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1528"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/method-desktop-168-1502/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "33f2e76a239342b28b953eee9f100a157ea69252ed54506afae536247babb5ee",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1527"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/method-desktop-168-1502/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "4d088363634a1168c5235c4e732e2bb732dae02854aa4589316ae0d8bb86d564",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1526"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/method-desktop-168-1502/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "b5c2b1444f05c59a15b035b89d412d55c1ebd1290d22ca4dfdab70c138c2db14",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1516"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/method-desktop-168-1502/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1517"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/method-desktop-168-1502/imgFrame.svg",
+      "bytes": 540,
+      "sha256": "b0330d2d431f1ea99e3a8fba5383bcac5138c112247805ba4dc8e172140fdf35",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "168:1563",
+        "168:1580",
+        "168:1597"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/method-desktop-168-1502/imgFrame1.svg",
+      "bytes": 457,
+      "sha256": "365ffcb821a892ce1e0099a368f5ff020c88cba07dd9ced2eaae6ad5bea5212d",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/method-desktop-168-1502/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "method-desktop-168-1502",
+      "sourceFrame": "168:1502",
+      "sourceNodes": [
+        "201:201"
+      ],
+      "variable": "imgV10",
+      "file": "assets/method-desktop-168-1502/imgV10.svg",
+      "bytes": 613,
+      "sha256": "78a03266cbda4467a9de69ad1b6be6f21f73bf2069c7150b0488b701fead1964",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "168:1652"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/method-mobile-168-1637/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "f0da7ff9183f2c0d17844c04060871fb4a20ae879a877c1e78c77a56121d845f",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "168:1650"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/method-mobile-168-1637/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "d0c1e9f0ff0c9c6db5cceee38c2dd2922ad236569e57ed6f63c538828775b216",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "168:1651"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/method-mobile-168-1637/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "359c6dfd18f6a23ed3f1a3bec657482eb684703897a11a32446e117ceae7a785",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "168:1648"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/method-mobile-168-1637/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "e15d55f5546240d41ed64688b5b4276d793575ed2d310a8f1fcfd279982229cb",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "168:1645"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/method-mobile-168-1637/imgFrame.svg",
+      "bytes": 540,
+      "sha256": "b0330d2d431f1ea99e3a8fba5383bcac5138c112247805ba4dc8e172140fdf35",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "201:205"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/method-mobile-168-1637/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/method-mobile-168-1637/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "method-mobile-168-1637",
+      "sourceFrame": "168:1637",
+      "sourceNodes": [
+        "201:203"
+      ],
+      "variable": "imgV10",
+      "file": "assets/method-mobile-168-1637/imgV10.svg",
+      "bytes": 601,
+      "sha256": "d876aa0e0e0dfc5e7ebdb6610f33e22e0ed1db155f0dc6bd5d9e1dcfcd48da34",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3507"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/minors-desktop-168-3494/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "46ef367f7b86defaaa02527b92d4c08ef93ae8cedc4f09985ddd604df3638e33",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3514"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/minors-desktop-168-3494/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3515",
+        "168:3562"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/minors-desktop-168-3494/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3544"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/minors-desktop-168-3494/imgFrame1.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3508"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/minors-desktop-168-3494/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "17d9371b77cb9467a5c9ca339fceb0c0d369f289816cc0e561d940e9df05c1c8",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "168:3509"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/minors-desktop-168-3494/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "e109515eaad76d2713edfc1b7ac3f6d078810b83be2c4405c78d4e8227ab7b2c",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/minors-desktop-168-3494/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "minors-desktop-168-3494",
+      "sourceFrame": "168:3494",
+      "sourceNodes": [
+        "201:253"
+      ],
+      "variable": "imgV10",
+      "file": "assets/minors-desktop-168-3494/imgV10.svg",
+      "bytes": 613,
+      "sha256": "d24a9dff068b162c86bab2b072f45b0d65f81a32bb94d05cb005632b79f23a89",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "168:3611"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/minors-mobile-168-3603/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "c6f819ae4e995fbb55e56d105b526c82bd0f3d2a2e95c8c97d1ab3357d5e7b3d",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "168:3616"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/minors-mobile-168-3603/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "201:256"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/minors-mobile-168-3603/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "168:3612"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/minors-mobile-168-3603/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "73980982a46fd9622ab0aa38b5f2a875671da5d59b93401ac232f5c94636446d",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/minors-mobile-168-3603/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "minors-mobile-168-3603",
+      "sourceFrame": "168:3603",
+      "sourceNodes": [
+        "201:254"
+      ],
+      "variable": "imgV10",
+      "file": "assets/minors-mobile-168-3603/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "168:1982"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/pricing-desktop-168-1956/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "db9dc6892fc24b8113c8a950df9789961aee2292e8c1d3ea1f430dca40790050",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "168:1981"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/pricing-desktop-168-1956/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "77b441cf7a0c6b322a94591147646d93db218ed68409c0d5eb95a8d0168b4ec8",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "168:1980"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/pricing-desktop-168-1956/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "0026cb7e6a47771b9828e4c8fd9711f4f1368f1624e04cf83c3d5e69ba0c2248",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "168:1970"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/pricing-desktop-168-1956/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "168:1971",
+        "168:2011",
+        "168:2028",
+        "168:2045"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/pricing-desktop-168-1956/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "944645201ec3dc006d9f5f54cf9064b880d404ed40e55232c2997e1bc3f891e8",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/pricing-desktop-168-1956/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "pricing-desktop-168-1956",
+      "sourceFrame": "168:1956",
+      "sourceNodes": [
+        "201:212"
+      ],
+      "variable": "imgV10",
+      "file": "assets/pricing-desktop-168-1956/imgV10.svg",
+      "bytes": 613,
+      "sha256": "d24a9dff068b162c86bab2b072f45b0d65f81a32bb94d05cb005632b79f23a89",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "168:2106"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/pricing-mobile-168-2091/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "e2a26cae9ef4273dc3fb89b11a27ed656bb7d132078f9347f96010c6add8a983",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "168:2104"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/pricing-mobile-168-2091/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "3d66557610ae363b2695cbd6ecc8b4576e3d9d162f89ebb496cb4d2b80df060a",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "168:2105"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/pricing-mobile-168-2091/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "99a698d614ec1cc09844efc566038b67d7fdd52ee4cf4e5363355adf1db6cd08",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "168:2102"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/pricing-mobile-168-2091/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "9c70d3dd7d5b525dec1f1392392b3a6160e6957949edd0e986a12259657c2283",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "168:2099"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/pricing-mobile-168-2091/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "944645201ec3dc006d9f5f54cf9064b880d404ed40e55232c2997e1bc3f891e8",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "201:215"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/pricing-mobile-168-2091/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/pricing-mobile-168-2091/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "pricing-mobile-168-2091",
+      "sourceFrame": "168:2091",
+      "sourceNodes": [
+        "201:213"
+      ],
+      "variable": "imgV10",
+      "file": "assets/pricing-mobile-168-2091/imgV10.svg",
+      "bytes": 601,
+      "sha256": "d876aa0e0e0dfc5e7ebdb6610f33e22e0ed1db155f0dc6bd5d9e1dcfcd48da34",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3153"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/privacy-desktop-168-3140/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "13ccb1395c5b2012da89c1ff08bfa8a164e987ae28f9af91fd9c36618331ddf8",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3160"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/privacy-desktop-168-3140/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3161",
+        "168:3208"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/privacy-desktop-168-3140/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3190"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/privacy-desktop-168-3140/imgFrame1.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3154"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/privacy-desktop-168-3140/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "b0f4f80bcb674666c38a4ea81cbd16c32608df941253f18c107c57afef6193f1",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "168:3155"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/privacy-desktop-168-3140/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "1917fba7c756f79f3317e97aab6b7476a13ab1b6a86a2b3529e6b5b14cbba56e",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/privacy-desktop-168-3140/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "privacy-desktop-168-3140",
+      "sourceFrame": "168:3140",
+      "sourceNodes": [
+        "201:243"
+      ],
+      "variable": "imgV10",
+      "file": "assets/privacy-desktop-168-3140/imgV10.svg",
+      "bytes": 613,
+      "sha256": "78a03266cbda4467a9de69ad1b6be6f21f73bf2069c7150b0488b701fead1964",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "168:3257"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/privacy-mobile-168-3249/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "b82abdcf6b113f5a57598a5035575c766ff915af275b3d73dfa8de7009e1376a",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "168:3262"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/privacy-mobile-168-3249/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "201:246"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/privacy-mobile-168-3249/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "168:3258"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/privacy-mobile-168-3249/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "a2cebd01c55dc2feedcce6bc8fd56f2b5e62363215a0bcf6840dac76eb86f314",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/privacy-mobile-168-3249/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "privacy-mobile-168-3249",
+      "sourceFrame": "168:3249",
+      "sourceNodes": [
+        "201:244"
+      ],
+      "variable": "imgV10",
+      "file": "assets/privacy-mobile-168-3249/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1749"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/start-desktop-168-1723/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "4186dc8dd6f07c8dc2b285adaefe90dd08c1566cbb23c86cc740093982a89ba0",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1748"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/start-desktop-168-1723/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "6afd14903fdff58f65a95bda7ba24979a447bbf34fcc7515505280409161db57",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1747"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/start-desktop-168-1723/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "5cf7c360a2cddb1e8963c64662d71f12c025b1e89c5816e9a3161a535a681937",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1737"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/start-desktop-168-1723/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1738"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/start-desktop-168-1723/imgFrame.svg",
+      "bytes": 556,
+      "sha256": "84e6e160065dedc47f1b9115ab07df1a8f0ce435fb3264a432e5f9325e14b412",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "168:1790",
+        "168:1807",
+        "168:1824"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/start-desktop-168-1723/imgFrame1.svg",
+      "bytes": 551,
+      "sha256": "d6bc92b4ec94ee460ec57b9aa61929826c51d66a97bb95340d900bc5451d7342",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/start-desktop-168-1723/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "201:207"
+      ],
+      "variable": "imgV10",
+      "file": "assets/start-desktop-168-1723/imgV10.svg",
+      "bytes": 613,
+      "sha256": "9566203dbc32c486566050cd5a098edb85341d8b57cadd0954a42542377db193",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "start-desktop-168-1723",
+      "sourceFrame": "168:1723",
+      "sourceNodes": [
+        "200:184"
+      ],
+      "variable": "imgV11",
+      "file": "assets/start-desktop-168-1723/imgV11.svg",
+      "bytes": 7003,
+      "sha256": "22e8e67d750c8522016be0692cb6bc7414314ebeb3a26ab571289236758d4cf0",
+      "dimensions": {
+        "width": "431",
+        "height": "277.071",
+        "viewBox": "0 0 431 277.071"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "168:1887"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/start-mobile-168-1872/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "b15e423dd213e8007fc0c0ab42a7102bb57372d76c13143b904188537b117c8c",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "168:1885"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/start-mobile-168-1872/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "5b7f2c8bdad7284477db9c1176484d403c28ba5eeda7786dc2d59eff108f39f3",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "168:1886"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/start-mobile-168-1872/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "69fa1bcffd062242b2da086730d953b1c016b0fbf447eb0de785fc1a7cfdb4ab",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "168:1883"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/start-mobile-168-1872/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "e15d55f5546240d41ed64688b5b4276d793575ed2d310a8f1fcfd279982229cb",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "168:1880"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/start-mobile-168-1872/imgFrame.svg",
+      "bytes": 556,
+      "sha256": "84e6e160065dedc47f1b9115ab07df1a8f0ce435fb3264a432e5f9325e14b412",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "201:210"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/start-mobile-168-1872/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/start-mobile-168-1872/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "201:208"
+      ],
+      "variable": "imgV10",
+      "file": "assets/start-mobile-168-1872/imgV10.svg",
+      "bytes": 601,
+      "sha256": "ac4f30d427961d913bfaf5f81629a2c4d67f9987fc38f557c613530d9b7bc8ad",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "start-mobile-168-1872",
+      "sourceFrame": "168:1872",
+      "sourceNodes": [
+        "200:207"
+      ],
+      "variable": "imgV11",
+      "file": "assets/start-mobile-168-1872/imgV11.svg",
+      "bytes": 6975,
+      "sha256": "232aabc42c3340f8c2440e9f9b87899d849d380954636a09189fb288a5452852",
+      "dimensions": {
+        "width": "72",
+        "height": "46.2857",
+        "viewBox": "0 0 72 46.2857"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "168:3021"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/status-desktop-168-3008/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "1d2bedfce5f0fcc198107a6a407d187350daac3723eafda2f22ad2ac07670750",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "168:3028"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/status-desktop-168-3008/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "168:3029"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/status-desktop-168-3008/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "168:3022"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/status-desktop-168-3008/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "078e030d70d8c94f6195206dda7e7fc85a6ca88e58c27c346354aef3b875ffc3",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "168:3023"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/status-desktop-168-3008/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "260b130603dd9d4521533ee593baa304d0e07afe296f9098dfd85f121195f9d3",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/status-desktop-168-3008/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "status-desktop-168-3008",
+      "sourceFrame": "168:3008",
+      "sourceNodes": [
+        "201:238"
+      ],
+      "variable": "imgV10",
+      "file": "assets/status-desktop-168-3008/imgV10.svg",
+      "bytes": 613,
+      "sha256": "d24a9dff068b162c86bab2b072f45b0d65f81a32bb94d05cb005632b79f23a89",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "168:3093"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/status-mobile-168-3085/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "e875c8e466cef741bd02ee2310f752412d46d33ad1a610b555dd8ae2352d7702",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "168:3098"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/status-mobile-168-3085/imgFrame.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "201:241"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/status-mobile-168-3085/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "168:3094"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/status-mobile-168-3085/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "4c628c5458e24c5ced96446f553d61fbd5d1b19b8dd05599614085cb24cf2890",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/status-mobile-168-3085/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "status-mobile-168-3085",
+      "sourceFrame": "168:3085",
+      "sourceNodes": [
+        "201:239"
+      ],
+      "variable": "imgV10",
+      "file": "assets/status-mobile-168-3085/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3330"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/terms-desktop-168-3317/imgAtmosphereGlow.svg",
+      "bytes": 271,
+      "sha256": "bfe545cfd36ca40b86cda40ba01d50508433065983fcc2696dae1fc8a964c9b5",
+      "dimensions": {
+        "width": "200",
+        "height": "200",
+        "viewBox": "0 0 200 200"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3337"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/terms-desktop-168-3317/imgEllipse.svg",
+      "bytes": 256,
+      "sha256": "8870d90058154629107c952f82f643c8b3dd8deca04629a069406beef1e52306",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3338",
+        "168:3367"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/terms-desktop-168-3317/imgFrame.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3385"
+      ],
+      "variable": "imgFrame1",
+      "file": "assets/terms-desktop-168-3317/imgFrame1.svg",
+      "bytes": 481,
+      "sha256": "9724cefa6a4eca38f90b079578e5cdc3151c1698d181c1215be9bc4d1b405fc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3331"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/terms-desktop-168-3317/imgMotionGentleOrbit.svg",
+      "bytes": 305,
+      "sha256": "58fa007e52daf38de0974b719251dcdbb513056c39f5049860e092a1d4ca7d05",
+      "dimensions": {
+        "width": "277",
+        "height": "277",
+        "viewBox": "0 0 277 277"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "168:3332"
+      ],
+      "variable": "imgMotionGentleOrbit1",
+      "file": "assets/terms-desktop-168-3317/imgMotionGentleOrbit1.svg",
+      "bytes": 301,
+      "sha256": "dde11a4558c180e943446da176d26a9d117beba216349447dbafc8537c99cbf0",
+      "dimensions": {
+        "width": "165",
+        "height": "165",
+        "viewBox": "0 0 165 165"
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/terms-desktop-168-3317/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "terms-desktop-168-3317",
+      "sourceFrame": "168:3317",
+      "sourceNodes": [
+        "201:248"
+      ],
+      "variable": "imgV10",
+      "file": "assets/terms-desktop-168-3317/imgV10.svg",
+      "bytes": 613,
+      "sha256": "78a03266cbda4467a9de69ad1b6be6f21f73bf2069c7150b0488b701fead1964",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "168:3434"
+      ],
+      "variable": "imgAtmosphereGlow",
+      "file": "assets/terms-mobile-168-3426/imgAtmosphereGlow.svg",
+      "bytes": 267,
+      "sha256": "6c461ab92494fac36421fb340686afd5e8eda3675ca66a21124419f20032ae9e",
+      "dimensions": {
+        "width": "110",
+        "height": "110",
+        "viewBox": "0 0 110 110"
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "168:3439"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/terms-mobile-168-3426/imgFrame.svg",
+      "bytes": 457,
+      "sha256": "ddd59cb59d1555a9d47d7829801e15a2dcdc67f9c0952ac085a37c189d10abb0",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "201:251"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/terms-mobile-168-3426/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "168:3435"
+      ],
+      "variable": "imgMotionGentleOrbit",
+      "file": "assets/terms-mobile-168-3426/imgMotionGentleOrbit.svg",
+      "bytes": 298,
+      "sha256": "39db425cebec5657979bb2e41237f1f14ff6ae9779c2d04a7f2a21b506a724bf",
+      "dimensions": {
+        "width": "89",
+        "height": "89",
+        "viewBox": "0 0 89 89"
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/terms-mobile-168-3426/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "terms-mobile-168-3426",
+      "sourceFrame": "168:3426",
+      "sourceNodes": [
+        "201:249"
+      ],
+      "variable": "imgV10",
+      "file": "assets/terms-mobile-168-3426/imgV10.svg",
+      "bytes": 601,
+      "sha256": "327f8e29b253788790d48e914a4e570ffde5d523cf0edf8980a81918b0bea661",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "trial-desktop-complete-203-252",
+      "sourceFrame": "203:252",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-desktop-complete-203-252/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-desktop-hint-read-203-204",
+      "sourceFrame": "203:204",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-desktop-hint-read-203-204/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-desktop-hint-to-read-203-228",
+      "sourceFrame": "203:228",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-desktop-hint-to-read-203-228/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-desktop-select-203-180",
+      "sourceFrame": "203:180",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-desktop-select-203-180/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-mobile-complete-203-345",
+      "sourceFrame": "203:345",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-mobile-complete-203-345/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-mobile-hint-read-203-297",
+      "sourceFrame": "203:297",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-mobile-hint-read-203-297/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-mobile-hint-to-read-203-321",
+      "sourceFrame": "203:321",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-mobile-hint-to-read-203-321/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "trial-mobile-select-203-273",
+      "sourceFrame": "203:273",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/trial-mobile-select-203-273/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1248"
+      ],
+      "variable": "imgAmbientGlimmer",
+      "file": "assets/world-desktop-168-1223/imgAmbientGlimmer.svg",
+      "bytes": 259,
+      "sha256": "d7b095ad7a50c6153af6752c9da0b6ea7400e6876ea509459da7670fcf53f2b8",
+      "dimensions": {
+        "width": "18",
+        "height": "18",
+        "viewBox": "0 0 18 18"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1247"
+      ],
+      "variable": "imgAmbientPastelOrb",
+      "file": "assets/world-desktop-168-1223/imgAmbientPastelOrb.svg",
+      "bytes": 275,
+      "sha256": "cf3413e9e0f21be0c2002af638db84d212269e5c7ac9c80e303bcf72510462bf",
+      "dimensions": {
+        "width": "157",
+        "height": "157",
+        "viewBox": "0 0 157 157"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1246"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/world-desktop-168-1223/imgBrandOrbitMotionPath.svg",
+      "bytes": 309,
+      "sha256": "113cdbaa8625023bfc509c30cbbb5dea001e8c178111b69074fd480d5339052b",
+      "dimensions": {
+        "width": "275",
+        "height": "275",
+        "viewBox": "0 0 275 275"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1237"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/world-desktop-168-1223/imgEllipse.svg",
+      "bytes": 251,
+      "sha256": "dddfcca680ab11d8db6befb6efcbc44547a2fa5b1e77aad7e60ad4924ee32125",
+      "dimensions": {
+        "width": "158",
+        "height": "158",
+        "viewBox": "0 0 158 158"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1238",
+        "168:1309",
+        "168:1325",
+        "168:1341"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/world-desktop-168-1223/imgFrame.svg",
+      "bytes": 365,
+      "sha256": "81ff8ed2519d751bc9bc9ccbae3c3d225df3d6cf6cf9c32839bd20044a83fdc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1280"
+      ],
+      "variable": "imgMoon",
+      "file": "assets/world-desktop-168-1223/imgMoon.svg",
+      "bytes": 231,
+      "sha256": "2cd08c3e4e441ef5642c5b7399628589b7db0af51f0fd2f115e7ff0f7d5489a2",
+      "dimensions": {
+        "width": "64",
+        "height": "64",
+        "viewBox": "0 0 64 64"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1281"
+      ],
+      "variable": "imgNightStar1",
+      "file": "assets/world-desktop-168-1223/imgNightStar1.svg",
+      "bytes": 236,
+      "sha256": "28450dd04bb6a11487d84d63fe09072f99f0d8c9d8e5e9416b8d3a2a3d6fe150",
+      "dimensions": {
+        "width": "7",
+        "height": "7",
+        "viewBox": "0 0 7 7"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1282"
+      ],
+      "variable": "imgNightStar2",
+      "file": "assets/world-desktop-168-1223/imgNightStar2.svg",
+      "bytes": 236,
+      "sha256": "706430d1d7f4ca002f52ad5b65bbfcf34f3c6928c8ecde24a928120c7772529e",
+      "dimensions": {
+        "width": "5",
+        "height": "5",
+        "viewBox": "0 0 5 5"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/world-desktop-168-1223/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1300"
+      ],
+      "variable": "imgPlantLeaf1",
+      "file": "assets/world-desktop-168-1223/imgPlantLeaf1.svg",
+      "bytes": 253,
+      "sha256": "1a269b6602574866b71e596e8963b6d245ac243cc295768180fb2597080aac53",
+      "dimensions": {
+        "width": "28",
+        "height": "39",
+        "viewBox": "0 0 28 39"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1301"
+      ],
+      "variable": "imgPlantLeaf2",
+      "file": "assets/world-desktop-168-1223/imgPlantLeaf2.svg",
+      "bytes": 249,
+      "sha256": "eac87dbba5db2f541ac55394a3ac63fec2ef357fbb524d1b76245d891f629718",
+      "dimensions": {
+        "width": "24",
+        "height": "54",
+        "viewBox": "0 0 24 54"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1302"
+      ],
+      "variable": "imgPlantLeaf3",
+      "file": "assets/world-desktop-168-1223/imgPlantLeaf3.svg",
+      "bytes": 253,
+      "sha256": "b2dd8ffa98a5c9f9bfc3e4ab959ae73393c29535cd6dfb224836c119635931d0",
+      "dimensions": {
+        "width": "23",
+        "height": "38",
+        "viewBox": "0 0 23 38"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "201:195"
+      ],
+      "variable": "imgV10",
+      "file": "assets/world-desktop-168-1223/imgV10.svg",
+      "bytes": 613,
+      "sha256": "1a7d3407bb67f6131338b127747622b4821db491a45ba4ccae7b870106778c4e",
+      "dimensions": {
+        "width": "59",
+        "height": "59",
+        "viewBox": "0 0 59 59"
+      }
+    },
+    {
+      "context": "world-desktop-168-1223",
+      "sourceFrame": "168:1223",
+      "sourceNodes": [
+        "168:1265"
+      ],
+      "variable": "imgV4DepthAndStarlight",
+      "file": "assets/world-desktop-168-1223/imgV4DepthAndStarlight.svg",
+      "bytes": 1354,
+      "sha256": "caa84da6d032dc48e82ebc974608da57ee2611f25e3d0505e36fb39cce6d062f",
+      "dimensions": {
+        "width": "1062",
+        "height": "243",
+        "viewBox": "0 0 1062 243"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1403"
+      ],
+      "variable": "imgAmbientPastelLight",
+      "file": "assets/world-mobile-168-1389/imgAmbientPastelLight.svg",
+      "bytes": 273,
+      "sha256": "3d0f856172fc39cbe536e53ac168ee288bc56ba8ec9dbdd9c8bfbcbe02b0f6a3",
+      "dimensions": {
+        "width": "79",
+        "height": "79",
+        "viewBox": "0 0 79 79"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1401"
+      ],
+      "variable": "imgBrandOrbitMotionPath",
+      "file": "assets/world-mobile-168-1389/imgBrandOrbitMotionPath.svg",
+      "bytes": 306,
+      "sha256": "e3d630922d4ba91a7d8a5ee9c9c4ad4b42f1a17e2e0df27580163e3697fe5b0d",
+      "dimensions": {
+        "width": "131",
+        "height": "131",
+        "viewBox": "0 0 131 131"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1402"
+      ],
+      "variable": "imgBrandOrbitMotionPath1",
+      "file": "assets/world-mobile-168-1389/imgBrandOrbitMotionPath1.svg",
+      "bytes": 302,
+      "sha256": "75e27063969fd3916034f69b67b01108dbc46a678c5b16d45efdf5e8607ab3db",
+      "dimensions": {
+        "width": "95",
+        "height": "95",
+        "viewBox": "0 0 95 95"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1443"
+      ],
+      "variable": "imgCoffeeTop",
+      "file": "assets/world-mobile-168-1389/imgCoffeeTop.svg",
+      "bytes": 249,
+      "sha256": "726c546959b828ca1aaad82458c1c4cca1e36e5381432591e6221065c6c4442d",
+      "dimensions": {
+        "width": "17",
+        "height": "7",
+        "viewBox": "0 0 17 7"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1399"
+      ],
+      "variable": "imgEllipse",
+      "file": "assets/world-mobile-168-1389/imgEllipse.svg",
+      "bytes": 249,
+      "sha256": "02c8ff55f64a109c7025a2d9c5f8835262d858e64fb2a5524fa79fb12ed56951",
+      "dimensions": {
+        "width": "90",
+        "height": "90",
+        "viewBox": "0 0 90 90"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1397"
+      ],
+      "variable": "imgFrame",
+      "file": "assets/world-mobile-168-1389/imgFrame.svg",
+      "bytes": 365,
+      "sha256": "81ff8ed2519d751bc9bc9ccbae3c3d225df3d6cf6cf9c32839bd20044a83fdc3",
+      "dimensions": {
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "201:199"
+      ],
+      "variable": "imgGroup",
+      "file": "assets/world-mobile-168-1389/imgGroup.svg",
+      "bytes": 403,
+      "sha256": "7c38998eb77d2a31f2de3ecdca9a7bbda73f934972074074d21bbec92c9af0c2",
+      "dimensions": {
+        "width": "18.8",
+        "height": "13.8",
+        "viewBox": "0 0 18.8 13.8"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1430"
+      ],
+      "variable": "imgMoon",
+      "file": "assets/world-mobile-168-1389/imgMoon.svg",
+      "bytes": 237,
+      "sha256": "e2594ae7bc31aec2c5e494e9cdeabdfd3c3dd08f14aefab42e5d47e7524a01ee",
+      "dimensions": {
+        "width": "25",
+        "height": "25",
+        "viewBox": "0 0 25 25"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "12:3"
+      ],
+      "variable": "imgOfficialLogoImageOriginal",
+      "file": "assets/world-mobile-168-1389/imgOfficialLogoImageOriginal.png",
+      "bytes": 29913,
+      "sha256": "6a517e5561fd8586eff6c0de97e78a6c7e454710c62c83ad7ade55e81d1baeab",
+      "dimensions": {
+        "width": 160,
+        "height": 160
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "201:197"
+      ],
+      "variable": "imgV10",
+      "file": "assets/world-mobile-168-1389/imgV10.svg",
+      "bytes": 601,
+      "sha256": "027df1d0f162d12e06f202d837ca94057c7e14d523563029f77523fc8570494e",
+      "dimensions": {
+        "width": "48",
+        "height": "48",
+        "viewBox": "0 0 48 48"
+      }
+    },
+    {
+      "context": "world-mobile-168-1389",
+      "sourceFrame": "168:1389",
+      "sourceNodes": [
+        "168:1420"
+      ],
+      "variable": "imgV4DepthAndStarlight",
+      "file": "assets/world-mobile-168-1389/imgV4DepthAndStarlight.svg",
+      "bytes": 834,
+      "sha256": "95065aeda2197099f1302ffd900ee3850f7b030ddcafa391a83f586b97e1f27e",
+      "dimensions": {
+        "width": "302",
+        "height": "166",
+        "viewBox": "0 0 302 166"
+      }
+    }
+  ]
+}

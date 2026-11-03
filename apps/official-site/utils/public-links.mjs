@@ -56,20 +56,19 @@ function normalizePath(path = "/") {
 }
 
 export function safePublicReturnTo(value, fallback = "/home") {
-  if (typeof value !== "string") return fallback;
+  if (typeof value !== "string" || /[\u0000-\u001f\u007f]/.test(value)) return fallback;
   const candidate = value.trim();
   if (
     !candidate ||
     candidate.includes("\\") ||
     /%(?:2f|5c)/i.test(candidate) ||
-    /[\u0000-\u001f]/.test(candidate) ||
     !candidate.startsWith("/") ||
     candidate.startsWith("//")
   )
     return fallback;
   try {
     const url = new URL(candidate, "https://englishflow-public.invalid");
-    return url.origin === "https://englishflow-public.invalid"
+    return url.origin === "https://englishflow-public.invalid" && !url.pathname.startsWith("//")
       ? `${url.pathname}${url.search}${url.hash}`
       : fallback;
   } catch {
@@ -160,15 +159,25 @@ export function safePublicHref(
   value,
   { siteUrl, learnerWebUrl, allowedOrigins = [], fallback = null } = {},
 ) {
-  if (typeof value !== "string") return fallback;
+  if (typeof value !== "string" || /[\u0000-\u001f\u007f]/.test(value)) return fallback;
   const candidate = value.trim();
   if (!candidate || candidate.includes("\\")) return fallback;
-  if (candidate.startsWith("/") && !candidate.startsWith("//"))
-    return candidate;
+  if (candidate.startsWith("/")) {
+    if (candidate.startsWith("//")) return fallback;
+    try {
+      const base = absoluteOrigin(siteUrl) || "https://englishflow-public.invalid";
+      const url = new URL(candidate, base);
+      return url.origin === base && !url.pathname.startsWith("//")
+        ? `${url.pathname}${url.search}${url.hash}`
+        : fallback;
+    } catch {
+      return fallback;
+    }
+  }
 
   try {
     const url = new URL(candidate);
-    if (!SAFE_PROTOCOLS.has(url.protocol)) return fallback;
+    if (!SAFE_PROTOCOLS.has(url.protocol) || url.username || url.password) return fallback;
     const origins = new Set(
       [
         absoluteOrigin(siteUrl),

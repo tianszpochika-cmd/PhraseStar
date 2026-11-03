@@ -335,18 +335,19 @@ function responseState(value: unknown): PublicProjectionLoadState | null {
   const candidates: Record<string, unknown>[] = []
   if (isRecord(value)) {
     candidates.push(value)
+    if (isRecord(value.publicProjection)) candidates.push(value.publicProjection)
     if (isRecord(value.data)) candidates.push(value.data)
     if (isRecord(value.result)) candidates.push(value.result)
+    if (isRecord(value.meta)) candidates.push(value.meta)
   }
-  for (const candidate of candidates) {
-    if (candidate.maintenance === true) return 'maintenance'
-    const state = text(candidate.state ?? candidate.serviceState ?? candidate.projectionState ?? candidate.accessState).toLowerCase().replaceAll('_', '-')
-    if (['maintenance', 'maintaining'].includes(state)) return 'maintenance'
-    if (['permission', 'forbidden', 'denied', 'access-denied'].includes(state)) return 'permission'
-    if (['recovery', 'recovering', 'degraded', 'stale'].includes(state)) return 'recovery'
-    if (['error', 'failed', 'unavailable'].includes(state)) return 'error'
-    if (state === 'loading') return 'loading'
-  }
+  const states = candidates.flatMap((candidate) =>
+    [candidate.state, candidate.serviceState, candidate.projectionState, candidate.accessState]
+      .map((value) => text(value).toLowerCase().replaceAll('_', '-')))
+  if (states.some((state) => ['permission', 'forbidden', 'denied', 'access-denied'].includes(state))) return 'permission'
+  if (states.some((state) => ['error', 'failed', 'unavailable'].includes(state))) return 'error'
+  if (candidates.some((candidate) => candidate.maintenance === true) || states.some((state) => ['maintenance', 'maintaining'].includes(state))) return 'maintenance'
+  if (candidates.some((candidate) => candidate.stale === true) || states.some((state) => ['recovery', 'recovering', 'degraded', 'stale'].includes(state))) return 'recovery'
+  if (states.includes('loading')) return 'loading'
   return null
 }
 
@@ -378,6 +379,18 @@ export function normalizePublicProjectionResponse(value: unknown, requestedLocal
   const explicitState = responseState(value)
   const state = explicitState ?? (hasPublicProjectionData(projection) ? 'ready' : 'empty')
   const root = isRecord(value) ? value : {}
+  const data = sourceData(value)
+  // The canonical content envelope declares all public collections. Legacy
+  // projections may omit whole optional collections, but an explicitly invalid
+  // collection or an invalid item can never be represented as an honest empty.
+  const canonicalEnvelope = isRecord(root.data) && isRecord(root.meta)
+  const invalidCollection = (keys: readonly string[], normalizedCount: number): boolean => {
+    const present = keys.filter((key) => Object.hasOwn(data, key))
+    const selected = keys.find((key) => data[key] !== null && data[key] !== undefined)
+    if (!selected) return canonicalEnvelope || present.length > 0
+    const raw = data[selected]
+    return !Array.isArray(raw) || raw.length !== normalizedCount
+  }
   const candidateSource = text(root.source).toLowerCase()
   const source: PublicProjectionResponse['source'] = candidateSource === 'gateway' || candidateSource === 'memory-cache' || candidateSource === 'empty-fallback' ? candidateSource : 'gateway'
   const generatedAt = nullableText((sourceData(value) as Record<string, unknown>).generatedAt)
@@ -390,14 +403,19 @@ export function normalizePublicProjectionResponse(value: unknown, requestedLocal
   const commerceState = resolveFacetCommerceState(root)
   const commerceErrorCode = resolveFacetCommerceError(root)
   const pricingFromCommerce = contentReadable && commerceState !== null
+  const contentFacet = (keys: readonly string[], count: number): PublicFacetStatus => {
+    const status = facetStatus(globalExplicit, count > 0, generatedAt, nullableText(root.errorCode), root.stale === true)
+    if (!contentReadable || !invalidCollection(keys, count)) return status
+    return { state: 'error', updatedAt: null, errorCode: 'PUBLIC_FACET_INVALID', stale: false }
+  }
   const facets: PublicProjectionFacets = {
-    courses: facetStatus(globalExplicit, projection.courses.length > 0, generatedAt, nullableText(root.errorCode), root.stale === true),
+    courses: contentFacet(['courses'], projection.courses.length),
     pricing: pricingFromCommerce
       ? { state: commerceState, updatedAt: generatedAt, errorCode: commerceErrorCode, stale: commerceState === 'recovery' }
       : facetStatus(globalExplicit, projection.pricingPlans.length > 0 || projection.skus.length > 0, generatedAt, nullableText(root.errorCode), root.stale === true),
-    download: facetStatus(globalExplicit, projection.downloadChannels.length > 0, generatedAt, nullableText(root.errorCode), root.stale === true),
-    announcements: facetStatus(globalExplicit, projection.announcements.length > 0, generatedAt, nullableText(root.errorCode), root.stale === true),
-    compliance: facetStatus(globalExplicit, projection.complianceNotices.length > 0, generatedAt, nullableText(root.errorCode), root.stale === true),
+    download: contentFacet(['downloadChannels', 'downloads'], projection.downloadChannels.length),
+    announcements: contentFacet(['announcements', 'notices'], projection.announcements.length),
+    compliance: contentFacet(['complianceNotices', 'compliance'], projection.complianceNotices.length),
   }
   return {
     projection,

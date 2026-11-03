@@ -23,40 +23,72 @@ function isRecord(value: unknown): value is PublicGatewayPayload {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function list(value: unknown): PublicGatewayPayload[] {
-  return Array.isArray(value) ? value.filter(isRecord) : [];
+function usableContentPayload(value: unknown): value is PublicGatewayPayload {
+  if (!isRecord(value)) return false;
+  const wrappers = ["publicProjection", "data", "result"] as const;
+  // An explicitly malformed wrapper must never fall back to sibling data.
+  if (wrappers.some((key) => Object.hasOwn(value, key) && !isRecord(value[key]))) return false;
+  if (Object.hasOwn(value, "meta") && !isRecord(value.meta)) return false;
+  const wrapper = wrappers.find((key) => isRecord(value[key]));
+  const content = wrapper && isRecord(value[wrapper]) ? value[wrapper] : value;
+  const layers: PublicGatewayPayload[] = [value];
+  for (const key of wrappers) {
+    const candidate = value[key];
+    if (isRecord(candidate)) layers.push(candidate);
+  }
+  if (isRecord(value.meta)) layers.push(value.meta);
+  if (layers.some((layer) => Object.hasOwn(layer, "stale") && typeof layer.stale !== "boolean")) return false;
+  const collections = ["courses", "pricingPlans", "pricing", "prices", "skus", "publicSkus", "campaigns", "activities", "promotions", "downloadChannels", "downloads", "announcements", "notices", "complianceNotices", "compliance"];
+  if (collections.some((key) => Object.hasOwn(content, key))) return true;
+  // A no-content denial/maintenance response must retain its explicit state;
+  // an otherwise empty object cannot prove that the catalog is truly empty.
+  return layers.some((layer) => [layer.state, layer.serviceState, layer.projectionState, layer.accessState]
+    .some((state) => typeof state === "string" && ["permission", "forbidden", "denied", "access-denied", "error", "failed", "unavailable", "maintenance", "maintaining"]
+      .includes(state.toLowerCase().replaceAll("_", "-"))) || layer.maintenance === true);
 }
 
-function mergeCommercePricing(projection: unknown, commerce: unknown): unknown {
-  if (!isRecord(projection)) return projection;
-  const plans = isRecord(commerce) ? list(commerce.plans) : [];
-  const data = isRecord(projection.data) ? projection.data : projection;
-  const locale = data.uiLocale === "en-US" ? "en-US" : "zh-CN";
+function publicCommerceCatalog(value: unknown): PublicGatewayPayload | null {
+  if (!isRecord(value)) return null;
+  // Check the data/plans shape when an envelope is present. Never fall back
+  // to a sibling legacy field when that shape is malformed.
+  if (Object.hasOwn(value, "data")) {
+    return isRecord(value.data) && Array.isArray(value.data.plans) ? value.data : null;
+  }
+  return Array.isArray(value.plans) ? value : null;
+}
 
-  // The official site may display commerce facts, but it must not own or copy
-  // order/entitlement data. Keep only the catalog's public, field-filtered
-  // plan projection and merge it at the BFF boundary.
-  const pricing = plans.flatMap((plan) => {
-    const skuId = typeof plan.skuId === "string" ? plan.skuId.trim() : "";
-    const name = typeof plan.title === "string" ? plan.title.trim() : "";
-    const currency = typeof plan.currency === "string" ? plan.currency.trim() : "";
+function publicCommercePrices(commerce: PublicGatewayPayload, locale: PublicUiLocale): PublicGatewayPayload[] | null {
+  if (!Array.isArray(commerce.plans)) return null;
+  const pricing: PublicGatewayPayload[] = [];
+  const allowedFields = new Set(["planId", "skuId", "title", "billingPeriod", "currency", "amountMinor", "priceSnapshotId", "availability", "entitlementCode"]);
+  for (const plan of commerce.plans) {
+    if (!isRecord(plan) || Object.keys(plan).some((key) => !allowedFields.has(key))) return null;
+    const requiredText = (key: string, maxLength: number) => {
+      const value = plan[key];
+      return typeof value === "string" && Array.from(value).length <= maxLength ? value.trim() : "";
+    };
+    const planId = requiredText("planId", 128);
+    const skuId = requiredText("skuId", 128);
+    const name = requiredText("title", 160);
+    const currency = typeof plan.currency === "string" ? plan.currency : "";
     const billingPeriod = typeof plan.billingPeriod === "string" ? plan.billingPeriod : "";
     const availability = typeof plan.availability === "string" ? plan.availability : "";
-    const entitlementCode = typeof plan.entitlementCode === "string" ? plan.entitlementCode.trim() : "";
-    const priceSnapshotId = typeof plan.priceSnapshotId === "string" ? plan.priceSnapshotId.trim() : "";
+    const entitlementCode = requiredText("entitlementCode", 96);
+    const priceSnapshotId = requiredText("priceSnapshotId", 128);
     const amountMinor = plan.amountMinor;
-    if (!skuId || !name || !/^[A-Z]{3}$/.test(currency)
+    if (!planId || !skuId || !name || !/^[A-Z]{3}$/.test(currency)
       || !["FREE", "MONTH", "QUARTER", "YEAR", "PERPETUAL"].includes(billingPeriod)
       || !["PUBLISHED", "COMING_SOON", "UNAVAILABLE"].includes(availability)
+      || (billingPeriod === "PERPETUAL" && availability === "PUBLISHED")
       || !entitlementCode || !priceSnapshotId
-      || typeof amountMinor !== "number" || !Number.isSafeInteger(amountMinor) || amountMinor < 0) return [];
+      || typeof amountMinor !== "number" || !Number.isSafeInteger(amountMinor) || amountMinor < 0) return null;
     let price: string;
     try {
       const formatter = new Intl.NumberFormat(locale, { style: "currency", currency });
       const digits = formatter.resolvedOptions().maximumFractionDigits ?? 2;
       price = formatter.format(amountMinor / (10 ** digits));
-    } catch { return []; }
-    return [{
+    } catch { return null; }
+    pricing.push({
       id: skuId,
       skuId,
       name,
@@ -68,14 +100,24 @@ function mergeCommercePricing(projection: unknown, commerce: unknown): unknown {
       availability,
       entitlementCode,
       priceSnapshotId,
-    }];
-  });
+    });
+  }
+  return pricing;
+}
+
+function mergeCommercePricing(projection: unknown, pricing: PublicGatewayPayload[]): unknown {
+  if (!isRecord(projection)) return projection;
+  // Match sourceData's precedence so new commerce facts replace old prices in
+  // the exact supported wrapper that the normalizer will subsequently read.
+  const wrapper = (["publicProjection", "data", "result"] as const)
+    .find((key) => isRecord(projection[key]));
+  const data = wrapper && isRecord(projection[wrapper]) ? projection[wrapper] : projection;
+  // Only the public, field-filtered catalog is merged; any invalid plan makes
+  // the commerce facet unavailable instead of turning a partial catalog empty.
   // Commerce owns public offers. A missing or empty catalog must also clear
   // prices and SKUs carried by an older content projection.
   const mergedData = { ...data, pricingPlans: pricing, skus: [] };
-  return isRecord(projection.data)
-    ? { ...projection, data: mergedData }
-    : mergedData;
+  return wrapper ? { ...projection, [wrapper]: mergedData } : mergedData;
 }
 
 const LAST_GOOD_MAX_AGE_MS = 60_000;
@@ -134,6 +176,21 @@ export default defineEventHandler(
     setResponseHeader(event, "cache-control", "no-store");
     setResponseHeader(event, "vary", "Accept-Language");
 
+    const rejectInvalidContent = (payload: unknown): PublicProjectionResponse => {
+      const latest = invalidationByLocale.get(locale);
+      setResponseHeader(event, "x-public-projection-source", "empty-fallback");
+      // A late malformed response cannot replace a newer denial or successful
+      // decision. It still returns no public facts to its own caller.
+      if ((latest?.generation ?? 0) !== initialGeneration)
+        return emptyFallback(latest?.state ?? "error");
+      if (requestId < (latestAppliedRequestByLocale.get(locale) ?? 0))
+        return emptyFallback("error");
+      latestAppliedRequestByLocale.set(locale, requestId);
+      const state = normalizePublicProjectionResponse(payload, locale).state === "permission" ? "permission" : "error";
+      invalidate(locale, state);
+      return emptyFallback(state);
+    };
+
     let accessDenied = false;
     try {
       const internalBase = String(config.gatewayInternalBaseUrl || "").trim();
@@ -163,8 +220,14 @@ export default defineEventHandler(
       }
       if (!response.ok)
         throw new Error(`PUBLIC_PROJECTION_HTTP_${response.status}`);
-      const projectionPayload = await response.json();
-      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, null);
+      let projectionPayload: unknown;
+      try {
+        projectionPayload = await response.json();
+      } catch {
+        return rejectInvalidContent(null);
+      }
+      if (!usableContentPayload(projectionPayload)) return rejectInvalidContent(projectionPayload);
+      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, []);
       let commerceDegraded = false;
       try {
         const commerceUrl = joinPath(gatewayBase, "/public/commerce/catalog");
@@ -177,8 +240,10 @@ export default defineEventHandler(
         );
         if (commerceResponse.ok) {
           const commercePayload = await commerceResponse.json();
-          if (isRecord(commercePayload) && Array.isArray(commercePayload.plans)) {
-            mergedPayload = mergeCommercePricing(projectionPayload, commercePayload);
+          const catalog = publicCommerceCatalog(commercePayload);
+          const pricing = catalog ? publicCommercePrices(catalog, locale) : null;
+          if (pricing !== null) {
+            mergedPayload = mergeCommercePricing(projectionPayload, pricing);
             setResponseHeader(event, "x-public-projection-commerce", "gateway");
           } else {
             commerceDegraded = true;
@@ -223,9 +288,11 @@ export default defineEventHandler(
         return emptyFallback(latestInvalidation?.state ?? "error");
       }
       latestAppliedRequestByLocale.set(locale, requestId);
-      if (result.state === "ready" && !commerceDegraded)
+      const hasInvalidContentFacet = Object.entries(result.facets).some(([name, facet]) =>
+        name !== "pricing" && facet.errorCode === "PUBLIC_FACET_INVALID");
+      if (result.state === "ready" && !commerceDegraded && !hasInvalidContentFacet)
         lastGoodProjectionByLocale.set(locale, { response: result, fetchedAt: Date.now() });
-      else if (result.state === "recovery") {
+      else if (result.state === "recovery" && !hasInvalidContentFacet) {
         // F10: recovery 携带权威内容+commerce 事实。刷新缓存中的事实，使随后的
         // 网络故障不能复活已被清空/替换的旧套餐；保留原 fetchedAt，recovery 永不
         // 延长 60 秒 TTL。无前置缓存时不从 recovery 新建缓存。
@@ -235,7 +302,7 @@ export default defineEventHandler(
         }
       } else
         invalidate(locale, result.state === "permission" ? "permission" : "error");
-      if (!commerceDegraded && (result.state === "ready" || result.state === "empty"))
+      if (!commerceDegraded && !hasInvalidContentFacet && (result.state === "ready" || result.state === "empty"))
         setResponseHeader(
           event,
           "cache-control",

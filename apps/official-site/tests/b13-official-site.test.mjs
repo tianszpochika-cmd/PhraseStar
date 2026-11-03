@@ -10,6 +10,7 @@ import {
   buildLearnerLink,
   preserveCampaignParams,
   safePublicHref,
+  safePublicReturnTo,
 } from "../utils/public-links.mjs";
 import {
   PUBLIC_EXTENDED_STATES,
@@ -108,6 +109,33 @@ test("B13 公开链接只允许受控 origin，并保留 UTM 而不接受 open r
   );
 });
 
+test("public links reject control characters and remain same-origin without campaign parameters", () => {
+  const options = {
+    siteUrl: "https://www.example.test",
+    allowedOrigins: ["https://apps.example.test"],
+  };
+  for (const character of ["\n", "\r", "\t", "\u0000", "\u007f"]) {
+    const attack = `/${character}/evil.example/path`;
+    assert.equal(safePublicHref(attack, options), null);
+    assert.equal(appendCampaignParams(safePublicHref(attack, options), {}), null);
+  }
+  for (const attack of [
+    "//evil.example/path", "/\\evil.example/path", "https://user:pass@apps.example.test/path",
+    "/a/..//evil.example/path", "/.//evil.example/path", "/%2e%2e//evil.example/path",
+  ]) {
+    assert.equal(safePublicHref(attack, options), null);
+    assert.equal(appendCampaignParams(safePublicHref(attack, options), {}), null);
+  }
+  assert.equal(safePublicHref("/a/../announcements?item=1#details", options), "/announcements?item=1#details");
+  assert.equal(safePublicHref("https://apps.example.test/download", options), "https://apps.example.test/download");
+  for (const attack of ["/a/..//evil.example/path", "/.//evil.example/path", "/%2e%2e//evil.example/path", "/\nevil"]) {
+    assert.equal(safePublicReturnTo(attack), "/home");
+    const login = new URL(buildLearnerLoginLink("https://study.example.test", { returnTo: attack }));
+    assert.equal(login.searchParams.get("returnTo"), "/home");
+  }
+  assert.equal(safePublicReturnTo("/a/../home?tab=one"), "/home?tab=one");
+});
+
 test("B13 官网状态覆盖 loading/empty/error/permission/recovery/maintenance", () => {
   for (const state of [
     "loading",
@@ -137,6 +165,8 @@ test("R1-001 保留公开投影兼容，价格/下载独立空态且不展示购
   const sku = await source("components/PublicSkuCard.vue");
   const campaign = await source("components/PublicCampaignCard.vue");
   const download = await source("pages/download.vue");
+  const catalog = await source("components/v1/experience/CatalogView.vue");
+  const copy = await readFile(join(siteRoot, "../../packages/i18n/src/official-site-v1/experience.ts"), "utf8");
 
   for (const token of [
     "PublicSkuProjection",
@@ -148,16 +178,24 @@ test("R1-001 保留公开投影兼容，价格/下载独立空态且不展示购
   ]) {
     assert.match(projection, new RegExp(token));
   }
-  assert.match(pricing, /PublicStatus/);
-  assert.match(pricing, /r1PricingPreparing/);
+  assert.match(pricing, /getFacet\("pricing"\)/);
+  assert.match(download, /getFacet\("download"\)/);
+  for (const [page, kind] of [[pricing, "pricing"], [download, "download"]]) {
+    assert.match(page, new RegExp(`<CatalogView kind="${kind}"[^>]*:state="facet.state"[^>]*:empty="catalogEmpty"[^>]*@retry="load"`));
+    assert.match(page, /value\.stale/);
+    assert.doesNotMatch(page, /navigateTo|redirectCode/);
+  }
+  assert.match(catalog, /props\.state === "ready" && !props\.empty/);
+  assert.match(catalog, /<PublicStatus v-else[^>]*:state="displayState"[^>]*emptyTitle[^>]*emptyMessage[^>]*@retry="retryFromStatus"/);
+  assert.match(catalog, /function retryFromStatus\(\)[\s\S]*?emit\("retry"\)/);
+  assert.match(copy, /emptyTitle: "收费方案暂未开放"/);
+  assert.match(copy, /emptyTitle: "下载准备中"/);
   assert.doesNotMatch(pricing, /navigateTo|redirectCode/);
   assert.match(sku, /entitlement-list/);
   assert.match(campaign, /safe|publicLink|authLink/);
-  assert.match(download, /r1DownloadPreparing/);
-  assert.doesNotMatch(download, /navigateTo|redirectCode/);
   assert.doesNotMatch(pricing, /PublicSkuCard|jsonld-pricing-public-offers/);
   assert.doesNotMatch(
-    pricing,
+    `${pricing}\n${download}\n${catalog}`,
     /createOrder|\/orders|payment|entitlement\/write/i,
   );
 });
