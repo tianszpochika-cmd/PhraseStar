@@ -1,0 +1,14 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="302" height="166" viewBox="0 0 302 166" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="V4 / depth and starlight" clip-path="url(#clip0_0_9)">
+<circle id="Brand orbit / motion path" cx="207.5" cy="24.5" r="120.75" stroke="#E2CDF9" stroke-opacity="0.3" stroke-width="1.5"/>
+<circle id="Ambient / star" cx="21" cy="35" r="2" fill="#FBEDFF" fill-opacity="0.8"/>
+<circle id="Ambient / star_2" cx="286" cy="36" r="3" fill="#FBEDFF" fill-opacity="0.8"/>
+<circle id="Ambient / star_3" cx="293" cy="114" r="2" fill="#FBEDFF" fill-opacity="0.8"/>
+<circle id="Ambient / star_4" cx="144.5" cy="119.5" r="2.5" fill="#FBEDFF" fill-opacity="0.8"/>
+</g>
+<defs>
+<clipPath id="clip0_0_9">
+<rect width="302" height="166" fill="white"/>
+</clipPath>
+</defs>
+</svg>

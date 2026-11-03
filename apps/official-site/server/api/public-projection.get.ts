@@ -27,11 +27,24 @@ function list(value: unknown): PublicGatewayPayload[] {
   return Array.isArray(value) ? value.filter(isRecord) : [];
 }
 
-function mergeCommercePricing(projection: unknown, commerce: unknown): unknown {
+function publicCommerceCatalog(value: unknown): PublicGatewayPayload | null {
+  if (!isRecord(value)) return null;
+  // Check the data/plans shape when an envelope is present. Never fall back
+  // to a sibling legacy field when that shape is malformed.
+  if (Object.hasOwn(value, "data")) {
+    return isRecord(value.data) && Array.isArray(value.data.plans) ? value.data : null;
+  }
+  return Array.isArray(value.plans) ? value : null;
+}
+
+function mergeCommercePricing(
+  projection: unknown,
+  commerce: PublicGatewayPayload | null,
+  locale: PublicUiLocale,
+): unknown {
   if (!isRecord(projection)) return projection;
-  const plans = isRecord(commerce) ? list(commerce.plans) : [];
+  const plans = commerce ? list(commerce.plans) : [];
   const data = isRecord(projection.data) ? projection.data : projection;
-  const locale = data.uiLocale === "en-US" ? "en-US" : "zh-CN";
 
   // The official site may display commerce facts, but it must not own or copy
   // order/entitlement data. Keep only the catalog's public, field-filtered
@@ -164,7 +177,7 @@ export default defineEventHandler(
       if (!response.ok)
         throw new Error(`PUBLIC_PROJECTION_HTTP_${response.status}`);
       const projectionPayload = await response.json();
-      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, null);
+      let mergedPayload: unknown = mergeCommercePricing(projectionPayload, null, locale);
       let commerceDegraded = false;
       try {
         const commerceUrl = joinPath(gatewayBase, "/public/commerce/catalog");
@@ -177,8 +190,9 @@ export default defineEventHandler(
         );
         if (commerceResponse.ok) {
           const commercePayload = await commerceResponse.json();
-          if (isRecord(commercePayload) && Array.isArray(commercePayload.plans)) {
-            mergedPayload = mergeCommercePricing(projectionPayload, commercePayload);
+          const catalog = publicCommerceCatalog(commercePayload);
+          if (catalog) {
+            mergedPayload = mergeCommercePricing(projectionPayload, catalog, locale);
             setResponseHeader(event, "x-public-projection-commerce", "gateway");
           } else {
             commerceDegraded = true;

@@ -16,6 +16,10 @@
       "types": "./src/official-site.ts",
       "import": "./src/official-site.ts"
     },
+    "./official-site-v1": {
+      "types": "./src/official-site-v1.ts",
+      "import": "./src/official-site-v1.ts"
+    },
     "./admin": {
       "types": "./src/admin.ts",
       "import": "./src/admin.ts"

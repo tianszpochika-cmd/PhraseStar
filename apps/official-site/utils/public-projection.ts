@@ -338,15 +338,14 @@ function responseState(value: unknown): PublicProjectionLoadState | null {
     if (isRecord(value.data)) candidates.push(value.data)
     if (isRecord(value.result)) candidates.push(value.result)
   }
-  for (const candidate of candidates) {
-    if (candidate.maintenance === true) return 'maintenance'
-    const state = text(candidate.state ?? candidate.serviceState ?? candidate.projectionState ?? candidate.accessState).toLowerCase().replaceAll('_', '-')
-    if (['maintenance', 'maintaining'].includes(state)) return 'maintenance'
-    if (['permission', 'forbidden', 'denied', 'access-denied'].includes(state)) return 'permission'
-    if (['recovery', 'recovering', 'degraded', 'stale'].includes(state)) return 'recovery'
-    if (['error', 'failed', 'unavailable'].includes(state)) return 'error'
-    if (state === 'loading') return 'loading'
-  }
+  const states = candidates.flatMap((candidate) =>
+    [candidate.state, candidate.serviceState, candidate.projectionState, candidate.accessState]
+      .map((value) => text(value).toLowerCase().replaceAll('_', '-')))
+  if (states.some((state) => ['permission', 'forbidden', 'denied', 'access-denied'].includes(state))) return 'permission'
+  if (states.some((state) => ['error', 'failed', 'unavailable'].includes(state))) return 'error'
+  if (candidates.some((candidate) => candidate.maintenance === true) || states.some((state) => ['maintenance', 'maintaining'].includes(state))) return 'maintenance'
+  if (candidates.some((candidate) => candidate.stale === true) || states.some((state) => ['recovery', 'recovering', 'degraded', 'stale'].includes(state))) return 'recovery'
+  if (states.includes('loading')) return 'loading'
   return null
 }
 

@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     "~/assets/css/main.css",
     "~/assets/css/world.css",
     "~/assets/css/production.css",
+    "~/assets/css/figma-v1.css",
   ],
   runtimeConfig: {
     gatewayInternalBaseUrl,

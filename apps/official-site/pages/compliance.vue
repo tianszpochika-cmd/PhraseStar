@@ -1,36 +1,44 @@
 <script setup lang="ts">
-const { t } = useSiteText(),
-  { loadState, load } = usePublicProjection("compliance");
-const notices = computed(() => loadState.value.projection.complianceNotices);
-const complianceFacet = computed(() => loadState.value.facets?.compliance ?? { state: loadState.value.state, updatedAt: null as string | null, errorCode: loadState.value.errorCode, stale: loadState.value.stale });
+import InfoLegal from "~/components/v1/info/InfoLegal.vue";
+const { t } = useSiteText();
+const { loadState, load, getFacet } = usePublicProjection("compliance");
+const facet = computed(() => getFacet("compliance"));
+const canShow = computed(() => ["ready", "recovery"].includes(facet.value.state));
+const notices = computed(() => canShow.value ? loadState.value.projection.complianceNotices : []);
 </script>
 <template>
-  <div>
-    <PublicDocument kind="compliance" />
-    <section class="section-compact">
-      <div class="container">
-        <div class="section-title">
-          <h2>{{ t("official.ca3b2169c8") }}</h2>
-        </div>
-        <PublicStatus
-          v-if="complianceFacet.state !== 'ready'"
-          :state="complianceFacet.state"
-          @retry="load"
-        />
-        <p v-if="complianceFacet.updatedAt" class="facet-updated" aria-live="polite">
-          {{ t("official.c5a1f3e8d2") }}{{ complianceFacet.updatedAt.slice(0, 10) }}
+  <InfoLegal kind="compliance">
+    <template #after-document>
+      <section class="v1-info-compliance-notices">
+        <h2>{{ t("official.v1.info.legal.compliance.noticesTitle") }}</h2>
+        <p>{{ t("official.v1.info.legal.compliance.noticesIntro") }}</p>
+        <p v-if="facet.state === 'recovery'" class="v1-info-compliance-notices__recovery" role="status">
+          {{ t("official.v1.info.legal.compliance.recovery") }}
+          <span v-if="facet.updatedAt">{{ t("official.v1.info.legal.compliance.updated") }}{{ facet.updatedAt.slice(0, 10) }}</span>
+          <button type="button" @click="load">{{ t("official.v1.info.legal.compliance.retry") }}</button>
         </p>
-        <div v-if="notices.length" class="published-notices">
-          <article v-for="notice in notices" :key="notice.title">
-            <span class="eyebrow">{{ notice.status }}</span>
-            <h2>{{ notice.title }}</h2>
-            <p>{{ notice.description }}</p>
-          </article>
+        <p v-else-if="facet.updatedAt && facet.state === 'ready'" class="v1-info-compliance-notices__updated">{{ t("official.v1.info.legal.compliance.updated") }}{{ facet.updatedAt.slice(0, 10) }}</p>
+        <div v-if="notices.length" class="v1-info-compliance-notices__items">
+          <article v-for="notice in notices" :key="notice.id"><span v-if="notice.status">{{ notice.status }}</span><h3>{{ notice.title }}</h3><p>{{ notice.description }}</p></article>
         </div>
-        <p v-else-if="loadState.state === 'ready'">
-          {{ t("official.c1f1059f87") }}
-        </p>
-      </div>
-    </section>
-  </div>
+        <p v-else-if="canShow || facet.state === 'empty'" class="v1-info-compliance-notices__empty" role="status">{{ t("official.v1.info.legal.compliance.empty") }}</p>
+        <PublicStatus v-else :state="facet.state" @retry="load" />
+      </section>
+    </template>
+  </InfoLegal>
 </template>
+<style scoped>
+.v1-info-compliance-notices { min-height: 145px; margin-top: 24px; padding: 29px 22px; border-radius: 20px; background: var(--v1-bg); color: var(--v1-text); }
+.v1-info-compliance-notices h2 { font-size: 21px; }
+.v1-info-compliance-notices > p { margin-top: 18px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
+.v1-info-compliance-notices__recovery button { min-height: 44px; margin-left: 8px; color: var(--v1-brand); font-weight: 700; }
+.v1-info-compliance-notices__items { display: grid; gap: 12px; margin-top: 18px; }
+.v1-info-compliance-notices__items article { padding: 18px; border: 1px solid var(--v1-border); border-radius: 14px; background: var(--v1-surface); }
+.v1-info-compliance-notices__items span { color: var(--v1-brand); font-size: 12px; font-weight: 600; }
+.v1-info-compliance-notices__items h3 { margin-top: 4px; font-size: 18px; }
+.v1-info-compliance-notices__items p { margin-top: 8px; color: var(--v1-muted); line-height: 1.6; }
+.v1-info-compliance-notices :deep(.public-status) { margin-top: 18px; }
+.v1-info-compliance-notices :is(a, button):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
+:global(html[data-theme="high-contrast"]) .v1-info-compliance-notices { border: 1px solid var(--v1-border); }
+@media (max-width: 800px) { .v1-info-compliance-notices { min-height: 142px; } }
+</style>

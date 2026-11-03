@@ -10,6 +10,7 @@ import {
   buildLearnerLink,
   preserveCampaignParams,
   safePublicHref,
+  safePublicReturnTo,
 } from "../utils/public-links.mjs";
 import {
   PUBLIC_EXTENDED_STATES,
@@ -106,6 +107,33 @@ test("B13 公开链接只允许受控 origin，并保留 UTM 而不接受 open r
     }),
     /utm_source=official/,
   );
+});
+
+test("public links reject control characters and remain same-origin without campaign parameters", () => {
+  const options = {
+    siteUrl: "https://www.example.test",
+    allowedOrigins: ["https://apps.example.test"],
+  };
+  for (const character of ["\n", "\r", "\t", "\u0000", "\u007f"]) {
+    const attack = `/${character}/evil.example/path`;
+    assert.equal(safePublicHref(attack, options), null);
+    assert.equal(appendCampaignParams(safePublicHref(attack, options), {}), null);
+  }
+  for (const attack of [
+    "//evil.example/path", "/\\evil.example/path", "https://user:pass@apps.example.test/path",
+    "/a/..//evil.example/path", "/.//evil.example/path", "/%2e%2e//evil.example/path",
+  ]) {
+    assert.equal(safePublicHref(attack, options), null);
+    assert.equal(appendCampaignParams(safePublicHref(attack, options), {}), null);
+  }
+  assert.equal(safePublicHref("/a/../announcements?item=1#details", options), "/announcements?item=1#details");
+  assert.equal(safePublicHref("https://apps.example.test/download", options), "https://apps.example.test/download");
+  for (const attack of ["/a/..//evil.example/path", "/.//evil.example/path", "/%2e%2e//evil.example/path", "/\nevil"]) {
+    assert.equal(safePublicReturnTo(attack), "/home");
+    const login = new URL(buildLearnerLoginLink("https://study.example.test", { returnTo: attack }));
+    assert.equal(login.searchParams.get("returnTo"), "/home");
+  }
+  assert.equal(safePublicReturnTo("/a/../home?tab=one"), "/home?tab=one");
 });
 
 test("B13 官网状态覆盖 loading/empty/error/permission/recovery/maintenance", () => {

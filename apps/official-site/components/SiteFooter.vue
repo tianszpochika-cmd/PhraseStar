@@ -1,62 +1,96 @@
 <script setup lang="ts">
-const { t } = useSiteText(),
-  preferences = useState("official:preferences", () => false);
-const groups = [
+const { t } = useSiteText();
+const route = useRoute();
+const isHome = computed(() => route.path === "/");
+const homeGroups = [
   {
-    title: "official.cbd6578c0b",
+    title: "official.v1.common.footer.explore",
     links: [
-      ["/courses", "official.c36a0f1dc5"],
-      ["/method", "official.c831468464"],
-      ["/world", "official.cdf0fd9f57"],
-      ["/start", "official.cd28ebd1dd"],
+      ["/method", "official.v1.common.nav.method"],
+      ["/courses", "official.v1.common.nav.courses"],
+      ["/pricing", "official.v1.common.nav.membership"],
     ],
   },
   {
-    title: "official.cc0c78a429",
+    title: "official.v1.common.footer.support",
     links: [
-      ["/help", "official.c0adb1147b"],
-      ["/about", "official.c3a9d26408"],
-      ["/announcements", "official.c941d9548f"],
-      ["/status", "official.cd42da9e2a"],
+      ["/help", "official.v1.common.nav.help"],
+      ["/status", "official.v1.common.footer.status"],
+      ["/help#contact", "official.v1.common.footer.contact"],
     ],
   },
   {
-    title: "official.cfbcee5731",
+    title: "official.v1.common.footer.legal",
     links: [
-      ["/privacy", "official.c5c7d60537"],
-      ["/terms", "official.c15683f6cd"],
-      ["/minors", "official.c770693e4f"],
-      ["/compliance", "official.cfbcee5731"],
+      ["/terms", "official.v1.common.footer.terms"],
+      ["/privacy", "official.v1.common.footer.privacy"],
+      ["/compliance", "official.v1.common.footer.compliance"],
     ],
   },
-];
+] as const;
+const innerGroups = [
+  {
+    title: "official.v1.common.footer.exploreLearning",
+    links: [["/courses", "official.v1.common.nav.courses"], ["/world", "official.v1.common.nav.world"], ["/method", "official.v1.common.nav.method"]],
+  },
+  {
+    title: "official.v1.common.footer.about",
+    links: [["/help", "official.v1.common.nav.help"], ["/about", "official.v1.common.footer.aboutLink"]],
+  },
+  {
+    title: "official.v1.common.footer.agreements",
+    links: [["/privacy", "official.v1.common.footer.privacy"], ["/terms", "official.v1.common.footer.terms"]],
+  },
+] as const;
+const homeMobileLinks = [
+  ["/courses", "official.v1.common.nav.courses"],
+  ["/method", "official.v1.common.nav.method"],
+  ["/pricing", "official.v1.common.nav.membership"],
+  ["/help", "official.v1.common.nav.help"],
+  ["/terms", "official.v1.common.footer.terms"],
+  ["/privacy", "official.v1.common.footer.privacy"],
+] as const;
+const innerMobileLinks = [
+  ["/courses", "official.v1.common.nav.courses"],
+  ["/method", "official.v1.common.nav.method"],
+  ["/help", "official.v1.common.nav.help"],
+  ["/privacy", "official.v1.common.footer.privacy"],
+  ["/terms", "official.v1.common.footer.terms"],
+  ["/compliance", "official.v1.common.footer.complianceLink"],
+] as const;
+const groups = computed(() => isHome.value ? homeGroups : innerGroups);
+const mobileLinks = computed(() => isHome.value ? homeMobileLinks : innerMobileLinks);
 </script>
+
 <template>
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-main">
-        <div class="footer-brand">
-          <SiteBrand />
-          <p>
-            {{ t("official.c5af6c5d99") }}<br />{{ t("official.c1d29e2d17") }}
-          </p>
-          <span class="footer-caption">LEARN A LITTLE. EVERY DAY.</span>
+  <footer class="v1-site-footer" :class="{ 'v1-site-footer--interior': !isHome }">
+    <div class="v1-site-footer__inner">
+      <div class="v1-site-footer__main">
+        <div class="v1-site-footer__brand">
+          <SiteBrand variant="footer" />
+          <p lang="en">{{ t("official.v1.common.slogan") }}</p>
         </div>
-        <div v-for="group in groups" :key="group.title" class="footer-col">
-          <h3>{{ t(group.title) }}</h3>
-          <NuxtLink
-            v-for="[path, label] in group.links"
-            :key="path"
-            :to="path"
-            >{{ t(label) }}</NuxtLink
-          >
-        </div>
+        <nav
+          v-for="group in groups"
+          :key="group.title"
+          class="v1-site-footer__column"
+          :aria-label="t(group.title)"
+        >
+          <h2>{{ t(group.title) }}</h2>
+          <NuxtLink v-for="[path, label] in group.links" :key="path" :to="path">
+            {{ t(label) }}
+          </NuxtLink>
+        </nav>
       </div>
-      <div class="footer-bottom">
-        <button class="footer-settings" @click="preferences = true">
-          <SiteIcon name="globe" />{{ t("official.cf3b9e99ed") }}</button
-        ><span>{{ t("official.cf7ce229f6") }}</span
-        ><span>{{ t("official.c594f92349") }}</span>
+      <nav class="v1-site-footer__mobile-links" :aria-label="t('official.c5e0350877')">
+        <NuxtLink v-for="[path, label] in mobileLinks" :key="path" :to="path">
+          {{ t(label) }}
+        </NuxtLink>
+      </nav>
+      <div v-if="isHome" class="v1-site-footer__bottom">
+        <span class="v1-site-footer__copyright--desktop">{{ t("official.v1.common.footer.copyrightDesktop") }}</span>
+        <span class="v1-site-footer__copyright--mobile">{{ t("official.v1.common.footer.copyrightMobile") }}</span>
+        <NuxtLink to="/compliance">{{ t("official.v1.common.footer.publicInfo") }}</NuxtLink>
       </div>
     </div>
   </footer>

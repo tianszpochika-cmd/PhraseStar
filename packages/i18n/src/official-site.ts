@@ -1,7 +1,10 @@
 /** Shared website copy. Future UI locales deliberately fall back to Chinese. */
+import { officialSiteV1Messages } from "./official-site-v1";
+
 export const officialWebsiteMessages = {
   "zh-CN": {
     official: {
+      v1: officialSiteV1Messages,
       r1Availability_available: "已发布的公开介绍",
       "r1Availability_coming-soon": "准备中",
       r1Availability_unavailable: "暂不可用",

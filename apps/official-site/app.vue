@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { renderOfficialSiteTokenStyle } from "~/utils/design-system";
 import { renderOfficialPalette } from "@englishflow/design-tokens/official-site";
+import { renderOfficialSiteV1Theme } from "@englishflow/design-tokens/official-site-v1";
 import {
   resolvePublicThemeMode,
   resolvePublicUiLocale,
@@ -42,7 +43,8 @@ onBeforeUnmount(() => {
 installSiteMotion();
 useHead({
   htmlAttrs: {
-    lang: computed(() => locale.value),
+    // English is an incomplete preview; the visible UI falls back to Chinese.
+    lang: "zh-CN",
     "data-ui-locale": computed(() => locale.value),
     "data-content-locale": "en-US",
     // SSR per-request theme from the cookie so crawlers/first paint agree with
@@ -55,7 +57,7 @@ useHead({
   style: [
     {
       id: "englishflow-official-site-tokens",
-      textContent: `:root{${renderOfficialSiteTokenStyle()};${renderOfficialPalette()}}`,
+      textContent: `:root{${renderOfficialSiteTokenStyle()};${renderOfficialPalette()}}${renderOfficialSiteV1Theme()}`,
     },
   ],
   script: [

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import test from "node:test";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
+import { computed, ref, watch } from "vue";
 
 const siteRoot = join(import.meta.dirname, "..");
 const read = (path) => readFile(join(siteRoot, path), "utf8");
@@ -15,6 +16,8 @@ const [routeSource, gatewaySource, projectionSource, composableSource] = await P
 ]);
 
 function loadTypeScript(source, globals = {}) {
+  const defaultUiLocale = ref("zh-CN");
+  let nextInstanceId = 0;
   const compiled = ts.transpileModule(source, {
     compilerOptions: {
       module: ts.ModuleKind.CommonJS,
@@ -27,6 +30,11 @@ function loadTypeScript(source, globals = {}) {
     exports: module.exports,
     URL,
     AbortSignal,
+    computed,
+    watch,
+    onBeforeUnmount: () => {},
+    useSiteText: () => ({ locale: defaultUiLocale }),
+    useId: () => `test-${++nextInstanceId}`,
     ...globals,
   });
   return module.exports;
@@ -265,6 +273,201 @@ test("composable initial and thrown-network shapes carry complete facet state", 
   assert.equal(probePage.projection.value.facets.download.state, "error");
   assert.equal(probePage.projection.value.commerceErrorCode, "PUBLIC_PROJECTION_UNAVAILABLE");
   assert.equal(probePage.projection.value.projection.courses.length, 0);
+});
+
+test("commerce degradation clears pricing while preserving unrelated content", async () => {
+  const state = new Map();
+  let degraded = false;
+  const response = projection.normalizePublicProjectionResponse(readyPayload);
+  const composable = loadTypeScript(composableSource, {
+    require: (name) => {
+      if (name === "#imports") return {
+        onMounted: () => {}, onServerPrefetch: () => {},
+        useRequestFetch: () => async (_url, options) => {
+          options.onResponse({ response: { headers: { get: () => degraded ? "degraded" : "gateway" } } });
+          return response;
+        },
+        useState: (key, initialize) => {
+          if (!state.has(key)) state.set(key, { value: initialize() });
+          return state.get(key);
+        },
+      };
+      if (name === "~/utils/public-projection") return projection;
+      throw new Error(`Unexpected import: ${name}`);
+    },
+    useRoute: () => ({ query: { locale: "zh-CN" } }),
+  });
+  const pricing = composable.usePublicProjection("pricing");
+  const home = composable.usePublicProjection("home");
+  await pricing.load();
+  degraded = true;
+  await pricing.load();
+  await home.load();
+  assert.equal(pricing.loadState.value.state, "error");
+  assert.equal(pricing.loadState.value.facets.pricing.state, "error");
+  assert.equal(pricing.loadState.value.commerceErrorCode, "PUBLIC_COMMERCE_PROJECTION_UNAVAILABLE");
+  assert.equal(pricing.loadState.value.projection.pricingPlans.length, 0);
+  assert.equal(home.loadState.value.state, "ready");
+  assert.equal(home.loadState.value.projection.courses.length, 1);
+});
+
+test("malformed facet state fails closed and unreadable global state clears old facts", async () => {
+  const state = new Map();
+  const ready = projection.normalizePublicProjectionResponse(readyPayload);
+  const withOldFacts = {
+    ...ready,
+    projection: {
+      ...ready.projection,
+      pricingPlans: [{ id: "old-price", entitlements: [] }],
+      complianceNotices: [{ id: "old-notice" }],
+    },
+  };
+  let response = withOldFacts;
+  const composable = loadTypeScript(composableSource, {
+    require: (name) => {
+      if (name === "#imports") return {
+        onMounted: () => {}, onServerPrefetch: () => {},
+        useRequestFetch: () => async () => response,
+        useState: (key, initialize) => {
+          if (!state.has(key)) state.set(key, { value: initialize() });
+          return state.get(key);
+        },
+      };
+      if (name === "~/utils/public-projection") return projection;
+      throw new Error(`Unexpected import: ${name}`);
+    },
+  });
+  const page = composable.usePublicProjection("facet-validation");
+  for (response of [
+    { ...withOldFacts, facets: undefined },
+    { ...withOldFacts, facets: { ...ready.facets, pricing: { ...ready.facets.pricing, state: "invalid" } } },
+    { ...withOldFacts, facets: { ...ready.facets, compliance: { ...ready.facets.compliance, stale: "false" } } },
+    { ...withOldFacts, facets: { ...ready.facets, pricing: { ...ready.facets.pricing, state: "ready", stale: true } } },
+    { ...withOldFacts, state: "ready", stale: true },
+    { ...withOldFacts, projection: {} },
+    { ...withOldFacts, projection: { ...withOldFacts.projection, pricingPlans: [{ id: "old-price" }] } },
+    { ...withOldFacts, projection: { ...withOldFacts.projection, pricingPlans: [{ id: "old-price", entitlements: [null] }] } },
+  ]) {
+    await page.load();
+    assert.equal(page.loadState.value.state, "error");
+    assert.equal(page.getFacet("pricing").state, "error");
+    assert.equal(page.loadState.value.projection.pricingPlans.length, 0);
+    assert.equal(page.loadState.value.projection.complianceNotices.length, 0);
+  }
+  for (const state of ["permission", "error", "maintenance"]) {
+    response = { ...withOldFacts, state };
+    await page.load();
+    assert.equal(page.loadState.value.state, state);
+    assert.equal(page.getFacet("compliance").state, state);
+    assert.equal(page.loadState.value.projection.complianceNotices.length, 0);
+  }
+  response = { ...withOldFacts, state: "recovery", facets: { ...ready.facets, pricing: { ...ready.facets.pricing, state: "ready" } } };
+  await page.load();
+  assert.equal(page.getFacet("pricing").state, "ready");
+  assert.equal(page.loadState.value.projection.pricingPlans.length, 1);
+});
+
+test("public projection follows UI locale and ignores older in-flight responses", async () => {
+  const uiLocale = ref("en-US");
+  const requests = [];
+  const state = new Map();
+  const composable = loadTypeScript(composableSource, {
+    require: (name) => {
+      if (name === "#imports") return {
+        onMounted: () => {}, onServerPrefetch: () => {},
+        useRequestFetch: () => (_url, options) => {
+          const item = { locale: options.query.locale, ...deferred() };
+          requests.push(item);
+          return item.promise;
+        },
+        useState: (key, initialize) => {
+          if (!state.has(key)) state.set(key, { value: initialize() });
+          return state.get(key);
+        },
+      };
+      if (name === "~/utils/public-projection") return projection;
+      throw new Error(`Unexpected import: ${name}`);
+    },
+    useSiteText: () => ({ locale: uiLocale }),
+  });
+  const page = composable.usePublicProjection("locale");
+  const oldEnglish = page.load();
+  assert.equal(requests[0].locale, "en-US");
+  uiLocale.value = "zh-CN";
+  assert.equal(requests[1].locale, "zh-CN");
+  uiLocale.value = "en-US";
+  assert.equal(requests[2].locale, "en-US");
+  assert.equal(page.loadState.value.state, "loading");
+  const responseFor = (locale, title) => projection.normalizePublicProjectionResponse({
+    data: { uiLocale: locale, courses: [{ id: title, title }] },
+  }, locale);
+  requests[2].resolve(responseFor("en-US", "latest"));
+  await page.load();
+  requests[1].resolve(responseFor("zh-CN", "old-chinese"));
+  requests[0].resolve(responseFor("en-US", "old-english"));
+  await oldEnglish;
+  assert.equal(page.loadState.value.projection.courses[0].title, "latest");
+  assert.equal(page.loadState.value.projection.uiLocale, "en-US");
+  uiLocale.value = "zh-CN";
+  const revisited = composable.usePublicProjection("locale");
+  assert.equal(revisited.loadState.value.state, "loading");
+  assert.equal(revisited.loadState.value.projection.courses.length, 0);
+});
+
+test("leaving a public page clears its instance state before a later visit", async () => {
+  const state = new Map();
+  const disposers = [];
+  const ready = projection.normalizePublicProjectionResponse(readyPayload);
+  const composable = loadTypeScript(composableSource, {
+    require: (name) => {
+      if (name === "#imports") return {
+        onMounted: () => {}, onServerPrefetch: () => {},
+        useRequestFetch: () => async () => ready,
+        useState: (key, initialize) => {
+          if (!state.has(key)) state.set(key, { value: initialize() });
+          return state.get(key);
+        },
+      };
+      if (name === "~/utils/public-projection") return projection;
+      throw new Error(`Unexpected import: ${name}`);
+    },
+    onBeforeUnmount: (callback) => disposers.push(callback),
+    clearNuxtState: (key) => { if (state.has(key)) state.get(key).value = undefined; },
+  });
+  for (let visit = 0; visit < 3; visit += 1) {
+    const page = composable.usePublicProjection("repeat");
+    assert.equal(page.loadState.value.state, "loading");
+    await page.load();
+    assert.equal([...state.values()].filter((entry) => entry.value !== undefined).length, 1);
+    disposers.pop()();
+    assert.equal([...state.values()].filter((entry) => entry.value !== undefined).length, 0);
+  }
+});
+
+test("a stale-only content signal becomes recovery without aging fresh commerce", async () => {
+  const plan = {
+    skuId: "fresh-sku", title: "公开方案", currency: "CNY", amountMinor: 1299,
+    billingPeriod: "MONTH", availability: "PUBLISHED",
+    entitlementCode: "learn.month", priceSnapshotId: "fresh-sku-v1",
+  };
+  const app = harness();
+  app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [plan] } : { ...readyPayload, stale: true }));
+  const { body, headers } = await app.request();
+  assert.equal(body.state, "recovery");
+  assert.equal(body.stale, true);
+  assert.equal(body.facets.courses.state, "recovery");
+  assert.equal(body.facets.courses.stale, true);
+  assert.equal(body.facets.pricing.state, "ready");
+  assert.equal(body.facets.pricing.stale, false);
+  assert.equal(body.projection.pricingPlans.length, 1);
+  assert.equal(headers["cache-control"], "no-store");
+  for (const state of ["permission", "error", "maintenance"]) {
+    const normalized = projection.normalizePublicProjectionResponse({ state: "recovery", data: { state, courses: [] } });
+    assert.equal(normalized.state, state);
+  }
+  assert.equal(projection.normalizePublicProjectionResponse({
+    state: "recovery", accessState: "denied", data: { courses: [] },
+  }).state, "permission");
 });
 
 test("BFF keeps legitimate recovery data, time, stale flag and reason", async () => {
@@ -508,6 +711,51 @@ test("an empty or failed commerce catalog never revives prices from content", as
   assert.equal(degraded.body.projection.pricingPlans.length, 0);
   assert.equal(degraded.body.projection.skus.length, 0);
   assert.equal(degraded.headers["cache-control"], "no-store");
+});
+
+test("public commerce accepts the contract envelope and the existing legacy shape", async () => {
+  const plan = {
+    planId: "plan-public", skuId: "sku-public", title: "公开方案", currency: "CNY", amountMinor: 1299,
+    billingPeriod: "MONTH", availability: "PUBLISHED",
+    entitlementCode: "learn.month", priceSnapshotId: "sku-public-v1",
+  };
+  const data = {
+    catalogVersion: "commerce-public-v1", uiLocale: "zh-CN", contentLocale: "en-US",
+    plans: [plan], publishedAt: "2026-11-03T00:00:00Z", checkoutPath: "/pricing",
+    productionPaymentEnabled: false, autoRenewalEnabled: false,
+  };
+  const meta = {
+    requestId: "request-1", traceId: "0123456789abcdef0123456789abcdef", apiVersion: "v1",
+    schemaVersion: "1.0.0", serverTime: "2026-11-03T00:00:00Z",
+  };
+  for (const catalog of [{ data, meta }, data]) {
+    const app = harness();
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? catalog : readyPayload));
+    const { body, headers } = await app.request();
+    assert.equal(headers["x-public-projection-commerce"], "gateway");
+    assert.equal(body.facets.pricing.state, "ready");
+    assert.deepEqual(body.projection.pricingPlans.map((item) => item.skuId), ["sku-public"]);
+  }
+});
+
+test("a malformed commerce envelope cannot fall back to sibling legacy plans", async () => {
+  const plan = {
+    skuId: "old-plan", title: "旧方案", currency: "CNY", amountMinor: 1299,
+    billingPeriod: "MONTH", availability: "PUBLISHED",
+    entitlementCode: "learn.month", priceSnapshotId: "old-plan-v1",
+  };
+  const app = harness();
+  app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? { plans: [plan] } : readyPayload));
+  assert.equal((await app.request()).body.projection.pricingPlans.length, 1);
+  for (const catalog of [{ data: null, plans: [plan] }, { data: { plans: "bad" }, plans: [plan] }, { data: {} }]) {
+    app.setFetch(async (url) => ok(url.includes("/public/commerce/catalog") ? catalog : readyPayload));
+    const { body, headers } = await app.request();
+    assert.equal(headers["x-public-projection-commerce"], "degraded");
+    assert.equal(headers["cache-control"], "no-store");
+    assert.equal(body.facets.pricing.state, "error");
+    assert.equal(body.projection.pricingPlans.length, 0);
+    assert.equal(body.projection.courses.length, 1);
+  }
 });
 
 test("malformed public offers are withheld instead of displaying a placeholder price", async () => {
