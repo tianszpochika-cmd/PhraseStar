@@ -141,7 +141,7 @@ useOfficialSeo({
 .v1-start-heading :deep(.v1-page-heading__body) { min-height: 338px; position: relative; align-items: flex-start; }
 .v1-start-heading :deep(.v1-page-heading__copy) { max-width: 700px; padding-top: 32px; }
 .v1-start-heading :deep(.v1-page-heading__copy .eyebrow) { margin: 0; }
-.v1-start-heading :deep(.v1-page-heading__copy h1) { font-size: 48px; line-height: 1.33; margin: 39px 0 30px; }
+.v1-start-heading :deep(.v1-page-heading__copy h1) { font-size: 48px; font-weight: 900; letter-spacing: normal; line-height: 1.33; margin: 39px 0 30px; }
 .v1-start-heading :deep(.v1-page-heading__copy > p) { font-size: 17px; }
 .v1-start-heading :deep(.v1-page-heading__artwork) { position: static; flex: 0 0 368px; align-self: center; }
 .v1-start-heading-card { position: relative; overflow: hidden; width: 368px; height: 220px; padding: 0; border: 18px solid var(--v1-surface); border-radius: 24px; transform: translate(-8px, 8px); background: var(--v1-brand-soft); display: block; }
@@ -204,9 +204,9 @@ useOfficialSeo({
 .v1-start :is(button,a,input):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
 @media (max-width: 768px) {
   .v1-start-heading :deep(.container), .v1-start-content { width: calc(100% - 48px); }
-  .v1-start-heading :deep(.v1-page-heading__body) { min-height: 315px; align-items: start; }
+  .v1-start-heading :deep(.v1-page-heading__body) { min-height: 315px; align-items: start; gap: 0; }
   .v1-start-heading :deep(.v1-page-heading__copy) { max-width: 100%; padding-top: 31px; }
-  .v1-start-heading :deep(.v1-page-heading__copy h1) { max-width: 310px; margin: 30px 0 62px; font-size: 31px; line-height: 1.45; }
+  .v1-start-heading :deep(.v1-page-heading__copy h1) { max-width: 100%; margin: 30px 0 62px; font-size: 31px; line-height: 1.45; }
   .v1-start-heading :deep(.v1-page-heading__copy > p) { max-width: 280px; font-size: 14px; line-height: 26px; }
   .v1-start-heading :deep(.v1-page-heading__artwork) { position: static; flex: 0 0 0; width: 0; min-width: 0; }
   .v1-start-heading-card { position: absolute; right: 0; top: 26px; z-index: 1; }
@@ -220,7 +220,7 @@ useOfficialSeo({
   .v1-start-ellipse-mobile { right: -81px; top: 100px; }
   .v1-start-heading-card :is(span,strong,small,.v1-start-progress) { display: none; }
   .v1-start-heading-word { display: block; left: 1px; right: auto; top: 263px; width: auto; opacity: .41; font-size: 11px; }
-  .v1-start-heading-spark { right: 12px; top: 59px; font-size: 27px; opacity: .65; }
+  .v1-start-heading-spark { right: 12px; top: 59px; width: 48px; font-size: 27px; font-weight: 700; line-height: normal; opacity: .65; }
   .v1-start-heading-bar { top: 283px; width: 74px; opacity: .33; }
   .v1-start-content { padding-top: 43px; }
   .v1-start-journey { min-height: 439px; padding: 33px 24px 24px; }

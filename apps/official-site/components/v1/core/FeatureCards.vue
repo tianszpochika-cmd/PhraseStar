@@ -12,12 +12,12 @@ defineProps<{ cards: readonly { title: string; description: string }[]; icon: st
 </template>
 <style scoped>
 .v1-core-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.v1-core-features article { position: relative; min-width: 0; min-height: 177px; padding: 19px; border: 1px solid var(--v1-border); border-radius: 20px; background: color-mix(in srgb, var(--v1-brand-soft) 35%, var(--v1-surface)); }
-.v1-core-features article[data-tone="1"] { background: color-mix(in srgb, var(--v1-tint-mint) 55%, var(--v1-surface)); }
-.v1-core-features article[data-tone="2"] { background: color-mix(in srgb, var(--v1-warning-bg) 55%, var(--v1-surface)); }
-.v1-core-features article::before { content: ""; position: absolute; left: -1px; top: 18px; width: 3px; height: 22px; border-radius: 2px; background: var(--v1-brand); opacity: .65; }
-.v1-core-features article[data-tone="1"]::before { background: var(--v1-success-fg); }
-.v1-core-features article[data-tone="2"]::before { background: var(--v1-warning-fg); }
+.v1-core-features article { position: relative; min-width: 0; min-height: 177px; padding: 19px; border: 1px solid var(--v1-border); border-radius: 20px; background: var(--v1-card-lilac); }
+.v1-core-features article[data-tone="1"] { background: var(--v1-card-mint); }
+.v1-core-features article[data-tone="2"] { background: var(--v1-card-sand); }
+.v1-core-features article::before { content: ""; position: absolute; left: -1px; top: 18px; width: 3px; height: 22px; border-radius: 2px; background: var(--v1-card-lilac-accent); }
+.v1-core-features article[data-tone="1"]::before { background: var(--v1-card-mint-accent); }
+.v1-core-features article[data-tone="2"]::before { background: var(--v1-card-sand-accent); }
 .v1-core-features__heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .v1-core-features h2 { font-size: 21px; line-height: 29px; }
 .v1-core-features__heading > span { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; margin: -7px -7px -5px 0; border-radius: 13px; background: var(--v1-surface); }

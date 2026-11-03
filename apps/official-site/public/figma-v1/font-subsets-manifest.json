@@ -707,7 +707,7 @@
         },
         {
           "path": "packages/i18n/src/official-site-v1/core.ts",
-          "sha256": "34363e32cce5caa64f6f2f9ac126554a315d4f2d2bb5c19a6e1d199119336208"
+          "sha256": "c7ce8213f584b1cbc7c429aab0736b716ad6703b85566bcb3eb4c12e1aab1456"
         },
         {
           "path": "packages/i18n/src/official-site-v1/experience.ts",
@@ -723,7 +723,7 @@
         },
         {
           "path": "packages/i18n/src/official-site-v1/info.ts",
-          "sha256": "47ec1ed00187f1502abb7235f0f9a727b981cb318be1772653ff19aa1d83bca6"
+          "sha256": "9176739c2a9d006f9e8396b93fca13f32b71233b8d2e7427db630341693f8884"
         },
         {
           "path": "packages/i18n/src/official-site.ts",
@@ -795,11 +795,11 @@
         },
         {
           "path": "apps/official-site/components/SiteFooter.vue",
-          "sha256": "ae3164b931919d3d2a2c59ad87836a2bdf84f8ba0614862b566912b08821b673"
+          "sha256": "a173ac0d5c4bd316ab42e4db47c794c9c8079314d0d57527fb6d8deec8c3ad8a"
         },
         {
           "path": "apps/official-site/components/SiteHeader.vue",
-          "sha256": "c84f96030ad6a0aa6efb81e5a0f33ec04d2fd8e472275e002a88ba3d7b529320"
+          "sha256": "cd930031db23842f25f2467438abcb96c1e845dfa43987b1e8a2642d3b3e8963"
         },
         {
           "path": "apps/official-site/components/SiteIcon.vue",
@@ -823,7 +823,7 @@
         },
         {
           "path": "apps/official-site/components/v1/core/FeatureCards.vue",
-          "sha256": "b9d3c34287867f1e5ae4332a15753f286b10766e1b1e0ac3099800e127b7fba4"
+          "sha256": "dc60d0e8912f42c6e4311034a79c3384f61081b6e13504885c01b3bd60b6d9f4"
         },
         {
           "path": "apps/official-site/components/v1/core/Hero.vue",
@@ -831,7 +831,7 @@
         },
         {
           "path": "apps/official-site/components/v1/experience/CatalogView.vue",
-          "sha256": "7fc3e40a8ad3cf5e020df5b21acebac6065a642e9dcb01960991e1a64346f15f"
+          "sha256": "3d712c2aad061de3c4d4df47b5303ed5299033a1e1ff39275a12aa17e926d3da"
         },
         {
           "path": "apps/official-site/components/v1/experience/WorldScene.vue",
@@ -847,7 +847,7 @@
         },
         {
           "path": "apps/official-site/components/v1/home/Hero.vue",
-          "sha256": "5b654577d6a6f47065ab7fec6d67870fff2b9a847f32b2705d3548a6cefadb53"
+          "sha256": "e2535b025967ef9231e23631baa631ac44ba868cd7c412480c44ea6b90692049"
         },
         {
           "path": "apps/official-site/components/v1/home/Method.vue",
@@ -871,15 +871,15 @@
         },
         {
           "path": "apps/official-site/components/v1/info/InfoHero.vue",
-          "sha256": "3cee6f11e03e012927dc4ae47189fc15fa7a94de22175e601314fc71ea3b37bf"
+          "sha256": "4885a1aef31cbc2e602a7d5464fcea12c89feebb3cb47210329604528352cd16"
         },
         {
           "path": "apps/official-site/components/v1/info/InfoLegal.vue",
-          "sha256": "60e835ecc0a3f0155b193a34d4220e5ea73704e11923246e57a0465c57f5770b"
+          "sha256": "b2239fb4a26ee9b4cca44e1d0febcdd32b4c03b9d6a2284655e39d8ad9147aad"
         },
         {
           "path": "apps/official-site/components/v1/info/InfoUseful.vue",
-          "sha256": "ff24bc991dea90ee68b66e1b237f09b12b088db2d6f19b3db28548e7af4fb903"
+          "sha256": "bbe6915b753b7612fae8d063603f566058e5402cce8090d38a092c720fd54006"
         },
         {
           "path": "apps/official-site/error.vue",
@@ -891,11 +891,11 @@
         },
         {
           "path": "apps/official-site/pages/about.vue",
-          "sha256": "13aad5f5f7b1c064e27118a0a8e11f91a25bad289d29faba92fe64059505ed00"
+          "sha256": "8b807a14f08695af166fcff280f74f875683056b8cbde5988e25fceeffaefea5"
         },
         {
           "path": "apps/official-site/pages/announcements.vue",
-          "sha256": "3acc9d212884f909f92bc669143c935fa65e989d3edc1629a72bcd64903eeab3"
+          "sha256": "1fdbb5e6ca902e02a5e97735e66c182abf4383d7ad069428896f876cd285a0de"
         },
         {
           "path": "apps/official-site/pages/compliance.vue",
@@ -903,11 +903,11 @@
         },
         {
           "path": "apps/official-site/pages/courses/[id].vue",
-          "sha256": "6a616b139a3c3cc7d87340f1af5a4ddf60a7c76845dce90ee7c01379dcb6a4bb"
+          "sha256": "277bc94915c484de7c5df54736162106864715450a4db8867c32d90ea3ee9dcc"
         },
         {
           "path": "apps/official-site/pages/courses/index.vue",
-          "sha256": "49bed765b5dd8ae23affe72a0d9db3f7c2668965bc733f83d7aa157e67801290"
+          "sha256": "5bf4e7e50f31ec10e99fa4a414708d27f488bb4364723a58771fe0bdae82b448"
         },
         {
           "path": "apps/official-site/pages/download.vue",
@@ -915,7 +915,7 @@
         },
         {
           "path": "apps/official-site/pages/help.vue",
-          "sha256": "07e4d12bddc41d2bd088b25535838bcb1e3621faf57d2cb74186e09ea6340a7c"
+          "sha256": "7eb43f39ee0f9f396da024de84afd775b810fe46a028574ccb1d33ee449f13f3"
         },
         {
           "path": "apps/official-site/pages/index.vue",
@@ -923,7 +923,7 @@
         },
         {
           "path": "apps/official-site/pages/method.vue",
-          "sha256": "96a389521cfee4024dfb65ad4297ef3a898aa2b2c0f7e009f2e7ead2b2bf68f7"
+          "sha256": "fe43ddaf020ad6382931b5e4f1c6e649bbefa66cd5cfcccee883fd0b34d042ce"
         },
         {
           "path": "apps/official-site/pages/minors.vue",
@@ -939,11 +939,11 @@
         },
         {
           "path": "apps/official-site/pages/start.vue",
-          "sha256": "49f94b15b1b1a043906cda06495ad697d55037f94674d80fdab4e93d8148a908"
+          "sha256": "5f65c00cac1a6abdf5faa8cd76e24bb941a24781198fd9842abbadbebb3020b1"
         },
         {
           "path": "apps/official-site/pages/status.vue",
-          "sha256": "6bc02cf0f7a1847e83767c90cedfdf769e177e9628b936e53b98bbc8196495d9"
+          "sha256": "16716e3a4dbfe50db66909db732ad4331678b3ffd60dbe84cd10a5378b1b856e"
         },
         {
           "path": "apps/official-site/pages/terms.vue",
@@ -951,7 +951,7 @@
         },
         {
           "path": "apps/official-site/pages/world.vue",
-          "sha256": "b4c4a64aae6fc0e87a0337a0abf658e0dd6a66c958b0ba6c1bf2aeace174ae28"
+          "sha256": "dd80ddd6a2e9d3e32c3713d54b3c77833b5729c143adb394a95affa1fff06612"
         },
         {
           "path": "apps/official-site/utils/avatar-art.ts",
@@ -984,6 +984,10 @@
         {
           "path": "apps/official-site/utils/site-icons.ts",
           "sha256": "5124c18e2c5c197aed513c490ed09b9c5323cfce22d6f8597449dd813d8a8e4b"
+        },
+        {
+          "path": "apps/official-site/utils/site-layout.ts",
+          "sha256": "d5ca14b585b1ed1ab2cd45dcaf35285f969274fbfe0a8907811b65c6430a4703"
         },
         {
           "path": "apps/official-site/utils/v2-foundation.ts",
@@ -1352,10 +1356,16 @@
         }
       ],
       "revalidation": {
-        "sourceCount": 76,
-        "characterCorpusExactlyMatchesGeneratedFontRequest": true,
+        "sourceCount": 77,
+        "currentSourceCharacterCount": 902,
+        "generatedCharacterCorpusCount": 903,
+        "sourceCharacterSetIsSubsetOfGeneratedFontRequest": true,
+        "generatedOnlyCodepoints": [
+          "U+2190"
+        ],
+        "currentSourceCharacterSetSha256": "8edc641bcb02cacddaa3f5bc56698da80a03bfcc4425a128a2a69e0ebbd81a3f",
         "fontBinaryUnchanged": true,
-        "atUtc": "2026-11-03T08:25:06.927350+00:00"
+        "atUtc": "2026-11-03T08:51:57.310229+00:00"
       }
     }
   ]

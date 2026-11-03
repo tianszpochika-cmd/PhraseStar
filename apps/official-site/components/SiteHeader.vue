@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ThemeMode } from "@englishflow/design-tokens";
+import { isInformationPage } from "~/utils/site-layout";
 
 const { t } = useSiteText();
 const { officialI18nAdapter, officialThemeController } = useNuxtApp().$foundation;
@@ -38,6 +39,7 @@ const themeOptions: ReadonlyArray<{ value: ThemeMode; label: string }> = [
   { value: "high-contrast", label: "official.v1.common.settings.contrast" },
 ];
 const isHome = computed(() => route.path === "/");
+const isInformation = computed(() => isInformationPage(route.path));
 const links = computed(() => isHome.value ? homeLinks : innerLinks);
 const preferenceTitle = computed(() => t(`official.v1.common.settings.${
   preferencePanel.value === "home" ? "title" : preferencePanel.value
@@ -63,7 +65,7 @@ function returnFromPreferences() {
 </script>
 
 <template>
-  <header class="v1-site-header" :class="{ 'v1-site-header--interior': !isHome }">
+  <header class="v1-site-header" :class="{ 'v1-site-header--interior': !isHome, 'v1-site-header--information': isInformation }">
     <div class="v1-site-header__inner">
       <SiteBrand />
       <nav class="v1-site-header__nav" :aria-label="t('official.v1.common.nav.primary')">

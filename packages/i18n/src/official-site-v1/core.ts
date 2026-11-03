@@ -77,7 +77,7 @@ export const officialSiteV1Core = {
     artCaption: "DEEP DIVE",
     methodLabel: "LEARNING METHOD",
     start: "开始学习",
-    boundary: "这里介绍学习方向与环节示例，不代表对应课程已经发布。可用课程以学习端显示为准。",
+    boundary: "学习方向与环节仅为示例，具体课程以学习端实际开放为准。",
     exampleLabel: "WORD CARD / 词汇示例",
     exampleAria: "词汇示例",
     exampleWord: "discover",
@@ -91,7 +91,6 @@ export const officialSiteV1Core = {
     progressNote: "观察自己对内容的掌握。",
     learnMore: "了解更多",
     lessons: "学习环节示例 / LESSONS",
-    lessonsNote: "以下是方法示例，具体内容以已发布课程为准。",
     pathEyebrow: "LEARNING PATH",
     pathTitle: "看看学习如何展开",
     pathLead: "通过示例了解目标、学习顺序与复习。",
@@ -101,7 +100,6 @@ export const officialSiteV1Core = {
     wordStage2: "例句理解",
     wordStage3: "练习与复习",
     vocabulary: "VOCABULARY CARD",
-    back: "返回课程体系",
   },
   method: {
     seoTitle: "学习方法 · 语学星",
@@ -154,7 +152,6 @@ export const officialSiteV1Core = {
     feedbackNext: "练习后的下一步",
     feedbackPath: "查看解释 → 加入复习 → 再次尝试",
     feedbackNote: "正式学习时，复习安排以学习端记录为准。",
-    back: "返回课程体系",
   },
   directions: {
     words: { title: "单词记忆", short: "单词发音、联想记忆与阶段复习。", action: "查看单词记忆", searchTerms: "词汇 单词 生词 vocabulary", code: "VOC", headline: "Little words. Lasting memories.", intro: "结合发音、释义、例句与复习计划，逐渐形成长期记忆。", first: "认识新词", firstNote: "从词义与语境认识一个新词。", second: "例句练习", secondNote: "在句子里理解它的用法。", third: "温故知新", thirdNote: "再次回顾，巩固已经接触过的内容。" },

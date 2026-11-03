@@ -597,6 +597,19 @@ dialog.v1-dialog-bare {
     border-radius: 1px;
     background: var(--v1-brand);
   }
+
+  .v1-site-header--interior .v1-site-header__menu-icon {
+    width: 18.8px;
+    height: 13.8px;
+    display: block;
+    background: var(--v1-menu-ink);
+    -webkit-mask: url("/figma-v1/assets/help-mobile-180-242/imgGroup.svg") center / contain no-repeat;
+    mask: url("/figma-v1/assets/help-mobile-180-242/imgGroup.svg") center / contain no-repeat;
+  }
+
+  .v1-site-header--interior .v1-site-header__menu-icon i {
+    display: none;
+  }
 }
 
 @media (max-width: 690px) {
@@ -606,6 +619,10 @@ dialog.v1-dialog-bare {
 
   .v1-site-header--interior {
     height: 74px;
+  }
+
+  .v1-site-header--information {
+    height: 73px;
   }
 
   .v1-site-header__inner {
@@ -716,6 +733,10 @@ dialog.v1-dialog-bare {
     margin: 14px 0 0;
     padding: 4px 0 20px;
     border-top: 1px solid var(--v1-footer-border);
+  }
+
+  .v1-site-footer--information .v1-site-footer__mobile-links {
+    padding-bottom: 16px;
   }
 
   .v1-site-footer--interior .v1-site-footer__mobile-links a {

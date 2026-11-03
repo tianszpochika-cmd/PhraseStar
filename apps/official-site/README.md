@@ -52,9 +52,11 @@ pnpm --filter @englishflow/official-site exec node --import ../../scripts/dev/re
 
 公开链接与回跳按来源、路径和参数白名单处理；上游读取超时为 2.5 秒。公司名称遵循用户确认的设计稿；备案和完整法律文件仍以核实后的正式公示为准，不虚构编号。
 
+`robots.txt` 与 `sitemap.xml` 由服务端按运行时 `NUXT_PUBLIC_SITE_URL` 生成，与页面 canonical 使用同一配置；生产构建不预渲染这两个地址。
+
 ## 共享基础与设计素材
 
 - 官网专用语义 Token 位于 `packages/design-tokens/src/official-site-v1.ts`，支持浅色、深色、跟随系统及高对比；保留原共享 Token 对其他三端的效果。
 - 文案通过 `packages/i18n` 聚合；当前完整 UI 为中文，English 为不完整预览并回退中文，UI locale 与学习内容语言分开。少量准确说明与原设计文案的差异和用户确认口径见 [文案差异](../../docs/06-design/v2-980plus/official-site-v1-20261103/COPY-DIFFERENCES.md)。
 - `public/figma-v1/` 保存定稿素材、来源与哈希清单，以及含许可文件的字体。静态字形优先使用子集，未覆盖中文按需回退同款完整字体；是否请求完整字体须以实际网络验证为准。
-- `@englishflow/performance` 保留 Ultra / High / Medium / Performance 四级与设备降级；动效同时遵循系统减少动态效果偏好。
+- `@englishflow/performance` 保留 Ultra / High / Medium / Performance 四级，按设备能力初始分档，并遵循系统减少动态效果与已保存画质偏好；运行中帧率/内存压力触发的逐级降档当前未接入，真实低配设备尚未验收。

@@ -8,6 +8,7 @@ defineProps<{
   cardTitle: string;
   desktopAssets: string;
   mobileAssets: string;
+  variant: "about" | "announcements" | "status" | "privacy" | "terms" | "minors" | "compliance";
   tone: "rose" | "sky" | "mint" | "brand" | "sand";
   cardTone?: "rose" | "sky" | "mint" | "brand";
   decor?: "lilac" | "rose" | "sky" | "mint" | "violet" | "sand" | "orchid" | "teal";
@@ -15,7 +16,7 @@ defineProps<{
 const { t } = useSiteText();
 </script>
 <template>
-  <section class="v1-info-hero" :class="[`v1-info-hero--${tone}`, `v1-info-hero--decor-${decor || tone}`]">
+  <section class="v1-info-hero" :class="[`v1-info-hero--${variant}`, `v1-info-hero--decor-${decor || tone}`]">
     <div class="v1-info-hero__inner">
       <div class="v1-info-hero__copy">
         <p class="v1-info-hero__eyebrow">{{ eyebrow }}</p>
@@ -42,7 +43,14 @@ const { t } = useSiteText();
   </section>
 </template>
 <style scoped>
-.v1-info-hero { --v1-info-decor: var(--v1-decor-lilac, var(--v1-brand)); overflow: hidden; color: var(--v1-text); background: linear-gradient(100deg, var(--v1-tint-rose, var(--v1-brand-soft)), var(--v1-brand-soft)); }
+.v1-info-hero { --v1-info-decor: var(--v1-decor-lilac, var(--v1-brand)); overflow: hidden; color: var(--v1-text); background: linear-gradient(90deg, var(--v1-info-hero-from, var(--v1-brand-soft)), var(--v1-info-hero-to, var(--v1-bg))); }
+.v1-info-hero--about { --v1-info-hero-from: var(--v1-info-about-hero-from); --v1-info-hero-to: var(--v1-info-about-hero-to); }
+.v1-info-hero--announcements { --v1-info-hero-from: var(--v1-info-announcements-hero-from); --v1-info-hero-to: var(--v1-info-announcements-hero-to); }
+.v1-info-hero--status { --v1-info-hero-from: var(--v1-info-status-hero-from); --v1-info-hero-to: var(--v1-info-status-hero-to); }
+.v1-info-hero--privacy { --v1-info-hero-from: var(--v1-info-privacy-hero-from); --v1-info-hero-to: var(--v1-info-privacy-hero-to); }
+.v1-info-hero--terms { --v1-info-hero-from: var(--v1-info-terms-hero-from); --v1-info-hero-to: var(--v1-info-terms-hero-to); }
+.v1-info-hero--minors { --v1-info-hero-from: var(--v1-info-minors-hero-from); --v1-info-hero-to: var(--v1-info-minors-hero-to); }
+.v1-info-hero--compliance { --v1-info-hero-from: var(--v1-info-compliance-hero-from); --v1-info-hero-to: var(--v1-info-compliance-hero-to); }
 .v1-info-hero--decor-rose { --v1-info-decor: var(--v1-decor-rose, var(--v1-brand)); }
 .v1-info-hero--decor-sky { --v1-info-decor: var(--v1-decor-sky, var(--v1-brand)); }
 .v1-info-hero--decor-mint { --v1-info-decor: var(--v1-decor-mint, var(--v1-brand)); }
@@ -50,10 +58,6 @@ const { t } = useSiteText();
 .v1-info-hero--decor-sand { --v1-info-decor: var(--v1-decor-sand, var(--v1-brand)); }
 .v1-info-hero--decor-orchid { --v1-info-decor: var(--v1-decor-orchid, var(--v1-brand)); }
 .v1-info-hero--decor-teal { --v1-info-decor: var(--v1-decor-teal, var(--v1-brand)); }
-.v1-info-hero--sky { background: linear-gradient(100deg, var(--v1-tint-sky, var(--v1-brand-soft)), var(--v1-tint-mint, var(--v1-brand-soft))); }
-.v1-info-hero--mint { background: linear-gradient(100deg, var(--v1-tint-mint, var(--v1-brand-soft)), var(--v1-tint-sky, var(--v1-brand-soft))); }
-.v1-info-hero--brand { background: linear-gradient(100deg, var(--v1-brand-soft), var(--v1-tint-sky, var(--v1-brand-soft))); }
-.v1-info-hero--sand { background: linear-gradient(100deg, var(--v1-tint-sand, var(--v1-bg)), var(--v1-tint-sky, var(--v1-brand-soft))); }
 .v1-info-hero__inner { position: relative; width: min(1192px, calc(100% - 48px)); height: 319px; margin: 0 auto; }
 .v1-info-hero__copy { position: relative; z-index: 1; padding-top: 30px; }
 .v1-info-hero__eyebrow { color: var(--v1-brand); font: 600 13px/1.3 var(--v1-font-display); }

@@ -76,7 +76,6 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
           </div>
         </div>
       </section>
-      <NuxtLink class="v1-core-method__back" to="/courses">← {{ t("official.v1.core.method.back") }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -123,7 +122,6 @@ useOfficialSeo({ title: t("official.v1.core.method.seoTitle"), description: t("o
 .v1-core-method__repair > div strong { font-size: 16px; }
 .v1-core-method__repair > div p { margin-top: 8px; color: var(--v1-muted); font-size: 13px; }
 .v1-core-method__repair > p { margin-top: 26px; color: var(--v1-muted); font-size: 13px; }
-.v1-core-method__back { display: inline-flex; align-items: center; min-height: 44px; margin-top: 18px; color: var(--v1-brand); font-size: 14px; font-weight: 600; }
 .v1-core-method :is(button, a):focus-visible { outline-color: var(--v1-focus); }
 :global(:root[data-theme="high-contrast"]) .v1-core-method__words button, :global(:root[data-theme="high-contrast"]) .v1-core-method__stages li { border: 1px solid var(--v1-border); }
 :global(:root[data-theme="high-contrast"]) .v1-core-method__words button[aria-pressed="true"] { border: 2px solid var(--v1-focus); }

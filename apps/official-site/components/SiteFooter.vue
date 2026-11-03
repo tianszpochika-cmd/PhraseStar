@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { isInformationPage } from "~/utils/site-layout";
+
 const { t } = useSiteText();
 const route = useRoute();
 const isHome = computed(() => route.path === "/");
@@ -66,13 +68,13 @@ const informationMobileLinks = [
   ["/terms", "official.v1.common.footer.terms"],
   ["/compliance", "official.v1.common.footer.complianceLink"],
 ] as const;
-const informationPaths = new Set(["/help", "/about", "/announcements", "/status", "/privacy", "/terms", "/minors", "/compliance"]);
+const isInformation = computed(() => isInformationPage(route.path));
 const groups = computed(() => isHome.value ? homeGroups : innerGroups);
-const mobileLinks = computed(() => isHome.value ? homeMobileLinks : informationPaths.has(route.path) ? informationMobileLinks : innerMobileLinks);
+const mobileLinks = computed(() => isHome.value ? homeMobileLinks : isInformation.value ? informationMobileLinks : innerMobileLinks);
 </script>
 
 <template>
-  <footer class="v1-site-footer" :class="{ 'v1-site-footer--interior': !isHome }">
+  <footer class="v1-site-footer" :class="{ 'v1-site-footer--interior': !isHome, 'v1-site-footer--information': isInformation }">
     <div class="v1-site-footer__inner">
       <div class="v1-site-footer__main">
         <div class="v1-site-footer__brand">

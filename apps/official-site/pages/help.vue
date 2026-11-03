@@ -98,7 +98,7 @@ useOfficialSeo({
         <div class="v1-info-help__faq-layout">
           <div>
             <div v-if="filtered.length" class="v1-info-help__faqs">
-              <article v-for="item in filtered" :key="item.id" class="v1-info-help__faq" :class="{ 'is-open': openQuestion === item.id }">
+              <article v-for="item in filtered" :key="item.id" class="v1-info-help__faq" :class="{ 'is-open': openQuestion === item.id, 'is-neutral': item.id >= 7 }">
                 <h3>
                   <button type="button" :aria-expanded="openQuestion === item.id" :aria-controls="`help-answer-${item.id}`" @click="openQuestion = openQuestion === item.id ? null : item.id">
                     <span>{{ t(`official.v1.info.help.question${item.id}`) }}</span><span class="v1-info-help__chevron" aria-hidden="true">⌄</span>
@@ -156,7 +156,7 @@ useOfficialSeo({
 .v1-info-help { color: var(--v1-text); font-family: var(--v1-font-sans); }
 .v1-info-help p { color: inherit; }
 .v1-info-help :is(button, a, input):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
-.v1-info-help__hero { background: linear-gradient(100deg, color-mix(in srgb, var(--v1-brand-soft) 85%, var(--v1-surface)), color-mix(in srgb, var(--v1-brand-soft) 55%, var(--v1-surface))); overflow: hidden; }
+.v1-info-help__hero { background: linear-gradient(90deg, var(--v1-info-help-hero-from, var(--v1-brand-soft)), var(--v1-info-help-hero-to, var(--v1-bg))); overflow: hidden; }
 .v1-info-help__hero-inner, .v1-info-help__container { width: min(1192px, calc(100% - 48px)); margin: 0 auto; }
 .v1-info-help__hero-inner { height: 319px; position: relative; }
 .v1-info-help__hero-copy { position: relative; z-index: 1; padding-top: 30px; }
@@ -192,6 +192,7 @@ useOfficialSeo({
 .v1-info-help__faqs { display: grid; gap: 11px; }
 .v1-info-help__faq { position: relative; overflow: hidden; border: 1px solid var(--v1-border); border-radius: 14px; background: color-mix(in srgb, var(--v1-brand-soft) 44%, var(--v1-bg)); }
 .v1-info-help__faq:nth-child(even) { background: var(--v1-bg); }
+.v1-info-help__faq.is-neutral { background: var(--v1-info-faq-neutral, var(--v1-bg)); }
 .v1-info-help__faq::before { content: ""; position: absolute; top: 20px; left: 7px; width: 4px; height: 25px; border-radius: 2px; background: color-mix(in srgb, var(--v1-brand) 45%, var(--v1-surface)); }
 .v1-info-help__faq h3 { font-size: inherit; }
 .v1-info-help__faq h3 button { width: 100%; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 22px; text-align: left; font-size: 15px; font-weight: 500; }
@@ -264,16 +265,18 @@ useOfficialSeo({
   .v1-info-help__contact :deep(.btn) { min-width: 181px; }
   .v1-info-help__useful { padding: 19px 15px 24px; }
   .v1-info-help__useful h2 { margin-top: 19px; font-size: 20px; line-height: 29px; }
-  .v1-info-help__useful-intro { margin-top: 10px; }
-  .v1-info-help__useful-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 24px; }
+  .v1-info-help__useful-intro { min-height: 40px; margin-top: 22px; }
+  .v1-info-help__useful-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 19px; }
   .v1-info-help__useful-card { padding: 12px; }
+  .v1-info-help__useful-card:not(.v1-info-help__steps) { min-height: 140px; padding: 13px 12px 21px; }
   .v1-info-help__useful-card h3 { display: none; }
   .v1-info-help__useful-row { min-height: 30px; margin-top: 5px; padding: 0; background: transparent !important; font-size: 12px; }
   .v1-info-help__useful-row:first-of-type { margin-top: 0; }
+  .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row + .v1-info-help__useful-row { margin-top: 8px; }
   .v1-info-help__useful-row > span { flex-basis: 40px; min-height: 30px; background: var(--v1-brand-soft); }
   .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(2) > span { background: var(--v1-tint-sky, var(--v1-brand-soft)); }
   .v1-info-help__useful-card:not(.v1-info-help__steps) .v1-info-help__useful-row:nth-of-type(3) > span { background: var(--v1-tint-mint, var(--v1-brand-soft)); }
-  .v1-info-help__steps .v1-info-help__useful-row { min-height: 32px; font-size: 13px; }
+  .v1-info-help__steps .v1-info-help__useful-row { min-height: 32px; font-size: 13px; font-weight: 500; }
   .v1-info-help__steps .v1-info-help__useful-row > span { flex-basis: 27px; }
   .v1-info-help__steps .v1-info-help__useful-row:first-of-type { color: var(--v1-brand); }
   .v1-info-help__steps .v1-info-help__useful-row:not(:first-of-type) > span { color: var(--v1-text); }

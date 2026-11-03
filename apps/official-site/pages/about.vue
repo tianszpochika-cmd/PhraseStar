@@ -12,7 +12,7 @@ useOfficialSeo({ title: t("official.v1.info.about.seoTitle"), description: t("of
 </script>
 <template>
   <div class="v1-info-about">
-    <InfoHero :eyebrow="t('official.v1.info.about.eyebrow')" :title="t('official.v1.info.about.title')" :lead="t('official.v1.info.about.lead')" :caption="t('official.v1.info.about.caption')" :card-label="t('official.v1.info.about.cardLabel')" :card-title="t('official.v1.info.about.cardTitle')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" tone="rose" />
+    <InfoHero :eyebrow="t('official.v1.info.about.eyebrow')" :title="t('official.v1.info.about.title')" :lead="t('official.v1.info.about.lead')" :caption="t('official.v1.info.about.caption')" :card-label="t('official.v1.info.about.cardLabel')" :card-title="t('official.v1.info.about.cardTitle')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" variant="about" tone="rose" />
     <div class="v1-info-about__body"><div class="v1-info-about__container">
       <section class="v1-info-about__story">
         <div class="v1-info-about__story-copy">

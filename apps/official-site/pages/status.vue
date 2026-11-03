@@ -9,7 +9,7 @@ useOfficialSeo({ title: t("official.v1.info.status.seoTitle"), description: t("o
 </script>
 <template>
   <div class="v1-info-status">
-    <InfoHero :eyebrow="t('official.v1.info.status.eyebrow')" :title="t('official.v1.info.status.title')" :lead="t('official.v1.info.status.lead')" :caption="t('official.v1.info.status.caption')" :card-label="t('official.v1.info.status.cardLabel')" :card-title="t('official.v1.info.status.cardTitle')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" tone="mint" card-tone="mint" />
+    <InfoHero :eyebrow="t('official.v1.info.status.eyebrow')" :title="t('official.v1.info.status.title')" :lead="t('official.v1.info.status.lead')" :caption="t('official.v1.info.status.caption')" :card-label="t('official.v1.info.status.cardLabel')" :card-title="t('official.v1.info.status.cardTitle')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" variant="status" tone="mint" card-tone="mint" />
     <div class="v1-info-status__body"><div class="v1-info-status__container">
       <section class="v1-info-status__notice" aria-describedby="status-no-realtime">
         <p class="v1-info-status__eyebrow">{{ t("official.v1.info.status.cardLabel") }}</p>
@@ -30,13 +30,13 @@ useOfficialSeo({ title: t("official.v1.info.status.seoTitle"), description: t("o
 .v1-info-status :is(a, button):focus-visible { outline: 3px solid var(--v1-focus); outline-offset: 3px; }
 .v1-info-status__body { padding: 68px 0 40px; background: var(--v1-surface); }
 .v1-info-status__container { width: min(1192px, calc(100% - 48px)); margin: 0 auto; }
-.v1-info-status__notice { position: relative; min-height: 330px; padding: 31px 24px 24px; border-radius: 25px; background: var(--v1-brand-soft); }
+.v1-info-status__notice { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 330px; padding: 31px 24px 38px; border-radius: 25px; background: var(--v1-brand-soft); }
 .v1-info-status__eyebrow { color: var(--v1-brand) !important; font: 600 13px/1.3 var(--v1-font-display); }
 .v1-info-status__sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .v1-info-status__disclaimer { position: absolute; top: 25px; right: 37px; display: grid; min-width: 311px; min-height: 42px; place-items: center; padding: 5px 12px; border-radius: 14px; background: var(--v1-surface); color: var(--v1-brand); font-size: 13px; font-weight: 500; }
 .v1-info-status__notice h2 { margin-top: 38px; font-size: 34px; }
-.v1-info-status__notice-text { margin-top: 38px; color: var(--v1-muted) !important; font-size: 15px; line-height: 1.6; }
-.v1-info-status__button { display: grid; width: 229px; min-height: 52px; place-items: center; margin-top: 29px; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); font-size: 15px; font-weight: 700; }
+.v1-info-status__notice-text { margin-top: 38px; margin-bottom: 16px; color: var(--v1-muted) !important; font-size: 15px; line-height: 1.6; }
+.v1-info-status__button { display: grid; width: 229px; min-height: 52px; place-items: center; margin-top: auto; border-radius: 14px; background: var(--v1-brand); color: var(--v1-on-brand); font-size: 15px; font-weight: 700; }
 .v1-info-status__help { display: block; min-height: 163px; margin-top: 26px; padding: 29px 22px; border-radius: 20px; background: var(--v1-bg); }
 .v1-info-status__help h2 { font-size: 21px; }
 .v1-info-status__help p { margin-top: 19px; color: var(--v1-muted); font-size: 14px; line-height: 24px; }
@@ -46,9 +46,9 @@ useOfficialSeo({ title: t("official.v1.info.status.seoTitle"), description: t("o
  .v1-info-status__body { padding-top: 50px; }
  .v1-info-status__notice { min-height: 330px; }
  .v1-info-status__disclaimer { top: 25px; right: 24px; min-width: 0; padding: 4px 12px; font-size: 11px; }
- .v1-info-status__notice h2 { margin-top: 40px; font-size: 25px; }
- .v1-info-status__notice-text { margin-top: 36px; font-size: 14px; }
- .v1-info-status__button { width: min(239px, 100%); margin-top: 22px; }
+ .v1-info-status__notice h2 { margin-top: 38px; font-size: 23px; }
+ .v1-info-status__notice-text { margin-top: 54px; font-size: 15px; }
+ .v1-info-status__button { width: min(239px, 100%); }
  .v1-info-status__help { min-height: 147px; }
 }
 @media (max-width: 360px) {

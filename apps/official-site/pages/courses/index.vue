@@ -218,17 +218,18 @@ useOfficialSeo({
 .v1-core-catalog__search input:focus-visible { outline: 2px solid var(--v1-focus); outline-offset: 3px; }
 .v1-core-catalog__search button { display: grid; place-items: center; min-width: 44px; min-height: 44px; }
 .v1-core-catalog__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
-.v1-core-catalog__card { position: relative; min-width: 0; min-height: 178px; padding: 19px; border: 1px solid var(--v1-border); border-radius: 20px; background: color-mix(in srgb, var(--v1-brand-soft) 35%, var(--v1-surface)); }
-.v1-core-catalog__card[data-tone="sage"] { background: color-mix(in srgb, var(--v1-tint-mint) 55%, var(--v1-surface)); }
-.v1-core-catalog__card[data-tone="apricot"] { background: color-mix(in srgb, var(--v1-warning-bg) 55%, var(--v1-surface)); }
-.v1-core-catalog__card[data-tone="blue"] { background: color-mix(in srgb, var(--v1-tint-sky) 55%, var(--v1-surface)); }
-.v1-core-catalog__card::before { content: ""; position: absolute; left: -1px; top: 18px; height: 22px; width: 3px; border-radius: 2px; background: var(--v1-brand); opacity: .65; }
-.v1-core-catalog__card[data-tone="sage"]::before { background: var(--v1-success-fg); }
-.v1-core-catalog__card[data-tone="apricot"]::before { background: var(--v1-warning-fg); }
+.v1-core-catalog__card { position: relative; min-width: 0; min-height: 178px; padding: 19px; border: 1px solid var(--v1-border); border-radius: 20px; background: var(--v1-card-lilac); }
+.v1-core-catalog__card[data-tone="sage"] { background: var(--v1-card-mint); }
+.v1-core-catalog__card[data-tone="apricot"] { background: var(--v1-card-sand); }
+.v1-core-catalog__card[data-tone="blue"] { background: var(--v1-card-sky); }
+.v1-core-catalog__card::before { content: ""; position: absolute; left: -1px; top: 18px; height: 22px; width: 3px; border-radius: 2px; background: var(--v1-card-lilac-accent); }
+.v1-core-catalog__card[data-tone="sage"]::before { background: var(--v1-card-mint-accent); }
+.v1-core-catalog__card[data-tone="apricot"]::before { background: var(--v1-card-sand-accent); }
+.v1-core-catalog__card[data-tone="blue"]::before { background: var(--v1-card-sky-accent); }
 .v1-core-catalog__card-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .v1-core-catalog__card h3 { font-size: 21px; line-height: 29px; }
 .v1-core-catalog__card-icon { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; margin: -7px -7px -5px 0; border-radius: 13px; background: var(--v1-surface); }
-.v1-core-catalog__card p { min-height: 40px; margin-top: 13px; padding-bottom: 9px; border-bottom: 1px solid var(--v1-border); color: var(--v1-muted); font-size: 14px; line-height: 24px; }
+.v1-core-catalog__card p { min-height: 38px; margin-top: 13px; padding-bottom: 9px; border-bottom: 1px solid var(--v1-border); color: var(--v1-muted); font-size: 14px; line-height: 24px; }
 .v1-core-catalog__card a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; margin-top: 13px; padding: 0 15px 0 16px; border-radius: 12px; background: var(--v1-surface); color: var(--v1-brand); font-size: 13px; font-weight: 500; }
 .v1-core-catalog__card a span { font: 600 19px var(--v1-font-display); }
 .v1-core-catalog__note { margin-top: 23px; padding: 17px 18px; border-radius: 17px; background: var(--v1-brand-soft); color: var(--v1-text); font-size: 14px; line-height: 24px; }
@@ -301,7 +302,7 @@ useOfficialSeo({
   .v1-core-catalog__filters { gap: 8px; }
   .v1-core-catalog__filters button { width: auto; flex: 1; min-width: 0; }
   .v1-core-catalog__grid, .v1-core-catalog__published-grid { grid-template-columns: 1fr; gap: 12px; }
-  .v1-core-catalog__card { min-height: 176px; border-radius: 16px; }
+  .v1-core-catalog__card { min-height: 176px; padding-bottom: 18px; border-radius: 16px; }
   .v1-core-catalog__card-icon { display: none; }
   .v1-core-catalog__no-results { margin-bottom: 188px; }
   .v1-core-catalog__note { min-height: 73px; padding: 15px 18px; }

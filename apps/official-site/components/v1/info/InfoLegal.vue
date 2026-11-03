@@ -27,7 +27,7 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
 </script>
 <template>
   <div class="v1-info-legal">
-    <InfoHero :eyebrow="t(key('eyebrow'))" :title="t(key('title'))" :lead="t(key('lead'))" :caption="t(key('caption'))" :card-label="t(key('cardLabel'))" :card-title="t(key('cardTitle'))" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" :tone="config.tone" :card-tone="config.cardTone" :decor="config.decor" />
+    <InfoHero :eyebrow="t(key('eyebrow'))" :title="t(key('title'))" :lead="t(key('lead'))" :caption="t(key('caption'))" :card-label="t(key('cardLabel'))" :card-title="t(key('cardTitle'))" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" :variant="kind" :tone="config.tone" :card-tone="config.cardTone" :decor="config.decor" />
     <div class="v1-info-legal__body"><div class="v1-info-legal__container">
       <nav class="v1-info-legal__nav" :aria-label="t('official.v1.info.legal.navigation')">
         <NuxtLink v-for="link in links" :key="link.kind" :to="link.path" :aria-current="kind === link.kind ? 'page' : undefined">{{ t(link.label) }}</NuxtLink>
@@ -39,10 +39,11 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
         <div class="v1-info-legal__grid">
           <div class="v1-info-legal__chapters">
             <section v-for="n in [1, 2, 3]" :id="`legal-section-${n}`" :key="n" class="v1-info-legal__chapter">
+              <span v-if="n < 3" class="v1-info-legal__mobile-accent" :class="{ 'v1-info-legal__mobile-accent--divider': n === 2 }" aria-hidden="true"></span>
               <h3>0{{ n }}&nbsp; {{ t(key(`section${n}`)) }}</h3>
               <p>{{ t(key(`content${n}`)) }}</p>
             </section>
-            <p class="v1-info-legal__notice">{{ t(key("notice")) }}</p>
+            <p class="v1-info-legal__notice">{{ t(key("notice")) }}<span class="v1-info-legal__mobile-accent v1-info-legal__mobile-accent--notice" aria-hidden="true"></span></p>
           </div>
           <aside class="v1-info-legal__contents" :aria-label="t('official.v1.info.legal.contents')">
             <div class="v1-info-legal__contents-title"><img :src="`${desktopAssets}/${config.navIcon}`" alt="" /><h3>{{ t("official.v1.info.legal.contents") }}</h3></div>
@@ -70,6 +71,7 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
 .v1-info-legal__document > h2 { font-size: 35px; }
 .v1-info-legal__document-label { margin-top: 16px; color: var(--v1-brand) !important; font: 600 13px/1.3 var(--v1-font-display); }
 .v1-info-legal__mobile-rule { display: none; }
+.v1-info-legal__mobile-accent { display: none; }
 .v1-info-legal__grid { display: grid; grid-template-columns: minmax(0, 735fr) minmax(260px, 328fr); gap: 62px; margin-top: 30px; align-items: start; }
 .v1-info-legal__chapter { min-height: 116px; padding: 0 0 20px; border-bottom: 1px solid var(--v1-border); scroll-margin-top: 100px; }
 .v1-info-legal__chapter + .v1-info-legal__chapter { padding-top: 16px; }
@@ -105,12 +107,13 @@ useOfficialSeo({ title: t(key("seoTitle")), description: t(key("lead")), path: `
  .v1-info-legal__mobile-rule span { display: block; width: 41%; height: 100%; border-radius: inherit; background: var(--v1-brand); }
  .v1-info-legal__grid { display: block; margin-top: 16px; }
  .v1-info-legal__chapter { position: relative; min-height: 135px; }
- .v1-info-legal__chapter::before { content: ""; position: absolute; top: 5px; left: -7px; width: 3px; height: 30px; border-radius: 2px; background: var(--v1-brand); }
+ .v1-info-legal__mobile-accent { display: block; position: absolute; top: 5px; left: -7px; width: 3px; height: 30px; border-radius: 2px; background: var(--v1-brand); }
+ .v1-info-legal__mobile-accent--divider { top: auto; bottom: 0; }
  .v1-info-legal__chapter + .v1-info-legal__chapter { padding-top: 16px; }
- .v1-info-legal__chapter + .v1-info-legal__chapter::before { top: 21px; }
  .v1-info-legal__chapter h3 { font-size: 18px; }
  .v1-info-legal__chapter p { margin-top: 12px; font-size: 14px; line-height: 23px; }
- .v1-info-legal__notice { margin-top: 21px; }
+ .v1-info-legal__notice { position: relative; margin-top: 21px; }
+ .v1-info-legal__mobile-accent--notice { top: auto; bottom: 13px; }
  .v1-info-legal__contents { display: none; }
 }
 </style>

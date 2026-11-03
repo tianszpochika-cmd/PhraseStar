@@ -14,7 +14,7 @@ useOfficialSeo({ title: t("official.v1.info.announcements.seoTitle"), descriptio
 </script>
 <template>
   <div class="v1-info-announcements">
-    <InfoHero :eyebrow="t('official.v1.info.announcements.eyebrow')" :title="t('official.v1.info.announcements.title')" :lead="t('official.v1.info.announcements.lead')" :caption="t('official.v1.info.announcements.caption')" :card-label="t('official.v1.info.announcements.cardLabel')" :card-title="t('official.v1.info.announcements.title')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" tone="sky" />
+    <InfoHero :eyebrow="t('official.v1.info.announcements.eyebrow')" :title="t('official.v1.info.announcements.title')" :lead="t('official.v1.info.announcements.lead')" :caption="t('official.v1.info.announcements.caption')" :card-label="t('official.v1.info.announcements.cardLabel')" :card-title="t('official.v1.info.announcements.title')" :desktop-assets="desktopAssets" :mobile-assets="mobileAssets" variant="announcements" tone="sky" />
     <div class="v1-info-announcements__body"><div class="v1-info-announcements__container">
       <section class="v1-info-announcements__intro">
         <p class="v1-info-announcements__eyebrow">{{ t("official.v1.info.announcements.cardLabel") }}</p>
