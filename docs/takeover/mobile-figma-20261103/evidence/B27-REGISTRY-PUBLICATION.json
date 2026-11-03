@@ -1,0 +1,77 @@
+{
+  "source": {
+    "at": "2026-11-03T22:19:28.728325+00:00",
+    "base": "ec3784cd1ba589d83b6bd43dcc621474034c5e0b",
+    "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-19-registry-source-snapshot",
+    "method": "EXACT_FROZEN_AUTHOR_BYTES",
+    "files": [
+      {
+        "path": "packages/i18n/src/mobile-experience.ts",
+        "before": "0fcd7a4f0e49da8fdf3a07b8657678240165ed57b0ae6595b32c44d0e2486ef5",
+        "sha256": "a10418b500fbd8e2e478a6a2769d13ef71e203b51a79c0346404343d67f84b17"
+      },
+      {
+        "path": "packages/i18n/src/mobile-resources/avatar-page.ts",
+        "before": null,
+        "sha256": "63e67dcab4a43ba49c110ab781d509491565dae2baee234a5eee45c68cb90d99"
+      },
+      {
+        "path": "packages/i18n/src/mobile-resources/report-page.ts",
+        "before": null,
+        "sha256": "a78f1eda31f2ab2c4a44621e36d75162763d88302d3184b8639566e479c06aa2"
+      },
+      {
+        "path": "packages/i18n/src/mobile-resources/world-page.ts",
+        "before": null,
+        "sha256": "9d6a5c892459f2377dd87cbe82940e5dbedaa7301ff3929e8212357a8e16f724"
+      }
+    ]
+  },
+  "leaf": {
+    "before": 2184,
+    "after": 2184,
+    "changed": [],
+    "removed": [],
+    "added": [],
+    "same": true
+  },
+  "checks": {
+    "i18nTsc": 0,
+    "mobileTsc": 0,
+    "i18nPackageTest": 0,
+    "i18nThemeTest": 0
+  },
+  "signatures": {
+    "avatarPageCopy": {
+      "file": "packages/i18n/src/mobile-resources/avatar-page.ts",
+      "exports": [
+        "avatarPageCopy"
+      ],
+      "parameterCount": 1,
+      "zh": {},
+      "en": {}
+    },
+    "reportPageCopy": {
+      "file": "packages/i18n/src/mobile-resources/report-page.ts",
+      "exports": [
+        "reportPageCopy"
+      ],
+      "parameterCount": 1,
+      "zh": {},
+      "en": {}
+    },
+    "worldPageCopy": {
+      "file": "packages/i18n/src/mobile-resources/world-page.ts",
+      "exports": [
+        "worldPageCopy"
+      ],
+      "parameterCount": 1,
+      "zh": {},
+      "en": {}
+    }
+  },
+  "unchangedResourceCount": 10,
+  "officialSiteSha256": "04a5326ab72e1317603e300a0660bc00fd587204d7cc2cfe42d32589c1666f89",
+  "packageJsonSha256": "3371a8b94abad4680498f4a4337878e39cc1b3dbffd05f068cc0e51996d4fab2",
+  "rootEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-27-registry"
+}

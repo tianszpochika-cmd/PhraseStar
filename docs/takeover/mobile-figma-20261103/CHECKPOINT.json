@@ -2888,7 +2888,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T22:18:13.208896+00:00",
+  "updated_at": "2026-11-03T22:22:44.410870+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3147,7 +3147,22 @@
       "DSH_PROFILE",
       "DSH_COMMERCE"
     ],
-    "integration": "NOT_COPIED_YET",
+    "integration": "ROOT_B27_VERIFIED_LOCAL",
     "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/handoffs/registry-b19-20261104/receipts.json"
+  },
+  "integration_batch_27_registry": {
+    "state": "REVIEWED_SHARED_REGISTRY_ONLY",
+    "files": 4,
+    "oldLeaves": 2184,
+    "afterLeaves": 2184,
+    "changed": 0,
+    "checks": {
+      "i18nTsc": 0,
+      "mobileTsc": 0,
+      "i18nPackageTest": 0,
+      "i18nThemeTest": 0
+    },
+    "review": "reviews/INTEGRATION-B27-REGISTRY.md",
+    "remote": "NOT_PUSHED"
   }
 }
