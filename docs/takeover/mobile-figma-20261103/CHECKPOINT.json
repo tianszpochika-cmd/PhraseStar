@@ -2889,7 +2889,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-03T23:49:16.403354+00:00",
+  "updated_at": "2026-11-04T01:05:20.326754+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3676,5 +3676,57 @@
     "avatarLifecycleB10": "partial page/tests edited; duplicate lifecycle handler cleanup requires verification, NOT_ACCEPTED",
     "srsStoreB23": "18semanticpass; boundary/type/buildlogs exist; Rootreview not complete; NOT_ACCEPTED",
     "readingB26": "prerequisites only; no reading product implementation"
+  },
+  "integration_batch_35_auth": {
+    "at": "2026-11-04T01:05:20.326754+00:00",
+    "state": "REVIEWED_SCOPED_SHARED_AUTH_FIX",
+    "files": 4,
+    "sourceTests": 44,
+    "typesExit": 0,
+    "buildExit": 0,
+    "rootBrowser": {
+      "checks": 16,
+      "screenshots": 2,
+      "index": "216e91467b170a20ab134439091c2caabfa298f48fae22e2da84530fff1c5d97",
+      "buildFiles": 475,
+      "cases": [
+        "Settings protected401 -> refresh401 -> visible login + safe return",
+        "Settings protected403 -> forbidden without failure refresh"
+      ],
+      "sourceAndBuildStable": true,
+      "unknownApi": 0,
+      "pageErrors": 0,
+      "externalOrArtifactMisses": 0,
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-35-auth"
+    },
+    "semanticDetail": {
+      "routing": 7,
+      "actualSessionClient": 13,
+      "existingAccountClient": 13,
+      "actualResetGate": 8,
+      "iamTransport": 3,
+      "heldRefresh": "success/failure across different subject, same subject new revision, explicit logout; real store + real client controlled transport"
+    },
+    "firstFailures": [
+      "AuthorB22 shared401 stuckloading retained",
+      "AuthorB23 fake consume test missed remint concurrent waiters; actual-store red5/6 retained",
+      "Root harness URL query required URLSearchParams decoding before actual safe-return comparison",
+      "Root missing two legitimate Settings read fixtures; first protected denial may be notification/support; fixed bounded endpoint list and retained raw logs"
+    ],
+    "limits": [
+      "All APIs synthetic; real IAM/Gateway/native/device/reader/deploy NOT_RUN",
+      "Held refresh A/B browser not completed because navigation waits for refresh; semantic proof only. Held401 author browser separate15checks/5shots",
+      "Build also contains pending hydration4 and Avatar24; neither signed by this card"
+    ],
+    "remote": "NOT_PUSHED_PHASE_CONTINUES"
+  },
+  "active_executor_takeover": {
+    "provider": "Grok only; DSH quota exhausted, no retry",
+    "onboarding": "grok/batch-28-onboarding-assets-test-closure",
+    "avatar": "grok/takeover-avatar-01",
+    "grammar": "grok/takeover-grammar-01",
+    "srsAndVocabulary": "grok/takeover-srs-01",
+    "reading": "not started; prerequisites frozen",
+    "codexModelSubagents": "NONE"
   }
 }

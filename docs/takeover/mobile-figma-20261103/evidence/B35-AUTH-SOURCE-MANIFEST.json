@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-04T01:05:20.326754+00:00",
+  "authorSnapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/auth-routing-profile-batch-25-source-snapshot",
+  "files": [
+    {
+      "path": "apps/mobile/src/api/client.ts",
+      "sha256": "c332170a0ac228d8e8a15329df9e75a423f6ec8414ab044776ae0cba78a50e84",
+      "bytes": 10832
+    },
+    {
+      "path": "apps/mobile/src/stores/session.ts",
+      "sha256": "69d1db000f480a1273cdf8ac5f0105abf35882df7ef1b3ecbaae2cd1ecf85432",
+      "bytes": 21642
+    },
+    {
+      "path": "apps/mobile/tests/mobile-auth-expiry-routing.test.mjs",
+      "sha256": "e31292c0859f092df8c2e0eda65921a959acb62b1f046c2844c4f44142d53ef3",
+      "bytes": 6163
+    },
+    {
+      "path": "apps/mobile/tests/mobile-auth-expiry-session.test.mjs",
+      "sha256": "298b329024dbfde3350abc51bac318b12971b700b50330d2704f4c53346d0517",
+      "bytes": 13108
+    }
+  ]
+}

@@ -24,7 +24,8 @@ export interface MobileRequestIdentity { subject: string; revision: number }
 type MobileAuthBootstrapPurpose = 'identity' | 'refresh' | 'logout' | 'revoke'
 type MobileAuthRequestSnapshot = { accessToken: string | null; identity: MobileRequestIdentity | null; revision: number }
 type MobileAuthRequestSnapshotProvider = () => MobileAuthRequestSnapshot
-type MobileUnauthorizedHandler = (identity: MobileRequestIdentity) => Promise<boolean>
+type MobileUnauthorizedResult = boolean | { refreshed: boolean; expired?: boolean; consume?: () => boolean }
+type MobileUnauthorizedHandler = (identity: MobileRequestIdentity) => Promise<MobileUnauthorizedResult>
 type MobileApiErrorHandler = (status: 401 | 403, details: unknown) => void
 let mobileApiErrorHandler: MobileApiErrorHandler | undefined
 
@@ -136,7 +137,9 @@ export function createMobileApiClient(baseUrl: string, onUnauthorized?: MobileUn
                 return
               }
               authRetryAttempted = true
-              if (await onUnauthorized(requestIdentity)) {
+              const unauthorizedResult = await onUnauthorized(requestIdentity)
+              const refreshed = unauthorizedResult === true || (typeof unauthorizedResult === 'object' && unauthorizedResult !== null && unauthorizedResult.refreshed)
+              if (refreshed) {
                 if (!sameIdentity(requestIdentity, readAuthSnapshot().identity)) {
                   rejectOnce(identityChangedError())
                   return
@@ -144,6 +147,17 @@ export function createMobileApiClient(baseUrl: string, onUnauthorized?: MobileUn
                 resolveOnce(await request(path, { ...options, skipAuthRetry: true }, true, requestIdentity))
                 return
               }
+              if (typeof unauthorizedResult === 'object' && unauthorizedResult !== null && unauthorizedResult.expired === true) {
+                if (typeof unauthorizedResult.consume === 'function' && unauthorizedResult.consume()) mobileApiErrorHandler?.(401, response.data)
+                rejectOnce(new MobileApiError(messageForStatus(path, 401), 401, response.data))
+                return
+              }
+              if (typeof unauthorizedResult === 'object' && unauthorizedResult !== null) {
+                rejectOnce(new MobileApiError(messageForStatus(path, 401), 401, response.data))
+                return
+              }
+              // Preserve the legacy boolean-false contract: fall through to the
+              // existing current-identity-guarded 401 notification path.
             }
             if (response.statusCode < 200 || response.statusCode >= 300) {
               await notifyIfCurrentIdentity(response.statusCode, response.data, Boolean(skipAuthRetry), retried || authRetryAttempted)
@@ -175,7 +189,8 @@ export const mobileApiClient = createMobileApiClient(
   getGatewayBaseUrl(),
   async (identity) => {
     const [{ pinia }, { useSessionStore }] = await Promise.all([import('../stores/pinia'), import('../stores/session')])
-    return useSessionStore(pinia).refreshSilentlyForIdentity(identity)
+    const store = useSessionStore(pinia)
+    return store.refreshForIdentity(identity)
   },
 )
 

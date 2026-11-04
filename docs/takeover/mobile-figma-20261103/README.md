@@ -2,6 +2,7 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
+- [共享会话修复 B35](reviews/INTEGRATION-B35-AUTH.md)：Root真实store/client等44项测试与设置401/403浏览器16项通过；迟到刷新跨账号浏览器仍待验。
 - [找回密码组合审核 B34](reviews/INTEGRATION-B34-RESET.md)：Root 68样本/8组交互/7图标场景/37图及18项源测试通过；近零输入和内部字段观测限制保留。
 - [三页文案注册 B27](reviews/INTEGRATION-B27-REGISTRY.md)：空模块按单写者交接，旧页面文案逐值不变，不计新增页面完成。
 - [注册组合审核 B26](reviews/INTEGRATION-B26-REGISTER.md)：12项源检查、51样本/14组/43图；暗色图标修复，全局B23五失败仍保留。
@@ -43,3 +44,5 @@
 ## 2026-11-04 额度停点（阶段仍在进行）
 
 DSH四个在途CLI任务均返回402、`coding_plan_exhausted=true`并退出，原始回执与冻结源码已保存，见[额度回执](evidence/DSH-QUOTA-STOP-20261104.json)。服务方仅给出Coding Plan用尽及重置时间，未注明周期；未查询余额，也未擅自重试、改账号或充值。Grok仍在工作，当前不满足两家均停止的收口条件。17/33条路由已进入本地UI候选整合，不是整页DoD或项目完成率；语法首跑11项失败、形象生命周期半成品、SRS store和阅读准备分别保留为未签收候选。
+
+DSH退出后，Root已将冻结且无人写入的主、设备、权益工作树分别转给独立Grok CLI会话，继续语法、词汇/SRS和形象生命周期修复；原Grok会话继续新手引导。四个会话均禁用子代理，未再调用DSH或Codex模型。当前写者见OWNERSHIP和CHECKPOINT。

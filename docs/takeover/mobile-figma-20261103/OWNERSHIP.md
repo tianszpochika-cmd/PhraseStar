@@ -88,3 +88,17 @@ Grok published frozen central a10418b5 plus empty avatarPageCopy/reportPageCopy/
 - DSH_PROFILE B23仅可修api/client.ts、stores/session.ts、auth/navigation.ts及具名语义测试的共享401过期路由；Grok B22独占App.vue与experience.ts，双方互为只读。
 - DSH_DEVICES B22唯一写api/b10.ts的词汇/SRS解析与必要domain字段；已收到冻结b8f00924及8项错题测试，不得覆盖非SRS/词汇函数。DSH_PROFILE此文件只读。
 - 主DSH B32只修已冻结World日历日期映射/测试，已收到36文件；DSH_COMMERCE B08只做Root找回密码冻结构建QA，所有产品只读。原作者分支、快照和失败证据保留。
+
+
+## DSH额度停止后的接手（2026-11-04）
+
+所有DSH进程已退出并冻结后才转交，原402回执不因接手抹去；不重试DSH。以下均为本机Grok CLI独立会话、禁用子代理，各工作树唯一写者。
+
+| 工作树原职责 | 当前执行会话 | 本卡可写范围 |
+|---|---|---|
+| 原Grok | `batch-28-onboarding-assets-test-closure` | onboarding页/资源/测试及central onboarding展示文案 |
+| 原DSH主 | `takeover-grammar-01` | grammar页/资源/测试；b10.ts仅语法方法，SRS和错题只读 |
+| 原DSH权益 | `takeover-avatar-01` | Avatar页生命周期与具名测试；World/B12和视觉资源只读 |
+| 原DSH设备 | `takeover-srs-01` | SRS store与词汇页/资源/测试；b10 API/domain只读 |
+
+共享client/session由已冻结DSH B25发布，后续上述会话只读。Root仅派工、审核、文档、QA和按哈希复制作者文件；集成树唯一写者仍为Root。阅读两个路由尚未开始实现；成长页未知赛季误空态仍待专卡。18183租约未转移。
