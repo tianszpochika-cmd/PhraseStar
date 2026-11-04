@@ -1,0 +1,107 @@
+{
+  "at": "2026-11-04T01:41:24.172259+00:00",
+  "files": [
+    {
+      "path": "apps/mobile/src/pages/b10-report/b10-report.vue",
+      "sha256": "dbd699dd0834bd9ea2bee5096f44ad362ff9cc6aea352eddcb90564627572160",
+      "bytes": 36837
+    },
+    {
+      "path": "apps/mobile/src/pages/b10-report/report-page.ts",
+      "sha256": "6e6654e303a21a297296af47e1bbcd10c919a8599a0784edd510901f72ccad35",
+      "bytes": 2990
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-daily-169-1058/imgDot.svg",
+      "sha256": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-daily-169-1058/imgDot1.svg",
+      "sha256": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-daily-169-1058/imgGlow.svg",
+      "sha256": "c68185b463e2b7b8e0ed7ffdbe6156a6da3ff6714be8954eb0936c3a41a7ddbc",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-error-169-921/imgMascot.svg",
+      "sha256": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+      "bytes": 2367
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-mistakes-169-667/imgGlow.svg",
+      "sha256": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-mistakes-169-667/imgIconChevL.svg",
+      "sha256": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-mistakes-169-667/imgIconInfo.svg",
+      "sha256": "118749aceaab0a537adfd9b7d7a54468fe0e8791d27c300ad3d532529dce36ea",
+      "bytes": 873
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-noaccess-169-991/imgGlow.svg",
+      "sha256": "cbdb6a618dc4dc2fbbb595a90530229d961c2884997c7a6b468ef1bc1baeeaee",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-noaccess-169-991/imgIconLock.svg",
+      "sha256": "c511e8f16857e5efde33a5360e5c1b43dfb7ee2953251cb01ba9396bd78494d1",
+      "bytes": 860
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-partial-169-1392/imgDot2.svg",
+      "sha256": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+      "bytes": 223
+    },
+    {
+      "path": "apps/mobile/src/static/figma-report-partial-169-1392/imgGlow.svg",
+      "sha256": "a178f6a61ebb79cc28038bafb838a1cf62d48114e1449de06558d3b669a27fa4",
+      "bytes": 671
+    },
+    {
+      "path": "apps/mobile/tests/b10-report-page.test.mjs",
+      "sha256": "dfbf0cfd1d2c2e5864b2f914141cd1769ec5a6321fd454ce9c92ae023a720539",
+      "bytes": 7261
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/report-page.ts",
+      "sha256": "dfec9283e9c0f156aa6eeddc6b0fe2262423f16ff23e72c03590ce9477a417fa",
+      "bytes": 9547
+    },
+    {
+      "path": "apps/mobile/src/api/b10.ts",
+      "sha256": "b8f00924f2794e3c3f2df728a8f971b10d155f34929dc0daf9f9ed9733c26ba5",
+      "bytes": 48698
+    },
+    {
+      "path": "apps/mobile/tests/b10-mistake-response.test.mjs",
+      "sha256": "8327bde3edffcc61d006ea07844b0bb792ba3153bc4bd808d1d1cda3e043e02d",
+      "bytes": 6732
+    }
+  ],
+  "source": "DSH frozen private-report-batch-21 page/resources + strict mistake API/test only",
+  "excluded": "DataC1 vocabulary/SRS API/domain/tests were restored to prior bytes; require matching C3 store, not part of report integration",
+  "formatFollowup": {
+    "at": "2026-11-04T01:35:22.283175+00:00",
+    "author": "Grok root-report-b37-whitespace-only-02",
+    "actualSession": "0f0d6e1e-7fac-41c7-8c9b-8203c2be22fe",
+    "beforeSnapshot": "DSH B21 frozen candidate, not HEAD baseline",
+    "beforeSha": "646dacabdb1c1f2e03915168a5c26527bfb4b07e2b49b218370510bbe53ece73",
+    "afterSha": "dbd699dd0834bd9ea2bee5096f44ad362ff9cc6aea352eddcb90564627572160",
+    "changedLines": [
+      397
+    ],
+    "onlyRemovedBlankLineSpaces": true,
+    "lineCountStable": true,
+    "diffCheckExit": 0,
+    "note": "Grok authored proof script compared against old Git HEAD, wrong baseline. Root audited against exact frozen pre-format author source; no product edit by Root."
+  }
+}

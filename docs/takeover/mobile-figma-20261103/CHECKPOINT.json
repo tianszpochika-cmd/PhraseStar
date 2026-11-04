@@ -2889,7 +2889,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-04T01:07:45.216688+00:00",
+  "updated_at": "2026-11-04T01:41:24.172259+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3666,7 +3666,7 @@
     "remote": "NOT_PUSHED_PHASE_CONTINUES"
   },
   "integration_scope_count": {
-    "routesWithLocalUICandidates": 17,
+    "routesWithLocalUICandidates": 18,
     "formalRouteDenominator": 33,
     "notDoD": true,
     "notOverallProjectPercentage": true
@@ -3674,7 +3674,7 @@
   "pending_quota_candidates": {
     "grammarB34": "56browser checks/11failed/12shots; frozen288; NOT_ACCEPTED",
     "avatarLifecycleB10": "partial page/tests edited; duplicate lifecycle handler cleanup requires verification, NOT_ACCEPTED",
-    "srsStoreB23": "18semanticpass; boundary/type/buildlogs exist; Rootreview not complete; NOT_ACCEPTED",
+    "srsStoreB23": "HOLD: wire payload timestamp/idempotent retry proof + atomic C1/store, no Root acceptance",
     "readingB26": "prerequisites only; no reading product implementation"
   },
   "integration_batch_35_auth": {
@@ -3723,10 +3723,10 @@
   "active_executor_takeover": {
     "provider": "Grok only; DSH quota exhausted, no retry",
     "onboarding": "grok/batch-28-onboarding-assets-test-closure",
-    "avatar": "grok/takeover-avatar-01",
-    "grammar": "grok/takeover-grammar-01",
-    "srsAndVocabulary": "grok/takeover-srs-01",
-    "reading": "not started; prerequisites frozen",
+    "avatar": "grok/takeover-avatar-02-scoped-execution",
+    "grammar": "grok/takeover-grammar-03-helper-permission",
+    "srsAndVocabulary": "grok/takeover-srs-02-real-wire-review, C3 serialized-payload review before UI",
+    "reading": "grok/takeover-reading-01",
     "codexModelSubagents": "NONE"
   },
   "integration_batch_36_hydration": {
@@ -3767,5 +3767,71 @@
       "Platform per-page restore workaround remains separate followup"
     ],
     "remote": "NOT_PUSHED_PHASE_CONTINUES"
+  },
+  "integration_batch_37_private_report": {
+    "at": "2026-11-04T01:41:24.172259+00:00",
+    "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+    "paths": 17,
+    "sourceTests": 13,
+    "typecheckExit": 0,
+    "buildExit": 0,
+    "build": {
+      "files": 486,
+      "index": "511ce02fcb068e280668a100ddf5b7feb47203661c612ad1a40f8c11f31ab591"
+    },
+    "rootCore": {
+      "checks": 55,
+      "shots": 18,
+      "sourceStable": true,
+      "unknown": 0,
+      "pageErrors": 0,
+      "outsideOrigins": 0,
+      "artifactMisses": 0,
+      "expectedConsole": 2,
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-37-private-report/report-only-final/format-final/core"
+    },
+    "rootOwner": {
+      "checks": 21,
+      "shots": 5,
+      "sourceStable": true,
+      "unknown": 0,
+      "pageErrors": 0,
+      "outsideOrigins": 0,
+      "artifactMisses": 0,
+      "expectedConsole401Or503": 20,
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-37-private-report/report-only-final/format-final/owner"
+    },
+    "behavior": [
+      "mistake detail/retry receipt with no false mastery",
+      "daily weekly READY/PARTIAL/EMPTY/GENERATING/errors and true unknown duration",
+      "exclusive date in LA remains Shanghai learning-day dates",
+      "public preview/issue/revoke/copy existing trusted current-origin UI URL",
+      "current401+refresh401 login",
+      "held retry/detail across real UI logout/login no A sheet or receipt in B",
+      "held A401 across same subject new revision B no clearing/route"
+    ],
+    "firstAndBoundaryEvidence": [
+      "Initial Root C1 composition27semantic+55core+15owner retained but not final API source",
+      "Initial owner15 passed narrowcases with13unconfigured legitimate Home/Settings GETs; rawJSON/log/screenshots retained",
+      "Bounded 5known background endpoints now explicit503 failures, not invented empty200; settings401 check strengthened to actual login+safe return, added no unknown/page/external/miss and expectedconsole assertions",
+      "Final source APIb8 strictmistakes; DataC1 eventStatus incompatible with current old store.status so excluded pending atomic C1+C3 integration",
+      "Author earlier B20oldpage55 and B21/B22two401 failures remain historical, not relabeled final"
+    ],
+    "limits": [
+      "All APIs synthetic; no real backend/native/device/reader/deploy acceptance",
+      "Held refresh A/B browser not completed; B35semantic only, held401 browser here separate",
+      "Full requirement/contract/owner/native trace not signed; FigmaRC1 not globally frozen",
+      "Pending Avatar24 compiled in this build, not accepted by this report card"
+    ],
+    "remote": "NOT_PUSHED_PHASE_CONTINUES",
+    "formatFollowup": {
+      "authorJob": "grok/root-report-b37-whitespace-only-02",
+      "actualSession": "0f0d6e1e-7fac-41c7-8c9b-8203c2be22fe",
+      "onlyLine": 397,
+      "oldPageSha": "646dacabdb1c1f2e03915168a5c26527bfb4b07e2b49b218370510bbe53ece73",
+      "finalPageSha": "dbd699dd0834bd9ea2bee5096f44ad362ff9cc6aea352eddcb90564627572160",
+      "finalBuildExit": 0,
+      "actualFinalSourceRerun": "55core +21owner pass after format; no source/hash drift"
+    }
   }
 }

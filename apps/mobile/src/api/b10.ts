@@ -441,20 +441,58 @@ function parseWritingPrompt(value: unknown): B10WritingPrompt | null {
   }
 }
 
-function parseMistake(value: unknown): B10Mistake | null {
-  if (!isRecord(value)) return null
-  const mistakeId = nullableNumber(value.mistakeId)
-  const itemId = nullableNumber(value.itemId)
-  if (!mistakeId || !itemId) return null
-  const rawStatus = text(value.mistakeStatus, 'PENDING_RETRY')
-  const rawMastery = text(value.masteryStatus, 'NEW')
+const MISTAKE_STATUSES = ['PENDING_RETRY', 'DELAY_VERIFY_D1', 'DELAY_VERIFY_D7', 'MASTERED', 'REOPENED'] as const
+const MASTERY_STATUSES = ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED'] as const
+
+function protocolError(): Error {
+  return new Error('错题服务返回的数据不符合接口契约，已停止显示。')
+}
+
+function requiredInteger(value: unknown): number {
+  if (typeof value !== 'number' || !Number.isInteger(value)) throw protocolError()
+  return value
+}
+
+function optionalInteger(value: unknown): number | null {
+  if (value === undefined) return null
+  return requiredInteger(value)
+}
+
+function requiredExactString(value: unknown): string {
+  if (typeof value !== 'string') throw protocolError()
+  return value
+}
+
+function requiredString(value: unknown): string {
+  if (typeof value !== 'string') throw protocolError()
+  return value.trim()
+}
+
+function mistakeRows(value: unknown): unknown[] {
+  const source = unwrap(value)
+  if (Array.isArray(source)) return source
+  if (!isRecord(source)) throw protocolError()
+  if (Array.isArray(source.items)) return source.items
+  if (Array.isArray(source.mistakes)) return source.mistakes
+  throw protocolError()
+}
+
+function parseMistake(value: unknown): B10Mistake {
+  if (!isRecord(value)) throw protocolError()
+  const mistakeId = requiredInteger(value.mistakeId)
+  const itemId = requiredInteger(value.itemId)
+  const rawStatus = requiredExactString(value.mistakeStatus)
+  const rawMastery = requiredExactString(value.masteryStatus)
+  if (!(MISTAKE_STATUSES as readonly string[]).includes(rawStatus)) throw protocolError()
+  if (!(MASTERY_STATUSES as readonly string[]).includes(rawMastery)) throw protocolError()
+  if (value.reasonTrace !== undefined && !Array.isArray(value.reasonTrace)) throw protocolError()
   return {
     mistakeId,
     itemId,
-    questionId: nullableNumber(value.questionId),
-    mistakeStatus: ['PENDING_RETRY', 'DELAY_VERIFY_D1', 'DELAY_VERIFY_D7', 'MASTERED', 'REOPENED'].includes(rawStatus) ? rawStatus as B10Mistake['mistakeStatus'] : 'PENDING_RETRY',
-    masteryStatus: ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED'].includes(rawMastery) ? rawMastery as B10Mistake['masteryStatus'] : 'NEW',
-    errorCategory: text(value.errorCategory, '需要复习'),
+    questionId: optionalInteger(value.questionId),
+    mistakeStatus: rawStatus as B10Mistake['mistakeStatus'],
+    masteryStatus: rawMastery as B10Mistake['masteryStatus'],
+    errorCategory: requiredString(value.errorCategory),
     reasonTrace: Array.isArray(value.reasonTrace) ? value.reasonTrace.flatMap((item): Array<{ code: string; label: string; evidence?: string }> => {
       if (!isRecord(item)) return []
       const code = text(item.code)
@@ -620,10 +658,15 @@ export const b10LearningApi = {
     return (await this.listMistakeBook(context)).items
   },
 
+  async getMistakeDetail(context: B10RequestContext, mistakeId: number): Promise<B10Mistake> {
+    const response = await mobileApiClient.request<unknown>(`${B10_GATEWAY_PATHS.assessment.masteryMistakes}/${encodeURIComponent(String(mistakeId))}`, { header: headers(context) })
+    return parseMistake(unwrap(response))
+  },
+
   async listMistakeBook(context: B10RequestContext): Promise<{ items: B10Mistake[]; attemptCount: number; mistakeCount: number; emptyStatus: string; emptyCopy: string; projectionVersion: string }> {
     const response = await mobileApiClient.request<unknown>(query(B10_GATEWAY_PATHS.assessment.masteryMistakes, { contentLocale: context.contentLocale }))
     const source = isRecord(unwrap(response)) ? unwrap(response) as RecordValue : {}
-    const items = listFrom(response).flatMap((item) => { const mistake = parseMistake(item); return mistake ? [mistake] : [] })
+    const items = mistakeRows(response).map((item) => parseMistake(item))
     return {
       items,
       attemptCount: number(source.attemptCount, 0),
