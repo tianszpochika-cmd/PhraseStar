@@ -1,7 +1,7 @@
 {
   "schema_version": "mobile-figma-supervision-v1",
   "generated_at": "2026-11-03",
-  "status": "IN_PROGRESS_NOT_ACCEPTED",
+  "status": "PAUSED_BY_USER",
   "base_commit": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
   "remote_verified_by": "root",
   "figma": {
@@ -78,14 +78,17 @@
     "at": "2026-11-03T22:03:21.286853+00:00",
     "holder": "ROOT_INTEGRATION_REGISTER_B26_QA",
     "port": 18183,
-    "pid": 97288,
+    "pid": null,
     "ptySession": 47549,
     "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
     "previousGrokPid": 79961,
     "previousPty": 70531,
     "previousStopExit": 0,
     "guardBeforeStart": "FREE18183",
-    "allCLIs": "compiledartifactonly;no18183"
+    "allCLIs": "compiledartifactonly;no18183",
+    "status": "STOPPED_BY_USER_PAUSE",
+    "previous_pid": 11064,
+    "port18183": "NO_LISTENER"
   },
   "trace_policy": "每页已有的编号是待核源锚点；TRACE_PENDING 必须在该页审签前逐字段补齐，不能编造或继承历史结果。",
   "tasks": [
@@ -353,7 +356,7 @@
       "name": "成人门、同意与目标",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
       "services_data_owners": [
         "iam-service",
@@ -432,7 +435,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-005",
@@ -991,7 +995,7 @@
       "name": "词汇与复习",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PENDING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放",
       "services_data_owners": [
         "content-service",
@@ -1059,7 +1063,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-013",
@@ -1068,7 +1073,7 @@
       "name": "语法与长难句",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PENDING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "内容与练习版本、已保存再反馈、缺题关闭和降级",
       "services_data_owners": [
         "content-service",
@@ -1138,7 +1143,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-014",
@@ -1147,7 +1153,7 @@
       "name": "阅读精练",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PENDING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "阅读内容/题目授权、保存后反馈、返回原位置",
       "services_data_owners": [
         "content-service",
@@ -1215,7 +1221,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-015",
@@ -1224,7 +1231,7 @@
       "name": "分级阅读",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PENDING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "正文长文、进度与内容下线；恢复身份与内容版本",
       "services_data_owners": [
         "content-service",
@@ -1290,7 +1297,8 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-016",
@@ -1462,7 +1470,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "IMPLEMENTATION_RUNNING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1519,7 +1527,8 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "current_job": "dsh/commerce-batch-05-world-implementation"
+      "current_job": "dsh/commerce-batch-05-world-implementation",
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-019",
@@ -1662,7 +1671,7 @@
       "name": "头像与衣柜",
       "owner": "DSH",
       "wave": "D2",
-      "status": "IMPLEMENTATION_RUNNING",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -1716,7 +1725,8 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "current_job": "dsh/batch-29-avatar-implementation"
+      "current_job": "dsh/batch-29-avatar-implementation",
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-022",
@@ -2096,7 +2106,7 @@
       "name": "语言主题与性能",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "AUTHOR545_BROWSER_PASS_PENDING_INTEGRATION",
+      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
       "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
       "services_data_owners": [
         "learner-service"
@@ -2154,7 +2164,8 @@
         "independent_review": "NOT_RUN",
         "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN",
         "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate"
-      }
+      },
+      "pause_handoff": "PAUSE-20261104.md"
     },
     {
       "id": "MB-028",
@@ -2677,7 +2688,7 @@
       "quota": "UNKNOWN_NO_DASHBOARD_PROBES"
     }
   },
-  "state": "IN_PROGRESS_NOT_ACCEPTED",
+  "state": "PAUSED_BY_USER",
   "dedicated_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2889,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-04T01:41:24.172259+00:00",
+  "updated_at": "2026-11-04T03:05:36.666612+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2997,7 +3008,7 @@
     "new_leaf_count": 0
   },
   "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
-  "remote_push": "NOT_YET_PHASE_CONTINUES",
+  "remote_push": "NOT_PUSHED_MANUAL_PAUSE",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
     "pages": 7,
@@ -3833,5 +3844,140 @@
       "finalBuildExit": 0,
       "actualFinalSourceRerun": "55core +21owner pass after format; no source/hash drift"
     }
+  },
+  "manual_pause": {
+    "at": "2026-11-04T03:05:36.666612+00:00",
+    "status": "PAUSED_BY_USER",
+    "resumeRequiresExplicitUserRequest": true,
+    "latestModelPolicy": "ONLY_GROK_CLI_NO_CODEX_SUBPROCESSES_NO_DSH_RETRY",
+    "rootProductHead": "269f0a0bafa9ef31f8838ad1822f9303b5e6cd56",
+    "rootProductPendingPaths": 103,
+    "localUICandidateRoutes": 18,
+    "formalRoutes": 33,
+    "notDoD": true,
+    "notOverallProductPercentage": true,
+    "jobs": [
+      {
+        "role": "Original - onboarding",
+        "job": "batch-31-onboarding-visual-fidelity",
+        "session": "91c9ab9d-03da-4d4f-a8b4-3ea04dda4bf3",
+        "pid": 66386,
+        "state": "exited",
+        "exitCode": 130,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-original-b31-source-snapshot",
+        "files": 241,
+        "manifestSha256": "07b2586d20fc82aca90e80adcd94faa808298dacd67e516309789c7da5a375df"
+      },
+      {
+        "role": "Main - grammar",
+        "job": "takeover-grammar-07-view-fidelity",
+        "session": "fd00f2ca-d71d-447a-8da8-23968f726ed0",
+        "pid": 62969,
+        "state": "exited",
+        "exitCode": 130,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-main-grammar07-source-snapshot",
+        "files": 302,
+        "manifestSha256": "02246afc174c886475f150f4ee55bbf84d3caeed933ce3d0617ae3a1b41689cb"
+      },
+      {
+        "role": "Commerce - registry",
+        "job": "takeover-central-05-next-pages-registry",
+        "session": "0b845774-2301-4f47-a75a-312ab4afff1c",
+        "pid": 67800,
+        "state": "exited",
+        "exitCode": 0,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-commerce-20261104/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-commerce-registry05-source-snapshot",
+        "files": 91,
+        "manifestSha256": "ae2e5e28d8873ee322003345c1e149e6477f96fcbffd35ba518d418564761d84"
+      },
+      {
+        "role": "Profile - reading QA",
+        "job": "takeover-reading-03-observer-fixture",
+        "session": "1bc59316-276c-483b-9ab4-f3f6860234b4",
+        "pid": 68589,
+        "state": "exited",
+        "exitCode": 130,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-profile-20261104/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-profile-reading03-source-snapshot",
+        "files": 154,
+        "manifestSha256": "595a42efa2375a12d69e69bc9b13a03cf8e33ba62c6dcae35ab5db85b0975ecb"
+      },
+      {
+        "role": "Devices - vocabulary QA",
+        "job": "takeover-vocab-07-real-ui-observer",
+        "session": "785cfc0d-ffbe-4de5-ab82-73e1c124269a",
+        "pid": 69620,
+        "state": "exited",
+        "exitCode": 130,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-devices-20261104/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-devices-vocab07-source-snapshot",
+        "files": 100,
+        "manifestSha256": "6299134cf667afeb4b1b57e0f55331b855c06ec96455689218a4b1d79543651f"
+      },
+      {
+        "role": "Root - copy test delivery",
+        "job": "root-platform-b40-copy-test-followup",
+        "session": "b51d2541-777c-4bf7-a4cb-2df6fd6afb6d",
+        "pid": 69598,
+        "state": "exited",
+        "exitCode": 0,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-root-integration-source-snapshot",
+        "files": 103,
+        "manifestSha256": "a8b3490acd035bf492c2467bf5d823b008c7fc18b04f27d77724c6e64806dad1"
+      },
+      {
+        "role": "Audit - onboarding QA",
+        "job": "qa-onboarding-compiled-03-resume",
+        "session": "b1c3c46c-17e8-4b31-9059-863b70e8bab4",
+        "pid": 64118,
+        "state": "exited",
+        "exitCode": 130,
+        "worktree": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/audit-workspace",
+        "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/pause-20261104/tmp-deliverables/grok-onboarding-compiled-qa-02",
+        "productWrites": false
+      }
+    ],
+    "processes": {
+      "remainingOwnedPids": [],
+      "H5_18183": "STOPPED_NO_LISTENER",
+      "beforeOwnedRSSMiB": 591.2
+    },
+    "docker": {
+      "removedContainers": [
+        "yuxuexing-local-minio-init-1",
+        "yuxuexing-local-redis-init-1",
+        "yuxuexing-local-minio-1",
+        "yuxuexing-local-redis-1",
+        "yuxuexing-local-mysql-1",
+        "yuxuexing-local-kafka-1"
+      ],
+      "removedNetworks": [
+        "97b2abdcbf37\tyuxuexing-local_yuxuexing-local"
+      ],
+      "preservedVolumes": [
+        "yuxuexing-local_yuxuexing-kafka",
+        "yuxuexing-local_yuxuexing-minio",
+        "yuxuexing-local_yuxuexing-mysql",
+        "yuxuexing-local_yuxuexing-redis"
+      ],
+      "relatedRemaining": [],
+      "otherRunningBefore": 50,
+      "otherRunningAfter": 50
+    },
+    "rawEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/pause-20261104",
+    "archive": {
+      "folders": 12,
+      "files": 911,
+      "bytes": 9778768
+    },
+    "quota": {
+      "DSH": "ACTUAL_402_STOP_RECORDED",
+      "Grok": "USER_PAUSE_NOT_QUOTA_STOP"
+    },
+    "remote": "NOT_PUSHED_MERGED_OR_DEPLOYED"
   }
 }

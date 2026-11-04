@@ -1,0 +1,135 @@
+{
+  "at": "2026-11-04T03:05:36.666612+00:00",
+  "status": "PAUSED_BY_USER",
+  "resumeRequiresExplicitUserRequest": true,
+  "latestModelPolicy": "ONLY_GROK_CLI_NO_CODEX_SUBPROCESSES_NO_DSH_RETRY",
+  "rootProductHead": "269f0a0bafa9ef31f8838ad1822f9303b5e6cd56",
+  "rootProductPendingPaths": 103,
+  "localUICandidateRoutes": 18,
+  "formalRoutes": 33,
+  "notDoD": true,
+  "notOverallProductPercentage": true,
+  "jobs": [
+    {
+      "role": "Original - onboarding",
+      "job": "batch-31-onboarding-visual-fidelity",
+      "session": "91c9ab9d-03da-4d4f-a8b4-3ea04dda4bf3",
+      "pid": 66386,
+      "state": "exited",
+      "exitCode": 130,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-original-b31-source-snapshot",
+      "files": 241,
+      "manifestSha256": "07b2586d20fc82aca90e80adcd94faa808298dacd67e516309789c7da5a375df"
+    },
+    {
+      "role": "Main - grammar",
+      "job": "takeover-grammar-07-view-fidelity",
+      "session": "fd00f2ca-d71d-447a-8da8-23968f726ed0",
+      "pid": 62969,
+      "state": "exited",
+      "exitCode": 130,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-main-grammar07-source-snapshot",
+      "files": 302,
+      "manifestSha256": "02246afc174c886475f150f4ee55bbf84d3caeed933ce3d0617ae3a1b41689cb"
+    },
+    {
+      "role": "Commerce - registry",
+      "job": "takeover-central-05-next-pages-registry",
+      "session": "0b845774-2301-4f47-a75a-312ab4afff1c",
+      "pid": 67800,
+      "state": "exited",
+      "exitCode": 0,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-commerce-20261104/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-commerce-registry05-source-snapshot",
+      "files": 91,
+      "manifestSha256": "ae2e5e28d8873ee322003345c1e149e6477f96fcbffd35ba518d418564761d84"
+    },
+    {
+      "role": "Profile - reading QA",
+      "job": "takeover-reading-03-observer-fixture",
+      "session": "1bc59316-276c-483b-9ab4-f3f6860234b4",
+      "pid": 68589,
+      "state": "exited",
+      "exitCode": 130,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-profile-20261104/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-profile-reading03-source-snapshot",
+      "files": 154,
+      "manifestSha256": "595a42efa2375a12d69e69bc9b13a03cf8e33ba62c6dcae35ab5db85b0975ecb"
+    },
+    {
+      "role": "Devices - vocabulary QA",
+      "job": "takeover-vocab-07-real-ui-observer",
+      "session": "785cfc0d-ffbe-4de5-ab82-73e1c124269a",
+      "pid": 69620,
+      "state": "exited",
+      "exitCode": 130,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-devices-20261104/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-devices-vocab07-source-snapshot",
+      "files": 100,
+      "manifestSha256": "6299134cf667afeb4b1b57e0f55331b855c06ec96455689218a4b1d79543651f"
+    },
+    {
+      "role": "Root - copy test delivery",
+      "job": "root-platform-b40-copy-test-followup",
+      "session": "b51d2541-777c-4bf7-a4cb-2df6fd6afb6d",
+      "pid": 69598,
+      "state": "exited",
+      "exitCode": 0,
+      "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/pause-root-integration-source-snapshot",
+      "files": 103,
+      "manifestSha256": "a8b3490acd035bf492c2467bf5d823b008c7fc18b04f27d77724c6e64806dad1"
+    },
+    {
+      "role": "Audit - onboarding QA",
+      "job": "qa-onboarding-compiled-03-resume",
+      "session": "b1c3c46c-17e8-4b31-9059-863b70e8bab4",
+      "pid": 64118,
+      "state": "exited",
+      "exitCode": 130,
+      "worktree": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/audit-workspace",
+      "snapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/pause-20261104/tmp-deliverables/grok-onboarding-compiled-qa-02",
+      "productWrites": false
+    }
+  ],
+  "processes": {
+    "remainingOwnedPids": [],
+    "H5_18183": "STOPPED_NO_LISTENER",
+    "beforeOwnedRSSMiB": 591.2
+  },
+  "docker": {
+    "removedContainers": [
+      "yuxuexing-local-minio-init-1",
+      "yuxuexing-local-redis-init-1",
+      "yuxuexing-local-minio-1",
+      "yuxuexing-local-redis-1",
+      "yuxuexing-local-mysql-1",
+      "yuxuexing-local-kafka-1"
+    ],
+    "removedNetworks": [
+      "97b2abdcbf37\tyuxuexing-local_yuxuexing-local"
+    ],
+    "preservedVolumes": [
+      "yuxuexing-local_yuxuexing-kafka",
+      "yuxuexing-local_yuxuexing-minio",
+      "yuxuexing-local_yuxuexing-mysql",
+      "yuxuexing-local_yuxuexing-redis"
+    ],
+    "relatedRemaining": [],
+    "otherRunningBefore": 50,
+    "otherRunningAfter": 50
+  },
+  "rawEvidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/pause-20261104",
+  "archive": {
+    "folders": 12,
+    "files": 911,
+    "bytes": 9778768
+  },
+  "quota": {
+    "DSH": "ACTUAL_402_STOP_RECORDED",
+    "Grok": "USER_PAUSE_NOT_QUOTA_STOP"
+  },
+  "remote": "NOT_PUSHED_MERGED_OR_DEPLOYED"
+}
