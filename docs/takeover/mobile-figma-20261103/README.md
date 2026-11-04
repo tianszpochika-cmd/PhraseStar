@@ -2,6 +2,7 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
+- [启动偏好恢复 B36](reviews/INTEGRATION-B36-HYDRATION.md)：18项源测试、组合25项/4图通过，原生滚轮等待停稳后复验；平台页临时恢复另待清理。
 - [共享会话修复 B35](reviews/INTEGRATION-B35-AUTH.md)：Root真实store/client等44项测试与设置401/403浏览器16项通过；迟到刷新跨账号浏览器仍待验。
 - [找回密码组合审核 B34](reviews/INTEGRATION-B34-RESET.md)：Root 68样本/8组交互/7图标场景/37图及18项源测试通过；近零输入和内部字段观测限制保留。
 - [三页文案注册 B27](reviews/INTEGRATION-B27-REGISTRY.md)：空模块按单写者交接，旧页面文案逐值不变，不计新增页面完成。

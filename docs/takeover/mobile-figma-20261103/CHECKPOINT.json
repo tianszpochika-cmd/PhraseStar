@@ -2889,7 +2889,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-04T01:05:20.326754+00:00",
+  "updated_at": "2026-11-04T01:07:45.216688+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3728,5 +3728,44 @@
     "srsAndVocabulary": "grok/takeover-srs-01",
     "reading": "not started; prerequisites frozen",
     "codexModelSubagents": "NONE"
+  },
+  "integration_batch_36_hydration": {
+    "at": "2026-11-04T01:07:45.216688+00:00",
+    "state": "REVIEWED_SCOPED_SHARED_RUNTIME_FIX",
+    "sourceTests": 18,
+    "typecheckExit": 0,
+    "buildExit": 0,
+    "rootBrowser": {
+      "checks": 25,
+      "screenshots": 4,
+      "sourceStable": true,
+      "buildStable": true,
+      "index": "216e91467b170a20ab134439091c2caabfa298f48fae22e2da84530fff1c5d97",
+      "fileCount": 475,
+      "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/integration-batch-36-hydration-final",
+      "unknownApi": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "externalRequests": 0
+    },
+    "cases": [
+      "Ultra+REDUCED",
+      "Performance+OFF",
+      "Medium+FULL -> on",
+      "High+FULL+OSreduce -> off",
+      "reload each",
+      "real native picker Ultra->Performance, cross-page and reload"
+    ],
+    "firstFailures": [
+      "B33 nativewheel first row enteredcenter duringmotion; confirm beforechange event, value stayedUltra",
+      "B33 initial QA expected FULL=full/OSreduce=reduced; domaincontractreturns on/off; fixed QA expectation only"
+    ],
+    "diagnostic": "Captured translateY(-101.185) before target-102; settled at107ms +4stable50ms samples, realtouch/confirm produced Performance. No appstate/DOM forcing.",
+    "limits": [
+      "Synthetic API H5 only; no real device/native/reader/deploy signoff",
+      "Build also includes pending Avatar24; not signed by this card",
+      "Platform per-page restore workaround remains separate followup"
+    ],
+    "remote": "NOT_PUSHED_PHASE_CONTINUES"
   }
 }

@@ -5,6 +5,7 @@ import { bootstrapMobileAuth, currentMobilePagePath, installMobileNavigationGuar
 import { safeMobileReturnTo } from './auth/gateway-auth'
 import { useSessionStore } from './stores/session'
 import { mobileExperienceVariables } from '@englishflow/design-tokens/mobile'
+import { hydrateMobileExperienceRuntime } from './platform/experience'
 import { mobileI18nAdapter, mobileThemeController } from './platform/v2-foundation'
 import { applyMobilePublicAuthHandoff, mobilePublicAuthQuery, resolveMobilePublicAuthHandoff } from './platform/public-auth-handoff.mjs'
 
@@ -29,6 +30,8 @@ syncTheme()
 const unsubscribeTheme = mobileThemeController.subscribe(syncTheme)
 
 onLaunch((options) => {
+  // Module init runs before H5 installs uni. Read saved quality and motion once storage exists.
+  hydrateMobileExperienceRuntime()
   installMobileNavigationGuard()
   const launchPath = normalizeMobilePagePath(options?.path, '/pages/home/home')
   const initialPath = currentMobilePagePath(launchPath)

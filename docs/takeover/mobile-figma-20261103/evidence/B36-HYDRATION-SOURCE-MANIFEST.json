@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-04T01:07:45.216688+00:00",
+  "authorSnapshot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/batch-25-hydration-portable-source-snapshot",
+  "files": [
+    {
+      "path": "apps/mobile/src/App.vue",
+      "sha256": "e27022da1bf287ff6abad1e8faa1d564d8f3e66540bfbe683a4962735c0c088e",
+      "bytes": 4806
+    },
+    {
+      "path": "apps/mobile/src/platform/experience.ts",
+      "sha256": "85950a91c2d61070a0ff23ae2e3c09c5658e035e17fb3f3049831a146963aba7",
+      "bytes": 7774
+    },
+    {
+      "path": "apps/mobile/tests/mobile-experience-runtime-hydration.test.mjs",
+      "sha256": "a0bd11faafd36405ebb4355d2c91ceeb43dccb7515cc84f97a076f213ed62e21",
+      "bytes": 17887
+    },
+    {
+      "path": "apps/mobile/tests/helpers/mobile-experience-runtime-loader.mjs",
+      "sha256": "fef0a7a2928b4a0d1001b7585b43b67e0a43782d5ccf1295b0d9c8e53dfe486e",
+      "bytes": 2435
+    }
+  ]
+}
