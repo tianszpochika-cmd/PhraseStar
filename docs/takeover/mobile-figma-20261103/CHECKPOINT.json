@@ -518,6 +518,14 @@
           "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
           "http_checks_each": 184,
           "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e"
+        },
+        "b85_current_h5_learner_target": {
+          "status": "SCOPED_CURRENT_H5_LEARNER_TARGET_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B85-LOCAL-H5-LEARNER-TARGET-20261106.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "owner_assertions": 67,
+          "browser_target_writes": 1,
+          "http_checks": 184
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3697,7 +3705,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T00:09:19.444944+08:00",
+  "updated_at": "2026-11-06T00:15:20.055122+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5527,5 +5535,15 @@
     "http_checks_each": 184,
     "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
     "deployed_and_native": "NOT_RUN"
+  },
+  "integration_batch_85_current_h5_learner_target": {
+    "scope": "MB-004 current H5 actual local target save",
+    "status": "SCOPED_CURRENT_H5_LEARNER_TARGET_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B85-LOCAL-H5-LEARNER-TARGET-20261106.json",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "owner_assertions": 67,
+    "browser_target_writes": 1,
+    "http_checks": 184,
+    "assessment_and_plan": "NOT_RUN"
   }
 }

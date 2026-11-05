@@ -1,0 +1,99 @@
+{
+  "scope": "MB-004 / R1-010 / R1-011 current H5 target save with actual IAM, Gateway, Learner, synthetic signed learner",
+  "author": "Grok73 browser observer, DSH34 in-process learner runtime and owner readback, Root verification",
+  "integration_head_at_run": "5060759028a203b10e60fd0eacc63f0d86c55c9d",
+  "h5_candidate": "c7429cb480a2a32ef93383133527cade8ea07b72",
+  "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "learner_jar_sha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+  "root_wrapper_exit_code": 0,
+  "independent_http_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "actual_browser": {
+    "result": "OBSERVED",
+    "expectations": {
+      "goalStep": true,
+      "cetSelected": true,
+      "quotaSelected": true,
+      "saveClicks": 1,
+      "targetPutCount": 1,
+      "targetPutStatus": 200,
+      "targetPutBodyMatch": true,
+      "idempotencyKeyPresent": true,
+      "targetReadbackMatch": true,
+      "savedUiAfterReadback": true,
+      "savedSurface": "assessment",
+      "savedUiBeforeReadback": false,
+      "preferenceWrites": 0,
+      "consentWrites": 0,
+      "planGetCount": 1,
+      "planGetStatus": null,
+      "planGetStatuses": [
+        null
+      ],
+      "planWriteCount": 0,
+      "extraContinuedWrites": 0,
+      "unknownContinued": 0,
+      "syntheticResponses": 0,
+      "staticFulfills": 60
+    }
+  },
+  "owner_readback": {
+    "counters": {
+      "requests": 7,
+      "anonymous": 1,
+      "reads": 7,
+      "writes": 0,
+      "programmaticWrites": 0,
+      "browserCalls": 1,
+      "replays": 0,
+      "ownerReadbacks": 3
+    },
+    "assertions_passed": 67,
+    "target": {
+      "goalCodeInput": "CET_4_6",
+      "goalCodeReturned": "COLLEGE_CET",
+      "profileGoalCode": "CET_4_6",
+      "targetLevel": "B1",
+      "dailyQuotaMinutes": 30,
+      "quotaAllowed": true,
+      "status": "ACTIVE",
+      "returnedStateVersion": 1,
+      "targetVersion": 1,
+      "replayed": false,
+      "browserStatus": "OBSERVED",
+      "programmaticWrites": 0,
+      "preferencesUnchanged": true,
+      "writes": 0,
+      "distinctWriteKeys": 0
+    },
+    "consent_recheck": {
+      "enabled": true,
+      "iamBaseUrl": "https://127.0.0.1:18087",
+      "clientId": "learner-service",
+      "digestMatched": true
+    }
+  },
+  "browser_probe_sha256": "28b0389eb959ac6b051ce10a67890c6e84543947c5b20ed1af1450d4762202cb",
+  "learner_probe_sha256": "99d558b5933d66f1cef17938af4945396076f8502bcb1cf5e0bcddad4228a6ca",
+  "result_sha256": "b129ae3e24836d923a4ea024eb3f4a39ca56ded971ceafeb95898d6fd5842c99",
+  "local_artifact_basename": "learner-target-browser-34-root",
+  "cleanup": [
+    "PORT_18070_RELEASED",
+    "PORT_18087_RELEASED",
+    "PORT_18088_RELEASED",
+    "PORT_13306_RELEASED",
+    "PORT_18183_RELEASED",
+    "TEMP_DB_RELEASED",
+    "TEMP_TLS_RELEASED",
+    "TEMP_PRIVATE_RUN_RELEASED"
+  ],
+  "assessment_page_body_and_learning_plan": "NOT_RUN",
+  "formal_publication_deployment_native": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}
