@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-05T06:50:47.994679+00:00",
+  "scope": "eight reserved page resource registrations",
+  "base": "8d542cf815c97c264727131cb8f520f687786d26",
+  "existing_dictionary_bytes_preserved": true,
+  "scope_sha256": {
+    "packages/i18n/src/mobile-experience.ts": "d471704b6c615c538b477d366ca0d10644c86bf5091a14540e4209913d389879",
+    "packages/i18n/src/mobile-resources/grammar-page.ts": "f0db940684a73601daa244bf436d2a9fd80a44c73aeeca53e2c120c488c0c7e0",
+    "packages/i18n/src/mobile-resources/vocabulary-page.ts": "522e1b497ba99ce40ad946a59a5da8162904b2066464ce3970802338bcbc7382",
+    "packages/i18n/src/mobile-resources/reading-page.ts": "e2aedd2fd016da7dbf19a28a1ca96af953c42d1733b6a1f680b13db04aa933ae",
+    "packages/i18n/src/mobile-resources/legacy-practice-page.ts": "1d630d3b844bd492f72c9c248df067758661a78c0fce0aa625d3fa4fce512e59",
+    "packages/i18n/src/mobile-resources/today-page.ts": "db41948f61d52a5b135daf0d1fbb14c05fb2277699a8156a55f5eee8cc347521",
+    "packages/i18n/src/mobile-resources/learn-page.ts": "914db8cbf81d35cac7ee4ba393eef29787b434e2e60f778c5a683d8a59814835",
+    "packages/i18n/src/mobile-resources/practice-page.ts": "372631c2a818d6b212067af90accbeea8deb00c128035a9a5fd3310fd0799c1b",
+    "packages/i18n/src/mobile-resources/assessment-page.ts": "7e827a577a514196af9a0ca91fb07646b2ba5614a8e84270ec3f4878c94f294c"
+  },
+  "i18n_typecheck": 0,
+  "mobile_typecheck": 0,
+  "routeCountDelta": 0,
+  "pending_onboarding_not_staged": true,
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/registry-compat-review"
+}

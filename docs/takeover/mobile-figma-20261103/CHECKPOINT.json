@@ -2900,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T06:34:10.022859+00:00",
+  "updated_at": "2026-11-05T06:50:47.994679+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4117,5 +4117,11 @@
     "evidence": "evidence/ROOT-B42-SETTINGS-NOTIFICATION-20261105.json",
     "tests": 79,
     "productSourceChanged": false
+  },
+  "registry_compat_20261105": {
+    "status": "REVIEWED_PREREQUISITE",
+    "evidence": "evidence/ROOT-B43-REGISTRY-20261105.json",
+    "localRouteDelta": 0,
+    "sourceSha": "d471704b6c615c538b477d366ca0d10644c86bf5091a14540e4209913d389879"
   }
 }
