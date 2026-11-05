@@ -55,6 +55,7 @@ class BankPracticeRuleProviderTest {
         assertNotNull(rules);
         assertEquals(10, rules.rows().size());
         assertEquals(266100L, rules.contentVersionId());
+        assertEquals("snap_p1.placement.v1-266100", rules.ownerSnapshotRef());
         assertTrue(rules.snapshotHash().matches("[a-f0-9]{64}"));
         Map<String, Object> grammar = rules.rows().stream()
                 .filter(row -> "266004".equals(row.get("item_id"))).findFirst().orElseThrow();
@@ -118,6 +119,41 @@ class BankPracticeRuleProviderTest {
         body = mapper.writeValueAsString(Map.of("data", drifted));
         BankPracticeRuleProvider provider = new BankPracticeRuleProvider(mapper, baseUrl);
         assertNull(provider.fetch("p1.placement.v1", 266100, "Bearer t"));
+    }
+
+    @Test
+    void sealedSnapshotIdIsCapturedVerbatim() throws Exception {
+        Map<String, Object> delivered = new LinkedHashMap<>(bank());
+        delivered.put("snapshotId", "snap_owner.ref-0001");
+        body = mapper.writeValueAsString(Map.of("data", delivered));
+        BankPracticeRuleProvider.BankRules rules = new BankPracticeRuleProvider(mapper, baseUrl)
+                .fetch("p1.placement.v1", 266100, "Bearer t");
+        assertNotNull(rules);
+        assertEquals("snap_owner.ref-0001", rules.ownerSnapshotRef());
+        assertEquals("a".repeat(64), rules.snapshotHash());
+    }
+
+    @Test
+    void missingOrMalformedSnapshotIdStaysEmpty() throws Exception {
+        for (Object bad : new Object[] {null, 266100, "266100", "snap_short",
+                "SNAP_p1.placement.v1-266100", " snap_p1.placement.v1-266100",
+                "snap_p1.placement.v1-266100 ", "snap_" + "a".repeat(128)}) {
+            BankPracticeRuleProvider.BankRules rules = fetchWithSnapshotId(bad);
+            assertNotNull(rules);
+            assertNull(rules.ownerSnapshotRef());
+            assertEquals("a".repeat(64), rules.snapshotHash());
+        }
+        BankPracticeRuleProvider.BankRules legacy = new BankPracticeRuleProvider.BankRules(
+                266100L, 1L, "a".repeat(64), List.of());
+        assertNull(legacy.ownerSnapshotRef());
+    }
+
+    private BankPracticeRuleProvider.BankRules fetchWithSnapshotId(Object snapshotId) throws Exception {
+        Map<String, Object> delivered = new LinkedHashMap<>(bank());
+        if (snapshotId == null) delivered.remove("snapshotId");
+        else delivered.put("snapshotId", snapshotId);
+        body = mapper.writeValueAsString(Map.of("data", delivered));
+        return new BankPracticeRuleProvider(mapper, baseUrl).fetch("p1.placement.v1", 266100, "Bearer t");
     }
 
     @SuppressWarnings("unchecked")

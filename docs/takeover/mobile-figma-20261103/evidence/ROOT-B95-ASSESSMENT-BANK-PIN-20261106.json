@@ -1,0 +1,56 @@
+{
+  "batch": "B95",
+  "at": "2026-11-06T03:32:13.356059+08:00",
+  "integration_base": "9897d43db1ca77466c39ae6de0dfa41456cd5e24",
+  "implementation": [
+    "Grok CLI 98",
+    "Grok CLI 100"
+  ],
+  "source_files": [
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/adapter/content/BankPracticeRuleProvider.java",
+      "sha256": "afe0208b87f1dbeb4d924528ea84d3e827c3db2daf286a75b3eb893e59d9d4a4",
+      "bytes": 9174
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "sha256": "a2a1850a67b284124e6a245ebe323491bc67ce8859a82811851cdd62f2e84590",
+      "bytes": 76348
+    },
+    {
+      "path": "services/assessment-service/src/main/resources/db/migration/V12__persist_bank_owner_snapshot_ref.sql",
+      "sha256": "45c61a418f2f15ff3c9f3775113b28d6802ccaf8bfac4486f04cf76c6593a780",
+      "bytes": 255
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/adapter/content/BankPracticeRuleProviderTest.java",
+      "sha256": "d048a89b36dbaf7762882222a20ea0964b1923ee01400569e65bd0c48cfcfb7a",
+      "bytes": 9600
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10BankSessionCreationTest.java",
+      "sha256": "e438b23dcaf2807f80100a605d7e4a1275fd4e947bc4372c4c717868c796e90d",
+      "bytes": 11219
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10SessionCreationIdempotencyTest.java",
+      "sha256": "c152cae434e7507470d0a13574736c09e4d0b23536d0b582b4b27c558243c4f3",
+      "bytes": 14433
+    }
+  ],
+  "worker_report_sha256": "7ea775edd995d8f07eec64033844e80c983d7b81f42dc5ee972e0f77d16ac8ec",
+  "tests": {
+    "assessment_maven": {
+      "total": 158,
+      "passed": 156,
+      "failed": 0,
+      "skipped": 2
+    },
+    "mysql_owner_flyway": "V11_TO_V12_PASS",
+    "legacy_and_new_session_sql": "PASS",
+    "same_version_retry": "NO_NEW_MIGRATION",
+    "temporary_mysql_and_port": "RELEASED"
+  },
+  "scope": "Owner sealed snapshot ref retained for new bank-backed B10 sessions and projected into existing assessment item event. Public numeric pin remains compatible.",
+  "event_broker_learning_progress_native_deploy": "NOT_RUN"
+}

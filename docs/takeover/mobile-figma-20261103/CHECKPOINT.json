@@ -5688,5 +5688,13 @@
     "binding": "3/3",
     "broker_and_learning_projection": "NOT_RUN",
     "evidence": "evidence/ROOT-B94-ASSESSMENT-OUTBOX-IDENTITY-20261106.json"
+  },
+  "integration_batch_95_assessment_bank_pin": {
+    "state": "ACCEPTED_LOCAL_ASSESSMENT_BANK_OWNER_SNAPSHOT_PIN",
+    "tests": "156_PASS_2_SKIP",
+    "owner_db_migration": "V11_V12_PASS",
+    "historical_and_new_rows": "VERIFIED",
+    "broker_and_learning_projection": "NOT_RUN",
+    "evidence": "evidence/ROOT-B95-ASSESSMENT-BANK-PIN-20261106.json"
   }
 }
