@@ -5,6 +5,7 @@
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
 - 当前待核的 8 条路由均已排入执行。引导的目标保存与读回已复验，首次签署依赖 IAM 提供待签三份文档各自的发布版本、摘要及内容对应关系。词汇与语法按同一 C2 兼容包整合。Android 工具可用性已读，iOS 工具首启检查尚未通过。实际真机、读屏和部署继续单列。
+- [引导页 B48](reviews/INTEGRATION-B48-ONBOARDING.md) 已有成人门、目标和记录浏览通过局部审核。R1-008 首次签署待契约事实，当前保持 25/33 条整页本地候选。
 - [课程书架与详情 B47](reviews/INTEGRATION-B47-LEARN.md) 49 项组合浏览器检查和 9 图通过，匿名直达保留返回意图。新增 MB-009，累计 25/33 条本地 UI 候选。
 - [今日任务与成长 B46](reviews/INTEGRATION-B46-WORLD-TODAY.md) 验证 390px 主按钮、课程真实入口、四个资源各读一次及赛季重试。该批新增 MB-008、MB-018，当时本地 UI 候选 24/33。
 - [阅读两页 B45](reviews/INTEGRATION-B45-READING.md) 通过 21 组组合浏览器检查，包含离开后的迟到内容防护。该批新增 MB-014 与 MB-015，当时本地 UI 候选 22/33。

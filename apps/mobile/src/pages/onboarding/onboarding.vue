@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import AppIcon from '../../components/AppIcon.vue'
+import FigmaAsset from '../../components/FigmaAsset.vue'
+import { goalArt, onboardingChrome, onboardingFrameRef } from '../../domain/onboarding-page'
 import { mobileT, useMobileExperience } from '../../platform/experience'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
@@ -14,7 +15,8 @@ import { canonicalGoalOptions, mapUiGoal, prefillSavedTarget, requiredConsentsCo
 import { useLearnerContentStore } from '../../stores/learner-content'
 import { useSessionStore } from '../../stores/session'
 
-const { experienceStyle, experienceMotion } = useMobileExperience()
+const { experienceStyle, experienceMotion, theme } = useMobileExperience()
+const ONBOARDING_PATH = '/pages/onboarding/onboarding'
 const store = useLearnerContentStore()
 const session = useSessionStore()
 const step = ref<OnboardingResumeStep>('gate')
@@ -36,6 +38,7 @@ const lastYearError = ref('')
 const lastAgeError = ref('')
 const recordsOpen = ref(false)
 const recordsError = ref(false)
+const accountMenuOpen = ref(false)
 type ConsentRecord = Pick<B8Consent, 'type' | 'purpose' | 'required' | 'document' | 'state' | 'provenance' | 'policyRef' | 'policyVersion' | 'decisionRef'>
 const consentRecords = ref<ConsentRecord[]>([])
 let active = false
@@ -47,11 +50,61 @@ const yearValid = computed(() => isSubmittableBirthYear(birthYear.value.trim() ?
 const yearError = computed(() => attempted.value && !yearValid.value ? interpolate(mobileT('onboarding.yearError'), { max: birthYearMax }) : null)
 const ageError = computed(() => attempted.value && !ageConfirmed.value ? mobileT('onboarding.ageError') : null)
 const goalOptions = canonicalGoalOptions([])
-const quotas = [5, 15, 30, 45]
 const rank = computed(() => step.value === 'gate' ? 0 : step.value === 'consent' ? 1 : step.value === 'goal' ? 2 : 3)
 const consentCurrent = computed(() => Boolean(store.onboardingResume && !store.onboardingResume.sessionRefreshRequired && requiredConsentsComplete(store.onboardingResume.consent) && session.adultGate === 'PASSED' && session.isLearningReady))
 const targetUnreadable = computed(() => store.onboardingResume?.target.readable === false)
 const primaryLabel = computed(() => mobileT(`onboarding.${saving.value ? step.value === 'goal' ? 'saving' : 'confirming' : step.value === 'gate' ? 'confirm' : step.value === 'goal' ? 'saveStart' : step.value === 'assessment' ? 'start' : 'continue'}`))
+const localGoalDraft = computed(() => step.value === 'goal' && (goal.value !== savedGoal.value || quota.value !== (savedQuota.value ?? 15)))
+function currentMobilePagePath(fallback: string): string {
+  // Hash wins because onHide can lag it. This stays page-local so navigation.ts is unchanged.
+  const normalize = (value: unknown, empty: string): string => {
+    if (typeof value !== 'string' || !value.trim()) return empty
+    const raw = value.trim().replace(/^https?:\/\/[^/]+/i, '')
+    const path = raw.split(/[?#]/, 1)[0] || empty
+    if (path === '/') return empty
+    return path.startsWith('/') ? path : `/${path}`
+  }
+  if (typeof window !== 'undefined' && window.location) {
+    const hashPath = normalize(window.location.hash.replace(/^#/, ''), '')
+    if (hashPath) return hashPath
+  }
+  const read = (globalThis as typeof globalThis & { getCurrentPages?: () => Array<{ route?: string }> }).getCurrentPages
+  return normalize(read?.()?.at(-1)?.route, fallback)
+}
+function stillOnOnboarding(): boolean {
+  const read = (globalThis as typeof globalThis & { getCurrentPages?: () => Array<{ route?: string }> }).getCurrentPages
+  if (typeof window === 'undefined' && typeof read !== 'function') return true
+  return currentMobilePagePath('/pages/login/login') === ONBOARDING_PATH
+}
+async function closeAccountMenu(): Promise<void> {
+  if (!accountMenuOpen.value) return
+  accountMenuOpen.value = false
+  await nextTick()
+  // #ifdef H5
+  pageRoot.value?.$el?.querySelector<HTMLElement>('.onboarding-more')?.focus()
+  // #endif
+}
+async function toggleAccountMenu(): Promise<void> {
+  if (busy.value) return
+  if (accountMenuOpen.value) { await closeAccountMenu(); return }
+  accountMenuOpen.value = true
+  await nextTick()
+  // #ifdef H5
+  // Compiled H5 host is uni-button, so a button tag selector never receives focus.
+  pageRoot.value?.$el?.querySelector<HTMLElement>('#mobile-onboarding-account-settings')?.focus()
+  // #endif
+}
+function keepMoreKey(event: { preventDefault?: () => void }): void {
+  // #ifdef H5
+  event.preventDefault?.()
+  // #endif
+}
+function openAccountMenuFromKey(event: { preventDefault?: () => void }): void {
+  // #ifdef H5
+  event.preventDefault?.()
+  void toggleAccountMenu()
+  // #endif
+}
 function minuteLabel(value: number | null): string { return interpolate(mobileT('onboarding.minutes'), { count: value === null ? '' : mobileI18n.formatNumber(value) }) }
 function reportErrors(): void {
   if (yearError.value) lastYearError.value = yearError.value
@@ -74,6 +127,7 @@ function syncNativeYear(): void {
 watch([birthYear, yearFocused, feedback, busy, () => mobileT('onboarding.year')], async () => { await nextTick(); syncNativeYear() }, { flush: 'post' })
 onMounted(syncNativeYear)
 watch(step, async () => {
+  accountMenuOpen.value = false
   await nextTick()
   if (!active) return
   // #ifdef H5
@@ -83,13 +137,13 @@ watch(step, async () => {
   // #endif
   uni.setNavigationBarTitle({ title: mobileT(`onboarding.${step.value}Title`) })
 })
-function current(request: number, revision: number): boolean { return active && request === generation && revision === session.identityRevision && session.isAuthenticated }
+function current(request: number, revision: number): boolean { return active && stillOnOnboarding() && request === generation && revision === session.identityRevision && session.isAuthenticated }
 function clearDrafts(): void {
   birthYear.value = ''; ageConfirmed.value = false; attempted.value = false; yearFocused.value = false
   lastYearError.value = ''; lastAgeError.value = ''; consentRecords.value = []; recordsOpen.value = false; recordsError.value = false
   goal.value = savedGoal.value; quota.value = savedQuota.value ?? 15
 }
-function invalidate(): void { generation++; saving.value = false; reading.value = false; clearDrafts() }
+function invalidate(): void { generation++; saving.value = false; reading.value = false; accountMenuOpen.value = false; clearDrafts() }
 watch(() => session.identityRevision, () => {
   invalidate(); savedGoal.value = null; savedQuota.value = null; goal.value = null; quota.value = 15; step.value = 'gate'; actionError.value = null
   if (active && !restoring.value && session.isAuthenticated) void loadResume()
@@ -137,7 +191,7 @@ async function navigate(url: string, login = false): Promise<void> {
   } catch { throw new OnboardingNavigationError('Onboarding navigation failed') }
 }
 async function loadResume(): Promise<void> {
-  if (!active || saving.value || reading.value) return
+  if (!active || !stillOnOnboarding() || saving.value || reading.value) return
   if (!session.isAuthenticated) {
     try { await navigate('/pages/login/login?returnTo=%2Fpages%2Fonboarding%2Fonboarding', true) }
     catch { if (active) actionError.value = mobileT('onboarding.navigationFailed') }
@@ -170,14 +224,14 @@ onShow(async () => {
   active = true; const request = ++showRequest; restoring.value = true
   try {
     await session.restore()
-    if (!active || request !== showRequest) return
+    if (!active || request !== showRequest || !stillOnOnboarding()) return
     if (!session.isAuthenticated) { await navigate('/pages/login/login?returnTo=%2Fpages%2Fonboarding%2Fonboarding', true); return }
     await loadResume()
   } catch { if (active && request === showRequest) actionError.value = mobileT('onboarding.readFailed') }
   finally {
     if (active && request === showRequest) {
       restoring.value = false
-      if (!session.isAuthenticated) {
+      if (!session.isAuthenticated && stillOnOnboarding()) {
         try { await navigate('/pages/login/login?returnTo=%2Fpages%2Fonboarding%2Fonboarding', true) }
         catch { if (active && request === showRequest) actionError.value = mobileT('onboarding.navigationFailed') }
       }
@@ -211,7 +265,7 @@ async function focusRequiredField(kind: 'year' | 'age'): Promise<void> {
   }
 }
 function chooseGoal(value: string): void { if (!busy.value && step.value === 'goal') goal.value = value }
-function chooseQuota(value: number): void { if (!busy.value && step.value === 'goal' && quotas.includes(value)) quota.value = value }
+function chooseQuota(value: number): void { if (!busy.value && step.value === 'goal' && store.quotas.includes(value)) quota.value = value }
 function adjustGoal(): void { if (!busy.value) { goal.value = savedGoal.value; quota.value = savedQuota.value ?? 15; actionError.value = null; step.value = 'goal' } }
 async function next(event?: { detail?: { value?: { birthYear?: unknown } } }): Promise<void> {
   if (busy.value) return
@@ -222,7 +276,7 @@ async function next(event?: { detail?: { value?: { birthYear?: unknown } } }): P
     return
   }
   if (step.value === 'goal' && targetUnreadable.value) { actionError.value = mobileT('onboarding.targetUnreadable'); return }
-  if (step.value === 'goal' && (!mapUiGoal(goal.value) || !quotas.includes(quota.value))) { actionError.value = mobileT('onboarding.chooseGoal'); return }
+  if (step.value === 'goal' && (!mapUiGoal(goal.value) || !store.quotas.includes(quota.value))) { actionError.value = mobileT('onboarding.chooseGoal'); return }
   const request = ++generation, revision = session.identityRevision, action = step.value
   const requestedGoal = mapUiGoal(goal.value), requestedQuota = quota.value
   saving.value = true
@@ -279,95 +333,251 @@ async function cancel(): Promise<void> {
 </script>
 
 <template>
-  <view ref="pageRoot" class="yx-page yx-onboarding" :aria-busy="busy" :style="experienceStyle" :data-motion="experienceMotion">
-    <view class="onboarding-topline"><view class="onboarding-brand"><AppIcon name="brand" :size="25" /><text>{{ mobileT('brand') }}</text></view><text class="onboarding-note">{{ mobileT('onboarding.adultNote') }}</text></view>
+  <view ref="pageRoot" class="yx-page yx-onboarding" :aria-busy="busy" :style="experienceStyle" :data-motion="experienceMotion" :data-theme="theme" :data-figma-ref="onboardingFrameRef(step, Boolean(goal))">
+    <view class="onboarding-scene" aria-hidden="true">
+      <FigmaAsset class="onboarding-blob onboarding-blob-a" :src="onboardingChrome.blob" :width="180" :height="180" />
+      <FigmaAsset class="onboarding-blob onboarding-blob-b" :src="onboardingChrome.blobWide" :width="260" :height="260" />
+      <FigmaAsset class="onboarding-blob onboarding-blob-c" :src="onboardingChrome.blobTall" :width="300" :height="300" />
+      <FigmaAsset class="onboarding-particles" :src="onboardingChrome.particles" :width="180" :height="140" />
+    </view>
     <view class="onboarding-content" :class="{ 'is-wide': step === 'goal' || step === 'consent' }">
-      <view class="onboarding-progress" :aria-label="mobileT('onboarding.progress')">
-        <view v-for="(name, index) in ['identity', 'consents', 'target']" :key="name" class="onboarding-progress-item" :class="{ 'is-current': rank === index, 'is-done': rank > index }" :aria-current="rank === index ? 'step' : undefined"><text class="onboarding-step-number">{{ index + 1 }}</text><view class="onboarding-progress-copy"><text>{{ mobileT(`onboarding.${name}`) }}</text><text class="onboarding-step-state">{{ mobileT(rank > index ? 'onboarding.done' : rank === index ? 'onboarding.current' : 'onboarding.pending') }}</text></view></view>
+      <view class="onboarding-hero">
+        <view class="onboarding-topline">
+          <view class="onboarding-brand">
+            <view class="onboarding-logo">
+              <FigmaAsset class="onboarding-logo-glow" :src="onboardingChrome.logoGlow" :width="64" :height="64" />
+              <image class="app-icon" :src="onboardingChrome.logo" mode="aspectFit" alt="" />
+            </view>
+            <view class="onboarding-brand-copy">
+              <text class="onboarding-brand-name">{{ mobileT('brand') }}</text>
+              <text class="onboarding-mark">{{ mobileT('onboarding.mark') }}</text>
+            </view>
+          </view>
+          <button v-if="step !== 'assessment'" class="onboarding-more" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-expanded="accountMenuOpen ? 'true' : 'false'" aria-controls="mobile-onboarding-exits" :aria-label="mobileT('onboarding.more')" @click="toggleAccountMenu" @keydown.enter="keepMoreKey" @keyup.enter="openAccountMenuFromKey" @keydown.space="keepMoreKey" @keyup.space="openAccountMenuFromKey" @keydown.escape.prevent="closeAccountMenu"><FigmaAsset :src="onboardingChrome.more" :width="22" :height="22" /></button>
+          <view v-if="accountMenuOpen && step !== 'assessment'" id="mobile-onboarding-exits" class="onboarding-exits onboarding-account-menu" role="group" :aria-label="mobileT('onboarding.more')" @keydown.escape.prevent="closeAccountMenu">
+            <button id="mobile-onboarding-account-settings" class="onboarding-text" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="accountSettings" @keydown.escape.prevent="closeAccountMenu">{{ mobileT('onboarding.accountSettings') }}</button>
+            <button class="onboarding-text" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="cancel" @keydown.escape.prevent="closeAccountMenu">{{ mobileT('onboarding.logout') }}</button>
+          </view>
+        </view>
+        <view class="onboarding-progress" :aria-label="mobileT('onboarding.progress')">
+          <template v-for="(name, index) in ['identity', 'consents', 'target']" :key="name">
+            <view v-if="index > 0" class="onboarding-step-line" aria-hidden="true" />
+            <view class="onboarding-progress-item" :class="{ 'is-current': rank === index, 'is-done': rank > index }" :aria-current="rank === index ? 'step' : undefined">
+              <view class="onboarding-step-number" aria-hidden="true"><text v-if="rank <= index">{{ index + 1 }}</text><FigmaAsset v-else :src="onboardingChrome.goalCheck" :width="13" :height="13" /></view>
+              <text class="onboarding-step-label">{{ mobileT(`onboarding.${name}`) }}</text>
+              <text class="onboarding-sr">{{ mobileT(rank > index ? 'onboarding.done' : rank === index ? 'onboarding.current' : 'onboarding.pending') }}</text>
+            </view>
+          </template>
+        </view>
+        <text id="mobile-onboarding-title" class="onboarding-title" role="heading" aria-level="1" tabindex="-1">{{ mobileT(`onboarding.${step}Title`) }}</text>
+        <text class="onboarding-description">{{ mobileT(`onboarding.${step}Description`) }}</text>
       </view>
-      <text id="mobile-onboarding-title" class="onboarding-title" role="heading" aria-level="1" tabindex="-1">{{ mobileT(`onboarding.${step}Title`) }}</text>
-      <text class="onboarding-description">{{ mobileT(`onboarding.${step}Description`) }}</text>
-      <text v-if="reading || restoring" class="onboarding-status" role="status">{{ mobileT('onboarding.reading') }}</text>
-      <form v-if="step === 'gate'" class="onboarding-body" @submit="next">
-        <view class="onboarding-field"><label id="mobile-onboarding-year-label" for="mobile-onboarding-year-host" class="onboarding-label" @click="!busy && (yearFocused = true)">{{ mobileT('onboarding.year') }}</label><input id="mobile-onboarding-year-host" ref="yearField" v-model="birthYear" name="birthYear" :maxlength="-1" class="onboarding-input" :class="{ 'is-invalid': feedback.year }" type="number" inputmode="numeric" :focus="yearFocused" :disabled="busy" confirm-type="go" :placeholder="mobileT('onboarding.yearPlaceholder')" @focus="yearFocused = true" @input="syncYear($event.detail?.value)" @blur="blurYear" @confirm="syncYear($event.detail?.value); next()" /><text v-if="feedback.lastYear" :id="feedback.year ? 'mobile-onboarding-year-error' : undefined" class="onboarding-error" :class="{ 'is-clear': !feedback.year }" :role="feedback.year ? 'alert' : undefined" :aria-hidden="!feedback.year">{{ feedback.year || feedback.lastYear }}</text></view>
-        <checkbox-group @change="changeAge"><label class="onboarding-check-row" for="mobile-onboarding-age"><checkbox id="mobile-onboarding-age" value="adult-confirmed" role="checkbox" tabindex="0" aria-required="true" aria-labelledby="mobile-onboarding-age-label" :aria-checked="ageConfirmed" :aria-disabled="busy" :aria-invalid="feedback.age ? true : undefined" :aria-describedby="feedback.age ? 'mobile-onboarding-age-error' : undefined" :checked="ageConfirmed" :disabled="busy" :color="'var(--v2-brand)'" @keydown.enter.stop.prevent="activateAge" @keydown.space.stop.prevent="activateAge" /><text id="mobile-onboarding-age-label">{{ mobileT('onboarding.ageConfirm') }}</text></label></checkbox-group>
-        <text v-if="feedback.lastAge" :id="feedback.age ? 'mobile-onboarding-age-error' : undefined" class="onboarding-error" :class="{ 'is-clear': !feedback.age }" :role="feedback.age ? 'alert' : undefined" :aria-hidden="!feedback.age">{{ feedback.age || feedback.lastAge }}</text>
-        <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
-        <button class="onboarding-primary" form-type="submit" role="button" tabindex="0" :disabled="busy || !yearValid || !ageConfirmed" :aria-disabled="busy || !yearValid || !ageConfirmed" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
-      </form>
-      <view v-else-if="step === 'consent'" class="onboarding-body">
-        <view v-for="record in consentRecords" :key="record.type" class="onboarding-record"><view class="onboarding-record-title"><text>{{ mobileT(`onboarding.purposes.${record.type}`) }}</text><text class="onboarding-help">{{ mobileT(record.required ? 'onboarding.required' : 'onboarding.optional') }}</text></view><text class="onboarding-help">{{ mobileT(record.state === 'GRANTED' ? 'onboarding.recorded' : 'onboarding.withdrawn') }}</text><text class="onboarding-help">{{ mobileT('onboarding.recordVersion') }} {{ record.document.version }}</text><view v-if="recordsOpen" class="onboarding-provenance"><text>{{ mobileT('onboarding.source') }}</text><text>{{ mobileT('onboarding.documentTime') }} {{ record.document.publishedAt }}</text><text>{{ mobileT('onboarding.recordTime') }} {{ record.provenance.recordedAt }}</text><text>{{ mobileT('onboarding.digest') }} {{ record.document.digest }}</text><text>{{ mobileT('onboarding.policy') }} {{ record.policyRef }} / {{ record.policyVersion }}</text><text>{{ mobileT('onboarding.decision') }} {{ record.decisionRef }}</text></view></view>
-        <button v-if="consentRecords.length" class="onboarding-record-toggle onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-expanded="recordsOpen" @click="!busy && (recordsOpen = !recordsOpen)">{{ mobileT(recordsOpen ? 'onboarding.hideSource' : 'onboarding.showSource') }}</button>
-        <text v-if="recordsError" class="onboarding-error" role="alert">{{ mobileT('onboarding.recordsFailed') }}</text>
-        <text v-if="!consentCurrent" class="onboarding-blocked" role="status">{{ mobileT('onboarding.consentBlocked') }}</text><text v-else class="onboarding-help">{{ mobileT('onboarding.currentConsent') }}</text>
-        <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
-        <button v-if="consentCurrent" class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
-        <button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="loadResume">{{ mobileT('onboarding.reload') }}</button>
+      <view class="onboarding-panel">
+        <text v-if="reading || restoring" class="onboarding-status" role="status">{{ mobileT('onboarding.reading') }}</text>
+        <form v-if="step === 'gate'" class="onboarding-form" @submit="next">
+          <view class="onboarding-body">
+          <view class="onboarding-field">
+            <label id="mobile-onboarding-year-label" for="mobile-onboarding-year-host" class="onboarding-label" @click="!busy && (yearFocused = true)">{{ mobileT('onboarding.year') }}</label>
+            <view class="onboarding-year-control">
+              <input id="mobile-onboarding-year-host" ref="yearField" v-model="birthYear" name="birthYear" :maxlength="-1" class="onboarding-input" :class="{ 'is-invalid': feedback.year }" type="number" inputmode="numeric" :focus="yearFocused" :disabled="busy" confirm-type="go" :placeholder="mobileT('onboarding.yearPlaceholder')" @focus="yearFocused = true" @input="syncYear($event.detail?.value)" @blur="blurYear" @confirm="syncYear($event.detail?.value); next()" />
+              <text v-if="mobileT('onboarding.yearUnit')" class="onboarding-year-unit">{{ mobileT('onboarding.yearUnit') }}</text>
+            </view>
+            <text class="onboarding-hint">{{ mobileT('onboarding.yearHint') }}</text>
+            <text v-if="feedback.lastYear" :id="feedback.year ? 'mobile-onboarding-year-error' : undefined" class="onboarding-error" :class="{ 'is-clear': !feedback.year }" :role="feedback.year ? 'alert' : undefined" :aria-hidden="!feedback.year">{{ feedback.year || feedback.lastYear }}</text>
+          </view>
+          <checkbox-group @change="changeAge"><label class="onboarding-check-row" for="mobile-onboarding-age"><checkbox id="mobile-onboarding-age" value="adult-confirmed" role="checkbox" tabindex="0" aria-required="true" aria-labelledby="mobile-onboarding-age-label" :aria-checked="ageConfirmed" :aria-disabled="busy" :aria-invalid="feedback.age ? true : undefined" :aria-describedby="feedback.age ? 'mobile-onboarding-age-error' : undefined" :checked="ageConfirmed" :disabled="busy" :color="'var(--v2-brand)'" @keydown.enter.stop.prevent="activateAge" @keydown.space.stop.prevent="activateAge" /><text id="mobile-onboarding-age-label">{{ mobileT('onboarding.ageConfirm') }}</text></label></checkbox-group>
+          <text v-if="feedback.lastAge" :id="feedback.age ? 'mobile-onboarding-age-error' : undefined" class="onboarding-error" :class="{ 'is-clear': !feedback.age }" :role="feedback.age ? 'alert' : undefined" :aria-hidden="!feedback.age">{{ feedback.age || feedback.lastAge }}</text>
+          <view class="onboarding-note-card">
+            <view class="onboarding-note-badge" aria-hidden="true"><FigmaAsset :src="onboardingChrome.info" :width="17" :height="17" /></view>
+            <view class="onboarding-note-copy"><text class="onboarding-note-title">{{ mobileT('onboarding.whyTitle') }}</text><text class="onboarding-hint">{{ mobileT('onboarding.whyBody') }}</text></view>
+          </view>
+          <view class="onboarding-tip">
+            <view class="onboarding-tip-row"><FigmaAsset :src="onboardingChrome.dot" :width="8" :height="8" /><text class="onboarding-note-title">{{ mobileT('onboarding.yearOnlyTitle') }}</text></view>
+            <text class="onboarding-hint">{{ mobileT('onboarding.yearOnlyBody') }}</text>
+          </view>
+          <view class="onboarding-spacer" aria-hidden="true" />
+          <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
+          <button class="onboarding-primary" form-type="submit" role="button" tabindex="0" :disabled="busy || !yearValid || !ageConfirmed" :aria-disabled="busy || !yearValid || !ageConfirmed" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
+          </view>
+        </form>
+        <view v-else-if="step === 'consent'" class="onboarding-body">
+          <view v-for="record in consentRecords" :key="record.type" class="onboarding-record">
+            <FigmaAsset :src="onboardingChrome.file" :width="20" :height="20" />
+            <view class="onboarding-record-copy">
+              <view class="onboarding-record-title"><text>{{ mobileT(`onboarding.purposes.${record.type}`) }}</text><text class="onboarding-tag">{{ mobileT(record.required ? 'onboarding.required' : 'onboarding.optional') }}</text></view>
+              <text class="onboarding-help">{{ mobileT(record.state === 'GRANTED' ? 'onboarding.recorded' : 'onboarding.withdrawn') }}</text>
+              <text class="onboarding-help">{{ mobileT('onboarding.recordVersion') }} {{ record.document.version }}</text>
+              <view v-if="recordsOpen" class="onboarding-provenance"><text>{{ mobileT('onboarding.source') }}</text><text>{{ mobileT('onboarding.documentTime') }} {{ record.document.publishedAt }}</text><text>{{ mobileT('onboarding.recordTime') }} {{ record.provenance.recordedAt }}</text><text>{{ mobileT('onboarding.digest') }} {{ record.document.digest }}</text><text>{{ mobileT('onboarding.policy') }} {{ record.policyRef }} / {{ record.policyVersion }}</text><text>{{ mobileT('onboarding.decision') }} {{ record.decisionRef }}</text></view>
+            </view>
+          </view>
+          <button v-if="consentRecords.length" class="onboarding-record-toggle onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-expanded="recordsOpen" @click="!busy && (recordsOpen = !recordsOpen)"><FigmaAsset :src="onboardingChrome.history" :width="18" :height="18" /><FigmaAsset :src="onboardingChrome.chevronDown" :width="18" :height="18" /><text>{{ mobileT(recordsOpen ? 'onboarding.hideSource' : 'onboarding.showSource') }}</text></button>
+          <text v-if="recordsError" class="onboarding-error" role="alert">{{ mobileT('onboarding.recordsFailed') }}</text>
+          <text v-if="!consentCurrent" class="onboarding-blocked" role="status">{{ mobileT('onboarding.consentBlocked') }}</text><text v-else class="onboarding-help">{{ mobileT('onboarding.currentConsent') }}</text>
+          <view class="onboarding-spacer" aria-hidden="true" />
+          <text class="onboarding-hint onboarding-center">{{ mobileT('onboarding.consentFooter') }}</text>
+          <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
+          <button v-if="consentCurrent" class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
+          <button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="loadResume">{{ mobileT('onboarding.reload') }}</button>
+        </view>
+        <view v-else-if="step === 'goal'" class="onboarding-body">
+          <text v-if="targetUnreadable" class="onboarding-error" role="alert">{{ mobileT('onboarding.targetUnreadable') }}</text>
+          <view class="onboarding-field">
+            <text class="onboarding-label">{{ mobileT('onboarding.target') }}</text>
+            <view class="onboarding-choices">
+              <button v-for="item in goalOptions" :key="item.value" class="onboarding-choice" :class="{ 'is-selected': goal === item.value }" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-pressed="goal === item.value" :data-goal-code="item.value" @click="chooseGoal(item.value)">
+                <view v-if="goalArt(item.value)" class="onboarding-goal-art"><FigmaAsset :src="goalArt(item.value).src" :width="32" :height="32" /></view>
+                <view class="onboarding-choice-copy"><text class="onboarding-choice-label">{{ mobileT(`onboarding.goals.${item.value}.label`) }}</text><text class="onboarding-help">{{ mobileT(`onboarding.goals.${item.value}.description`) }}</text></view>
+                <view class="onboarding-radio" :class="{ 'is-selected': goal === item.value }"><FigmaAsset v-if="goal === item.value" :src="onboardingChrome.goalCheck" :width="13" :height="13" /></view>
+              </button>
+            </view>
+          </view>
+          <view class="onboarding-field">
+            <text class="onboarding-label">{{ mobileT('onboarding.dailyTime') }}</text>
+            <view class="onboarding-quotas">
+              <button v-for="item in store.quotas" :key="item" class="onboarding-quota" :class="{ 'is-selected': quota === item }" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-pressed="quota === item" @click="chooseQuota(item)">{{ minuteLabel(item) }}</button>
+            </view>
+          </view>
+          <text v-if="localGoalDraft" class="onboarding-hint">{{ mobileT('onboarding.localDraft') }}</text>
+          <view class="onboarding-spacer" aria-hidden="true" />
+          <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
+          <button class="onboarding-primary" role="button" tabindex="0" :disabled="busy || !goal || targetUnreadable" :aria-disabled="busy || !goal || targetUnreadable" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
+          <button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="loadResume">{{ mobileT('onboarding.reload') }}</button>
+        </view>
+        <view v-else-if="step === 'assessment'" class="onboarding-body">
+          <view class="onboarding-summary">
+            <view class="onboarding-summary-head"><text class="onboarding-choice-label">{{ mobileT('onboarding.planTitle') }}</text><button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="adjustGoal">{{ mobileT('onboarding.adjustGoal') }}</button></view>
+            <view class="onboarding-summary-row">
+              <view v-if="goalArt(savedGoal)" class="onboarding-goal-art"><FigmaAsset :src="goalArt(savedGoal).src" :width="32" :height="32" /></view>
+              <view><text class="onboarding-help">{{ mobileT('onboarding.savedTarget') }}</text><text class="onboarding-label">{{ mobileT(`onboarding.goals.${savedGoal}.label`) }}</text></view>
+            </view>
+            <view class="onboarding-summary-row">
+              <view class="onboarding-goal-art"><FigmaAsset :src="onboardingChrome.schedule" :width="17" :height="17" /></view>
+              <view><text class="onboarding-help">{{ mobileT('onboarding.dailyShort') }}</text><text class="onboarding-label">{{ minuteLabel(savedQuota) }}</text></view>
+            </view>
+          </view>
+          <text class="onboarding-hint">{{ mobileT('onboarding.planNote') }}</text>
+          <view class="onboarding-spacer" aria-hidden="true" />
+          <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
+          <button class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
+          <view id="mobile-onboarding-exits" class="onboarding-exits"><button class="onboarding-text" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="accountSettings">{{ mobileT('onboarding.accountSettings') }}</button><button class="onboarding-text" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="cancel">{{ mobileT('onboarding.logout') }}</button></view>
+        </view>
       </view>
-      <view v-else-if="step === 'goal'" class="onboarding-body">
-        <text v-if="targetUnreadable" class="onboarding-error" role="alert">{{ mobileT('onboarding.targetUnreadable') }}</text>
-        <view class="onboarding-field"><text class="onboarding-label">{{ mobileT('onboarding.target') }}</text><view class="onboarding-choices"><button v-for="item in goalOptions" :key="item.value" class="onboarding-choice" :class="{ 'is-selected': goal === item.value }" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-pressed="goal === item.value" :data-goal-code="item.value" @click="chooseGoal(item.value)"><view class="onboarding-choice-title"><text>{{ mobileT(`onboarding.goals.${item.value}.label`) }}</text><text v-if="goal === item.value" class="onboarding-help">{{ mobileT('onboarding.selected') }}</text></view><text class="onboarding-help">{{ mobileT(`onboarding.goals.${item.value}.description`) }}</text></button></view></view>
-        <view class="onboarding-field"><text class="onboarding-label">{{ mobileT('onboarding.dailyTime') }}</text><view class="onboarding-quotas"><button v-for="minutes in quotas" :key="minutes" class="onboarding-quota" :class="{ 'is-selected': quota === minutes }" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-pressed="quota === minutes" @click="chooseQuota(minutes)">{{ minuteLabel(minutes) }}<text v-if="quota === minutes" class="onboarding-help">{{ mobileT('onboarding.selected') }}</text></button></view></view>
-        <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text><button class="onboarding-primary" role="button" tabindex="0" :disabled="busy || !goal || targetUnreadable" :aria-disabled="busy || !goal || targetUnreadable" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button><button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="loadResume">{{ mobileT('onboarding.reload') }}</button>
-      </view>
-      <view v-else-if="step === 'assessment'" class="onboarding-body"><view class="onboarding-summary"><view><text class="onboarding-help">{{ mobileT('onboarding.savedTarget') }}</text><text class="onboarding-label">{{ mobileT(`onboarding.goals.${savedGoal}.label`) }}</text></view><view><text class="onboarding-help">{{ mobileT('onboarding.dailyTime') }}</text><text class="onboarding-label">{{ minuteLabel(savedQuota) }}</text></view></view><text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text><button class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button><button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="adjustGoal">{{ mobileT('onboarding.adjustGoal') }}</button></view>
-      <view class="onboarding-exits"><button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="accountSettings">{{ mobileT('onboarding.accountSettings') }}</button><button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="cancel">{{ mobileT('onboarding.logout') }}</button></view>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.yx-page.yx-onboarding { max-width: none; min-height: 100vh; min-height: 100dvh; padding: calc(20px + env(safe-area-inset-top)) 24px calc(40px + env(safe-area-inset-bottom)); background: var(--v2-bg); color: var(--v2-ink); font-family: var(--v2-font); line-height: 1.6; }
-.onboarding-topline { display: flex; flex-direction: column; align-items: flex-start; max-width: 1080px; margin: 0 auto 40px; }
-.onboarding-brand { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; color: var(--v2-ink); font-size: 20px; font-weight: 650; }
-.onboarding-brand :deep(.app-icon) { color: var(--v2-brand); }
-.onboarding-note, .onboarding-help { color: var(--v2-mut); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.onboarding-content { max-width: 420px; width: 100%; margin: 0 auto; }
+.yx-page.yx-onboarding { position: relative; display: flex; flex-direction: column; box-sizing: border-box; width: 100%; max-width: none; min-height: 100vh; min-height: 100dvh; margin: 0; padding: 0; overflow-x: clip; background-color: #fbf8ff; background-image: linear-gradient(180deg, #ede6ff 0%, #f4eeff 45%, #fbf8ff 100%); color: var(--v2-ink); font-family: var(--v2-font); line-height: 1.5; }
+.yx-onboarding[data-theme="dark"] { background-color: var(--yx-auth-page-color, var(--v2-bg)); background-image: var(--yx-auth-page-image, none); }
+.yx-onboarding[data-theme="high-contrast"] { background-color: var(--yx-surface-page, var(--v2-bg)); background-image: none; }
+.onboarding-scene { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.onboarding-blob, .onboarding-particles { position: absolute; opacity: .9; }
+.onboarding-blob-a { top: 20px; right: -4px; }
+.onboarding-blob-b { top: -60px; right: -80px; }
+.onboarding-blob-c { top: -180px; left: -120px; }
+.onboarding-particles { top: 40px; left: 194px; }
+.onboarding-content { position: relative; display: flex; flex: 1 0 auto; flex-direction: column; width: 100%; max-width: 420px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; }
 .onboarding-content.is-wide { max-width: 560px; }
-.onboarding-progress { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 40px; }
-.onboarding-progress-item { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 6px; color: var(--v2-mut); text-align: center; font-size: 13px; }
-.onboarding-progress-copy { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 6px; word-break: normal; overflow-wrap: normal; }
-.onboarding-progress-copy text { word-break: normal; overflow-wrap: normal; }
-.onboarding-step-number { display: flex; width: 28px; height: 28px; align-items: center; justify-content: center; border: 1px solid var(--v2-line); border-radius: 50%; font-size: 14px; background: var(--v2-card); }
-.onboarding-progress-item.is-current, .onboarding-progress-item.is-done { color: var(--v2-brand); }
-.onboarding-progress-item.is-current .onboarding-step-number, .onboarding-progress-item.is-done .onboarding-step-number { background: var(--v2-brand); color: var(--v2-inverse); border-color: var(--v2-brand); }
-.onboarding-step-state { font-size: 13px; }
-.onboarding-title { display: block; margin-bottom: 8px; font-size: 28px; font-weight: 650; line-height: 1.4; letter-spacing: 0; }
-.onboarding-description { display: block; color: var(--v2-mut); font-size: 14px; line-height: 1.75; }
-.onboarding-body { display: grid; gap: 24px; margin-top: 32px; }
-.onboarding-field { display: grid; gap: 8px; min-width: 0; }
-.onboarding-label { display: block; font-size: 14px; font-weight: 500; line-height: 1.6; }
-.yx-onboarding .onboarding-input { width: 100%; min-height: 48px; height: calc(1.5em + 24px); padding: 0 14px; border: 1px solid var(--v2-mut); border-radius: 10px; background: var(--v2-card); color: var(--v2-ink); font-size: 16px; line-height: 1.5; }
+.onboarding-hero { display: grid; gap: 16px; padding: calc(4px + env(safe-area-inset-top)) 24px 24px; }
+.onboarding-topline { position: relative; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.onboarding-brand { display: flex; min-width: 0; flex: 1; align-items: center; gap: 10px; color: var(--v2-ink); }
+.onboarding-logo { position: relative; width: 40px; height: 40px; flex: none; }
+.onboarding-logo-glow { position: absolute; left: -12px; top: -12px; }
+.onboarding-brand .app-icon { position: relative; display: block; width: 40px; height: 40px; }
+.onboarding-brand-copy { display: flex; flex-flow: row wrap; align-items: center; column-gap: 8px; min-width: 0; }
+.onboarding-brand-name { font-size: 22px; font-weight: 700; line-height: 22px; white-space: nowrap; }
+.onboarding-mark { color: var(--yx-auth-wordmark, #6b45b2); font-size: 11px; font-weight: 500; line-height: 15px; white-space: nowrap; }
+.yx-onboarding .onboarding-more { display: inline-flex; width: 44px; height: 44px; min-width: 44px; min-height: 44px; margin: 0; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--yx-auth-glass-border, rgba(255, 255, 255, 0.85)); border-radius: 14px; background: rgba(255, 255, 255, 0.55); box-shadow: 0 4px 12px rgba(89, 53, 184, 0.13); backdrop-filter: blur(var(--yx-auth-blur, 10px)); -webkit-backdrop-filter: blur(var(--yx-auth-blur, 10px)); }
+.yx-onboarding[data-theme="dark"] .onboarding-more { background: var(--yx-auth-glass, rgba(43, 37, 67, 0.88)); }
+.yx-onboarding[data-theme="high-contrast"] .onboarding-more { background: var(--yx-surface-card); box-shadow: none; backdrop-filter: none; }
+.onboarding-account-menu { position: absolute; top: 52px; right: 0; z-index: 4; display: flex; flex-direction: column; align-items: stretch; min-width: 160px; padding: 8px; border: 1px solid var(--yx-auth-glass-border, var(--v2-line)); border-radius: 16px; background: var(--yx-auth-glass, var(--v2-card)); box-shadow: var(--yx-auth-shadow-card, var(--v2-shadow)); }
+.onboarding-progress { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; width: 100%; min-width: 0; min-height: 28px; }
+.onboarding-progress-item { position: relative; display: flex; flex: none; align-items: center; gap: 4px; color: var(--v2-mut); font-size: 12px; line-height: 16px; white-space: nowrap; }
+.onboarding-step-label { white-space: nowrap; }
+.onboarding-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.onboarding-step-number { display: flex; width: 24px; height: 24px; flex: none; align-items: center; justify-content: center; border: 1.5px solid var(--v2-line); border-radius: 12px; background: var(--v2-card); font-size: 12px; font-weight: 500; }
+.onboarding-progress-item.is-current, .onboarding-progress-item.is-done { color: var(--v2-ink); font-weight: 500; }
+.onboarding-progress-item.is-current .onboarding-step-number { border-color: transparent; background: var(--v2-brand); color: var(--v2-inverse); font-weight: 700; box-shadow: 0 3px 8px rgba(89, 53, 184, 0.25); }
+.onboarding-progress-item.is-done .onboarding-step-number { border-color: transparent; background: var(--v2-brand); color: var(--v2-inverse); }
+.onboarding-step-line { flex: 1 1 4px; height: 2px; min-width: 4px; border-radius: 1px; background: var(--v2-line); }
+.onboarding-progress-item.is-done + .onboarding-step-line, .onboarding-step-line:has(+ .onboarding-progress-item.is-done), .onboarding-step-line:has(+ .onboarding-progress-item.is-current) { background: var(--v2-brand); }
+.onboarding-title { display: block; font-size: 24px; font-weight: 700; line-height: 40px; letter-spacing: .5px; }
+.onboarding-description { display: block; color: var(--v2-mut); font-size: 14px; line-height: 21px; }
+.onboarding-panel { display: flex; flex-direction: column; flex: 1 1 auto; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 24px 24px calc(32px + env(safe-area-inset-bottom)); border: 1px solid var(--yx-auth-glass-border, rgba(255, 255, 255, 0.72)); border-radius: 28px 28px 20px 20px; background: var(--yx-auth-glass, rgba(250, 247, 255, 0.74)); box-shadow: var(--yx-auth-shadow-card, 0 6px 16px rgba(89, 53, 184, 0.08), 0 -12px 16px -2px rgba(42, 22, 96, 0.14)); backdrop-filter: blur(var(--yx-auth-blur, 10px)); -webkit-backdrop-filter: blur(var(--yx-auth-blur, 10px)); }
+.onboarding-form { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
+/* #ifdef H5 */
+/* uni-h5 Form renders uni-form > span around the slot, so this span has to carry the column. */
+.onboarding-form > :deep(span) { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; width: 100%; }
+/* #endif */
+.onboarding-body { display: flex; flex: 1 1 auto; flex-direction: column; row-gap: 16px; min-width: 0; }
+.onboarding-spacer { flex: 1 1 auto; min-height: 16px; }
+.onboarding-field, .onboarding-note-copy, .onboarding-record-copy { display: grid; gap: 8px; min-width: 0; }
+.onboarding-label, .onboarding-choice-label, .onboarding-note-title { display: block; font-size: 14px; font-weight: 700; line-height: 22px; }
+.onboarding-year-control { position: relative; }
+.yx-onboarding .onboarding-input { width: 100%; min-height: 48px; height: 48px; padding: 0 42px 0 14px; border: 1px solid var(--v2-mut); border-radius: 14px; background: var(--v2-card); color: var(--v2-ink); font-size: 16px; font-weight: 600; line-height: 19px; }
 .onboarding-input :deep(.uni-input-input), .onboarding-input :deep(.uni-input-placeholder) { font: inherit; color: inherit; }
-.onboarding-input :deep(.uni-input-placeholder) { color: var(--v2-mut); }
+.onboarding-input :deep(.uni-input-placeholder) { color: var(--v2-mut); font-weight: 400; }
+.onboarding-year-unit { position: absolute; top: 0; right: 14px; height: 48px; display: flex; align-items: center; color: var(--v2-mut); font-size: 14px; pointer-events: none; }
 .onboarding-input.is-invalid { border-color: var(--v2-bad); }
 .onboarding-input:focus-within { outline: 2px solid var(--v2-brand); outline-offset: 2px; }
-.onboarding-check-row { display: flex; min-height: 44px; align-items: center; gap: 12px; padding: 8px 0; font-size: 14px; cursor: pointer; }
+.onboarding-hint, .onboarding-help { color: var(--v2-mut); font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }
+.onboarding-center { text-align: center; }
+.onboarding-check-row { display: flex; min-height: 44px; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; cursor: pointer; }
 .onboarding-check-row checkbox { display: flex; flex: none; width: 44px; min-width: 44px; height: 44px; align-items: center; justify-content: center; }
-.onboarding-check-row :deep(.uni-checkbox-input) { border-color: var(--v2-mut); background-color: var(--v2-card); }
-.onboarding-check-row checkbox:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 2px; border-radius: 4px; }
-.yx-onboarding .onboarding-primary { display: flex; width: 100%; min-height: 48px; padding: 12px 20px; margin: 0; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; background: var(--v2-brand); color: var(--v2-inverse); font-size: 16px; font-weight: 600; line-height: 1.5; box-shadow: none; }
-.yx-onboarding .onboarding-primary:active:not([disabled]) { background: var(--v2-brand2); transform: none; }
-.yx-onboarding .onboarding-text { display: inline-flex; min-height: 44px; min-width: 44px; padding: 8px 0; margin: 0; align-items: center; justify-content: center; background: transparent; border: 0; border-radius: 0; color: var(--v2-brand); font-size: 14px; font-weight: 500; line-height: 1.6; }
-.onboarding-choices { display: grid; gap: 12px; }
-.yx-onboarding .onboarding-choice { display: grid; gap: 6px; width: 100%; margin: 0; padding: 14px 16px; min-height: 44px; border: 1px solid var(--v2-mut); border-radius: 10px; background: var(--v2-card); color: var(--v2-ink); text-align: left; font-size: 16px; line-height: 1.5; }
-.onboarding-choice-title, .onboarding-record-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.onboarding-quotas { --quota-basis: calc(50% - 6px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(6.5em, var(--quota-basis))), 1fr)); gap: 12px; font-size: 16px; }
-.yx-onboarding .onboarding-quota { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 48px; margin: 0; padding: 10px; border: 1px solid var(--v2-mut); border-radius: 10px; background: var(--v2-card); color: var(--v2-ink); font-size: 16px; line-height: 1.5; }
-.onboarding-quota { word-break: normal; overflow-wrap: normal; }
-.yx-onboarding .is-selected { border-color: var(--v2-brand); background: var(--v2-soft); }
-.onboarding-record { display: grid; gap: 6px; padding-bottom: 16px; border-bottom: 1px solid var(--v2-line); font-size: 14px; }
+.onboarding-check-row :deep(.uni-checkbox-input) { width: 20px; height: 20px; border-color: var(--v2-mut); border-radius: 6px; background-color: var(--v2-card); }
+.onboarding-check-row checkbox:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 2px; border-radius: 6px; }
+.onboarding-note-card, .onboarding-tip { box-sizing: border-box; width: 100%; border: 1px solid var(--closed-card-border, rgba(255, 255, 255, 0.9)); background: var(--closed-card-bg, rgba(255, 255, 255, 0.62)); box-shadow: var(--closed-card-shadow, 0 6px 16px -2px rgba(42, 22, 96, 0.09)); }
+.onboarding-note-card { display: flex; gap: 10px; align-items: flex-start; padding: 12px 8px 12px 14px; border-radius: 16px; }
+.onboarding-note-badge { display: flex; width: 24px; height: 24px; flex: none; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(135deg, #c4b5fd 0%, #5935b8 71.429%); box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.7), 0 3px 8px rgba(89, 53, 184, 0.5); }
+.onboarding-tip { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; }
+.onboarding-tip-row { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.onboarding-note-title { color: var(--v2-brand); }
+.onboarding-tip .onboarding-note-title { color: var(--v2-ink); }
+.yx-onboarding[data-theme="high-contrast"] .onboarding-note-badge { background: var(--v2-brand); box-shadow: none; }
+.yx-onboarding .onboarding-primary { display: flex; width: 100%; min-height: 48px; padding: 14px 20px; margin: 0; align-items: center; justify-content: center; border: 0; border-radius: 14px; background: var(--v2-grad); color: var(--v2-inverse); font-size: 16px; font-weight: 700; line-height: 1.5; }
+.yx-onboarding .onboarding-text { display: inline-flex; min-height: 44px; min-width: 44px; padding: 8px; margin: 0; align-items: center; justify-content: center; gap: 6px; background: transparent; border: 0; color: var(--v2-brand); font-size: 14px; font-weight: 500; line-height: 20px; }
+.onboarding-choices { display: grid; gap: 8px; }
+.yx-onboarding .onboarding-choice { display: flex; gap: 12px; width: 100%; margin: 0; padding: 12px 16px 12px 14px; min-height: 70px; align-items: center; border: 1px solid var(--v2-mut); border-radius: 16px; background: var(--v2-card); color: var(--v2-ink); text-align: left; }
+.onboarding-choice-copy { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.onboarding-choice-label { font-size: 16px; }
+.onboarding-goal-art { display: flex; width: 44px; height: 44px; flex: none; align-items: center; justify-content: center; border-radius: 14px; background: var(--v2-soft); }
+.onboarding-radio { display: flex; width: 22px; height: 22px; flex: none; align-items: center; justify-content: center; border: 1.5px solid var(--v2-mut); border-radius: 11px; background: var(--v2-card); }
+.onboarding-radio.is-selected { border-color: var(--v2-brand); background: var(--v2-brand); }
+.yx-onboarding .is-selected.onboarding-choice { border: 2px solid var(--v2-brand); background: var(--v2-soft); }
+.onboarding-quotas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--v2-surface); }
+.yx-onboarding .onboarding-quota { display: flex; min-height: 44px; margin: 0; padding: 8px; align-items: center; justify-content: center; border: 1px solid var(--v2-mut); border-radius: 12px; background: var(--v2-card); color: var(--v2-ink); font-size: 14px; font-weight: 500; line-height: 20px; text-align: center; overflow-wrap: anywhere; }
+.yx-onboarding .onboarding-quota.is-selected { border-color: transparent; background: var(--v2-grad); color: var(--v2-inverse); font-weight: 700; }
+.onboarding-record { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--v2-line); border-radius: 16px; background: var(--v2-card); }
+.onboarding-record-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; line-height: 22px; }
+.onboarding-tag { padding: 1px 6px; border-radius: 6px; background: var(--v2-soft); color: var(--v2-brand); font-size: 12px; font-weight: 500; line-height: 16px; }
 .onboarding-provenance { display: grid; gap: 8px; font-size: 13px; color: var(--v2-mut); overflow-wrap: anywhere; }
-.onboarding-blocked, .onboarding-status { display: block; color: var(--v2-mut); font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
-.onboarding-status { margin-top: 16px; }
+.onboarding-blocked, .onboarding-status { display: block; color: var(--v2-mut); font-size: 14px; line-height: 21px; overflow-wrap: anywhere; }
 .onboarding-error { display: block; font-size: 14px; line-height: 1.6; color: var(--v2-bad); overflow-wrap: anywhere; }
 .onboarding-error.is-clear { visibility: hidden; }
-.onboarding-summary { display: grid; gap: 20px; }
-.onboarding-summary > view { display: grid; gap: 4px; }
-.onboarding-exits { display: grid; gap: 4px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--v2-line); }
-.yx-onboarding button[disabled] { opacity: .6; cursor: default; }
-.yx-onboarding button:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 3px; }
-@media (max-width: 520px) { .onboarding-progress { grid-template-columns: 1fr; margin-bottom: 32px; } .onboarding-progress-item { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; } .onboarding-step-number { flex: none; width: 2em; height: 2em; } .onboarding-progress-copy { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; } }
-@media (min-width: 521px) { .yx-page.yx-onboarding { padding: calc(32px + env(safe-area-inset-top)) 32px calc(64px + env(safe-area-inset-bottom)); } .onboarding-topline { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 64px; } .onboarding-quotas { --quota-basis: calc(25% - 9px); } }
+.onboarding-summary { display: grid; gap: 14px; padding: 16px; border: 1px solid var(--v2-line); border-radius: 22px; background: var(--v2-card); }
+.onboarding-summary-head, .onboarding-summary-row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.onboarding-summary-head { justify-content: space-between; }
+.onboarding-exits { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+.yx-onboarding button[disabled] { opacity: .55; cursor: default; }
+.yx-onboarding button:focus-visible, .yx-onboarding .onboarding-exits:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 3px; }
+@media (max-width: 359px) {
+  /* 390 keeps the three labels on one row. Narrow frames may wrap that row; they do not add a status line. */
+  .onboarding-hero { padding-left: 12px; padding-right: 12px; }
+  .onboarding-panel { padding-left: 16px; padding-right: 16px; }
+  .onboarding-progress { flex-wrap: wrap; row-gap: 8px; }
+  .onboarding-quotas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .onboarding-particles { left: auto; right: 0; }
+}
+.yx-onboarding[data-theme="high-contrast"] .onboarding-progress-item.is-current .onboarding-step-number { box-shadow: none; }
+.yx-onboarding[data-motion="reduced"] .onboarding-scene,
+.yx-onboarding[data-motion="off"] .onboarding-scene { display: none; }
+.yx-onboarding[data-motion="reduced"] .onboarding-panel,
+.yx-onboarding[data-motion="off"] .onboarding-panel,
+.yx-onboarding[data-motion="reduced"] .onboarding-more,
+.yx-onboarding[data-motion="off"] .onboarding-more,
+.yx-onboarding[data-motion="reduced"] .onboarding-note-card,
+.yx-onboarding[data-motion="off"] .onboarding-note-card,
+.yx-onboarding[data-motion="reduced"] .onboarding-tip,
+.yx-onboarding[data-motion="off"] .onboarding-tip { backdrop-filter: none; -webkit-backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .yx-onboarding * { transition: none; animation: none; } }
 </style>

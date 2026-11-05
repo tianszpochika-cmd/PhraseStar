@@ -356,7 +356,7 @@
       "name": "成人门、同意与目标",
       "owner": "GROK",
       "wave": "G1",
-      "status": "SCOPED_H5_PASS_CONSENT_AUTHORITY_AND_QA_OPEN",
+      "status": "LOCAL_H5_PARTIAL_CONSENT_AUTHORITY_OPEN",
       "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
       "services_data_owners": [
         "iam-service",
@@ -427,17 +427,17 @@
         "onboarding-resume.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "LOCAL_H5_SCOPED_PASS",
+        "interaction": "LOCAL_H5_SCOPED_PASS_FIRST_CONSENT_OPEN",
+        "h5": "BUILD_PASS",
+        "cross_viewport": "LOCAL_H5_128_LAYOUTS_PASS",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B48-ONBOARDING.md"
       },
       "pause_handoff": "PAUSE-20261104.md",
-      "current_job": "grok/resume-20261105-onboarding-production-observer-09",
+      "current_job": null,
       "resume_evidence_20261105": "layout13 + smoke4 + flow15 + boundary8 + matrix128 + restoring2, separate goal6; compiled private-internals cases being adapted"
     },
     {
@@ -2921,7 +2921,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T07:47:14.697608+00:00",
+  "updated_at": "2026-11-05T07:52:18.029301+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4280,6 +4280,16 @@
     "evidence": "evidence/ROOT-B47-LEARN-20261105.json",
     "review": "reviews/INTEGRATION-B47-LEARN.md",
     "routeCountDelta": 1,
+    "localUICandidateRoutes": 25,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_48_onboarding": {
+    "status": "LOCAL_H5_PARTIAL_CONSENT_AUTHORITY_OPEN",
+    "buildIndex": "61a79d80525d84c40c0da8f112871aa2c1ed3f696e3eff62e8ee2846fb9580a8",
+    "evidence": "evidence/ROOT-B48-ONBOARDING-20261105.json",
+    "review": "reviews/INTEGRATION-B48-ONBOARDING.md",
+    "routeCountDelta": 0,
     "localUICandidateRoutes": 25,
     "formalRoutes": 33,
     "doD": false
