@@ -1,0 +1,60 @@
+{
+  "batch": "B102",
+  "at": "2026-11-06T05:12:50.806949+08:00",
+  "integration_base": "4753845929b18c42038e916e1cb691257fdba72b",
+  "implementation": [
+    "Grok CLI 118",
+    "Grok CLI 122"
+  ],
+  "frozen_files": [
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentOutboxRelay.java",
+      "sha256": "be9cf6b30bed66f607ef9533e4b51b11e32cf5912fae8c2b75202bce711bdd39",
+      "bytes": 14541
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/port/AssessmentOutboxRelayPort.java",
+      "sha256": "5046e404d9558e3a2214aa34ea977204d61cb002319bfd2d4781a23c4db52a0a",
+      "bytes": 2767
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentOutboxRelayTest.java",
+      "sha256": "63615e630e2fe0fb9a27c2335606298910cbe9db6a43862602e65254d34a4006",
+      "bytes": 39454
+    }
+  ],
+  "source_trace": {
+    "mobile": [
+      "MB-011",
+      "MB-016"
+    ],
+    "cards": [
+      "R1-048",
+      "R1-050"
+    ],
+    "owner": "assessment-service",
+    "contract": "assessment.item.assessed.v2 / assessment.event.v2",
+    "trace_status": "TRACE_PENDING"
+  },
+  "offline_maven": {
+    "passed": 158,
+    "opt_in_skipped": 6,
+    "failures": 0
+  },
+  "real_mysql": {
+    "version": "8.0",
+    "owner_schema_version": 12,
+    "passed": 4,
+    "skipped": 0,
+    "stale_lease_fenced": true,
+    "claim_budget": 5,
+    "legacy_rows_preserved": true,
+    "two_connections_skip_locked": true,
+    "receipt_sha256": "cba800ab471e21325e8a3af17af0b589682056548d01dbc8e700ba89f1e76dbf",
+    "process_receipt_sha256": "d57052c9197e102df2bb2e6507a89617bf162c134c6a8c28d76f19720a3ae24e",
+    "release": "PASS"
+  },
+  "runtime_activation": "DORMANT",
+  "broker_and_learning_consumption": "NOT_RUN",
+  "device_and_deployment": "NOT_RUN"
+}

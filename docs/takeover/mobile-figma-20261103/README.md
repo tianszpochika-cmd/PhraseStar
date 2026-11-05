@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [测评事件领取 B102](reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md) 实际 MySQL 的四项领取和租约检查通过。发布与消费继续验收。
 - [测评事件编号 B97](reviews/INTEGRATION-B97-ASSESSMENT-EVENT-CORRELATION.md) 逐题事件信封和正文通过编译后校验，消息消费仍待验。
 - [定级主题 B100](reviews/INTEGRATION-B100-ASSESSMENT-THEME.md) 暗色与高对比组件样式通过 34 项受控浏览器检查。
 - [今日高对比 B99](reviews/INTEGRATION-B99-TODAY-HIGH-CONTRAST.md) 亮色、暗色、高对比与放大文字的 13 个受控视口通过。

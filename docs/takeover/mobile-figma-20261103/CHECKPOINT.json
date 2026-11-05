@@ -5751,5 +5751,14 @@
     "disposable_avds_removed": 2,
     "device_app_host_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B101-ANDROID-SIMULATOR-KEYSTORE-20261106.json"
+  },
+  "integration_batch_102_assessment_outbox_lease": {
+    "state": "ACCEPTED_DORMANT_ASSESSMENT_OWNER_MYSQL_RELAY",
+    "mysql": "4/4",
+    "stale_lease_fenced": true,
+    "two_connections_skip_locked": true,
+    "attempt_budget": 5,
+    "broker_learning_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B102-ASSESSMENT-OUTBOX-LEASE-20261106.json"
   }
 }

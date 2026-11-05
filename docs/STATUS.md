@@ -10,6 +10,8 @@
 
 移动端 B87 本机定级会话创建和读回通过，真实目标与题库版本绑定，数据库确认 1 条会话和 0 条答案。B88 首题评分、同键重试和第二题读回通过，B89 当前 H5 复验通过，真实目标读回后键盘创建会话并显示首题。B90 本机十题定级和报告读回通过。B91 本机学习计划创建、同键重试及今日任务读回通过。B96 本机 H5 整轮作答、报告、自动计划及今日记录通过。B100 定级页暗色和高对比修正通过 34 项受控 H5 检查。真机和部署单列。[定级主题 B100](takeover/mobile-figma-20261103/reviews/INTEGRATION-B100-ASSESSMENT-THEME.md)[学习计划 B91](takeover/mobile-figma-20261103/reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md)[定级 B87](takeover/mobile-figma-20261103/reviews/INTEGRATION-B49-ASSESSMENT.md#b87-本机定级会话创建和读回)
 
+移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。Kafka 发布、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
+
 移动端 B93 修正了「今日任务」误显示空态的问题。学习服务确认的到期条目进入就绪清单。原有课程任务导航与空态通过受控回归。真实浏览器确认三条到期记录逐项一致。B99 今日页 13 个受控视口场景通过，含四种高对比视口。练习完成与学习进度继续验收。[完整 H5 B96](takeover/mobile-figma-20261103/reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md)
 
 ## 分支
