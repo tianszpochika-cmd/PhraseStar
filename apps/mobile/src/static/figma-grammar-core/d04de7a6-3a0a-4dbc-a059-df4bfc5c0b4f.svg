@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon/hourglass">
+<path id="Vector" d="M3.75 16.5H14.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#606277"/>
+<path id="Vector_2" d="M3.75 1.5H14.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#606277"/>
+<path id="Vector_3" d="M12.75 16.5V13.35C12.7444 12.9543 12.5826 12.5769 12.3 12.3L9 9L5.7 12.3C5.41738 12.5769 5.25564 12.9543 5.25 13.35V16.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#606277"/>
+<path id="Vector_4" d="M5.25 1.5V4.65C5.25564 5.04565 5.41738 5.42305 5.7 5.7L9 9L12.3 5.7C12.5826 5.42305 12.7444 5.04565 12.75 4.65V1.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#606277"/>
+</g>
+</svg>

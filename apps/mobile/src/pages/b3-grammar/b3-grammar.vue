@@ -1,235 +1,416 @@
 <script setup lang="ts">
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
+import { interpolate } from '@englishflow/i18n'
+import type { PerformanceLevel } from '@englishflow/performance'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
-const { experienceStyle, experienceMotion } = useMobileExperience()
-
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { createAdaptivePerformanceEngine, type PerformanceLevel } from '@englishflow/performance'
 import B10ExerciseCard from '../../components/b10/B10ExerciseCard.vue'
-import B10FeedbackCard from '../../components/b10/B10FeedbackCard.vue'
-import B10StatusPanel from '../../components/b10/B10StatusPanel.vue'
-import type { B10AnswerInput, B10AssessmentSession, B10GrammarPoint, B10RuleFeedback, B10SyntaxGraph, B10WritingPrompt } from '../../domain/b10'
+import type { B10AnswerInput, B10AssessmentSession, B10GrammarPoint, B10RuleFeedback, B10SyntaxGraph } from '../../domain/b10'
 import { b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../../api/b10'
-import { packNotice } from '../../domain/grammar-reading-pack'
-import { b10ContentLocale, b10ThemeMode, b10T, b10UiLocale } from '../../platform/b10-foundation'
+import { grammarClosedDraftKey, grammarExerciseProgress, grammarGraphState, grammarPointExamples, isLocalGrammarSession } from '../../domain/grammar-page'
+import { grammarAssets, grammarExamplePage, grammarGlowAsset, grammarInitialView, grammarPointIcon, grammarPrerequisiteTitles, grammarRouteMatches, grammarShowsPractice, grammarViewBack, type GrammarViewName } from '../../domain/grammar-view'
+import { ensureMobilePageAccess } from '../../auth/navigation'
+import { b10ContentLocale, b10ThemeMode, b10UiLocale } from '../../platform/b10-foundation'
+import { mobileExperienceEngine, mobileT, useMobileExperience } from '../../platform/experience'
 import { getUniRuntime } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
 
+const PAGE_PATH = '/pages/b3-grammar/b3-grammar'
+const { experienceStyle, experienceMotion } = useMobileExperience()
 const session = useSessionStore()
-const engine = createAdaptivePerformanceEngine()
-const performanceLevel = ref<PerformanceLevel>(engine.level)
+const performanceLevel = ref<PerformanceLevel>(mobileExperienceEngine.level)
+const unsubscribePerformance = mobileExperienceEngine.subscribe((state) => { performanceLevel.value = state.level })
 const status = ref<'idle' | 'loading' | 'ready' | 'empty' | 'offline' | 'forbidden' | 'stale' | 'error'>('idle')
 const message = ref<string | null>(null)
 const points = ref<B10GrammarPoint[]>([])
 const activePoint = ref<B10GrammarPoint | null>(null)
 const graph = ref<B10SyntaxGraph | null>(null)
+const graphFailed = ref(false)
+const graphNotice = ref<string | null>(null)
 const grammarSession = ref<B10AssessmentSession | null>(null)
-const blockOrder = ref<string[]>([])
-const slotValues = ref<Record<string, string>>({})
 const feedback = ref<B10RuleFeedback | null>(null)
-const correctionPrompt = ref<B10WritingPrompt | null>(null)
-const correctionAnswer = ref('')
+const selectedOption = ref<string | null>(null)
+const exerciseIndex = ref(0)
+const exampleIndex = ref(0)
+const submitting = ref(false)
+const completed = ref(false)
+const visible = ref(false)
+const screen = ref<GrammarViewName>(grammarInitialView())
+const catalogOnly = ref(false)
 let grammarSelectionRequest = 0
-interface MobileGrammarDraft {
-  selectedPointId: number | null
-  blockOrders: Record<string, string[]>
-  slotValues: Record<string, Record<string, string>>
-  contentVersions: Record<string, number | null>
-}
+let deeplinkPointId: number | null = null
+let backCaptureBound = false
+const sessionCache = new Map<number, B10AssessmentSession>()
+let draft: MobileGrammarDraft = emptyGrammarDraft()
+interface MobileGrammarDraft { selectedPointId: number | null; contentVersions: Record<string, number | null> }
 const GRAMMAR_DRAFT_KEY = 'yx.b10.mobile.grammar-draft.v1'
-const grammarDraft = ref<MobileGrammarDraft>(emptyGrammarDraft())
 const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
-const exercise = computed(() => grammarSession.value?.exercises.find((item) => item.position === 0) ?? grammarSession.value?.exercises[0] ?? null)
-const grammarPackNotice = computed(() => packNotice('GRAMMAR', grammarSession.value?.exercises.length ?? 0, message.value))
-const linearMode = computed(() => performanceLevel.value === 'Performance' || graph.value?.graphStatus === 'DEGRADED')
 const context = computed(() => ({ uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }))
+const exercises = computed(() => grammarSession.value?.exercises ?? [])
+const exercise = computed(() => exercises.value[exerciseIndex.value] ?? null)
+const total = computed(() => exercises.value.length)
+const localSession = computed(() => isLocalGrammarSession(grammarSession.value))
+const linearMode = computed(() => performanceLevel.value === 'Performance' || graph.value?.graphStatus === 'DEGRADED')
+const graphState = computed(() => grammarGraphState(graph.value, activePoint.value?.sentenceId ?? null, graphFailed.value))
+const answerBusy = computed(() => submitting.value || feedback.value !== null)
+const progressText = computed(() => grammarExerciseProgress(exerciseIndex.value, total.value))
+const closedDraftKey = computed(() => grammarClosedDraftKey(draft))
+const pointExamples = computed(() => grammarPointExamples(activePoint.value))
+const examplePage = computed(() => grammarExamplePage(pointExamples.value, exampleIndex.value))
+const prerequisiteTitles = computed(() => grammarPrerequisiteTitles(activePoint.value?.prerequisites ?? [], points.value))
+const practiceVisible = computed(() => grammarShowsPractice(screen.value))
+const glowSrc = computed(() => grammarGlowAsset(screen.value, status.value === 'empty'))
+const answerEventIds = ref<Record<string, string>>({})
+const helpNotes = computed(() => [
+  { title: grammarT('tipLowTitle'), body: grammarT('tipLowBody'), dot: grammarAssets.dotLow },
+  { title: grammarT('tipContainsTitle'), body: grammarT('tipContainsBody'), dot: grammarAssets.dotContains },
+  { title: grammarT('tipUpdatesTitle'), body: grammarT('tipUpdatesBody'), dot: grammarAssets.dotUpdates },
+])
+let grammarHeadingScreen: GrammarViewName | null = null
+function bindGrammarFocus(): void {
+  if (typeof document === 'undefined') return
+  for (const el of document.querySelectorAll('.v2-grammar-page .grammar-button, .v2-grammar-page .grammar-option, .v2-grammar-page .grammar-point')) {
+    if (el instanceof HTMLElement && el.tabIndex < 0) el.tabIndex = 0
+  }
+  const heading = document.querySelector('.v2-grammar-page .grammar-heading')
+  if (!(heading instanceof HTMLElement) || grammarHeadingScreen === screen.value) return
+  grammarHeadingScreen = screen.value
+  heading.focus({ preventScroll: true })
+}
+function grammarT(key: string, values?: Record<string, unknown>): string { const text = mobileT(`grammarPage.${key}`); return values ? interpolate(text, values) : text }
 function isRecord(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null && !Array.isArray(value) }
-function emptyGrammarDraft(): MobileGrammarDraft { return { selectedPointId: null, blockOrders: {}, slotValues: {}, contentVersions: {} } }
+function emptyGrammarDraft(): MobileGrammarDraft { return { selectedPointId: null, contentVersions: {} } }
 type AccountScope = { subject: string; revision: number }
-function accountScope(): AccountScope | null {
-  return session.isAuthenticated && session.verifiedSubject
-    ? { subject: session.verifiedSubject, revision: session.identityRevision } : null
+function accountScope(): AccountScope | null { return session.isAuthenticated && session.verifiedSubject ? { subject: session.verifiedSubject, revision: session.identityRevision } : null }
+function routeAllowsPaint(): boolean {
+  if (typeof getCurrentPages !== 'function') return true
+  const pages = getCurrentPages()
+  if (!pages.length) return true
+  const route = pages[pages.length - 1]?.route
+  return grammarRouteMatches(typeof route === 'string' ? route : '', PAGE_PATH)
 }
 function isCurrent(scope: AccountScope | null): scope is AccountScope {
-  return Boolean(scope && session.isAuthenticated && session.verifiedSubject === scope.subject && session.identityRevision === scope.revision)
+  return Boolean(scope && visible.value && routeAllowsPaint() && session.isAuthenticated && session.verifiedSubject === scope.subject && session.identityRevision === scope.revision)
 }
-function clearPage(): void {
-  grammarSelectionRequest += 1
-  points.value = []; activePoint.value = null; graph.value = null; grammarSession.value = null
-  blockOrder.value = []; slotValues.value = {}; feedback.value = null
-  correctionPrompt.value = null; correctionAnswer.value = ''; grammarDraft.value = emptyGrammarDraft()
-  status.value = 'idle'; message.value = null
+function clearTransient(): void {
+  grammarSession.value = null; activePoint.value = null; graph.value = null; graphFailed.value = false; graphNotice.value = null
+  feedback.value = null; selectedOption.value = null; exerciseIndex.value = 0; exampleIndex.value = 0; submitting.value = false; completed.value = false
+  screen.value = grammarInitialView(); catalogOnly.value = false
 }
-function readGrammarDraft(): MobileGrammarDraft {
-  const draft = emptyGrammarDraft()
-  const scope = accountScope()
-  if (!isCurrent(scope)) return draft
+function clearPage(): void { grammarSelectionRequest += 1; points.value = []; sessionCache.clear(); clearTransient(); draft = emptyGrammarDraft(); status.value = 'idle'; message.value = null }
+function readDraft(): MobileGrammarDraft {
+  const next = emptyGrammarDraft(); const scope = accountScope(); if (!isCurrent(scope)) return next
   try {
     const raw = getUniRuntime().getStorageSync(GRAMMAR_DRAFT_KEY)
-    if (typeof raw !== 'string') return draft
+    if (typeof raw !== 'string') return next
     const parsed: unknown = JSON.parse(raw)
-    if (!isRecord(parsed)) return draft
-    if (parsed.subject !== scope.subject) { getUniRuntime().removeStorageSync(GRAMMAR_DRAFT_KEY); return draft }
-    draft.selectedPointId = typeof parsed.selectedPointId === 'number' && Number.isInteger(parsed.selectedPointId) ? parsed.selectedPointId : null
-    if (isRecord(parsed.blockOrders)) for (const [key, value] of Object.entries(parsed.blockOrders)) if (Array.isArray(value) && value.every((item): item is string => typeof item === 'string')) draft.blockOrders[key] = [...value]
-    if (isRecord(parsed.slotValues)) for (const [sentenceId, value] of Object.entries(parsed.slotValues)) if (isRecord(value)) draft.slotValues[sentenceId] = Object.fromEntries(Object.entries(value).flatMap(([key, item]) => typeof item === 'string' ? [[key, item]] : []))
-    if (isRecord(parsed.contentVersions)) for (const [sentenceId, value] of Object.entries(parsed.contentVersions)) if (value === null || (typeof value === 'number' && Number.isSafeInteger(value))) draft.contentVersions[sentenceId] = value as number | null
+    if (!isRecord(parsed) || parsed.subject !== scope.subject) { getUniRuntime().removeStorageSync(GRAMMAR_DRAFT_KEY); return next }
+    next.selectedPointId = typeof parsed.selectedPointId === 'number' && Number.isInteger(parsed.selectedPointId) ? parsed.selectedPointId : null
+    if (isRecord(parsed.contentVersions)) for (const [key, value] of Object.entries(parsed.contentVersions)) if (value === null || (typeof value === 'number' && Number.isSafeInteger(value))) next.contentVersions[key] = value as number | null
   } catch { try { getUniRuntime().removeStorageSync(GRAMMAR_DRAFT_KEY) } catch { /* ignore */ } }
-  return draft
+  return next
 }
-function persistGrammarDraft(): void { const scope = accountScope(); if (!isCurrent(scope)) return; try { getUniRuntime().setStorageSync(GRAMMAR_DRAFT_KEY, JSON.stringify({ subject: scope.subject, ...grammarDraft.value })) } catch { /* best effort local recovery */ } }
-function setPerformance(level: PerformanceLevel): void { engine.setLevel(level, 'manual'); performanceLevel.value = level }
-function moveBlock(index: number, offset: number): void { const target = index + offset; if (target < 0 || target >= blockOrder.value.length) return; const next = [...blockOrder.value]; [next[index], next[target]] = [next[target], next[index]]; blockOrder.value = next }
-async function loadPoint(point: B10GrammarPoint): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope)) return
-  const requestId = ++grammarSelectionRequest
-  activePoint.value = point; grammarDraft.value.selectedPointId = point.grammarPointId; persistGrammarDraft(); graph.value = null; grammarSession.value = null; feedback.value = null; blockOrder.value = []; slotValues.value = {}; status.value = 'loading'; message.value = null
-  try {
-    if (point.sentenceId) {
-      const nextGraph = await b10LearningApi.getSentenceGraph(context.value, point.sentenceId)
-      if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
-      graph.value = nextGraph
-      const versionMatches = Object.hasOwn(grammarDraft.value.contentVersions, String(nextGraph.sentenceId))
-        && grammarDraft.value.contentVersions[String(nextGraph.sentenceId)] === nextGraph.contentVersionId
-      const savedOrder = versionMatches ? grammarDraft.value.blockOrders[String(nextGraph.sentenceId)] : undefined
-      const savedSlots = versionMatches ? grammarDraft.value.slotValues[String(nextGraph.sentenceId)] : undefined
-      const allowedBlockIds = new Set(nextGraph.blockOrder)
-      blockOrder.value = savedOrder?.length === nextGraph.blockOrder.length && savedOrder.every((item) => allowedBlockIds.has(item)) ? [...savedOrder] : [...nextGraph.blockOrder]
-      slotValues.value = { ...nextGraph.imitationSlots }
-      if (savedSlots) for (const [key, value] of Object.entries(savedSlots)) if (key in slotValues.value) slotValues.value[key] = value
-    } else message.value = '当前知识点还没有发布可解析的长难句。'
-    const nextSession = await b10LearningApi.createGrammarSession(context.value, point.grammarPointId, point.contentVersionId, createB10ClientEventId(`grammar-session-${point.grammarPointId}`))
-    if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
-    grammarSession.value = nextSession
-    status.value = graph.value || grammarSession.value.exercises.length ? 'ready' : 'empty'
-  } catch (error) { if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return; const info = b10ErrorInfo(error, '语法服务暂时不可用。'); status.value = info.kind; message.value = info.message }
+function persistDraft(): void { const scope = accountScope(); if (!isCurrent(scope)) return; try { getUniRuntime().setStorageSync(GRAMMAR_DRAFT_KEY, JSON.stringify({ subject: scope.subject, ...draft })) } catch { /* best effort */ } }
+function failure(error: unknown, fallback: string): void { const info = b10ErrorInfo(error, fallback); status.value = info.kind; message.value = info.message }
+function eventIdFor(key: string): string { if (!answerEventIds.value[key]) answerEventIds.value[key] = createB10ClientEventId(key); return answerEventIds.value[key] }
+function pointStill(scope: AccountScope, pointId: number): boolean {
+  return isCurrent(scope) && activePoint.value?.grammarPointId === pointId
+}
+function openDetail(point: B10GrammarPoint): void {
+  const scope = accountScope(); if (!isCurrent(scope)) return
+  grammarSelectionRequest += 1
+  activePoint.value = point
+  draft.selectedPointId = point.grammarPointId
+  persistDraft()
+  graph.value = null; graphFailed.value = false; graphNotice.value = null
+  feedback.value = null; selectedOption.value = null; exerciseIndex.value = 0; exampleIndex.value = 0; completed.value = false
+  grammarSession.value = sessionCache.get(point.grammarPointId) ?? null
+  screen.value = 'detail'; status.value = 'ready'; message.value = null
 }
 async function load(): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope)) return
+  const scope = accountScope(); if (!isCurrent(scope)) return
   const requestId = ++grammarSelectionRequest
-  status.value = 'loading'; message.value = null
+  status.value = 'loading'; message.value = null; points.value = []; sessionCache.clear(); clearTransient()
   try {
+    if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
     const nextPoints = await b10LearningApi.listGrammarPoints(context.value)
     if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
-    const nextCorrectionPrompt = (await b10LearningApi.listWritingPrompts(context.value, 'CORRECTION'))[0] ?? null
-    if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
     points.value = nextPoints
-    correctionPrompt.value = nextCorrectionPrompt
     if (!points.value.length) {
+      if (!isCurrent(scope)) return
       const loose = await b10LearningApi.createGrammarSession(context.value, 0, null, createB10ClientEventId('grammar-unbound'))
       if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return
       grammarSession.value = loose
+      catalogOnly.value = loose.exercises.length > 0
+      screen.value = loose.exercises.length ? 'practice' : 'list'
       status.value = loose.exercises.length ? 'ready' : 'empty'
       return
     }
-    await loadPoint(points.value.find((point) => point.grammarPointId === grammarDraft.value.selectedPointId) ?? points.value[0])
-  } catch (error) { if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return; const info = b10ErrorInfo(error, '语法知识树暂时不可用。'); status.value = info.kind; message.value = info.message }
+    screen.value = 'list'
+    status.value = 'ready'
+    const linked = deeplinkPointId == null ? null : points.value.find((point) => point.grammarPointId === deeplinkPointId) ?? null
+    deeplinkPointId = null
+    if (linked && isCurrent(scope)) openDetail(linked)
+  } catch (error) { if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return; failure(error, grammarT('error')) }
 }
-async function submitBlocks(): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope) || !grammarSession.value || !exercise.value || !graph.value || !blockOrder.value.length) return
-  const requestId = grammarSelectionRequest
-  try { const result = await b10LearningApi.submitGrammarAnswer(context.value, grammarSession.value.sessionId, exercise.value.exerciseId, { orderedTokenIds: [...blockOrder.value] }, graph.value.contentVersionId, createB10ClientEventId(`grammar-blocks-${graph.value.sentenceId}`)); if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready' }
-  catch (error) { if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; const info = b10ErrorInfo(error, '句子积木提交失败，当前顺序已保留。'); status.value = info.kind; message.value = info.message }
+async function openStructure(): Promise<void> {
+  const scope = accountScope(); if (!isCurrent(scope) || !activePoint.value) return
+  const point = activePoint.value
+  const requestId = ++grammarSelectionRequest
+  graph.value = null; graphFailed.value = false; graphNotice.value = null
+  if (point.sentenceId) {
+    try {
+      if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return
+      const nextGraph = await b10LearningApi.getSentenceGraph(context.value, point.sentenceId)
+      if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return
+      graph.value = nextGraph
+      if (nextGraph.graphStatus === 'DEGRADED') graphNotice.value = grammarT('structureUnavailable')
+    } catch { if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return; graphFailed.value = true; graphNotice.value = grammarT('structureUnavailable') }
+  }
+  if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return
+  screen.value = 'structure'
+  status.value = 'ready'
 }
-async function submitImitation(): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope) || !grammarSession.value || !exercise.value || !graph.value) return
-  const requestId = grammarSelectionRequest
-  try { const result = await b10LearningApi.submitGrammarAnswer(context.value, grammarSession.value.sessionId, exercise.value.exerciseId, { text: JSON.stringify(slotValues.value) }, graph.value.contentVersionId, createB10ClientEventId(`grammar-imitation-${graph.value.sentenceId}`)); if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready' }
-  catch (error) { if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; const info = b10ErrorInfo(error, '仿写提交失败，草稿仍保留。'); status.value = info.kind; message.value = info.message }
+async function startPractice(): Promise<void> {
+  const scope = accountScope(); if (!isCurrent(scope) || !activePoint.value || screen.value === 'list') return
+  const point = activePoint.value
+  const cached = sessionCache.get(point.grammarPointId)
+  if (cached) { grammarSession.value = cached; screen.value = 'practice'; status.value = cached.exercises.length ? 'ready' : 'empty'; return }
+  const requestId = ++grammarSelectionRequest
+  status.value = 'loading'; message.value = null
+  try {
+    if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return
+    const nextSession = await b10LearningApi.createGrammarSession(context.value, point.grammarPointId, point.contentVersionId, createB10ClientEventId(`grammar-session-${point.grammarPointId}`))
+    if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return
+    sessionCache.set(point.grammarPointId, nextSession)
+    grammarSession.value = nextSession
+    screen.value = 'practice'
+    status.value = nextSession.exercises.length ? 'ready' : 'empty'
+  } catch (error) { if (requestId !== grammarSelectionRequest || !pointStill(scope, point.grammarPointId)) return; failure(error, grammarT('error')) }
+}
+async function submitChoice(): Promise<void> {
+  const scope = accountScope(); if (!isCurrent(scope) || !practiceVisible.value || !grammarSession.value || !exercise.value || submitting.value || feedback.value) return
+  if (!selectedOption.value) { message.value = grammarT('answerRequired'); return }
+  const requestId = grammarSelectionRequest; const current = exercise.value; const key = `exercise-${current.exerciseId}`
+  submitting.value = true; message.value = null
+  try {
+    if (!isCurrent(scope)) return
+    const result = await b10LearningApi.submitGrammarAnswer(context.value, grammarSession.value.sessionId, current.exerciseId, { selectedOptionKeys: [selectedOption.value] }, activePoint.value?.contentVersionId ?? null, eventIdFor(key))
+    if (requestId !== grammarSelectionRequest || !isCurrent(scope) || !result.savedReceipt) return
+    feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready'
+  } catch (error) { if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return; failure(error, grammarT('error')) }
+  finally { if (requestId === grammarSelectionRequest) submitting.value = false }
 }
 async function submitExerciseAnswer(answer: B10AnswerInput): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope) || !grammarSession.value || !exercise.value) return
-  const requestId = grammarSelectionRequest
-  try { const result = await b10LearningApi.submitGrammarAnswer(context.value, grammarSession.value.sessionId, exercise.value.exerciseId, answer, activePoint.value?.contentVersionId ?? null, createB10ClientEventId(`grammar-exercise-${exercise.value.exerciseId}`)); if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready' }
-  catch (error) { if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; const info = b10ErrorInfo(error, '语法练习提交失败，答案仍保留。'); status.value = info.kind; message.value = info.message }
+  const scope = accountScope(); if (!isCurrent(scope) || !practiceVisible.value || !grammarSession.value || !exercise.value || submitting.value || feedback.value) return
+  const requestId = grammarSelectionRequest; const current = exercise.value; const key = `exercise-${current.exerciseId}`
+  submitting.value = true; message.value = null
+  try {
+    if (!isCurrent(scope)) return
+    const result = await b10LearningApi.submitGrammarAnswer(context.value, grammarSession.value.sessionId, current.exerciseId, answer, activePoint.value?.contentVersionId ?? null, eventIdFor(key))
+    if (requestId !== grammarSelectionRequest || !isCurrent(scope) || !result.savedReceipt) return
+    feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready'
+  } catch (error) { if (requestId !== grammarSelectionRequest || !isCurrent(scope)) return; failure(error, grammarT('error')) }
+  finally { if (requestId === grammarSelectionRequest) submitting.value = false }
 }
-async function submitCorrection(): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope) || !correctionPrompt.value || !correctionAnswer.value.trim()) return
-  const requestId = grammarSelectionRequest
-  try { const result = await b10LearningApi.submitCorrection(context.value, correctionPrompt.value, correctionAnswer.value, createB10ClientEventId(`correction-${correctionPrompt.value.promptId}`)); if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready' }
-  catch (error) { if (!isCurrent(scope) || requestId !== grammarSelectionRequest) return; const info = b10ErrorInfo(error, '病句改错提交失败，答案仍保留。'); status.value = info.kind; message.value = info.message }
+function nextExercise(): void { if (exerciseIndex.value + 1 < total.value) { exerciseIndex.value += 1; selectedOption.value = null; feedback.value = null; message.value = null } else completed.value = true }
+function shiftExample(step: number): void { if (!examplePage.value || examplePage.value.total < 2) return; exampleIndex.value = examplePage.value.index + step }
+function retreat(): void {
+  const next = grammarViewBack(screen.value, catalogOnly.value)
+  if (next === 'navigate') return
+  grammarSelectionRequest += 1
+  submitting.value = false
+  screen.value = next
+  message.value = null
 }
-watch(() => session.identityRevision, clearPage, { flush: 'sync' })
-onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } grammarDraft.value = readGrammarDraft(); void load() })
-onUnmounted(() => engine.dispose())
-watch(blockOrder, (value) => { if (graph.value) { grammarDraft.value.blockOrders[String(graph.value.sentenceId)] = [...value]; grammarDraft.value.contentVersions[String(graph.value.sentenceId)] = graph.value.contentVersionId; persistGrammarDraft() } }, { deep: true })
-watch(slotValues, (value) => { if (graph.value) { grammarDraft.value.slotValues[String(graph.value.sentenceId)] = { ...value }; grammarDraft.value.contentVersions[String(graph.value.sentenceId)] = graph.value.contentVersionId; persistGrammarDraft() } }, { deep: true })
+function interceptHeaderBack(event: Event): void {
+  if (grammarViewBack(screen.value, catalogOnly.value) === 'navigate') return
+  const target = event.target
+  if (!(target instanceof Element) || !target.closest('.mobile-back')) return
+  event.preventDefault()
+  event.stopPropagation()
+  retreat()
+}
+function bindBackCapture(): void {
+  if (typeof document === 'undefined' || backCaptureBound) return
+  document.addEventListener('click', interceptHeaderBack, true)
+  backCaptureBound = true
+}
+function unbindBackCapture(): void {
+  if (typeof document === 'undefined' || !backCaptureBound) return
+  document.removeEventListener('click', interceptHeaderBack, true)
+  backCaptureBound = false
+}
+function retry(): void { if (status.value === 'forbidden') { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } void load() }
+watch(() => session.identityRevision, () => { clearPage(); if (visible.value && session.isAuthenticated) void load() }, { flush: 'sync' })
+watch([status, screen, () => exercise.value?.exerciseId ?? 0, () => points.value.length], () => { void nextTick(bindGrammarFocus) })
+onLoad((query) => {
+  const source = query as { grammarPointId?: unknown } | undefined
+  const raw = typeof source?.grammarPointId === 'string' ? source.grammarPointId : ''
+  deeplinkPointId = /^[1-9]\d*$/u.test(raw) ? Number(raw) : null
+})
+onShow(async () => {
+  visible.value = true
+  bindBackCapture()
+  status.value = 'loading'; message.value = null
+  if (!await ensureMobilePageAccess(PAGE_PATH)) { status.value = 'forbidden'; return }
+  await session.restore()
+  if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); status.value = 'forbidden'; return }
+  if (!routeAllowsPaint()) { status.value = 'idle'; return }
+  draft = readDraft()
+  await load()
+})
+onHide(() => { visible.value = false; unbindBackCapture(); grammarSelectionRequest += 1; sessionCache.clear(); clearTransient(); status.value = 'idle'; message.value = null })
+onUnmounted(() => { grammarSelectionRequest += 1; unbindBackCapture(); unsubscribePerformance() })
 </script>
 
 <template>
-  <view class="yx-page v2-grammar-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="b3-grammar" />
+  <view class="yx-page v2-grammar-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion" :data-grammar-state="status" :data-grammar-view="screen" :data-grammar-catalog="catalogOnly ? 'true' : 'false'">
+    <image class="grammar-glow" :src="glowSrc" mode="scaleToFill" aria-hidden="true" />
+    <MobilePageHeader page="b3-grammar" compact :title="grammarT('navTitle')" :back-icon-src="grammarAssets.chevronBack" :show-settings="false" />
+    <view class="grammar-scroll">
+      <view v-if="status === 'loading'" class="grammar-skeleton" role="status"><text>{{ grammarT('loading') }}</text><view class="grammar-skeleton-block"/><view class="grammar-skeleton-block"/></view>
+      <view v-else-if="status === 'forbidden'" class="grammar-state grammar-glass" role="alert"><text class="grammar-state-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ grammarT('permission') }}</text><button class="grammar-button" type="button" tabindex="0" role="button" @click="retry">{{ grammarT('back') }}</button></view>
+      <view v-else-if="status === 'offline' || status === 'error' || status === 'stale'" class="grammar-state grammar-glass" role="alert"><text class="grammar-state-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ status === 'offline' ? grammarT('offline') : status === 'stale' ? grammarT('stale') : message ?? grammarT('error') }}</text><button class="grammar-button" type="button" tabindex="0" role="button" @click="retry">{{ grammarT('retry') }}</button></view>
 
-    <view class="v2-grammar-body">
-    <B10StatusPanel class="v2-grammar-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" />
+      <template v-else>
+        <template v-if="screen === 'list' && points.length">
+          <view class="grammar-hero"><text class="grammar-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ grammarT('heroTitle') }}</text><text class="grammar-subtitle">{{ grammarT('heroSubtitle') }}</text></view>
+          <view class="grammar-glass grammar-list-card">
+            <view class="grammar-card-head"><text class="grammar-card-title">{{ grammarT('pointsTitle') }}</text><text class="grammar-count">{{ grammarT('pointsCount', { count: points.length }) }}</text></view>
+            <view class="grammar-point-list">
+              <button v-for="(point, index) in points" :key="point.grammarPointId" type="button" tabindex="0" role="button" class="grammar-point" @click="openDetail(point)">
+                <view class="grammar-point-icon" :class="`grammar-point-icon--${index % 3}`"><image :src="grammarPointIcon(index)" mode="aspectFit" aria-hidden="true" /></view>
+                <view class="grammar-point-copy"><text class="grammar-point-title">{{ point.title }}</text><text class="grammar-meta">{{ point.cefrLevel }} · {{ point.masteryPercent === null ? grammarT('notStarted') : grammarT('mastery', { percent: point.masteryPercent }) }}</text></view>
+                <image class="grammar-chev" :src="grammarAssets.chevronForward" mode="aspectFit" aria-hidden="true" />
+              </button>
+            </view>
+          </view>
+          <view class="grammar-notes">
+            <view v-for="note in helpNotes" :key="note.title" class="grammar-glass grammar-note">
+              <view class="grammar-note-title"><image class="grammar-dot" :src="note.dot" mode="aspectFit" aria-hidden="true" /><text>{{ note.title }}</text></view>
+              <text class="grammar-note-body">{{ note.body }}</text>
+            </view>
+          </view>
+        </template>
 
-    <view v-if="points.length" class="yx-card b10-grammar-tree v2-grammar-card card"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="book" :size="14" /><text class="b10-section-title v2-grammar-title v2-grammar-h2">{{ b10T('grammar.tree') }}</text></view><scroll-view scroll-x class="b10-point-list v2-grammar-list"><button tabindex="0" role="button" v-for="point in points" :key="point.grammarPointId" class="b10-point v2-grammar-opt opt" :class="{ 'b10-point--active': activePoint?.grammarPointId === point.grammarPointId }" type="button" @click="loadPoint(point)">{{ point.code }} · {{ point.title }}</button></scroll-view><view v-if="activePoint" class="b10-rule v2-grammar-rule"><text class="b10-kicker v2-grammar-kicker eyebrow">{{ activePoint.cefrLevel }} · {{ activePoint.code }}</text><text class="b10-rule__title v2-grammar-title v2-grammar-h2">{{ activePoint.title }}</text><text class="b10-rule__copy v2-grammar-d d">{{ activePoint.meaningCn }}</text><text class="b10-rule__formula v2-grammar-fb fb">{{ activePoint.ruleFormula }}</text><text v-if="activePoint.prerequisites.length" class="b10-rule__meta v2-grammar-d d">前置知识点：{{ activePoint.prerequisites.join('、') }}</text><text v-if="activePoint.masteryPercent !== null" class="b10-rule__meta v2-grammar-d d">掌握投影：{{ activePoint.masteryPercent }}%</text></view></view>
+        <template v-else-if="screen === 'detail' && activePoint">
+          <view class="grammar-glass grammar-rule">
+            <view class="grammar-detail-kicker"><text v-if="activePoint.cefrLevel" class="grammar-level">{{ activePoint.cefrLevel }}</text><text v-if="prerequisiteTitles.length" class="grammar-meta">{{ grammarT('prerequisite', { value: prerequisiteTitles.join('、') }) }}</text></view>
+            <text class="grammar-detail-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ activePoint.title }}</text>
+            <text v-if="activePoint.meaningCn" class="grammar-detail-copy">{{ activePoint.meaningCn }}</text>
+            <text v-if="activePoint.ruleFormula" class="grammar-formula">{{ activePoint.ruleFormula }}</text>
+            <view v-if="activePoint.masteryPercent !== null" class="grammar-mastery"><text class="grammar-meta">{{ grammarT('masteryLabel') }}</text><view class="grammar-mastery-track"><view class="grammar-mastery-fill" :style="{ width: `${Math.max(0, Math.min(100, activePoint.masteryPercent))}%` }"/></view><text class="grammar-mastery-value">{{ grammarT('masteryValue', { percent: activePoint.masteryPercent }) }}</text></view>
+          </view>
+          <view class="grammar-glass grammar-examples">
+            <text class="grammar-card-title">{{ grammarT('exampleTitle') }}</text>
+            <text v-if="examplePage" class="grammar-example">{{ examplePage.text }}</text>
+            <text v-else class="grammar-meta">{{ grammarT('exampleMissing') }}</text>
+            <view v-if="examplePage && examplePage.total > 1" class="grammar-example-pager">
+              <button class="grammar-button grammar-pager" type="button" tabindex="0" role="button" @click="shiftExample(-1)">{{ grammarT('examplePrevious') }}</button>
+              <text class="grammar-meta">{{ grammarT('examplePage', { current: examplePage.index + 1, total: examplePage.total }) }}</text>
+              <button class="grammar-button grammar-pager" type="button" tabindex="0" role="button" @click="shiftExample(1)">{{ grammarT('exampleNext') }}</button>
+            </view>
+          </view>
+          <button class="grammar-glass grammar-structure" type="button" tabindex="0" role="button" @click="openStructure">
+            <view class="grammar-point-icon grammar-point-icon--1"><image :src="grammarAssets.grid" mode="aspectFit" aria-hidden="true" /></view>
+            <view class="grammar-point-copy"><text class="grammar-point-title">{{ grammarT('structureTitle') }}</text><text class="grammar-meta">{{ grammarT('structureHint') }}</text></view>
+            <image class="grammar-chev" :src="grammarAssets.chevronForward" mode="aspectFit" aria-hidden="true" />
+          </button>
+        </template>
 
-    <view v-if="graph" class="yx-card b10-graph-card v2-grammar-card card"><view class="b10-graph-card__header v2-grammar-head"><view class="v2-grammar-titles"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="type" :size="14" /><text class="b10-kicker v2-grammar-kicker">{{ b10T('grammar.sentence') }} · {{ graph.sentenceId }}</text></view><text class="b10-graph-card__sentence v2-grammar-title v2-grammar-h2">{{ graph.text }}</text></view><text class="b10-graph-card__mode v2-grammar-meta meta">{{ linearMode ? '2D / Linear' : performanceLevel }}</text></view><text v-if="graph.translation" class="b10-graph-card__translation v2-grammar-d d">{{ graph.translation }}</text><text v-if="graph.graphStatus === 'DEGRADED' || performanceLevel === 'Performance'" class="b10-graph-card__notice v2-grammar-fb fb">{{ b10T('grammar.degraded') }}</text><view class="b10-node-list v2-grammar-list"><view v-for="node in graph.nodes" :key="node.nodeId" class="b10-node v2-grammar-row"><text class="b10-node__role v2-grammar-kicker eyebrow">{{ node.role }}</text><text class="v2-grammar-d d">{{ node.text }}</text></view></view><view v-if="!linearMode && graph.edges.length" class="b10-edge-list v2-grammar-fb fb"><text class="v2-grammar-d d">依存关系 {{ graph.edges.length }} 条</text><text v-for="edge in graph.edges" :key="`${edge.fromNodeId}-${edge.toNodeId}`" class="v2-grammar-d d">{{ edge.fromNodeId }} → {{ edge.toNodeId }} · {{ edge.relation }}</text></view><view v-if="linearMode" class="b10-linear-list v2-grammar-fb fb"><text v-for="slice in graph.slices" :key="slice.sliceId" class="v2-grammar-d d">{{ slice.role }}：{{ slice.text }}</text></view>
-      <view v-if="blockOrder.length" class="b10-practice-section v2-grammar-section"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="list" :size="14" /><text class="b10-section-title v2-grammar-title v2-grammar-h2">{{ b10T('grammar.order') }}</text></view><view v-for="(blockId, index) in blockOrder" :key="blockId" class="b10-block-row v2-grammar-row"><text class="v2-grammar-d d">{{ index + 1 }}. {{ graph.slices.find((slice) => slice.sliceId === blockId)?.text ?? blockId }}</text><view class="v2-grammar-actions row"><button tabindex="0" role="button" class="b10-move v2-grammar-btn btn" type="button" :disabled="index === 0" aria-label="上移" @click="moveBlock(index, -1)">↑</button><button tabindex="0" role="button" class="b10-move v2-grammar-btn btn" type="button" :disabled="index === blockOrder.length - 1" aria-label="下移" @click="moveBlock(index, 1)">↓</button></view></view><button tabindex="0" role="button" class="yx-button v2-grammar-btn v2-grammar-submit btn" type="button" @click="submitBlocks">{{ b10T('grammar.submit') }}<AppIcon name="check" :size="14" /></button></view>
-      <view v-if="Object.keys(graph.imitationSlots).length" class="b10-practice-section v2-grammar-section"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="activity" :size="14" /><text class="b10-section-title v2-grammar-title v2-grammar-h2">{{ b10T('grammar.imitate') }}</text></view><view v-for="(value, key) in graph.imitationSlots" :key="key" class="b10-slot v2-grammar-row"><text class="v2-grammar-d d">{{ key }}</text><input v-model="slotValues[key]" class="b10-input v2-grammar-input" :placeholder="value" /></view><button tabindex="0" role="button" class="yx-button v2-grammar-btn v2-grammar-submit btn" type="button" @click="submitImitation">{{ b10T('grammar.submit') }}<AppIcon name="check" :size="14" /></button></view>
+        <template v-else-if="screen === 'structure' && activePoint">
+          <view class="grammar-glass grammar-rule">
+            <view class="grammar-detail-kicker"><text v-if="activePoint.cefrLevel" class="grammar-level">{{ activePoint.cefrLevel }}</text></view>
+            <text class="grammar-detail-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ activePoint.title }}</text>
+            <text v-if="activePoint.meaningCn" class="grammar-detail-copy">{{ activePoint.meaningCn }}</text>
+            <text v-if="activePoint.ruleFormula" class="grammar-formula">{{ activePoint.ruleFormula }}</text>
+          </view>
+          <view v-if="graph && graphState === 'READY'" class="grammar-glass grammar-examples">
+            <text class="grammar-card-title">{{ grammarT('structureTitle') }} <text class="grammar-meta">{{ linearMode ? '2D / Linear' : performanceLevel }}</text></text>
+            <text v-if="graph.text" class="grammar-example">{{ graph.text }}</text>
+            <text v-if="graph.translation" class="grammar-meta">{{ graph.translation }}</text>
+            <view v-for="node in graph.nodes" :key="node.nodeId" class="grammar-node"><text class="grammar-node-role">{{ node.role }}</text><text class="grammar-node-text">{{ node.text }}</text></view>
+          </view>
+          <view v-else class="grammar-glass grammar-examples">
+            <text class="grammar-card-title">{{ grammarT('graphClosedTitle') }}</text>
+            <text v-if="examplePage" class="grammar-example">{{ examplePage.text }}</text>
+            <view class="grammar-graph-note" role="status">
+              <image class="grammar-hourglass" :src="grammarAssets.hourglass" mode="aspectFit" aria-hidden="true" />
+              <text class="grammar-meta">{{ graphNotice ?? grammarT('structureUnavailable') }}</text>
+            </view>
+            <text class="grammar-meta">{{ grammarT(closedDraftKey) }}</text>
+          </view>
+        </template>
+
+        <template v-else-if="practiceVisible && exercise">
+          <view v-if="localSession" class="grammar-local"><text class="grammar-local-title">{{ grammarT('localPreview') }}</text><text class="grammar-meta">{{ grammarT('localPreviewNote') }}</text></view>
+          <view class="grammar-exercise-head"><text class="grammar-exercise-progress">{{ grammarT('exerciseProgress', { current: exerciseIndex + 1, total }) }}</text><text class="grammar-meta">{{ progressText }}</text></view>
+          <view class="grammar-progress" aria-hidden="true"><view :style="{ width: `${total ? ((exerciseIndex + 1) / total) * 100 : 0}%` }"/></view>
+          <view id="grammar-exercise" class="grammar-glass grammar-exercise">
+            <text class="grammar-level">{{ grammarT('questionLabel') }}</text>
+            <text class="grammar-question grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ exercise.prompt }}</text>
+            <text v-if="exercise.sourceText" class="grammar-source">{{ exercise.sourceText }}</text>
+            <view v-if="exercise.options.length" class="grammar-options">
+              <button v-for="option in exercise.options" :key="option.key" type="button" tabindex="0" role="button" class="grammar-option" :class="{ selected: selectedOption === option.key }" :aria-pressed="selectedOption === option.key" :aria-disabled="answerBusy" @click="selectedOption = option.key">
+                <view class="grammar-option-mark"><image v-if="selectedOption === option.key" :src="grammarAssets.check" mode="aspectFit" aria-hidden="true" /></view>
+                <text class="grammar-option-key">{{ option.key }}</text><text class="grammar-option-text">{{ option.text }}</text>
+              </button>
+            </view>
+            <B10ExerciseCard v-else :exercise="exercise" :disabled="answerBusy" @answer="submitExerciseAnswer" />
+            <text v-if="message" class="grammar-inline-error" role="alert">{{ message }}</text>
+            <view v-if="feedback" class="grammar-feedback" role="status">
+              <text class="grammar-feedback-title">{{ grammarT('feedbackConfirmed') }}</text>
+              <text v-if="feedback.correct !== null" class="grammar-meta">{{ feedback.correct ? grammarT('feedbackCorrect') : grammarT('feedbackIncorrect') }}</text>
+              <text v-if="feedback.score !== null" class="grammar-meta">{{ grammarT('feedbackScore', { score: feedback.score }) }}</text>
+              <text v-if="feedback.feedbackText" class="grammar-meta">{{ feedback.feedbackText }}</text>
+              <text v-if="feedback.savedReceipt" class="grammar-meta">{{ grammarT('feedbackReceipt') }} · {{ feedback.savedReceipt }}</text>
+            </view>
+            <text v-if="completed" class="grammar-completed">{{ grammarT('completed') }}</text>
+          </view>
+        </template>
+
+        <view v-else-if="status === 'empty'" class="grammar-glass grammar-state" role="status">
+          <view class="grammar-closed-icon"><image :src="grammarAssets.closedGrid" mode="aspectFit" aria-hidden="true" /></view>
+          <text class="grammar-state-title grammar-heading" role="heading" aria-level="2" tabindex="-1">{{ grammarT('emptyTitle') }}</text><text class="grammar-meta">{{ grammarT('emptyBody') }}</text>
+          <button class="grammar-button" type="button" tabindex="0" role="button" @click="retry">{{ grammarT('retry') }}</button>
+        </view>
+      </template>
     </view>
-    <text v-if="grammarPackNotice" class="b10-pack-notice v2-grammar-d d" data-pack-notice>{{ grammarPackNotice }}</text>
-    <B10ExerciseCard v-if="exercise" class="v2-grammar-card" :exercise="exercise" @answer="submitExerciseAnswer" />
-    <B10FeedbackCard class="v2-grammar-fb" :feedback="feedback" />
-
-    <view v-if="correctionPrompt" class="yx-card b10-correction v2-grammar-card card"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="flag" :size="14" /><text class="b10-section-title v2-grammar-title v2-grammar-h2">{{ b10T('grammar.correction') }}</text></view><text class="b10-kicker v2-grammar-kicker eyebrow">{{ correctionPrompt.title }}</text><text class="v2-grammar-d d">{{ correctionPrompt.taskText }}</text><textarea v-model="correctionAnswer" class="b10-textarea v2-grammar-input" maxlength="12000" placeholder="指出错误并给出规则依据。" /><button tabindex="0" role="button" class="yx-button v2-grammar-btn v2-grammar-submit btn" type="button" @click="submitCorrection">{{ b10T('grammar.submit') }}<AppIcon name="check" :size="14" /></button></view>
-    <view v-if="status === 'empty'" class="yx-card b10-empty v2-grammar-card card"><view class="v2-grammar-eyebrow eyebrow"><AppIcon name="inbox" :size="14" /><text class="v2-grammar-title v2-grammar-h2">{{ b10T('grammar.noGraph') }}</text></view><button tabindex="0" role="button" class="yx-button v2-grammar-btn btn" type="button" @click="load">{{ b10T('status.retry') }}<AppIcon name="refresh" :size="14" /></button></view>
+    <view v-if="status === 'ready' && screen === 'detail' && activePoint" class="grammar-footer"><button class="grammar-button grammar-primary" type="button" tabindex="0" role="button" @click="startPractice">{{ grammarT('startPractice') }}</button></view>
+    <view v-else-if="status === 'ready' && screen === 'structure' && activePoint" class="grammar-footer"><button class="grammar-button grammar-primary" type="button" tabindex="0" role="button" @click="startPractice">{{ grammarT('startPractice') }}</button></view>
+    <view v-else-if="status === 'ready' && practiceVisible && exercise && exercise.options.length" class="grammar-footer">
+      <button v-if="feedback" class="grammar-button grammar-primary" type="button" tabindex="0" role="button" @click="nextExercise">{{ completed ? grammarT('done') : grammarT('next') }}</button>
+      <button v-else class="grammar-button grammar-primary" type="button" tabindex="0" role="button" :aria-disabled="answerBusy || !selectedOption" @click="submitChoice">{{ submitting ? grammarT('submitting') : grammarT('submit') }}</button>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.b10-grammar-tree,.b10-graph-card,.b10-correction{display:grid;gap:16rpx}.b10-section-title{color:var(--yx-text-primary);font-size:29rpx;font-weight:750}.b10-point-list{display:flex;white-space:nowrap}.b10-point{display:inline-block;min-height:64rpx;margin-right:10rpx;padding:0 16rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;color:var(--yx-text-secondary);background:var(--yx-surface-card);font-size:22rpx;line-height:64rpx}.b10-point--active{border-color:var(--yx-brand);color:var(--yx-brand);background:var(--yx-brand-soft)}.b10-rule{display:grid;gap:10rpx;padding-top:16rpx;border-top:1rpx solid var(--yx-border)}.b10-kicker{color:var(--yx-brand);font-size:22rpx;font-weight:700}.b10-rule__title{font-size:34rpx;font-weight:750}.b10-rule__copy,.b10-rule__meta{color:var(--yx-text-secondary);font-size:24rpx;line-height:1.6}.b10-rule__formula{padding:16rpx;border-radius:12rpx;color:var(--yx-brand);background:var(--yx-brand-soft);font-size:26rpx}.b10-graph-card__header{display:flex;justify-content:space-between;gap:16rpx}.b10-graph-card__sentence{display:block;margin-top:8rpx;font-size:32rpx;line-height:1.55}.b10-graph-card__mode,.b10-graph-card__translation{color:var(--yx-text-secondary);font-size:22rpx;line-height:1.6}.b10-graph-card__notice{padding:12rpx;border-radius:10rpx;color:var(--yx-warning-strong);background:var(--yx-warning-soft);font-size:22rpx}.b10-node-list,.b10-edge-list,.b10-linear-list{display:grid;gap:10rpx}.b10-node{display:grid;gap:4rpx;padding:14rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;background:var(--yx-surface-card);font-size:24rpx}.b10-node__role{color:var(--yx-brand);font-size:20rpx;font-weight:700}.b10-edge-list,.b10-linear-list{padding:14rpx;border-radius:12rpx;background:var(--yx-surface-soft);color:var(--yx-text-secondary);font-size:22rpx;line-height:1.6}.b10-practice-section{display:grid;gap:12rpx;padding-top:18rpx;border-top:1rpx solid var(--yx-border)}.b10-block-row{display:flex;align-items:center;justify-content:space-between;gap:10rpx;padding:14rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;color:var(--yx-text-primary);font-size:24rpx}.b10-move{min-width:62rpx;min-height:58rpx;margin-left:8rpx;border:1rpx solid var(--yx-border);border-radius:10rpx;color:var(--yx-brand);background:var(--yx-surface-card);font-size:26rpx}.b10-slot{display:grid;grid-template-columns:140rpx 1fr;gap:10rpx;align-items:center;color:var(--yx-brand);font-size:22rpx}.b10-input,.b10-textarea{width:100%;box-sizing:border-box;padding:16rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;background:var(--yx-surface-card);font-size:24rpx}.b10-input{height:72rpx}.b10-textarea{min-height:220rpx}.b10-empty{display:grid;gap:16rpx;color:var(--yx-text-secondary);font-size:24rpx}
-/* v2 语法页换皮：对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 卡片/eyebrow/标题/列表行/按钮同样数值，对齐 mobile/styles.css、refine.css，仅用 var(--v2-*)。 */
-.v2-grammar-page{font-family:var(--v2-font)}
-.v2-grammar-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-grammar-status{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-grammar-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
-.v2-grammar-card:hover{border-color:var(--v2-brand)}
-.v2-grammar-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-grammar-title,.v2-grammar-h2{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-grammar-kicker{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-grammar-d{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-grammar-meta{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-grammar-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-grammar-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
-.v2-grammar-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
-.v2-grammar-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-grammar-head>*{min-width:0;max-width:100%}
-.v2-grammar-titles{display:flex;flex-direction:column;gap:var(--v2-space-2);flex:1 1 auto;box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-grammar-titles>*{min-width:0;max-width:100%}
-.v2-grammar-list{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0}
-scroll-view.v2-grammar-list{display:flex;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;overflow-x:auto}
-.v2-grammar-opt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-scroll-view.v2-grammar-list .v2-grammar-opt{width:auto;flex:0 0 auto}
-.v2-grammar-opt:hover{border-color:var(--v2-brand)}
-.v2-grammar-opt.sel{border-color:var(--v2-brand);background:var(--v2-soft)}
-.v2-grammar-opt.b10-point--active{border-color:var(--v2-brand);background:var(--v2-soft)}
-.v2-grammar-opt:active{transform:scale(.97)}
-.v2-grammar-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-grammar-opt:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-grammar-rule{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding-top:var(--v2-space-4);border-top:1px solid var(--v2-line);font-family:var(--v2-font)}
-.v2-grammar-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);font-family:var(--v2-font)}
-.v2-grammar-row:hover{border-color:var(--v2-brand)}
-.v2-grammar-row>*{min-width:0;max-width:100%}
-.v2-grammar-section{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding-top:var(--v2-space-4);border-top:1px solid var(--v2-line);font-family:var(--v2-font)}
-.v2-grammar-actions{display:flex;gap:var(--v2-space-2);flex-wrap:wrap;align-items:center;box-sizing:border-box;max-width:100%;min-width:0}
-.v2-grammar-actions>*{min-width:0;max-width:100%}
-.v2-grammar-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-grammar-actions .v2-grammar-btn{width:auto;flex:0 0 auto}
-.v2-grammar-btn:hover{border-color:var(--v2-brand)}
-.v2-grammar-btn:active{transform:scale(.97)}
-.v2-grammar-btn:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-grammar-btn:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-grammar-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700}
-.v2-grammar-submit:hover{border-color:var(--v2-brand)}
-.v2-grammar-input{width:100%;box-sizing:border-box;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.5;overflow-wrap:anywhere}
+.v2-grammar-page.v2-grammar-page{position:relative;display:flex;flex-direction:column;box-sizing:border-box;width:100%;max-width:720px;height:100vh;height:100dvh;max-height:100dvh;min-height:0;margin:0 auto;overflow:hidden;padding:calc(18px + env(safe-area-inset-top)) 24px 0;background-color:var(--yx-r4-page-color);background-image:var(--yx-r4-home-image);background-repeat:no-repeat;background-size:cover;font-family:var(--v2-font)}
+.grammar-glow{position:absolute;top:-140px;left:150px;width:360px;height:300px;max-width:none;opacity:.85;pointer-events:none}
+.grammar-scroll{position:relative;z-index:1;display:flex;flex:1 1 auto;flex-direction:column;gap:16px;box-sizing:border-box;width:100%;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;padding-bottom:16px;-webkit-overflow-scrolling:touch}
+.grammar-hero{display:grid;gap:4px;padding-top:8px}.grammar-title{display:block;color:var(--v2-ink);font-size:28px;font-weight:700;line-height:36px;overflow-wrap:anywhere}.grammar-subtitle{display:block;color:var(--v2-mut);font-size:14px;line-height:22px;overflow-wrap:anywhere}.grammar-heading{outline:none}
+.grammar-glass{position:relative;box-sizing:border-box;width:100%;min-width:0;border:1px solid var(--yx-profile-glass-border);border-radius:24px;background:var(--yx-profile-glass);box-shadow:var(--yx-profile-card-shadow);backdrop-filter:blur(var(--yx-profile-blur));-webkit-backdrop-filter:blur(var(--yx-profile-blur))}
+.grammar-list-card{display:flex;flex-direction:column;padding:6px 20px}.grammar-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:8px 0}.grammar-card-title{color:var(--v2-ink);font-size:18px;font-weight:700;line-height:26px;overflow-wrap:anywhere}.grammar-count{color:var(--v2-mut);font-size:13px;line-height:20px;white-space:nowrap}.grammar-meta{display:block;color:var(--v2-mut);font-size:13px;line-height:18px;overflow-wrap:anywhere}
+.grammar-point-list{display:grid}.grammar-point,.grammar-structure{display:flex;align-items:center;gap:12px;box-sizing:border-box;width:100%;min-height:56px;margin:0;padding:10px 0;color:var(--v2-ink);font:inherit;text-align:left;cursor:pointer}.grammar-point{border:0;border-top:1px solid var(--v2-line);background:transparent}.grammar-point:first-child{border-top:0}.grammar-structure{min-height:64px;padding:10px 20px;border-radius:24px}
+.grammar-point-icon{display:flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;border-radius:14px;background:var(--yx-surface-page)}.grammar-point-icon--0{background:var(--yx-success-soft)}.grammar-point-icon--1{background:var(--yx-brand-soft)}.grammar-point-icon--2{background:var(--yx-surface-page)}.grammar-point-icon image{display:block;width:22px;height:22px}.grammar-point-copy{display:grid;gap:2px;min-width:0;flex:1 1 auto}.grammar-point-title{color:var(--v2-ink);font-size:15px;font-weight:700;line-height:22px;overflow-wrap:anywhere}.grammar-chev{display:block;flex:none;width:20px;height:20px}
+.grammar-point:focus-visible,.grammar-structure:focus-visible,.grammar-button:focus-visible,.grammar-option:focus-visible{outline:3px solid var(--v2-brand);outline-offset:3px}
+.grammar-notes{display:grid;gap:12px;padding:4px 0}.grammar-note{display:grid;gap:6px;padding:14px 16px;border-radius:18px}.grammar-note-title{display:flex;align-items:center;gap:10px;color:var(--v2-ink);font-size:14px;font-weight:700;line-height:20px}.grammar-note-title text{min-width:0;overflow-wrap:anywhere}.grammar-dot{flex:none;width:8px;height:8px}.grammar-note-body{color:var(--v2-mut);font-size:13px;line-height:20px;overflow-wrap:anywhere}
+.grammar-rule,.grammar-examples,.grammar-exercise{display:flex;flex-direction:column;gap:10px;padding:18px 20px}.grammar-detail-kicker{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.grammar-level{display:inline-flex;align-self:flex-start;padding:3px 10px;border-radius:999px;background:var(--yx-brand-soft);color:var(--v2-brand);font-size:12px;font-weight:700;line-height:18px}.grammar-detail-title{color:var(--v2-ink);font-size:22px;font-weight:700;line-height:30px;overflow-wrap:anywhere}.grammar-detail-copy{color:var(--v2-mut);font-size:14px;line-height:22px;overflow-wrap:anywhere}.grammar-formula{padding:10px 14px;border-radius:14px;background:var(--yx-brand-soft);color:var(--v2-brand);font-size:15px;font-weight:700;line-height:22px;overflow-wrap:anywhere}
+.grammar-mastery{display:flex;align-items:center;gap:10px}.grammar-mastery-track{flex:1 1 auto;height:6px;border-radius:999px;overflow:hidden;background:var(--yx-brand-soft)}.grammar-mastery-fill{height:100%;border-radius:inherit;background-color:var(--yx-r4-cta-color);background-image:var(--yx-r4-cta-image)}.grammar-mastery-value{flex:none;color:var(--v2-brand);font-size:12px;font-weight:700;line-height:18px}
+.grammar-example{color:var(--v2-ink);font-size:17px;font-weight:600;line-height:26px;overflow-wrap:anywhere}.grammar-example-pager{display:flex;align-items:center;gap:8px}.grammar-pager{width:auto;min-height:44px;flex:1 1 auto}
+.grammar-graph-note{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-radius:18px;background:var(--yx-surface-card)}.grammar-hourglass{flex:none;width:18px;height:18px;margin-top:2px}.grammar-node{display:grid;gap:2px;padding:10px 0;border-top:1px solid var(--v2-line)}.grammar-node-role{color:var(--v2-brand);font-size:12px;font-weight:700;line-height:18px}.grammar-node-text{color:var(--v2-ink);font-size:14px;line-height:20px;overflow-wrap:anywhere}
+.grammar-local{display:grid;gap:2px;padding:12px 14px;border-radius:14px;background:var(--yx-brand-soft)}.grammar-local-title{color:var(--v2-brand);font-size:12px;font-weight:700;line-height:18px}
+.grammar-exercise-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.grammar-exercise-progress{color:var(--v2-brand);font-size:13px;font-weight:700;line-height:20px}.grammar-progress{height:8px;border-radius:999px;overflow:hidden;background:var(--yx-brand-soft)}.grammar-progress>view{height:100%;border-radius:inherit;background-color:var(--yx-r4-cta-color);background-image:var(--yx-r4-cta-image)}
+.grammar-question{color:var(--v2-ink);font-size:18px;font-weight:700;line-height:27px;overflow-wrap:anywhere}.grammar-source{padding:12px 14px;border-radius:14px;background:var(--yx-brand-soft);color:var(--v2-ink);font-size:15px;line-height:22px;overflow-wrap:anywhere}
+.grammar-options{display:grid;gap:10px}.grammar-option{display:flex;align-items:center;gap:12px;box-sizing:border-box;width:100%;min-height:48px;margin:0;padding:14px;border:1px solid var(--v2-line);border-radius:12px;background:var(--yx-surface-card);color:var(--v2-ink);font:inherit;text-align:left;cursor:pointer}.grammar-option.selected{border:2px solid var(--v2-brand);background:var(--yx-brand-soft)}.grammar-option-mark{display:flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--yx-brand-soft)}.grammar-option-mark image{width:16px;height:16px}.grammar-option-key{flex:none;color:var(--v2-mut);font-size:12px;font-weight:700}.grammar-option-text{color:var(--v2-ink);font-size:14px;line-height:20px;overflow-wrap:anywhere}
+.grammar-button{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-height:48px;margin:0;padding:14px 20px;border:1px solid var(--v2-line);border-radius:14px;background:var(--yx-surface-card);color:var(--v2-ink);font:inherit;font-size:16px;font-weight:700;line-height:1.4;text-align:center;white-space:normal;cursor:pointer}.grammar-button.grammar-primary{border-color:transparent;background-color:var(--yx-r4-cta-color);background-image:var(--yx-r4-cta-image);color:var(--yx-r4-on-cta);box-shadow:var(--yx-r4-shadow-cta)}.grammar-button[aria-disabled="true"]{cursor:default}.v2-grammar-page.b10-theme--high-contrast .grammar-button.grammar-primary{background-color:var(--closed-cta-background);background-image:none;color:var(--closed-cta-on);box-shadow:none}
+.grammar-inline-error{color:var(--v2-bad);font-size:13px;line-height:20px}.grammar-feedback{display:grid;gap:4px;padding:14px;border:1px solid var(--v2-line);border-radius:16px;background:var(--yx-brand-soft)}.grammar-feedback-title{color:var(--v2-ink);font-size:14px;font-weight:700;line-height:20px}.grammar-completed{color:var(--v2-brand);font-size:14px;font-weight:700;line-height:20px}
+.grammar-state{display:grid;justify-items:center;gap:12px;padding:28px 20px;text-align:center}.grammar-state-title{color:var(--v2-ink);font-size:22px;font-weight:700;line-height:30px;overflow-wrap:anywhere}.grammar-closed-icon{display:flex;align-items:center;justify-content:center;width:88px;height:88px;border-radius:28px;background:var(--yx-brand-soft)}.grammar-closed-icon image{width:40px;height:40px}
+.grammar-skeleton{display:grid;gap:10px;padding:16px 0}.grammar-skeleton-block{height:120px;border-radius:20px;background:var(--v2-surface)}
+.grammar-footer{position:relative;z-index:2;flex:none;box-sizing:border-box;width:auto;margin-inline:-24px;padding:12px 24px calc(30px + env(safe-area-inset-bottom));background:var(--yx-surface-card);box-shadow:var(--yx-shadow)}
+.v2-grammar-page[data-motion="reduced"] .grammar-button,.v2-grammar-page[data-motion="off"] .grammar-button{transition:none}
+@media(max-width:360px){.v2-grammar-page.v2-grammar-page{padding-inline:16px}.grammar-footer{margin-inline:-16px;padding-inline:16px}.grammar-detail-title{font-size:22px;line-height:30px}.grammar-list-card,.grammar-rule,.grammar-examples,.grammar-exercise{padding-inline:16px}}
+@media(prefers-reduced-motion:reduce){.grammar-button,.grammar-point,.grammar-option,.grammar-structure{transition:none}.grammar-button:active{transform:none}}
 </style>

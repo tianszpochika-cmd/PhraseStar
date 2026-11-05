@@ -1234,7 +1234,7 @@
       "name": "词汇与复习",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放",
       "services_data_owners": [
         "content-service",
@@ -1294,18 +1294,18 @@
         "b10/c05-vocabulary.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_FINAL_SCOPED_COMBINED_SHOTS",
+        "interaction": "VOCAB_18_CASES_179_CHECKS_C2_COLD_16",
+        "h5": "PASS_SHA256_ce363349e566a6a7069c97550aeffe5618ff851b0ebdc0e05f304646b0fa5444",
+        "cross_viewport": "COMPILED_H5_MATRIX",
+        "accessibility": "KEYBOARD_AND_CONTRAST_LOCAL_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md"
       },
       "pause_handoff": "PAUSE-20261104.md",
-      "current_job": "grok/resume-20261105-vocab-finish-13",
-      "resume_evidence_20261105": "17/18 initially and separate corrected actual held-back pass; R4 semantic styling open"
+      "current_job": null,
+      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed."
     },
     {
       "id": "MB-013",
@@ -1314,7 +1314,7 @@
       "name": "语法与长难句",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "SCOPED_H5_PASS_ATOMIC_C2_INTEGRATION_PENDING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "内容与练习版本、已保存再反馈、缺题关闭和降级",
       "services_data_owners": [
         "content-service",
@@ -1376,18 +1376,18 @@
         "b3-grammar-guards.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_FINAL_SCOPED_COMBINED_SHOTS",
+        "interaction": "GRAMMAR_129_COMBINED_CHECKS",
+        "h5": "PASS_SHA256_ce363349e566a6a7069c97550aeffe5618ff851b0ebdc0e05f304646b0fa5444",
+        "cross_viewport": "COMPILED_H5_MATRIX",
+        "accessibility": "KEYBOARD_AND_CONTRAST_LOCAL_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md"
       },
       "pause_handoff": "PAUSE-20261104.md",
       "current_job": null,
-      "resume_evidence_20261105": "129/129 local; shared C2 publication gated by Vocabulary build and compatibility"
+      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed."
     },
     {
       "id": "MB-014",
@@ -4561,9 +4561,9 @@
     "doD": false
   },
   "active_resume_review_20261105": {
-    "at": "2026-11-05T08:37:59.009638+00:00",
+    "at": "2026-11-05T08:47:40.009554+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 30,
+    "local_ui_candidates": 32,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4631,9 +4631,9 @@
       {
         "id": "MB-012",
         "cli": "grok",
-        "job": "grok/resume-20261105-vocab-finish-13",
-        "state": "running",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-vocab-finish-13.checkpoint.json"
+        "job": "grok/resume-20261105-c2-sync-advance-18",
+        "state": "exited_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-c2-sync-advance-18.checkpoint.json"
       },
       {
         "id": "MB-018",
@@ -4732,6 +4732,16 @@
     "review": "reviews/INTEGRATION-B53-FORBIDDEN.md",
     "routeCountDelta": 1,
     "localUICandidateRoutes": 30,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_54_vocab_grammar": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "ce363349e566a6a7069c97550aeffe5618ff851b0ebdc0e05f304646b0fa5444",
+    "evidence": "evidence/ROOT-B54-VOCAB-GRAMMAR-20261105.json",
+    "review": "reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md",
+    "routeCountDelta": 2,
+    "localUICandidateRoutes": 32,
     "formalRoutes": 33,
     "doD": false
   }

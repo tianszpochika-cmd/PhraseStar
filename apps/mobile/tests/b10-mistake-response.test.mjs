@@ -2,9 +2,23 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 import ts from 'typescript'
 
+const require = createRequire(import.meta.url)
 const appRoot = path.resolve(import.meta.dirname, '..')
+
+function realGrammarModule() {
+  const dir = path.join(appRoot, 'src/domain')
+  const source = fs.readFileSync(path.join(dir, 'grammar-page.ts'), 'utf8')
+  const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
+  const module = { exports: {} }
+  new Function('require', 'module', 'exports', compiled)((name) => {
+    if (name !== './grammar-page-contract.mjs') throw new Error(`Unexpected grammar import ${name}`)
+    return require(path.join(dir, 'grammar-page-contract.mjs'))
+  }, module, module.exports)
+  return module.exports
+}
 
 function loadB10(responses) {
   const source = fs.readFileSync(path.join(appRoot, 'src/api/b10.ts'), 'utf8')
@@ -29,6 +43,7 @@ function loadB10(responses) {
       './client': { mobileApiClient, MobileApiError },
       '../domain/grammar-reading-pack': { mentionsClosedMissing: () => false, PACK_CLOSED_COPY: 'closed' },
       './b3': { listGrammarExercises: async () => [] },
+      '../domain/grammar-page': realGrammarModule(),
       '../platform/client-id': { createClientId: () => 'fixture-client-event' },
     }
     if (!(name in modules)) throw new Error(`Unexpected import ${name}`)

@@ -29,13 +29,24 @@ test('B10 mobile mutations carry stable idempotency ids and never send answer ke
   assert.match(store, /queuedReviews/) 
 })
 
-test('B10 mobile SRS review carries the B25 top-level item id', () => {
+test('B10 mobile SRS review posts the published event without a top-level item id', () => {
   const api = read('src/api/b10.ts')
   const store = read('src/stores/b10-learning.ts')
-  assert.match(api, /data:\s*\{\s*itemId:\s*card\.itemId/)
-  assert.match(api, /rawQuality:\s*quality/)
-  assert.match(store, /return \{ itemId: card\.itemId, snapshotId:/)
-  assert.match(api, /itemId: number \| string/)
+  // ReviewEventRequest carries snapshot ids, a tagged item, the observed time and baseStateVersion.
+  // POST /learning/srs/reviews sends Idempotency-Key. A top-level itemId is removed and never forwarded.
+  assert.match(api, /srsReview: '\/learning\/srs\/reviews'/)
+  assert.match(api, /'Idempotency-Key': idempotencyKey\(clientEventId\)/)
+  assert.match(api, /const REVIEW_EVENT_KEYS = \['snapshotId', 'snapshotItemId', 'item', 'rawQuality', 'answerOutcome', 'responseTimeMs', 'revealElapsedMs', 'attemptNo', 'clientEventId', 'clientOccurredAt', 'baseStateVersion'\]/)
+  assert.match(api, /const SRS_ITEM_TYPES = \['VOCAB', 'CHUNK', 'EXPRESSION'\]/)
+  assert.match(api, /if \(itemType === 'VOCAB'\) return \{ itemType, vocabId: itemId \}\s*if \(itemType === 'CHUNK'\) return \{ itemType, chunkId: itemId \}\s*if \(itemType === 'EXPRESSION'\) return \{ itemType, expressionId: itemId \}/)
+  assert.match(api, /if \(key !== 'itemId' && !\(REVIEW_EVENT_KEYS as readonly string\[\]\)\.includes\(key\)\) throw fail\(\)/)
+  assert.match(api, /snapshotId: card\.snapshotId,\s*snapshotItemId: card\.snapshotItemId,\s*item: srsItemRef\(card\.itemType, card\.itemId\),\s*rawQuality: quality,[\s\S]*?clientOccurredAt: new Date\(\)\.toISOString\(\),\s*baseStateVersion: card\.stateVersion,/)
+  assert.match(api, /request<unknown>\(B10_GATEWAY_PATHS\.learning\.srsReview, \{\s*method: 'POST',\s*data: event,\s*header: \{ \.\.\.headers\(context, clientEventId\)/)
+  assert.doesNotMatch(api, /data:\s*\{\s*itemId:\s*card\.itemId/)
+  assert.match(store, /const REVIEW_WIRE_KEYS = \['snapshotId', 'snapshotItemId', 'item', 'rawQuality', 'answerOutcome', 'responseTimeMs', 'revealElapsedMs', 'attemptNo', 'clientEventId', 'clientOccurredAt', 'baseStateVersion'\]/)
+  assert.match(store, /if \(card\.itemType === 'VOCAB'\) return \{ itemType: 'VOCAB', vocabId: card\.itemId \}\s*if \(card\.itemType === 'CHUNK'\) return \{ itemType: 'CHUNK', chunkId: card\.itemId \}\s*if \(card\.itemType === 'EXPRESSION'\) return \{ itemType: 'EXPRESSION', expressionId: card\.itemId \}/)
+  assert.match(store, /return \{ snapshotId: card\.snapshotId, snapshotItemId: card\.snapshotItemId, item, rawQuality: quality, answerOutcome: 'REVEALED_WITHOUT_ANSWER', responseTimeMs: 0, revealElapsedMs: 0, clientEventId, clientOccurredAt: new Date\(\)\.toISOString\(\), baseStateVersion: card\.stateVersion \}/)
+  assert.doesNotMatch(store, /return \{ itemId: card\.itemId, snapshotId:/)
 })
 
 test('B10 mobile covers recovery states, content-version staleness and performance downgrade', () => {
@@ -58,8 +69,18 @@ test('B10 mobile routes expose the report page without a miniapp project', () =>
   assert.doesNotMatch(pages, /miniapp|mini-app|apps\/miniapp-wechat/)
 })
 
-test('H5 placement reads encode locale and optional session id as query parameters', () => {
-  const source = read('src/api/learner-content.ts')
-  assert.match(source, /type QueryParams = string \| Record<string, string \| null \| undefined>/)
-  assert.match(source, /query\('\/assessment\/placement\/start', \{ contentLocale, \.\.\.\(sessionId \? \{ sessionId \} : \{\}\) \}\)/)
+test('placement reads an existing session by encoded id and creates only through the session seam', () => {
+  const api = read('src/api/learner-content.ts')
+  const store = read('src/stores/learner-content.ts')
+  // Locale stays on the shared query seam and the contentLocale argument. Placement session
+  // routes do not take it, and the client default for a request without a method is GET.
+  assert.match(api, /type QueryParams = string \| Record<string, string \| null \| undefined>/)
+  assert.match(api, /typeof params === 'string' \? \{ contentLocale: params \} : params/)
+  assert.match(api, /void contentLocale\s+if \(!sessionId\) return emptyPlacement\(\)\s+return parsePlacement\(await mobileApiClient\.request<unknown>\(`\/assessment\/placement\/sessions\/\$\{encodeURIComponent\(sessionId\)\}`\)\)/)
+  assert.match(api, /request<unknown>\('\/assessment\/placement\/sessions', \{\s*method: 'POST',\s*data: \{\},/)
+  assert.doesNotMatch(api, /\/assessment\/placement\/start/)
+  assert.match(store, /const contentLocale = await ensureContentLocale\(owner\)/)
+  assert.match(store, /if \(sessionId\) \{\s*remote = await mobileLearnerContentApi\.readPlacement\(contentLocale, sessionId\)\s*\} else \{\s*remote = await mobileLearnerContentApi\.startPlacement\(contentLocale, eventId\('mobile-placement-start'\)\)/)
+  assert.match(store, /if \(!remote\.report && !remote\.currentQuestion && remote\.sessionId\?\.startsWith\('asess_'\)\) \{\s*remote = await mobileLearnerContentApi\.readPlacement\(contentLocale, remote\.sessionId\)/)
+  assert.doesNotMatch(store, /\/assessment\/placement\/start/)
 })
