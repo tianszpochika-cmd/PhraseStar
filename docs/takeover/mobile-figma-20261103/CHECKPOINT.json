@@ -361,7 +361,15 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B34-RESET.md"
+        "independent_review": "reviews/INTEGRATION-B34-RESET.md",
+        "b79_local_iam_reset_privacy": {
+          "status": "SCOPED_LOCAL_IAM_RESET_PRIVACY_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B79-LOCAL-IAM-RESET-PRIVACY-20261105.json",
+          "review": "reviews/INTEGRATION-B34-RESET.md",
+          "reset_http_checks": 29,
+          "independent_http_checks": 184,
+          "focused_iam_tests": 41
+        }
       },
       "current_job": null,
       "source_operation_trace_b59": {
@@ -3646,7 +3654,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:25:27.103493+08:00",
+  "updated_at": "2026-11-05T23:29:51.719032+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5420,5 +5428,15 @@
     "ui_success_after_owner_readback": true,
     "target_refresh_status": 401,
     "deployed_gateway_and_native": "NOT_RUN"
+  },
+  "integration_batch_79_local_iam_reset_privacy": {
+    "scope": "MB-003 direct TLS local reset request non-enumeration and invalid code",
+    "status": "SCOPED_LOCAL_IAM_RESET_PRIVACY_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B79-LOCAL-IAM-RESET-PRIVACY-20261105.json",
+    "review": "reviews/INTEGRATION-B34-RESET.md",
+    "reset_http_checks": 29,
+    "independent_http_checks": 184,
+    "focused_iam_tests": 41,
+    "external_reset_delivery_and_deployment": "NOT_RUN"
   }
 }

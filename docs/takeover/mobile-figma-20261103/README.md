@@ -34,6 +34,7 @@
 - [错题与报告 B37](reviews/INTEGRATION-B37-PRIVATE-REPORT.md)：最终13项源测试、核心55项/18图与身份21项/5图通过；词汇C1接口与队列另行整合。
 - [启动偏好恢复 B36](reviews/INTEGRATION-B36-HYDRATION.md)：18项源测试、组合25项/4图通过，原生滚轮等待停稳后复验；平台页临时恢复另待清理。
 - [共享会话修复 B35](reviews/INTEGRATION-B35-AUTH.md)：Root真实store/client等44项测试与设置401/403浏览器16项通过；迟到刷新跨账号浏览器仍待验。
+- [找回密码本机接口 B79](reviews/INTEGRATION-B34-RESET.md#b79-本机找回密码隐私) 已知与未知账号一致、无效码拒绝及原会话有效均通过。
 - [找回密码组合审核 B34](reviews/INTEGRATION-B34-RESET.md)：Root 68样本/8组交互/7图标场景/37图及18项源测试通过；近零输入和内部字段观测限制保留。
 - [三页文案注册 B27](reviews/INTEGRATION-B27-REGISTRY.md)：空模块按单写者交接，旧页面文案逐值不变，不计新增页面完成。
 - [注册组合审核 B26](reviews/INTEGRATION-B26-REGISTER.md)：12项源检查、51样本/14组/43图；暗色图标修复，全局B23五失败仍保留。

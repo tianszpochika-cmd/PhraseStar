@@ -1,0 +1,256 @@
+{
+  "scope": "MB-003 / R1-012 / R1-015 local HTTP direct IAM TLS password-reset non-enumeration and invalid code",
+  "author": "DSH32 external opt-in proof, Root review and execution",
+  "integration_head_at_run": "e2f22273c9f68b791bb56edddcc60567d7feb683",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "service_jars_receipt": "ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+  "root_wrapper_exit_code": 0,
+  "independent_http_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "reset_http": {
+    "status": "PASS",
+    "counts": {
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "optionalWarned": 0
+    },
+    "observations": {
+      "identifiers": {
+        "known": "synthetic-registered",
+        "unknown": "synthetic-distinct-valid-unknown"
+      },
+      "knownRequestStatus": 202,
+      "unknownRequestStatus": 202,
+      "samePublicData": true,
+      "samePublicShape": true,
+      "retryStatus": 202,
+      "retryReusedKey": true,
+      "retryReusedBody": true,
+      "invalidConfirmStatus": 401,
+      "invalidConfirmNoToken": true,
+      "bearerStillValid": true,
+      "corsPreflightStatus": 200,
+      "resetTokenRetrieved": false,
+      "deliveryObserved": false,
+      "deliveryClaimed": false,
+      "passwordChangeAttempted": false,
+      "sessionRevocationClaimed": false
+    },
+    "checks": [
+      {
+        "id": "reset.request.known.status",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "status": 202
+        }
+      },
+      {
+        "id": "reset.request.known.no_store",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.known.json",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.known.no_identifier_token_or_secret",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.unknown.status",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "status": 202
+        }
+      },
+      {
+        "id": "reset.request.unknown.no_store",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.unknown.json",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.unknown.no_identifier_token_or_secret",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.same_public_data",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.same_public_shape",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.known.accepted",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.unknown.accepted",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.retry.status",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "status": 202
+        }
+      },
+      {
+        "id": "reset.request.retry.same_public_data",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.retry.no_store",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.request.retry.no_identifier_token_or_secret",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.confirm.invalid.status",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "status": 401
+        }
+      },
+      {
+        "id": "reset.confirm.invalid.no_token",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "setCookie": false
+        }
+      },
+      {
+        "id": "reset.confirm.invalid.error_envelope",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "errorPresent": true
+        }
+      },
+      {
+        "id": "reset.confirm.invalid.no_store",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.session.bearer_still_valid",
+        "ok": true,
+        "required": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "id": "reset.session.same_principal",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.session.active",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.session.no_store",
+        "ok": true,
+        "required": true,
+        "detail": {}
+      },
+      {
+        "id": "reset.cors.confirm.preflight_status",
+        "ok": true,
+        "required": false,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "id": "reset.cors.confirm.allow_origin",
+        "ok": true,
+        "required": false,
+        "detail": {}
+      },
+      {
+        "id": "reset.cors.confirm.allow_credentials",
+        "ok": true,
+        "required": false,
+        "detail": {}
+      },
+      {
+        "id": "reset.cors.confirm.allow_methods",
+        "ok": true,
+        "required": false,
+        "detail": {}
+      },
+      {
+        "id": "reset.cors.confirm.allow_headers",
+        "ok": true,
+        "required": false,
+        "detail": {}
+      }
+    ]
+  },
+  "focused_iam_tests": {
+    "scope": "Existing controller and security-facts tests with in-memory reset delivery",
+    "IdempotencyCredentialReplayControllerTest": 20,
+    "IamSecurityFactsTest": 21,
+    "log_sha256": "2bf5d7889fae4c8dc9ecf7680f02ba05f31c0d90488c15ffec2330d273340775"
+  },
+  "probe_sha256": "8bc8a72c86ea122073eb754a7c41bd49e3144eb1425a93848d916642ebd63f63",
+  "result_sha256": "afb1b1f816ace653821378a17c28395f0c41b1aea5819c130912dfb974226207",
+  "local_artifact_basename": "iam-reset-http-32-b77-root",
+  "cleanup": [
+    "PORT_18070_RELEASED",
+    "PORT_18087_RELEASED",
+    "PORT_13306_RELEASED",
+    "TEMP_DB_RELEASED",
+    "TEMP_TLS_RELEASED"
+  ],
+  "external_reset_delivery_deployment_and_native": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}
