@@ -1,0 +1,97 @@
+{
+  "batch": "B98",
+  "at": "2026-11-06T04:06:50.378335+08:00",
+  "integration_base": "96e5a80e737fbce225ce5f85a1b08c87759557a3",
+  "scope": "ISOLATED_IOS_SIMULATOR_NATIVE_SWIFT_KEYCHAIN",
+  "native_source_sha256": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+  "implementation": [
+    "DSH CLI 40",
+    "Grok CLI 102 and 106"
+  ],
+  "sdk": "iOS Simulator SDK 27.2, iOS 27.0 runtime, arm64",
+  "entitlement_scope": "simulated Mach-O section, ad hoc signature with no restricted entitlements",
+  "harness_sha256": "963022ecd345ceae36c505d71108c17dd43cc7b8398ad277dc93690497b45d27",
+  "app_executable_sha256": "4adc864798cbdca0745fb5d0fbcfe0efe4f75078667d4dbf0ac32f85780afe7b",
+  "test_phase_receipts": {
+    "write": {
+      "schema": "qa-securestore-receipt-1",
+      "bundleId": "app.englishflow.qa.securestore",
+      "phase": "write",
+      "passed": true,
+      "checks": {
+        "wrongKeyRejected": true,
+        "emptyRejected": true,
+        "oversizeRejected": true,
+        "writeOk": true,
+        "readMatches": true,
+        "replaceOk": true,
+        "replaceMatches": true,
+        "attributeQueryHealthy": true,
+        "attributesVisible": true,
+        "nonsync": true,
+        "deviceOnlyWhenUnlocked": true
+      },
+      "osStatus": {
+        "wrongKeyRead": 0,
+        "wrongKeyWrite": 0,
+        "wrongKeyRemove": 0,
+        "emptyWrite": 0,
+        "oversizeWrite": 0,
+        "write": 0,
+        "read": 0,
+        "replace": 0,
+        "replaceRead": 0,
+        "nonsyncQuery": 0,
+        "syncQuery": -25300
+      }
+    },
+    "read-remove": {
+      "schema": "qa-securestore-receipt-1",
+      "bundleId": "app.englishflow.qa.securestore",
+      "phase": "read-remove",
+      "passed": true,
+      "checks": {
+        "persisted": true,
+        "attributeQueryHealthy": true,
+        "attributesVisible": true,
+        "nonsync": true,
+        "deviceOnlyWhenUnlocked": true,
+        "removeOk": true,
+        "missingAfterRemove": true,
+        "removeIdempotent": true,
+        "stillMissing": true
+      },
+      "osStatus": {
+        "read": 0,
+        "nonsyncQuery": 0,
+        "syncQuery": -25300,
+        "remove": 0,
+        "readAfterRemove": 0,
+        "removeAgain": 0,
+        "readFinal": 0
+      }
+    },
+    "read-missing": {
+      "schema": "qa-securestore-receipt-1",
+      "bundleId": "app.englishflow.qa.securestore",
+      "phase": "read-missing",
+      "passed": true,
+      "checks": {
+        "missing": true
+      },
+      "osStatus": {
+        "read": 0
+      }
+    }
+  },
+  "prior_attempts": [
+    "MISSING_SIMULATOR_ENTITLEMENT_OSSTATUS_-34018",
+    "RESTRICTED_CODE_SIGNATURE_ENTITLEMENT_LAUNCH_FAILED",
+    "WRITE_PASS_ROOT_RECEIPT_FIELD_ASSERTION_STOPPED_BEFORE_RELAUNCH"
+  ],
+  "cleanup": {
+    "dedicated_simulators_deleted": 4,
+    "original_devices_preserved": 11
+  },
+  "dcloud_host_android_own_runtime_physical_device_release": "NOT_RUN"
+}

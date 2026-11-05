@@ -5714,5 +5714,14 @@
     "compiled_strict_schema": "2/2",
     "broker_and_learning_projection": "NOT_RUN",
     "evidence": "evidence/ROOT-B97-ASSESSMENT-EVENT-CORRELATION-20261106.json"
+  },
+  "integration_batch_98_ios_simulator_keychain": {
+    "state": "ACCEPTED_ISOLATED_IOS_SIMULATOR_SWIFT_KEYCHAIN",
+    "phases": "3/3",
+    "device_only_when_unlocked": true,
+    "non_synchronizing": true,
+    "disposable_simulators_removed": 4,
+    "device_app_host_android_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B98-IOS-SIMULATOR-KEYCHAIN-20261106.json"
   }
 }
