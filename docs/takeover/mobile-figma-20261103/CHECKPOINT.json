@@ -5760,5 +5760,14 @@
     "attempt_budget": 5,
     "broker_learning_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B102-ASSESSMENT-OUTBOX-LEASE-20261106.json"
+  },
+  "integration_batch_103_reading_empty_owner": {
+    "state": "ACCEPTED_LOCAL_READING_EMPTY_CATALOG_H5_OWNER",
+    "reading_list_reads": 1,
+    "eligible_articles": 0,
+    "content_writes": 0,
+    "cleanup": "PASS",
+    "published_detail_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B103-READING-EMPTY-OWNER-20261106.json"
   }
 }

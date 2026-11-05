@@ -1,0 +1,68 @@
+{
+  "batch": "B103",
+  "at": "2026-11-06T05:41:24.717820+08:00",
+  "integration_base": "4e8ec2c88e131f5ec0bd196a387e6b7f4d8517c1",
+  "implementation": [
+    "Grok CLI 116",
+    "Grok CLI 119",
+    "Grok CLI 125",
+    "Grok CLI 127"
+  ],
+  "trace": {
+    "mobile": "MB-014",
+    "page": "PAGE-P1-READING",
+    "cards": [
+      "R1-043",
+      "R1-044",
+      "R1-046"
+    ],
+    "trace_status": "TRACE_PENDING"
+  },
+  "h5_index_sha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
+  "owner_jars": {
+    "iam": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "learner": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+    "content": "dfea86f0f7fa9b28074c7ccd1c79b871e8de282be999fc77bd7dc732b36c65bf"
+  },
+  "observer_sha256": "7a0328fddc0228bff3bd6fd4cffa289c5ebf6738c293d1795f5f003c7ec3ac70",
+  "wrapper_sha256": "831dc36a5e6307ab1a838dae5fd2625d2b3205f485e23b674919c851d8c80f26",
+  "runtime_receipt_sha256": "c430c9025482e2dbd2eafadc8fd496ccc174e33c31ab6d16a04ce5826a5e603f",
+  "bootstrap_sha256": "b7145ece90e37c7be1528633185e3f4dd2196d30a618f67eece72507ec146a44",
+  "owner_query_sha256": "939a5a6ac866b1f44a3829f48f344b6dd3e05f2ab65434ccd732954a2b42340f",
+  "browser": {
+    "authenticated_synthetic_learner": true,
+    "gateway_200_empty": true,
+    "visible_empty_state": true,
+    "owner_read_count": 1,
+    "unexpected_traffic": 0,
+    "content_writes": 0,
+    "target_setup_write": true
+  },
+  "content_owner": {
+    "eligibleArticles": 0,
+    "failedMigrations": 0,
+    "legacy": "UNPUBLISHED",
+    "legacyCount": 1,
+    "versions": {
+      "23": "1",
+      "29": "1",
+      "34": "1"
+    }
+  },
+  "cleanup": {
+    "scope": "owned only",
+    "dry_probes": "4/4",
+    "ports_after": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18183:free"
+    ],
+    "database_released": true
+  },
+  "published_article_detail": "NOT_RUN",
+  "native_devices_and_deployment": "NOT_RUN"
+}

@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。Kafka 发布、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B103 经本机 Gateway 读取真实内容目录，阅读精练空态与数据库的零篇可读文章一致。已发布文章详情分别验收。[阅读空态 B103](takeover/mobile-figma-20261103/reviews/INTEGRATION-B103-READING-EMPTY-OWNER.md)
+
 移动端 B93 修正了「今日任务」误显示空态的问题。学习服务确认的到期条目进入就绪清单。原有课程任务导航与空态通过受控回归。真实浏览器确认三条到期记录逐项一致。B99 今日页 13 个受控视口场景通过，含四种高对比视口。练习完成与学习进度继续验收。[完整 H5 B96](takeover/mobile-figma-20261103/reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md)
 
 ## 分支

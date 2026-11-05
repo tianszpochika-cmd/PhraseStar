@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B103-20261106] 阅读精练经本机内容服务确认真实空目录及页面空态。
+
 - [MOBILE-FIGMA-B102-20261106] 增加逐题测评事件的租约领取和确认，四项独立 MySQL 验证通过。
 
 - [MOBILE-FIGMA-B101-20261106] Android 独立模拟器验证 Keystore 密文替换、跨启动读回和删除。

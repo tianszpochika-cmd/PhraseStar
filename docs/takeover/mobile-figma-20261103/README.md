@@ -48,6 +48,7 @@
 - [引导页 B48](reviews/INTEGRATION-B48-ONBOARDING.md) 已有成人门、目标和记录浏览通过局部审核。R1-008 首次签署待契约事实，该批未增加整页本地候选。
 - [课程书架与详情 B47](reviews/INTEGRATION-B47-LEARN.md) 49 项组合浏览器检查和 9 图通过，匿名直达保留返回意图。新增 MB-009，累计 25/33 条本地 UI 候选。
 - [今日任务与成长 B46](reviews/INTEGRATION-B46-WORLD-TODAY.md) 验证 390px 主按钮、课程真实入口、四个资源各读一次及赛季重试。该批新增 MB-008、MB-018，当时本地 UI 候选 24/33。
+- [真实阅读空态 B103](reviews/INTEGRATION-B103-READING-EMPTY-OWNER.md) 内容库及真实 H5 确认目录为空，发布文章详情继续验收。
 - [阅读两页 B45](reviews/INTEGRATION-B45-READING.md) 通过 21 组组合浏览器检查，包含离开后的迟到内容防护。该批新增 MB-014 与 MB-015，当时本地 UI 候选 22/33。
 - [形象与衣柜 B44](reviews/INTEGRATION-B44-AVATAR.md) 通过 42 项源码、52 项组合浏览器检查和 16 图。该批新增 MB-021，当时本地 UI 候选 20/33。
 - [形象与成长 B41](reviews/INTEGRATION-B41-AVATAR-WORLD.md) 验证迟到请求与重复读取并分批整合，保留首屏视觉差异。当批两页只进入功能候选。后续形象页见 B44，成长页见 B46。
