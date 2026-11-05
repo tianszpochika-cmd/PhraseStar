@@ -40,6 +40,7 @@ import tools.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -345,6 +346,61 @@ class JdbcAssessmentOutboxRelayTest {
             assertEquals(List.of(older), remaining.stream().map(ClaimedEvent::eventId).toList());
             assertEquals(1, remaining.get(0).attemptCount());
         });
+    }
+
+    @Test
+    void permanentFailureReachesDlqWithoutSpendingTheAttemptBudget() throws Exception {
+        withRelay((jdbc, relay, schema) -> {
+            Stored schemaDlq = permanentDlq(jdbc, relay, schema, 201, "SCHEMA_INVALID", "permanent-schema");
+            Stored forbiddenDlq = permanentDlq(jdbc, relay, schema, 202, "FORBIDDEN", "permanent-forbidden");
+            assertEquals(schemaDlq.availableAt().getTime(), forbiddenDlq.availableAt().getTime());
+            String id = insertCanonical(jdbc, schema, 203, "retryable-timeout", BASE);
+            ClaimedEvent claimed = claimOnly(relay, BASE);
+            assertEquals(1, claimed.attemptCount());
+            Instant failedAt = BASE.plusSeconds(1);
+            Instant retryAt = failedAt.plusSeconds(30);
+            assertTrue(relay.markFailed(id, claimed.leaseToken(), failedAt, retryAt, "TIMEOUT"));
+            Stored retry = read(jdbc, schema, id);
+            assertEquals("RETRY", retry.status());
+            assertEquals(1, retry.attemptCount());
+            assertEquals("TIMEOUT", retry.errorCode());
+            assertEquals("publish failed", retry.errorMessage());
+            assertNull(retry.lockedBy());
+            assertEquals(claimed.payloadJson(), retry.payload());
+            assertNoPayloadLeak(retry, "retryable-timeout");
+            assertEquals(30_000L, retry.availableAt().getTime() - schemaDlq.availableAt().getTime());
+            assertTrue(relay.claim(failedAt, 8, LEASE).isEmpty());
+            assertFalse(relay.markFailed(id, claimed.leaseToken(), retryAt, retryAt, "TIMEOUT"));
+            assertEquals(signature(retry), signature(read(jdbc, schema, id)));
+        });
+    }
+
+    private Stored permanentDlq(JdbcTemplate jdbc, JdbcAssessmentOutboxRelay relay, String schema, int n,
+            String code, String marker) throws Exception {
+        String id = insertCanonical(jdbc, schema, n, marker, BASE);
+        ClaimedEvent claimed = claimOnly(relay, BASE);
+        assertEquals(id, claimed.eventId());
+        assertEquals(1, claimed.attemptCount());
+        Instant failedAt = BASE.plusSeconds(1);
+        Instant rejectedRetry = failedAt.plusSeconds(45);
+        assertTrue(relay.markFailed(id, claimed.leaseToken(), failedAt, rejectedRetry, code));
+        Stored stored = read(jdbc, schema, id);
+        assertEquals("DLQ", stored.status());
+        assertEquals(1, stored.attemptCount());
+        assertEquals(code, stored.errorCode());
+        assertEquals("publish failed", stored.errorMessage());
+        assertNull(stored.lockedBy());
+        assertNull(stored.lockedUntil());
+        assertEquals(claimed.payloadJson(), stored.payload());
+        assertNotNull(stored.availableAt());
+        assertNoPayloadLeak(stored, marker);
+        Instant later = failedAt.plusSeconds(2);
+        assertFalse(relay.markFailed(id, claimed.leaseToken(), later, later, code));
+        assertFalse(relay.markPublished(id, claimed.leaseToken(), later));
+        assertEquals(0, relay.reclaimExpiredLeases(later));
+        assertTrue(relay.claim(later, 1, LEASE).isEmpty());
+        assertEquals(signature(stored), signature(read(jdbc, schema, id)));
+        return stored;
     }
 
     private static void rollbackHeld(AtomicReference<Connection> held, Connection connection) throws SQLException {

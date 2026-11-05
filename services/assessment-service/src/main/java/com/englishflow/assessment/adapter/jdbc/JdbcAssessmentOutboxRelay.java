@@ -23,12 +23,13 @@ import org.springframework.transaction.support.TransactionTemplate;
  * <p>Admission is the WHERE predicate. It runs before {@code ORDER BY}, {@code LIMIT}, and
  * {@code FOR UPDATE SKIP LOCKED}, so an older non-canonical row cannot occupy a claim slot or
  * be reclaimed. Stored envelope columns are never assigned. Nothing in the application context
- * constructs this type.
+ * constructs this type. A permanent failure code on a still-live lease moves that row to
+ * {@code DLQ} immediately; every other safe code keeps the attempt bound.
  */
 public final class JdbcAssessmentOutboxRelay implements AssessmentOutboxRelayPort {
 
     /** Registered outbox attempt budget. The fifth claim is the last one that may publish. */
-    public static final int MAX_ATTEMPTS = 5;
+    public static final int MAX_ATTEMPTS = AssessmentOutboxRelayPort.MAX_ATTEMPTS;
 
     private static final String EVENT_NAME = "assessment.item.assessed.v2";
     private static final String SCHEMA_NAME = "assessment.event.v2";
@@ -44,6 +45,11 @@ public final class JdbcAssessmentOutboxRelay implements AssessmentOutboxRelayPor
     private static final String LEASE_EXPIRED_MESSAGE = "publishing lease expired";
     private static final String ATTEMPTS_EXHAUSTED = "ATTEMPTS_EXHAUSTED";
     private static final String ATTEMPTS_EXHAUSTED_MESSAGE = "attempt budget exhausted";
+    /**
+     * Case-sensitive permanent-code checks. Each comparison is {@code BINARY ? = BINARY 'CODE'},
+     * the same collation fence as {@code locked_by}.
+     */
+    private static final String PERMANENT_PREDICATE = permanentPredicate();
 
     /**
      * Case-sensitive canonical envelope. {@code BINARY} keeps the match strict under a
@@ -129,8 +135,14 @@ public final class JdbcAssessmentOutboxRelay implements AssessmentOutboxRelayPor
                 """, table);
         this.markFailedSql = sql("""
                 UPDATE __TABLE__
-                   SET status = CASE WHEN attempt_count >= ? THEN 'DLQ' ELSE 'RETRY' END,
-                       available_at = CASE WHEN attempt_count >= ? THEN ? ELSE ? END,
+                   SET status = CASE
+                           WHEN attempt_count >= ? OR __PERMANENT__ THEN 'DLQ'
+                           ELSE 'RETRY'
+                       END,
+                       available_at = CASE
+                           WHEN attempt_count >= ? OR __PERMANENT__ THEN ?
+                           ELSE ?
+                       END,
                        locked_by = NULL, locked_until = NULL,
                        last_error_code = ?, last_error_message = ?
                  WHERE event_id = ?
@@ -201,16 +213,36 @@ public final class JdbcAssessmentOutboxRelay implements AssessmentOutboxRelayPor
         Objects.requireNonNull(now, "now is required");
         Objects.requireNonNull(availableAt, "availableAt is required");
         Timestamp at = Timestamp.from(now);
-        return jdbc.update(markFailedSql, appendEnvelope(
-                MAX_ATTEMPTS,
-                MAX_ATTEMPTS,
-                at,
-                Timestamp.from(availableAt),
-                safeCode(errorCode),
-                EXPLICIT_FAILURE_MESSAGE,
-                eventId,
-                leaseToken,
-                at)) == 1;
+        String code = safeCode(errorCode);
+        return jdbc.update(markFailedSql, appendEnvelope(markFailedArguments(
+                at, Timestamp.from(availableAt), code, eventId, leaseToken))) == 1;
+    }
+
+    /**
+     * Two copies of the permanent predicate surround the attempt bound, then the stored code.
+     * The predicate length is the registered permanent-code list, so the binds cannot drift from it.
+     */
+    private static Object[] markFailedArguments(Timestamp at, Timestamp availableAt, String code,
+            String eventId, String leaseToken) {
+        int codes = AssessmentOutboxRelayPort.PERMANENT_FAILURE_CODES.size();
+        Object[] leading = new Object[2 + (codes * 2) + 7];
+        int index = 0;
+        leading[index++] = MAX_ATTEMPTS;
+        for (int nth = 0; nth < codes; nth++) {
+            leading[index++] = code;
+        }
+        leading[index++] = MAX_ATTEMPTS;
+        for (int nth = 0; nth < codes; nth++) {
+            leading[index++] = code;
+        }
+        leading[index++] = at;
+        leading[index++] = availableAt;
+        leading[index++] = code;
+        leading[index++] = EXPLICIT_FAILURE_MESSAGE;
+        leading[index++] = eventId;
+        leading[index++] = leaseToken;
+        leading[index++] = at;
+        return leading;
     }
 
     @Override
@@ -287,8 +319,27 @@ public final class JdbcAssessmentOutboxRelay implements AssessmentOutboxRelayPor
         return args;
     }
 
+    private static String permanentPredicate() {
+        StringBuilder sql = new StringBuilder();
+        for (String code : AssessmentOutboxRelayPort.PERMANENT_FAILURE_CODES) {
+            if (!SAFE_ERROR_CODE.matcher(code).matches()) {
+                throw new IllegalStateException("permanent failure code is invalid");
+            }
+            if (sql.length() > 0) {
+                sql.append(" OR ");
+            }
+            sql.append("BINARY ? = BINARY '").append(code).append('\'');
+        }
+        if (sql.isEmpty()) {
+            throw new IllegalStateException("permanent failure code is invalid");
+        }
+        return sql.toString();
+    }
+
     private static String sql(String template, String table) {
-        return template.replace("__TABLE__", table).replace("__ENVELOPE__", ENVELOPE_PREDICATE);
+        return template.replace("__TABLE__", table)
+                .replace("__ENVELOPE__", ENVELOPE_PREDICATE)
+                .replace("__PERMANENT__", PERMANENT_PREDICATE);
     }
 
     private record Selected(

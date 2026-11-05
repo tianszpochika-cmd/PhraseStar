@@ -5769,5 +5769,13 @@
     "cleanup": "PASS",
     "published_detail_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B103-READING-EMPTY-OWNER-20261106.json"
+  },
+  "integration_batch_104_assessment_kafka_ack_core": {
+    "state": "ACCEPTED_DORMANT_ASSESSMENT_KAFKA_PUBLISHER_CORE",
+    "publisher_unit": "13/13",
+    "mysql": "5/5",
+    "default_start": "PASS",
+    "live_kafka_learning_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B104-ASSESSMENT-KAFKA-ACK-CORE-20261106.json"
   }
 }

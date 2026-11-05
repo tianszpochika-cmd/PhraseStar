@@ -1,0 +1,79 @@
+{
+  "batch": "B104",
+  "at": "2026-11-06T05:59:21.680902+08:00",
+  "integration_base": "57de259731841056e105dfa214a8e8fad135ad60",
+  "implementation": [
+    "Grok CLI 123",
+    "Grok CLI 130",
+    "Grok CLI 132"
+  ],
+  "files": [
+    {
+      "path": "services/assessment-service/pom.xml",
+      "sha256": "92343fc7fe92db978e31b5aa2e58d059770d65a06a10620b32efc6a5aa43eb04",
+      "bytes": 4967
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentOutboxRelay.java",
+      "sha256": "1f9087a5d5955a5a6b47cc843416dc24a5adc8309e10aec636411e1511c3dadf",
+      "bytes": 16846
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelay.java",
+      "sha256": "8b5d7b27c9368d1c33815c1398e142d012bfb50bf5c29c3e0c80fbc490e8d34f",
+      "bytes": 14156
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/port/AssessmentOutboxRelayPort.java",
+      "sha256": "b88b20181fe67c87616b1cfbf96f8c11442801a95427ef5c2ad297269e1903f8",
+      "bytes": 3833
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentOutboxRelayTest.java",
+      "sha256": "400de4c1b97be5a37b6da704ff00be8c6481c8761093c2b118d292c6059a475b",
+      "bytes": 42696
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelayTest.java",
+      "sha256": "8fe5294888986bbeac0b5069d029a3faf3837d6190179b42c431bfb74cc3de64",
+      "bytes": 25788
+    }
+  ],
+  "contract": {
+    "topic": "platform.assessment.v1",
+    "event": "assessment.item.assessed.v2",
+    "schema": "assessment.event.v2",
+    "delivery": "at-least-once",
+    "publisher_active": false
+  },
+  "offline_maven": {
+    "passed": 171,
+    "opt_in_skipped": 7,
+    "publisher_tests": 13,
+    "failures": 0
+  },
+  "real_mysql": {
+    "passed": 5,
+    "skipped": 0,
+    "scope": "owner lease/terminal DLQ",
+    "receipt_sha256": "138e89cd4baeff3565decee56ec5f8888467cbc7c4b4dbcf10c4c5a502a9d676",
+    "released": true
+  },
+  "default_local_start": {
+    "kind": "DEFAULT_DISABLED_PUBLISHER_STARTUP",
+    "jar_sha256": "15e582a9ced5aa320c805175fa7cd2c186e3bc00f4f2c5841540961db044129f",
+    "broker_autoconfiguration_on_classpath": false,
+    "status": "PASS",
+    "port": 18091,
+    "readiness": "UP",
+    "broker_established_socket": false,
+    "released": true
+  },
+  "default_boot_receipt_sha256": "8043d42f3a9bd4589d8ca045d2303e772d910460a2331b25c512360a8954f0ac",
+  "dependencies": {
+    "spring_kafka": "4.1.1",
+    "kafka_clients": "4.2.1"
+  },
+  "scoped_broker_and_consumer": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}
