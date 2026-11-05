@@ -1,0 +1,97 @@
+{
+  "batch": "B105",
+  "at": "2026-11-06T06:06:16.614509+08:00",
+  "integration_base": "65716ef348562bc9a3e323313fd0a8170e5d7025",
+  "implementation": [
+    "Grok CLI 124",
+    "Grok CLI 126",
+    "Grok CLI 128",
+    "Grok CLI 131",
+    "Grok CLI 133"
+  ],
+  "trace": {
+    "mobile": "MB-013",
+    "pages": [
+      "PAGE-P1-GRAMMAR",
+      "PAGE-P1-PRACTICE-SESSION"
+    ],
+    "cards": [
+      "R1-043",
+      "R1-044",
+      "R1-048"
+    ],
+    "trace_status": "TRACE_PENDING"
+  },
+  "h5_index_sha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
+  "assessment_service": {
+    "commit": "4e8ec2c88e131f5ec0bd196a387e6b7f4d8517c1",
+    "jar_sha256": "dddfc87db2762ffca0334e60b926bdcd645ef150b3fc8513147390f5a82d8d00",
+    "flyway": "V12"
+  },
+  "other_owner_jars": "B103 exact IAM/Gateway/Learner/Content pins",
+  "files": {
+    "observer_sha256": "c6286fa1d13d612dc6b808dd7c9700fe4d62b4d82322abb4ae863f624df26781",
+    "wrapper_sha256": "c69fd07926555bc05c38bab406f8264ad30949c8e0457c27677f7131591ed535",
+    "assessment_query_sha256": "be1464b1c299f1f63de99c17aa4e83781182b3c0fcb0da854cb5aec11b0e77a1"
+  },
+  "first_browser": {
+    "reason": "submit-unavailable",
+    "assessment_writes": 0,
+    "cleanup": "PASS",
+    "result_sha256": "d0722edbc2ea671724e53e80c908a225c846ee3a7c688731e0ba3c2a124ec1f4"
+  },
+  "browser": {
+    "login": "synthetic-adult-IAM-TLS",
+    "content_match": "exact normalized displayed question and choices",
+    "content_refresh_matches": true,
+    "feedback_after_authoritative_receipt": true,
+    "assessment": {
+      "attemptAssessed": true,
+      "attemptPosts": 1,
+      "attemptStatus": 200,
+      "itemCount": 1,
+      "modePractice": true,
+      "oneQuestion": true,
+      "receiptAuthoritative": true,
+      "sameSession": true,
+      "sessionPosts": 1,
+      "sessionStatus": 200
+    },
+    "counts": {
+      "abortedWrites": 0,
+      "assessmentWrites": 2,
+      "continued": 18,
+      "foreignOrigins": 0,
+      "iamSessionWrites": 1,
+      "retriesAborted": 0,
+      "syntheticFulfills": 0,
+      "unknownContinued": 0
+    },
+    "result_sha256": "0ad1744c07256240630d59c657418f19676c8d2e47673a9bcd86e147e6ed846e"
+  },
+  "owner_mysql": {
+    "passed": 17,
+    "total": 17,
+    "session": 1,
+    "attempt": 1,
+    "report": 1,
+    "pending_bound_event": 1,
+    "snapshot_pin_matches": true,
+    "row_envelope_id_matches": true,
+    "failed_migrations": 0
+  },
+  "cleanup": {
+    "scope": "owned only",
+    "ports": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18091:free",
+      "18183:free"
+    ],
+    "database_released": true
+  },
+  "broker_learning_repeat_or_device_deploy": "NOT_RUN"
+}

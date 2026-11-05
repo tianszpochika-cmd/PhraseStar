@@ -5777,5 +5777,15 @@
     "default_start": "PASS",
     "live_kafka_learning_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B104-ASSESSMENT-KAFKA-ACK-CORE-20261106.json"
+  },
+  "integration_batch_105_grammar_h5_owner": {
+    "state": "ACCEPTED_LOCAL_GRAMMAR_SINGLE_ITEM_H5_OWNER",
+    "assessment_writes": "1 session + 1 attempt",
+    "sql": "17/17",
+    "owner_snapshot_pin": true,
+    "event_state": "PENDING",
+    "cleanup": "PASS",
+    "live_kafka_learning_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B105-GRAMMAR-H5-OWNER-20261106.json"
   }
 }
