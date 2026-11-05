@@ -3591,7 +3591,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T21:22:18.076940+08:00",
+  "updated_at": "2026-11-05T21:36:11.667424+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5280,7 +5280,9 @@
     "checks": 74,
     "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
     "receipt": "evidence/ROOT-B70-ONBOARDING-KEYBOARD-20261105.json",
-    "device_and_reader": "NOT_RUN"
+    "device_and_reader": "NOT_RUN",
+    "followup_checks": 76,
+    "new_inner_scroll_checks": 2
   },
   "integration_batch_71_report_share_issue": {
     "scope": "MB-016/017 / owner optional idempotency",

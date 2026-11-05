@@ -24,5 +24,34 @@
     "Fixture HTTP only, no consent PUT. Actual disclosure keyboard focus, selected relationships, enabled after three documents opened.",
     "Body uses intentional bounded overflow auto. This run verifies the region is focusable and unclipped by hidden overflow. It does not independently assert keyboard scrolling to the end.",
     "H5 computed large-text probe only. Real browser/production release, OS text scaling, native and screen reader remain separately tracked."
-  ]
+  ],
+  "scroll_followup": {
+    "author": "Grok CLI 54; supervisor exact local harness run",
+    "checks_total": 76,
+    "new_inner_scroll_checks": 2,
+    "scope": "TERMS only, Chinese 320 dark and English 390 high contrast",
+    "measurements": {
+      "zh-320-dark": {
+        "key": "PageDown",
+        "before": 12,
+        "after": 50,
+        "range": 50,
+        "lastLineInside": true,
+        "focusInside": true
+      },
+      "en-390-high-contrast": {
+        "key": "PageDown",
+        "before": 12,
+        "after": 85,
+        "range": 85,
+        "lastLineInside": true,
+        "focusInside": true
+      }
+    },
+    "raw_sha256": {
+      "result.json": "211e4b8979c2da853645908224b45d998c32f85e4aa45026127889cab049d401",
+      "results.json": "622ddd0283db55a6f4f6d3171f80307935251f5c8d2ce7b3c3f45f6a48350ba5",
+      "run.cjs": "6f16152d260eeac2e2ae9b1668bc4bea387f0474752f934d661efb089d65c003"
+    }
+  }
 }
