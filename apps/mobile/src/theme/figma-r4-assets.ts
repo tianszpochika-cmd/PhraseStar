@@ -71,3 +71,41 @@ export const homeAssets = {
   tabBook: `${homeRoot}/bcb9e57b-a2a5-451e-a17b-df9192646b0d.svg`,
   tabUser: `${homeRoot}/1430dadc-7e13-4585-8033-54b167d7e20b.svg`,
 } as const
+
+/**
+ * Dark home screen 247:1980. Same roles as the light set.
+ * `arc` and `flame` stay unpainted: the arc is a demo wedge and flame has no streak source.
+ * iPad frames 251:2, 251:215, and 251:362 are stored as original bytes under
+ * static/figma-home-ipad-* and are not mapped. Their course art bakes a unit
+ * count, and the sidebar repeats the native tab bar.
+ */
+const homeDarkRoot = '/static/figma-home-dark-247-1980'
+export const homeDarkAssets = {
+  courseArt: `${homeDarkRoot}/ad157816-d997-477d-afea-c0b81afa01be.svg`,
+  chevron: `${homeDarkRoot}/4cc71835-ee73-4f9e-93b8-a1894f981565.svg`,
+  book: `${homeDarkRoot}/b5127cdf-ffaf-48e0-b869-c491ad758e77.svg`,
+  flame: `${homeDarkRoot}/6d1339bc-4de5-4d20-a098-3f404f728701.svg`,
+  logo: `${homeDarkRoot}/a38ea1e6-efe6-45eb-8541-91ad3a49773b.png`,
+  blobA: `${homeDarkRoot}/30611b5f-6f66-48f5-acbf-e087bd282c4c.svg`,
+  blobB: `${homeDarkRoot}/81347680-a9f2-4843-82c0-21aea9456e3f.svg`,
+  glow: `${homeDarkRoot}/a41be7de-e81e-4372-87e6-bbced7b5ca1b.svg`,
+  sparkle: `${homeDarkRoot}/bd1ab810-8da2-4155-9a7f-1d54c3c41f04.svg`,
+  logoGlow: `${homeDarkRoot}/e346f6b8-db4e-4c57-8056-f079c72898b2.svg`,
+  blobC: `${homeDarkRoot}/b75be60d-5360-45e7-a099-12acd6c26762.svg`,
+  blobD: `${homeDarkRoot}/55cdffde-45bd-4e66-8fa7-83323e7ff9fc.svg`,
+  particles: `${homeDarkRoot}/800d824e-02aa-47da-b41f-585ca0cb034e.svg`,
+  track: `${homeDarkRoot}/c3654450-de43-45c3-bb02-96d0b38a257a.svg`,
+  arc: `${homeDarkRoot}/d1c0183a-d165-4f94-b9cd-684c63520edb.svg`,
+  arrow: `${homeDarkRoot}/da43cfd9-a145-4636-b579-b3de5e54b4eb.svg`,
+  schedule: `${homeDarkRoot}/f9370cbb-0f80-40c4-a2dc-2ebedb8c20cd.svg`,
+  more: `${homeDarkRoot}/35e4b3a4-d6c2-413f-8ed6-731c36442691.svg`,
+  taskDone: `${homeDarkRoot}/db2f39e6-2b60-4388-bb48-d3d2ff014172.svg`,
+  check: `${homeDarkRoot}/d3fe111e-d074-4ec3-a4f6-d5ce9e312a28.svg`,
+  taskPencil: `${homeDarkRoot}/f6a7c032-d149-412b-b718-3594f958e465.svg`,
+  search: `${homeDarkRoot}/0672c73c-1501-4641-8fff-40f53fc92667.svg`,
+  tabHouse: `${homeDarkRoot}/c1f5d3ac-1f86-475d-aed5-b89ce2c4185c.svg`,
+  tabPencil: `${homeDarkRoot}/0669107d-1119-4a1c-a800-efd7c04e8200.svg`,
+  tabSparkle: `${homeDarkRoot}/bedfc551-444a-466c-8ae7-0b3c4ca16d70.svg`,
+  tabBook: `${homeDarkRoot}/6be64013-108a-4b28-a5cc-31694f4bb52d.svg`,
+  tabUser: `${homeDarkRoot}/6de92a91-dd5c-400f-8630-81951926fb97.svg`,
+} as const

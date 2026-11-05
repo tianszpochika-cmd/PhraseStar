@@ -619,7 +619,7 @@
       "name": "首页",
       "owner": "GROK",
       "wave": "G1",
-      "status": "DSH_TABLET_TOKEN_REVIEW_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "真实计划摘要、首学、空/错/401、切号及迟到响应",
       "services_data_owners": [
         "learner-service",
@@ -679,17 +679,17 @@
         "mobile-learning-account-scope.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_5_REFERENCES_33_COMBINED_H5_SHOTS",
+        "interaction": "COMPILED_H5_25_CHECKS_PASS_SYNTHETIC",
+        "h5": "PASS_SHA256_a8bebee0a2d7a9fd50d13675710b4b8f41c34ac60a89aa2d43cc16a8e713ebb4",
+        "cross_viewport": "MATRIX_31_PHONE_TABLET_AND_8_INDEPENDENT",
+        "accessibility": "LOCAL_KEYBOARD_HIGH_CONTRAST_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B50-HOME.md"
       },
-      "current_job": "dsh/resume-20261105-home-tablet-tokens-02",
-      "resume_evidence_20261105": "geometry at 834/1194 verified; current semantic migration and repaint checks open"
+      "current_job": null,
+      "resume_evidence_20261105": "B50 exact Home02 + composed Home dictionary + strict combined fixture. Native devices and TRACE_PENDING remain."
     },
     {
       "id": "MB-008",
@@ -4180,9 +4180,9 @@
     "doD": false
   },
   "active_resume_review_20261105": {
-    "at": "2026-11-05T07:59:46.067180+00:00",
+    "at": "2026-11-05T08:15:07.162194+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 26,
+    "local_ui_candidates": 27,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4215,9 +4215,9 @@
       {
         "id": "MB-007",
         "cli": "dsh",
-        "job": "dsh/resume-20261105-home-tablet-tokens-02",
-        "state": "running",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-home-tablet-tokens-02.checkpoint.json"
+        "job": "grok/resume-20261105-home-observer-12",
+        "state": "exited_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-home-observer-12.checkpoint.json"
       },
       {
         "id": "MB-008",
@@ -4301,6 +4301,16 @@
     "review": "reviews/INTEGRATION-B49-ASSESSMENT.md",
     "routeCountDelta": 1,
     "localUICandidateRoutes": 26,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_50_home": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "a8bebee0a2d7a9fd50d13675710b4b8f41c34ac60a89aa2d43cc16a8e713ebb4",
+    "evidence": "evidence/ROOT-B50-HOME-20261105.json",
+    "review": "reviews/INTEGRATION-B50-HOME.md",
+    "routeCountDelta": 1,
+    "localUICandidateRoutes": 27,
     "formalRoutes": 33,
     "doD": false
   }

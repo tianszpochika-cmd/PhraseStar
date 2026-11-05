@@ -46,6 +46,152 @@ export function mobileExperienceVariables(theme: ResolvedTheme): Record<string, 
   }
 }
 
+export type MobileHomeTabletLayout = 'rail' | 'sidebar'
+
+/**
+ * MB-007 tablet Home semantic roles. The confirmed 251:215 / 251:2 / 251:362
+ * tones live here instead of the page so business CSS consumes only roles.
+ * High contrast maps every role to an existing --yx token and removes
+ * gradients, shadows and decorative effects. Phone Home does not bind this
+ * helper. `layout` is the resolved tablet shell, not a user metric.
+ */
+export function mobileHomeTabletVariables(theme: ResolvedTheme, layout: MobileHomeTabletLayout): Record<string, string> {
+  const high = theme === 'high-contrast'
+  const dark = theme === 'dark'
+  const rail = layout === 'rail'
+  const taskTones = {
+    '--home-tablet-task-completed': '#d8f2e6',
+    '--home-tablet-task-progress': '#e9e1fa',
+    '--home-tablet-task-available': '#e0f0fc',
+  }
+
+  if (high) {
+    return {
+      '--home-tablet-page-bg': 'var(--yx-surface-page)',
+      '--home-tablet-page-image': 'none',
+      '--home-tablet-glow': 'transparent',
+      '--home-tablet-panel': 'var(--yx-surface-card)',
+      '--home-tablet-panel-border': 'var(--yx-border)',
+      '--home-tablet-panel-shadow': 'none',
+      '--home-tablet-ink': 'var(--yx-text-primary)',
+      '--home-tablet-muted': 'var(--yx-text-secondary)',
+      '--home-tablet-brand': 'var(--yx-brand)',
+      '--home-tablet-soft': 'var(--yx-surface-soft)',
+      '--home-tablet-track': 'var(--yx-border)',
+      '--home-tablet-fill': 'var(--yx-brand)',
+      '--home-tablet-hero-color': 'var(--yx-action)',
+      '--home-tablet-hero-image': 'none',
+      '--home-tablet-hero-ink': 'var(--yx-on-brand)',
+      '--home-tablet-hero-muted': '#f8edff',
+      '--home-tablet-hero-fx-display': 'none',
+      '--home-tablet-ring-bg': 'var(--yx-surface-card)',
+      '--home-tablet-ring-border': 'var(--yx-border)',
+      '--home-tablet-ring-ink': 'var(--yx-text-primary)',
+      '--home-tablet-ring-label': '#f5ebff',
+      '--home-tablet-hero-cta-bg': 'var(--yx-surface-card)',
+      '--home-tablet-hero-cta-ink': 'var(--yx-brand)',
+      '--home-tablet-hero-cta-border': '1px solid var(--yx-border)',
+      '--home-tablet-hero-focus': '#fff',
+      '--home-tablet-course-art': 'var(--yx-surface-card)',
+      '--home-tablet-course-art-border': '1px solid var(--yx-border)',
+      '--home-tablet-course-art-ink': 'var(--yx-text-primary)',
+      '--home-tablet-course-art-kicker': 'var(--yx-text-primary)',
+      '--home-tablet-course-art-muted': 'var(--yx-text-secondary)',
+      '--home-tablet-course-spark-display': 'none',
+      '--home-tablet-course-cta-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-course-cta-color': 'var(--yx-brand)',
+      ...taskTones,
+      '--home-tablet-nav-bg': 'var(--yx-surface-card)',
+      '--home-tablet-nav-image': 'none',
+      '--home-tablet-nav-ink': 'var(--yx-text-primary)',
+      '--home-tablet-nav-latin': 'var(--yx-text-primary)',
+      '--home-tablet-nav-tagline': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item-active': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item-active-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-nav-icon-bg': 'var(--yx-text-primary)',
+      '--home-tablet-nav-icon-active-bg': 'var(--yx-text-primary)',
+      '--home-tablet-nav-icon-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-indicator': '#d6bdff',
+      '--home-tablet-nav-profile-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-nav-profile-sub': 'var(--yx-text-primary)',
+      '--home-tablet-nav-avatar-bg': 'var(--yx-action)',
+      '--home-tablet-nav-avatar-image': 'none',
+      '--home-tablet-nav-avatar-ink': 'var(--yx-on-brand)',
+      '--home-tablet-nav-focus': '#f0e8ff',
+      '--home-tablet-nav-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-active-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-profile-border': '1px solid var(--yx-border)',
+    }
+  }
+
+  return {
+    '--home-tablet-page-bg': dark ? '#171527' : '#faf7ff',
+    '--home-tablet-page-image': dark
+      ? 'linear-gradient(90deg, #171527, #262039)'
+      : rail
+        ? 'linear-gradient(90deg, #faf7ff, #f4effc)'
+        : 'linear-gradient(90deg, #faf7ff, #f3eefa)',
+    '--home-tablet-glow': 'rgba(213, 189, 255, .28)',
+    '--home-tablet-panel': dark ? '#2e2743' : '#fff',
+    '--home-tablet-panel-border': dark ? 'rgba(107, 88, 138, .52)' : '#e5dbf3',
+    '--home-tablet-panel-shadow': '0 7px 22px rgba(41, 26, 82, .12)',
+    '--home-tablet-ink': dark ? '#f4efff' : '#272138',
+    '--home-tablet-muted': dark ? '#c4b8d6' : '#77718a',
+    '--home-tablet-brand': dark ? '#d4b6ff' : '#6638be',
+    '--home-tablet-soft': dark ? '#30283f' : '#f8f4fd',
+    '--home-tablet-track': dark ? '#504765' : '#eee6f8',
+    '--home-tablet-fill': dark ? '#c8a9fb' : '#9163d8',
+    '--home-tablet-hero-color': dark ? '#5c35b6' : '#5d35b6',
+    '--home-tablet-hero-image': dark
+      ? 'linear-gradient(90deg, #5c35b6, #9b62d7)'
+      : 'linear-gradient(90deg, #5d35b6, #a26bdd)',
+    '--home-tablet-hero-ink': '#fff',
+    '--home-tablet-hero-muted': '#f8edff',
+    '--home-tablet-hero-fx-display': 'block',
+    '--home-tablet-ring-bg': dark ? 'rgba(255, 255, 255, .15)' : '#986ccd',
+    '--home-tablet-ring-border': dark ? 'rgba(232, 213, 255, .5)' : '#d4c3f0',
+    '--home-tablet-ring-ink': '#fff',
+    '--home-tablet-ring-label': '#f5ebff',
+    '--home-tablet-hero-cta-bg': '#fff',
+    '--home-tablet-hero-cta-ink': rail ? '#6238bc' : '#5935b8',
+    '--home-tablet-hero-cta-border': '0',
+    '--home-tablet-hero-focus': '#fff',
+    '--home-tablet-course-art': 'linear-gradient(90deg, #c6abfb, #efcfea)',
+    '--home-tablet-course-art-border': '0',
+    '--home-tablet-course-art-ink': '#4c3290',
+    '--home-tablet-course-art-kicker': rail ? '#7654b2' : '#7655bb',
+    '--home-tablet-course-art-muted': '#745f9e',
+    '--home-tablet-course-spark-display': 'block',
+    '--home-tablet-course-cta-bg': dark ? '#2e2743' : rail ? '#f0e8fb' : '#f1eafb',
+    '--home-tablet-course-cta-color': dark ? '#d4b6ff' : rail ? '#6940b8' : '#6737c1',
+    ...taskTones,
+    '--home-tablet-nav-bg': '#241b43',
+    '--home-tablet-nav-image': rail
+      ? 'linear-gradient(90deg, #322254, #241b43)'
+      : 'linear-gradient(90deg, #352261, #241b43)',
+    '--home-tablet-nav-ink': '#fff',
+    '--home-tablet-nav-latin': rail ? '#c9bce3' : '#d6c4ff',
+    '--home-tablet-nav-tagline': '#c9bce3',
+    '--home-tablet-nav-item': rail ? '#f0e8ff' : 'rgba(255, 255, 255, .82)',
+    '--home-tablet-nav-item-active': '#fff',
+    '--home-tablet-nav-item-active-bg': rail ? '#5a3c91' : 'rgba(90, 60, 145, .93)',
+    '--home-tablet-nav-icon-bg': rail ? '#635080' : 'rgba(100, 80, 129, .72)',
+    '--home-tablet-nav-icon-active-bg': '#fff',
+    '--home-tablet-nav-icon-border': '0',
+    '--home-tablet-nav-indicator': '#d6bdff',
+    '--home-tablet-nav-profile-bg': rail ? '#6b49af' : 'rgba(72, 49, 110, .85)',
+    '--home-tablet-nav-profile-sub': '#d6c8e9',
+    '--home-tablet-nav-avatar-bg': '#6b49af',
+    '--home-tablet-nav-avatar-image': rail ? 'none' : 'linear-gradient(90deg, #9877e4, #6b44b6)',
+    '--home-tablet-nav-avatar-ink': '#fff',
+    '--home-tablet-nav-focus': '#f0e8ff',
+    '--home-tablet-nav-border': '0',
+    '--home-tablet-nav-active-border': '0',
+    '--home-tablet-nav-profile-border': '0',
+  }
+}
+
 /**
  * Decorative stops only. Light and dark use the requested hex; dark does not
  * invent a second palette. High contrast uses each stop's existing semantic

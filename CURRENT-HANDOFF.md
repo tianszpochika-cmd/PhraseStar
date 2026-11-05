@@ -11,4 +11,4 @@
 
 过期交接记录已从当前工作树清理；需要追溯时可查阅 Git 历史。签收账和验收证据保留在原位置。
 
-移动端恢复（2026-11-05）。沿用[暂停收口](docs/takeover/mobile-figma-20261103/PAUSE-20261104.md)的六棵冻结快照，从各实际停点恢复 Grok，DSH 已完成独立首页核验和 iPad 几何对照，继续复核共享设计令牌迁移。最新候选和唯一写者以[监督账](docs/takeover/mobile-figma-20261103/README.md)为准。CloudStudy 容器保持未启动，当前走冻结 H5 和受控 fixture 复核。
+移动端恢复（2026-11-05）。沿用[暂停收口](docs/takeover/mobile-figma-20261103/PAUSE-20261104.md)的六棵冻结快照，从各实际停点恢复 Grok，DSH 完成首页平板布局和共享设计令牌，Grok 补齐组合测试。定级与首页均已进入本地 UI 候选。最新候选和唯一写者以[监督账](docs/takeover/mobile-figma-20261103/README.md)为准。CloudStudy 容器保持未启动，当前走冻结 H5 和受控 fixture 复核。
