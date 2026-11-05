@@ -288,7 +288,7 @@
       "name": "找回密码",
       "owner": "GROK",
       "wave": "G1",
-      "status": "IMPLEMENTATION_RUNNING",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "申请与确认两步、恒定回执、过期及返回登录；不枚举账号",
       "services_data_owners": [
         "iam-service"
@@ -338,16 +338,16 @@
         "password-reset-failure-marker.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B34-RESET.md"
       },
-      "current_job": "grok/batch-20-reset-implementation"
+      "current_job": null
     },
     {
       "id": "MB-004",
@@ -356,7 +356,7 @@
       "name": "成人门、同意与目标",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_VISUAL_REPAIR_RUNNING",
+      "status": "SCOPED_H5_PASS_CONSENT_AUTHORITY_AND_QA_OPEN",
       "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
       "services_data_owners": [
         "iam-service",
@@ -436,7 +436,9 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "current_job": "grok/resume-20261105-onboarding-production-observer-09",
+      "resume_evidence_20261105": "layout13 + smoke4 + flow15 + boundary8 + matrix128 + restoring2, separate goal6; compiled private-internals cases being adapted"
     },
     {
       "id": "MB-005",
@@ -445,7 +447,7 @@
       "name": "访问受限",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "GROK_BUILT_H5_REVIEW_RUNNING",
       "scope": "拒绝原因、安全出口和退出；403 不伪装空态或越过 Gate",
       "services_data_owners": [
         "iam-service"
@@ -514,7 +516,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-forbidden-compiled-38",
+      "resume_evidence_20261105": "dark 270:3110 source frozen and H5 built; original observer expects dev server"
     },
     {
       "id": "MB-006",
@@ -523,7 +527,7 @@
       "name": "定级",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "GROK_VISUAL_AND_SOURCE_REVIEW_RUNNING",
       "scope": "10 题与版本、checkpoint、未知结果/冲突、跳过和重测；反馈时点 DEC-04 不代签",
       "services_data_owners": [
         "assessment-service",
@@ -604,7 +608,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-assessment-finish-13",
+      "resume_evidence_20261105": "25 strict H5 assertions and 7 shots; action placement, disabled paint, and source-test localization follow-up"
     },
     {
       "id": "MB-007",
@@ -613,7 +619,7 @@
       "name": "首页",
       "owner": "GROK",
       "wave": "G1",
-      "status": "DSH_TABLET_LAYOUT_RUNNING",
+      "status": "DSH_TABLET_TOKEN_REVIEW_RUNNING",
       "scope": "真实计划摘要、首学、空/错/401、切号及迟到响应",
       "services_data_owners": [
         "learner-service",
@@ -681,7 +687,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "dsh/resume-20261105-home-tablet-tokens-02",
+      "resume_evidence_20261105": "geometry at 834/1194 verified; current semantic migration and repaint checks open"
     },
     {
       "id": "MB-008",
@@ -690,7 +698,7 @@
       "name": "今日任务",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_IMPLEMENTATION_RUNNING",
+      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
       "scope": "区分无计划/已完成/无内容/无到期/失败；无有效 practiceRef 不编题",
       "services_data_owners": [
         "learning-service"
@@ -759,7 +767,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-world-today-finish-11",
+      "resume_evidence_20261105": "formal18 and independent16 passed on Today09; final 390 CTA dimensions open"
     },
     {
       "id": "MB-009",
@@ -768,7 +778,7 @@
       "name": "学习与课程",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
       "scope": "书架/继续学习、内容授权与版本、空目录/无结果/失败分开",
       "services_data_owners": [
         "content-service",
@@ -835,7 +845,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-learn-visual-10",
+      "resume_evidence_20261105": "49 checks and 9 shots; zero duplicate login rejection in six real compiled runs"
     },
     {
       "id": "MB-010",
@@ -844,7 +856,7 @@
       "name": "练习入口",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "GROK_IMPLEMENTATION_RUNNING",
       "scope": "真实可用入口、队列、能力关闭原因；不开放隐藏功能",
       "services_data_owners": [
         "assessment-service",
@@ -912,7 +924,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-practice-core-08",
+      "resume_evidence_20261105": "reference and 20 exact artwork assets published to paired scope"
     },
     {
       "id": "MB-011",
@@ -921,7 +935,7 @@
       "name": "旧综合练习入口",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PENDING",
+      "status": "GROK_IMPLEMENTATION_RUNNING",
       "scope": "旧入口迁移说明/可用出口，保持现有网关与权限边界",
       "services_data_owners": [
         "assessment-service",
@@ -986,7 +1000,9 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
-      }
+      },
+      "current_job": "grok/resume-20261105-practice-core-08",
+      "resume_evidence_20261105": "preserve real historic practice path plus honest empty state"
     },
     {
       "id": "MB-012",
@@ -995,7 +1011,7 @@
       "name": "词汇与复习",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_BROWSER_OBSERVER_RUNNING",
+      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
       "scope": "词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放",
       "services_data_owners": [
         "content-service",
@@ -1064,7 +1080,9 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "current_job": "grok/resume-20261105-vocab-finish-13",
+      "resume_evidence_20261105": "17/18 initially and separate corrected actual held-back pass; R4 semantic styling open"
     },
     {
       "id": "MB-013",
@@ -1073,7 +1091,7 @@
       "name": "语法与长难句",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_VISUAL_REPAIR_RUNNING",
+      "status": "SCOPED_H5_PASS_ATOMIC_C2_INTEGRATION_PENDING",
       "scope": "内容与练习版本、已保存再反馈、缺题关闭和降级",
       "services_data_owners": [
         "content-service",
@@ -1144,7 +1162,9 @@
         "device": "NOT_RUN",
         "independent_review": "NOT_RUN"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "current_job": null,
+      "resume_evidence_20261105": "129/129 local; shared C2 publication gated by Vocabulary build and compatibility"
     },
     {
       "id": "MB-014",
@@ -1307,7 +1327,7 @@
       "name": "错题与报告",
       "owner": "DSH_PROFILE",
       "wave": "D2",
-      "status": "IMPLEMENTATION_RUNNING",
+      "status": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
       "scope": "报告/错题/补救，空/未就绪/失败/部分与真实数据区分",
       "services_data_owners": [
         "assessment-service",
@@ -1378,16 +1398,16 @@
         "b10/b10-mobile-contract.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B37-PRIVATE-REPORT.md"
       },
-      "current_job": "dsh/profile-batch-19-report-implementation"
+      "current_job": null
     },
     {
       "id": "MB-017",
@@ -1470,7 +1490,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "INTEGRATED_H5_FUNCTIONAL_DESIGN_HOLD",
+      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1527,8 +1547,9 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md"
       },
-      "current_job": "dsh/commerce-batch-05-world-implementation",
-      "pause_handoff": "PAUSE-20261104.md"
+      "current_job": "grok/resume-20261105-world-today-finish-11",
+      "pause_handoff": "PAUSE-20261104.md",
+      "resume_evidence_20261105": "Root initial 11 runtime cases passed; hierarchy on four real read sources in progress"
     },
     {
       "id": "MB-019",
@@ -2900,7 +2921,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T07:22:21.425800+00:00",
+  "updated_at": "2026-11-05T07:30:14.429880+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3096,7 +3117,21 @@
     "COMMERCE_HC_ENABLED_CTA": "CLOSED_LOCAL_ROOT_B31_FINAL_HC11.3104",
     "SHARED_AUTH_401_ROUTING": "CURRENT_AUTH_TWO_ROUTES20S_FAIL; DSH_PROFILE_B23_ONLY_AUTH_REPAIR",
     "WORLD_CALENDAR_DATE": "FROZEN_B06_NEGATIVE_ZONE_PREVIOUS_DAY/INVALID_NORMALIZES; MainDSH_B32",
-    "RESET_B30": "Root64matrix+4textscale/7groups and7icon scenarios passed; SDK100ms observer closure byDSH_COMMERCE_B08; not yet committed"
+    "RESET_B30": "Root64matrix+4textscale/7groups and7icon scenarios passed; SDK100ms observer closure byDSH_COMMERCE_B08; not yet committed",
+    "onboarding_new_consent_authority": {
+      "status": "CONTRACT_AND_PUBLICATION_GAP",
+      "design": "164:5944",
+      "r1": "R1-008",
+      "owner": "iam-service",
+      "evidence": "GET /iam/consents returns recorded facts. GET /iam/principal/me projects a single aggregate version. The source reviewed exposes no pre-acceptance per-document version/digest/content binding for all three published required documents. Legacy helper uses fallback and can retry a new unseen version. Scope remains closed and real publish/sign/readback is not verified."
+    },
+    "native_toolchain_20261105": {
+      "status": "TOOL_READINESS_ONLY",
+      "ios": "Xcode first launch exit 69, simulator inventory unavailable",
+      "android": "SDK/platform/build tools/emulator available",
+      "runtime": "NOT_RUN",
+      "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/native-toolchain-readiness/result.json"
+    }
   },
   "integration_batch_23_devices": {
     "state": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
@@ -4143,5 +4178,90 @@
     "localUICandidateRoutes": 22,
     "formalRoutes": 33,
     "doD": false
+  },
+  "active_resume_review_20261105": {
+    "at": "2026-11-05T07:30:14.429880+00:00",
+    "status": "ACTIVE_USER_RESUMED",
+    "local_ui_candidates": 22,
+    "formal_routes": 33,
+    "real_services": "NOT_RUN",
+    "native_devices": "NOT_RUN",
+    "screen_reader": "NOT_RUN",
+    "deployment": "NOT_RUN",
+    "remote_push": "NOT_PUSHED_STAGE_IN_PROGRESS",
+    "cli_quota_current": "NO_PROVIDER_QUOTA_STOP_OBSERVED",
+    "assignments": [
+      {
+        "id": "MB-004",
+        "cli": "grok",
+        "job": "grok/resume-20261105-onboarding-production-observer-09",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-onboarding-production-observer-09.checkpoint.json"
+      },
+      {
+        "id": "MB-005",
+        "cli": "grok",
+        "job": "grok/resume-20261105-forbidden-compiled-38",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-forbidden-compiled-38.checkpoint.json"
+      },
+      {
+        "id": "MB-006",
+        "cli": "grok",
+        "job": "grok/resume-20261105-assessment-finish-13",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-assessment-finish-13.checkpoint.json"
+      },
+      {
+        "id": "MB-007",
+        "cli": "dsh",
+        "job": "dsh/resume-20261105-home-tablet-tokens-02",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-home-tablet-tokens-02.checkpoint.json"
+      },
+      {
+        "id": "MB-008",
+        "cli": "grok",
+        "job": "grok/resume-20261105-world-today-finish-11",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-world-today-finish-11.checkpoint.json"
+      },
+      {
+        "id": "MB-009",
+        "cli": "grok",
+        "job": "grok/resume-20261105-learn-visual-10",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-learn-visual-10.checkpoint.json"
+      },
+      {
+        "id": "MB-010",
+        "cli": "grok",
+        "job": "grok/resume-20261105-practice-core-08",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-practice-core-08.checkpoint.json"
+      },
+      {
+        "id": "MB-011",
+        "cli": "grok",
+        "job": "grok/resume-20261105-practice-core-08",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-practice-core-08.checkpoint.json"
+      },
+      {
+        "id": "MB-012",
+        "cli": "grok",
+        "job": "grok/resume-20261105-vocab-finish-13",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-vocab-finish-13.checkpoint.json"
+      },
+      {
+        "id": "MB-018",
+        "cli": "grok",
+        "job": "grok/resume-20261105-world-today-finish-11",
+        "state": "running",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-world-today-finish-11.checkpoint.json"
+      }
+    ],
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105"
   }
 }
