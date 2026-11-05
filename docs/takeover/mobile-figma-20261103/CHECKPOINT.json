@@ -960,7 +960,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "LOCAL_SYNTHETIC_PLAN_ENSURE_AND_TODAY_READ_PASS_B91_OTHER_NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md"
+        "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md",
+        "today_due_rows_review": "reviews/INTEGRATION-B93-TODAY-DUE-ROWS.md"
       },
       "current_job": null,
       "resume_evidence_20261105": "B46 final H5 measured the 390px primary at 48px and task spacing at 16px. 10 visual and 16 route checks.",
@@ -5670,5 +5671,15 @@
     "native_sdk_compile": "PASS_WITH_DCLOUD_TEST_STUBS",
     "app_host_package_device_storage_accessibility_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B92-NATIVE-SECURE-STORAGE-20261106.json"
+  },
+  "integration_batch_93_today_due_rows": {
+    "state": "ACCEPTED_LOCAL_UI_DUE_ROWS_READY_PROJECTION",
+    "source_tests": "676/676",
+    "i18n_tests": "11/11",
+    "offline_h5": "43/43",
+    "today_fixture": "18/18",
+    "h5_index_sha256": "8493c786ac57fe421742f5640eb52a6f6f4c82d9fcfafe1cc3a853290a30fa69",
+    "real_browser_and_completion": "NOT_RUN",
+    "evidence": "evidence/ROOT-B93-TODAY-DUE-ROWS-20261106.json"
   }
 }

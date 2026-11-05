@@ -69,7 +69,7 @@ function loadPage({ allowed = true, hash = '' } = {}) {
     '../../stores/session': { useSessionStore: () => session },
     './today-view': helper,
   }
-  const exported = `${script}\nexport const __refs = { visual, design, frame, measured, summary, launchTask, message };\nexport const __test = { viewTask, backHome, openPlanEmpty };\n`
+  const exported = `${script}\nexport const __refs = { visual, design, frame, measured, summary, launchTask, message, dueRows, arrangementFacts };\nexport const __test = { viewTask, backHome, openPlanEmpty };\n`
   const compiled = ts.transpileModule(exported, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
   const scope = vue.effectScope()
   const module = scope.run(() => {
@@ -224,4 +224,121 @@ test('today source keeps the catalog and empty pins and does not mount the login
   ]) {
     assert.equal(fs.existsSync(path.join(appRoot, asset)), true, asset)
   }
+})
+
+function practiceRef(questionItemId, contentVersionId = 266100) {
+  return { contentCode: 'p1.placement.v1', contentVersionId, questionItemId }
+}
+
+function dueItem(itemId, questionItemId = itemId) {
+  return {
+    itemId,
+    stage: 'NEW',
+    dueAt: '2026-11-06T00:00:00.000000Z',
+    arrangement: 'DUE',
+    practiceRef: practiceRef(questionItemId),
+  }
+}
+
+test('today keeps confirmed due rows on the ready list', async () => {
+  const plan = load('src/domain/plan-today.ts', {})
+  const copy = load('../../packages/i18n/src/mobile-resources/today-page.ts', {})
+  assert.equal(copy.todayPageCopy(false).dueItemTitle, '到期复习')
+  assert.equal(copy.todayPageCopy(true).dueItemTitle, 'Due for review')
+  assert.equal(copy.todayPageCopy(false).dueItemMeta, '已排入今日复习')
+  assert.equal(copy.todayPageCopy(true).dueItemMeta, 'Scheduled for today')
+
+  const parsed = plan.parsePlanTodayQueue({
+    data: {
+      planId: 'plan-b91',
+      status: 'ACTIVE',
+      planVersion: 2,
+      targetMinutes: 30,
+      emptyReason: 'READY',
+      deferredCount: 1,
+      count: 4,
+      algorithmVersion: 'SM2_Q03_V1',
+      items: [
+        dueItem('266001'),
+        dueItem('266002'),
+        dueItem('266003'),
+        dueItem('266001'),
+        { itemId: '266004', stage: 'NEW', arrangement: 'DEFERRED', arrangementCopy: '今天排不下，已顺延，这不是欠账。', practiceRef: practiceRef('266004') },
+        { itemId: '266010', stage: 'NEW', practiceRef: practiceRef('266010') },
+        { itemId: 'bad-ref', stage: 'NEW', arrangement: 'DUE', practiceRef: 'dropped-ref' },
+        { itemId: 'bad-version', stage: 'NEW', arrangement: 'DUE', practiceRef: practiceRef('bad-version', 0) },
+        { itemId: 266011, stage: 'NEW', arrangement: 'DUE', practiceRef: practiceRef('266011') },
+        { stage: 'NEW', arrangement: 'DUE', practiceRef: practiceRef('266009') },
+      ],
+    },
+  })
+  const rows = plan.readableDueItems(parsed.arrangements)
+  assert.deepEqual(rows, [{ itemId: '266001' }, { itemId: '266002' }, { itemId: '266003' }])
+  assert.deepEqual(Object.keys(rows[0]), ['itemId'])
+  assert.equal(parsed.arrangements[0].durableItemId, '266001')
+  assert.equal(parsed.arrangements[0].serverArrangement, 'DUE')
+  assert.equal(parsed.arrangements[0].confirmedPracticeRef, true)
+  assert.equal(JSON.stringify(parsed.arrangements).includes('contentCode'), false)
+  assert.equal(JSON.stringify(parsed.arrangements).includes('questionItemId'), false)
+  const deferred = parsed.arrangements.find((item) => item.durableItemId === '266004')
+  assert.equal(deferred.serverArrangement, 'DEFERRED')
+  assert.equal(plan.arrangementLabel(deferred.arrangement, deferred.arrangementCopy), '今天排不下，已顺延，这不是欠账。')
+  assert.equal(parsed.arrangements.find((item) => item.durableItemId === 'bad-ref').confirmedPracticeRef, false)
+  assert.equal(parsed.arrangements.find((item) => item.durableItemId === '266010').serverArrangement, null)
+  assert.equal(parsed.arrangements.some((item) => item.durableItemId === '266011' || item.durableItemId === '266009'), false)
+
+  const vueSource = fs.readFileSync(path.join(appRoot, pagePath), 'utf8')
+  const readyAt = vueSource.indexOf('v-if="visual === \'ready\'" class="today-ready"')
+  const dueAt = vueSource.indexOf(':data-due-item-id="item.itemId"')
+  const noTasksAt = vueSource.indexOf('v-else-if="visual === \'no-tasks\'"')
+  assert.ok(readyAt >= 0 && dueAt > readyAt && noTasksAt > dueAt)
+  assert.doesNotMatch(vueSource, /v-else-if="dueRows\.length"/)
+  assert.match(vueSource, /<view v-for="item in dueRows" :key="item\.itemId" class="today-row" :data-due-item-id="item\.itemId">/)
+  assert.doesNotMatch(vueSource, /data-due-item-id="item\.itemId"[^>]*@click/)
+  assert.match(vueSource, /v-if="visual === 'ready' && \(store\.home\?\.tasks\.length \?\? 0\) > 0 && summary"/)
+  assert.match(vueSource, /v-if="\(store\.home\?\.tasks\.length \?\? 0\) > 0 && measured"/)
+  assert.match(vueSource, /v-else-if="visual === 'ready' && launchTask"/)
+
+  const page = loadPage()
+  await page.shown[0]()
+  await flush()
+  page.store.homeStatus = 'empty'
+  page.store.planQueueStatus = 'ready'
+  page.store.home = { stale: false, targetMinutes: 30, completedMinutes: 0, tasks: [] }
+  page.store.planQueue = parsed
+  await flush()
+  assert.equal(page.refs.visual.value, 'ready')
+  assert.equal(page.refs.launchTask.value, null)
+  assert.deepEqual(page.refs.dueRows.value, rows)
+  const factIds = page.refs.arrangementFacts.value.map((item) => item.durableItemId)
+  assert.equal(factIds.includes('266004'), true)
+  assert.equal(factIds.includes('266001') || factIds.includes('266002') || factIds.includes('266003'), false)
+
+  page.store.homeStatus = 'ready'
+  page.store.home = {
+    stale: false,
+    targetMinutes: 30,
+    completedMinutes: 0,
+    tasks: [{ id: 'live', status: 'IN_PROGRESS', title: '服务端进行中的课', minutes: 8, contentCode: 'live-1' }],
+  }
+  await flush()
+  assert.equal(page.refs.visual.value, 'ready')
+  assert.deepEqual(page.refs.dueRows.value, [])
+  assert.equal(page.refs.launchTask.value.id, 'live')
+  page.test.viewTask(page.store.home.tasks[0])
+  assert.deepEqual(page.calls.navigate, ['/pages/learn/learn?contentCode=live-1&taskId=live'])
+
+  page.store.homeStatus = 'empty'
+  page.store.home = { stale: false, targetMinutes: 30, completedMinutes: 0, tasks: [] }
+  page.store.planQueue = plan.parsePlanTodayQueue({ data: { targetMinutes: 30, emptyReason: 'READY', items: [] } })
+  await flush()
+  assert.equal(page.refs.visual.value, 'no-tasks')
+  assert.deepEqual(page.refs.dueRows.value, [])
+
+  page.store.planQueue = parsed
+  page.store.homeStatus = 'error'
+  await flush()
+  assert.equal(page.refs.visual.value, 'error')
+  assert.equal(page.refs.launchTask.value, null)
+  page.scope.stop()
 })

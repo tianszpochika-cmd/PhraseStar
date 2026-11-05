@@ -1,0 +1,72 @@
+{
+  "batch": "B93",
+  "at": "2026-11-06T02:51:32.665727+08:00",
+  "integration_base": "6c4036e879027c541a646757b975ca204a1deaaa",
+  "implementation": [
+    "Grok CLI 87",
+    "Grok CLI 91"
+  ],
+  "review": "root",
+  "source_files": [
+    {
+      "path": "apps/mobile/src/domain/plan-today.ts",
+      "sha256": "9286ef425637e838765c95308a69fa094a66c489a2655dffd3156e72df4d8bd2",
+      "bytes": 9596
+    },
+    {
+      "path": "apps/mobile/src/pages/today/today.vue",
+      "sha256": "9de76fd2ee43fb09558881cf23d1cbe098515be7d5b959091d117cccd35db817",
+      "bytes": 19349
+    },
+    {
+      "path": "apps/mobile/tests/today-page.test.mjs",
+      "sha256": "58c38241ac4ee4b5ab9f16c99acc60d352fbf1eb51d3ac7f496c1959051fe720",
+      "bytes": 18485
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/today-page.ts",
+      "sha256": "49a833fda126f5ed51dae1914f2eba55ace985ada207b38bb2885a53b0d89ff9",
+      "bytes": 4301
+    }
+  ],
+  "source_manifest_sha256": "442e44476927ce922ff8856710b6e456b67d39f6e86f9984f4bd1cac790e7195",
+  "worker_report_sha256": {
+    "grok87": "a1e5cf012a7a0f3dd1ad62cdf804ce8a5f150621a1d7b73a944abc8d744de55e",
+    "grok91": "c808ba159303032455af88d40b6b0a07de1fa856b773799b9a9f04e8f8ae0844"
+  },
+  "contract_basis": [
+    "R1-034",
+    "BC-027",
+    "IC-017",
+    "MB-008",
+    "B91"
+  ],
+  "checks": {
+    "mobile_source": "676/676",
+    "i18n": "11/11",
+    "types": "PASS",
+    "h5": "PASS",
+    "app_plus": "PASS",
+    "offline_h5": "43/43",
+    "today_fixture_assertions": "18/18"
+  },
+  "artifacts": {
+    "appFiles": 748,
+    "appTreeSha256": "6c3dcd216e5bc52dfccbd24f1fe0ed08828583ab2aa60b1219379dc5e529b69f",
+    "routes": 33,
+    "nativeFiles": {
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/YXSecureStorageNative.kt": "d0b2bdb2a37c8722c1320181d7bf4f12bba4539120ee23c5c50588740ec254be",
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/index.kt": "61b9998de41abbdd1488c664f4217e2470fcec50ec394487062140bd375a9428",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/YXSecureStorageNative.swift": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/index.swift": "f7535f708021512a23671630155a9ad5b392fb4f280b04926a1a29680da0923b"
+    },
+    "h5Files": 797,
+    "h5TreeSha256": "c4efeab47ea9b28050200856aa5b9056cb4d12f8adf31ae4b490f4d0c75df03a",
+    "h5IndexSha256": "8493c786ac57fe421742f5640eb52a6f6f4c82d9fcfafe1cc3a853290a30fa69",
+    "browserCases": 43,
+    "browserScreenshots": 23
+  },
+  "real_browser": "NOT_RUN_AT_SOURCE_ACCEPTANCE",
+  "answer_and_completion": "OUTSTANDING_TRUSTED_OWNER_PROJECTION",
+  "native_runtime_and_deploy": "NOT_RUN"
+}
