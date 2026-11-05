@@ -57,7 +57,7 @@ class ReportShareControllerTest {
         row.put("share_ref", ref);
         row.put("principal_id", "learner-share-test");
         row.put("snapshot_json", "{\"availability\":\"EMPTY\",\"copy\":\"这段时间还没有学习记录。\",\"subject\":\"learner-share-test\",\"token\":\"secret\"}");
-        row.put("expires_at", java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00Z")));
+        row.put("expires_at", java.sql.Timestamp.from(Instant.now().plus(java.time.Duration.ofDays(7))));
         row.put("revoked_at", null);
         when(jdbc.queryForList(contains("b25_learning_report_share"), eq(ref), eq("platform"))).thenReturn(List.of(row));
 

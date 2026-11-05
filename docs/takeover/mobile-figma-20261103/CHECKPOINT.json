@@ -3544,7 +3544,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T19:53:53.233376+08:00",
+  "updated_at": "2026-11-05T20:04:57.765551+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5190,5 +5190,13 @@
     "receipt": "evidence/ROOT-B63-CONSENT-PUBLICATION-LIMITS-20261105.json",
     "source_tests_passed": 14,
     "status": "SOURCE_TEST_AND_TYPECHECK_PASS_TRACE_PENDING"
+  },
+  "integration_batch_64_report_share_test": {
+    "scope": "MB-016/017 report-share active test fixture only",
+    "source_tests": 9,
+    "source": "ReportShareControllerTest and LearningPeriodReportTest",
+    "baseline_log_sha256": "0d71b54035e097356c20235faca9fdb3235fc61e976014f28782cf03b71de402",
+    "review_log_sha256": "8c59ac87c430105eb7b01fbb9df015fb92cef52fb9760892941016906aca9c96",
+    "runtime": "NOT_RUN"
   }
 }
