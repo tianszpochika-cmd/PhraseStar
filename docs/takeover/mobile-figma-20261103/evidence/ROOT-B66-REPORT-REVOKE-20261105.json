@@ -1,0 +1,21 @@
+{
+  "source_base": "9f7f65db",
+  "scope": "MB-016/017 existing owner revoke timestamp replay",
+  "files": {
+    "services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java": "ad544c426f35e9a013d3f4572f90bc7ded2ccbff243f70cc20fc94db408b226f",
+    "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java": "6af82aeb3b9b73d48f93208fe63ba7bcc8fc0c6d7d22b1e696444d25c5282f5f"
+  },
+  "runtime_contract": [
+    "Owner and tenant scoped SELECT FOR UPDATE and first conditional UPDATE at microsecond precision",
+    "Repeated revoke reads existing timestamp; missing/foreign ref or no affected first row returns existing 404",
+    "JDBC Timestamp uses its exact Instant; public read still returns status only when revoked"
+  ],
+  "verification": {
+    "local_java_mock_and_rules_tests_per_timezone": 12,
+    "cst_sha256": "57597378e6fd73919f102e65d5812e75d8cdfe66016bdfc5a4c1ee060927ca48",
+    "utc_sha256": "614f5329aa7bba503ce1d809352947720d47f2a315cf9933cae9dadeecc02e15",
+    "prior_mock_failure_sha256": "34d7e6a8ad47ff3b4dac47d6b83589f5b714010b797d7255444e5c785fcec448",
+    "actual_db_concurrency": "NOT_RUN"
+  },
+  "release": "Keyed share issue and real Gateway/DB deployment remain separate."
+}

@@ -1785,6 +1785,12 @@
           "group": "B60_FROZEN_KEYBOARD_TEXT",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        },
+        "b66_report_revoke": {
+          "status": "JAVA_CONTROLLED_PASS",
+          "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
+          "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
+          "actual_db_concurrency": "NOT_RUN"
         }
       },
       "current_job": null,
@@ -1865,7 +1871,13 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B25-REPORT-SHARE.md",
         "source_tests": "Root11/11+types/H5build0",
-        "candidate_browser": "Root73matrix21shots+14authenticated4shots;UTC+publicnoBearer verified"
+        "candidate_browser": "Root73matrix21shots+14authenticated4shots;UTC+publicnoBearer verified",
+        "b66_report_revoke": {
+          "status": "JAVA_CONTROLLED_PASS",
+          "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
+          "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
+          "actual_db_concurrency": "NOT_RUN"
+        }
       },
       "current_job": "dsh/profile-batch-15-share-matrix",
       "source_operation_trace_b59": {
@@ -3559,7 +3571,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:18:54.339676+08:00",
+  "updated_at": "2026-11-05T20:22:27.212633+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5222,5 +5234,12 @@
     "source_tests_passed": 645,
     "cross_tests_passed": 18,
     "status": "SOURCE_AND_BUILD_PASS_BROWSER_PENDING"
+  },
+  "integration_batch_66_report_revoke": {
+    "scope": "MB-016/017 existing owner revoke",
+    "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
+    "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
+    "java_checks_per_timezone": 12,
+    "real_db_concurrency": "NOT_RUN"
   }
 }

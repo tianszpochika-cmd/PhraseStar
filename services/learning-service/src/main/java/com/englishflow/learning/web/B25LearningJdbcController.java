@@ -490,16 +490,32 @@ public class B25LearningJdbcController {
     @Transactional
     public Map<String, Object> revokeReportShare(Authentication authentication, @PathVariable String ref) {
         Principal principal = principal(authentication, "learning.progress.read");
-        Map<String, Object> row = shareRow(ref);
-        if (row == null || !principal.subject().equals(text(row.get("principal_id")))) {
+        if (ref == null || !ref.matches("[0-9a-f]{32}")) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
         }
-        Instant now = Instant.now();
-        jdbc.update("""
+        String owner = principal.subject();
+        Map<String, Object> locked = one("""
+                SELECT revoked_at
+                  FROM b25_learning_report_share
+                 WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
+                 FOR UPDATE
+                """, ref, TENANT, owner);
+        if (locked == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
+        }
+        if (locked.get("revoked_at") != null) {
+            return Map.of("ref", ref, "status", "REVOKED", "revokedAt", instantText(locked.get("revoked_at")));
+        }
+        Instant now = Instant.now().truncatedTo(ChronoUnit.MICROS);
+        int updated = jdbc.update("""
                 UPDATE b25_learning_report_share
                    SET revoked_at = ?
                  WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
-                """, java.sql.Timestamp.from(now), ref, TENANT, principal.subject());
+                   AND revoked_at IS NULL
+                """, java.sql.Timestamp.from(now), ref, TENANT, owner);
+        if (updated != 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
+        }
         return Map.of("ref", ref, "status", "REVOKED", "revokedAt", now.toString());
     }
 
@@ -839,7 +855,11 @@ public class B25LearningJdbcController {
         }
     }
 
+    /** Share timestamps are UTC. {@code Timestamp.toString()} renders the JVM zone and must not be parsed as text. */
     private static String instantText(Object value) {
+        if (value instanceof java.sql.Timestamp timestamp) {
+            return timestamp.toInstant().toString();
+        }
         return LearningPeriodReport.parseInstant(value).toString();
     }
 
