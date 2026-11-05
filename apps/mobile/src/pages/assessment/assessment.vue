@@ -18,6 +18,7 @@ import { getUniRuntime } from '../../platform/uni-runtime'
 import { mobileI18n } from '../../platform/v2-foundation'
 import { useLearnerContentStore } from '../../stores/learner-content'
 import { useSessionStore } from '../../stores/session'
+import { assessmentAssetsFor, assessmentResumeCount, assessmentScreen } from './assessment-screen'
 
 const { experienceStyle, experienceMotion } = useMobileExperience()
 const store = useLearnerContentStore()
@@ -73,6 +74,19 @@ const completedText = computed(() => copy('completedCount', { count: number(acce
 const questionText = computed(() => copy('questionCount', { current: number(question.value?.stepIndex ?? 0), total: number(totalSteps.value) }))
 const feedbackText = computed(() => store.placement.reconciledWithoutReceipt ? '' : store.placement.responseOutcome === 'FULL' ? mobileT('assessment.correct') : store.placement.responseOutcome === 'ZERO' ? mobileT('assessment.incorrect') : '')
 const heldCheckpoint = computed(() => Boolean(store.placement.sessionId?.startsWith('asess_') && !question.value && !report.value && !['loading', 'idle', 'offline', 'error', 'forbidden'].includes(store.placementStatus)))
+const visualScreen = computed(() => assessmentScreen({
+  leave: leaveDestination.value !== null,
+  skipped: isSkipped.value,
+  hasReport: Boolean(report.value),
+  hasQuestion: Boolean(question.value),
+  selected: Boolean(selectedKey.value),
+  unconfirmed: Boolean(question.value) && (store.placementStatus === 'offline' || store.placementStatus === 'error' || errorKey.value === 'answerUnconfirmed'),
+  guide: !entryRevalidating.value && guideChecked.value && guidePending.value,
+  checkpoint: heldCheckpoint.value && !entryRevalidating.value,
+}))
+const visualAssets = computed(() => assessmentAssetsFor(visualScreen.value))
+const resumeCount = computed(() => assessmentResumeCount(visualScreen.value, store.placement.acceptedSequence))
+const questionAlert = computed(() => Boolean(question.value) && (errorKey.value === 'answerUnconfirmed' || store.placementStatus === 'offline' || store.placementStatus === 'error'))
 const pendingText = computed(() => {
   if (!guideChecked.value || pending.value === 'entry' || pending.value === 'read' || store.placementStatus === 'loading') return mobileT('assessment.preparing')
   if (store.placementStatus === 'forbidden') return mobileT('assessment.accessDenied')
@@ -483,19 +497,21 @@ onShow(() => { active = true; pageVisible = true; entryRevalidating.value = true
 </script>
 
 <template>
-  <view id="assessment-page" ref="pageRoot" class="assessment-page" :style="experienceStyle" :data-motion="experienceMotion" :aria-busy="busy">
+  <view id="assessment-page" ref="pageRoot" class="assessment-page" :style="experienceStyle" :data-motion="experienceMotion" :data-assessment-screen="visualScreen" :aria-busy="busy">
     <view class="assessment-shell">
       <view class="assessment-navigation">
-        <button id="assessment-back" class="assessment-nav-button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('back')"><AppIcon name="back" :size="22" /><text>{{ mobileT('back') }}</text></button>
+        <button id="assessment-back" class="assessment-nav-button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('back')"><image class="assessment-icon assessment-icon--ink" :src="visualAssets.back" mode="aspectFit" aria-hidden="true" /><text class="assessment-sr">{{ mobileT('back') }}</text></button>
+        <text id="assessment-title" class="assessment-title" role="heading" aria-level="1" tabindex="-1">{{ pageTitle }}</text>
         <button id="assessment-settings" class="assessment-nav-button assessment-settings" role="button" tabindex="0" :aria-label="mobileT('settings')" :disabled="busy" :aria-disabled="busy" @click="requestLeave('settings')"><AppIcon name="gear" :size="22" /></button>
       </view>
-      <text id="assessment-title" class="assessment-title" role="heading" aria-level="1" tabindex="-1">{{ pageTitle }}</text>
-      <text v-if="errorKey" id="assessment-error" class="assessment-error" role="alert">{{ mobileT(`assessment.${errorKey}`) }}</text>
+      <text v-if="errorKey && !questionAlert" id="assessment-error" class="assessment-error" role="alert">{{ mobileT(`assessment.${errorKey}`) }}</text>
 
-      <view v-if="leaveDestination" id="assessment-leave-confirmation" class="assessment-confirmation" role="alertdialog" aria-labelledby="assessment-leave-title" aria-describedby="assessment-leave-description">
-        <text id="assessment-leave-title" class="assessment-confirm-title" role="heading" aria-level="2" tabindex="-1">{{ mobileT('assessment.leaveTitle') }}</text>
-        <text id="assessment-leave-description" class="assessment-description">{{ mobileT('assessment.leaveDescription') }}</text>
-        <view class="assessment-confirm-actions"><button id="assessment-leave-cancel" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" @click="cancelLeave">{{ mobileT('assessment.keepAnswering') }}</button><button id="assessment-leave-confirm" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy" @click="confirmLeave">{{ mobileT('assessment.leaveConfirm') }}</button></view>
+      <view v-if="leaveDestination" class="assessment-leave-overlay">
+        <view id="assessment-leave-confirmation" class="assessment-confirmation" role="alertdialog" aria-labelledby="assessment-leave-title" aria-describedby="assessment-leave-description">
+          <text id="assessment-leave-title" class="assessment-confirm-title" role="heading" aria-level="2" tabindex="-1">{{ mobileT('assessment.leaveTitle') }}</text>
+          <text id="assessment-leave-description" class="assessment-description">{{ mobileT('assessment.leaveDescription') }}</text>
+          <view class="assessment-confirm-actions"><button id="assessment-leave-cancel" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" @click="cancelLeave">{{ mobileT('assessment.keepAnswering') }}</button><button id="assessment-leave-confirm" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy" @click="confirmLeave">{{ mobileT('assessment.leaveConfirm') }}</button></view>
+        </view>
       </view>
 
       <view v-if="!entryRevalidating && isSkipped" id="assessment-skipped" class="assessment-result">
@@ -529,90 +545,147 @@ onShow(() => { active = true; pageVisible = true; entryRevalidating.value = true
       </view>
 
       <view v-else-if="!entryRevalidating && question" id="assessment-question" class="assessment-question">
-        <view class="assessment-question-meta"><text>{{ questionText }}</text><text>{{ completedText }}</text></view>
-        <view class="assessment-progress" role="progressbar" :aria-label="mobileT('assessment.progress')" :aria-valuemin="0" :aria-valuemax="totalSteps" :aria-valuenow="accepted" :aria-valuetext="progressText"><view class="assessment-progress-value" :style="{ width: `${progressPercent}%` }" /></view>
-        <text class="assessment-stem" role="heading" aria-level="2">{{ question.stemText }}</text>
-        <text v-if="feedbackText" class="assessment-feedback" role="status">{{ feedbackText }}</text>
-        <view class="assessment-options" role="group" :aria-label="mobileT('assessment.answers')">
-          <button v-for="option in question.options" :id="`assessment-option-${option.key}`" :key="option.key" class="assessment-option" :class="{ 'is-selected': selectedKey === option.key }" role="button" tabindex="0" :aria-pressed="selectedKey === option.key" :disabled="busy || !!leaveDestination" :aria-disabled="busy || !!leaveDestination" @click="select(option.key)"><text class="assessment-option-key">{{ option.key }}</text><text class="assessment-option-text">{{ option.text }}</text><view v-if="selectedKey === option.key" class="assessment-selected"><AppIcon name="check" :size="16" /><text>{{ mobileT('assessment.selected') }}</text></view></button>
+        <view class="assessment-scroll">
+          <view class="assessment-card">
+            <view class="assessment-eyebrow"><image class="assessment-icon assessment-icon--brand" :src="visualAssets.target" mode="aspectFit" aria-hidden="true" /><text>{{ questionText }}</text></view>
+            <view class="assessment-progress" role="progressbar" :aria-label="mobileT('assessment.progress')" :aria-valuemin="0" :aria-valuemax="totalSteps" :aria-valuenow="accepted" :aria-valuetext="progressText"><view class="assessment-progress-value" :style="{ width: `${progressPercent}%` }" /></view>
+            <text class="assessment-meta">{{ progressText }}</text>
+            <text class="assessment-stem" role="heading" aria-level="2">{{ question.stemText }}</text>
+            <text v-if="feedbackText" class="assessment-feedback" role="status">{{ feedbackText }}</text>
+            <view class="assessment-options" role="group" :aria-label="mobileT('assessment.answers')">
+              <button v-for="option in question.options" :id="`assessment-option-${option.key}`" :key="option.key" class="assessment-option" :class="{ 'is-selected': selectedKey === option.key }" role="button" tabindex="0" :aria-pressed="selectedKey === option.key" :disabled="busy || !!leaveDestination" :aria-disabled="busy || !!leaveDestination" @click="select(option.key)">
+                <view class="assessment-option-key"><image v-if="selectedKey === option.key" class="assessment-check" :src="visualAssets.check" mode="aspectFit" aria-hidden="true" /><text v-else>{{ option.key }}</text></view>
+                <text class="assessment-option-text">{{ option.text }}</text>
+                <view v-if="selectedKey === option.key" class="assessment-selected"><text>{{ mobileT('assessment.selected') }}</text></view>
+              </button>
+            </view>
+            <view v-if="questionAlert" id="assessment-error" class="assessment-inline-alert" role="alert"><view class="assessment-error-badge"><image class="assessment-error-icon" :src="visualAssets.error" mode="aspectFit" aria-hidden="true" /></view><text>{{ mobileT(`assessment.${errorKey || 'answerUnconfirmed'}`) }}</text></view>
+            <text class="assessment-note">{{ mobileT('assessment.localChoice') }}</text>
+          </view>
+          <view v-if="visualScreen === 'question'" class="assessment-tip"><image class="assessment-dot assessment-icon assessment-icon--ink" :src="visualAssets.questionDot" mode="aspectFit" aria-hidden="true" /><view><text class="assessment-tip-title">{{ mobileT('assessment.progress') }}</text><text class="assessment-description assessment-reason">{{ mobileT('assessment.localChoice') }}</text></view></view>
         </view>
-        <view class="assessment-actions"><button v-if="store.placementStatus === 'offline' || store.placementStatus === 'error' || errorKey === 'answerUnconfirmed'" id="assessment-reload-answer" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy || !!leaveDestination" :aria-disabled="busy || !!leaveDestination" @click="load">{{ reloadLabel }}</button><button v-else id="assessment-submit" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy || !selectedKey || !!leaveDestination" :aria-disabled="busy || !selectedKey || !!leaveDestination" @click="submit">{{ mobileT(pending === 'submit' ? 'assessment.submitting' : 'assessment.submit') }}</button></view>
-        <text class="assessment-note">{{ mobileT('assessment.localChoice') }}</text>
+        <view class="assessment-actions assessment-dock"><button v-if="store.placementStatus === 'offline' || store.placementStatus === 'error' || errorKey === 'answerUnconfirmed'" id="assessment-reload-answer" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy || !!leaveDestination" :aria-disabled="busy || !!leaveDestination" @click="load">{{ reloadLabel }}</button><button v-else id="assessment-submit" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy || !selectedKey || !!leaveDestination" :aria-disabled="busy || !selectedKey || !!leaveDestination" @click="submit">{{ mobileT(pending === 'submit' ? 'assessment.submitting' : 'assessment.submit') }}</button></view>
       </view>
 
       <view v-else-if="!entryRevalidating && guideChecked && guidePending" id="assessment-guide" class="assessment-guide">
-        <text class="assessment-description">{{ mobileT('assessment.introduction') }}</text>
-        <view class="assessment-guide-points"><view class="assessment-guide-point"><view class="assessment-guide-icon"><AppIcon name="list" :size="24" /></view><view><text class="assessment-point-title">{{ mobileT('assessment.answerHonestly') }}</text><text class="assessment-description">{{ mobileT('assessment.answerDescription') }}</text></view></view><view class="assessment-guide-point"><view class="assessment-guide-icon"><AppIcon name="chart" :size="24" /></view><view><text class="assessment-point-title">{{ mobileT('assessment.viewResult') }}</text><text class="assessment-description">{{ mobileT('assessment.resultDescription') }}</text></view></view></view>
-        <view class="assessment-actions"><button id="assessment-start" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="begin">{{ mobileT('assessment.start') }}</button><button id="assessment-home" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('home')">{{ mobileT('assessment.home') }}</button></view>
-        <text class="assessment-note">{{ mobileT('assessment.quickStartUnavailable') }}</text>
+        <view class="assessment-scroll">
+          <view class="assessment-card">
+            <view class="assessment-kicker"><image class="assessment-icon assessment-icon--brand" :src="visualAssets.sparkles" mode="aspectFit" aria-hidden="true" /><text class="assessment-guide-title" role="heading" aria-level="2">{{ mobileT('assessment.start') }}</text></view>
+            <text class="assessment-guide-lead">{{ mobileT('assessment.introduction') }}</text>
+            <view class="assessment-guide-points">
+              <view class="assessment-guide-point"><view class="assessment-guide-icon"><image class="assessment-icon assessment-icon--brand" :src="visualAssets.list" mode="aspectFit" aria-hidden="true" /></view><view><text class="assessment-point-title">{{ mobileT('assessment.answerHonestly') }}</text><text class="assessment-description assessment-reason">{{ mobileT('assessment.answerDescription') }}</text></view></view>
+              <view class="assessment-guide-point"><view class="assessment-guide-icon"><image class="assessment-icon assessment-icon--brand" :src="visualAssets.chart" mode="aspectFit" aria-hidden="true" /></view><view><text class="assessment-point-title">{{ mobileT('assessment.viewResult') }}</text><text class="assessment-description assessment-reason">{{ mobileT('assessment.resultDescription') }}</text></view></view>
+            </view>
+          </view>
+          <view class="assessment-tip"><image class="assessment-dot assessment-icon assessment-icon--ink" :src="visualAssets.dot" mode="aspectFit" aria-hidden="true" /><text class="assessment-description assessment-reason">{{ mobileT('assessment.quickStartUnavailable') }}</text></view>
+        </view>
+        <view class="assessment-actions assessment-dock"><button id="assessment-start" class="assessment-button assessment-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="begin">{{ mobileT('assessment.start') }}</button><button id="assessment-home" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('home')">{{ mobileT('assessment.home') }}</button></view>
       </view>
 
       <view v-else id="assessment-pending" class="assessment-pending">
-        <text class="assessment-description" :role="readingFailed ? 'alert' : 'status'">{{ pendingText }}</text>
-        <view class="assessment-actions"><button v-if="guideChecked && !busy" id="assessment-reload" class="assessment-button assessment-primary" role="button" tabindex="0" @click="load">{{ reloadLabel }}</button><button id="assessment-pending-home" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('home')">{{ mobileT('assessment.home') }}</button></view>
+        <view class="assessment-scroll">
+          <view v-if="visualScreen === 'resume'" class="assessment-card">
+            <view class="assessment-eyebrow"><image class="assessment-icon assessment-icon--brand" :src="visualAssets.clock" mode="aspectFit" aria-hidden="true" /><text>{{ mobileT('assessment.progress') }}</text></view>
+            <text class="assessment-guide-title" role="heading" aria-level="2">{{ reloadLabel }}</text>
+            <text class="assessment-description" role="status">{{ pendingText }}</text>
+            <view v-if="resumeCount !== null" class="assessment-resume-count"><image class="assessment-dot assessment-icon assessment-icon--ink" :src="visualAssets.resumeDot" mode="aspectFit" aria-hidden="true" /><text>{{ copy('completedCount', { count: number(resumeCount) }) }}</text></view>
+          </view>
+          <text v-else class="assessment-description" :role="readingFailed ? 'alert' : 'status'">{{ pendingText }}</text>
+        </view>
+        <view class="assessment-actions assessment-dock"><button v-if="guideChecked && !busy" id="assessment-reload" class="assessment-button assessment-primary" role="button" tabindex="0" @click="load">{{ reloadLabel }}</button><button id="assessment-pending-home" class="assessment-button assessment-secondary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="requestLeave('home')">{{ mobileT('assessment.home') }}</button></view>
       </view>
     </view>
   </view>
 </template>
 
 <style scoped>
-.assessment-page { --assessment-control-border: var(--yx-text-secondary); box-sizing: border-box; min-height: 100vh; padding: calc(16px + env(safe-area-inset-top)) 24px calc(40px + env(safe-area-inset-bottom)); background: var(--yx-surface-card); color: var(--yx-text-primary); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 16px; line-height: 1.5; }
-.assessment-shell { width: 100%; max-width: 560px; margin: 0 auto; }
-.assessment-navigation { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
-.assessment-page .assessment-nav-button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 44px; min-height: 44px; margin: 0; padding: 8px 0; border: 0; border-radius: 6px; background: transparent; color: var(--yx-text-primary); font: inherit; line-height: 1.5; }
-.assessment-title { display: block; margin: 0 0 24px; font-size: 28px; font-weight: 650; line-height: 1.4; letter-spacing: 0; overflow-wrap: anywhere; }
-.assessment-description { display: block; color: var(--yx-text-secondary); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
-.assessment-guide-points { display: grid; gap: 28px; margin: 40px 0; }
-.assessment-guide-point { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; gap: 16px; }
-.assessment-guide-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--yx-surface-soft); color: var(--yx-text-primary); }
-.assessment-point-title { display: block; margin-bottom: 6px; font-weight: 600; }
-.assessment-actions { display: grid; gap: 12px; margin-top: 32px; }
-/* Page-local control contour (>=3:1 vs the light, dark and high-contrast page and
-   the soft confirmation panel). The brand fill stays the primary button background;
-   only its boundary switches to this token, so high-contrast 2.62:1 / 1.88:1 no
-   longer depends on the fill. */
-.assessment-page .assessment-button { box-sizing: border-box; display: flex; width: 100%; min-width: 0; min-height: 48px; align-items: center; justify-content: center; gap: 8px; margin: 0; padding: 12px 16px; border: 1px solid var(--assessment-control-border); border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 600; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; box-shadow: none; }
-.assessment-page .assessment-primary { background: var(--yx-action); color: var(--yx-on-brand); border-color: var(--assessment-control-border); }
-.assessment-page .assessment-secondary { background: var(--yx-surface-card); color: var(--yx-text-primary); border-color: var(--assessment-control-border); }
-.assessment-note { display: block; margin-top: 24px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; text-align: center; overflow-wrap: anywhere; }
-.assessment-question-meta { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; color: var(--yx-text-secondary); font-size: 14px; }
-.assessment-progress { height: 4px; margin-top: 12px; overflow: hidden; border-radius: 4px; background: var(--yx-border); }
-.assessment-progress-value { height: 100%; max-width: 100%; border-radius: inherit; background: var(--yx-brand); }
-.assessment-stem { display: block; margin: 28px 0 20px; font-size: 20px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.assessment-page { box-sizing: border-box; display: flex; flex-direction: column; height: 100dvh; min-height: 100dvh; padding: calc(12px + env(safe-area-inset-top)) 20px 0; overflow: hidden; background-color: var(--yx-r4-page-color); background-image: var(--yx-r4-home-image); color: var(--yx-text-primary); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 16px; line-height: 1.5; }
+.assessment-shell { display: flex; flex: 1 1 auto; flex-direction: column; width: 100%; max-width: 560px; min-height: 0; margin: 0 auto; }
+.assessment-navigation { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; margin-bottom: 20px; }
+.assessment-page .assessment-nav-button { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-width: 44px; min-height: 44px; margin: 0; padding: 0; border: 0; border-radius: 12px; background: transparent; color: var(--yx-text-primary); font: inherit; line-height: 1; }
+.assessment-title { display: flex; align-items: center; justify-content: center; min-height: 44px; margin: 0; font-size: 18px; font-weight: 650; line-height: 1.3; letter-spacing: 0; text-align: center; overflow-wrap: anywhere; }
+.assessment-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.assessment-icon { display: block; width: 22px; height: 22px; flex: none; }
+.assessment-card, .assessment-tip { border: 1px solid var(--yx-r4-glass-border); border-radius: 22px; background: var(--yx-r4-glass); box-shadow: var(--yx-r4-shadow-card); backdrop-filter: blur(var(--yx-r4-blur)); }
+.assessment-card { padding: 20px; }
+.assessment-tip { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 14px 16px; }
+.assessment-tip-title { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 650; }
+.assessment-guide, .assessment-question, .assessment-pending, .assessment-result { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.assessment-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.assessment-result { overflow: auto; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+.assessment-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--yx-brand); font-size: 13px; font-weight: 650; line-height: 1.4; }
+.assessment-kicker { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--yx-brand); }
+.assessment-guide-title { display: block; margin: 0 0 8px; color: var(--yx-text-primary); font-size: 24px; font-weight: 650; line-height: 34px; overflow-wrap: anywhere; }
+.assessment-kicker .assessment-guide-title { margin: 0; }
+.assessment-guide-lead { display: block; margin: 0 0 16px; color: var(--yx-text-secondary); font-size: 14px; font-weight: 400; line-height: 22px; overflow-wrap: anywhere; }
+.assessment-description { display: block; color: var(--yx-text-secondary); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.assessment-reason { font-size: 13px; line-height: 20px; }
+.assessment-guide-points { display: grid; gap: 18px; }
+.assessment-guide-point { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; gap: 12px; }
+.assessment-guide-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 16px; background: var(--yx-surface-soft); }
+.assessment-point-title { display: block; margin-bottom: 4px; color: var(--yx-text-primary); font-size: 15px; font-weight: 650; line-height: 22px; overflow-wrap: anywhere; }
+.assessment-dot { width: 8px; height: 8px; }
+.assessment-meta { display: block; margin: 8px 0 0; color: var(--yx-text-secondary); font-size: 13px; line-height: 1.4; }
+.assessment-actions { display: grid; gap: 12px; margin-top: 20px; }
+.assessment-dock { flex: none; margin-top: 0; padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+.assessment-page .assessment-button, .assessment-page .assessment-nav-button, .assessment-page .assessment-option { cursor: pointer; }
+.assessment-page .assessment-button { box-sizing: border-box; display: flex; width: 100%; min-width: 0; min-height: 48px; align-items: center; justify-content: center; gap: 8px; margin: 0; padding: 12px 16px; border: 1px solid var(--yx-border); border-radius: 16px; font-family: inherit; font-size: 16px; font-weight: 650; line-height: 1.4; white-space: normal; overflow-wrap: anywhere; }
+.assessment-page .assessment-primary { border-color: transparent; background-color: var(--yx-r4-cta-color); background-image: var(--yx-r4-cta-image); color: var(--yx-r4-on-cta); box-shadow: var(--yx-r4-shadow-cta); }
+.assessment-page .assessment-secondary { background: var(--yx-surface-card); color: var(--yx-text-primary); }
+.assessment-page .assessment-button[disabled], .assessment-page .assessment-button[aria-disabled="true"], .assessment-page .assessment-nav-button[disabled], .assessment-page .assessment-nav-button[aria-disabled="true"], .assessment-page .assessment-option[disabled], .assessment-page .assessment-option[aria-disabled="true"] { cursor: default; opacity: 1; }
+.assessment-page .assessment-primary[disabled], .assessment-page .assessment-primary[aria-disabled="true"] { background-color: var(--yx-surface-soft); background-image: none; color: var(--yx-text-primary); border-color: var(--yx-border); box-shadow: none; opacity: 1; }
+.assessment-note { display: block; margin-top: 16px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; text-align: center; overflow-wrap: anywhere; }
+.assessment-progress { height: 6px; margin-top: 4px; overflow: hidden; border-radius: 6px; background: var(--yx-border); }
+.assessment-progress-value { height: 100%; max-width: 100%; border-radius: inherit; background-color: var(--yx-r4-cta-color); background-image: var(--yx-r4-cta-image); }
+.assessment-stem { display: block; margin: 18px 0 16px; font-size: 20px; font-weight: 650; line-height: 1.45; overflow-wrap: anywhere; }
 .assessment-options { display: grid; gap: 12px; }
-.assessment-page .assessment-option { box-sizing: border-box; display: flex; width: 100%; min-width: 0; min-height: 60px; align-items: center; gap: 12px; margin: 0; padding: 12px 14px; border: 1px solid var(--assessment-control-border); border-radius: 8px; background: var(--yx-surface-card); color: var(--yx-text-primary); font-family: inherit; font-size: 16px; font-weight: 400; line-height: 1.5; text-align: left; white-space: normal; overflow-wrap: anywhere; }
-.assessment-option-key { display: flex; flex: none; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--yx-surface-soft); }
+.assessment-page .assessment-option { box-sizing: border-box; display: flex; width: 100%; min-width: 0; min-height: 62px; align-items: center; gap: 12px; margin: 0; padding: 12px 14px; border: 1px solid var(--yx-border); border-radius: 16px; background: var(--yx-surface-card); color: var(--yx-text-primary); font-family: inherit; font-size: 16px; font-weight: 400; line-height: 1.45; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.assessment-option-key { display: flex; flex: none; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--yx-surface-soft); color: var(--yx-text-primary); font-weight: 650; }
+.assessment-check { width: 16px; height: 16px; }
 .assessment-option-text { flex: 1 1 0; min-width: 0; }
-.assessment-selected { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px; max-width: 7em; color: var(--yx-brand); font-size: 14px; font-weight: 600; }
-.assessment-page .assessment-option.is-selected { border-color: var(--yx-brand); box-shadow: inset 0 0 0 1px var(--yx-brand); background: var(--yx-brand-soft); }
-.is-selected .assessment-option-key { background: var(--yx-action); color: var(--yx-on-brand); }
+.assessment-selected { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px; max-width: 7em; color: var(--yx-brand); font-size: 14px; font-weight: 650; }
+.assessment-page .assessment-option.is-selected { border-color: var(--yx-brand); background: var(--yx-brand-soft); }
+.is-selected .assessment-option-key { background-color: var(--yx-action); background-image: none; color: var(--yx-on-brand); }
+.assessment-inline-alert { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; color: var(--yx-danger); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.assessment-error-badge { display: flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--yx-danger); }
+.assessment-error-icon { width: 16px; height: 16px; }
+.assessment-resume-count { display: flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--yx-text-primary); font-size: 15px; font-weight: 650; }
 .assessment-result { text-align: center; }
-.assessment-complete { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 40px 0 24px; font-size: 16px; }
+.assessment-complete { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 28px 0 20px; font-size: 16px; }
 .assessment-complete-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--yx-success); background: var(--yx-success-soft); }
 .assessment-result-facts { display: grid; gap: 16px; }
 .assessment-level { display: block; font-size: 64px; font-weight: 650; line-height: 1.2; overflow-wrap: anywhere; }
 .assessment-score { display: block; font-size: 24px; line-height: 1.4; }
-.assessment-result-heading { display: block; margin-bottom: 16px; font-size: 24px; font-weight: 600; line-height: 1.4; }
+.assessment-result-heading { display: block; margin-bottom: 16px; font-size: 24px; font-weight: 650; line-height: 1.4; }
 .assessment-saved { display: block; margin: 28px 0 0; padding: 24px 0 0; border-top: 1px solid var(--yx-border); color: var(--yx-text-secondary); }
 .assessment-result > .assessment-description { margin-top: 16px; }
-.assessment-feedback { display: block; margin: 16px 0; color: var(--yx-text-primary); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
-.assessment-error { display: block; margin: 16px 0; color: var(--yx-danger); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
-.assessment-confirmation { margin: 16px 0 24px; padding: 20px; border: 1px solid var(--yx-border); border-radius: 8px; background: var(--yx-surface-soft); text-align: left; }
-.assessment-confirm-title { display: block; margin-bottom: 8px; font-size: 18px; font-weight: 600; line-height: 1.5; }
+.assessment-feedback { display: block; margin: 12px 0; color: var(--yx-text-primary); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.assessment-error { display: block; margin: 12px 0; color: var(--yx-danger); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.assessment-leave-overlay { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--yx-profile-scrim); background: color-mix(in srgb, var(--yx-profile-scrim) 60%, transparent); }
+.assessment-confirmation { margin: 16px 0 24px; padding: 20px; border: 1px solid var(--yx-border); border-radius: 20px; background: var(--yx-surface-card); text-align: left; }
+.assessment-leave-overlay .assessment-confirmation { width: min(310px, 100%); margin: 0; }
+.assessment-confirm-title { display: block; margin-bottom: 8px; font-size: 18px; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
 .assessment-confirm-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-.assessment-confirm-actions .assessment-button { flex: 1 1 8em; width: auto; }
+.assessment-confirm-actions .assessment-button { flex: 1 1 8em; width: auto; min-width: 0; }
 .assessment-page button::after { border: 0; }
-.assessment-page button:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 3px; }
-.assessment-page button[disabled] { opacity: .6; cursor: default; }
-.assessment-page .assessment-option[disabled] { opacity: 1; }
-@media (max-width: 360px) { .assessment-page { padding-right: 20px; padding-left: 20px; } }
-/* Narrow widths: the selected badge takes a normal-flow second row under the answer
-   text instead of consuming its inline width, so the option text keeps a readable
-   column and words are not split inside the word at 200% text. */
+.assessment-page button:focus-visible, .assessment-page .assessment-option:focus-visible, .assessment-page .assessment-nav-button:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 3px; }
+:global(:root[data-theme="high-contrast"]) .assessment-page { background-image: none; }
+:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); box-shadow: none; }
+:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary[disabled], :global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary[aria-disabled="true"] { background-color: var(--yx-surface-card); background-image: none; color: var(--yx-text-primary); border-color: var(--yx-text-primary); box-shadow: none; opacity: 1; }
+:global(:root[data-theme="high-contrast"]) .assessment-card, :global(:root[data-theme="high-contrast"]) .assessment-tip, :global(:root[data-theme="high-contrast"]) .assessment-confirmation { background: var(--yx-surface-card); backdrop-filter: none; box-shadow: none; }
+:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-option.is-selected { background: var(--yx-surface-card); border-color: var(--yx-text-primary); }
+:global(:root[data-theme="high-contrast"]) .is-selected .assessment-option-key { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); }
+:global(:root[data-theme="dark"]) .is-selected .assessment-option-key { background-color: var(--yx-r4-brand); background-image: none; color: var(--yx-r4-ink); }
+:global(:root[data-theme="dark"]) .assessment-check, :global(:root[data-theme="high-contrast"]) .assessment-check { filter: brightness(0); }
+:global(:root[data-theme="dark"]) .assessment-icon--ink, :global(:root[data-theme="high-contrast"]) .assessment-icon--ink { filter: invert(1); }
+:global(:root[data-theme="dark"]) .assessment-icon--brand, :global(:root[data-theme="high-contrast"]) .assessment-icon--brand { filter: brightness(1.6); }
+:global(:root[data-theme="dark"]) .assessment-error-badge, :global(:root[data-theme="high-contrast"]) .assessment-error-badge { background: var(--yx-surface-card); border: 1px solid var(--yx-danger); }
+@media (max-width: 360px) { .assessment-page { padding-right: 16px; padding-left: 16px; } .assessment-card { padding: 16px; } }
 @media (max-width: 599px) {
   .assessment-page .assessment-option.is-selected { display: grid; grid-template-columns: auto minmax(0, 1fr); }
   .assessment-option.is-selected .assessment-selected { grid-column: 2 / -1; justify-content: flex-start; max-width: none; }
 }
-@media (min-width: 600px) { .assessment-page { padding-top: calc(24px + env(safe-area-inset-top)); padding-bottom: calc(64px + env(safe-area-inset-bottom)); } .assessment-navigation { margin-bottom: 48px; } }
+@media (max-width: 390px) { .assessment-guide-title { font-size: 22px; line-height: 30px; } }
+@media (min-width: 768px) { .assessment-shell { max-width: 720px; } .assessment-page { padding-top: calc(24px + env(safe-area-inset-top)); } .assessment-dock { padding-bottom: calc(24px + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) { .assessment-page * { animation: none; transition: none; } }
 </style>

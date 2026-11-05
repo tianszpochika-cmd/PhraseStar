@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-05",
+  "scope": "MB-006",
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "sourceSnapshots": [
+    "grok/resume-assessment-13-source-snapshot",
+    "grok/resume-assessment-14-source-snapshot"
+  ],
+  "source": {
+    "apps/mobile/src/pages/assessment/assessment-screen.ts": "eafc992c61c016fb805381efa6ea79331af42105bb03af968f44c91a311d59f2",
+    "apps/mobile/src/pages/assessment/assessment.vue": "b8807e09b312c78bbf349e2386b64d4bff0e63b5a080d3b51b0045a42ed975dd",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/18481c47-9996-4fe1-ae50-73836a126525.svg": "bf42fb6a37a2ddf539e6314b11e1bbe42605ffb2326001838927e1ab2aba0ecb",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/2b75b54a-e8dd-4feb-bc70-b84b72e85c31.svg": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/52901c17-34ea-47c1-b109-54e14742ea9e.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/b098807e-5be4-4b41-9a91-66379428779c.svg": "cc11414ac90bbe7a751b36e3bdadbec7f861004cc9e6592b94938256707639da",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/cbc79026-a716-4db6-9c9a-b53aaacbc11a.svg": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+    "apps/mobile/src/static/figma-assessment/assessment-intro-166-1209/d0d46b64-a591-46dd-bb15-45eedf264ec6.svg": "6171711543b2886c73291b267acba13d4f42c5a54e6215c5b88b0156d5b022d3",
+    "apps/mobile/src/static/figma-assessment/assessment-leave-confirm-166-2015/00bb7507-9029-4994-806d-ae1d9a8a06b0.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-leave-confirm-166-2015/3aeed369-542d-41dc-b152-b6d8adce119a.svg": "38f5a6fea5ae446861ad4758fd51c5357a0050df8ce4ca3472f781ad21ae6272",
+    "apps/mobile/src/static/figma-assessment/assessment-leave-confirm-166-2015/73fef0e9-b3db-4702-9895-2279bae79079.svg": "c8983dade5739bf804af5d11c301f5472d87fbbe1f2033ae4a11d8a5b1ed0ecc",
+    "apps/mobile/src/static/figma-assessment/assessment-question-166-1467/1f94acf0-3dc4-4219-9ad2-3f7380ac7226.svg": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+    "apps/mobile/src/static/figma-assessment/assessment-question-166-1467/34eb6ed2-103c-441b-9848-7d83efaab491.svg": "844298ebe354985acebc43d41f9ac492fdd88f8f771d12555ba08c5bf99f7fb6",
+    "apps/mobile/src/static/figma-assessment/assessment-question-166-1467/6b5230f9-e317-4205-9d2b-f0ddc8ffa558.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-resume-166-1396/0ab34b69-91a5-4fe4-a5c6-046975a626ce.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-resume-166-1396/36bc362e-a43f-40a8-a6c3-ee0ac3a94b4e.svg": "e8e36f1acf5559237e595831241ebc154742856384555d4bec05eb3cdf0b8cb3",
+    "apps/mobile/src/static/figma-assessment/assessment-resume-166-1396/ae2ba92f-48eb-4e20-a98d-b608b3bde457.svg": "eb3e1ea0e85db31f2ea50f29c392f6a55af9d3533ce51d7bcc18ae0c0fca1d9f",
+    "apps/mobile/src/static/figma-assessment/assessment-resume-166-1396/b0f626c7-cec2-4cd4-b292-0a816b9d9a39.svg": "dc07b1cbedd928261790ce09fbc8b23c840cfd5fd214124ceac10bd4ff30e274",
+    "apps/mobile/src/static/figma-assessment/assessment-resume-166-1396/fb7cbf9c-dd4f-40ab-bdb5-82934a39457d.svg": "8a20771c33521a32eae490cdc6d748a2e35cbdf5e0bf8cab9964bf3cddf004be",
+    "apps/mobile/src/static/figma-assessment/assessment-selected-166-1552/01f823d0-40c2-4544-8e80-42ff9c882aa2.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-selected-166-1552/2bfcf823-1ccf-4c9a-9d5d-f633d19dee30.svg": "44e178a4287fa12e2d4aa83e1b7474de74553a984395a80dd91e93f7ed16f8cc",
+    "apps/mobile/src/static/figma-assessment/assessment-selected-166-1552/7bcd3f3e-5553-4792-86e7-d2ff186fdd54.svg": "38f5a6fea5ae446861ad4758fd51c5357a0050df8ce4ca3472f781ad21ae6272",
+    "apps/mobile/src/static/figma-assessment/assessment-unconfirmed-166-1918/866c3734-840b-460e-9712-bf7c50c4d7e3.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-assessment/assessment-unconfirmed-166-1918/867b8b2e-e064-4dbb-9dac-17d4fd5763da.svg": "72544206999e02d48f53162cf228e002cc6c4b05b3ea0aa85e8814cb3c3da5d1",
+    "apps/mobile/src/static/figma-assessment/assessment-unconfirmed-166-1918/a037ec97-817c-4150-88b4-9c1528717ef0.svg": "38f5a6fea5ae446861ad4758fd51c5357a0050df8ce4ca3472f781ad21ae6272",
+    "apps/mobile/src/static/figma-assessment/assessment-unconfirmed-166-1918/c951a4b3-b6ea-4f0e-b2dd-856312eea009.svg": "4f708722e13017dbd8f7ad00fea233db16c32845609c397ab5abc797d8c9c491",
+    "apps/mobile/tests/assessment-screen.test.mjs": "fbc10bdc29bbbc32f5988c6f7c2c249b5965db09f3681239d15381cbe3faf864",
+    "apps/mobile/tests/c04-assessment-chain.test.mjs": "bf02ab3e23cf7074b61724e0bb8adad5b7404b84742fce4725f566ab41eb50b3",
+    "apps/mobile/tests/placement-checkpoint-resume.test.mjs": "4bc290747e64937abae9b0b098bd450ba273033bfa7aa033b1e359555900d71d",
+    "packages/i18n/src/mobile-resources/assessment-page.ts": "7e827a577a514196af9a0ca91fb07646b2ba5614a8e84270ec3f4878c94f294c"
+  },
+  "figma": {
+    "file": "UpcXTamTjwrb5OQg9WJiFu",
+    "nodes": [
+      "166:1209",
+      "166:1396",
+      "166:1467",
+      "166:1552",
+      "166:1918",
+      "166:2015"
+    ],
+    "gate": "DEC-04 feedback timing remains open"
+  },
+  "build": {
+    "target": "@englishflow/mobile",
+    "typecheck": "PASS",
+    "h5": "PASS",
+    "fileCount": 664,
+    "indexSha256": "c19c6b0c5cc62c0d921be74329ded3b8289b1969141e60ead65b092673354da6"
+  },
+  "verification": {
+    "nodeTests": 27,
+    "browserChecks": 28,
+    "screenshots": 7,
+    "unknownRequests": 0,
+    "unknownWrites": 0,
+    "outsideRequests": 0,
+    "mode": "immutable compiled H5, synthetic IAM and Gateway, no service listener",
+    "firstFailedRunPreserved": true
+  },
+  "limits": {
+    "productDecision": "DEC-04_OPEN_EXISTING_POLICY",
+    "realServices": "NOT_RUN",
+    "nativeDevices": "NOT_RUN",
+    "screenReader": "NOT_RUN",
+    "deployment": "NOT_RUN",
+    "trace": "TRACE_PENDING"
+  },
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/assessment-13-review/root-combined",
+  "routeCountDelta": 1,
+  "localUiCandidates": 26,
+  "formalRoutes": 33
+}
