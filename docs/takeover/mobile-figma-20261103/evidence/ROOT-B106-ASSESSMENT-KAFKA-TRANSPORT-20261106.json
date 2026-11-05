@@ -1,0 +1,119 @@
+{
+  "batch": "B106",
+  "type": "LOCAL_ISOLATED_SYNTHETIC_TRANSPORT",
+  "parent": "71528536581c95c30b40e8f658ec5580740ee79a",
+  "source_jobs": [
+    "G134",
+    "G135",
+    "G138",
+    "G140"
+  ],
+  "status": "PASS_FOR_FROZEN_WIRING_CANDIDATE",
+  "branch_integration": "TRANSPORT_EVIDENCE_ONLY_RELAY_WIRING_HELD_FOR_ITEM_OUTCOME_FIX",
+  "wiring_candidate": {
+    "jar_sha256": "27f049a11fb4617f42c033bb163bd9894b7e62f49ebad62bd7e9e87a33e32eec",
+    "candidate_changes": [
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/config/AssessmentEventRelayConfiguration.java",
+        "sha256": "3bf166715cba672c617702a9018ff83bca266086ba31bc80c4f477913a924e0e"
+      },
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelay.java",
+        "sha256": "803951c47cdf9516179c88ba8629df552f17365d6e7d80a0bac1fd5961d3d593"
+      },
+      {
+        "path": "services/assessment-service/src/main/resources/application.yml",
+        "sha256": "bc6d4e699a0d42c1037914ee239da9b50df9070ed221ee881962416168476a2a"
+      },
+      {
+        "path": "services/assessment-service/src/test/java/com/englishflow/assessment/config/AssessmentEventRelayConfigurationTest.java",
+        "sha256": "af043fd688b702705f2ebafa9526d128f75966185c719229c5f2b1b47095d004"
+      }
+    ],
+    "offline_maven": {
+      "passed": 175,
+      "skipped_opt_in": 7,
+      "gate_tests": 4
+    },
+    "default_start": {
+      "result": "UP_NO_BROKER_SOCKET",
+      "receipt_sha256": "5d8b99823504b1fa63099b82c4340e04faa8b0e086a6ecee8358b54ed2290ca2"
+    }
+  },
+  "runner_sha256": "1fc7b30819a4f59206158edddce724243dcad883c6f1fc8f8c67add7a04fcf3c",
+  "raw_receipt_sha256": "409c9d5c2f494b2e3f88213accdcf468808cf4565624edf3497dafd480d7e9b4",
+  "fixture_sha256": "abe3f7d678d59acc8cfd0c92f8102cc703e23a0abb1d51f84dea664911a310ba",
+  "mysql_image": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b",
+  "kafka_image": "sha256:05b4616e0702ef2729327705d54ad6b50ea70b271c4b730fabd2320789fb7b02",
+  "topology": {
+    "context": "desktop-linux",
+    "isolated_test_bridge": true,
+    "fixed_loopback_ports": [
+      13306,
+      18091,
+      19092
+    ],
+    "persistent_mounts": 0
+  },
+  "transport": {
+    "probe": "assessment-owner-outbox-to-local-kafka",
+    "status": "PASS",
+    "cleanup": "PASS",
+    "ports_released": true,
+    "not_learner_or_learning_consumer": true,
+    "jar_pinned": true,
+    "fixture_pinned": true,
+    "images_pinned": true,
+    "flyway_target": "12",
+    "topic": "platform.assessment.v1",
+    "partitions": 12,
+    "replication": 1,
+    "auto_topic_create": false,
+    "positive_published": true,
+    "positive_attempt": 1,
+    "positive_lock_clear": true,
+    "positive_published_at": true,
+    "positive_identity_unchanged": true,
+    "positive_json_unchanged": true,
+    "negative_pending": true,
+    "negative_attempt": 0,
+    "negative_unclaimed": true,
+    "broker_records": 1,
+    "offset_total": 1,
+    "offset_partitions": 12,
+    "second_message_absent": true,
+    "key_matches_aggregate_id": true,
+    "correlation_headers": 7,
+    "headers_match": true,
+    "stored_json_match": true,
+    "unexpected_topics": 0,
+    "loopback_only": true
+  },
+  "preflight_corrections": [
+    "G135 console formatter self-check failed before mutation; G138 uses Kafka 3.9.2 default separators and LF.",
+    "Pinned image declares three volume destinations; G140 overrides each with temporary memory mounts.",
+    "Automatic bridge subnet pool exhausted; internal bridge did not forward to macOS loopback; reviewed scoped ordinary bridge passed and was removed."
+  ],
+  "post_cleanup": {
+    "released_ports": [
+      13306,
+      18091,
+      19092
+    ],
+    "owned_containers": 0,
+    "owned_networks": 0,
+    "owned_jvms": 0,
+    "preserved_project_volumes": 4
+  },
+  "trace": {
+    "route": "MB-013",
+    "business": "INT-P1-006",
+    "event": "assessment.item.assessed.v2",
+    "topic": "platform.assessment.v1",
+    "owner": "assessment-service"
+  },
+  "holds": [
+    "G144 per-attempt assessed item admission and outcome correctness before enabling the new wiring",
+    "Replay of real H5 attempt through broker, broker authorization, Learning consumer/state, device and deployment"
+  ]
+}

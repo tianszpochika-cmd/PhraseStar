@@ -5787,5 +5787,16 @@
     "cleanup": "PASS",
     "live_kafka_learning_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B105-GRAMMAR-H5-OWNER-20261106.json"
+  },
+  "integration_batch_106_assessment_kafka_transport": {
+    "state": "ACCEPTED_SYNTHETIC_TRANSPORT_PROOF_WIRING_HELD",
+    "live_broker_records": 1,
+    "owner_and_broker_identity": "PASS",
+    "negative_inert": "PASS",
+    "topic_partitions": 12,
+    "cleanup": "PASS",
+    "next": "G144_ACTUAL_ATTEMPT_OUTCOME",
+    "h5_same_attempt_broker_acl_learning_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B106-ASSESSMENT-KAFKA-TRANSPORT-20261106.json"
   }
 }
