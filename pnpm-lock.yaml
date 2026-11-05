@@ -151,6 +151,9 @@ importers:
       '@dcloudio/uni-app':
         specifier: 3.0.0-alpha-1000920260909822
         version: 3.0.0-alpha-1000920260909822(@dcloudio/types@3.4.31)(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-app-plus':
+        specifier: 3.0.0-alpha-1000920260909822
+        version: 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))
       '@dcloudio/uni-components':
         specifier: 3.0.0-alpha-1000920260909822
         version: 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))
@@ -840,6 +843,18 @@ packages:
 
   '@dcloudio/types@3.4.31':
     resolution: {integrity: sha512-YAqOfJpcAwMs4Fagv2oP+iRHSCJOJoN8JUYyoRD6gwfANhsI9QaYj4/j22FzSopfHkqjX50B7YkG/VRAyz9OnA==}
+
+  '@dcloudio/uni-app-plus@3.0.0-alpha-1000920260909822':
+    resolution: {integrity: sha512-7eMoGc+OzGLTGepKYT3EQNlZWq9METutX5UvTpbtVjs+47ATFHxgUXugTzW5s1x/bZCul/MZED5zyNFnr9RtlQ==}
+
+  '@dcloudio/uni-app-uts@3.0.0-alpha-1000920260909822':
+    resolution: {integrity: sha512-eHp+RjMvn1BXDdjvINSGQ/I7oT0pg5+9uO/0uw50UpQBr0LREzXwM0tFcrXO1eDM0Z451ltBQix25RzQOmR6BQ==}
+
+  '@dcloudio/uni-app-vite@3.0.0-alpha-1000920260909822':
+    resolution: {integrity: sha512-CKgAPGzejZ6+n3AQCqoA3F8kjf5HK+kzRv25DbY7aeMIbKjFSFm+3V/qLiTimnMfSAQ2vvIM6D+nBidSqMdRtw==}
+
+  '@dcloudio/uni-app-vue@3.0.0-alpha-1000920260909822':
+    resolution: {integrity: sha512-FErEgsLhi8dDl4n7rP3tUE/aDAxhGe8R2+nbVESf9nFrvBECMiLhnpOK3XxZUzGFWMPkDCw0lcVCEC0Z/R8/bQ==}
 
   '@dcloudio/uni-app@3.0.0-alpha-1000920260909822':
     resolution: {integrity: sha512-1A4KKBviWa783ZfUMHLiP2bmU8dLQEEMPqWv1ScXPSixjYjYBBwIq5rgQpJXsR/c15Lu0kUEIAWotcBHxCd9OQ==}
@@ -2486,6 +2501,10 @@ packages:
   '@vue/compiler-vue2@2.7.16':
     resolution: {integrity: sha512-qYC3Psj9S/mfu9uVi5WvNZIzq+xnXMhOwbTFKKDD7b1lhpnn71jXSFdTQ+WsIEk0ONCd7VV2IMm7ONl6tbQ86A==}
 
+  '@vue/consolidate@1.0.0':
+    resolution: {integrity: sha512-oTyUE+QHIzLw2PpV14GD/c7EohDyP64xCniWTcqcEmTd699eFqTIwOmtDYjcO1j3QgdXoJEoWv1/cCdLrRoOfg==}
+    engines: {node: '>= 0.12.0'}
+
   '@vue/devtools-api@6.6.4':
     resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
 
@@ -3724,6 +3743,9 @@ packages:
   lcid@3.1.1:
     resolution: {integrity: sha512-M6T051+5QCGLBQb8id3hdvIW8+zeFV2FyBGFS9IEK5H9Wt4MueD4bW1eWikpHgZp+5xR3l5c8pZUkQsIA0BFZg==}
     engines: {node: '>=8'}
+
+  licia@1.41.1:
+    resolution: {integrity: sha512-XqObV8u1KEMdYWaNK0leRrTwhzKnLQEkhbnuUu7qGNH3zJoN7l9sfvF6PfHstSCuUOmpEP+0SBjRrk0I9uZs8g==}
 
   lightningcss-android-arm64@1.33.0:
     resolution: {integrity: sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==}
@@ -6421,6 +6443,85 @@ snapshots:
 
   '@dcloudio/types@3.4.31': {}
 
+  '@dcloudio/uni-app-plus@3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))':
+    dependencies:
+      '@dcloudio/uni-app-uts': 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-app-vite': 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-app-vue': 3.0.0-alpha-1000920260909822
+      debug: 4.3.7
+      fs-extra: 10.1.0
+      licia: 1.41.1
+      postcss-selector-parser: 6.1.2
+    transitivePeerDependencies:
+      - '@nuxt/kit'
+      - '@vueuse/core'
+      - postcss
+      - rollup
+      - supports-color
+      - ts-node
+      - vite
+      - vue
+
+  '@dcloudio/uni-app-uts@3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vue@3.5.41(typescript@5.9.3))':
+    dependencies:
+      '@babel/parser': 7.25.6
+      '@babel/types': 7.25.6
+      '@dcloudio/uni-cli-shared': 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-console': 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-i18n': 3.0.0-alpha-1000920260909822
+      '@dcloudio/uni-nvue-styler': 3.0.0-alpha-1000920260909822
+      '@dcloudio/uni-shared': 3.0.0-alpha-1000920260909822
+      '@jridgewell/gen-mapping': 0.3.13
+      '@jridgewell/trace-mapping': 0.3.31
+      '@rollup/pluginutils': 5.1.0(rollup@4.62.4)
+      '@vue/compiler-core': 3.4.21
+      '@vue/compiler-dom': 3.4.21
+      '@vue/compiler-sfc': 3.4.21
+      '@vue/consolidate': 1.0.0
+      '@vue/shared': 3.4.21
+      debug: 4.3.7
+      es-module-lexer: 1.5.4
+      estree-walker: 2.0.2
+      fast-glob: 3.3.3
+      fs-extra: 10.1.0
+      magic-string: 0.30.11
+      picocolors: 1.1.0
+      source-map-js: 1.2.1
+      unimport: 4.1.1
+    transitivePeerDependencies:
+      - '@nuxt/kit'
+      - '@vueuse/core'
+      - postcss
+      - rollup
+      - supports-color
+      - ts-node
+      - vue
+
+  '@dcloudio/uni-app-vite@3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))':
+    dependencies:
+      '@dcloudio/uni-cli-shared': 3.0.0-alpha-1000920260909822(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vue@3.5.41(typescript@5.9.3))
+      '@dcloudio/uni-i18n': 3.0.0-alpha-1000920260909822
+      '@dcloudio/uni-nvue-styler': 3.0.0-alpha-1000920260909822
+      '@dcloudio/uni-shared': 3.0.0-alpha-1000920260909822
+      '@rollup/pluginutils': 5.1.0(rollup@4.62.4)
+      '@vitejs/plugin-vue': 6.0.7(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))
+      '@vue/compiler-dom': 3.4.21
+      '@vue/compiler-sfc': 3.4.21
+      debug: 4.3.7
+      fs-extra: 10.1.0
+      picocolors: 1.1.0
+    transitivePeerDependencies:
+      - '@nuxt/kit'
+      - '@vueuse/core'
+      - postcss
+      - rollup
+      - supports-color
+      - ts-node
+      - vite
+      - vue
+
+  '@dcloudio/uni-app-vue@3.0.0-alpha-1000920260909822': {}
+
   '@dcloudio/uni-app@3.0.0-alpha-1000920260909822(@dcloudio/types@3.4.31)(@nuxt/kit@3.21.11(magicast@0.5.4))(@vueuse/core@14.3.0(vue@3.5.41(typescript@5.9.3)))(postcss@8.5.26)(rollup@4.62.4)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.0)(terser@5.50.0)(yaml@2.9.0))(vue@3.5.41(typescript@5.9.3))':
     dependencies:
       '@dcloudio/types': 3.4.31
@@ -8169,6 +8270,8 @@ snapshots:
       de-indent: 1.0.2
       he: 1.2.0
 
+  '@vue/consolidate@1.0.0': {}
+
   '@vue/devtools-api@6.6.4': {}
 
   '@vue/devtools-core@8.2.1(vue@3.5.41(typescript@5.9.3))':
@@ -9467,6 +9570,8 @@ snapshots:
   lcid@3.1.1:
     dependencies:
       invert-kv: 3.0.1
+
+  licia@1.41.1: {}
 
   lightningcss-android-arm64@1.33.0:
     optional: true

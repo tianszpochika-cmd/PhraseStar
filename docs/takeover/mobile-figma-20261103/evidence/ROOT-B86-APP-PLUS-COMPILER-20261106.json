@@ -1,0 +1,79 @@
+{
+  "batch": "B86",
+  "at": "2026-11-06T00:40:30.812186+08:00",
+  "source_base": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+  "implementation": "DSH CLI 36",
+  "integrator": "root",
+  "candidate_files": {
+    "apps/mobile/package.json": "b569f3e4eefcf8c6d3ea65e995b9f46f568722e38b846d6b7c5e277e20034b08",
+    "pnpm-lock.yaml": "061d20e07316cb462977ec9c55f00261c12ff2db3e77eb38f7abeda326b6616c"
+  },
+  "worker_report_sha256": "16b820f6d7d0d1d659ac9d1b04b0c5ec8eb818bd1c7cc2f676d89622c97ab76c",
+  "dependency": {
+    "name": "@dcloudio/uni-app-plus",
+    "version": "3.0.0-alpha-1000920260909822",
+    "lock_added_lines": 105,
+    "lock_removed_lines": 0,
+    "frozen_install": "PASS"
+  },
+  "reproduced_before": {
+    "build_exit": 0,
+    "files": 3,
+    "output_kind": "H5-shaped SPA",
+    "app_plus_manifest_present": false
+  },
+  "app_plus": {
+    "build": "PASS",
+    "files": 744,
+    "page_modules": 33,
+    "platform_manifest": [
+      "android",
+      "iPhone",
+      "iPad"
+    ],
+    "root_index_html_present": false,
+    "app_service_sha256": "c58550bc72032155d425007483f564beb6d6479ddf288a7db8ccb3a31e279cb9",
+    "app_config_service_sha256": "3abcfecad2c8660a83dc91191994be20a5690e7666df181b378263bcd219d5c2",
+    "manifest_sha256": "dfd7cc33961382ad8c078768a5ce31cc55835247d8ef0312517d3680f0bbf611",
+    "all_file_manifest_sha256": "938fc45912698c022a1eddbff806685570023d6f9c730faeb97bcaabd378cf7a",
+    "independent_sha_check": "744/744",
+    "independent_syntax_and_route_check": "PASS",
+    "two_same_tree_builds": "IDENTICAL_FILE_DIGESTS"
+  },
+  "h5": {
+    "build": "PASS",
+    "files": 797,
+    "index_sha256": "983d33d4c7bb6ae8a9586970790d906f795ebc4cfe640c0c18166cac3837de73",
+    "all_file_manifest_sha256": "d6b43d75c6494ec312b6ab0d6590d9164cd6fb153401b0fb7835f8e10745252e",
+    "independent_sha_check": "797/797",
+    "two_same_tree_builds": "IDENTICAL_FILE_DIGESTS",
+    "typecheck": "PASS",
+    "independent_source_tests": {
+      "pass": 662,
+      "fail": 0
+    },
+    "independent_offline_browser": {
+      "pass": 43,
+      "anonymous_cases": 34,
+      "closed_workspace_cases": 9,
+      "screenshots": 23,
+      "private_requests": 0,
+      "unexpected_requests": 0,
+      "writes": 0,
+      "page_errors": 0
+    }
+  },
+  "release": {
+    "apk_ipa_or_simulator_host": "NOT_RUN",
+    "ios_android_ipad_runtime": "NOT_RUN",
+    "keychain_keystore_bridge": "NOT_PRESENT",
+    "screen_reader": "NOT_RUN",
+    "deploy": "NOT_RUN"
+  },
+  "vendor": [
+    "https://raw.githubusercontent.com/dcloudio/uni-preset-vue/vite/package.json",
+    "https://uniapp.dcloud.net.cn/worktile/CLI.html"
+  ],
+  "local_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/app-plus-compiler-36-root",
+  "runtime_resources": "NO_SERVER_OR_CONTAINER_STARTED"
+}

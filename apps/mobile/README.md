@@ -23,6 +23,7 @@
 ## B0 本地验证
 - H5 固定端口：`18183`；启动前执行根目录 `pnpm ports:check`。
 - H5 开发：`pnpm --filter @englishflow/mobile dev:h5`；构建：`pnpm --filter @englishflow/mobile build:h5`。
+- App 资源构建运行 `pnpm --filter @englishflow/mobile build:app`。在 `dist/build/app` 核对 `manifest.json`、`app-service.js` 与页面资源。APK／IPA 由原生宿主另行打包。[B86 构建回执](../../docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B86-APP-PLUS-COMPILER.md)
 - TypeScript 检查：`pnpm exec tsc --noEmit -p apps/mobile/tsconfig.json`。
 - 移动端源码测试可用 `node scripts/dev/run-node-tests.mjs apps/mobile/tests` 运行。
 - DCloud 版本以本项目 `package.json` 与仓库锁文件为准；`src/compat/vue.ts` 兼容运行时导出差异，H5 的 `src/compat/page-lifecycle.ts` 补齐官方页面初始化调用，保证 `onLoad` 参数和 `onShow` 数据加载执行。业务页面接入前不得移除兼容层。
