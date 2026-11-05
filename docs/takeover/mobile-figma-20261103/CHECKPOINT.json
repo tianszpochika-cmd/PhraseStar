@@ -1790,7 +1790,7 @@
           "status": "JAVA_CONTROLLED_PASS",
           "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
           "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
-          "actual_db_concurrency": "NOT_RUN"
+          "actual_db_concurrency": "PASS_ISOLATED_MYSQL"
         }
       },
       "current_job": null,
@@ -1876,7 +1876,7 @@
           "status": "JAVA_CONTROLLED_PASS",
           "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
           "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
-          "actual_db_concurrency": "NOT_RUN"
+          "actual_db_concurrency": "PASS_ISOLATED_MYSQL"
         }
       },
       "current_job": "dsh/profile-batch-15-share-matrix",
@@ -3571,7 +3571,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:27:29.701972+08:00",
+  "updated_at": "2026-11-05T20:42:56.646781+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5243,6 +5243,6 @@
     "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
     "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
     "java_checks_per_timezone": 12,
-    "real_db_concurrency": "NOT_RUN"
+    "real_db_concurrency": "PASS_ISOLATED_MYSQL"
   }
 }

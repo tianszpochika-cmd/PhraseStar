@@ -15,7 +15,32 @@
     "cst_sha256": "57597378e6fd73919f102e65d5812e75d8cdfe66016bdfc5a4c1ee060927ca48",
     "utc_sha256": "614f5329aa7bba503ce1d809352947720d47f2a315cf9933cae9dadeecc02e15",
     "prior_mock_failure_sha256": "34d7e6a8ad47ff3b4dac47d6b83589f5b714010b797d7255444e5c785fcec448",
-    "actual_db_concurrency": "NOT_RUN"
+    "actual_db_concurrency": {
+      "status": "PASS",
+      "scope": "isolated MySQL 8.0 with Spring transaction proxy, no HTTP/deployed Gateway",
+      "source_product_pin": "47043d4a",
+      "test_file": "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java",
+      "test_sha256": "c36c4149aad0cde1917c73b2644d539a92377c11ef4e85f95caa16cdf24945fd",
+      "flyway_applied": 13,
+      "tests_passed": 1,
+      "skipped": 0,
+      "verified": [
+        "two real DB connections waited on same row lock",
+        "same first microsecond timestamp in both responses and SQL row",
+        "other owner 404",
+        "public status only"
+      ],
+      "jdbc_log_sha256": "807a15ea5b6aceb16731564b25250bdeb6e77474bc6a0fe5d81747239d8a0926",
+      "cleanup": {
+        "at": "2026-11-05T12:42:27.731885+00:00",
+        "test_pass": true,
+        "log_sha256": "807a15ea5b6aceb16731564b25250bdeb6e77474bc6a0fe5d81747239d8a0926",
+        "container_cleanup": "VERIFIED_REMOVED",
+        "fixed_host_port_13306": "FREE",
+        "initial_cleanup_observation": "TEMP_DB_STILL_PRESENT",
+        "explanation": "Immediate post-stop check observed --rm cleanup in progress. Fresh independent lookup found no container with the exact label and no listener."
+      }
+    }
   },
-  "release": "Keyed share issue and real Gateway/DB deployment remain separate."
+  "release": "Keyed share issuance and real Gateway/deployment remain separate."
 }
