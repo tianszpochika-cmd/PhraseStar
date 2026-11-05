@@ -24,5 +24,14 @@
     "typecheck": "PASS",
     "integration_log_sha256": "9527a91fc491773a87fac85cdba698ab2a50e8051999c13e88f17689756bc3bc"
   },
-  "evidence_scope": "SOURCE_TEST_ONLY; real document publication, controlled current runtime, native package and deployment not run in this patch"
+  "evidence_scope": "SOURCE_TEST_ONLY; real document publication, controlled current runtime, native package and deployment not run in this patch",
+  "h5_after_source_commit": {
+    "source_pin": "3297c544d971e7a29d90ee20a3859b7256725d93",
+    "index_sha256": "4dc3c5193af6b9d8ecd6eb95270a2e7d7e3a9542c395cbefa27ee01219656b35",
+    "files": 800,
+    "scenarios": 9,
+    "passed": 213,
+    "raw_sha256": "f7f537f7e80ac27ee7aac862075660795301e9eaace2eeeee33fef33181d9a82",
+    "runtime": "synthetic IAM/Gateway with the exact simulated docs"
+  }
 }

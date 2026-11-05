@@ -2985,6 +2985,11 @@
           "group": "B58_FROZEN_BOUNDARY",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        },
+        "b65_closed_workspaces": {
+          "status": "SOURCE_AND_BUILD_PASS",
+          "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
+          "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
@@ -3160,6 +3165,11 @@
           "group": "B58_FROZEN_BOUNDARY",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        },
+        "b65_closed_workspaces": {
+          "status": "SOURCE_AND_BUILD_PASS",
+          "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
+          "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
@@ -3249,6 +3259,11 @@
           "group": "B58_FROZEN_BOUNDARY",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        },
+        "b65_closed_workspaces": {
+          "status": "SOURCE_AND_BUILD_PASS",
+          "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
+          "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
@@ -3544,7 +3559,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:04:57.765551+08:00",
+  "updated_at": "2026-11-05T20:18:54.339676+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5189,7 +5204,8 @@
     "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
     "receipt": "evidence/ROOT-B63-CONSENT-PUBLICATION-LIMITS-20261105.json",
     "source_tests_passed": 14,
-    "status": "SOURCE_TEST_AND_TYPECHECK_PASS_TRACE_PENDING"
+    "status": "SOURCE_TEST_AND_TYPECHECK_PASS_TRACE_PENDING",
+    "h5_simulated_checks_passed": 213
   },
   "integration_batch_64_report_share_test": {
     "scope": "MB-016/017 report-share active test fixture only",
@@ -5198,5 +5214,13 @@
     "baseline_log_sha256": "0d71b54035e097356c20235faca9fdb3235fc61e976014f28782cf03b71de402",
     "review_log_sha256": "8c59ac87c430105eb7b01fbb9df015fb92cef52fb9760892941016906aca9c96",
     "runtime": "NOT_RUN"
+  },
+  "integration_batch_65_closed_workspaces": {
+    "scope": "MB-030/032/033",
+    "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
+    "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json",
+    "source_tests_passed": 645,
+    "cross_tests_passed": 18,
+    "status": "SOURCE_AND_BUILD_PASS_BROWSER_PENDING"
   }
 }

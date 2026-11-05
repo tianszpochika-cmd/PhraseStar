@@ -1,0 +1,34 @@
+{
+  "scope": "MB-030/032/033 closed workspaces only",
+  "source_base": "3297c544",
+  "source_sha256": {
+    "MB-030": "67be9f5793ddd97549a1aef36596b165bfca6c3f6341b550b6247fe1cc25488e",
+    "MB-032": "0c9bfe0d4c6050d382d25b0dd538b5fd75aeda86fedcf15379264479332074a2",
+    "MB-033": "f144c7cece88057be6f46ec3debd343752eb09103eba884dab064684ae43b657"
+  },
+  "checks": {
+    "recursive_mobile": 645,
+    "cross_repo": 18,
+    "typecheck": "PASS",
+    "h5_index_sha256": "0c638ce14f6bf006dcdada9dd918f5fb6849fb4cff8c9b051ee94c2f75b21379",
+    "h5_files": 797,
+    "app_source_manifest": {
+      "assets/index-D-OnJbye.css": "218e72b9d363882f5107abbd3faa0504f4796bcb493081d6683b0ac453b0a788",
+      "assets/index-DclLOsoo.js": "fa5116d6646fef5c7cb966060a1f04175b09f576a772e55d5c7bee13eb310442",
+      "index.html": "b6a84b8f2cc0adb3c7cf465bbad1195c04b691ef6da9b2895e4c085a350fa503"
+    },
+    "cross_log_sha256": "4289a02b958df6ed6a909c7946b50eb2ca4c05b5e95e46542f1f9a540c2ac985",
+    "recursive_log_sha256": "eff8e8fb40fac2877d4d69bc8c2cfaed1dc8d36e7b573e42c267c54ab4695d45"
+  },
+  "source_behavior": [
+    "The old writing Retry, two B11 legacy panels per route, and their page handlers are absent.",
+    "B11 per-store off/Performance fallback and global navigation guard are retained.",
+    "Writing retains its existing page/session guard.",
+    "Closure page data is sourced from the existing closed notice and allowed links."
+  ],
+  "previous_failures": {
+    "candidate_42_comment_only_source_assertion": "5cf5eac6641b519de2a9330ebd8309ac84503c82828bc59d74c5a6e1c465a428",
+    "cross_repo_stale_base": "3e54f13f956f923ba8a8d069957e490575070396b85004ae9430a43e9361b4ee"
+  },
+  "acceptance": "SOURCE_AND_BUILD_PASS; exact candidate browser, device, native, reader, real owner and deployment not run at this point"
+}

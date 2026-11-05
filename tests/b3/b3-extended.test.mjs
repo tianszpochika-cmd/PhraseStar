@@ -84,13 +84,39 @@ test('B3 cross-platform pages expose the four-level performance fallback and no 
   const files = [
     'apps/learner-web/src/pages/B3GrammarPage.vue', 'apps/learner-web/src/pages/B3ListeningPage.vue', 'apps/learner-web/src/pages/B3ReadingPage.vue',
     'apps/learner-web/src/pages/B3SpeakingPage.vue', 'apps/learner-web/src/pages/B3WritingPage.vue',
-    'apps/mobile/src/pages/b3-grammar/b3-grammar.vue', 'apps/mobile/src/pages/b3-listening/b3-listening.vue', 'apps/mobile/src/pages/b3-reading/b3-reading.vue',
-    'apps/mobile/src/pages/b3-speaking/b3-speaking.vue', 'apps/mobile/src/pages/b3-writing/b3-writing.vue',
+    'apps/mobile/src/pages/b3-grammar/b3-grammar.vue', 'apps/mobile/src/pages/b3-reading/b3-reading.vue',
   ]
   const sources = await Promise.all(files.map(read))
-  for (const source of sources) {
+  assert.match(sources.join('\n'), /aiScoringAvailable|AI 评分/iu)
+  const reading = sources.at(-1)
+  for (const source of sources.slice(0, -1)) {
     assert.match(source, /Performance/u)
     assert.match(source, /performanceLevel|Performance/u)
   }
-  assert.match(sources.join('\n'), /aiScoringAvailable|AI 评分/iu)
+  assert.match(reading, /const quality = ref\(mobileExperienceEngine\.state\.level\)/u)
+  assert.match(reading, /mobileExperienceEngine\.subscribe\(\(next\) => \{ quality\.value = next\.level \}\)/u)
+  assert.match(reading, /:data-quality="quality"/u)
+  const levels = await read('packages/performance/src/index.ts')
+  assert.match(levels, /PERFORMANCE_LEVELS = \['Ultra', 'High', 'Medium', 'Performance'\]/u)
+})
+
+test('closed B3 mobile listening, speaking and writing expose notice exits without prior controls', async () => {
+  const closed = [
+    ['apps/mobile/src/pages/b3-listening/b3-listening.vue', 'listening', 'closed.b3Listening.title', 'closed.listening.reason'],
+    ['apps/mobile/src/pages/b3-speaking/b3-speaking.vue', 'speaking', 'closed.b3Speaking.title', 'closed.b3Speaking.reason'],
+    ['apps/mobile/src/pages/b3-writing/b3-writing.vue', 'writing', 'closed.writing.title', 'closed.writing.reason'],
+  ]
+  for (const [path, variant, titleKey, reasonKey] of closed) {
+    const source = await read(path)
+    assert.match(source, /<MobileClosedPracticeNotice/u)
+    assert.match(source, new RegExp(`variant="${variant}"`, 'u'))
+    assert.match(source, new RegExp(`title-key="${titleKey.replaceAll('.', '\\.')}"`, 'u'))
+    assert.match(source, new RegExp(`description-key="${reasonKey.replaceAll('.', '\\.')}"`, 'u'))
+    assert.match(source, /navigateTo\(\{ url: '\/pages\/today\/today' \}\)/u)
+    assert.match(source, /target: '\/pages\/b2-vocabulary\/b2-vocabulary'/u)
+    assert.match(source, /target: '\/pages\/b3-reading\/b3-reading'/u)
+    assert.match(source, /@back="backToLearning"/u)
+    assert.match(source, /@select="openRelated"/u)
+    assert.doesNotMatch(source, /PLAYBACK_RATES|createInnerAudioContext|enableUniAudioPitchPreservation|已记录降级|B10StatusPanel|B11StatusPanel|<textarea|requestMicrophonePermission|recorderManager|getStorageSync|setStorageSync|removeStorageSync/u)
+  }
 })
