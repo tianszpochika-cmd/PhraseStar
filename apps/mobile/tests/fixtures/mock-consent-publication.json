@@ -1,0 +1,35 @@
+{
+  "fixtureScope": "SYNTHETIC_TEST_ONLY",
+  "documents": [
+    {
+      "type": "TERMS",
+      "purpose": "ACCOUNT_TERMS",
+      "documentVersion": "mock-mb004-terms-v1",
+      "documentDigest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411",
+      "publishedAt": "2026-11-05T00:00:00Z",
+      "policyVersion": "mock-mb004-policy-v1",
+      "policyRef": "iam://consent/ACCOUNT_TERMS",
+      "bodyText": "模拟文档 · 仅供测试\n\n账号条款样本。版本标记：mock-mb004-terms-v1。这段文字只放在测试页面里，用来查看账号说明如何排版。它不是正式条款，也不形成任何账户约定。\n\n样本中的账号使用状态是：可以看见学习入口，可以保留本机练习进度，并在设置里显示当前登录标记。\n\n请只核对这些句子是否完整出现。不要输入真实口令，也不要把样本当成可以执行的规则。"
+    },
+    {
+      "type": "PRIVACY",
+      "purpose": "PRIVACY_NOTICE",
+      "documentVersion": "mock-mb004-privacy-v1",
+      "documentDigest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451",
+      "publishedAt": "2026-11-05T00:00:00Z",
+      "policyVersion": "mock-mb004-policy-v1",
+      "policyRef": "iam://consent/PRIVACY_NOTICE",
+      "bodyText": "模拟文档 · 仅供测试\n\n隐私说明样本。版本标记：mock-mb004-privacy-v1。这是占位的隐私处理文案，只给浏览器核对阅读区域。它不说明任何真实记录会送到哪里。\n\n界面上的占位写法是：练习记录留在样本状态中，不收集姓名、联系方式或口令。关闭本页只改变显示。\n\n请确认标题和正文都能看清。这些句子没有可执行的隐私承诺。"
+    },
+    {
+      "type": "ADULT_LEARNING",
+      "purpose": "ADULT_LEARNING_ELIGIBILITY",
+      "documentVersion": "mock-mb004-adult-v1",
+      "documentDigest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15",
+      "publishedAt": "2026-11-05T00:00:00Z",
+      "policyVersion": "mock-mb004-policy-v1",
+      "policyRef": "iam://consent/ADULT_LEARNING_ELIGIBILITY",
+      "bodyText": "模拟文档 · 仅供测试\n\n成人学习资格样本。版本标记：mock-mb004-adult-v1。这是成人学习资格的界面状态样本。测试页只把它显示为未勾选或已勾选。\n\n样本假定学习功能面向已成年的使用者，但这里没有年龄核验，也不会打开或关闭真实学习能力。\n\n请只把勾选看作测试状态。它不是资格结论，也不产生学习权限。"
+    }
+  ]
+}
