@@ -1,0 +1,37 @@
+{
+  "batch": "B97",
+  "at": "2026-11-06T04:05:08.436356+08:00",
+  "integration_base": "1c5e4b67d319d6cbd1ec90c365a2f4ffaa80c5ff",
+  "implementation": "Grok CLI 104",
+  "source_files": [
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "sha256": "c215da29b0db6db9704628eca523031038ae4c2d18917cb0598c5aedbbade06b",
+      "bytes": 77553
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java",
+      "sha256": "23b98d32b0a20451432aad517fdeb624c3ae4f50d0a695da1a8128a5cf2e2160",
+      "bytes": 5059
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10AssessmentEventCorrelationTest.java",
+      "sha256": "83639a3637f5fd8e61c2b11bf4a34b50b16354b1c899bd931889114e34591c11",
+      "bytes": 13089
+    }
+  ],
+  "worker_report_sha256": "010ebc17ddb387e9a4f9efb4bd21e2f479d10755a58d2acea7d74b7071610504",
+  "assessment_suite": {
+    "total": 160,
+    "passed": 158,
+    "failed": 0,
+    "skipped": 2
+  },
+  "compiled_schema": {
+    "old": "TRACE_ID_PATTERN_FAILURE",
+    "canonical_and_owner_fallback": "2/2",
+    "envelope_and_payload": "PASS"
+  },
+  "scope": "B10 normal submit emits one canonical request and trace pair across existing events. Replays keep the original attempt and produce no extra events.",
+  "broker_delivery_learning_projection": "NOT_RUN"
+}

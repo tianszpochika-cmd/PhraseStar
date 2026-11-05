@@ -48,7 +48,7 @@ class AssessmentJdbcAuthorizationBoundaryTest {
         JwtAuthenticationToken writeOnly = authentication("assessment.session.write");
 
         deniedBeforeJdbc(jdbc, () -> controller.createSession(readOnly, Map.of(), "key", null));
-        deniedBeforeJdbc(jdbc, () -> controller.submitAttempt(readOnly, "session-1", Map.of(), "key"));
+        deniedBeforeJdbc(jdbc, () -> controller.submitAttempt(readOnly, "session-1", Map.of(), "key", null, null));
         deniedBeforeJdbc(jdbc, () -> controller.verifyMistake(readOnly, 1L, Map.of(), "key"));
         deniedBeforeJdbc(jdbc, () -> controller.issueVariant(readOnly, 1L, Map.of(), "key"));
         deniedBeforeJdbc(jdbc, () -> controller.saveCheckpoint(readOnly, "session-1", "attempt-1", Map.of(), "key"));

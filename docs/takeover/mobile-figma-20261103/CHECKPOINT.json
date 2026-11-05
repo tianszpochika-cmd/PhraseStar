@@ -5707,5 +5707,12 @@
     "practice_completion_device_deploy": "NOT_RUN",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B96-H5-PLACEMENT-LEARNING-20261106.json"
+  },
+  "integration_batch_97_assessment_event_correlation": {
+    "state": "ACCEPTED_LOCAL_B10_EVENT_CORRELATION_CONTRACT",
+    "assessment_tests": "158_PASS_2_SKIP",
+    "compiled_strict_schema": "2/2",
+    "broker_and_learning_projection": "NOT_RUN",
+    "evidence": "evidence/ROOT-B97-ASSESSMENT-EVENT-CORRELATION-20261106.json"
   }
 }

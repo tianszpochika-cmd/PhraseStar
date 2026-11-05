@@ -308,7 +308,9 @@ public class B10AssessmentJdbcController {
             Authentication authentication,
             @PathVariable String sessionId,
             @RequestBody Map<String, Object> body,
-            @RequestHeader("Idempotency-Key") String idempotencyKey) {
+            @RequestHeader("Idempotency-Key") String idempotencyKey,
+            @RequestHeader(value = "X-Request-Id", required = false) String requestId,
+            @RequestHeader(value = "X-Trace-Id", required = false) String traceId) {
         Principal principal = principal(authentication, "assessment.session.write");
         requireKey(idempotencyKey);
         if (AttemptGuard.rejectsMutation(body)) {
@@ -423,8 +425,12 @@ public class B10AssessmentJdbcController {
         // P1R decision 5A: emit canonical learning facts atomically with grading.
         // Per-item assessed events plus one report-ready event go to the durable
         // outbox in the same transaction; no raw answers, keys or rule text leave.
+        // Request and trace ids are observability only: one canonical pair for this
+        // write, never an owner, privilege, or dedupe fact.
+        String eventRequestId = canonicalRequestId(requestId);
+        String eventTraceId = canonicalTraceId(traceId);
         emitAssessedEvents(principal.subject(), session, gradingCode, gradingVersion,
-                attemptId, reportId, submissionId, sessionRules, mistakes, totalScoreBucket,
+                attemptId, reportId, eventRequestId, eventTraceId, sessionRules, mistakes, totalScoreBucket,
                 total, totalCorrect, allMistakes.size());
         // M5-009: persist wrong-answer mistake facts so the D0/D1/D7 delay
         // machine and variant repair have durable state to drive. B10 items
@@ -432,7 +438,8 @@ public class B10AssessmentJdbcController {
         // not classify errors, hence UNCLASSIFIED (its own term elsewhere).
         // allMistakes (not just submitted) so unanswered items count too.
         if (MistakeAdmission.entersBook(totalScoreBucket)) {
-            recordMistakes(principal.subject(), allMistakes, answerMap, gradingCode, gradingVersion, attemptId);
+            recordMistakes(principal.subject(), allMistakes, answerMap, gradingCode, gradingVersion, attemptId,
+                    eventRequestId, eventTraceId);
         }
         String nextStatus = allMistakes.isEmpty() || answerMap.size() >= total ? "ASSESSED" : "IN_PROGRESS";
         jdbc.update("""
@@ -449,7 +456,7 @@ public class B10AssessmentJdbcController {
             completed.put("scoreBucket", totalScoreBucket);
             completed.put("rewardVisible", PracticeCompletion.rewardVisible());
             appendOutbox(PracticeCompletion.EVENT, "learning.event.v1", 1,
-                    "assessment_session", sessionId, principal.subject(), submissionId, submissionId,
+                    "assessment_session", sessionId, principal.subject(), eventRequestId, eventTraceId,
                     PracticeCompletion.dedupeKey(sessionId), completed, Instant.now());
         }
         Map<String, Object> view = attemptView(one("SELECT * FROM b10_assessment_attempt WHERE attempt_id = ?", attemptId));
@@ -547,7 +554,7 @@ public class B10AssessmentJdbcController {
     }
 
     private void recordMistakes(String subject, List<String> codes, Map<String, String> answerMap,
-            String gradingCode, long gradingVersion, String sourceAttemptId) {
+            String gradingCode, long gradingVersion, String sourceAttemptId, String requestId, String traceId) {
         String ruleVersion = (gradingCode + ":v" + gradingVersion).trim();
         if (ruleVersion.length() > 128) ruleVersion = ruleVersion.substring(0, 128);
         Instant now = Instant.now();
@@ -573,7 +580,7 @@ public class B10AssessmentJdbcController {
                     mistake.mistakeId(), itemId, sourceAttemptId, gradingCode, mistake.errorCategory());
             appendOutbox(MistakeAdmission.EVENT, "learning.event.v1", 1,
                     "assessment_mistake", String.valueOf(mistake.mistakeId()), subject,
-                    sourceAttemptId, sourceAttemptId,
+                    requestId, traceId,
                     MistakeAdmission.dedupeKey(sourceAttemptId, itemId), admitted, now);
         }
     }
@@ -947,7 +954,7 @@ public class B10AssessmentJdbcController {
     }
 
     private void emitAssessedEvents(String subject, Map<String, Object> session, String gradingCode,
-            long gradingVersion, String attemptId, String reportId, String submissionId,
+            long gradingVersion, String attemptId, String reportId, String requestId, String traceId,
             List<Map<String, Object>> rules, List<String> mistakes, String totalScoreBucket,
             int total, int totalCorrect, int totalMistakes) {
         Instant now = Instant.now();
@@ -1003,7 +1010,7 @@ public class B10AssessmentJdbcController {
             payload.put("assessmentFactWatermark", "b10." + text(session.get("session_id"), ""));
             payload.put("assessedAt", now.toString());
             appendOutbox("assessment.item.assessed.v2", "assessment.event.v2", 2,
-                    "assessment_item", itemAssessmentId, subject, submissionId, submissionId,
+                    "assessment_item", itemAssessmentId, subject, requestId, traceId,
                     attemptId + ":" + itemAssessmentId, payload, now);
         }
         Map<String, Object> reportPayload = new LinkedHashMap<>();
@@ -1020,7 +1027,7 @@ public class B10AssessmentJdbcController {
         reportPayload.put("totalMistakes", totalMistakes);
         reportPayload.put("completedAt", now.toString());
         appendOutbox("learning.report.ready.v1", "learning.event.v1", 1,
-                "learning_report", reportId, subject, submissionId, submissionId,
+                "learning_report", reportId, subject, requestId, traceId,
                 reportId, reportPayload, now);
     }
 
@@ -1272,6 +1279,20 @@ public class B10AssessmentJdbcController {
     private static String sha256(String value) {
         try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8))); }
         catch (NoSuchAlgorithmException exception) { throw new IllegalStateException(exception); }
+    }
+
+    /** Envelope requestId. Absent or malformed values are owner-minted and stay observability-only. */
+    private static String canonicalRequestId(String value) {
+        String candidate = value == null ? "" : value.trim();
+        if (candidate.matches("^[A-Za-z][A-Za-z0-9._-]{7,127}$")) return candidate;
+        return "req_" + compactUuid();
+    }
+
+    /** Envelope traceId. Absent or malformed values are owner-minted and stay observability-only. */
+    private static String canonicalTraceId(String value) {
+        String candidate = value == null ? "" : value.trim();
+        if (candidate.matches("^[a-f0-9]{32}$")) return candidate;
+        return compactUuid();
     }
 
     private static String compactUuid() { return UUID.randomUUID().toString().replace("-", ""); }
