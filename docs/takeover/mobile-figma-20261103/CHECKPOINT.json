@@ -610,7 +610,98 @@
         "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "B49 frozen exact product source and portable tests. DEC-04 and TRACE_PENDING remain."
+      "resume_evidence_20261105": "B49 frozen exact product source and portable tests. DEC-04 and TRACE_PENDING remain.",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "getB8Principal",
+            "method": "GET",
+            "path": "/api/v1/iam/principal/me",
+            "contract": "packages/contracts/fragments/b8/b8-auth-iam.openapi.json",
+            "via": "store.loadOnboardingResume"
+          },
+          {
+            "operationId": "getB9LearnerProfile",
+            "method": "GET",
+            "path": "/api/v1/learner/profile",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "ensureContentLocale→readAccount"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount and readOnboardingResume"
+          },
+          {
+            "operationId": "getB9LearnerPreferences",
+            "method": "GET",
+            "path": "/api/v1/learner/preferences",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount"
+          },
+          {
+            "operationId": "createB10PlacementSession",
+            "method": "POST",
+            "path": "/api/v1/assessment/placement/sessions",
+            "contract": "packages/contracts/fragments/b10/b10-placement.openapi.json",
+            "via": "startPlacement when no stored asess_ id"
+          },
+          {
+            "operationId": "getB10PlacementSession",
+            "method": "GET",
+            "path": "/api/v1/assessment/placement/sessions/{sessionId}",
+            "contract": "packages/contracts/fragments/b10/b10-placement.openapi.json",
+            "via": "readPlacement"
+          },
+          {
+            "operationId": "submitB10PlacementResponse",
+            "method": "POST",
+            "path": "/api/v1/assessment/placement/sessions/{sessionId}/responses",
+            "contract": "packages/contracts/fragments/b10/b10-placement.openapi.json",
+            "via": "submitPlacementAnswer"
+          },
+          {
+            "operationId": "retestB10PlacementSession",
+            "method": "POST",
+            "path": "/api/v1/assessment/placement/sessions/{sessionId}/retest",
+            "contract": "packages/contracts/fragments/b10/b10-placement.openapi.json",
+            "via": "retestPlacement"
+          },
+          {
+            "operationId": "ensureB10LearningPlan",
+            "method": "POST",
+            "path": "/api/v1/learning/plans:ensure",
+            "contract": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+            "via": "ensurePlanFromReport after ASSESSED"
+          },
+          {
+            "operationId": "getB10LearningToday",
+            "method": "GET",
+            "path": "/api/v1/learning/today",
+            "contract": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+            "via": "refreshPlanQueue"
+          }
+        ],
+        "not_called": [
+          "createB10PlacementSkipBaseline",
+          "getB10PlacementReport"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/phase1-business-operation/02-端到端业务旅程台账.md#JNY-P1-04 · 规则化定级与中断恢复",
+          "docs/06-design/v2-980plus/phase1-business-operation/03-全端页面功能登记册.md#3. learner-web 与 mobile 共享业务语义登记",
+          "docs/06-design/v2-980plus/redesign/business-chains.md#L2 定级环（R1，BC-013…022，owner：assessment-service）",
+          "docs/06-design/v2-980plus/redesign/business-chains.md#C5. 定级、快速开始与计划输入（新增设计，DEC-03/04）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I1 入门向导（IC-001…012）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I6b 入门细分（IC-052…059）",
+          "docs/06-design/v2-980plus/redesign/revision-notes.md#4. 待确认决策清单",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L2 定级环（BC-013…022 → R1-018…029）",
+          "docs/06-design/v2-980plus/redesign/design-source-traceability.md#3. 移动反推规则→需求与架构"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B49-ASSESSMENT-20261105.json"
+      }
     },
     {
       "id": "MB-007",
@@ -762,14 +853,71 @@
         "visual": "LOCAL_SCOPED_H5_PASS",
         "interaction": "LOCAL_SCOPED_H5_PASS",
         "h5": "BUILD_PASS",
-        "cross_viewport": "NOT_RUN",
+        "cross_viewport": "390_PX_PRIMARY_AND_TASK_GAP_MEASURED_B46",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "formal18 and independent16 passed on Today09; final 390 CTA dimensions open"
+      "resume_evidence_20261105": "B46 final H5 measured the 390px primary at 48px and task spacing at 16px. 10 visual and 16 route checks.",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "getB9LearnerProfile",
+            "method": "GET",
+            "path": "/api/v1/learner/profile",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "loadHome→ensureContentLocale"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount"
+          },
+          {
+            "operationId": "getB9LearnerPreferences",
+            "method": "GET",
+            "path": "/api/v1/learner/preferences",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount"
+          },
+          {
+            "operationId": "getB9LearnerHomeProjection",
+            "method": "GET",
+            "path": "/api/v1/learner/home",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readHome"
+          },
+          {
+            "operationId": "listB9LearnerContentCatalog",
+            "method": "GET",
+            "path": "/api/v1/content/learner/catalog",
+            "contract": "packages/contracts/fragments/b9/b9-content.openapi.json",
+            "via": "readHome"
+          },
+          {
+            "operationId": "getB10LearningToday",
+            "method": "GET",
+            "path": "/api/v1/learning/today",
+            "contract": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+            "via": "readPlanToday"
+          }
+        ],
+        "not_called": [
+          "getTodayLearningStream",
+          "submitLearningStreamAction"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/redesign/business-chains.md#L3 计划今日环（R1，BC-023…032，owner：learning-service）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I2 计划与今日（IC-013…021）",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L3 计划今日环（BC-023…032/199 → R1-030…042）"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B46-WORLD-TODAY-20261105.json"
+      }
     },
     {
       "id": "MB-009",
@@ -847,7 +995,82 @@
         "independent_review": "reviews/INTEGRATION-B47-LEARN.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "49 checks and 9 shots; zero duplicate login rejection in six real compiled runs"
+      "resume_evidence_20261105": "49 checks and 9 shots; zero duplicate login rejection in six real compiled runs",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "getB9LearnerProfile",
+            "method": "GET",
+            "path": "/api/v1/learner/profile",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "loadHome"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount"
+          },
+          {
+            "operationId": "getB9LearnerPreferences",
+            "method": "GET",
+            "path": "/api/v1/learner/preferences",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readAccount"
+          },
+          {
+            "operationId": "getB9LearnerHomeProjection",
+            "method": "GET",
+            "path": "/api/v1/learner/home",
+            "contract": "packages/contracts/fragments/b9/b9-learner.openapi.json",
+            "via": "readHome"
+          },
+          {
+            "operationId": "listB9LearnerContentCatalog",
+            "method": "GET",
+            "path": "/api/v1/content/learner/catalog",
+            "contract": "packages/contracts/fragments/b9/b9-content.openapi.json",
+            "via": "readHome"
+          },
+          {
+            "operationId": "getB10LearningToday",
+            "method": "GET",
+            "path": "/api/v1/learning/today",
+            "contract": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+            "via": "readPlanToday"
+          },
+          {
+            "operationId": "getB9LearnerContentProjection",
+            "method": "GET",
+            "path": "/api/v1/content/learner/{contentCode}",
+            "contract": "packages/contracts/fragments/b9/b9-content.openapi.json",
+            "via": "readContent"
+          },
+          {
+            "operationId": "listB10LearningReviewQueue",
+            "method": "GET",
+            "path": "/api/v1/learning/review-queue",
+            "contract": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+            "via": "learning.load"
+          }
+        ],
+        "not_called": [
+          "getCurrentLearningPlan",
+          "getB1ContinueContext",
+          "saveB1ContinueContext",
+          "getB10LearnerContentSnapshot",
+          "completeB10LearningReview"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/redesign/business-chains.md#补链附录（BC-199…208，原归属保留）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I3b 内容细屏（IC-025…029）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I4b 学习端周边（IC-034…039）",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L3 计划今日环（BC-023…032/199 → R1-030…042）"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B47-LEARN-20261105.json"
+      }
     },
     {
       "id": "MB-010",
@@ -1242,7 +1465,44 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B45-READING.md"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "listB3ReadingArticles",
+            "method": "GET",
+            "path": "/api/v1/reading/articles",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.listReadingArticles"
+          },
+          {
+            "operationId": "getB3ReadingArticle",
+            "method": "GET",
+            "path": "/api/v1/reading/articles/{articleId}",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.getReadingArticle"
+          },
+          {
+            "operationId": "listB3ReadingQuestions",
+            "method": "GET",
+            "path": "/api/v1/reading/questions",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.listReadingQuestions"
+          }
+        ],
+        "not_called": [
+          "updateB3ReadingProgress",
+          "createB3SentenceMining",
+          "submitB3ReadingAttempt"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/redesign/business-chains.md#L4 练题判分环（R1，BC-033…044，owner：assessment-service）",
+          "docs/06-design/v2-980plus/redesign/interaction-chains.md#I3 练习与判分（IC-022…024）",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L4 练错复（BC-033…062/203 → R1-043…059）"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B45-READING-20261105.json"
+      }
     },
     {
       "id": "MB-015",
@@ -1318,7 +1578,44 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B45-READING.md"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "listB3ReadingArticles",
+            "method": "GET",
+            "path": "/api/v1/reading/articles",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.listReadingArticles"
+          },
+          {
+            "operationId": "getB3ReadingArticle",
+            "method": "GET",
+            "path": "/api/v1/reading/articles/{articleId}",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.getReadingArticle"
+          },
+          {
+            "operationId": "listB3ReadingQuestions",
+            "method": "GET",
+            "path": "/api/v1/reading/questions",
+            "contract": "packages/contracts/fragments/b3-multimodal.openapi.json",
+            "via": "b10LearningApi.listReadingQuestions"
+          }
+        ],
+        "not_called": [
+          "updateB3ReadingProgress",
+          "createB3SentenceMining",
+          "submitB3ReadingAttempt"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/redesign/business-chains.md#L4 练题判分环（R1，BC-033…044，owner：assessment-service）",
+          "docs/06-design/v2-980plus/redesign/business-chains.md#补链附录（BC-199…208，原归属保留）",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L8 内容双审（BC-071…084/200/204…207 → R1-070…090）"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B45-READING-20261105.json"
+      }
     },
     {
       "id": "MB-016",
@@ -1549,7 +1846,51 @@
       },
       "current_job": null,
       "pause_handoff": "PAUSE-20261104.md",
-      "resume_evidence_20261105": "Root initial 11 runtime cases passed; hierarchy on four real read sources in progress"
+      "resume_evidence_20261105": "Root initial 11 runtime cases passed; hierarchy on four real read sources in progress",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "getM1014GamificationSummary",
+            "method": "GET",
+            "path": "/api/v1/gamification/me/summary",
+            "contract": "packages/contracts/fragments/b12/b12-gamification-social-notification.openapi.json",
+            "via": "getB4Profile"
+          },
+          {
+            "operationId": "getB4Streak",
+            "method": "GET",
+            "path": "/api/v1/gamification/streak",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json",
+            "via": "getB4Streak"
+          },
+          {
+            "operationId": "listB4Quests",
+            "method": "GET",
+            "path": "/api/v1/gamification/quests",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json",
+            "via": "listB4Quests"
+          },
+          {
+            "operationId": "getB4Season",
+            "method": "GET",
+            "path": "/api/v1/gamification/season",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json",
+            "via": "getB4Season"
+          }
+        ],
+        "not_called": [
+          "getB12GamificationSummary",
+          "listB12GamificationLedger",
+          "listB12RewardGrants"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/redesign/business-chains.md#L4 练题判分环（R1，BC-033…044，owner：assessment-service）",
+          "docs/06-design/v2-980plus/redesign/dev-plan-R1.md#L4 练错复（BC-033…062/203 → R1-043…059）",
+          "docs/06-design/v2-980plus/phase1-business-operation/06-业务联调矩阵.md#2. Canonical `INT-P1-*` 联调矩阵"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B46-WORLD-TODAY-20261105.json"
+      }
     },
     {
       "id": "MB-019",
@@ -1747,7 +2088,47 @@
         "independent_review": "reviews/INTEGRATION-B44-AVATAR.md"
       },
       "current_job": "dsh/batch-29-avatar-implementation",
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "verified_operation_trace_20261105": {
+        "api_delta": "NONE",
+        "called": [
+          {
+            "operationId": "getB4AvatarProfile",
+            "method": "GET",
+            "path": "/api/v1/avatar/profile",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json"
+          },
+          {
+            "operationId": "listB4AvatarItems",
+            "method": "GET",
+            "path": "/api/v1/avatar/items",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json"
+          },
+          {
+            "operationId": "listB4AvatarLoadouts",
+            "method": "GET",
+            "path": "/api/v1/avatar/loadouts",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json"
+          },
+          {
+            "operationId": "getB4AvatarResources",
+            "method": "GET",
+            "path": "/api/v1/avatar/resources",
+            "contract": "packages/contracts/fragments/b4-gamification-social.openapi.json"
+          }
+        ],
+        "not_called": [
+          "listB12RewardGrants",
+          "getB12RewardProbability",
+          "claimB12Reward",
+          "listB12GamificationLedger"
+        ],
+        "anchors": [
+          "docs/06-design/v2-980plus/phase1-business-operation/03-全端页面功能登记册.md#3. learner-web 与 mobile 共享业务语义登记",
+          "docs/06-design/v2-980plus/08-980plus-功能点设计登记册.md#2. 逐条登记"
+        ],
+        "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B44-AVATAR-20261105.json"
+      }
     },
     {
       "id": "MB-022",
@@ -4323,5 +4704,25 @@
     "localUICandidateRoutes": 29,
     "formalRoutes": 33,
     "doD": false
+  },
+  "operation_trace_audit_20261105": {
+    "at": "2026-11-05T08:31:44.878861+00:00",
+    "scopes": [
+      "MB-006",
+      "MB-008",
+      "MB-009",
+      "MB-014",
+      "MB-015",
+      "MB-018",
+      "MB-021"
+    ],
+    "checkedOperationReferences": 38,
+    "source_sha256": "8245a8fc1f3afad318d2ef02c404d789ea7b833ec09efd3e3a4ada1f376dcdb6",
+    "status": "OPERATION_REFERENCES_VERIFIED_TRACE_REMAINS_PENDING",
+    "open": [
+      "remaining PRD-ATOM and R1/BC/IC links where unassigned",
+      "DEC-04 feedback timing",
+      "real services and device/reader/deployment evidence"
+    ]
   }
 }
