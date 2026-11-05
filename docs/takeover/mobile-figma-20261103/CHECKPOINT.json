@@ -5732,5 +5732,15 @@
     "offline_h5": "43/43",
     "h5_index_sha256": "85e2f1ccfc20d556565d575c27eabf235201f69e3110bf1aa3804066952a9fb8",
     "evidence": "evidence/ROOT-B99-TODAY-HIGH-CONTRAST-20261106.json"
+  },
+  "integration_batch_100_assessment_theme": {
+    "state": "ACCEPTED_LOCAL_ASSESSMENT_THEME_SCOPE",
+    "offline_browser": "34/34",
+    "baseline_browser": "25/34",
+    "mobile_source": "676/676",
+    "offline_h5": "43/43",
+    "h5_index_sha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
+    "feedback_decision": "DEC-04_PENDING",
+    "evidence": "evidence/ROOT-B100-ASSESSMENT-THEME-20261106.json"
   }
 }

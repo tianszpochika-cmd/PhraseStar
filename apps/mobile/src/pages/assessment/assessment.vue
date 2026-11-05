@@ -669,17 +669,17 @@ onShow(() => { active = true; pageVisible = true; entryRevalidating.value = true
 .assessment-confirm-actions .assessment-button { flex: 1 1 8em; width: auto; min-width: 0; }
 .assessment-page button::after { border: 0; }
 .assessment-page button:focus-visible, .assessment-page .assessment-option:focus-visible, .assessment-page .assessment-nav-button:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 3px; }
-:global(:root[data-theme="high-contrast"]) .assessment-page { background-image: none; }
-:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); box-shadow: none; }
-:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary[disabled], :global(:root[data-theme="high-contrast"]) .assessment-page .assessment-primary[aria-disabled="true"] { background-color: var(--yx-surface-card); background-image: none; color: var(--yx-text-primary); border-color: var(--yx-text-primary); box-shadow: none; opacity: 1; }
-:global(:root[data-theme="high-contrast"]) .assessment-card, :global(:root[data-theme="high-contrast"]) .assessment-tip, :global(:root[data-theme="high-contrast"]) .assessment-confirmation { background: var(--yx-surface-card); backdrop-filter: none; box-shadow: none; }
-:global(:root[data-theme="high-contrast"]) .assessment-page .assessment-option.is-selected { background: var(--yx-surface-card); border-color: var(--yx-text-primary); }
-:global(:root[data-theme="high-contrast"]) .is-selected .assessment-option-key { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); }
-:global(:root[data-theme="dark"]) .is-selected .assessment-option-key { background-color: var(--yx-r4-brand); background-image: none; color: var(--yx-r4-ink); }
-:global(:root[data-theme="dark"]) .assessment-check, :global(:root[data-theme="high-contrast"]) .assessment-check { filter: brightness(0); }
-:global(:root[data-theme="dark"]) .assessment-icon--ink, :global(:root[data-theme="high-contrast"]) .assessment-icon--ink { filter: invert(1); }
-:global(:root[data-theme="dark"]) .assessment-icon--brand, :global(:root[data-theme="high-contrast"]) .assessment-icon--brand { filter: brightness(1.6); }
-:global(:root[data-theme="dark"]) .assessment-error-badge, :global(:root[data-theme="high-contrast"]) .assessment-error-badge { background: var(--yx-surface-card); border: 1px solid var(--yx-danger); }
+:global(:root[data-theme="high-contrast"] .assessment-page) { background-image: none; }
+:global(:root[data-theme="high-contrast"] .assessment-page .assessment-primary) { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); box-shadow: none; }
+:global(:root[data-theme="high-contrast"] .assessment-page .assessment-primary[disabled]), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-primary[aria-disabled="true"]) { background-color: var(--yx-surface-card); background-image: none; color: var(--yx-text-primary); border-color: var(--yx-text-primary); box-shadow: none; opacity: 1; }
+:global(:root[data-theme="high-contrast"] .assessment-page .assessment-card), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-tip), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-confirmation) { background: var(--yx-surface-card); backdrop-filter: none; box-shadow: none; }
+:global(:root[data-theme="high-contrast"] .assessment-page .assessment-option.is-selected) { background: var(--yx-surface-card); border-color: var(--yx-text-primary); }
+:global(:root[data-theme="high-contrast"] .assessment-page .is-selected .assessment-option-key) { background-color: var(--closed-cta-background); background-image: none; color: var(--closed-cta-on); }
+:global(:root[data-theme="dark"] .assessment-page .is-selected .assessment-option-key) { background-color: var(--yx-r4-brand); background-image: none; color: var(--yx-r4-ink); }
+:global(:root[data-theme="dark"] .assessment-page .assessment-check), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-check) { filter: brightness(0); }
+:global(:root[data-theme="dark"] .assessment-page .assessment-icon--ink), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-icon--ink) { filter: invert(1); }
+:global(:root[data-theme="dark"] .assessment-page .assessment-icon--brand), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-icon--brand) { filter: brightness(1.6); }
+:global(:root[data-theme="dark"] .assessment-page .assessment-error-badge), :global(:root[data-theme="high-contrast"] .assessment-page .assessment-error-badge) { background: var(--yx-surface-card); border: 1px solid var(--yx-danger); }
 @media (max-width: 360px) { .assessment-page { padding-right: 16px; padding-left: 16px; } .assessment-card { padding: 16px; } }
 @media (max-width: 599px) {
   .assessment-page .assessment-option.is-selected { display: grid; grid-template-columns: auto minmax(0, 1fr); }

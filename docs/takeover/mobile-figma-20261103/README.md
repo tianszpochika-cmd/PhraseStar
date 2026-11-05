@@ -10,6 +10,7 @@
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。安装宿主与系统存储读写继续验收。
 - [测评事件编号 B97](reviews/INTEGRATION-B97-ASSESSMENT-EVENT-CORRELATION.md) 逐题事件信封和正文通过编译后校验，消息消费仍待验。
+- [定级主题 B100](reviews/INTEGRATION-B100-ASSESSMENT-THEME.md) 暗色与高对比组件样式通过 34 项受控浏览器检查。
 - [今日高对比 B99](reviews/INTEGRATION-B99-TODAY-HIGH-CONTRAST.md) 亮色、暗色、高对比与放大文字的 13 个受控视口通过。
 - [完整本机 H5 B96](reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md) 同一浏览器从目标经十题定级、报告、自动计划到今日三条记录，数据库及资源回收通过。
 - [测评题库快照 B95](reviews/INTEGRATION-B95-ASSESSMENT-BANK-PIN.md) 新练习会话与现有事件保留内容来源编号，旧会话迁移读回通过。

@@ -1,0 +1,64 @@
+{
+  "batch": "B100",
+  "at": "2026-11-06T04:30:32.963690+08:00",
+  "integration_base": "ab6508e49229abf08f58a82d82912d9bd8c9701d",
+  "implementation": [
+    "Grok CLI 111",
+    "Grok CLI 112"
+  ],
+  "source_file": {
+    "path": "apps/mobile/src/pages/assessment/assessment.vue",
+    "sha256": "7a6a42a74a5c0314c771559c66ffcc6ad8b0b390af230df7e9a196dc262b0928",
+    "bytes": 55097
+  },
+  "source_report_sha256": "b3263838d03800dedef6404c31b46840e325a6b63501ffb8a9c58ece3264dd0a",
+  "browser_observer_sha256": "37f12cbdea4be5a4e7fc3fa79d946735365c3dda235ce36d69f3d99768a19146",
+  "compiled_css": {
+    "old_bare_root_selectors": 10,
+    "new_bare_root_selectors": 0,
+    "new_page_selectors": 18,
+    "old_css_sha256": "7c78e5038443da8a34cc8b61bac40a6d2dcdd70c16320354ec9d2423bef3a7ad",
+    "new_css_sha256": "29baefc25a03cce622180436d74cd5c28027fe0380ad0a60d7bca81f6b6cd92c"
+  },
+  "browser_b93": {
+    "passed": 25,
+    "total": 34,
+    "failed_theme_assertions": 9,
+    "first_root_filter": "brightness(1.6)",
+    "result_sha256": "92d0efad0b26fda3c0a91d318d240d44c38771b90afe13f9bd91dea26a6968f2"
+  },
+  "browser_candidate": {
+    "passed": 34,
+    "total": 34,
+    "theme_assertions": 9,
+    "screenshots": 7,
+    "unexpected_traffic": 0,
+    "result_sha256": "32cdabdb565799bd58b488982e78f534d3732208150c6b7ae3ee280c353c1061"
+  },
+  "tests": {
+    "mobile_source": "676/676",
+    "types": "PASS",
+    "app_plus": "PASS",
+    "h5": "PASS",
+    "offline_h5": "43/43"
+  },
+  "artifacts": {
+    "appFiles": 748,
+    "appTreeSha256": "d63a1fd387ef8d442c61381d650f10b09c2e3ae09f9a661a22cbd0b531243c43",
+    "routes": 33,
+    "nativeFiles": {
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/YXSecureStorageNative.kt": "d0b2bdb2a37c8722c1320181d7bf4f12bba4539120ee23c5c50588740ec254be",
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/index.kt": "61b9998de41abbdd1488c664f4217e2470fcec50ec394487062140bd375a9428",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/YXSecureStorageNative.swift": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/index.swift": "f7535f708021512a23671630155a9ad5b392fb4f280b04926a1a29680da0923b"
+    },
+    "h5Files": 797,
+    "h5TreeSha256": "ed0bd1976f3ff7a5c121053da677527dc95c58cb396f1349a8a34f21242d035b",
+    "h5IndexSha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
+    "browserCases": 43,
+    "browserScreenshots": 23
+  },
+  "real_owner": "SEPARATE_B96",
+  "native_device_deployment": "NOT_RUN",
+  "decision_feedback_timing": "DEC-04_PENDING"
+}
