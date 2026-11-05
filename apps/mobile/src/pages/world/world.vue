@@ -66,8 +66,15 @@ const rewardsConfirmed = computed(() => summary.value?.featureEnabled === true)
 const hasSummaryFacts = computed(() => Boolean(summary.value && (summary.value.xp !== null || summary.value.level !== null)))
 const activeStreak = computed(() => streak.value !== null)
 const showStatusRetry = computed(() => ['partial', 'error', 'offline'].includes(status.value))
+const pageFailure = computed(() => status.value === 'error' || status.value === 'offline')
 const levelText = computed(() => summary.value?.level !== null && summary.value?.level !== undefined ? wt('levelShort', { level: summary.value.level }) : null)
-const xpText = computed(() => summary.value?.xp !== null && summary.value?.xp !== undefined ? `${summary.value.xp} ${wt('xp')}` : null)
+const xpText = computed(() => {
+  const xp = summary.value?.xp
+  if (xp === null || xp === undefined) return null
+  let amount = String(xp)
+  try { amount = new Intl.NumberFormat(uiLocale.value).format(xp) } catch { amount = String(xp) }
+  return `${amount} ${wt('xp')}`
+})
 const qualityLabels = computed(() => B4_PERFORMANCE_LEVELS.map((level) => wt(`quality${level}`)))
 const qualityIndex = computed(() => Math.max(0, B4_PERFORMANCE_LEVELS.indexOf(b4.performanceLevel)))
 const statusText = computed(() => wt(statusKey.value))
@@ -403,6 +410,19 @@ function seasonPoints(value: WorldSeason): string | null {
   return value.points === null ? null : wt('seasonPoints', { count: value.points })
 }
 
+function seasonMeta(value: WorldSeason): string {
+  const status = wt(seasonStatusKey(value.status))
+  const points = seasonPoints(value)
+  return points ? `${points} · ${status}` : status
+}
+
+function streakTone(status: WorldStreak['status']): string {
+  if (status === 'ACTIVE') return 'ok'
+  if (status === 'AT_RISK') return 'warn'
+  if (status === 'BROKEN') return 'bad'
+  return 'neutral'
+}
+
 onShow(() => {
   if (dropIfRouteLeft()) return
   const wasVisible = visible
@@ -462,6 +482,12 @@ watch(() => session.identityRevision, () => {
         :description="wt('subtitle')"
         :show-settings="false"
       />
+      <text v-if="status === 'ready'" class="world-live world-live--quiet" role="status">{{ statusText }}</text>
+      <view class="world-quality-dock">
+        <picker :range="qualityLabels" :value="qualityIndex" @change="changeQuality">
+          <view class="world-quality">{{ wt('quality') }} · {{ qualityLabels[qualityIndex] }}</view>
+        </picker>
+      </view>
     </view>
 
     <view v-if="accessBlocked" class="world-body">
@@ -478,20 +504,14 @@ watch(() => session.identityRevision, () => {
     </view>
 
     <view v-else class="world-body">
-      <view class="world-status" role="status">
-        <view class="world-status-copy">
-          <text class="world-status-title">{{ statusText }}</text>
-          <text class="world-status-hint">{{ wt('loadingHint') }}</text>
-        </view>
-        <view class="world-status-actions">
-          <button v-if="showStatusRetry" class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
-          <picker :range="qualityLabels" :value="qualityIndex" @change="changeQuality">
-            <view class="world-quality">{{ wt('quality') }} · {{ qualityLabels[qualityIndex] }}</view>
-          </picker>
-        </view>
+      <view v-if="pageFailure" class="world-state" role="alert">
+        <image class="world-state-mascot" src="/static/figma-world-core/imgMascot-d54a4be0.svg" mode="aspectFit" aria-hidden="true" />
+        <text class="world-state-title">{{ statusText }}</text>
+        <text class="world-state-body">{{ wt('loadingHint') }}</text>
+        <button class="world-state-retry" type="button" @click="retry">{{ wt('retry') }}</button>
       </view>
 
-      <view v-if="featureClosed" class="world-closed" role="status">
+      <view v-else-if="featureClosed" class="world-closed" role="status">
         <image class="world-mascot" src="/static/figma-world-core/imgMascot-d54a4be0.svg" mode="aspectFit" aria-hidden="true" />
         <view class="world-closed-copy">
           <text class="world-closed-title">{{ wt('featureClosedTitle') }}</text>
@@ -505,6 +525,13 @@ watch(() => session.identityRevision, () => {
       </view>
 
       <template v-else>
+        <view v-if="status === 'loading' || status === 'partial'" class="world-inline-status" role="status">
+          <view class="world-inline-copy">
+            <text class="world-inline-title">{{ statusText }}</text>
+            <text class="world-inline-hint">{{ wt('loadingHint') }}</text>
+          </view>
+          <button v-if="showStatusRetry" class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+        </view>
         <view v-if="summaryState === 'error'" class="world-section-error" role="alert">
           <text>{{ wt('summaryUnavailable') }}</text>
           <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
@@ -525,7 +552,7 @@ watch(() => session.identityRevision, () => {
             <text class="world-stat-value">{{ levelText }}</text>
             <text class="world-stat-label">{{ wt('level') }}</text>
           </view>
-          <view v-if="activeStreak" class="world-stat">
+          <view v-if="activeStreak" class="world-stat world-stat--streak">
             <text class="world-stat-value">{{ wt('days', { count: streak?.currentStreak ?? 0 }) }}</text>
             <text class="world-stat-label">{{ wt('streak') }}</text>
           </view>
@@ -534,7 +561,7 @@ watch(() => session.identityRevision, () => {
         <view class="world-card world-map-card">
           <view class="world-card-head">
             <text class="world-card-title">{{ wt('growthMap') }}</text>
-            <image class="world-inline-icon" src="/static/figma-world-core/imgIconSparkles-d3d305c0.svg" mode="aspectFit" aria-hidden="true" />
+            <text class="world-head-note">{{ wt('growthMapUnavailable') }}</text>
           </view>
           <view class="world-map-art" aria-hidden="true">
             <image class="world-star world-star--1" src="/static/figma-world-core/imgS-8aa360df.svg" mode="aspectFit" />
@@ -542,51 +569,71 @@ watch(() => session.identityRevision, () => {
             <image class="world-star world-star--3" src="/static/figma-world-core/imgS2-4d7cc3f6.svg" mode="aspectFit" />
             <image class="world-star world-star--4" src="/static/figma-world-core/imgS3-8c27187b.svg" mode="aspectFit" />
           </view>
-          <text class="world-note">{{ wt('growthMapUnavailable') }}</text>
         </view>
 
         <view class="world-card world-season-card">
-          <view class="world-card-head">
-            <text class="world-card-title">{{ wt('season') }}</text>
-            <image class="world-inline-icon" src="/static/figma-world-core/imgIconTrophy-1571c4ce.svg" mode="aspectFit" aria-hidden="true" />
+          <view v-if="season" class="world-season-row">
+            <view class="world-season-tile" aria-hidden="true">
+              <image class="world-season-trophy" src="/static/figma-world-core/imgIconTrophy-1571c4ce.svg" mode="aspectFit" />
+            </view>
+            <view class="world-season-copy">
+              <text class="world-season-title">{{ season.title ?? season.seasonId }}</text>
+              <text class="world-meta world-season-meta">{{ seasonMeta(season) }}</text>
+            </view>
           </view>
-          <view v-if="seasonState === 'error'" class="world-section-error" role="alert">
-            <text>{{ wt('seasonUnavailable') }}</text>
-            <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
-          </view>
-          <template v-else-if="season">
-            <text class="world-season-title">{{ season.title ?? season.seasonId }}</text>
-            <text class="world-meta">{{ wt(seasonStatusKey(season.status)) }}<template v-if="seasonPoints(season)"> · {{ seasonPoints(season) }}</template></text>
+          <template v-else>
+            <view class="world-card-head">
+              <text class="world-card-title">{{ wt('season') }}</text>
+              <image class="world-inline-icon" src="/static/figma-world-core/imgIconTrophy-1571c4ce.svg" mode="aspectFit" aria-hidden="true" />
+            </view>
+            <view v-if="seasonState === 'error'" class="world-section-error" role="alert">
+              <text>{{ wt('seasonUnavailable') }}</text>
+              <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+            </view>
+            <text v-else-if="seasonState === 'empty'" class="world-empty">{{ wt('noSeason') }}</text>
           </template>
-          <text v-else-if="seasonState === 'empty'" class="world-empty">{{ wt('noSeason') }}</text>
         </view>
 
-        <view class="world-entry-grid">
-          <button class="world-entry" type="button" @click="navigate('/pages/b4-games/b4-games')">
-            <image class="world-entry-icon" src="/static/figma-world-core/imgIconGame-d3e0367c.svg" mode="aspectFit" aria-hidden="true" />
-            <text class="world-entry-title">{{ wt('games') }}</text>
-            <text class="world-meta">{{ wt('gamesDesc') }}</text>
-          </button>
-          <button class="world-entry" type="button" @click="navigate('/pages/b4-social/b4-social')">
-            <image class="world-entry-icon" src="/static/figma-world-core/imgIconUsers-a47ef190.svg" mode="aspectFit" aria-hidden="true" />
-            <text class="world-entry-title">{{ wt('social') }}</text>
-            <text class="world-meta">{{ wt('socialDesc') }}</text>
-          </button>
-          <button class="world-entry" type="button" @click="navigate('/pages/b4-avatar/b4-avatar')">
-            <image class="world-entry-icon" src="/static/figma-world-core/imgIconShirt-4ea65edd.svg" mode="aspectFit" aria-hidden="true" />
-            <text class="world-entry-title">{{ wt('avatar') }}</text>
-            <text class="world-meta">{{ wt('avatarDesc') }}</text>
-          </button>
-          <button class="world-entry" type="button" @click="navigate('/pages/b4-offline/b4-offline')">
-            <image class="world-entry-icon" src="/static/figma-world-core/imgIconDownload-8e6deb40.svg" mode="aspectFit" aria-hidden="true" />
-            <text class="world-entry-title">{{ wt('offlineEntry') }}</text>
-            <text class="world-meta">{{ wt('offlineEntryDesc') }} · {{ wt('offlineClosed') }}</text>
-          </button>
+        <view class="world-card world-space-card">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('space') }}</text>
+          </view>
+          <view class="world-entry-grid">
+            <button class="world-entry" type="button" @click="navigate('/pages/b4-games/b4-games')">
+              <view class="world-entry-well world-entry-well--brand" aria-hidden="true">
+                <image class="world-entry-icon" src="/static/figma-world-core/imgIconGame-d3e0367c.svg" mode="aspectFit" />
+              </view>
+              <text class="world-entry-title">{{ wt('games') }}</text>
+              <text class="world-entry-desc">{{ wt('gamesDesc') }}</text>
+            </button>
+            <button class="world-entry" type="button" @click="navigate('/pages/b4-social/b4-social')">
+              <view class="world-entry-well world-entry-well--ok" aria-hidden="true">
+                <image class="world-entry-icon" src="/static/figma-world-core/imgIconUsers-a47ef190.svg" mode="aspectFit" />
+              </view>
+              <text class="world-entry-title">{{ wt('social') }}</text>
+              <text class="world-entry-desc">{{ wt('socialDesc') }}</text>
+            </button>
+            <button class="world-entry" type="button" @click="navigate('/pages/b4-avatar/b4-avatar')">
+              <view class="world-entry-well world-entry-well--warn" aria-hidden="true">
+                <image class="world-entry-icon" src="/static/figma-world-core/imgIconShirt-4ea65edd.svg" mode="aspectFit" />
+              </view>
+              <text class="world-entry-title">{{ wt('avatar') }}</text>
+              <text class="world-entry-desc">{{ wt('avatarDesc') }}</text>
+            </button>
+            <button class="world-entry" type="button" @click="navigate('/pages/b4-offline/b4-offline')">
+              <view class="world-entry-well world-entry-well--neutral" aria-hidden="true">
+                <image class="world-entry-icon" src="/static/figma-world-core/imgIconDownload-8e6deb40.svg" mode="aspectFit" />
+              </view>
+              <text class="world-entry-title">{{ wt('offlineEntry') }}</text>
+              <text class="world-entry-desc">{{ wt('offlineEntryDesc') }} · {{ wt('offlineClosed') }}</text>
+            </button>
+          </view>
         </view>
 
         <view class="world-card world-streak-card">
           <view class="world-card-head">
             <text class="world-card-title">{{ wt('streak') }}</text>
+            <text v-if="streak" class="world-tag" :class="`world-tag--${streakTone(streak.status)}`">{{ wt(streakStatusKey(streak.status)) }}</text>
             <image class="world-inline-icon" src="/static/figma-world-core/imgIconFlame-2c1c73a2.svg" mode="aspectFit" aria-hidden="true" />
           </view>
           <view v-if="streakState === 'error'" class="world-section-error" role="alert">
@@ -595,7 +642,7 @@ watch(() => session.identityRevision, () => {
           </view>
           <template v-else-if="streak">
             <text class="world-streak-number">{{ wt('days', { count: streak.currentStreak }) }}</text>
-            <text class="world-meta">{{ wt(streakStatusKey(streak.status)) }}<template v-if="streak.timeZone"> · {{ wt('streakTimeZone', { zone: streak.timeZone }) }}</template></text>
+            <text v-if="streak.timeZone" class="world-meta">{{ wt('streakTimeZone', { zone: streak.timeZone }) }}</text>
             <text class="world-meta">{{ streakLastValid(streak) }}</text>
             <text class="world-note">{{ wt('streakCalendarUnavailable') }}</text>
             <text v-if="streak.status === 'AT_RISK' || streak.status === 'BROKEN' || streak.status === 'FROZEN'" class="world-note">{{ wt('rescueClosed') }}</text>
@@ -626,7 +673,7 @@ watch(() => session.identityRevision, () => {
         </view>
 
         <B12RewardsCard v-if="rewardsConfirmed" />
-        <view v-else class="world-rewards">
+        <view v-else class="world-card world-rewards">
           <view class="world-card-head">
             <text class="world-card-title">{{ wt('rewardsTitle') }}</text>
             <image class="world-inline-icon" src="/static/figma-world-core/imgIconGift-b89f33ab.svg" mode="aspectFit" aria-hidden="true" />
@@ -648,50 +695,71 @@ watch(() => session.identityRevision, () => {
   margin: 0 auto;
   padding: 0 0 calc(96px + env(safe-area-inset-bottom));
   overflow-x: hidden;
-  background-color: var(--yx-surface-page);
-  background-image: var(--yx-r4-home-image);
+  background-color: var(--v2-bg);
+  background-image: linear-gradient(180deg, var(--v2-soft), var(--v2-bg));
   background-repeat: no-repeat;
   background-size: cover;
-  color: var(--yx-r4-ink, var(--yx-text-primary));
+  color: var(--v2-ink);
   font-family: var(--v2-font);
 }
 .world-glow { position: absolute; top: -140px; right: -120px; width: min(360px, 92vw); height: 300px; overflow: hidden; pointer-events: none; }
 .world-glow-image { display: block; width: 100%; height: 100%; }
-.world-header { position: relative; z-index: 2; padding: calc(18px + env(safe-area-inset-top)) 16px 0 8px; }
-.world-header :deep(.mobile-intro--world) { padding: 0; border-radius: 0; background: none; overflow: visible; }
-.world-header :deep(.mobile-intro--world .mobile-intro-copy) { max-width: 100%; }
-.world-header :deep(.mobile-intro--world .mobile-page-title) { font-size: 28px; }
-.world-header :deep(.mobile-intro--world .mobile-book-art) { display: none; }
-.world-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; padding: 8px 24px 0; }
-.world-status {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 12px 14px; border: 1px solid var(--yx-r4-glass-border, var(--yx-border));
-  border-radius: 16px; background: var(--yx-r4-glass, var(--v2-card));
-  box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
-  backdrop-filter: blur(var(--yx-r4-blur, 10px)); -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+.world-header { position: relative; z-index: 2; padding: calc(8px + env(safe-area-inset-top)) 24px 0; }
+.world-header :deep(.mobile-topbar),
+.world-header :deep(.mobile-kicker),
+.world-header :deep(.mobile-book-art) { display: none; }
+.world-header :deep(.mobile-intro--world) { padding: 8px 0 0; border-radius: 0; background: none; overflow: visible; }
+.world-header :deep(.mobile-intro--world .mobile-intro-copy) { display: flex; flex-direction: column; gap: 4px; max-width: 100%; }
+.world-header :deep(.mobile-page-title) { margin: 0; color: var(--v2-ink); font-size: 28px; font-weight: 700; line-height: 36px; letter-spacing: 0; }
+.world-header :deep(.mobile-page-description) { max-width: none; margin: 0; color: var(--v2-mut); font-size: 14px; font-weight: 400; line-height: 22px; }
+.world-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; padding: 16px 24px 0; }
+.world-live--quiet {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
 }
-.world-status-copy { display: grid; gap: 2px; min-width: 0; }
-.world-status-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 13px; font-weight: 700; line-height: 19px; }
-.world-status-hint { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 18px; }
-.world-status-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-.world-quality { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; border: 1px solid var(--v2-line); border-radius: 10px; color: var(--v2-brand); background: var(--v2-card); font-size: 12px; font-weight: 700; white-space: nowrap; }
+.world-quality-dock { position: absolute; z-index: 3; top: calc(16px + env(safe-area-inset-top)); right: 24px; }
+.world-quality {
+  display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  min-width: 44px; min-height: 44px; padding: 0 2px; border: 0; background: transparent;
+  color: var(--v2-brand); font-size: 12px; font-weight: 700; line-height: 18px; white-space: nowrap;
+}
+.world-inline-status { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
+.world-inline-copy { display: grid; gap: 2px; min-width: 0; }
+.world-inline-title { color: var(--v2-ink); font-size: 13px; font-weight: 700; line-height: 20px; }
+.world-inline-hint { color: var(--v2-mut); font-size: 12px; line-height: 18px; }
+.world-state {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; box-sizing: border-box;
+  width: 100%; margin-top: 58px; padding: 24px 20px; border: 1px solid var(--v2-line); border-radius: 18px;
+  background: var(--v2-card); box-shadow: var(--v2-shadow); text-align: center;
+}
+.world-state-mascot { display: block; width: 120px; height: 120px; }
+.world-state-title { color: var(--v2-ink); font-size: 22px; font-weight: 700; line-height: 32px; }
+.world-state-body { color: var(--v2-mut); font-size: 15px; line-height: 24px; }
+.world-page .world-state-retry {
+  display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%;
+  min-height: 44px; height: auto; margin: 12px 0 0; padding: 12px 20px; border: 0; border-radius: 14px;
+  background-color: var(--v2-brand); background-image: var(--v2-grad); color: var(--v2-inverse);
+  font-family: var(--v2-font); font-size: 16px; font-weight: 700; line-height: 1.5;
+}
+.world-page .world-state-retry::after { border: 0; }
 .world-page .world-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin: 0; padding: 6px 8px; border: 0; border-radius: 8px; color: var(--v2-brand); background: transparent; font-family: var(--v2-font); font-size: 13px; font-weight: 700; }
 .world-page .world-link::after { border: 0; }
 .world-page .world-link--start { justify-self: start; padding-left: 0; }
 .world-hero {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 20px 22px; border-radius: 28px; color: var(--yx-r4-on-cta, var(--v2-inverse));
-  background-color: var(--v2-brand); background-image: var(--yx-r4-cta-image);
-  box-shadow: var(--yx-r4-shadow-cta, var(--v2-shadow));
+  padding: 22px 22px 20px; border-radius: 28px; color: var(--v2-inverse);
+  background-color: var(--v2-brand); background-image: var(--v2-grad);
+  box-shadow: var(--v2-shadow);
 }
 .world-hero-copy { display: grid; gap: 4px; min-width: 0; }
 .world-hero-level { color: color-mix(in srgb, var(--v2-inverse) 82%, transparent); font-size: 13px; font-weight: 600; line-height: 20px; }
-.world-hero-xp { color: var(--yx-r4-on-cta, var(--v2-inverse)); font-size: 26px; font-weight: 700; line-height: 34px; overflow-wrap: anywhere; }
+.world-hero-xp { color: var(--v2-inverse); font-size: 26px; font-weight: 700; line-height: 34px; overflow-wrap: anywhere; }
 .world-hero-art { display: flex; flex: 0 0 72px; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 24px; background: color-mix(in srgb, var(--v2-inverse) 18%, transparent); }
 .world-hero-rocket { display: block; width: 34px; height: 34px; }
 .world-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .world-stat { display: grid; gap: 2px; justify-items: center; padding: 14px 12px; border-radius: 18px; background: var(--v2-card); box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow)); }
 .world-stat-value { color: var(--v2-brand); font-size: 22px; font-weight: 700; line-height: 30px; }
+.world-stat--streak .world-stat-value { color: var(--v2-ok); }
 .world-stat-label { color: var(--v2-mut); font-size: 12px; line-height: 18px; }
 .world-card {
   display: grid; gap: 8px; box-sizing: border-box; min-width: 0; padding: 18px 20px;
@@ -703,37 +771,55 @@ watch(() => session.identityRevision, () => {
   .world-card { background: color-mix(in srgb, var(--v2-card) 62%, transparent); border-color: color-mix(in srgb, var(--v2-card) 90%, transparent); }
 }
 .world-card-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.world-card-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 18px; font-weight: 700; line-height: 26px; }
+.world-card-title { color: var(--v2-ink); font-size: 18px; font-weight: 700; line-height: 26px; }
+.world-head-note { margin-left: auto; max-width: 58%; color: var(--v2-mut); font-size: 13px; font-weight: 500; line-height: 20px; text-align: right; }
 .world-inline-icon { display: block; width: 20px; height: 20px; margin-left: auto; }
-.world-map-card { gap: 6px; }
+.world-map-card { gap: 10px; }
 .world-map-art {
-  position: relative; height: 94px; margin-top: 2px; overflow: hidden; border-radius: 18px;
+  display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;
+  height: 120px; padding: 0 24px; overflow: hidden; border-radius: 20px;
   background: linear-gradient(153deg, var(--v2-side), var(--v2-brand));
 }
-.world-star { position: absolute; display: block; opacity: .9; }
-.world-star--1 { top: 34px; left: 22%; width: 22px; height: 22px; }
-.world-star--2 { top: 18px; left: 44%; width: 30px; height: 30px; }
-.world-star--3 { top: 46px; left: 64%; width: 22px; height: 22px; }
-.world-star--4 { top: 12px; left: 78%; width: 26px; height: 26px; }
+.world-star { display: block; flex: 0 0 auto; opacity: .95; }
+.world-star--1, .world-star--3 { width: 22px; height: 22px; }
+.world-star--2, .world-star--4 { width: 30px; height: 30px; }
 .world-meta { display: block; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 19px; overflow-wrap: anywhere; }
 .world-note { display: block; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }
 .world-empty { display: block; padding: 6px 0; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 22px; }
-.world-season-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 17px; font-weight: 700; line-height: 24px; }
-.world-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.world-season-row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.world-season-tile { display: flex; flex: 0 0 44px; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: var(--v2-warn-soft); }
+.world-season-trophy { display: block; width: 22px; height: 22px; }
+.world-season-copy { display: grid; gap: 2px; min-width: 0; }
+.world-season-title { color: var(--v2-ink); font-size: 17px; font-weight: 700; line-height: 24px; overflow-wrap: anywhere; }
+.world-season-meta { color: var(--v2-mut); font-size: 12px; line-height: 18px; }
+.world-space-card { gap: 10px; }
+.world-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .world-page .world-entry {
-  display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: auto auto; gap: 2px 10px;
-  align-items: center; min-height: 78px; padding: 14px; border: 1px solid var(--v2-line);
-  border-radius: 18px; background: var(--v2-card); color: var(--v2-ink); font-family: var(--v2-font); text-align: left;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  min-height: 0; margin: 0; padding: 14px; border: 0; border-radius: 20px;
+  background: var(--v2-bg); color: var(--v2-ink); font-family: var(--v2-font); text-align: left;
 }
 .world-page .world-entry::after { border: 0; }
-.world-entry-icon { grid-row: 1 / 3; display: block; width: 30px; height: 30px; }
-.world-entry-title { color: var(--v2-ink); font-size: 14px; font-weight: 700; line-height: 20px; }
-.world-streak-number { color: var(--v2-brand); font-size: 34px; font-weight: 800; line-height: 42px; }
+.world-entry-well { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 13px; background: var(--v2-soft); }
+.world-entry-well--brand { background: var(--v2-soft); }
+.world-entry-well--ok { background: var(--v2-ok-soft); }
+.world-entry-well--warn { background: var(--v2-warn-soft); }
+.world-entry-well--neutral { background: var(--v2-surface); }
+.world-entry-icon { display: block; width: 20px; height: 20px; }
+.world-entry-title { color: var(--v2-ink); font-size: 15px; font-weight: 700; line-height: 22px; }
+.world-entry-desc { color: var(--v2-mut); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }
+.world-streak-card .world-tag { margin-left: auto; }
+.world-streak-card .world-inline-icon { margin-left: 0; }
+.world-streak-number { color: var(--v2-ink); font-size: 28px; font-weight: 700; line-height: 34px; }
 .world-quest { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--v2-line); }
 .world-quest:first-of-type { border-top: 0; }
 .world-quest-copy { display: grid; gap: 2px; min-width: 0; }
 .world-quest-title { color: var(--v2-ink); font-size: 14px; font-weight: 700; line-height: 20px; }
-.world-tag { flex: 0 0 auto; padding: 3px 9px; border-radius: 999px; color: var(--v2-brand); background: var(--v2-soft); font-size: 12px; font-weight: 700; line-height: 18px; white-space: nowrap; }
+.world-tag { flex: 0 0 auto; padding: 3px 10px; border-radius: 999px; color: var(--v2-brand); background: var(--v2-soft); font-size: 12px; font-weight: 700; line-height: 18px; white-space: nowrap; }
+.world-tag--ok { color: var(--v2-ok); background: var(--v2-ok-soft); }
+.world-tag--warn { color: var(--v2-warn); background: var(--v2-warn-soft); }
+.world-tag--bad { color: var(--v2-bad); background: var(--v2-bad-soft); }
+.world-tag--neutral { color: var(--v2-mut); background: var(--v2-surface); }
 .world-section-error { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 4px 0; color: var(--v2-bad); font-size: 13px; line-height: 20px; }
 .world-alert, .world-closed {
   display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 12px; align-items: center;
@@ -746,22 +832,46 @@ watch(() => session.identityRevision, () => {
 .world-alert-actions, .world-closed-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 4px; }
 .world-alert-title, .world-closed-title { color: var(--v2-ink); font-size: 16px; font-weight: 700; line-height: 22px; }
 .world-alert-body { color: var(--v2-mut); font-size: 13px; line-height: 19px; }
-.world-rewards { display: grid; gap: 6px; min-width: 0; }
+.world-quests-card { padding-top: 8px; padding-bottom: 8px; }
+.world-rewards { display: grid; gap: 10px; min-width: 0; }
 .world-rewards .b12-card { margin-top: 0; }
 @media (max-width: 360px) {
   .world-body { padding-right: 16px; padding-left: 16px; }
-  .world-header { padding-right: 12px; padding-left: 8px; }
-  .world-status { display: grid; }
-  .world-status-actions { justify-content: flex-start; }
+  .world-header { padding-right: 16px; padding-left: 16px; }
+  .world-map-card .world-card-head { align-items: flex-start; flex-wrap: wrap; }
+  .world-head-note { max-width: 100%; margin-left: 0; text-align: left; }
+  .world-quality-dock { right: 16px; }
+  .world-inline-status { align-items: flex-start; }
   .world-entry-grid { grid-template-columns: 1fr; }
 }
 @media (prefers-contrast: more) {
-  .world-status, .world-card, .world-alert, .world-closed { background: var(--v2-card); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .world-page .world-state,
+  .world-page .world-card,
+  .world-page .world-alert,
+  .world-page .world-closed,
+  .world-page .world-stat,
+  .world-page .world-entry,
+  .world-page .world-season-tile {
+    border: 2px solid var(--v2-ink);
+    background: var(--v2-card);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
-.world-page.b10-theme--high-contrast .world-status,
+.world-page.b10-theme--high-contrast .world-state,
 .world-page.b10-theme--high-contrast .world-card,
 .world-page.b10-theme--high-contrast .world-alert,
-.world-page.b10-theme--high-contrast .world-closed { background: var(--v2-card); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.world-page.b10-theme--high-contrast .world-closed,
+.world-page.b10-theme--high-contrast .world-stat,
+.world-page.b10-theme--high-contrast .world-entry,
+.world-page.b10-theme--high-contrast .world-season-tile {
+  border: 2px solid var(--v2-ink);
+  background: var(--v2-card);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 .world-page.b10-theme--dark .world-hero,
 .world-page.b10-theme--high-contrast .world-hero { color: var(--v2-ink); background-image: none; background-color: var(--v2-side); }
 .world-page.b10-theme--dark .world-hero-level,

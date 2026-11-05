@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-05",
+  "scope": [
+    "MB-008",
+    "MB-018"
+  ],
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "source": {
+    "apps/mobile/src/pages/today/today-view.ts": "c677973fd033601da80af33a32b9c97c9aa1ecab7d6296c8ccd2b1f43662f3d8",
+    "apps/mobile/src/pages/today/today.vue": "380cd8c10c7495b7028668635dbcdffd2b7b17c34884b018b21e6d795dbdd170",
+    "apps/mobile/src/pages/world/world.vue": "e8c593930b20d30fb03e58a55065fae6ce5ba86e324d25a20fe4568a6f453bd5",
+    "apps/mobile/src/static/figma-today-166-11121/0beb39f2-e519-4ae0-89f2-c9cc6a9e1775.svg": "9ba8af2b738e4e3fa3b7b0e3f98adc33949b06be86eb9d89be657967d26a61b3",
+    "apps/mobile/src/static/figma-today-166-11121/24e0ddb7-7f15-4633-88e3-5ac208175aa3.svg": "30de22287eb28d49142764d23792d44f5e51d49bce3dcc83a3b35e6ce87fe8b5",
+    "apps/mobile/src/static/figma-today-166-11121/2d49f875-6146-4701-972c-01b7f2ab183b.svg": "e23c8174800eb9c9f2589f77a92890bc2f76bdfe327f7f8cc2ed3934f8f52424",
+    "apps/mobile/src/static/figma-today-166-11121/6e0da2fc-7cbc-4062-b0bc-bb67bdd994a5.svg": "0524de650187a8c541f94e820606e5c185f8af8736d0b42dbb8a579b5a3c35ae",
+    "apps/mobile/src/static/figma-today-166-11121/83db559c-0a12-4f47-95a5-bb6f1d54d4ed.svg": "4856d23c7c982b79819a5a651dabd1bb97c9dfc02cfb5950917b6e9b2c35f0d4",
+    "apps/mobile/src/static/figma-today-166-11121/b4108fd9-b63b-4486-bec7-8d39b000708e.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-166-11121/cd506223-501d-4dc7-8842-dcc6338aae0a.svg": "0f89bb46a92e5d075e32ac46d34730132d24e3919292007305a36622b063e027",
+    "apps/mobile/src/static/figma-today-166-11121/eb66e421-46cc-4cba-99b5-055b7facc64b.svg": "369d77740c0d9b99ab607ec885647d1d9cefe9e24b6acb2387d969177e951fea",
+    "apps/mobile/src/static/figma-today-166-11635/6497d25f-361a-4dc5-b0db-6a68b7de1f8e.svg": "d8700b0f674d7cd7a364c989516a415c270fac57fd5caccedeba3a9a5058e3e6",
+    "apps/mobile/src/static/figma-today-166-11635/b743531d-0bda-45e7-8fd7-74df7e5af9e7.svg": "3ee59986c5a070468507af076bde68ece657b598e9c7949334213f4052e13cef",
+    "apps/mobile/src/static/figma-today-166-11635/e39cbc0b-e99f-4c0f-9dd7-edb306f6d569.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-355-5246/30fb0de0-e94b-4e24-9146-d82488c588f2.svg": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+    "apps/mobile/src/static/figma-today-355-5246/95783ea4-506d-4331-844f-73946b70f0d6.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-355-5246/ab13e961-ef94-4dc8-96eb-a88369d5f50e.svg": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+    "apps/mobile/src/static/figma-today-355-5315/23864862-549b-4c4b-a184-7fcff5690299.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-355-5315/912fb261-3612-4e6f-b5a1-dc9136b1cacd.svg": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+    "apps/mobile/src/static/figma-today-355-5315/c571fe87-3ad4-44c7-adc8-72d2f71a95ff.svg": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+    "apps/mobile/src/static/figma-today-355-5384/3811e537-8ab8-49e6-8d31-ac63b800c0ae.svg": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+    "apps/mobile/src/static/figma-today-355-5384/9c7e1df4-24e4-438b-aa3b-61fe645e1bca.svg": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+    "apps/mobile/src/static/figma-today-355-5384/d7bc5516-cdd8-4a2b-9e0a-f261da7c3051.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-355-5453/0bdb70d3-3c91-4809-b937-c8ec6361efad.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-today-355-5453/23f7e56a-7c27-4dec-adbd-9687eaa1151d.svg": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+    "apps/mobile/src/static/figma-today-355-5453/a48bdbff-8508-4310-aa4f-7ff4dc6aab67.svg": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+    "apps/mobile/tests/today-page.test.mjs": "92d479f922bd87c6a81d7ba222ceb0a7c8755b2761da0941ba9d94ced13405eb",
+    "apps/mobile/tests/ui-today.e2e.cjs": "cb44198c4db79e0c28354f2468ee6f3fa334866e5763ebdad4ea94fbe5bca62b",
+    "apps/mobile/tests/world-page.test.mjs": "657a70c43cc873cb7a480dd849effd7fbc513a33492af46beba6848c0c347b84",
+    "packages/i18n/src/mobile-resources/today-page.ts": "29e44e563d611a3b87553af4e506dacd5af714a41f4950c620b10ddf5c304c8e",
+    "packages/i18n/src/mobile-resources/world-page.ts": "8b53b98ec1ea61b47db762ddc0aedaddc69c5c351d5746b4b49a4f1f741246a5"
+  },
+  "artifact": {
+    "index_sha256": "6e432490fa53f6b0c4caf14a83a7c1542e290b348535eb51a62de5e69a2e4592",
+    "file_count": 630,
+    "includes_separately_pending_MB004": true
+  },
+  "node_tests": {
+    "pass": 26,
+    "fail": 0
+  },
+  "typecheck": "PASS",
+  "h5": "PASS",
+  "browser": {
+    "transport": "Playwright route.fulfill with three synthetic origins",
+    "world_visual": 12,
+    "world_runtime_cases": 11,
+    "world_runtime_assertions": 29,
+    "today_visual": 10,
+    "today_route_checks": 16,
+    "today_button_css_px": 48,
+    "today_cards_gap_css_px": 16,
+    "unknown_or_outside": 0
+  },
+  "design_refs": {
+    "today": [
+      "166:11121",
+      "166:11635",
+      "355:5246",
+      "355:5315",
+      "355:5384",
+      "355:5453"
+    ],
+    "world": [
+      "169:2936",
+      "169:3034",
+      "169:3148",
+      "169:3438",
+      "169:4002",
+      "169:4268"
+    ]
+  },
+  "pending": [
+    "real_gateway_and_iam",
+    "native_device",
+    "screen_reader",
+    "deployment",
+    "full_trace"
+  ],
+  "local_ui_candidate_count": 24,
+  "formal_route_count": 33,
+  "raw": "resume-20261105/world-today-11-review/root-combined"
+}

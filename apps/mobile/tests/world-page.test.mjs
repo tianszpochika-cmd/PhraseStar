@@ -191,6 +191,13 @@ test('SFC compiles and the page uses real GET facts, shared rewards, original as
   assert.match(descriptor.template.content, /streakState === 'error'/)
   assert.match(descriptor.template.content, /questsState === 'error'/)
   assert.match(descriptor.template.content, /seasonState === 'error'/)
+  assert.doesNotMatch(descriptor.template.content, /class="world-status"/)
+  assert.match(descriptor.template.content, /status === 'ready'/)
+  assert.match(descriptor.template.content, /world-live--quiet/)
+  assert.match(descriptor.template.content, /role="status"/)
+  assert.match(descriptor.template.content, /class="world-state"/)
+  assert.match(descriptor.template.content, /class="world-quality"/)
+  assert.match(script.content, /pageFailure/)
 
   const used = new Set(Array.from(page.matchAll(/wt\('([^']+)'/g), (match) => match[1]))
   for (const key of used) assert.ok(key in zh, `missing copy key ${key}`)

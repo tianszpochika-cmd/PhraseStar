@@ -698,7 +698,7 @@
       "name": "今日任务",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "区分无计划/已完成/无内容/无到期/失败；无有效 practiceRef 不编题",
       "services_data_owners": [
         "learning-service"
@@ -759,16 +759,16 @@
         "mobile-learning-account-scope.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md"
       },
-      "current_job": "grok/resume-20261105-world-today-finish-11",
+      "current_job": null,
       "resume_evidence_20261105": "formal18 and independent16 passed on Today09; final 390 CTA dimensions open"
     },
     {
@@ -1490,7 +1490,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1538,16 +1538,16 @@
         "b12/b12-mobile-contract.test.mjs"
       ],
       "evidence": {
-        "visual": "REVIEW_HOLD",
+        "visual": "LOCAL_SCOPED_H5_PASS",
         "interaction": "LOCAL_SCOPED_H5_PASS",
         "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md"
+        "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md"
       },
-      "current_job": "grok/resume-20261105-world-today-finish-11",
+      "current_job": null,
       "pause_handoff": "PAUSE-20261104.md",
       "resume_evidence_20261105": "Root initial 11 runtime cases passed; hierarchy on four real read sources in progress"
     },
@@ -2921,7 +2921,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T07:30:14.429880+00:00",
+  "updated_at": "2026-11-05T07:41:24.758972+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4182,7 +4182,7 @@
   "active_resume_review_20261105": {
     "at": "2026-11-05T07:30:14.429880+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 22,
+    "local_ui_candidates": 24,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4263,5 +4263,15 @@
       }
     ],
     "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105"
+  },
+  "integration_batch_46_world_today": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "6e432490fa53f6b0c4caf14a83a7c1542e290b348535eb51a62de5e69a2e4592",
+    "evidence": "evidence/ROOT-B46-WORLD-TODAY-20261105.json",
+    "review": "reviews/INTEGRATION-B46-WORLD-TODAY.md",
+    "routeCountDelta": 2,
+    "localUICandidateRoutes": 24,
+    "formalRoutes": 33,
+    "doD": false
   }
 }
