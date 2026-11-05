@@ -1,38 +1,17 @@
 <script setup lang="ts">
-import AppIcon from '../../components/AppIcon.vue'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
 import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
 import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { createAdaptivePerformanceEngine, type PerformanceLevel } from '@englishflow/performance'
-import B2StatusPanel from '../../components/b2/B2StatusPanel.vue'
-import { createRecording, createRoleplaySession, deleteRecording, getPhonetics, isB3OfflineError, listListeningMaterials, submitRoleplayTurn, submitSelfRating } from '../../api/b3'
-import type { B3Status, ListeningMaterial, Phoneme, RoleplaySession, SpeakingRecording } from '../../domain/b3'
-import { getUniRuntime, type UniAudioContext, type UniRuntime, type UniSecureRecordingVault } from '../../platform/uni-runtime'
+import { computed, onMounted } from 'vue'
+import { getUniRuntime } from '../../platform/uni-runtime'
+import { b10ThemeMode } from '../../platform/b10-foundation'
 import { ensureMobilePageAccess } from '../../auth/navigation'
 import { useSessionStore } from '../../stores/session'
-import { b10ThemeMode } from '../../platform/b10-foundation'
 
-interface RecorderResult { duration?: number; tempFilePath?: string }
-interface RecorderManager { start(options?: { duration?: number }): void; stop(): void; onStart(callback: () => void): void; onStop(callback: (result: RecorderResult) => void): void; onError(callback: (error: unknown) => void): void }
-type RecorderRuntime = UniRuntime & { getRecorderManager?: () => RecorderManager }
-
-const session = useSessionStore(); const engine = createAdaptivePerformanceEngine(); const performanceLevel = ref<PerformanceLevel>(engine.level); const status = ref<B3Status>('idle'); const message = ref<string | null>(null); const phonemes = ref<Phoneme[]>([]); const recording = ref(false); const localDuration = ref(0); const localPath = ref<string | null>(null); const encryptedPath = ref<string | null>(null); const rating = ref(''); const savedRecording = ref<SpeakingRecording | null>(null); const selectedPhoneme = ref<Phoneme | null>(null); const roleplay = ref<RoleplaySession | null>(null); const demoAudioUrl = ref<string | null>(null); const demoAudioMessage = ref('正在检查示范音频资源…'); const demoAudio = ref<UniAudioContext | null>(null); const currentRoleplayTurn = computed(() => roleplay.value?.turns[roleplay.value.turnIndex] ?? null); const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`); const unsubscribe = engine.subscribe((state) => { performanceLevel.value = state.level })
-function setPerformance(level: PerformanceLevel): void { engine.setLevel(level, 'manual'); performanceLevel.value = level }
-async function load(): Promise<void> { status.value = 'loading'; message.value = null; try { phonemes.value = await getPhonetics(); selectedPhoneme.value = phonemes.value[0] ?? null; status.value = phonemes.value.length === 48 ? 'ready' : 'empty'; if (phonemes.value.length !== 48) message.value = '音标目录未返回完整的 48 项内容。' } catch (error) { status.value = isB3OfflineError(error) ? 'offline' : 'error'; message.value = error instanceof Error ? error.message : '音标服务暂时不可用，未使用本地假数据。' } await loadDemoAudio() }
-async function loadDemoAudio(): Promise<void> { try { const material = (await listListeningMaterials())[0] as ListeningMaterial | undefined; const media = material?.mediaRef; if (media?.rightsStatus === 'AUTHORIZED' && media.availability !== 'NOT_READY' && media.signedUrl) { demoAudioUrl.value = media.signedUrl; demoAudioMessage.value = '示范音频已获得短时授权。'; return }; demoAudioMessage.value = media?.rightsStatus === 'REVOKED' ? '示范音频权益已撤销；已降级为文本脚本和 2D 口型。' : '示范音频当前没有可播放授权地址；已降级为文本脚本和 2D 口型。' } catch { demoAudioMessage.value = '示范音频资源暂时不可用；已降级为文本脚本和 2D 口型。' } }
-function playDemoAudio(): void { if (!demoAudioUrl.value) return; try { const context = demoAudio.value ?? getUniRuntime().createInnerAudioContext?.(); if (!context) throw new Error('当前平台没有示范音频播放适配器。'); demoAudio.value = context; demoAudio.value.src = demoAudioUrl.value; demoAudio.value.play() } catch { demoAudioMessage.value = '示范音频当前无法播放；已降级为文本脚本和 2D 口型。' } }
-function selectPhoneme(item: Phoneme): void { selectedPhoneme.value = item }
-function startRecording(): void { if (recording.value) return; const manager = (getUniRuntime() as RecorderRuntime).getRecorderManager?.(); if (!manager) { message.value = '当前平台没有可用录音管理器；未伪造录音成功。'; return } manager.onStart(() => { recording.value = true; message.value = '正在录音，完成后请停止并登记真实文件。' }); manager.onStop((result) => { recording.value = false; localDuration.value = result.duration ?? 0; localPath.value = result.tempFilePath ?? null; message.value = localPath.value ? '录音文件已返回，点击“登记录音”前会先计算真实 SHA-256。' : '录音已停止，但平台未返回本地媒体引用。' }); manager.onError(() => { recording.value = false; status.value = 'error'; message.value = '录音失败，未生成虚假的评测结果。' }); manager.start({ duration: 60000 }) }
-function stopRecording(): void { (getUniRuntime() as RecorderRuntime).getRecorderManager?.()?.stop() }
-async function saveRecording(): Promise<void> { if (!localPath.value || localDuration.value < 500) { message.value = '请先完成至少 500ms 的真实录音。'; return } const runtime = getUniRuntime() as RecorderRuntime & { getSecureRecordingVault?: () => UniSecureRecordingVault }; const vault = runtime.getSecureRecordingVault?.(); if (!vault) { message.value = '当前设备没有接入 Keychain/Keystore 录音加密适配器，未登记录音。'; return } try { const encrypted = await vault.encryptFile({ filePath: localPath.value }); if (!/^[A-Fa-f0-9]{64}$/.test(encrypted.contentHash)) throw new Error('原生加密适配器未返回有效 SHA-256，未登记录音。'); savedRecording.value = await createRecording('seg-1', localDuration.value, encrypted.contentHash); encryptedPath.value = encrypted.encryptedFilePath; message.value = '录音已由 Keychain/Keystore 适配器加密；服务端只登记哈希和生命周期元数据。' } catch (error) { message.value = error instanceof Error ? error.message : '录音加密或登记失败，未标记为成功。' } }
-async function openRoleplay(): Promise<void> { try { roleplay.value = await createRoleplaySession(); message.value = '预编角色扮演已打开；分支和回合由服务端脚本控制。' } catch (error) { message.value = error instanceof Error ? error.message : '角色扮演暂不可用。' } }
-async function advanceRoleplay(choiceCode?: string): Promise<void> { if (!roleplay.value || !currentRoleplayTurn.value) return; if (currentRoleplayTurn.value.recordingRequired && !savedRecording.value) { message.value = '当前回合需要先完成并登记真实录音。'; return } try { const result = await submitRoleplayTurn(roleplay.value.roleplaySessionId, roleplay.value.turnIndex, savedRecording.value?.recordingId ?? '', choiceCode); roleplay.value = { ...roleplay.value, turnIndex: result.nextTurnIndex, status: result.status }; message.value = result.status === 'COMPLETED' ? '角色扮演完成；Phase 1 只记录回合和自评，不生成 AI 分数。' : '回合已保存，继续下一步。' } catch (error) { message.value = error instanceof Error ? error.message : '角色扮演回合提交失败。' } }
-async function setRating(value: string): Promise<void> { rating.value = value; if (!savedRecording.value) { message.value = '请先登记一次真实录音，再提交自评。'; return } try { await submitSelfRating(savedRecording.value.recordingId, value); message.value = `自评已保存：${value}。Phase 1 不生成 AI 分数。` } catch (error) { message.value = error instanceof Error ? error.message : '自评提交失败。' } }
-async function playLocal(): Promise<void> { const runtime = getUniRuntime() as RecorderRuntime & { getSecureRecordingVault?: () => UniSecureRecordingVault }; if (!encryptedPath.value) { message.value = '暂无已加密录音可回放。'; return } const vault = runtime.getSecureRecordingVault?.(); const audio = runtime.createInnerAudioContext?.(); if (!vault || !audio) { message.value = '当前平台没有安全解密回放适配器；未伪造播放成功。'; return } try { audio.src = await vault.createPlaybackSource({ encryptedFilePath: encryptedPath.value }); audio.play() } catch { message.value = '加密录音解密回放失败。' } }
-async function removeRecording(): Promise<void> { if (!savedRecording.value) return; const runtime = getUniRuntime() as RecorderRuntime & { getSecureRecordingVault?: () => UniSecureRecordingVault }; const vault = runtime.getSecureRecordingVault?.(); try { await deleteRecording(savedRecording.value.recordingId); if (vault && encryptedPath.value) await vault.deleteFile({ encryptedFilePath: encryptedPath.value }); savedRecording.value = null; encryptedPath.value = null; message.value = '录音已删除，原生加密文件已请求清理。' } catch (error) { message.value = error instanceof Error ? error.message : '录音删除失败。' } }
+const session = useSessionStore()
+const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
 function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
 function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
 const alternatives = [
@@ -55,81 +34,31 @@ const alternatives = [
     tone: 'ok' as const,
   },
 ]
-onMounted(async () => { await session.restore(); if (!await ensureMobilePageAccess('/pages/b3-speaking/b3-speaking')) return; /* closed practice: no live load */ undefined }); onUnmounted(() => { demoAudio.value?.destroy(); unsubscribe(); engine.dispose() })
+onMounted(async () => { await session.restore(); if (!await ensureMobilePageAccess('/pages/b3-speaking/b3-speaking')) return; /* closed practice: no live load */ undefined })
 </script>
 
 <template>
   <view class="yx-page v2-closed-page" :style="experienceStyle" :data-motion="experienceMotion" :class="themeClass">
     <MobilePageHeader page="b3-speaking" compact :title="mobileT('closed.b3Speaking.navTitle')" back-icon-src="/static/figma-closed-168-5501/9e998881-5cf4-47d5-a4b3-8b77c7bb8347.svg" :show-settings="false" />
     <view class="v2-b3speak-body">
-    <MobileClosedPracticeNotice
-      variant="speaking"
-      title-key="closed.b3Speaking.title"
-      description-key="closed.b3Speaking.reason"
-      aria-label-key="closed.b3Speaking.title"
-      glow-src="/static/figma-closed-168-5501/abaf7a75-11e2-4a95-b329-8bc1452320fe.svg"
-      icon-src="/static/figma-closed-168-5501/679cf7aa-0ce1-4ae7-8caf-70db9789cc07.svg"
-      :alternatives="alternatives"
-      @back="backToLearning"
-      @select="openRelated"
-    />
-
-<B2StatusPanel class="v2-b3speak-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" @sync="() => undefined" />
-  <view v-if="phonemes.length" class="yx-card phoneme-card card v2-b3speak-card"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="type" :size="14" /><text>英语音标</text></view><text class="v2-b3speak-title v2-b3speak-h2">发音图解 · {{ phonemes.length }}/48</text><text class="card-kicker v2-b3speak-kicker">英语音标 · 发音图解 · {{ phonemes.length }}/48</text><view class="phoneme-grid v2-b3speak-list"><button tabindex="0" role="button" v-for="phoneme in phonemes" :key="phoneme.phonemeId" :class="{ active: selectedPhoneme?.phonemeId === phoneme.phonemeId }" class="phoneme opt v2-b3speak-opt v2-b3speak-row" type="button" @click="selectPhoneme(phoneme)"><text class="phoneme__symbol v2-b3speak-stem">{{ phoneme.symbol }}</text><text class="d v2-b3speak-d">{{ phoneme.exampleWord }}</text><text class="phoneme__group d v2-b3speak-d">{{ phoneme.group }}</text></button></view></view>
-  <view v-if="phonemes.length" class="yx-card demo-audio card v2-b3speak-card" role="status" aria-live="polite"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="activity" :size="14" /><text>示范音频</text></view><text class="v2-b3speak-title v2-b3speak-h2">跟读前先听一遍示范</text><text class="card-kicker v2-b3speak-kicker">示范音频</text><button tabindex="0" role="button" v-if="demoAudioUrl" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-submit" type="button" @click="playDemoAudio"><AppIcon name="activity" :size="14" />播放示范音频</button><text class="d v2-b3speak-d">{{ demoAudioMessage }}</text></view>
-  <view class="speaking-workspace v2-b3speak-workspace">
-    <view class="yx-card recorder-card card v2-b3speak-card"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="target" :size="14" /><text>本地录音</text></view><text class="v2-b3speak-title v2-b3speak-h2">录下发音并自评</text><text class="card-kicker v2-b3speak-kicker">本地录音与自评</text><view class="mouth v2-b3speak-mouth"><text class="d v2-b3speak-d">{{ selectedPhoneme?.symbol || '选择音标' }} · 发音口型图解</text><text class="d v2-b3speak-d">下颌 {{ selectedPhoneme?.mouthProfile.jawOpen ?? 0 }} · 舌高 {{ selectedPhoneme?.mouthProfile.tongueHeight ?? 0 }} · 唇圆 {{ selectedPhoneme?.mouthProfile.lipRound ?? 0 }}</text><text class="d v2-b3speak-d">{{ selectedPhoneme?.mouthProfile.voicing ? '声带振动' : '清音' }}</text></view><text class="recorder-copy d v2-b3speak-d">{{ recording ? '录音进行中…' : localPath ? `已录音 ${localDuration}ms` : '录音权限需用户操作；不可用时仍可学习音标、口型和文本跟读。' }}</text><view class="recorder-actions v2-b3speak-controls"><button tabindex="0" role="button" class="yx-button btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-submit" type="button" @click="recording ? stopRecording() : startRecording()">{{ recording ? '停止录音' : '开始录音' }}</button><button tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" :disabled="!encryptedPath || recording" @click="playLocal">安全回放</button><button tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" :disabled="!localPath || recording" @click="saveRecording">加密并登记</button><button tabindex="0" role="button" v-if="savedRecording" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" @click="removeRecording">删除录音</button><button tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" @click="setRating('NEEDS_PRACTICE')">需要练习</button><button tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" @click="setRating('BASIC')">基本准确</button><button tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-tool" type="button" @click="setRating('FLUENT')">比较流利</button></view><text v-if="savedRecording" class="rating fb v2-b3speak-fb">已登记：{{ savedRecording.recordingId }} · 当前自评：{{ rating || '未选择' }}</text></view>
-    <view class="yx-card roleplay-card card v2-b3speak-card"><view class="eyebrow v2-b3speak-eyebrow"><AppIcon name="users" :size="14" /><text>角色扮演</text></view><text class="v2-b3speak-title v2-b3speak-h2">咖啡店场景，分回合推进</text><text class="card-kicker v2-b3speak-kicker">ROLEPLAY · 预编脚本</text><button tabindex="0" role="button" class="yx-button btn v2-b3speak-btn v2-b3speak-opt v2-b3speak-submit" type="button" @click="openRoleplay"><AppIcon name="chev" :size="14" />{{ roleplay ? '重新打开咖啡店场景' : '开始角色扮演' }}</button><view v-if="roleplay && currentRoleplayTurn" class="roleplay-turn v2-b3speak-row"><text class="d v2-b3speak-d">回合 {{ roleplay.turnIndex + 1 }} · {{ currentRoleplayTurn.speaker }}</text><text class="roleplay-text v2-b3speak-stem">{{ currentRoleplayTurn.text }}</text><button tabindex="0" role="button" v-for="choice in currentRoleplayTurn.choiceCodes" :key="choice" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt" type="button" @click="advanceRoleplay(choice)">{{ choice }}</button><button tabindex="0" role="button" v-if="!currentRoleplayTurn.choiceCodes.length" class="yx-button yx-button--secondary btn v2-b3speak-btn v2-b3speak-opt" type="button" @click="advanceRoleplay()">{{ currentRoleplayTurn.recordingRequired ? '提交已登记录音并继续' : '继续' }}</button></view><text v-else-if="roleplay?.status === 'COMPLETED'" class="rating fb v2-b3speak-fb">已完成全部预编回合；无 AI 评分。</text></view>
-  </view>
-  </view>
-
+      <MobileClosedPracticeNotice
+        variant="speaking"
+        title-key="closed.b3Speaking.title"
+        description-key="closed.b3Speaking.reason"
+        aria-label-key="closed.b3Speaking.title"
+        glow-src="/static/figma-closed-168-5501/abaf7a75-11e2-4a95-b329-8bc1452320fe.svg"
+        icon-src="/static/figma-closed-168-5501/679cf7aa-0ce1-4ae7-8caf-70db9789cc07.svg"
+        :alternatives="alternatives"
+        @back="backToLearning"
+        @select="openRelated"
+      />
+    </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.phoneme-card,.recorder-card,.roleplay-card,.demo-audio{display:grid;gap:16rpx}.card-kicker{color:var(--yx-brand);font-size:22rpx;font-weight:700}.phoneme-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10rpx}.phoneme{min-width:0;display:grid;gap:4rpx;padding:14rpx 8rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;text-align:center;font-size:20rpx;background:var(--yx-surface-card);overflow-wrap:anywhere}.phoneme.active{border-color:var(--yx-brand);background:var(--yx-brand-soft)}.phoneme__symbol{color:var(--yx-text-primary);font-size:31rpx;font-weight:750}.phoneme__group{color:var(--yx-text-tertiary);font-size:18rpx}.demo-audio{padding:18rpx;border:1rpx solid var(--yx-border);border-radius:14rpx;background:var(--yx-surface-page)}.demo-audio audio{width:100%}.demo-audio text:last-child{color:var(--yx-text-secondary);font-size:22rpx;line-height:1.55}.mouth{display:grid;place-items:center;gap:10rpx;min-height:170rpx;border-radius:18rpx;background:linear-gradient(145deg,var(--yx-brand-soft),var(--yx-brand-soft));color:var(--yx-text-secondary);font-size:24rpx}.recorder-copy,.rating{color:var(--yx-text-secondary);font-size:24rpx}.recorder-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10rpx}.roleplay-turn{display:grid;gap:10rpx;padding:16rpx;border-radius:12rpx;background:var(--yx-surface-page)}.roleplay-text{line-height:1.6;color:var(--yx-success)}.yx-button{margin-top:0}.yx-button--secondary{color:var(--yx-brand);background:var(--yx-surface-card)}.yx-button:disabled{opacity:.45}
-/* v2 口语页换皮：对齐 mobile/styles.css 与 refine.css 中 .card/.eyebrow/.opt/.fb/.btn/.list-row，对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 同样数值，仅用 var(--v2-*)。 */
 .v2-b3speak-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
 .v2-b3speak-body>*{min-width:0;max-width:100%}
-.v2-b3speak-workspace{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3speak-workspace>*{min-width:0;max-width:100%}
-.v2-b3speak-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
-.v2-b3speak-card:hover{border-color:var(--v2-brand)}
-.v2-b3speak-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-b3speak-title,.v2-b3speak-h2{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-b3speak-kicker{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-b3speak-status{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3speak-d{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b3speak-mouth{display:grid;place-items:center;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-soft);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow:hidden;overflow-wrap:anywhere}
-.v2-b3speak-mouth>*{min-width:0;max-width:100%}
-.v2-b3speak-controls{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-b3speak-controls>*{min-width:0;max-width:100%}
-.v2-b3speak-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3speak-row>*{min-width:0;max-width:100%}
-.v2-b3speak-row:not(.v2-b3speak-controls){padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card)}
-.v2-b3speak-row:not(.v2-b3speak-controls):hover{border-color:var(--v2-brand)}
-.v2-b3speak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3speak-list>*{min-width:0;max-width:100%}
-.v2-b3speak-stem{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-b3speak-opt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b3speak-controls .v2-b3speak-opt{width:auto;flex:0 0 auto}
-.v2-b3speak-opt:hover{border-color:var(--v2-brand)}
-.v2-b3speak-opt:active{transform:scale(.97)}
-.v2-b3speak-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b3speak-opt:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-b3speak-tool{width:auto;flex:0 0 auto}
-.v2-b3speak-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b3speak-row .v2-b3speak-btn{width:auto;flex:0 0 auto}
-.v2-b3speak-btn:hover{border-color:var(--v2-brand)}
-.v2-b3speak-btn:active{transform:scale(.97)}
-.v2-b3speak-btn:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b3speak-btn:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-b3speak-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700}
-.v2-b3speak-submit:hover{border-color:var(--v2-brand)}
-.v2-b3speak-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b3speak-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
-.v2-b3speak-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
-
 .v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
 @media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

@@ -1,0 +1,128 @@
+{
+  "status": "PASS_LOCAL_SYNTHETIC_H5",
+  "b3_source": {
+    "base": "38044c6affd07d8dc0a004bc46314fda702fd6a8",
+    "files": [
+      {
+        "path": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+        "sha256": "c4594ec4ab5cd555e0a856f06d36fa195c187256e39cd27625a1ab9025e58a07",
+        "bytes": 3212
+      },
+      {
+        "path": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+        "sha256": "64dae3efc076962583fec9be0f475c25c1554d9a650683cae761e47d99dadcac",
+        "bytes": 3251
+      },
+      {
+        "path": "apps/mobile/tests/b11/b11-mobile-contract.test.mjs",
+        "sha256": "b556cd3026aab29c91b847b32c0c34cd929976b452d6cd0def66127f6902d4ec",
+        "bytes": 7748
+      },
+      {
+        "path": "apps/mobile/tests/b3-listening-closed.test.mjs",
+        "sha256": "6c1bea26539a06fd49a784a1afb98055d83832dc4b7b86bb5254f895cee1d5bf",
+        "bytes": 2936
+      },
+      {
+        "path": "apps/mobile/tests/b3-speaking-closed.test.mjs",
+        "sha256": "0f15bf68106edeb26fe657c3b65f4541b3a3a9007ddd23cf806e4a329c2c9c71",
+        "bytes": 3138
+      }
+    ]
+  },
+  "build_source": {
+    "base": "38044c6affd07d8dc0a004bc46314fda702fd6a8",
+    "product_files": [
+      {
+        "path": "apps/mobile/src/api/learner-content.ts",
+        "sha256": "21cca2893737deee18d15fa7bd9f9206b416817d0f3d02c598f7d202cbc51a66"
+      },
+      {
+        "path": "apps/mobile/src/domain/onboarding-resume.ts",
+        "sha256": "bfa387234210ba6fa3eea0fd9bc7b983ab81b9504f6b5e1a1662b1e6fee21654"
+      },
+      {
+        "path": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+        "sha256": "c4594ec4ab5cd555e0a856f06d36fa195c187256e39cd27625a1ab9025e58a07"
+      },
+      {
+        "path": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+        "sha256": "64dae3efc076962583fec9be0f475c25c1554d9a650683cae761e47d99dadcac"
+      },
+      {
+        "path": "apps/mobile/src/pages/onboarding/onboarding.vue",
+        "sha256": "cdda86cf0e07d03a8acce0570843c20bbde604bc42a54b12695f55795b92747b"
+      },
+      {
+        "path": "apps/mobile/src/stores/learner-content.ts",
+        "sha256": "efec3dab7add1321f2f4d63b9fbe479ce4cbd03deb32685289ac37411d0a6382"
+      },
+      {
+        "path": "packages/i18n/src/mobile-experience.ts",
+        "sha256": "337511d53873b61b5a759a83dba060e1b7130a9101ff0634fcf9a314d89f67de"
+      }
+    ]
+  },
+  "artifact_index_sha256": "77da836e2d37f8d6d2865ba3dc8fcdcd88421572c77dd0e88c8e9e5b1481e260",
+  "artifact_tree_sha256": "2b73fbd6ae508c8d4f16b6b22e042ba4fe11c9c5e1d5c76ffa5ba8bea527ab36",
+  "targeted_source_tests": 12,
+  "browser_checks": 116,
+  "screenshots": 7,
+  "routes": [
+    "/pages/b4-offline/b4-offline",
+    "/pages/b3-writing/b3-writing",
+    "/pages/b3-listening/b3-listening",
+    "/pages/b11-listening/b11-listening",
+    "/pages/b3-speaking/b3-speaking",
+    "/pages/b11-speaking/b11-speaking",
+    "/pages/profile/profile"
+  ],
+  "legacy_dom_probes": [
+    {
+      "name": "b3-listening-legacy-dom-absent-rc1-retained",
+      "ok": true,
+      "expected": {
+        "legacyDom": 0,
+        "alternatives": 2,
+        "title": "听力练习暂未开放",
+        "cta": "回到可用学习"
+      },
+      "actual": {
+        "legacyDom": {
+          "controls": [],
+          "workspaces": {},
+          "total": 0
+        },
+        "alternatives": 2,
+        "title": "听力练习暂未开放",
+        "cta": "回到可用学习"
+      }
+    },
+    {
+      "name": "b3-speaking-legacy-dom-absent-rc1-retained",
+      "ok": true,
+      "expected": {
+        "legacyDom": 0,
+        "alternatives": 2,
+        "title": "跟读与录音暂未开放",
+        "cta": "回到可用学习"
+      },
+      "actual": {
+        "legacyDom": {
+          "controls": [],
+          "workspaces": {},
+          "total": 0
+        },
+        "alternatives": 2,
+        "title": "跟读与录音暂未开放",
+        "cta": "回到可用学习"
+      }
+    }
+  ],
+  "page_errors": 0,
+  "unknown_paths": 0,
+  "outside_requests": 0,
+  "real_services": "NOT_RUN",
+  "native_devices": "NOT_RUN",
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/consent-simulation/combined-25/closed-auth-final/results.json"
+}

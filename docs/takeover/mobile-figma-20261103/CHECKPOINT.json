@@ -2672,7 +2672,7 @@
       "name": "听力旧入口",
       "owner": "DSH",
       "wave": "D1",
-      "status": "INTEGRATED_SYNTHETIC_UI_CHECKED_TRACE_PENDING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "旧入口关闭说明与安全出口；不得假装提供音频",
       "services_data_owners": [
         "media-service",
@@ -2737,11 +2737,14 @@
         "combined_browser": "599 total checks across7 pages/39 images; restricted synthetic scope",
         "additional_scoped_reviews": [
           "reviews/INTEGRATION-B13.md",
-          "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
+          "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md",
+          "reviews/INTEGRATION-B56-CLOSED-PRACTICE.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY"
+        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY",
+        "b56_closed_dom": "PASS zero legacy controls or workspaces including hidden DOM"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED"
     },
     {
       "id": "MB-030",
@@ -2828,7 +2831,7 @@
       "name": "口语旧入口",
       "owner": "DSH",
       "wave": "D1",
-      "status": "INTEGRATED_SYNTHETIC_UI_CHECKED_TRACE_PENDING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "旧入口不可用说明与返回，不伪造语音评分",
       "services_data_owners": [
         "media-service",
@@ -2893,11 +2896,14 @@
         "combined_browser": "599 total checks across7 pages/39 images; restricted synthetic scope",
         "additional_scoped_reviews": [
           "reviews/INTEGRATION-B13.md",
-          "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
+          "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md",
+          "reviews/INTEGRATION-B56-CLOSED-PRACTICE.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY"
+        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY",
+        "b56_closed_dom": "PASS zero legacy controls or workspaces including hidden DOM"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED"
     },
     {
       "id": "MB-032",
@@ -3341,7 +3347,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T09:31:28.431025+00:00",
+  "updated_at": "2026-11-05T09:52:04.432128+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4906,5 +4912,17 @@
       "project_compatibility_ci": "FAIL on M2-001 Gateway root/projection and M1-018 event descriptors/projection on the pre-consent baseline and the integrated source"
     },
     "scope": "Local source and linked synthetic UI evidence. Real service, deployed Gateway, device, reader and deployment NOT_RUN."
+  },
+  "integration_batch_56_closed_practice": {
+    "review": "reviews/INTEGRATION-B56-CLOSED-PRACTICE.md",
+    "evidence": "evidence/ROOT-B56-CLOSED-PRACTICE-20261105.json",
+    "routes": [
+      "MB-029",
+      "MB-031"
+    ],
+    "local_ui_candidates": 32,
+    "formal_routes": 33,
+    "browser_checks": 116,
+    "scope": "local synthetic H5"
   }
 }

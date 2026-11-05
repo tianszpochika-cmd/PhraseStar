@@ -7,6 +7,7 @@
 - 当前 32/33 条路由进入本地 UI 候选。引导的目标保存与读回已复验，首次签署的模拟契约已准备，页面与异常恢复待组合验证。正式发布和实际 IAM 签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。
 - 33 条路由追溯仍待签收。本轮核对 10 个空缺字段，记录 6 项相关需求来源和 4 个登记缺项，并补齐 7 条路由的审核链接。全量契约门禁保留既有 Gateway 与事件基线差异。 [追溯与门禁复核](reviews/TRACE-AUDIT-20261105.md)
 - [首次签署模拟发布包](../../../apps/mobile/tests/fixtures/mock-consent-publication.json) 含三份独立版本的测试正文和逐份 SHA-256 摘要，用于受控验收。正式发布文档和实际 IAM 投影继续单列。
+- [关闭页 B56](reviews/INTEGRATION-B56-CLOSED-PRACTICE.md) 收口旧听力与口语关闭页，组合 H5 116 项受控检查通过。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。
 - [词汇与语法 B54](reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md) 验证复习队列、冷启动、同步回执与语法交互。新增 MB-012、MB-013，累计 32/33 条本地 UI 候选。
 - [访问受限 B53](reviews/INTEGRATION-B53-FORBIDDEN.md) 19 项组合检查通过。新增 MB-005，累计 30/33 条本地 UI 候选。
