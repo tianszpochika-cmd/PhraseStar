@@ -453,7 +453,7 @@
         "h5": "BUILD_PASS",
         "cross_viewport": "LOCAL_H5_128_LAYOUTS_PASS",
         "accessibility": "NOT_RUN",
-        "real_api": "NOT_RUN",
+        "real_api": "LOCAL_SYNTHETIC_HTTP_PASS_DEPLOYED_API_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B48-ONBOARDING.md",
         "b57_simulated_first_sign": "9 controlled scenarios, 213 PASS, no unexpected or page errors",
@@ -481,6 +481,12 @@
           "status": "SCOPED_SYNTHETIC_H5_PASS",
           "checks": 74,
           "receipt": "evidence/ROOT-B70-ONBOARDING-KEYBOARD-20261105.json"
+        },
+        "b72_local_iam_gateway": {
+          "status": "SCOPED_LOCAL_IAM_GATEWAY_MYSQL_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "script_checks": 184
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3591,7 +3597,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T21:36:11.667424+08:00",
+  "updated_at": "2026-11-05T21:37:49.581986+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5292,5 +5298,13 @@
     "mysql_profile_tests": 18,
     "utc_focused_tests": 16,
     "mobile_retry_and_deployment": "NOT_RUN"
+  },
+  "integration_batch_72_local_iam_gateway": {
+    "scope": "MB-004 / R1-008 local synthetic HTTP integration",
+    "status": "SCOPED_LOCAL_IAM_GATEWAY_MYSQL_PASS_TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "receipt": "evidence/ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+    "script_checks": 184,
+    "formal_publication_and_deployed_gateway": "NOT_RUN"
   }
 }

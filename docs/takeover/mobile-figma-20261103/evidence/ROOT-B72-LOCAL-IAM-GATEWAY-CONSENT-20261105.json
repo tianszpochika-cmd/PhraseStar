@@ -1,0 +1,53 @@
+{
+  "scope": "MB-004 / R1-008 / BC-008, local HTTP integration with synthetic inputs",
+  "author": "DSH24 harness and content guard, Grok52 direct TLS restriction and runtime bounds, Grok55 JWKS observation, Root execution",
+  "source_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "jar_sha256": {
+    "iam": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1"
+  },
+  "fixture_sha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+  "results": {
+    "total_passed": 184,
+    "before_service_start": 51,
+    "during_and_after_start": 133,
+    "database": "MySQL 8.0 disposable iam_service, Flyway V19 and synthetic three-document control-plane rows",
+    "public_jwks": {
+      "server_probe_status": 200,
+      "mobile_origin_observed_status": 403
+    },
+    "processes_and_resources_released": [
+      "PORT_18070_RELEASED",
+      "PORT_18087_RELEASED",
+      "PORT_13306_RELEASED",
+      "TEMP_DB_RELEASED",
+      "TEMP_TLS_RELEASED"
+    ]
+  },
+  "raw_sha256": {
+    "result.json": "0db909ff821c1ea6d7fb3a6550450ef4c1ace66baa10acddf4a368bdcddc3131",
+    "runner.log": "c8b6f94e54c91830751b5a7fcf0cbb82aa00c1182084e6e921f05ad4b5c3a6b7",
+    "cleanup-status.log": "86eca0804d8ddb335fd1aad8ba68cf333ed2c9a1b023e0da4b7cd4dce44b37e2",
+    "harness/acceptance.mjs": "13a7622383f04dc27769d9cddcd134e79fe716dd6383527e6bcdc02c4ef5bb85"
+  },
+  "earlier_runs": [
+    {
+      "cause": "Reproducible jar mtime 1980 was incorrectly used as a freshness gate. Services did not start. Confirmed content and exact jar hashes.",
+      "raw_result_sha256": "d831dedf80472dd149d23b3616d1df503cf8fd0a43cc6ff8d8a2a139e02381ed"
+    },
+    {
+      "cause": "Read path reached 99/101, including exact three texts and hashes. Stopped at browser-Origin 403 on public JWKS when test reused the browser helper. Server-to-server lookup and browser-Origin diagnostic were separated.",
+      "raw_result_sha256": "6ccb7e4721bea8848c78467d86289e152bb20481fb5b95ffa516719a94650821"
+    }
+  ],
+  "limits": [
+    "Gateway password registration or login; no prior runtime is treated as evidence",
+    "formal legal publication, authorizer approval, deployed Gateway/IAM, production rollout",
+    "actual mobile H5/browser or native app, device secure storage, screen reader, real device",
+    "browser-enforced CORS, cookie partitioning, and certificate UX (only HTTP-level preflight/cookie attributes are checked)",
+    "withdrawal, logout, refresh-token replay detection, multi-device kickout",
+    "invalid body digest, missing body, oversize body, NUL body or partial projection over HTTP (unit/JDBC tests exist, not repeated here)",
+    "durable audit-service ingest and database-level audit row assertions",
+    "visual onboarding UI, navigation, i18n and responsive behavior"
+  ]
+}
