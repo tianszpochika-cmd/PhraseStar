@@ -2657,6 +2657,14 @@
           "kickout_retry_exact": true,
           "target_refresh_status": 401,
           "current_bearer_status": 200
+        },
+        "b78_local_h5_iam_device": {
+          "status": "SCOPED_LOCAL_H5_IAM_DEVICE_REVOCATION_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B78-LOCAL-H5-IAM-DEVICE-20261105.json",
+          "review": "reviews/INTEGRATION-B23-DEVICES.md",
+          "script_checks": 184,
+          "ui_success_after_owner_readback": true,
+          "target_refresh_status": 401
         }
       },
       "current_job": "dsh/devices-batch-16-error-locale-browser",
@@ -3638,7 +3646,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:13:54.192457+08:00",
+  "updated_at": "2026-11-05T23:25:27.103493+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5402,5 +5410,15 @@
     "independent_http_checks": 184,
     "canonical_mistake_detail": "NOT_RUN",
     "deployment": "NOT_RUN"
+  },
+  "integration_batch_78_local_h5_iam_device": {
+    "scope": "MB-025 actual local H5 device exit, synthetic account",
+    "status": "SCOPED_LOCAL_H5_IAM_DEVICE_REVOCATION_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B78-LOCAL-H5-IAM-DEVICE-20261105.json",
+    "review": "reviews/INTEGRATION-B23-DEVICES.md",
+    "script_checks": 184,
+    "ui_success_after_owner_readback": true,
+    "target_refresh_status": 401,
+    "deployed_gateway_and_native": "NOT_RUN"
   }
 }
