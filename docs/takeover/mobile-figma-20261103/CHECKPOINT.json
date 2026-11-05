@@ -2634,7 +2634,16 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B23-DEVICES.md",
         "source_tests": "Root final41/41+mobile/i18n types/build0",
-        "candidate_browser": "Prelocale-only patch:247core+131matrix;final enerror26checks PASS;authorB16running"
+        "candidate_browser": "Prelocale-only patch:247core+131matrix;final enerror26checks PASS;authorB16running",
+        "b76_local_iam_devices": {
+          "status": "SCOPED_LOCAL_IAM_DEVICE_REVOCATION_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B76-LOCAL-IAM-DEVICES-20261105.json",
+          "review": "reviews/INTEGRATION-B23-DEVICES.md",
+          "independent_http_checks": 184,
+          "kickout_retry_exact": true,
+          "target_refresh_status": 401,
+          "current_bearer_status": 200
+        }
       },
       "current_job": "dsh/devices-batch-16-error-locale-browser",
       "source_operation_trace_b59": {
@@ -3615,7 +3624,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T22:55:06.330850+08:00",
+  "updated_at": "2026-11-05T23:05:09.887933+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5358,5 +5367,16 @@
     "owner_consents_matched": 3,
     "formal_publication_and_deployed_gateway": "NOT_RUN",
     "native_and_screen_reader": "NOT_RUN"
+  },
+  "integration_batch_76_local_iam_devices": {
+    "scope": "MB-025 / R1-005 local HTTP with synthetic account and two scoped H5 sessions",
+    "status": "SCOPED_LOCAL_IAM_DEVICE_REVOCATION_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B76-LOCAL-IAM-DEVICES-20261105.json",
+    "review": "reviews/INTEGRATION-B23-DEVICES.md",
+    "independent_http_checks": 184,
+    "kickout_retry_exact": true,
+    "target_refresh_status": 401,
+    "current_bearer_status": 200,
+    "deployed_gateway_and_native": "NOT_RUN"
   }
 }
