@@ -217,7 +217,7 @@ async function openDetail(mistake: B10Mistake): Promise<void> {
   detailError.value = ''
   detailMistake.value = null
   await nextTick()
-  document.querySelector<HTMLElement>('.report-detail-sheet .report-text-button')?.focus()
+  if (typeof document !== 'undefined') document.querySelector<HTMLElement>('.report-detail-sheet .report-text-button')?.focus()
   try {
     const detail = await b10LearningApi.getMistakeDetail({ uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }, mistake.mistakeId)
     if (generation !== detailGeneration) return

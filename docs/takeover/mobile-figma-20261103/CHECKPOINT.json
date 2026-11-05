@@ -1756,7 +1756,13 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B37-PRIVATE-REPORT.md"
+        "independent_review": "reviews/INTEGRATION-B37-PRIVATE-REPORT.md",
+        "b60_report_detail_focus": {
+          "status": "SOURCE_TEST_AND_BUILD_PASS",
+          "review": "reviews/INTEGRATION-B60-REPORT-DETAIL-FOCUS.md",
+          "receipt": "evidence/ROOT-B60-REPORT-DETAIL-FOCUS-20261105.json",
+          "real_api": "NOT_RUN"
+        }
       },
       "current_job": null,
       "source_operation_trace_b59": {
@@ -3479,7 +3485,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T19:28:23.306936+08:00",
+  "updated_at": "2026-11-05T19:37:40.262936+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5097,5 +5103,13 @@
     },
     "trace_pending": 33,
     "real_service": "NOT_RUN"
+  },
+  "integration_batch_60_report_detail_focus": {
+    "scope": "MB-016 DOM focus guard",
+    "review": "reviews/INTEGRATION-B60-REPORT-DETAIL-FOCUS.md",
+    "receipt": "evidence/ROOT-B60-REPORT-DETAIL-FOCUS-20261105.json",
+    "source_tests_passed": 13,
+    "gateway_baseline_tests_passed": 2,
+    "status": "SOURCE_TEST_AND_BUILD_PASS_TRACE_PENDING"
   }
 }

@@ -1,0 +1,40 @@
+{
+  "source_base": "d33ac9b8",
+  "scope": "MB-016 one runtime DOM guard and exact source/Gateway baseline review",
+  "source_sha256": {
+    "apps/mobile/src/pages/b10-report/b10-report.vue": "b51690df2e4d72f19057e79719458058e9b32f869acd343d70cf912eb4bea77b"
+  },
+  "grok_raw_sha256": "d46f6a8a6b9b29b99aee6e2e82ffa72e6e6532a05a7f9294471af74e697aa271",
+  "verification": {
+    "source_selected": {
+      "passed": 13,
+      "failed": 0,
+      "log_sha256": "c655888e067a63f54cafef0cf52c002d14f091f11f1ed991070997a82828b8df"
+    },
+    "gateway_baseline": {
+      "passed": 2,
+      "failed": 0,
+      "log_sha256": "84ad578cbfd04b66349871225cbb4a51d339c4eced72ac6de20904f213dd9dfd",
+      "kind": "in-process Spring WebTestClient/route policy without owner connection"
+    },
+    "typecheck": "PASS",
+    "h5_index_sha256": "44722a6712a1b46ce6f4d1c4db327d9484a1a92fc52acb0c7391aa3e82e1d2bb",
+    "h5_files": 800,
+    "app_source_files": {
+      "assets/index-07AzL6r0.js": "0beeced6599e057bc30ddea60fc877e62c0c031316b4f9015c3e8ff8f6600681",
+      "assets/index-D-OnJbye.css": "218e72b9d363882f5107abbd3faa0504f4796bcb493081d6683b0ac453b0a788",
+      "index.html": "7d443a03cf0ce5b37f7ba38d49e20dfed4c341543217db80dbfc38f28891df7a"
+    }
+  },
+  "endpoint_status": {
+    "legacy": "GET /api/v1/mastery/mistakes/{mistakeId} has no exact gateway execution or learning-service detail handler. 404 canonical_route_target_unavailable on checked gateway policy.",
+    "canonical": "GET /api/v1/learning/repairs/{repairId} has no executed path, owner handler or confirmed identity/shape compatibility.",
+    "list": "Current B3 list emits OPEN/REVIEW; the mobile strict parser only accepts the documented B2 enum. Owner-side repair separately tracked."
+  },
+  "limitations": [
+    "No signed-in browser was run on this H5 for MB-016 in B60.",
+    "App source compiled. Native packaging, real device and no-DOM runtime NOT_RUN.",
+    "No service ownership acceptance or deployment.",
+    "All page trace status remains TRACE_PENDING."
+  ]
+}
