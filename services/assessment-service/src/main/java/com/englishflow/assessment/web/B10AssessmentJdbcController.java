@@ -1020,8 +1020,9 @@ public class B10AssessmentJdbcController {
     private void appendOutbox(String eventName, String schema, int version, String aggregateType,
             String aggregateId, String subject, String requestId, String traceId,
             String dedupeKey, Map<String, Object> payload, Instant now) {
+        String eventId = UUID.randomUUID().toString();
         Map<String, Object> envelope = new LinkedHashMap<>();
-        envelope.put("eventId", UUID.randomUUID().toString());
+        envelope.put("eventId", eventId);
         envelope.put("eventName", eventName);
         envelope.put("schema", schema);
         envelope.put("version", version);
@@ -1041,7 +1042,7 @@ public class B10AssessmentJdbcController {
                      status, attempt_count, available_at, created_at, occurred_at, request_id, trace_id)
                 VALUES (?, ?, ?, ?, ?, ?, 'PENDING', 0, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE dedupe_key = VALUES(dedupe_key)
-                """, UUID.randomUUID().toString(), aggregateId, eventName, schema, dedupeKey,
+                """, eventId, aggregateId, eventName, schema, dedupeKey,
                 json(envelope), Timestamp.from(now), Timestamp.from(now), Timestamp.from(now), requestId, traceId);
     }
 

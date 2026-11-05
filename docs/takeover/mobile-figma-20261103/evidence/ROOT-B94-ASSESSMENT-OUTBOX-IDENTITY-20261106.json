@@ -1,0 +1,26 @@
+{
+  "batch": "B94",
+  "at": "2026-11-06T02:55:57.282716+08:00",
+  "integration_base": "7e92282d585a9bb678660226558bb4af76ea39a0",
+  "source_base": "6c4036e879027c541a646757b975ca204a1deaaa",
+  "implementation": "Grok CLI 92",
+  "source_file": {
+    "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+    "sha256": "7e121f761b7cdd1d3a2052deb910abefc3daf064276d3b55d9c35d51fe374a37",
+    "bytes": 75961
+  },
+  "worker_report_sha256": "9767653e96ef0e3f2d47bfd7a04657b6faffec3d78f923b2feb5499e4d327d18",
+  "tests": {
+    "assessment_maven": {
+      "total": 155,
+      "passed": 153,
+      "failed": 0,
+      "skipped": 2
+    },
+    "compiled_jdbc_and_envelope_identity": "3/3",
+    "baseline": "REPRODUCED_SPLIT_EVENT_ID"
+  },
+  "verification_boundary": "Compiled production helper with captured JDBC update arguments, no persistent writes. Existing idempotency SQL retained.",
+  "historical_outbox_migration_and_delivery": "NOT_RUN",
+  "learning_projection_and_deploy": "NOT_RUN"
+}

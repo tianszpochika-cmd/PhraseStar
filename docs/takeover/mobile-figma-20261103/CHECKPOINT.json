@@ -5681,5 +5681,12 @@
     "h5_index_sha256": "8493c786ac57fe421742f5640eb52a6f6f4c82d9fcfafe1cc3a853290a30fa69",
     "real_browser_and_completion": "NOT_RUN",
     "evidence": "evidence/ROOT-B93-TODAY-DUE-ROWS-20261106.json"
+  },
+  "integration_batch_94_assessment_outbox_identity": {
+    "state": "ACCEPTED_LOCAL_COMPILED_B10_OUTBOX_IDENTITY",
+    "tests": "153_PASS_2_SKIP",
+    "binding": "3/3",
+    "broker_and_learning_projection": "NOT_RUN",
+    "evidence": "evidence/ROOT-B94-ASSESSMENT-OUTBOX-IDENTITY-20261106.json"
   }
 }

@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B94-20261106] 测评 B10 事件共用数据库行和消息编号，保留事务和幂等写入。
+
 - [MOBILE-FIGMA-B93-20261106] 今日任务按实际到期记录呈现就绪清单，验证旧课程任务入口、延期与空态回归。
 
 - [MOBILE-FIGMA-B92-20261106] 移动 App 接入 Keychain／Android Keystore 源码桥接，保留宿主兼容并验证 App、H5 产物隔离。
