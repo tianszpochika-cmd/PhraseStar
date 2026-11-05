@@ -704,7 +704,8 @@
         "accessibility": "LOCAL_DISABLED_STATE_CHECK_SCREEN_READER_NOT_RUN",
         "real_api": "LOCAL_SYNTHETIC_START_READ_FIRST_CHECKPOINT_PASS_DEPLOYED_AND_COMPLETION_NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md"
+        "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md",
+        "current_h5_owner_browser": "LOCAL_CHROME_TARGET_AND_FIRST_QUESTION_PASS_B89"
       },
       "current_job": null,
       "resume_evidence_20261105": "B49 frozen exact product source and portable tests. DEC-04 and TRACE_PENDING remain.",
@@ -3705,7 +3706,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T01:22:30.918024+08:00",
+  "updated_at": "2026-11-06T01:24:56.212920+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5603,5 +5604,23 @@
     "completion_plan_native_deploy": "NOT_RUN",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B88-LOCAL-PLACEMENT-CHECKPOINT-20261106.json"
+  },
+  "integration_batch_89_current_h5_placement_first_question": {
+    "state": "ACCEPTED_LOCAL_H5_TARGET_AND_PLACEMENT_FIRST_QUESTION",
+    "owner_source": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+    "h5_index_sha256": "983d33d4c7bb6ae8a9586970790d906f795ebc4cfe640c0c18166cac3837de73",
+    "iam_http": "184/184",
+    "owner_assertions": "70/70",
+    "target_put": 200,
+    "keyboard_placement_create": 201,
+    "first_item": 266001,
+    "question_count": "1/10",
+    "accepted_count": "0/10",
+    "owner_db_sessions": 1,
+    "owner_db_answers": 0,
+    "browser_submit_plan_native_deploy": "NOT_RUN",
+    "first_run": "OBSERVER_LATE_TARGET_REVALIDATION_FALSE_NEGATIVE",
+    "cleanup": "PASS",
+    "evidence": "evidence/ROOT-B89-CURRENT-H5-PLACEMENT-FIRST-QUESTION-20261106.json"
   }
 }

@@ -1,0 +1,80 @@
+{
+  "batch": "B89",
+  "at": "2026-11-06T01:24:56.212920+08:00",
+  "owner_source": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+  "h5_batch": "B86",
+  "h5_index_sha256": "983d33d4c7bb6ae8a9586970790d906f795ebc4cfe640c0c18166cac3837de73",
+  "scope": "real current local H5 Chrome target save, owner readback, keyboard start and first real placement question",
+  "authors": [
+    "DSH CLI 37",
+    "Grok CLI 77",
+    "Grok CLI 79"
+  ],
+  "iam_separate": "184/184",
+  "learner_browser_owner_checks": "70/70",
+  "target": {
+    "browser_puts": 1,
+    "http": 200,
+    "exact_owner_readback_before_route": true,
+    "programmatic_writes": 0,
+    "preference_or_consent_writes": 0
+  },
+  "placement": {
+    "keyboard_enter_count": 1,
+    "browser_posts": 1,
+    "http": 201,
+    "programmatic_posts": 0,
+    "bank_version": 266100,
+    "item_id": 266001,
+    "stem_matches_owner": true,
+    "options_matching": 3,
+    "question_index": 1,
+    "questions_total": 10,
+    "accepted_answers": 0,
+    "submit_disabled": true,
+    "synthetic_business_responses": 0
+  },
+  "owner_db": {
+    "bank_items": 10,
+    "placement_sessions": 1,
+    "placement_responses": 0,
+    "placement_idempotency_records": 1
+  },
+  "first_run": {
+    "status": "FAIL_OBSERVER_ORDERING",
+    "placement_http": 201,
+    "placement_dom_checks": "PASS",
+    "failure": "Later exact target revalidation overwrote the observer chronology after its first gate passed.",
+    "db_readback": "NOT_RUN",
+    "local_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/placement-browser-runtime-77-root"
+  },
+  "observer_fix": {
+    "before": "b318a2e391065415ce1f1627414bdca2b884c3b495fdb27216bb0dde313a0642",
+    "after": "59a7047fb74401ac16077191dd89d68ebf905d3aeaa3d16c6eb510f762c0b28d",
+    "changed_lines": 2,
+    "focused_ordering_cases": "4/4",
+    "product_source_changed": false
+  },
+  "coverage_limits": {
+    "plan_today_get_without_http_status": 1,
+    "plan_writes": 0,
+    "browser_submit": "NOT_RUN",
+    "browser_session_get": "NOT_RUN",
+    "full_placement_dec04_native_deployed": "NOT_RUN"
+  },
+  "cleanup": {
+    "both_runs": "PASS",
+    "released_ports": [
+      18070,
+      18087,
+      18088,
+      18089,
+      18090,
+      18091,
+      18183,
+      13306
+    ],
+    "db_tls_and_private_scratch_released": true
+  },
+  "local_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/placement-browser-observer-79-retry-root"
+}
