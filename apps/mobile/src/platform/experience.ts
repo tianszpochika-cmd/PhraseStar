@@ -2,10 +2,21 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { mobileExperienceVariables } from '@englishflow/design-tokens/mobile'
 import { mobileExperienceMessages } from '@englishflow/i18n/mobile-experience'
-import { createAdaptivePerformanceEngine, type PerformanceLevel } from '@englishflow/performance'
+import { createAdaptivePerformanceEngine, PERFORMANCE_LEVELS, type PerformanceLevel, type PerformanceSignal } from '@englishflow/performance'
 import { mobileI18n, mobileThemeController } from './v2-foundation'
+import { bindMobilePerformanceRuntime, syncMobilePerformanceSampling } from './mobile-performance-runtime'
 import { getUniRuntime, openUniPage } from './uni-runtime'
 import { resolveMobileMotion } from '../domain/experience'
+
+export {
+  disposeMobilePerformanceRuntime,
+  MOBILE_FRAME_CADENCE_MS,
+  MOBILE_FRAME_MAX_GAP_MS,
+  MOBILE_FRAME_MIN_SAMPLES,
+  MOBILE_FRAME_WINDOW_MS,
+  startMobilePerformanceRuntime,
+  stopMobilePerformanceRuntime,
+} from './mobile-performance-runtime'
 
 for (const [locale, messages] of Object.entries(mobileExperienceMessages)) mobileI18n.registerMessages(locale, messages)
 const uiLocale = ref(mobileI18n.locale)
@@ -52,15 +63,43 @@ function isQualityLevel(value: string): value is PerformanceLevel {
   return value === 'Ultra' || value === 'High' || value === 'Medium' || value === 'Performance'
 }
 
+function levelRank(level: PerformanceLevel): number {
+  const index = PERFORMANCE_LEVELS.indexOf(level)
+  return index < 0 ? PERFORMANCE_LEVELS.length : index
+}
+
 let runtimeHydrated = false
 let hydrating = false
 let motionChosen = false
 let qualityChosen = false
 let qualitySettled = false
 let persistNeedsRetry = false
+/** Session-only safety floor. Passive restore keeps the live level and the saved choice until an explicit selection or reset. */
+let sessionSafetyOverride = false
+let chosenQuality: PerformanceLevel | null = null
 
-export const mobileExperienceEngine = createAdaptivePerformanceEngine({ storage })
-mobileExperienceEngine.restore()
+const engine = createAdaptivePerformanceEngine({ storage })
+export const mobileExperienceEngine = engine
+
+/** Runtime measurements only. Direct engine.observe remains the unwrapped engine method. */
+export function reportMobilePerformanceSignal(signal: PerformanceSignal) {
+  const before = mobileExperienceEngine.level
+  const next = mobileExperienceEngine.observe(signal)
+  if (levelRank(next.level) > levelRank(before)) sessionSafetyOverride = true
+  return next
+}
+
+/** Hydration and B4 passive restore. An active session override does not read or write the saved level. */
+export function passiveRestoreMobileQuality() {
+  if (sessionSafetyOverride) return mobileExperienceEngine.state
+  return mobileExperienceEngine.restore()
+}
+
+bindMobilePerformanceRuntime({
+  observe: (signal) => { reportMobilePerformanceSignal(signal) },
+  level: () => mobileExperienceEngine.level,
+})
+passiveRestoreMobileQuality()
 export const mobileMotionMode = ref('FULL')
 
 function markUnstored(): void {
@@ -84,9 +123,12 @@ export function setMobileMotion(mode: string): void {
 
 export function setMobileQuality(level: PerformanceLevel): void {
   mobileExperienceEngine.setLevel(level, 'manual')
+  chosenQuality = level
   qualityChosen = true
   qualitySettled = false
+  sessionSafetyOverride = false
   if (!confirmWrite(QUALITY_KEY, level)) markUnstored()
+  syncMobilePerformanceSampling()
 }
 
 export function restoreMobileQualityDefault(): PerformanceLevel {
@@ -95,13 +137,20 @@ export function restoreMobileQualityDefault(): PerformanceLevel {
   } catch {
     return mobileExperienceEngine.state.level
   }
+  sessionSafetyOverride = false
+  chosenQuality = null
   const read = readStorage(QUALITY_KEY)
   if (read.status !== 'missing') {
-    if (read.status === 'value' && isQualityLevel(read.value)) mobileExperienceEngine.setLevel(read.value, 'restore')
+    if (read.status === 'value' && isQualityLevel(read.value)) {
+      chosenQuality = read.value
+      mobileExperienceEngine.setLevel(read.value, 'restore')
+    }
+    syncMobilePerformanceSampling()
     return mobileExperienceEngine.state.level
   }
   qualityChosen = false
   qualitySettled = true
+  syncMobilePerformanceSampling()
   return mobileExperienceEngine.state.level
 }
 
@@ -123,8 +172,10 @@ export function hydrateMobileExperienceRuntime(): void {
   persistNeedsRetry = false
   try {
     let ok = true
-    if (qualityChosen) ok = confirmWrite(QUALITY_KEY, mobileExperienceEngine.state.level) && ok
-    else if (!qualitySettled) mobileExperienceEngine.restore()
+    if (qualityChosen) {
+      const levelToSave = chosenQuality ?? mobileExperienceEngine.state.level
+      ok = confirmWrite(QUALITY_KEY, levelToSave) && ok
+    } else if (!qualitySettled) passiveRestoreMobileQuality()
     if (motionChosen) ok = applyMotionValue(mobileMotionMode.value, true) && ok
     else ok = applyStoredMotion() && ok
     if (ok && !persistNeedsRetry) runtimeHydrated = true

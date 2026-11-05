@@ -2818,7 +2818,15 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B40-PLATFORM.md",
         "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN",
-        "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate"
+        "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate",
+        "b80_mobile_performance_runtime": {
+          "status": "SCOPED_MOBILE_PERFORMANCE_RUNTIME_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B80-MOBILE-PERFORMANCE-RUNTIME-20261105.json",
+          "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+          "source_tests": 661,
+          "browser_scenarios": 43,
+          "native_pressure": "NOT_RUN"
+        }
       },
       "pause_handoff": "PAUSE-20261104.md",
       "source_operation_trace_b59": {
@@ -3654,7 +3662,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:29:51.719032+08:00",
+  "updated_at": "2026-11-05T23:41:36.883698+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5438,5 +5446,15 @@
     "independent_http_checks": 184,
     "focused_iam_tests": 41,
     "external_reset_delivery_and_deployment": "NOT_RUN"
+  },
+  "integration_batch_80_mobile_performance_runtime": {
+    "scope": "MB-027 visible H5 sampler and supported native memory-warning bridge",
+    "status": "SCOPED_MOBILE_PERFORMANCE_RUNTIME_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B80-MOBILE-PERFORMANCE-RUNTIME-20261105.json",
+    "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+    "source_tests": 661,
+    "browser_scenarios": 43,
+    "native_pressure": "NOT_RUN",
+    "telemetry": "UNPROVISIONED"
   }
 }

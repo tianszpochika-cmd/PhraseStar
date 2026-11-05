@@ -5,7 +5,7 @@ import { MobileApiError } from '../api/client'
 import { authorizeB4OfflinePackage, cleanupB4OfflineDownload, createB4GameSession, equipB4Loadout, finishB4GameSession, getB4AvatarProfile, getB4AvatarResources, getB4Profile, getB4Season, getB4Streak, joinB4Room, leaveB4Room, listB4AvatarItems, listB4Games, listB4Loadouts, listB4Notifications, listB4OfflinePackages, listB4Quests, listB4Rooms, pauseB4GameSession, pushB4SyncEvents, readAllB4Notifications, readB4Notification, rescueB4Streak, resumeB4GameSession, saveB4AvatarProfile, saveB4StreakSettings, sendB4Interaction, startB4Focus, submitB4GameEvent, updateB4Focus, updateB4OfflineDownload, getB4GameSession } from '../api/b4'
 import { B4_GAME_RELEASE_PHASES, B4_PERFORMANCE_LEVELS, createB4ClientEventId, isRecord, numberValue, recordList, recordValue, stringValue, unwrapB4, type B4AvatarItem, type B4AvatarProfile, type B4AvatarResources, type B4FocusAction, type B4FocusSession, type B4GameCatalogItem, type B4GameCode, type B4GameFinishResult, type B4GameSession, type B4Galaxy, type B4InteractionCode, type B4Loadout, type B4Notification, type B4OfflinePackage, type B4PerformanceLevel, type B4Profile, type B4Quest, type B4Room, type B4Season, type B4Status, type B4Streak, type B4SyncEvent, type B4GameReleasePhase } from '../domain/b4'
 import { createB4OfflineQueue } from '../platform/b4-offline'
-import { mobileExperienceEngine, setMobileQuality } from '../platform/experience'
+import { mobileExperienceEngine, passiveRestoreMobileQuality, setMobileQuality } from '../platform/experience'
 import { useSessionStore } from './session'
 import { createB4ModerationReport, getB4ChestProbability, getB4SocialLeaderboard, listB4Chests, openB4Chest } from '../api/b4'
 import { B4_REPORT_REASONS, type B4ChestOpenResult, type B4ChestProbability, type B4Leaderboard, type B4LeaderboardEntry, type B4ModerationReceipt, type B4ReportReason, type B4RewardChest } from '../domain/b4'
@@ -98,7 +98,7 @@ export const useB4Store = defineStore('b4', () => {
   }
   watch(() => session.identityRevision, resetPersonal, { flush: 'sync' })
   function refreshQueue(): void { offlineRecords.value = offline.records.slice() }
-  function restore(): void { mobileExperienceEngine.restore() }
+  function restore(): void { passiveRestoreMobileQuality() }
   function setPerformance(level: B4PerformanceLevel): void { setMobileQuality(level) }
   function fail(error: unknown, fallback: string): void { if (error === staleIdentity) return; if (offlineError(error)) online.value = false; const httpStatus = error instanceof MobileApiError ? error.status : 0; status.value = offlineError(error) ? 'offline' : httpStatus === 401 || httpStatus === 403 ? 'permission' : httpStatus === 409 ? 'recovery' : 'error'; lastError.value = message(error, fallback) }
   async function guardedAction<T>(key: string, action: () => Promise<T>): Promise<T | undefined> { const owner = currentOwner(); if (!owner || actionKey.value) return undefined; actionKey.value = key; try { return await action() } finally { if (session.verifiedSubject === owner.subject && session.identityRevision === owner.revision && actionKey.value === key) actionKey.value = null } }

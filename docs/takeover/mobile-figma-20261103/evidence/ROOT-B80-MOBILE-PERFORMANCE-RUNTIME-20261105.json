@@ -1,0 +1,67 @@
+{
+  "scope": "MB-027 current mobile shared runtime quality, visible H5 frames and native memory-warning lifecycle",
+  "author": "Grok64/68/69/70 source, Root verification",
+  "source_base": "8e16cc14f4dbc636c54eb60a3b8eec388a5baeda",
+  "integration_parent": "f74974b25c4f1d6cd5683ac646bd7c8e66f29ebc",
+  "source_files": [
+    {
+      "path": "apps/mobile/src/App.vue",
+      "sha256": "ad357d1cd6ea023e4f934d4a12f6049aab10b6592da52297edaead514e92aaa0",
+      "bytes": 5140
+    },
+    {
+      "path": "apps/mobile/src/platform/experience.ts",
+      "sha256": "8b8f7a3f7abd2bb9b789759c36a899a790b161499234a46c4fb41756d4a5400c",
+      "bytes": 9675
+    },
+    {
+      "path": "apps/mobile/src/platform/mobile-performance-runtime.ts",
+      "sha256": "0f764c4c5f4359a9b7c1531bc421f43ad977215eb5662b676c3d47c94b4f6b96",
+      "bytes": 8653
+    },
+    {
+      "path": "apps/mobile/src/stores/b4.ts",
+      "sha256": "e1bb3afdff82ff20eca6dda9a1a320e69a95f96a2d1530380af0e19c51f7c2b2",
+      "bytes": 41776
+    },
+    {
+      "path": "apps/mobile/tests/b4-performance-sync.test.mjs",
+      "sha256": "cc8e835550f931a80562faa152c6018bb9b1581c5deb7d646d27ab99bac60ea4",
+      "bytes": 7610
+    },
+    {
+      "path": "apps/mobile/tests/mobile-performance-runtime.test.mjs",
+      "sha256": "73d4a84427efa2fb6d933f5f0ad7b389fc42d2a5cd5fae0e9de4f5da61887c67",
+      "bytes": 29667
+    }
+  ],
+  "focused_pre_cleanup": {
+    "passed": 42,
+    "log_sha256": "d8f64ce5828c6a5637157903ce0f28eceb228c64a462b0809d851ad335da37c5"
+  },
+  "current_verification": {
+    "source_tests_passed": 661,
+    "typecheck": "PASS",
+    "h5_build": "PASS",
+    "app_source_build": "PASS",
+    "app_source_files": 3,
+    "h5_index_sha256": "58641498bc70b751ec993d27d558addc740e2b613d93bdb8bf7841c3bb65070e",
+    "h5_tree_manifest_sha256": "309fb733e1cc849baa40e498d3028530fd6bfce5767a778bc81864b3438be7dd",
+    "h5_files": 797,
+    "daily_browser_scenarios": 43,
+    "daily_browser_checks": 477,
+    "browser_screenshots": 23,
+    "browser_evidence_sha256": "7a0b24c4f9f362672f2fd035a5d101a317eddd3dff143dad9b7cddb1ab5f29d1"
+  },
+  "prior_fixture_failure": {
+    "total": 41,
+    "passed": 30,
+    "failed": 11,
+    "log_sha256": "6afe6bd6ee7bdf6474224d62bde3297aee89980757f75bb9bf65f9c4b093226b",
+    "reason": "Fake document existed before Vue runtime-dom was loaded; new assertions were not reached."
+  },
+  "local_artifact_basename": "performance-runtime-70-root",
+  "device_real_frame_memory_reader_and_deployment": "NOT_RUN",
+  "anonymous_performance_telemetry": "UNPROVISIONED",
+  "trace": "TRACE_PENDING"
+}

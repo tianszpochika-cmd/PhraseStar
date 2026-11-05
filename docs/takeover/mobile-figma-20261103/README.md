@@ -16,6 +16,7 @@
 - [报告分享 B77](reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md#b77-本机-gateway-报告分享) 本机 Gateway 和学习服务的并发签发、冲突、旧调用与撤销读回通过。
 - [设备页浏览器 B78](reviews/INTEGRATION-B23-DEVICES.md#b78-本机-h5-设备退出) 真实页面键盘确认、单次退出、读回后成功提示及目标会话刷新拒绝通过。
 - [设备退出 B76](reviews/INTEGRATION-B23-DEVICES.md#b76-本机设备退出接口) 本机 Gateway 与 IAM 通过设备列表、同键重试、单设备撤销及刷新拒绝验证。
+- [运行时画质 B80](reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md) 前台持续低帧率与原生内存告警降档，保存的手动画质保持。661 项移动端源码和 43 个日常 H5 场景通过。
 - [日常 H5 入口 B74](reviews/INTEGRATION-B74-CURRENT-H5-RUNNER.md) 默认构建的匿名与关闭页检查覆盖 43 个场景。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。
 - [词汇与语法 B54](reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md) 验证复习队列、冷启动、同步回执与语法交互。新增 MB-012、MB-013，累计 32/33 条本地 UI 候选。

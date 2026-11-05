@@ -54,6 +54,7 @@ function loadStore({ engine, session, qualityCalls = [] }) {
     '../platform/experience': {
       mobileExperienceEngine: engine,
       setMobileQuality(level) { qualityCalls.push(level); engine.setLevel(level, 'manual') },
+      passiveRestoreMobileQuality() { return engine.restore() },
     },
     './session': { useSessionStore: () => session },
   }
@@ -140,6 +141,8 @@ test('b4 source no longer owns a local performance engine or disposes the global
   const source = fs.readFileSync(path.join(root, storePath), 'utf8')
   assert.doesNotMatch(source, /createAdaptivePerformanceEngine/u)
   assert.match(source, /mobileExperienceEngine/u)
+  assert.match(source, /passiveRestoreMobileQuality\(\)/u)
+  assert.doesNotMatch(source, /mobileExperienceEngine\.restore\(\)/u)
   assert.match(source, /setMobileQuality/u)
   assert.doesNotMatch(source, /engine\.dispose/u)
   assert.match(source, /dispose: \(\) => \{ unsubscribe\(\) \}/u)
