@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-05",
+  "scope": "MB-005",
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "figma": {
+    "file": "UpcXTamTjwrb5OQg9WJiFu",
+    "node": "270:3110",
+    "dark390": {
+      "card": [
+        24,
+        235,
+        342,
+        242
+      ],
+      "brandTop": 60
+    }
+  },
+  "sourceSnapshots": [
+    "grok/resume-forbidden-39-source-snapshot",
+    "grok/resume-20261105-forbidden-observer-14"
+  ],
+  "source": {
+    "apps/mobile/src/pages/forbidden/forbidden.vue": "ec5cd80d72075c1bbfeff395b91b4e3cdb6346e66742e1911103568b12f25ee0",
+    "apps/mobile/src/static/figma-forbidden-270-3110/2d5ef976-9cf8-4009-ab82-25cc08972ab5.svg": "26bace38df70f54fe95d910c443cd3ec180d129a66253f90b78a62cb7aac1047",
+    "apps/mobile/src/static/figma-forbidden-270-3110/58acf21e-1d4e-4951-95cb-f9cb7ab83774.svg": "a0050124bcd170edc131255a69ba4a8e99dce92d668bf85e2e1a1a0f85872950",
+    "apps/mobile/src/static/figma-forbidden-270-3110/7e7a30be-58d2-4996-8a79-c66b7d718b71.svg": "8a3ae85d0f1afec13671e781e0bb0387d90d1f311a5504b65422a49c275acb31",
+    "packages/design-tokens/src/mobile.ts": "a09f06f4cbd4e18c6c8bcc373925e9126cb1eba3ea12a0746f7fbc1395afbb06"
+  },
+  "build": {
+    "target": "@englishflow/mobile",
+    "mobileTypecheck": "PASS",
+    "designTokenTypecheck": "PASS",
+    "h5": "PASS",
+    "indexSha256": "36b52214ef8cb8669fabe079507ac52fe40473c30d9fc5dadf47613d7790e184",
+    "files": 766
+  },
+  "verification": {
+    "nodeTests": 10,
+    "combinedChecks": 19,
+    "screenshots": 14,
+    "safeReturnIndependentChecks": 9,
+    "mode": "immutable H5 with synthetic IAM/Gateway",
+    "failedFirstObserverPreserved": true
+  },
+  "limits": {
+    "realServices": "NOT_RUN",
+    "nativeDevices": "NOT_RUN",
+    "screenReader": "NOT_RUN",
+    "deployment": "NOT_RUN",
+    "trace": "TRACE_PENDING"
+  },
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/forbidden-39-review",
+  "routeCountDelta": 1,
+  "localUiCandidates": 30,
+  "formalRoutes": 33
+}

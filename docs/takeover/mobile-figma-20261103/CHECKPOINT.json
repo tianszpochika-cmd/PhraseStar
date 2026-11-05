@@ -447,7 +447,7 @@
       "name": "访问受限",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_BUILT_H5_REVIEW_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "拒绝原因、安全出口和退出；403 不伪装空态或越过 Gate",
       "services_data_owners": [
         "iam-service"
@@ -508,17 +508,17 @@
         "onboarding-adult-verdict.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_270_3110_342x242_MEASURED",
+        "interaction": "COMPILED_H5_19_COMBINED_PASS_SYNTHETIC",
+        "h5": "PASS_SHA256_36b52214ef8cb8669fabe079507ac52fe40473c30d9fc5dadf47613d7790e184",
+        "cross_viewport": "320_390_768_THREE_THEME_MATRIX",
+        "accessibility": "LOCAL_FOCUS_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B53-FORBIDDEN.md"
       },
-      "current_job": "grok/resume-20261105-forbidden-compiled-38",
-      "resume_evidence_20261105": "dark 270:3110 source frozen and H5 built; original observer expects dev server"
+      "current_job": null,
+      "resume_evidence_20261105": "F39 exact visual/token scope and 19 combined checks; DSH safe re-login and withdrawal cross-check."
     },
     {
       "id": "MB-006",
@@ -4561,9 +4561,9 @@
     "doD": false
   },
   "active_resume_review_20261105": {
-    "at": "2026-11-05T08:24:44.055412+00:00",
+    "at": "2026-11-05T08:37:59.009638+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 29,
+    "local_ui_candidates": 30,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4582,9 +4582,9 @@
       {
         "id": "MB-005",
         "cli": "grok",
-        "job": "grok/resume-20261105-forbidden-compiled-38",
-        "state": "running",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-forbidden-compiled-38.checkpoint.json"
+        "job": "grok/resume-20261105-forbidden-observer-14",
+        "state": "exited_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-forbidden-observer-14.checkpoint.json"
       },
       {
         "id": "MB-006",
@@ -4724,5 +4724,15 @@
       "DEC-04 feedback timing",
       "real services and device/reader/deployment evidence"
     ]
+  },
+  "integration_batch_53_forbidden": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "36b52214ef8cb8669fabe079507ac52fe40473c30d9fc5dadf47613d7790e184",
+    "evidence": "evidence/ROOT-B53-FORBIDDEN-20261105.json",
+    "review": "reviews/INTEGRATION-B53-FORBIDDEN.md",
+    "routeCountDelta": 1,
+    "localUICandidateRoutes": 30,
+    "formalRoutes": 33,
+    "doD": false
   }
 }

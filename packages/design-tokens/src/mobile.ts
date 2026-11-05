@@ -476,3 +476,48 @@ function mobileSocialRoomVariables(theme: ResolvedTheme): Record<string, string>
   if (theme === 'light') return { '--yx-social-room-tile': '#13C88E' }
   return { '--yx-social-room-tile': 'var(--yx-success-soft)' }
 }
+
+/**
+ * Forbidden screen 270:3110. Light keeps the page semantic surface.
+ * Dark reuses the closed card, closed CTA, profile avatar and profile card
+ * shadow where those strings match the frame. The page wash, wordmark,
+ * CTA label and dark inset have no equivalent role. High contrast uses the
+ * existing semantic pair and drops image, blur and shadow.
+ */
+export function mobileForbiddenRoles(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-forbidden-page': 'var(--v2-bg)',
+      '--yx-forbidden-page-image': 'none',
+      '--yx-forbidden-mark': 'var(--v2-brand)',
+      '--yx-forbidden-card': 'var(--v2-card)',
+      '--yx-forbidden-card-border': 'var(--v2-line)',
+      '--yx-forbidden-card-shadow': 'none',
+      '--yx-forbidden-backdrop': 'none',
+      '--yx-forbidden-logo': 'var(--v2-brand)',
+      '--yx-forbidden-logo-image': 'none',
+      '--yx-forbidden-cta': 'var(--v2-brand)',
+      '--yx-forbidden-cta-image': 'none',
+      '--yx-forbidden-on-cta': 'var(--v2-inverse)',
+      '--yx-forbidden-cta-shadow': 'none',
+      '--yx-forbidden-actions-shadow': 'none',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-forbidden-page': dark ? '#161826' : 'var(--v2-bg)',
+    '--yx-forbidden-page-image': dark ? 'linear-gradient(180deg, #211833 0%, #161826 100%)' : 'none',
+    '--yx-forbidden-mark': dark ? '#ded0ff' : 'var(--v2-brand)',
+    '--yx-forbidden-card': dark ? 'var(--closed-card-bg)' : 'var(--v2-card)',
+    '--yx-forbidden-card-border': dark ? 'var(--closed-card-border)' : 'var(--v2-line)',
+    '--yx-forbidden-card-shadow': dark ? 'var(--yx-profile-card-shadow), inset 0 1px 0 rgba(255,255,255,0.7)' : 'var(--v2-shadow)',
+    '--yx-forbidden-backdrop': dark ? 'blur(10px)' : 'none',
+    '--yx-forbidden-logo': '#6d4ae0',
+    '--yx-forbidden-logo-image': 'var(--yx-profile-avatar-image)',
+    '--yx-forbidden-cta': dark ? 'var(--yx-auth-cta-color)' : 'var(--v2-brand)',
+    '--yx-forbidden-cta-image': dark ? 'var(--closed-cta-background)' : 'var(--v2-grad)',
+    '--yx-forbidden-on-cta': dark ? '#fffaff' : 'var(--v2-inverse)',
+    '--yx-forbidden-cta-shadow': dark ? 'var(--closed-cta-shadow)' : 'none',
+    '--yx-forbidden-actions-shadow': dark ? '0 -4px 16px rgba(42, 31, 92, 0.08)' : 'var(--yx-settings-bottom-bar-shadow)',
+  }
+}
