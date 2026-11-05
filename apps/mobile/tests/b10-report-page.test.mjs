@@ -120,3 +120,121 @@ test('report page SFC compiles, uses reportPage copy and all original assets', (
     assert.match(svg, /<svg[^>]+width="[\d.]+"[^>]+height="[\d.]+"/, `root geometry ${ref}`)
   }
 })
+
+test('share date is an exact calendar day and a loading report is not a new period', () => {
+  assert.equal(mapper.reportShareDate('2026-10-12'), '2026-10-12')
+  assert.equal(mapper.reportShareDate('2026-10-14'), '2026-10-14')
+  for (const value of ['2026-02-31', '2026-10-12T00:00:00Z', ' 2026-10-12', '10/12/2026', '', null, undefined]) {
+    assert.equal(mapper.reportShareDate(value), null, String(value))
+  }
+  const same = { periodStart: '2026-10-12', periodEndExclusive: '2026-10-13' }
+  const boundToken = 'daily|2026-10-12|2026-10-13'
+  assert.equal(mapper.reportSharePeriodToken('daily', same), boundToken)
+  assert.equal(mapper.reportSharePeriodToken('weekly', { periodStart: '2026-10-14', periodEndExclusive: '2026-10-21' }), 'weekly|2026-10-14|2026-10-21')
+  for (const status of ['loading', 'idle', 'offline', 'error', 'stale', 'forbidden']) {
+    assert.equal(mapper.confirmedReportSharePeriodChanged({
+      boundToken,
+      status,
+      kind: 'daily',
+      period: { periodStart: '2026-10-13', periodEndExclusive: '2026-10-14' },
+    }), false, status)
+  }
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'ready', kind: 'daily', period: same }), false)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'empty', kind: 'daily', period: same }), false)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'ready', kind: 'daily', period: { periodStart: '2026-10-13', periodEndExclusive: '2026-10-14' } }), true)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'empty', kind: 'weekly', period: { periodStart: '2026-10-14', periodEndExclusive: '2026-10-21' } }), true)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'ready', kind: 'daily', period: null }), true)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken: null, status: 'ready', kind: 'daily', period: null }), false)
+  assert.equal(mapper.confirmedReportSharePeriodChanged({ boundToken, status: 'ready', kind: 'mistakes', period: null }), false)
+})
+
+test('hide invalidates late share replies and a confirmed replacement still clears the attempt', () => {
+  const source = read(PAGE)
+  const hideAt = source.indexOf('onHide(() => {')
+  assert.ok(hideAt > 0)
+  const hide = source.slice(hideAt, source.indexOf('\n})', hideAt))
+  assert.match(hide, /shareGeneration \+= 1/)
+  assert.doesNotMatch(hide, /shareAttempt|shareRef|clearShare|issueShare|revokeShare|copyShare/)
+  assert.match(source, /function clearShare\(\): void \{\n  shareGeneration \+= 1\n  shareAttempt = null\n  shareRef\.value = ''/)
+  assert.match(source, /if \(!confirmedReportSharePeriodChanged\(\{/)
+  assert.match(source, /date: reportShareDate\(period\.periodStart\)/)
+  assert.match(source, /idempotencyKey: attempt\.key, date: attempt\.date/)
+  assert.match(source, /if \(availability\.value !== 'READY'\) return/)
+  assert.match(source, /generation !== shareGeneration \|\| revision !== session\.identityRevision \|\| shareAttempt !== attempt/)
+  const revoke = source.slice(source.indexOf('async function revokeShare'), source.indexOf('function copyTextToClipboard'))
+  assert.match(revoke, /generation !== shareGeneration \|\| revision !== session\.identityRevision/)
+  const copy = source.slice(source.indexOf('async function copyShare'), source.indexOf('function previewShare'))
+  assert.match(copy, /generation === shareGeneration/)
+  assert.match(source, /onBeforeUnmount\(\(\) => \{[\s\S]*?shareGeneration \+= 1\n  shareAttempt = null/)
+  assert.doesNotMatch(read('src/api/b10.ts'), /optionalReportShareDate|optionalReportShareKey/)
+})
+
+function loadIssueApi() {
+  const requests = []
+  let respond = async () => ({ ref: 'a'.repeat(32), publicPath: `/api/v1/public/learning/report-shares/${'a'.repeat(32)}` })
+  const compiled = ts.transpileModule(read('src/api/b10.ts'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
+  const module = { exports: {} }
+  class MobileApiError extends Error {
+    constructor(message, status, details) {
+      super(message)
+      this.status = status
+      this.details = details
+    }
+  }
+  const stubs = {
+    './client': { MobileApiError, mobileApiClient: { request: async (requestPath, options) => { requests.push({ path: requestPath, options }); return respond() } } },
+    './unavailable': { unavailableOperation: async () => { throw new Error('closed') } },
+    '../domain/grammar-reading-pack': { mentionsClosedMissing: () => false, PACK_CLOSED_COPY: 'closed' },
+    './b3': { listGrammarExercises: async () => [] },
+    '../domain/grammar-page': { grammarPreviewItems: () => [], grammarQuestionItemId: () => null, parseGrammarPointContent: () => null },
+    '../platform/client-id': { createClientId: (prefix = 'client') => `${prefix}-test` },
+  }
+  new Function('require', 'module', 'exports', compiled)((name) => {
+    if (!(name in stubs)) throw new Error(`unexpected import ${name}`)
+    return stubs[name]
+  }, module, module.exports)
+  return { api: module.exports.b10LearningApi, requests, setRespond(next) { respond = next }, MobileApiError }
+}
+
+test('a supplied share key is sent or rejected before the network, and a typed date is not reinterpreted', async () => {
+  const api = loadIssueApi()
+  const key = 'mb016-report-share-1234567890abcdef'
+  const legacy = await api.api.issueReportShare('daily')
+  assert.equal(legacy.ref, 'a'.repeat(32))
+  assert.equal(api.requests[0].path, '/learning/reports/DAILY/shares')
+  assert.equal(api.requests[0].options.method, 'POST')
+  assert.deepEqual(api.requests[0].options.data, {})
+  assert.equal(api.requests[0].options.header, undefined)
+
+  await api.api.issueReportShare('weekly', { idempotencyKey: key, date: '2026-10-14' })
+  assert.equal(api.requests[1].path, '/learning/reports/WEEKLY/shares?date=2026-10-14')
+  assert.equal(api.requests[1].options.header['Idempotency-Key'], key)
+  assert.deepEqual(api.requests[1].options.data, {})
+
+  await api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-02-31' })
+  assert.equal(api.requests[2].path, '/learning/reports/DAILY/shares?date=2026-02-31')
+  assert.equal(api.requests[2].options.header['Idempotency-Key'], key)
+
+  await api.api.issueReportShare('daily', { idempotencyKey: key, date: null })
+  assert.equal(api.requests[3].path, '/learning/reports/DAILY/shares')
+  assert.equal(api.requests[3].options.header['Idempotency-Key'], key)
+
+  const beforeReject = api.requests.length
+  await assert.rejects(
+    () => api.api.issueReportShare('daily', { idempotencyKey: 'short', date: 'not-a-date' }),
+    (error) => error instanceof api.MobileApiError && error.status === 400 && error.message === 'Idempotency-Key must contain 16-128 safe characters' && error.details.code === 'IDEMPOTENCY_KEY_INVALID',
+  )
+  await assert.rejects(() => api.api.issueReportShare('daily', { idempotencyKey: '' }), (error) => error.status === 400 && api.requests.length === beforeReject)
+  await assert.rejects(() => api.api.issueReportShare('daily', {}), (error) => error.status === 400)
+  assert.equal(api.requests.length, beforeReject)
+
+  api.setRespond(async () => { throw Object.assign(new Error('unavailable'), { status: 503 }) })
+  await assert.rejects(() => api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-10-12' }), (error) => error.status === 503 && error.message === 'unavailable')
+  api.setRespond(async () => ({ ref: 'not-a-ref' }))
+  await assert.rejects(() => api.api.issueReportShare('daily'), /分享链接没有生成/)
+
+  const web = fs.readFileSync(path.resolve(appRoot, '../learner-web/src/api/b10.ts'), 'utf8')
+  const webIssue = web.slice(web.indexOf('export async function issueReportShare'), web.indexOf('export async function revokeReportShare'))
+  assert.doesNotMatch(webIssue, /Idempotency-Key|idempotencyKey/)
+  assert.match(webIssue, /\/learning\/reports\/\$\{reportType\}\/shares`, \{\}, withB10Headers\(\)/)
+})

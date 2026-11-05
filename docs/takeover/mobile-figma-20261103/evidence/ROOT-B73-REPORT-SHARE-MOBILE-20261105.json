@@ -1,0 +1,51 @@
+{
+  "scope": "MB-016/017 mobile report-share retry and confirmed-period binding",
+  "authors": "Grok53 draft and Grok57 accepted revision; DSH25/26 browser observer; supervisor review and exact combined verification",
+  "integration_parent": "7b30cdf6a31ba1078219fd856a30b8f94bbc0977",
+  "applied_source": {
+    "apps/mobile/src/api/b10.ts": {
+      "grok_sha256": "6f58225dda85eddee43b98ac9e3f42b31c086daf197b068b9156565240cdc83c",
+      "combined_sha256": "6f58225dda85eddee43b98ac9e3f42b31c086daf197b068b9156565240cdc83c"
+    },
+    "apps/mobile/src/pages/b10-report/b10-report.vue": {
+      "grok_sha256": "690489b75330f9923fe71646fa62dca6141fdd3c4e5269a87b2e8e8b4f1db571",
+      "combined_sha256": "690489b75330f9923fe71646fa62dca6141fdd3c4e5269a87b2e8e8b4f1db571"
+    },
+    "apps/mobile/src/pages/b10-report/report-page.ts": {
+      "grok_sha256": "a533d16b2156b80940616f5341deeca415731220d03557e382623c306ac7dfc9",
+      "combined_sha256": "a533d16b2156b80940616f5341deeca415731220d03557e382623c306ac7dfc9"
+    },
+    "apps/mobile/tests/b10-report-page.test.mjs": {
+      "grok_sha256": "14476e376b106ebf6b2775d2333072598a52ebd4776d88761d602ba9f9cb48ff",
+      "combined_sha256": "68af3dde6e2b5bb2d1b74428b8b2b24e8fc0ad83b14f07e71d58ad4ff3af3133"
+    }
+  },
+  "mechanical_normalization": "One final blank line removed from the test file. Product source bytes match the accepted Grok57 snapshot.",
+  "artifact": {
+    "indexSha256": "1a76e5ba2f09234e58704512785628251a386b3e66e9b9de5cb48635965e23fc",
+    "fileCount": 797,
+    "treeSha256": "5c10d1db5dd0f8174cfcfbdb0cbd1d1dc1bb2a2cfc4ed20f5e6693afbe505740"
+  },
+  "tests": {
+    "mobile_source": 648,
+    "typecheck": "PASS",
+    "h5_build": "PASS",
+    "app_source_output_files": 3,
+    "legacy_share_checks": 51,
+    "candidate_share_checks": 54,
+    "anonymous_routes": 33,
+    "mock_consent_checks": 213,
+    "closed_scope_checks": 255
+  },
+  "raw_sha256": {
+    "share": "6c01a9f62db6cba11242c3f951149ae51adbcf002b6710dcca851cff979c903a",
+    "anonymous": "04bf555ec455dea5f3c75dd54117372739a54e4756b32efef42fff58c60d61ad",
+    "consent": "5c43595f7550714e9cd172d03ba592ee6901717cac18bf0caa754fc78b32f899",
+    "closed": "cd60d475e566f5a5ecb58d45ca17e755868ab1801b11165d9c2db191394fb596"
+  },
+  "legacy_result_sha256": "356c45668fe08f771ba07fd309a4abd38edb2ed42dd34780920fe9fc5906c5a5",
+  "limits": [
+    "Browser owner data simulated. Real learning MySQL is a separate B71 proof.",
+    "Deployed Gateway/service rollout and native package/device/reader remain separate."
+  ]
+}

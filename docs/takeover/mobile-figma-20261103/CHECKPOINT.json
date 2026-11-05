@@ -1812,6 +1812,11 @@
           "status": "SCOPED_MYSQL_AND_CONTRACT_PASS_TRACE_PENDING",
           "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
           "receipt": "evidence/ROOT-B71-REPORT-SHARE-ISSUE-20261105.json"
+        },
+        "b73_mobile_share": {
+          "status": "SCOPED_SOURCE_AND_SYNTHETIC_H5_PASS_TRACE_PENDING",
+          "review": "reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md",
+          "receipt": "evidence/ROOT-B73-REPORT-SHARE-MOBILE-20261105.json"
         }
       },
       "current_job": null,
@@ -1903,6 +1908,11 @@
           "status": "SCOPED_MYSQL_AND_CONTRACT_PASS_TRACE_PENDING",
           "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
           "receipt": "evidence/ROOT-B71-REPORT-SHARE-ISSUE-20261105.json"
+        },
+        "b73_mobile_share": {
+          "status": "SCOPED_SOURCE_AND_SYNTHETIC_H5_PASS_TRACE_PENDING",
+          "review": "reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md",
+          "receipt": "evidence/ROOT-B73-REPORT-SHARE-MOBILE-20261105.json"
         }
       },
       "current_job": "dsh/profile-batch-15-share-matrix",
@@ -3597,7 +3607,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T21:37:49.581986+08:00",
+  "updated_at": "2026-11-05T22:02:52.772464+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5306,5 +5316,18 @@
     "receipt": "evidence/ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
     "script_checks": 184,
     "formal_publication_and_deployed_gateway": "NOT_RUN"
+  },
+  "integration_batch_73_mobile_report_share": {
+    "scope": "MB-016/017 mobile share",
+    "status": "SCOPED_SOURCE_AND_SYNTHETIC_H5_PASS_TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md",
+    "receipt": "evidence/ROOT-B73-REPORT-SHARE-MOBILE-20261105.json",
+    "source_tests": 648,
+    "share_browser_checks": 54,
+    "current_h5": {
+      "indexSha256": "1a76e5ba2f09234e58704512785628251a386b3e66e9b9de5cb48635965e23fc",
+      "fileCount": 797,
+      "treeSha256": "5c10d1db5dd0f8174cfcfbdb0cbd1d1dc1bb2a2cfc4ed20f5e6693afbe505740"
+    }
   }
 }

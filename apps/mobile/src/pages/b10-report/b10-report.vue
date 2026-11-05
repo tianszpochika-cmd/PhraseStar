@@ -12,7 +12,8 @@ import { useSessionStore } from '../../stores/session'
 import { useB10LearningStore } from '../../stores/b10-learning'
 import { b10LearningApi } from '../../api/b10'
 import type { B10Mistake } from '../../domain/b10'
-import { availabilityKind, inclusivePeriod, maskRef, publicSharePageUrl, shareReceipt } from './report-page'
+import { createClientId } from '../../platform/client-id'
+import { availabilityKind, confirmedReportSharePeriodChanged, inclusivePeriod, maskRef, publicSharePageUrl, reportShareDate, reportSharePeriodToken, shareReceipt } from './report-page'
 
 const { experienceStyle, experienceMotion } = useMobileExperience()
 const session = useSessionStore()
@@ -37,6 +38,8 @@ const shareRef = ref('')
 const shareBusy = ref(false)
 const shareNote = ref('')
 const shareError = ref('')
+interface ShareAttempt { key: string; kind: 'daily' | 'weekly'; token: string; date: string | null }
+let shareAttempt: ShareAttempt | null = null
 let detailGeneration = 0
 let shareGeneration = 0
 let pageGeneration = 0
@@ -150,10 +153,28 @@ const primaryDisabled = computed(() => shareBusy.value || retryingId.value !== n
 
 function clearShare(): void {
   shareGeneration += 1
+  shareAttempt = null
   shareRef.value = ''
   shareNote.value = ''
   shareError.value = ''
   shareBusy.value = false
+}
+function retainShareForConfirmedPeriod(): void {
+  if (!shareAttempt) return
+  if (!confirmedReportSharePeriodChanged({
+    boundToken: shareAttempt.token,
+    status: store.reportStatus,
+    kind: view.value,
+    period: store.report?.period,
+  })) return
+  clearShare()
+}
+function ensureShareAttempt(kind: 'daily' | 'weekly', period: { periodStart?: unknown; periodEndExclusive?: unknown }): ShareAttempt | null {
+  const token = reportSharePeriodToken(kind, period)
+  if (!token) return null
+  if (shareAttempt && shareAttempt.kind === kind && shareAttempt.token === token) return shareAttempt
+  shareAttempt = { key: createClientId('mb016-report-share'), kind, token, date: reportShareDate(period.periodStart) }
+  return shareAttempt
 }
 function pageCurrent(generation: number, revision: number): boolean {
   return generation === pageGeneration && revision === session.identityRevision
@@ -163,7 +184,11 @@ function loadCurrent(): void {
   const revision = session.identityRevision
   initialized.value = false
   const task = view.value === 'mistakes' ? store.loadMistakes() : store.loadReport(view.value)
-  void task.finally(() => { if (pageCurrent(generation, revision)) initialized.value = true })
+  void task.finally(() => {
+    if (!pageCurrent(generation, revision)) return
+    retainShareForConfirmedPeriod()
+    initialized.value = true
+  })
 }
 async function showPage(): Promise<void> {
   const generation = ++pageGeneration
@@ -171,17 +196,25 @@ async function showPage(): Promise<void> {
   accessDenied.value = false
   try { await session.restore() } catch { /* session clears itself */ }
   if (generation !== pageGeneration) return
-  if (!session.isAuthenticated || !session.isLearningReady) { accessDenied.value = true; initialized.value = true; return }
+  if (!session.isAuthenticated || !session.isLearningReady) {
+    clearShare()
+    accessDenied.value = true
+    initialized.value = true
+    return
+  }
   const revision = session.identityRevision
   if (!(await ensureMobilePageAccess(PATH))) {
-    if (pageCurrent(generation, revision)) { accessDenied.value = true; initialized.value = true }
+    if (pageCurrent(generation, revision)) { clearShare(); accessDenied.value = true; initialized.value = true }
     return
   }
   if (!pageCurrent(generation, revision)) return
   try {
     await Promise.all([store.loadMistakes(), store.loadReport(view.value === 'weekly' ? 'weekly' : 'daily')])
   } finally {
-    if (pageCurrent(generation, revision)) initialized.value = true
+    if (pageCurrent(generation, revision)) {
+      retainShareForConfirmedPeriod()
+      initialized.value = true
+    }
   }
 }
 function selectView(next: View): void {
@@ -194,7 +227,11 @@ function selectView(next: View): void {
   view.value = next
   if (next === 'mistakes') { initialized.value = true; return }
   initialized.value = false
-  void store.loadReport(next).finally(() => { if (pageCurrent(generation, revision)) initialized.value = true })
+  void store.loadReport(next).finally(() => {
+    if (!pageCurrent(generation, revision)) return
+    retainShareForConfirmedPeriod()
+    initialized.value = true
+  })
 }
 function retryPage(): void { loadCurrent() }
 function retryMistake(mistake: B10Mistake): void {
@@ -252,38 +289,52 @@ function onDetailKey(event: KeyboardEvent): void {
   else if (!event.shiftKey && (active === last || !sheet.contains(active))) { event.preventDefault(); first.focus() }
 }
 onMounted(() => { if (typeof window !== 'undefined') window.addEventListener('keydown', onDetailKey) })
-onBeforeUnmount(() => { if (typeof window !== 'undefined') window.removeEventListener('keydown', onDetailKey) })
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('keydown', onDetailKey)
+  shareGeneration += 1
+  shareAttempt = null
+  shareBusy.value = false
+})
 async function issueShare(): Promise<void> {
   if (shareBusy.value || view.value === 'mistakes' || !store.report?.period) return
+  if (!session.isAuthenticated || !session.isLearningReady) return
+  if (availability.value !== 'READY') return
+  const kind = view.value
+  const attempt = ensureShareAttempt(kind, store.report.period)
+  if (!attempt) return
   const generation = ++shareGeneration
+  const revision = session.identityRevision
   shareBusy.value = true
   shareError.value = ''
   shareNote.value = ''
   try {
-    const response = await b10LearningApi.issueReportShare(view.value)
-    if (generation !== shareGeneration) return
+    const response = await b10LearningApi.issueReportShare(kind, { idempotencyKey: attempt.key, date: attempt.date })
+    if (generation !== shareGeneration || revision !== session.identityRevision || shareAttempt !== attempt) return
     const receipt = shareReceipt(response)
     if (!receipt) { shareError.value = reportT('share.invalid'); return }
     shareRef.value = receipt.ref
     shareNote.value = reportT('share.issued')
   } catch {
-    if (generation === shareGeneration) shareError.value = reportT('share.failed')
+    if (generation === shareGeneration && revision === session.identityRevision && shareAttempt === attempt) shareError.value = reportT('share.failed')
   } finally {
-    if (generation === shareGeneration) shareBusy.value = false
+    if (generation === shareGeneration && shareAttempt === attempt) shareBusy.value = false
   }
 }
 async function revokeShare(): Promise<void> {
   if (shareBusy.value || !shareRef.value) return
   const generation = ++shareGeneration
+  const revision = session.identityRevision
+  const attempt = shareAttempt
   shareBusy.value = true
   shareError.value = ''
   try {
     await b10LearningApi.revokeReportShare(shareRef.value)
-    if (generation !== shareGeneration) return
+    if (generation !== shareGeneration || revision !== session.identityRevision) return
     shareRef.value = ''
+    if (shareAttempt === attempt) shareAttempt = null
     shareNote.value = reportT('share.revoked')
   } catch {
-    if (generation === shareGeneration) shareError.value = reportT('share.revokeFailed')
+    if (generation === shareGeneration && revision === session.identityRevision) shareError.value = reportT('share.revokeFailed')
   } finally {
     if (generation === shareGeneration) shareBusy.value = false
   }
@@ -348,8 +399,10 @@ onShow(() => { void showPage() })
 onHide(() => {
   pageGeneration += 1
   retryGeneration += 1
-  shareGeneration += 1
   detailGeneration += 1
+  // Preview hides the page. Invalidate late share, revoke, and copy replies.
+  // The attempt key, its period, and a ref already confirmed stay for this page.
+  shareGeneration += 1
   shareBusy.value = false
   detailOpen.value = false
   detailBusy.value = false
