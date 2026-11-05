@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-05",
+  "scope": [
+    "MB-010",
+    "MB-011"
+  ],
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "figma": {
+    "file": "UpcXTamTjwrb5OQg9WJiFu",
+    "nodes": [
+      "167:4008",
+      "167:5317",
+      "270:3004"
+    ]
+  },
+  "sourceSnapshots": [
+    "grok/resume-practice-09-source-snapshot",
+    "grok/resume-20261105-practice-portable-11"
+  ],
+  "source": {
+    "apps/mobile/src/pages/b2-practice/b2-practice.vue": "335fa297a8e05b8a0896ad575a2c97becedbf5559f5cd09e28844e3fcafdf7f0",
+    "apps/mobile/src/pages/practice/practice.vue": "b3aa7962b185ddef7f69828b92f1e482f84efe3b0e56d85807c789ba37638545",
+    "apps/mobile/src/static/figma-practice-core/practice-dark-offline-270-3004/619cb08d-1a66-4bfb-a20a-6841b39f7c8f.svg": "39daf43336618a061d90340b0ab4a0a959d061ad13e748f043ccdded5d92a5d7",
+    "apps/mobile/src/static/figma-practice-core/practice-dark-offline-270-3004/a1983f1f-bd1f-459a-b997-caf66ba0137e.svg": "7a5d56ddfca4704b73df47e598000f374d48a612e6a16ec7c41c60cc340faf8f",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/03dd37eb-95fb-47a0-80b3-4aa1394e0f2d.svg": "619ec98870e3000ed76f55872af1805521edba288d36998dd1165a572bc94d69",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/077ccc78-a51f-428d-b0c4-200338e1619d.svg": "aa00e11698cf49549238cd8e0e3a3a811411ae29d0e2ccc5e27165490cc28e26",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/1b033e60-bd08-475b-8d93-c5aaec006bc4.svg": "bf42fb6a37a2ddf539e6314b11e1bbe42605ffb2326001838927e1ab2aba0ecb",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/28489a76-1d1c-45ac-9249-14590fa12965.svg": "38b284122373050681d51af4065e7b00cba1d60f84a9e511db804b8998ff3dd4",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/33ee40cc-5218-47f7-a47a-dce6d42d6b11.svg": "2c64a1a2eb56e44bb1430f99a57ec149a5551efbc7429490ec358648e2774e11",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/6ced3a16-0487-445c-a872-4b76848a705f.svg": "aba4c22d8caec9aa7e66d74ea7c71c71693748c82177ede9cc09d225de9daeae",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/84c069ed-a1ee-471b-be7a-65178d10e515.svg": "73af029af96053c3fb6d80fa31e7b075cec99b2b92b808bb9720a7c8d3c18bad",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/add2c580-5ceb-485a-8f65-77873f3651b9.svg": "0524de650187a8c541f94e820606e5c185f8af8736d0b42dbb8a579b5a3c35ae",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/aec7d4b8-83b2-40af-ae6b-5f21e1a51dd5.svg": "b9db54f8b47a312600a4263a8e49ee042280a048d5727f44729f52154a580a20",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/e03b706c-0677-415d-81f2-6d4ef9441f0d.svg": "80f2e7e311c11871771d523ff73650bfcebfa95c099c91d7a56e34e30acacf1e",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/e95a8a4c-d6d2-4e79-a269-7bccb93b11c5.svg": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+    "apps/mobile/src/static/figma-practice-core/practice-hub-167-4008/f3b4e192-cee4-4253-8f13-8fa8c92b6992.svg": "819512d1511baad55921d73af858aa02dbc9ce4967beda5430ec1c1a3d1c453c",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/30313a8e-dc17-4dda-be08-c9e542c92f4a.svg": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/397a0e7c-11ea-484c-b1f0-fe1385096df2.svg": "dcc19980d7024d5fbe7dfb2b6716c0df4bd38a197befdf212bdf3dd58ed25751",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/741a70b6-f6a4-4991-aa48-b3710b4ef763.svg": "d1b9bdd7baa91c7e7d33b80a06709f8b6623a78225e9b61f3bc65f7f2c8fe226",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/855cdefa-2dc7-4b82-82a0-64426fbc7293.svg": "13dc734fc1932cace14f44dacaca4c24730fe6d7abc2540c62e83b458b571497",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/a99dacf5-be89-4544-b38b-2af9e40ecec8.svg": "e796f8c53f909921e710cd574a39e5fd29abcf1aa2301334f04239b5514909db",
+    "apps/mobile/src/static/figma-practice-core/practice-legacy-167-5317/c373e119-ee84-4cd7-8139-65db989e503e.svg": "7270a68f8b62609c2566cd002f534af2b725ecd80daa541de165eafe4a291eb1",
+    "packages/i18n/src/mobile-resources/legacy-practice-page.ts": "d5d9ecf228955af9285863a5c6df2eef7104d43db1f459bdbd6d7b18b6a029a8",
+    "packages/i18n/src/mobile-resources/practice-page.ts": "3c0e4a8552f862c2f41364245c9c00de0eb82f5e43e094ade5ded9cd3ad70959",
+    "apps/mobile/tests/practice-core-pages.test.mjs": "8c43852e66c3f31205c610b563a27a27cc88bf06416416e9a3dd4547e6db98ed"
+  },
+  "build": {
+    "target": "@englishflow/mobile",
+    "mobileTypecheck": "PASS",
+    "i18nTypecheck": "PASS",
+    "h5": "PASS",
+    "indexSha256": "3426c4aaf82f101c7062d0e5a9b1556dfa36fefbdc2dda7ef64505d87250a90e",
+    "files": 763
+  },
+  "verification": {
+    "topLevelNodeTests": 482,
+    "browserChecks": 140,
+    "notRunRecords": [
+      {
+        "branch": "live-backend-practice",
+        "reason": "Real tokens and a live assessment service are outside this intercepted run."
+      },
+      {
+        "branch": "idempotency-replay",
+        "reason": "The frozen page does not expose a second submit of the same Idempotency-Key."
+      },
+      {
+        "branch": "destination-page-body",
+        "reason": "Enabled routes are observed by hash only. Vocabulary, grammar, assessment, and home bodies are not claimed."
+      }
+    ],
+    "screenshots": 13,
+    "browserRejections": 0,
+    "cases": [
+      "hub-390-light",
+      "hub-390-dark",
+      "hub-390-high-contrast",
+      "hub-320-light",
+      "empty410",
+      "empty200",
+      "error",
+      "unauthorized",
+      "forbidden",
+      "exercise"
+    ],
+    "practice": {
+      "panel": "finished",
+      "report": true,
+      "captures": [
+        {
+          "op": "session",
+          "idempotency": true
+        },
+        {
+          "op": "attempt",
+          "idempotency": true
+        },
+        {
+          "op": "checkpoint",
+          "idempotency": true
+        },
+        {
+          "op": "attempt",
+          "idempotency": true
+        }
+      ]
+    },
+    "firstRunFailurePreserved": true,
+    "mode": "immutable H5, synthetic IAM/Gateway"
+  },
+  "limits": {
+    "realServices": "NOT_RUN",
+    "nativeDevices": "NOT_RUN",
+    "screenReader": "NOT_RUN",
+    "deployment": "NOT_RUN",
+    "trace": "TRACE_PENDING"
+  },
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/practice-09-review/root-combined",
+  "routeCountDelta": 2,
+  "localUiCandidates": 29,
+  "formalRoutes": 33
+}

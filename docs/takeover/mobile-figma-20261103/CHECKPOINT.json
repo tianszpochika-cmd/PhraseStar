@@ -856,7 +856,7 @@
       "name": "练习入口",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_IMPLEMENTATION_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "真实可用入口、队列、能力关闭原因；不开放隐藏功能",
       "services_data_owners": [
         "assessment-service",
@@ -916,17 +916,17 @@
         "mobile-state-boundaries.e2e.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_3_NODES_13_COMBINED_H5_SHOTS",
+        "interaction": "COMPILED_H5_140_CHECKS_PASS_COMBINED",
+        "h5": "PASS_SHA256_3426c4aaf82f101c7062d0e5a9b1556dfa36fefbdc2dda7ef64505d87250a90e",
+        "cross_viewport": "320_390_THEME_MATRIX",
+        "accessibility": "LOCAL_CONTROL_STATES_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md"
       },
-      "current_job": "grok/resume-20261105-practice-core-08",
-      "resume_evidence_20261105": "reference and 20 exact artwork assets published to paired scope"
+      "current_job": null,
+      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab."
     },
     {
       "id": "MB-011",
@@ -935,7 +935,7 @@
       "name": "旧综合练习入口",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_IMPLEMENTATION_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "旧入口迁移说明/可用出口，保持现有网关与权限边界",
       "services_data_owners": [
         "assessment-service",
@@ -992,17 +992,17 @@
         "c04-assessment-chain.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
-        "accessibility": "NOT_RUN",
+        "visual": "RC1_3_NODES_13_COMBINED_H5_SHOTS",
+        "interaction": "COMPILED_H5_140_CHECKS_PASS_COMBINED",
+        "h5": "PASS_SHA256_3426c4aaf82f101c7062d0e5a9b1556dfa36fefbdc2dda7ef64505d87250a90e",
+        "cross_viewport": "320_390_THEME_MATRIX",
+        "accessibility": "LOCAL_CONTROL_STATES_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md"
       },
-      "current_job": "grok/resume-20261105-practice-core-08",
-      "resume_evidence_20261105": "preserve real historic practice path plus honest empty state"
+      "current_job": null,
+      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab."
     },
     {
       "id": "MB-012",
@@ -4180,9 +4180,9 @@
     "doD": false
   },
   "active_resume_review_20261105": {
-    "at": "2026-11-05T08:15:07.162194+00:00",
+    "at": "2026-11-05T08:24:44.055412+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 27,
+    "local_ui_candidates": 29,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4235,17 +4235,17 @@
       },
       {
         "id": "MB-010",
-        "cli": "grok",
-        "job": "grok/resume-20261105-practice-core-08",
-        "state": "running",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-practice-core-08.checkpoint.json"
+        "cli": "dsh",
+        "job": "dsh/resume-20261105-practice-observer-audit-04",
+        "state": "exited_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-practice-observer-audit-04.checkpoint.json"
       },
       {
         "id": "MB-011",
-        "cli": "grok",
-        "job": "grok/resume-20261105-practice-core-08",
-        "state": "running",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-practice-core-08.checkpoint.json"
+        "cli": "dsh",
+        "job": "dsh/resume-20261105-practice-observer-audit-04",
+        "state": "exited_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-practice-observer-audit-04.checkpoint.json"
       },
       {
         "id": "MB-012",
@@ -4311,6 +4311,16 @@
     "review": "reviews/INTEGRATION-B50-HOME.md",
     "routeCountDelta": 1,
     "localUICandidateRoutes": 27,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_52_practice": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "3426c4aaf82f101c7062d0e5a9b1556dfa36fefbdc2dda7ef64505d87250a90e",
+    "evidence": "evidence/ROOT-B52-PRACTICE-20261105.json",
+    "review": "reviews/INTEGRATION-B52-PRACTICE.md",
+    "routeCountDelta": 2,
+    "localUICandidateRoutes": 29,
     "formalRoutes": 33,
     "doD": false
   }
