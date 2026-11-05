@@ -1190,7 +1190,7 @@ export type B8SessionRevocationResponse = { sessionId: string; status: "REVOKED"
 /**
  * Generated from the contract source.
  */
-export type B8PrincipalResponse = { principalId: string; subject?: B8ServerDerivedSubject; tenantId: string; tenant?: B8ServerDerivedTenant; sessionId: string; deviceId: string; roles: ReadonlyArray<string>; permissions: ReadonlyArray<string>; phase?: B8PhaseAccessContext; authMode: "self-owned-jwt"; status?: "ACTIVE" | "RESTRICTED"; adultGate?: B8AdultGateResponse; consentState?: B8ConsentState; deviceTrust?: B8DeviceTrustContext; policyVersion?: string; policy?: B8PolicyVersionContext; authorityProvenance?: B8AuthorityProvenance; };
+export type B8PrincipalResponse = { principalId: string; subject?: B8ServerDerivedSubject; tenantId: string; tenant?: B8ServerDerivedTenant; sessionId: string; deviceId: string; roles: ReadonlyArray<string>; permissions: ReadonlyArray<string>; phase?: B8PhaseAccessContext; authMode: "self-owned-jwt"; status?: "ACTIVE" | "RESTRICTED"; adultGate?: B8AdultGateResponse; consentState?: B8ConsentState; publishedConsentDocuments?: readonly [B8PublishedConsentDocument, B8PublishedConsentDocument, B8PublishedConsentDocument]; deviceTrust?: B8DeviceTrustContext; policyVersion?: string; policy?: B8PolicyVersionContext; authorityProvenance?: B8AuthorityProvenance; };
 
 /**
  * Generated from the contract source.
@@ -4091,6 +4091,11 @@ export type B10PlanReplanRequest = { baseStateVersion: number; confirmImpact: tr
  * Generated from the contract source.
  */
 export type B10PlanReplanResult = { planId: string; planVersion: number; replayed: boolean; rescheduledCount: number; preservedCompletedCount: number; explanation?: string; };
+
+/**
+ * Server-published first-consent document. iam-service owns the exact UTF-8 body bytes and documentDigest. The client validates the type-purpose pair against the canonical set on B8PrincipalResponse.publishedConsentDocuments: TERMS with ACCOUNT_TERMS, PRIVACY with PRIVACY_NOTICE, and ADULT_LEARNING with ADULT_LEARNING_ELIGIBILITY. Each type and each purpose appears once in that array.
+ */
+export type B8PublishedConsentDocument = { type: "TERMS" | "PRIVACY" | "ADULT_LEARNING"; purpose: "ACCOUNT_TERMS" | "PRIVACY_NOTICE" | "ADULT_LEARNING_ELIGIBILITY"; documentVersion: string; documentDigest: string; bodyText: string; publishedAt: string; policyVersion: string; policyRef: string; };
 
 export interface CanonicalIdRegistry {
   userId: CanonicalInt64Id;
