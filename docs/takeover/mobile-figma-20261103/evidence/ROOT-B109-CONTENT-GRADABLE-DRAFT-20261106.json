@@ -1,0 +1,160 @@
+{
+  "batch": "B109",
+  "status": "ACCEPTED_CONTENT_OWNER_DRAFT_ONLY",
+  "source_jobs": [
+    "G137",
+    "G141",
+    "G143",
+    "G147",
+    "G148",
+    "G151"
+  ],
+  "parent": "48e2b8e113675f3282259da552dcc74d826f3e1a",
+  "source_files": [
+    {
+      "path": "packages/contracts/fragments/b9/b9-content.openapi.json",
+      "sha256": "6f4d242c6676c8fb4eb0f39f8eba751aec6e71709d413cf053f033512e93f4f4",
+      "bytes": 166143
+    },
+    {
+      "path": "packages/contracts/generated/openapi.ts",
+      "sha256": "67c0464339d8214dfa1b43f6792ae810a50a33343f8e48d06a8d87f90574d475",
+      "bytes": 371455
+    },
+    {
+      "path": "packages/contracts/openapi/v1/openapi.json",
+      "sha256": "a8d33f89a42c5899a78e4e66756968db7c31e165ba2bc840adeb79c032475dcf",
+      "bytes": 2587183
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/domain/ContentAutoValidation.java",
+      "sha256": "f27cf4812c5d97486f7805f27b8893dc7d81d766360d9f3518e1d1bfb75b876d",
+      "bytes": 5495
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/domain/ContentProjectionPolicy.java",
+      "sha256": "276acb5ea254d56827140e296ab4a01c06e29fd9dc4c5a42da65b1b6f4417e89",
+      "bytes": 7446
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/domain/GradableQuestions.java",
+      "sha256": "f81f521df4bd9b5c767d99c69028d72c9f2d4243a2e0d50057f56cfc6567a108",
+      "bytes": 7879
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/web/B9ContentAdminController.java",
+      "sha256": "43c056206140c2ba05b986717f0f5e7674e7d254af00ea972af4bef76e987a48",
+      "bytes": 91930
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/domain/ContentProjectionPolicyTest.java",
+      "sha256": "e74c5e5108d4ed64670ef4a1896332723aa2fe230d5e93853f31e6ec7beb50d1",
+      "bytes": 17806
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/web/B9ContentAdminRightsBoundaryTest.java",
+      "sha256": "f55c530cf2b31c664d0d4f771762a85b176c4ca9ffe5359ccc88577d25a47f76",
+      "bytes": 48167
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/web/B9GradableDraftMySqlTest.java",
+      "sha256": "e17b0a77066212af2d46ef6844603cdf7feb0bf2c1ca496e1e5492319197c626",
+      "bytes": 21918
+    }
+  ],
+  "trace": {
+    "route": "MB-014",
+    "owner": "content-service",
+    "command": [
+      "CREATE_DRAFT",
+      "SAVE_DRAFT"
+    ],
+    "page_trace": {
+      "act": [
+        "ACT-P1-LEARNER"
+      ],
+      "jny": [
+        "JNY-P1-06"
+      ],
+      "rule": [
+        "RULE-P1-SESSION",
+        "RULE-P1-TIME-SYNC"
+      ],
+      "int_ids": [
+        "INT-P1-005",
+        "INT-P1-006"
+      ],
+      "e2e": [
+        "E2E-P1-MULTISKILL"
+      ],
+      "arch": [
+        "ARCH-API-001",
+        "ARCH-REL-001"
+      ],
+      "page": [
+        "PAGE-P1-READING",
+        "PAGE-P1-PRACTICE-SESSION"
+      ],
+      "r1": [
+        "R1-043",
+        "R1-044",
+        "R1-045",
+        "R1-046"
+      ],
+      "bc": [
+        "BC-035",
+        "BC-036",
+        "BC-038"
+      ],
+      "ic": [
+        "IC-022",
+        "IC-023"
+      ],
+      "feat_v2": [
+        "FEAT-RDG-002→V2-980-0136"
+      ],
+      "prd_atom_v2": [
+        "PRD-ATOM-0392→V2-980-0151"
+      ],
+      "trace_status": "TRACE_PENDING",
+      "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+    }
+  },
+  "contract": {
+    "merge": "PASS",
+    "generation": "PASS",
+    "validation": "PASS",
+    "openapi_operations": 471,
+    "openapi_schemas": 822,
+    "compatibility": "PASS",
+    "compatibility_receipt_sha256": "034f0fedcf492dad0651688987a9470085e39f1c0ad0a34f6effaf9a481f53dd"
+  },
+  "offline_maven": {
+    "passed": 309,
+    "opt_in_skipped": 6,
+    "log_sha256": "4bb95356e15be67ec732128d7b84563310e29f5a1a8622dd79439d579bcba9c3"
+  },
+  "owner_mysql": {
+    "passed": 2,
+    "skipped": 0,
+    "flyway_version": "34",
+    "isolated_schema": true,
+    "mode": "REAL_JDBC_IN_PROCESS_SYNTHETIC_AUTHORIZED_EDITOR",
+    "version_immutable": true,
+    "question_and_option_order": true,
+    "idempotent_cold_replay": true,
+    "invalid_no_owner_writes": true,
+    "rights_pending": true,
+    "response_private_field_omitted": true,
+    "log_sha256": "0341ae29bee3ff0ccf239e91c8949abbcfb291ca023654d6dbfd6d97fa466bc0",
+    "receipt_sha256": "86d8b2c7ff1ae740a4b63683ec6177703dfa5b5581f1dee89e26568b29fb2f99",
+    "cleanup": "PASS"
+  },
+  "prior_rejections": [
+    "Overstrict object reference assertion in G143 failed, repaired in G147.",
+    "G148 actual MySQL V34 first pass found two test comparisons depending on JSON object property order. G151 compares semantics and still requires question/option array order."
+  ],
+  "pending": [
+    "IAM/Gateway authoring HTTP, four-eyes publication proof, protected question read and score, article binding, real learner reading, device/deployment"
+  ]
+}

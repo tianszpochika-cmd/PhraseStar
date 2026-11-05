@@ -5817,5 +5817,14 @@
     "cleanup": "PASS",
     "same_h5_attempt_broker_acl_learning_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B108-ASSESSMENT-KAFKA-OPT-IN-20261106.json"
+  },
+  "integration_batch_109_content_gradable_draft": {
+    "state": "ACCEPTED_CONTENT_OWNER_DRAFT_ONLY",
+    "offline_maven": "309 pass, 6 opt-in skip",
+    "contract": "PASS",
+    "mysql_v34": "2/2",
+    "cleanup": "PASS",
+    "publish_score_binding_reading_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B109-CONTENT-GRADABLE-DRAFT-20261106.json"
   }
 }

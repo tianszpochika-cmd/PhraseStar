@@ -57,8 +57,16 @@ public final class ContentAutoValidation {
         if (level instanceof String text && !text.isBlank() && !ALLOWED_LEVELS.contains(text.trim().toUpperCase())) {
             findings.add(new Finding("STAGE_INVALID", "BLOCKER", "targetLevel must be one of A1..C2"));
         }
-        // 3. answer-leak scan: public projection must never carry restricted keys
-        if (containsRestrictedKey(fields)) {
+        // 3. answer-leak scan: public projection must never carry restricted keys.
+        // One validity check. A valid top-level opt-in is skipped; a malformed one is
+        // still scanned, and the same answer keys anywhere else still block.
+        boolean optedIn = fields.containsKey(GradableQuestions.FIELD);
+        boolean optInValid = optedIn && GradableQuestions.valid(fields.get(GradableQuestions.FIELD));
+        if (optedIn && !optInValid) {
+            findings.add(new Finding("GRADABLE_QUESTIONS_INVALID", "BLOCKER",
+                    "gradableQuestions must be a closed authoring array"));
+        }
+        if (containsRestrictedKey(fields, optInValid)) {
             findings.add(new Finding("ANSWER_LEAK_DETECTED", "BLOCKER", "draft carries answer/solution keys that must stay assessment-only"));
         }
         // 4. structure: kind-present payload with at least a title/summary/items shape
@@ -76,13 +84,14 @@ public final class ContentAutoValidation {
         return new Report(passed, RULE_VERSION, List.copyOf(findings), Map.copyOf(summary));
     }
 
-    private static boolean containsRestrictedKey(Object value) {
+    private static boolean containsRestrictedKey(Object value, boolean skipValidOptIn) {
         if (value instanceof Map<?, ?> map) {
             for (Map.Entry<?, ?> entry : map.entrySet()) {
-                if (ContentProjectionPolicy.isAnswerRuleKey(String.valueOf(entry.getKey()))) {
-                    return true;
+                String key = String.valueOf(entry.getKey());
+                if (skipValidOptIn && GradableQuestions.FIELD.equals(key)) {
+                    continue;
                 }
-                if (containsRestrictedKey(entry.getValue())) {
+                if (ContentProjectionPolicy.isAnswerRuleKey(key) || containsRestrictedKey(entry.getValue(), false)) {
                     return true;
                 }
             }
@@ -90,7 +99,7 @@ public final class ContentAutoValidation {
         }
         if (value instanceof List<?> list) {
             for (Object item : list) {
-                if (containsRestrictedKey(item)) {
+                if (containsRestrictedKey(item, false)) {
                     return true;
                 }
             }

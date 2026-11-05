@@ -26,3 +26,7 @@ mvn -f services/content-service/pom.xml test
 ```
 
 当前仓库环境只有 Java 24 且没有 Maven；本轮已使用 `javac --release 24` 编译纯 Java 主源码并运行 `ContentDomainSmoke`。该结果不能替代 Java 25 + Maven + Spring Boot、MySQL/Kafka 或真实 Gateway 运行态验证。
+
+## 可判分题目草稿
+
+单条 `CREATE_DRAFT` 与 `SAVE_DRAFT` 支持可选的 `content.gradableQuestions`。题目与答案在同一内容版本内保存。批量导入不接收该字段，现有读取响应省略新增的私有字段。使用 Java 25 运行 `mvn -o -B -ntp -f services/content-service/pom.xml test`。独立 MySQL V34 的读回范围见 B109。 [本机草稿验收](../../docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B109-CONTENT-GRADABLE-DRAFT.md)
