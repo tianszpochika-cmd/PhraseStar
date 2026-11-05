@@ -25,3 +25,9 @@ java -cp $out com.englishflow.assessment.AssessmentDomainSmoke
 ```
 
 真实 Spring 启动、HTTP controller、MySQL/Flyway、Redis、Kafka、Gateway、跨进程恢复和持久化故障注入不在本代码切片验证范围内；这些属于后续 adapter/integration 任务。
+
+## 本机测评消息发布
+
+逐题测评事件由测评库写入 outbox，并通过固定主题 `platform.assessment.v1` 发布。两个开关默认关闭。本机独立验证时同时设置 `ASSESSMENT_PERSISTENCE_ENABLED=true` 和 `ASSESSMENT_EVENT_RELAY_ENABLED=true`。发布端读取 `ASSESSMENT_KAFKA_BOOTSTRAP_SERVERS`，本机默认 `127.0.0.1:19092`。本地基础设施按已登记的 12 个分区创建主题。
+
+使用 Java 25 运行 `mvn -o -B -ntp -f services/assessment-service/pom.xml test`。默认启动、真实本机 Kafka 合成传输、数据库读回和资源释放见 B108。 [本机发布验收](../../docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B108-ASSESSMENT-KAFKA-OPT-IN.md)

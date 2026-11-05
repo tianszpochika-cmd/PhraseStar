@@ -5808,5 +5808,14 @@
     "next": "EXACT_COMBINED_PUBLISHER_RUNTIME",
     "h5_broker_acl_learning_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B107-ASSESSMENT-SUBMITTED-ITEMS-20261106.json"
+  },
+  "integration_batch_108_assessment_kafka_opt_in": {
+    "state": "ACCEPTED_DEFAULT_OFF_COMBINED_ASSESSMENT_RELAY",
+    "offline_maven": "179 pass, 7 opt-in skip",
+    "default_start": "UP, no broker socket",
+    "synthetic_combined_jar_kafka": "PASS",
+    "cleanup": "PASS",
+    "same_h5_attempt_broker_acl_learning_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B108-ASSESSMENT-KAFKA-OPT-IN-20261106.json"
   }
 }

@@ -1,0 +1,117 @@
+{
+  "batch": "B108",
+  "status": "ACCEPTED_DEFAULT_OFF_ASSESSMENT_OWNER_RELAY",
+  "parent": "adb26afb1cb059801ef50bb66e8f177304a1c099",
+  "candidate_files": {
+    "source_commit": "adb26afb1cb059801ef50bb66e8f177304a1c099",
+    "g146": [
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+        "sha256": "834f1136216dc918645f1033b19b14d5001b3cf83a2b8398be668c0d424bdbb9",
+        "bytes": 81404
+      },
+      {
+        "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10AssessmentEventCorrelationTest.java",
+        "sha256": "d801138663dc17cb4d7b13ea34ea991ae9934d95463a1b3a740f3f95be9b51c1",
+        "bytes": 30295
+      }
+    ],
+    "g134": [
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/config/AssessmentEventRelayConfiguration.java",
+        "sha256": "3bf166715cba672c617702a9018ff83bca266086ba31bc80c4f477913a924e0e",
+        "bytes": 6858
+      },
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelay.java",
+        "sha256": "803951c47cdf9516179c88ba8629df552f17365d6e7d80a0bac1fd5961d3d593",
+        "bytes": 14442
+      },
+      {
+        "path": "services/assessment-service/src/main/resources/application.yml",
+        "sha256": "bc6d4e699a0d42c1037914ee239da9b50df9070ed221ee881962416168476a2a",
+        "bytes": 4063
+      },
+      {
+        "path": "services/assessment-service/src/test/java/com/englishflow/assessment/config/AssessmentEventRelayConfigurationTest.java",
+        "sha256": "af043fd688b702705f2ebafa9526d128f75966185c719229c5f2b1b47095d004",
+        "bytes": 11137
+      }
+    ]
+  },
+  "packaged_sha256": "55df73fdecccad95c1d56d2edfebb08b723fb572748005a0239513e947a30701",
+  "offline_tests": {
+    "passed": 179,
+    "opt_in_skipped": 7,
+    "relay_gate_tests": 4,
+    "package": "PASS",
+    "log_sha256": "0638ffed6082f3ada3f2acd2bad34a872480fd534d2305021699216a4cdcb518"
+  },
+  "default_boot": {
+    "ready": true,
+    "broker_socket": false,
+    "bind": [
+      "127.0.0.1:18091"
+    ],
+    "all_ports_released": true,
+    "jar_sha256": "55df73fdecccad95c1d56d2edfebb08b723fb572748005a0239513e947a30701"
+  },
+  "default_receipt_sha256": "0b2a0b379693069544dc82565be9016bebda1d385f7acc1db6b5afea0c1af5e0",
+  "synthetic_real_mysql_kafka": {
+    "probe": "assessment-owner-outbox-to-local-kafka",
+    "status": "PASS",
+    "cleanup": "PASS",
+    "ports_released": true,
+    "not_learner_or_learning_consumer": true,
+    "jar_pinned": true,
+    "fixture_pinned": true,
+    "images_pinned": true,
+    "flyway_target": "12",
+    "topic": "platform.assessment.v1",
+    "partitions": 12,
+    "replication": 1,
+    "auto_topic_create": false,
+    "positive_published": true,
+    "positive_attempt": 1,
+    "positive_lock_clear": true,
+    "positive_published_at": true,
+    "positive_identity_unchanged": true,
+    "positive_json_unchanged": true,
+    "negative_pending": true,
+    "negative_attempt": 0,
+    "negative_unclaimed": true,
+    "broker_records": 1,
+    "offset_total": 1,
+    "offset_partitions": 12,
+    "second_message_absent": true,
+    "key_matches_aggregate_id": true,
+    "correlation_headers": 7,
+    "headers_match": true,
+    "stored_json_match": true,
+    "unexpected_topics": 0,
+    "loopback_only": true
+  },
+  "synthetic_receipt_sha256": "409c9d5c2f494b2e3f88213accdcf468808cf4565624edf3497dafd480d7e9b4",
+  "post_cleanup": {
+    "released_ports": [
+      13306,
+      18091,
+      19092
+    ],
+    "owned_containers": 0,
+    "owned_networks": 0,
+    "owned_jvms": 0
+  },
+  "trace": {
+    "route": "MB-013",
+    "business": "INT-P1-006",
+    "event": "assessment.item.assessed.v2",
+    "owner": "assessment-service"
+  },
+  "runtime_pending": [
+    "same H5 browser attempt to broker",
+    "registered broker ACL",
+    "Learning consumer and state",
+    "device/deployment"
+  ]
+}
