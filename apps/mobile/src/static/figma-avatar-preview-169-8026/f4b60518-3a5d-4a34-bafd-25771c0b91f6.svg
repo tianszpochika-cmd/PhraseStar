@@ -1,0 +1,30 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="132" height="132" viewBox="0 0 132 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mascot/&#229;&#176;&#143;&#230;&#152;&#159;" clip-path="url(#clip0_0_16)">
+<circle id="Halo" cx="66" cy="66" r="66" fill="#EEE9FB"/>
+<g id="Star" filter="url(#filter0_d_0_16)">
+<path d="M59.7228 32.7189C62.2905 27.5162 69.7095 27.5162 72.2772 32.7189L78.772 45.879C79.7917 47.945 81.7626 49.377 84.0426 49.7083L98.5656 51.8186C104.307 52.6529 106.6 59.7087 102.445 63.7584L91.9362 74.0021C90.2864 75.6103 89.5335 77.9273 89.923 80.1981L92.4038 94.6624C93.3846 100.381 87.3826 104.741 82.2472 102.042L69.2574 95.2125C67.2181 94.1404 64.7819 94.1404 62.7426 95.2125L49.7528 102.042C44.6174 104.741 38.6154 100.381 39.5962 94.6624L42.077 80.1981C42.4665 77.9273 41.7136 75.6103 40.0638 74.0022L29.5549 63.7585C25.4003 59.7087 27.6928 52.6529 33.4344 51.8186L47.9574 49.7083C50.2374 49.377 52.2083 47.945 53.228 45.879L59.7228 32.7189Z" fill="url(#paint0_linear_0_16)"/>
+</g>
+<circle id="EyeL" cx="58" cy="70" r="4" fill="#222337"/>
+<circle id="EyeR" cx="77" cy="70" r="4" fill="#222337"/>
+<ellipse id="Blush" cx="49.5" cy="79.5" rx="6.5" ry="3.5" fill="#FB7185" fill-opacity="0.666667"/>
+<ellipse id="Blush2" cx="87.5" cy="79.5" rx="6.5" ry="3.5" fill="#FB7185" fill-opacity="0.666667"/>
+</g>
+<defs>
+<filter id="filter0_d_0_16" x="11.4333" y="18.8169" width="109.133" height="106.044" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="6"/>
+<feGaussianBlur stdDeviation="8"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.654902 0 0 0 0 0.545098 0 0 0 0 0.980392 0 0 0 0.4 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_16"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_16" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_16" x1="21.7805" y1="30.3577" x2="101.455" y2="94.0976" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A78BFA"/>
+<stop offset="1" stop-color="#F472B6"/>
+</linearGradient>
+<clipPath id="clip0_0_16">
+<rect width="132" height="132" fill="white"/>
+</clipPath>
+</defs>
+</svg>

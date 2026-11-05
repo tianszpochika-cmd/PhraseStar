@@ -1,140 +1,773 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
-const { experienceStyle, experienceMotion } = useMobileExperience()
-
-import { onShow } from '@dcloudio/uni-app'
-import { computed } from 'vue'
-import { B4_PERFORMANCE_LEVELS } from '../../domain/b4'
-import B4StatusPanel from '../../components/b4/B4StatusPanel.vue'
-import { getUniRuntime } from '../../platform/uni-runtime'
+import B12RewardsCard from '../../components/b12/B12RewardsCard.vue'
+import { ensureMobilePageAccess } from '../../auth/navigation'
+import { getB4Profile, getB4Season, getB4Streak, listB4Quests } from '../../api/b4'
+import { B4_PERFORMANCE_LEVELS, type B4PerformanceLevel } from '../../domain/b4'
+import { b10ThemeMode, b10UiLocale } from '../../platform/b10-foundation'
+import { mobileT, useMobileExperience } from '../../platform/experience'
+import { openUniPage } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
 import { useB4Store } from '../../stores/b4'
-import B12RewardsCard from '../../components/b12/B12RewardsCard.vue'
+import {
+  formatWorldDate,
+  isEmptyWorldPayload,
+  isSameWorldIdentity,
+  isWorldFeatureClosed,
+  questPeriodKey,
+  seasonStatusKey,
+  streakStatusKey,
+  toWorldFailure,
+  toWorldQuests,
+  toWorldSeason,
+  toWorldStreak,
+  toWorldSummary,
+  type WorldQuest,
+  type WorldQuests,
+  type WorldSeason,
+  type WorldStreak,
+  type WorldSummary,
+} from './world-page'
 
+const PAGE_PATH = '/pages/world/world'
+const { experienceStyle, experienceMotion } = useMobileExperience()
 const session = useSessionStore()
 const b4 = useB4Store()
-const mapNodes = [
-  { code: 'ORIGIN', title: '起源星门', description: '首次学习事件' },
-  { code: 'VOCAB_ORBIT', title: '词汇轨道', description: '词汇与复习' },
-  { code: 'GRAMMAR_NEBULA', title: '语法星云', description: '阅读与 Checkpoint' },
-  { code: 'LISTENING_MOON', title: '听力卫星', description: '听力完成事件' },
-  { code: 'SPEAKING_STAR', title: '表达恒星', description: '写作与合格游戏' },
-  { code: 'GALAXY_GATE', title: '星系之门', description: '每日目标与全局成长' },
-]
-const galaxyNodes = computed(() => mapNodes.map((node) => {
-  const serverNode = b4.galaxy?.nodes.find((item) => item.nodeCode === node.code)
-  return { ...node, hasData: Boolean(serverNode), status: serverNode?.status ?? 'UNKNOWN', progress: serverNode?.progress ?? 0, requiredProgress: serverNode?.requiredProgress ?? 0, progressPercent: serverNode?.progressPercent ?? 0 }
-}))
-function stateLabel(value?: string): string {
-  return ({ ACTIVE: '进行中', AVAILABLE: '可用', UNLOCKED: '已解锁', COMPLETED: '已完成', LOCKED: '待解锁', AT_RISK: '即将中断', BROKEN: '已中断', FROZEN: '已保护', IN_PROGRESS: '进行中' } as Record<string, string>)[value ?? ''] ?? '待确认'
-}
-function questPeriod(value: string): string {
-  return ({ DAILY: '每日', WEEKLY: '每周', SEASON: '赛季' } as Record<string, string>)[value] ?? '成长'
+const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
+const uiLocale = computed(() => b10UiLocale.value)
+
+type PageStatus = 'loading' | 'ready' | 'partial' | 'error' | 'offline' | 'permission' | 'closed'
+type SectionState = 'loading' | 'ready' | 'empty' | 'error'
+
+const status = ref<PageStatus>('loading')
+const statusKey = ref('loading')
+const summary = ref<WorldSummary | null>(null)
+const streak = ref<WorldStreak | null>(null)
+const season = ref<WorldSeason | null>(null)
+const quests = ref<WorldQuests>({ quests: [], invalidCount: 0 })
+const summaryState = ref<SectionState>('loading')
+const streakState = ref<SectionState>('loading')
+const seasonState = ref<SectionState>('loading')
+const questsState = ref<SectionState>('loading')
+const accessBlocked = ref(false)
+
+let visible = false
+let pageEpoch = 0
+let showEpoch = 0
+let showInFlight = false
+let loadFlight: Promise<void> | null = null
+let reloadAfterFlight = false
+let adoptedKey = ''
+
+const featureClosed = computed(() => isWorldFeatureClosed(summary.value))
+const rewardsConfirmed = computed(() => summary.value?.featureEnabled === true)
+const hasSummaryFacts = computed(() => Boolean(summary.value && (summary.value.xp !== null || summary.value.level !== null)))
+const activeStreak = computed(() => streak.value !== null)
+const showStatusRetry = computed(() => ['partial', 'error', 'offline'].includes(status.value))
+const levelText = computed(() => summary.value?.level !== null && summary.value?.level !== undefined ? wt('levelShort', { level: summary.value.level }) : null)
+const xpText = computed(() => summary.value?.xp !== null && summary.value?.xp !== undefined ? `${summary.value.xp} ${wt('xp')}` : null)
+const qualityLabels = computed(() => B4_PERFORMANCE_LEVELS.map((level) => wt(`quality${level}`)))
+const qualityIndex = computed(() => Math.max(0, B4_PERFORMANCE_LEVELS.indexOf(b4.performanceLevel)))
+const statusText = computed(() => wt(statusKey.value))
+
+function wt(key: string, values: Record<string, string | number> = {}): string {
+  return mobileT(`worldPage.${key}`).replace(/\{(\w+)\}/g, (_, name: string) => (
+    values[name] === undefined ? `{${name}}` : String(values[name])
+  ))
 }
 
-onShow(async () => {
-  await session.restore()
-  if (!session.isAuthenticated) {
-    getUniRuntime().navigateTo({ url: '/pages/login/login' })
+function currentIdentity(): { subject: string; revision: number } | null {
+  return session.getMobileApiIdentity()
+}
+
+function identityKey(): string {
+  const identity = currentIdentity()
+  return identity ? `${identity.subject}\0${identity.revision}` : ''
+}
+
+function observedTopPath(): string | null {
+  if (typeof window !== 'undefined' && window.location) {
+    const raw = window.location.hash.replace(/^#/, '').trim()
+    if (raw) {
+      const path = raw.split(/[?#]/, 1)[0] ?? ''
+      if (path) return path.startsWith('/') ? path : `/${path}`
+    }
+  }
+  const reader = (globalThis as { getCurrentPages?: () => Array<{ route?: string }> }).getCurrentPages
+  if (typeof reader !== 'function') return null
+  const pages = reader() ?? []
+  const route = pages.length > 0 ? pages[pages.length - 1]?.route : undefined
+  if (typeof route !== 'string' || !route.trim()) return null
+  const path = route.trim().split(/[?#]/, 1)[0] ?? ''
+  return path.startsWith('/') ? path : `/${path}`
+}
+
+function routeStillThisPage(): boolean {
+  const path = observedTopPath()
+  return path === null || path === PAGE_PATH
+}
+
+function dropIfRouteLeft(): boolean {
+  // Compiled H5 can keep this tab alive without onHide while the hash or top page is elsewhere.
+  if (routeStillThisPage()) return false
+  if (visible) {
+    visible = false
+    showEpoch += 1
+    pageEpoch += 1
+    reloadAfterFlight = false
+    adoptedKey = ''
+    resetData()
+  }
+  return true
+}
+
+function isCurrent(run: number, identity: { subject: string; revision: number } | null): boolean {
+  return visible
+    && routeStillThisPage()
+    && pageEpoch === run
+    && session.isAuthenticated
+    && session.isLearningReady
+    && isSameWorldIdentity(identity, session.getMobileApiIdentity())
+}
+
+function resetData(): void {
+  summary.value = null
+  streak.value = null
+  season.value = null
+  quests.value = { quests: [], invalidCount: 0 }
+  summaryState.value = 'loading'
+  streakState.value = 'loading'
+  seasonState.value = 'loading'
+  questsState.value = 'loading'
+  status.value = 'loading'
+  statusKey.value = 'loading'
+  accessBlocked.value = false
+}
+
+function sectionFailure(error: unknown): { permission: boolean; offline: boolean; key: string } {
+  const failure = toWorldFailure(error)
+  if (failure.kind === 'unauthorized' || failure.kind === 'forbidden') {
+    accessBlocked.value = true
+    return { permission: true, offline: false, key: 'permission' }
+  }
+  return { permission: false, offline: failure.kind === 'offline', key: failure.kind === 'offline' ? 'offline' : 'error' }
+}
+
+function applySummary(result: PromiseSettledResult<unknown>): { ok: boolean; error?: unknown } {
+  if (result.status === 'rejected') {
+    summaryState.value = 'error'
+    sectionFailure(result.reason)
+    return { ok: false, error: result.reason }
+  }
+  if (isEmptyWorldPayload(result.value)) {
+    summaryState.value = 'empty'
+    return { ok: false }
+  }
+  const parsed = toWorldSummary(result.value)
+  if (!parsed.ok) {
+    summaryState.value = 'error'
+    return { ok: false }
+  }
+  summary.value = parsed.data
+  summaryState.value = parsed.data.xp !== null || parsed.data.level !== null || parsed.data.currentSeason !== null || parsed.data.featureEnabled !== null ? 'ready' : 'empty'
+  return { ok: true }
+}
+
+function applyStreak(result: PromiseSettledResult<unknown>): { ok: boolean; error?: unknown } {
+  if (result.status === 'rejected') {
+    streakState.value = 'error'
+    sectionFailure(result.reason)
+    return { ok: false, error: result.reason }
+  }
+  if (isEmptyWorldPayload(result.value)) {
+    streakState.value = 'empty'
+    return { ok: false }
+  }
+  const parsed = toWorldStreak(result.value)
+  if (!parsed.ok) {
+    streakState.value = 'error'
+    return { ok: false }
+  }
+  streak.value = parsed.data
+  streakState.value = 'ready'
+  return { ok: true }
+}
+
+function isLegacyEmptySeason(value: unknown): boolean {
+  if (isEmptyWorldPayload(value)) return true
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false
+  if (!Object.prototype.hasOwnProperty.call(value, 'data')) return false
+  const data = Reflect.get(value, 'data')
+  return typeof data === 'object' && data !== null && !Array.isArray(data) && Object.keys(data).length === 0
+}
+
+function applySeason(result: PromiseSettledResult<unknown>): { ok: boolean; error?: unknown } {
+  if (result.status === 'rejected') {
+    season.value = null
+    seasonState.value = 'error'
+    sectionFailure(result.reason)
+    return { ok: false, error: result.reason }
+  }
+  // null, {data:null}, and {data:{}} are legacy empty envelopes. The current season read is a non-null seasonId.
+  if (isLegacyEmptySeason(result.value)) {
+    season.value = null
+    seasonState.value = 'empty'
+    return { ok: false }
+  }
+  const parsed = toWorldSeason(result.value)
+  if (!parsed.ok) {
+    season.value = null
+    seasonState.value = 'error'
+    return { ok: false }
+  }
+  season.value = parsed.data
+  seasonState.value = 'ready'
+  return { ok: true }
+}
+
+function applyQuests(result: PromiseSettledResult<unknown>): { ok: boolean; error?: unknown } {
+  if (result.status === 'rejected') {
+    questsState.value = 'error'
+    sectionFailure(result.reason)
+    return { ok: false, error: result.reason }
+  }
+  if (isEmptyWorldPayload(result.value)) {
+    questsState.value = 'empty'
+    return { ok: false }
+  }
+  const parsed = toWorldQuests(result.value)
+  if (!parsed.ok) {
+    questsState.value = 'error'
+    return { ok: false }
+  }
+  quests.value = parsed.data
+  questsState.value = parsed.data.quests.length ? 'ready' : 'empty'
+  return { ok: true }
+}
+
+async function load(): Promise<void> {
+  if (dropIfRouteLeft() || !visible) return
+  if (loadFlight) return loadFlight
+  const identity = currentIdentity()
+  if (!session.isAuthenticated || !session.isLearningReady || !identity) {
+    accessBlocked.value = true
+    status.value = 'permission'
+    statusKey.value = 'permission'
     return
   }
+  reloadAfterFlight = false
+  adoptedKey = `${identity.subject}\0${identity.revision}`
+  const run = ++pageEpoch
+  status.value = 'loading'
+  statusKey.value = 'loading'
+  summaryState.value = 'loading'
+  streakState.value = 'loading'
+  seasonState.value = 'loading'
+  questsState.value = 'loading'
+  const flight = (async () => {
+  if (dropIfRouteLeft() || !isCurrent(run, identity)) return
+  const summarySettled = await Promise.allSettled([getB4Profile()])
+  if (dropIfRouteLeft() || !isCurrent(run, identity)) return
+  const summaryResult = applySummary(summarySettled[0])
+  if (accessBlocked.value) {
+    status.value = 'permission'
+    statusKey.value = 'permission'
+    return
+  }
+  if (summary.value && summary.value.featureEnabled === false) {
+    status.value = 'closed'
+    statusKey.value = 'featureClosedTitle'
+    return
+  }
+  if (!summaryResult.ok && summaryResult.error === undefined && summaryState.value === 'error') {
+    streak.value = null
+    season.value = null
+    quests.value = { quests: [], invalidCount: 0 }
+    status.value = 'error'
+    statusKey.value = 'error'
+    return
+  }
+  if (dropIfRouteLeft() || !isCurrent(run, identity)) return
+  const results = await Promise.allSettled([getB4Streak(), listB4Quests(), getB4Season()])
+  if (dropIfRouteLeft() || !isCurrent(run, identity)) return
+  const streakResult = applyStreak(results[0])
+  const questsResult = applyQuests(results[1])
+  const seasonResult = applySeason(results[2])
+  const failures = [summaryResult, streakResult, questsResult, seasonResult].filter((item) => !item.ok && item.error !== undefined)
+  const sectionErrors = [summaryState.value, streakState.value, seasonState.value, questsState.value].filter((item) => item === 'error').length
+  const firstFailure = failures[0]?.error
+  if (accessBlocked.value) {
+    status.value = 'permission'
+    statusKey.value = 'permission'
+    return
+  }
+  if (summary.value && summary.value.featureEnabled === false) {
+    status.value = 'closed'
+    statusKey.value = 'featureClosedTitle'
+    return
+  }
+  if (sectionErrors === 0) {
+    const anyReady = summaryState.value === 'ready' || streakState.value === 'ready' || seasonState.value === 'ready' || questsState.value === 'ready'
+    status.value = anyReady ? 'ready' : 'partial'
+    statusKey.value = anyReady ? 'lastUpdated' : 'summaryNoFacts'
+    return
+  }
+  const offline = failures.length > 0 && toWorldFailure(firstFailure).kind === 'offline'
+  if (sectionErrors === 4) {
+    status.value = offline ? 'offline' : 'error'
+    statusKey.value = offline ? 'offline' : 'error'
+    return
+  }
+  status.value = 'partial'
+  statusKey.value = offline ? 'offline' : 'partial'
+  })()
+  loadFlight = flight
+  try {
+    await flight
+  } finally {
+    if (loadFlight === flight) loadFlight = null
+  }
+  if (reloadAfterFlight && visible && routeStillThisPage()) {
+    reloadAfterFlight = false
+    await load()
+  }
+}
+
+async function initialise(token: number): Promise<void> {
+  showInFlight = true
+  let started = false
+  try {
+    const allowed = await ensureMobilePageAccess(PAGE_PATH)
+    if (token !== showEpoch || dropIfRouteLeft() || !visible) return
+    if (!allowed) {
+      accessBlocked.value = true
+      status.value = 'permission'
+      statusKey.value = 'permission'
+      return
+    }
+    if (!session.isAuthenticated || !session.isLearningReady || !currentIdentity()) {
+      accessBlocked.value = true
+      status.value = 'permission'
+      statusKey.value = 'permission'
+      return
+    }
+    started = true
+    await load()
+  } finally {
+    showInFlight = false
+  }
+  if (!started && reloadAfterFlight && visible && routeStillThisPage()) {
+    reloadAfterFlight = false
+    await initialise(++showEpoch)
+  }
+}
+
+function retry(): void {
+  if (status.value === 'loading' || loadFlight) return
+  adoptedKey = ''
+  void load()
+}
+
+function returnToLearning(): void {
+  openUniPage('/pages/home/home')
+}
+
+function navigate(url: string): void {
+  openUniPage(url)
+}
+
+function changeQuality(event: { detail: { value: number | string } }): void {
+  const level = B4_PERFORMANCE_LEVELS[Number(event.detail.value)]
+  if (level) b4.setPerformance(level)
+}
+
+function questTitle(quest: WorldQuest): string {
+  return quest.title ?? wt('questUnknown')
+}
+
+function questProgress(quest: WorldQuest): string {
+  if (quest.claimed === true) return wt('questClaimed')
+  if (quest.completed === true) return wt('questCompleted')
+  if (quest.progress !== null && quest.target !== null) return wt('questProgress', { progress: quest.progress, target: quest.target })
+  return wt('unavailable')
+}
+
+function streakLastValid(value: WorldStreak): string {
+  const date = formatWorldDate(value.lastValidDate, uiLocale.value)
+  return date ? wt('streakLastValid', { date }) : wt('dateUnknown')
+}
+
+function seasonPoints(value: WorldSeason): string | null {
+  return value.points === null ? null : wt('seasonPoints', { count: value.points })
+}
+
+onShow(() => {
+  if (dropIfRouteLeft()) return
+  const wasVisible = visible
+  visible = true
   b4.restore()
-  void b4.loadWorld()
+  if (wasVisible && (showInFlight || loadFlight || adoptedKey)) return
+  reloadAfterFlight = false
+  const token = ++showEpoch
+  void initialise(token)
 })
 
-function navigate(url: string): void { getUniRuntime().navigateTo({ url }) }
-function choosePerformance(level: (typeof B4_PERFORMANCE_LEVELS)[number]): void { b4.setPerformance(level) }
+onHide(() => {
+  visible = false
+  showEpoch += 1
+  pageEpoch += 1
+  reloadAfterFlight = false
+  adoptedKey = ''
+})
+
+watch(() => session.identityRevision, () => {
+  if (dropIfRouteLeft()) return
+  if (!visible) return
+  const key = identityKey()
+  if (!session.isAuthenticated) {
+    pageEpoch += 1
+    resetData()
+    accessBlocked.value = true
+    status.value = 'permission'
+    statusKey.value = 'permission'
+    reloadAfterFlight = false
+    adoptedKey = ''
+    return
+  }
+  if (showInFlight || loadFlight) {
+    pageEpoch += 1
+    resetData()
+    reloadAfterFlight = true
+    return
+  }
+  if (key && key === adoptedKey) return
+  pageEpoch += 1
+  resetData()
+  adoptedKey = ''
+  void initialise(++showEpoch)
+})
 </script>
 
 <template>
-  <view class="yx-page b4-world v2-world-body" :class="`b4-world--${b4.performanceLevel}`" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="world" />
-
-    <B4StatusPanel class="v2-world-status" :status="b4.status" :online="b4.online" :message="b4.lastError" :queue-count="b4.queueCount" :performance-level="b4.performanceLevel" @retry="b4.loadWorld" @sync="b4.syncOffline" @performance="choosePerformance" />
-
-    <view class="b4-metrics v2-world-stats v2-world-list">
-      <view class="b4-metric card v2-world-card v2-world-stat v2-world-row"><text class="eyebrow v2-world-eyebrow">XP</text><text class="b4-metric__value v2-world-num v2-world-title">{{ b4.profile?.xp ?? '—' }}</text><text class="d v2-world-d">{{ b4.profile ? `Lv.${b4.profile.level} · ${b4.profile.rank}` : '暂未获取成长记录' }}</text></view>
-      <view class="b4-metric card v2-world-card v2-world-stat v2-world-row"><text class="eyebrow v2-world-eyebrow">星币</text><text class="b4-metric__value v2-world-num v2-world-title">{{ b4.profile?.coins ?? '—' }}</text><text class="d v2-world-d">可用星币</text></view>
-      <view class="b4-metric card v2-world-card v2-world-stat v2-world-row"><text class="eyebrow v2-world-eyebrow">连续学习</text><text class="b4-metric__value v2-world-num v2-world-title">{{ b4.streak ? `${b4.streak.currentStreak} 天` : '—' }}</text><text class="d v2-world-d">{{ b4.streak ? stateLabel(b4.streak.status) : '暂无记录' }}</text></view>
+  <view class="yx-page world-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
+    <view class="world-glow" aria-hidden="true">
+      <image class="world-glow-image" src="/static/figma-world-core/imgGlow-a1692313.svg" mode="scaleToFill" />
+    </view>
+    <view class="world-header">
+      <MobilePageHeader
+        page="world"
+        :title="wt('title')"
+        :description="wt('subtitle')"
+        :show-settings="false"
+      />
     </view>
 
-    <view class="yx-card galaxy-card card v2-world-card">
-      <view class="card-heading v2-world-head"><view class="v2-world-titles"><text class="card-kicker eyebrow v2-world-eyebrow">星系地图</text><view class="v2-world-h2"><AppIcon name="world" :size="20" /><text class="card-title v2-world-title">成长世界</text></view></view><text class="fact-tag tag v2-world-tag">成长进度</text></view>
-      <text class="muted d v2-world-d">每次练习，都为你的成长地图点亮一点星光。</text>
-      <view class="galaxy-map v2-world-list"><view v-for="node in galaxyNodes" :key="node.code" class="galaxy-node card v2-world-row v2-world-node"><view class="galaxy-node__dot v2-world-dot"><AppIcon name="spark" :size="16" />✦</view><text class="v2-world-row-title">{{ node.title }}</text><text class="muted d v2-world-d">{{ node.description }}</text><text class="pending v2-world-tag v2-world-pending">{{ node.hasData ? `${stateLabel(node.status)} · ${node.progress}/${node.requiredProgress}（${node.progressPercent}%）` : '进度待确认' }}</text></view></view>
-      <text v-if="b4.galaxy" class="muted d v2-world-d">总成长 XP：{{ b4.galaxy.totalXp }}</text>
-      <view v-if="b4.season" class="season-row v2-world-row v2-world-season"><text class="v2-world-row-title">{{ b4.season.title }}</text><text class="d v2-world-d">{{ b4.season.points }} 赛季点 · {{ stateLabel(b4.season.status) }}</text></view>
-      <text v-else class="empty-copy v2-world-empty v2-world-d">当前暂无赛季活动。</text>
+    <view v-if="accessBlocked" class="world-body">
+      <view class="world-alert" role="alert">
+        <image class="world-mascot" src="/static/figma-world-core/imgMascot-d54a4be0.svg" mode="aspectFit" aria-hidden="true" />
+        <view class="world-alert-copy">
+          <text class="world-alert-title">{{ wt('permission') }}</text>
+          <text class="world-alert-body">{{ wt('loadingHint') }}</text>
+        </view>
+        <view class="world-alert-actions">
+          <button class="world-link" type="button" @click="returnToLearning">{{ wt('safeExit') }}</button>
+        </view>
+      </view>
     </view>
 
-    <view class="yx-card streak-card card v2-world-card">
-      <view class="card-heading v2-world-head"><view class="v2-world-titles"><text class="card-kicker eyebrow v2-world-eyebrow">连续学习日历</text><view class="v2-world-h2"><AppIcon name="calendar" :size="20" /><text class="card-title v2-world-title">连续学习日历</text></view></view><text class="streak-fire v2-world-dot">♨</text></view>
-      <template v-if="b4.streak"><text class="streak-number v2-world-num">{{ b4.streak.currentStreak }}<text> 天</text></text><text class="muted d v2-world-d">上次有效日：{{ b4.streak.lastValidDate ?? '暂无记录' }} · {{ b4.streak.timeZone }} · {{ stateLabel(b4.streak.status) }}</text><button v-if="['AT_RISK', 'BROKEN', 'FROZEN'].includes(b4.streak.status)" tabindex="0" role="button" class="yx-button yx-button--secondary btn v2-world-btn v2-world-opt" type="button" @click="b4.rescueStreak('CHALLENGE')">请求破冰挑战<AppIcon name="chev" :size="14" /></button></template>
-      <text v-else class="empty-copy v2-world-empty v2-world-d">还没有连续学习记录，从今天开始积累吧。</text>
-    </view>
+    <view v-else class="world-body">
+      <view class="world-status" role="status">
+        <view class="world-status-copy">
+          <text class="world-status-title">{{ statusText }}</text>
+          <text class="world-status-hint">{{ wt('loadingHint') }}</text>
+        </view>
+        <view class="world-status-actions">
+          <button v-if="showStatusRetry" class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+          <picker :range="qualityLabels" :value="qualityIndex" @change="changeQuality">
+            <view class="world-quality">{{ wt('quality') }} · {{ qualityLabels[qualityIndex] }}</view>
+          </picker>
+        </view>
+      </view>
 
-    <view class="b4-entry-grid v2-world-grid v2-world-list">
-      <button tabindex="0" role="button" class="yx-button entry-button opt btn v2-world-btn v2-world-opt v2-world-row" type="button" @click="navigate('/pages/b4-games/b4-games')"><AppIcon name="grid" :size="18" /><text>游戏大厅</text><text class="d v2-world-d">用小挑战巩固所学</text><AppIcon name="chev" :size="14" /></button>
-      <button tabindex="0" role="button" class="yx-button entry-button opt btn v2-world-btn v2-world-opt v2-world-row" type="button" @click="navigate('/pages/b4-social/b4-social')"><AppIcon name="users" :size="18" /><text>虚拟自习室</text><text class="d v2-world-d">专注一刻，一起进步</text><AppIcon name="chev" :size="14" /></button>
-      <button tabindex="0" role="button" class="yx-button entry-button opt btn v2-world-btn v2-world-opt v2-world-row" type="button" @click="navigate('/pages/b4-avatar/b4-avatar')"><AppIcon name="spark" :size="18" /><text>我的形象</text><text class="d v2-world-d">装扮自己的成长空间</text><AppIcon name="chev" :size="14" /></button>
-      <button tabindex="0" role="button" class="yx-button entry-button opt btn v2-world-btn v2-world-opt v2-world-row" type="button" @click="navigate('/pages/b4-offline/b4-offline')"><AppIcon name="inbox" :size="18" /><text>离线包</text><text class="d v2-world-d">把学习带在身边</text><AppIcon name="chev" :size="14" /></button>
-    </view>
+      <view v-if="featureClosed" class="world-closed" role="status">
+        <image class="world-mascot" src="/static/figma-world-core/imgMascot-d54a4be0.svg" mode="aspectFit" aria-hidden="true" />
+        <view class="world-closed-copy">
+          <text class="world-closed-title">{{ wt('featureClosedTitle') }}</text>
+          <text class="world-note">{{ wt('featureClosedBody') }}</text>
+          <view class="world-closed-actions">
+            <button class="world-link" type="button" @click="navigate('/pages/b4-avatar/b4-avatar')">{{ wt('avatar') }}</button>
+            <button class="world-link" type="button" @click="navigate('/pages/b4-offline/b4-offline')">{{ wt('offlineEntry') }}</button>
+            <button class="world-link" type="button" @click="returnToLearning">{{ wt('safeExit') }}</button>
+          </view>
+        </view>
+      </view>
 
-    <view class="yx-card quest-card card v2-world-card"><view class="card-heading v2-world-head"><view class="v2-world-titles"><text class="card-kicker eyebrow v2-world-eyebrow">成长任务</text><view class="v2-world-h2"><AppIcon name="target" :size="20" /><text class="card-title v2-world-title">学习挑战</text></view></view><text class="tag v2-world-tag">{{ b4.quests.length ? `${b4.quests.length} 个任务` : '暂无' }}</text></view><view v-if="b4.quests.length" class="quest-list v2-world-list"><view v-for="quest in b4.quests" :key="quest.questId" class="quest-row v2-world-row"><view class="v2-world-row-main"><text class="v2-world-row-title">{{ quest.title }}</text><text class="muted d v2-world-d">{{ questPeriod(quest.period) }}</text></view><text class="v2-world-tag" :class="quest.completed ? 'done' : 'pending'">{{ quest.claimed ? '已领取' : quest.completed ? '待领取' : `${quest.progress}/${quest.target}` }}</text></view></view><text v-else class="empty-copy v2-world-empty v2-world-d">暂无成长任务。</text></view>
-    <B12RewardsCard class="v2-world-rewards" />
+      <template v-else>
+        <view v-if="summaryState === 'error'" class="world-section-error" role="alert">
+          <text>{{ wt('summaryUnavailable') }}</text>
+          <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+        </view>
+
+        <view v-if="hasSummaryFacts" class="world-hero">
+          <view class="world-hero-copy">
+            <text v-if="levelText" class="world-hero-level">{{ levelText }}</text>
+            <text v-if="xpText" class="world-hero-xp">{{ xpText }}</text>
+          </view>
+          <view class="world-hero-art">
+            <image class="world-hero-rocket" src="/static/figma-world-core/imgIconRocket-df0018e9.svg" mode="aspectFit" aria-hidden="true" />
+          </view>
+        </view>
+
+        <view v-if="levelText || activeStreak" class="world-stats">
+          <view v-if="levelText" class="world-stat">
+            <text class="world-stat-value">{{ levelText }}</text>
+            <text class="world-stat-label">{{ wt('level') }}</text>
+          </view>
+          <view v-if="activeStreak" class="world-stat">
+            <text class="world-stat-value">{{ wt('days', { count: streak?.currentStreak ?? 0 }) }}</text>
+            <text class="world-stat-label">{{ wt('streak') }}</text>
+          </view>
+        </view>
+
+        <view class="world-card world-map-card">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('growthMap') }}</text>
+            <image class="world-inline-icon" src="/static/figma-world-core/imgIconSparkles-d3d305c0.svg" mode="aspectFit" aria-hidden="true" />
+          </view>
+          <view class="world-map-art" aria-hidden="true">
+            <image class="world-star world-star--1" src="/static/figma-world-core/imgS-8aa360df.svg" mode="aspectFit" />
+            <image class="world-star world-star--2" src="/static/figma-world-core/imgS1-49835748.svg" mode="aspectFit" />
+            <image class="world-star world-star--3" src="/static/figma-world-core/imgS2-4d7cc3f6.svg" mode="aspectFit" />
+            <image class="world-star world-star--4" src="/static/figma-world-core/imgS3-8c27187b.svg" mode="aspectFit" />
+          </view>
+          <text class="world-note">{{ wt('growthMapUnavailable') }}</text>
+        </view>
+
+        <view class="world-card world-season-card">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('season') }}</text>
+            <image class="world-inline-icon" src="/static/figma-world-core/imgIconTrophy-1571c4ce.svg" mode="aspectFit" aria-hidden="true" />
+          </view>
+          <view v-if="seasonState === 'error'" class="world-section-error" role="alert">
+            <text>{{ wt('seasonUnavailable') }}</text>
+            <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+          </view>
+          <template v-else-if="season">
+            <text class="world-season-title">{{ season.title ?? season.seasonId }}</text>
+            <text class="world-meta">{{ wt(seasonStatusKey(season.status)) }}<template v-if="seasonPoints(season)"> · {{ seasonPoints(season) }}</template></text>
+          </template>
+          <text v-else-if="seasonState === 'empty'" class="world-empty">{{ wt('noSeason') }}</text>
+        </view>
+
+        <view class="world-entry-grid">
+          <button class="world-entry" type="button" @click="navigate('/pages/b4-games/b4-games')">
+            <image class="world-entry-icon" src="/static/figma-world-core/imgIconGame-d3e0367c.svg" mode="aspectFit" aria-hidden="true" />
+            <text class="world-entry-title">{{ wt('games') }}</text>
+            <text class="world-meta">{{ wt('gamesDesc') }}</text>
+          </button>
+          <button class="world-entry" type="button" @click="navigate('/pages/b4-social/b4-social')">
+            <image class="world-entry-icon" src="/static/figma-world-core/imgIconUsers-a47ef190.svg" mode="aspectFit" aria-hidden="true" />
+            <text class="world-entry-title">{{ wt('social') }}</text>
+            <text class="world-meta">{{ wt('socialDesc') }}</text>
+          </button>
+          <button class="world-entry" type="button" @click="navigate('/pages/b4-avatar/b4-avatar')">
+            <image class="world-entry-icon" src="/static/figma-world-core/imgIconShirt-4ea65edd.svg" mode="aspectFit" aria-hidden="true" />
+            <text class="world-entry-title">{{ wt('avatar') }}</text>
+            <text class="world-meta">{{ wt('avatarDesc') }}</text>
+          </button>
+          <button class="world-entry" type="button" @click="navigate('/pages/b4-offline/b4-offline')">
+            <image class="world-entry-icon" src="/static/figma-world-core/imgIconDownload-8e6deb40.svg" mode="aspectFit" aria-hidden="true" />
+            <text class="world-entry-title">{{ wt('offlineEntry') }}</text>
+            <text class="world-meta">{{ wt('offlineEntryDesc') }} · {{ wt('offlineClosed') }}</text>
+          </button>
+        </view>
+
+        <view class="world-card world-streak-card">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('streak') }}</text>
+            <image class="world-inline-icon" src="/static/figma-world-core/imgIconFlame-2c1c73a2.svg" mode="aspectFit" aria-hidden="true" />
+          </view>
+          <view v-if="streakState === 'error'" class="world-section-error" role="alert">
+            <text>{{ wt('streakUnavailable') }}</text>
+            <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+          </view>
+          <template v-else-if="streak">
+            <text class="world-streak-number">{{ wt('days', { count: streak.currentStreak }) }}</text>
+            <text class="world-meta">{{ wt(streakStatusKey(streak.status)) }}<template v-if="streak.timeZone"> · {{ wt('streakTimeZone', { zone: streak.timeZone }) }}</template></text>
+            <text class="world-meta">{{ streakLastValid(streak) }}</text>
+            <text class="world-note">{{ wt('streakCalendarUnavailable') }}</text>
+            <text v-if="streak.status === 'AT_RISK' || streak.status === 'BROKEN' || streak.status === 'FROZEN'" class="world-note">{{ wt('rescueClosed') }}</text>
+          </template>
+          <text v-else-if="streakState === 'empty'" class="world-empty">{{ wt('streakNoRecord') }}</text>
+        </view>
+
+        <view class="world-card world-quests-card">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('quests') }}</text>
+            <text v-if="quests.quests.length" class="world-tag">{{ wt('questsCount', { count: quests.quests.length }) }}</text>
+          </view>
+          <view v-if="questsState === 'error'" class="world-section-error" role="alert">
+            <text>{{ wt('questsUnavailable') }}</text>
+            <button class="world-link" type="button" @click="retry">{{ wt('retry') }}</button>
+          </view>
+          <template v-else-if="quests.quests.length">
+            <view v-for="quest in quests.quests" :key="quest.questId" class="world-quest">
+              <view class="world-quest-copy">
+                <text class="world-quest-title">{{ questTitle(quest) }}</text>
+                <text class="world-meta">{{ wt(questPeriodKey(quest.period)) }}</text>
+              </view>
+              <text class="world-tag">{{ questProgress(quest) }}</text>
+            </view>
+            <text v-if="quests.invalidCount" class="world-note">{{ wt('partial') }}</text>
+          </template>
+          <text v-else-if="questsState === 'empty'" class="world-empty">{{ wt('noQuests') }}</text>
+        </view>
+
+        <B12RewardsCard v-if="rewardsConfirmed" />
+        <view v-else class="world-rewards">
+          <view class="world-card-head">
+            <text class="world-card-title">{{ wt('rewardsTitle') }}</text>
+            <image class="world-inline-icon" src="/static/figma-world-core/imgIconGift-b89f33ab.svg" mode="aspectFit" aria-hidden="true" />
+          </view>
+          <text class="world-note">{{ wt('rewardsNote') }}</text>
+          <text class="world-note">{{ wt('rewardsUnconfirmed') }}</text>
+        </view>
+      </template>
+    </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.b4-world{padding-bottom:56rpx}.b4-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16rpx;margin-top:28rpx}.b4-metric{display:grid;gap:8rpx;padding:22rpx;border:1rpx solid var(--yx-border);border-radius:16rpx;background:var(--yx-surface-card)}.b4-metric>text:first-child{color:var(--yx-brand);font-size:21rpx;font-weight:800;letter-spacing:2rpx}.b4-metric__value{font-size:40rpx;font-weight:800}.b4-metric>text:last-child{color:var(--yx-text-secondary);font-size:21rpx}.card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16rpx}.card-kicker{display:block;color:var(--yx-brand);font-size:21rpx;font-weight:800;letter-spacing:2rpx}.card-title{display:block;margin-top:8rpx;font-size:34rpx;font-weight:750}.fact-tag{color:var(--yx-text-secondary);font-size:22rpx}.muted{color:var(--yx-text-secondary);font-size:23rpx;line-height:1.6}.galaxy-map{display:grid;grid-template-columns:repeat(2,1fr);gap:12rpx;margin-top:18rpx;padding:16rpx;border-radius:16rpx;background:var(--yx-surface-page)}.galaxy-node{display:grid;gap:8rpx;min-height:150rpx;padding:16rpx;border:1rpx solid var(--yx-border);border-radius:14rpx;background:var(--yx-surface-card)}.galaxy-node__dot{display:flex;width:46rpx;height:46rpx;align-items:center;justify-content:center;border-radius:50%;color:var(--yx-on-brand);background:linear-gradient(135deg,var(--yx-action),var(--yx-action))}.pending{color:var(--yx-warning);font-size:21rpx}.season-row{display:flex;justify-content:space-between;gap:12rpx;margin-top:18rpx;padding:16rpx;border-radius:12rpx;color:var(--yx-brand);background:var(--yx-brand-soft);font-size:23rpx}.empty-copy{display:block;padding:18rpx;border:1rpx dashed var(--yx-border);border-radius:12rpx;color:var(--yx-text-secondary);font-size:24rpx;line-height:1.6}.streak-card{margin-top:24rpx}.streak-fire{display:flex;width:56rpx;height:56rpx;align-items:center;justify-content:center;border-radius:16rpx;color:var(--yx-on-brand);background:var(--yx-warning);font-size:28rpx}.streak-number{display:block;margin-top:12rpx;color:var(--yx-brand);font-size:72rpx;font-weight:800}.streak-number text{font-size:26rpx;font-weight:500;color:var(--yx-text-secondary)}.b4-entry-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16rpx;margin-top:24rpx}.entry-button{display:grid!important;height:150rpx!important;align-content:center;gap:8rpx;padding:20rpx!important;text-align:left}.entry-button text:first-child{font-size:30rpx}.entry-button text:last-child{color:var(--yx-brand-soft);font-size:21rpx;font-weight:400}.quest-card{margin-top:24rpx}.quest-list{display:grid;gap:10rpx;margin-top:16rpx}.quest-row{display:flex;align-items:center;justify-content:space-between;gap:12rpx;padding:16rpx;border-radius:12rpx;background:var(--yx-surface-page)}.quest-row>view{display:grid;gap:5rpx}.done{color:var(--yx-success);font-size:22rpx}.quest-row .pending{font-size:22rpx}@media(max-width:560px){.b4-metrics{gap:10rpx}.b4-metric{padding:16rpx}.b4-metric__value{font-size:30rpx}.b4-entry-grid{grid-template-columns:1fr}.season-row{display:grid}}
-/* v2 成长世界页换皮：对齐 mobile/styles.css 与 refine.css 中 .card/.eyebrow/.tag/.opt/.btn/.list-row/.metrics/.empty/.fb，对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 同样数值，仅用 var(--v2-*)。 */
-.v2-world-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;min-width:0;max-width:100%;overflow-x:hidden;font-family:var(--v2-font)}
-.v2-world-body>view,.v2-world-body>button{min-width:0;max-width:100%}
-.v2-world-status{display:grid;gap:var(--v2-space-2);min-width:0;max-width:100%;font-family:var(--v2-font)}
-.v2-world-list{display:grid;gap:var(--v2-space-2);min-width:0;max-width:100%}
-.v2-world-list>*{min-width:0}
-.v2-world-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--v2-space-2);min-width:0;max-width:100%}
-.v2-world-stats>*{min-width:0}
-.v2-world-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--v2-space-4);min-width:0;max-width:100%}
-.v2-world-grid>*{min-width:0}
-.v2-world-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;min-width:0;max-width:100%;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font);overflow-wrap:anywhere}
-.v2-world-card:hover{border-color:var(--v2-brand)}
-.v2-world-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;min-width:0;max-width:100%;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);font-family:var(--v2-font);overflow-wrap:anywhere}
-.v2-world-row:hover{border-color:var(--v2-brand)}
-.v2-world-row>*{min-width:0;max-width:100%}
-.v2-world-stat{display:grid;gap:var(--v2-space-2);align-content:start;overflow-wrap:anywhere}
-.v2-world-node{display:grid;gap:var(--v2-space-2);align-content:start;text-align:left;overflow-wrap:anywhere}
-.v2-world-season{border-color:transparent;background:var(--v2-soft);color:var(--v2-brand)}
-.v2-world-eyebrow{display:flex;align-items:center;gap:var(--v2-space-2);min-width:0;max-width:100%;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-world-title{display:block;min-width:0;max-width:100%;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-world-row-title{display:block;flex:1 1 auto;min-width:0;max-width:100%;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:700;line-height:1.5;overflow-wrap:anywhere}
-.v2-world-row-main{display:grid;gap:var(--v2-space-1);flex:1 1 auto;min-width:0;max-width:100%;overflow-wrap:anywhere}
-.v2-world-num{display:block;min-width:0;max-width:100%;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:800;line-height:1.2;overflow-wrap:anywhere}
-.v2-world-d{display:block;min-width:0;max-width:100%;margin-top:var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-world-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);min-width:0;max-width:100%;margin:var(--v2-space-1) 0 var(--v2-space-3)}
-.v2-world-head>*{min-width:0;max-width:100%}
-.v2-world-titles{display:grid;gap:var(--v2-space-1);flex:1 1 auto;min-width:0;max-width:100%}
-.v2-world-h2{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);min-width:0;max-width:100%;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-world-h2>*{min-width:0}
-.v2-world-tag{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;max-width:100%;padding:var(--v2-space-1) var(--v2-space-2);border-radius:var(--v2-radius-pill);background:var(--v2-soft);color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;line-height:1.5;overflow-wrap:anywhere}
-.v2-world-tag.done{background:var(--v2-ok-soft);color:var(--v2-ok)}
-.v2-world-tag.pending{background:var(--v2-warn-soft);color:var(--v2-warn)}
-.v2-world-pending{background:var(--v2-warn-soft);color:var(--v2-warn)}
-.v2-world-dot{display:flex;flex:none;align-items:center;justify-content:center;width:var(--v2-space-12);height:var(--v2-space-12);border-radius:var(--v2-radius-md);background:var(--v2-soft);color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1}
-.v2-world-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);width:100%;max-width:100%;min-height:var(--v2-space-12);margin:0;padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;text-align:left;overflow-wrap:anywhere}
-.v2-world-btn:hover{border-color:var(--v2-brand)}
-.v2-world-btn:active{transform:scale(.97)}
-.v2-world-btn:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-world-btn:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-world-btn>*{min-width:0;max-width:100%}
-.v2-world-opt:hover{border-color:var(--v2-brand)}
-.v2-world-opt.sel{border-color:var(--v2-brand);background:var(--v2-soft)}
-.v2-world-opt:active{transform:scale(.97)}
-.v2-world-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-world-opt:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-world-empty{display:grid;gap:var(--v2-space-2);box-sizing:border-box;min-width:0;max-width:100%;padding:var(--v2-space-4);border:1px dashed var(--v2-line);border-radius:var(--v2-radius-md);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-world-rewards{display:grid;gap:var(--v2-space-2);min-width:0;max-width:100%;font-family:var(--v2-font)}
-@media(max-width:560px){.v2-world-grid{grid-template-columns:1fr}}
+.world-page.yx-page.yx-page {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 860px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 0 calc(96px + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  background-color: var(--yx-surface-page);
+  background-image: var(--yx-r4-home-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-family: var(--v2-font);
+}
+.world-glow { position: absolute; top: -140px; right: -120px; width: min(360px, 92vw); height: 300px; overflow: hidden; pointer-events: none; }
+.world-glow-image { display: block; width: 100%; height: 100%; }
+.world-header { position: relative; z-index: 2; padding: calc(18px + env(safe-area-inset-top)) 16px 0 8px; }
+.world-header :deep(.mobile-intro--world) { padding: 0; border-radius: 0; background: none; overflow: visible; }
+.world-header :deep(.mobile-intro--world .mobile-intro-copy) { max-width: 100%; }
+.world-header :deep(.mobile-intro--world .mobile-page-title) { font-size: 28px; }
+.world-header :deep(.mobile-intro--world .mobile-book-art) { display: none; }
+.world-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; padding: 8px 24px 0; }
+.world-status {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 14px; border: 1px solid var(--yx-r4-glass-border, var(--yx-border));
+  border-radius: 16px; background: var(--yx-r4-glass, var(--v2-card));
+  box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+  backdrop-filter: blur(var(--yx-r4-blur, 10px)); -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+.world-status-copy { display: grid; gap: 2px; min-width: 0; }
+.world-status-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 13px; font-weight: 700; line-height: 19px; }
+.world-status-hint { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 18px; }
+.world-status-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.world-quality { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; border: 1px solid var(--v2-line); border-radius: 10px; color: var(--v2-brand); background: var(--v2-card); font-size: 12px; font-weight: 700; white-space: nowrap; }
+.world-page .world-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin: 0; padding: 6px 8px; border: 0; border-radius: 8px; color: var(--v2-brand); background: transparent; font-family: var(--v2-font); font-size: 13px; font-weight: 700; }
+.world-page .world-link::after { border: 0; }
+.world-page .world-link--start { justify-self: start; padding-left: 0; }
+.world-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 20px 22px; border-radius: 28px; color: var(--yx-r4-on-cta, var(--v2-inverse));
+  background-color: var(--v2-brand); background-image: var(--yx-r4-cta-image);
+  box-shadow: var(--yx-r4-shadow-cta, var(--v2-shadow));
+}
+.world-hero-copy { display: grid; gap: 4px; min-width: 0; }
+.world-hero-level { color: color-mix(in srgb, var(--v2-inverse) 82%, transparent); font-size: 13px; font-weight: 600; line-height: 20px; }
+.world-hero-xp { color: var(--yx-r4-on-cta, var(--v2-inverse)); font-size: 26px; font-weight: 700; line-height: 34px; overflow-wrap: anywhere; }
+.world-hero-art { display: flex; flex: 0 0 72px; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 24px; background: color-mix(in srgb, var(--v2-inverse) 18%, transparent); }
+.world-hero-rocket { display: block; width: 34px; height: 34px; }
+.world-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.world-stat { display: grid; gap: 2px; justify-items: center; padding: 14px 12px; border-radius: 18px; background: var(--v2-card); box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow)); }
+.world-stat-value { color: var(--v2-brand); font-size: 22px; font-weight: 700; line-height: 30px; }
+.world-stat-label { color: var(--v2-mut); font-size: 12px; line-height: 18px; }
+.world-card {
+  display: grid; gap: 8px; box-sizing: border-box; min-width: 0; padding: 18px 20px;
+  border: 1px solid var(--yx-r4-glass-border, var(--yx-border)); border-radius: 24px;
+  background: var(--yx-r4-glass, var(--v2-card)); box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+  backdrop-filter: blur(var(--yx-r4-blur, 10px)); -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  .world-card { background: color-mix(in srgb, var(--v2-card) 62%, transparent); border-color: color-mix(in srgb, var(--v2-card) 90%, transparent); }
+}
+.world-card-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.world-card-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 18px; font-weight: 700; line-height: 26px; }
+.world-inline-icon { display: block; width: 20px; height: 20px; margin-left: auto; }
+.world-map-card { gap: 6px; }
+.world-map-art {
+  position: relative; height: 94px; margin-top: 2px; overflow: hidden; border-radius: 18px;
+  background: linear-gradient(153deg, var(--v2-side), var(--v2-brand));
+}
+.world-star { position: absolute; display: block; opacity: .9; }
+.world-star--1 { top: 34px; left: 22%; width: 22px; height: 22px; }
+.world-star--2 { top: 18px; left: 44%; width: 30px; height: 30px; }
+.world-star--3 { top: 46px; left: 64%; width: 22px; height: 22px; }
+.world-star--4 { top: 12px; left: 78%; width: 26px; height: 26px; }
+.world-meta { display: block; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 19px; overflow-wrap: anywhere; }
+.world-note { display: block; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }
+.world-empty { display: block; padding: 6px 0; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 22px; }
+.world-season-title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 17px; font-weight: 700; line-height: 24px; }
+.world-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.world-page .world-entry {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: auto auto; gap: 2px 10px;
+  align-items: center; min-height: 78px; padding: 14px; border: 1px solid var(--v2-line);
+  border-radius: 18px; background: var(--v2-card); color: var(--v2-ink); font-family: var(--v2-font); text-align: left;
+}
+.world-page .world-entry::after { border: 0; }
+.world-entry-icon { grid-row: 1 / 3; display: block; width: 30px; height: 30px; }
+.world-entry-title { color: var(--v2-ink); font-size: 14px; font-weight: 700; line-height: 20px; }
+.world-streak-number { color: var(--v2-brand); font-size: 34px; font-weight: 800; line-height: 42px; }
+.world-quest { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--v2-line); }
+.world-quest:first-of-type { border-top: 0; }
+.world-quest-copy { display: grid; gap: 2px; min-width: 0; }
+.world-quest-title { color: var(--v2-ink); font-size: 14px; font-weight: 700; line-height: 20px; }
+.world-tag { flex: 0 0 auto; padding: 3px 9px; border-radius: 999px; color: var(--v2-brand); background: var(--v2-soft); font-size: 12px; font-weight: 700; line-height: 18px; white-space: nowrap; }
+.world-section-error { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 4px 0; color: var(--v2-bad); font-size: 13px; line-height: 20px; }
+.world-alert, .world-closed {
+  display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 16px; border: 1px solid var(--yx-r4-glass-border, var(--yx-border)); border-radius: 22px;
+  background: var(--yx-r4-glass, var(--v2-card)); box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+}
+.world-closed { align-items: start; }
+.world-mascot { display: block; width: 54px; height: 54px; }
+.world-alert-copy, .world-closed-copy { display: grid; gap: 4px; min-width: 0; }
+.world-alert-actions, .world-closed-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 4px; }
+.world-alert-title, .world-closed-title { color: var(--v2-ink); font-size: 16px; font-weight: 700; line-height: 22px; }
+.world-alert-body { color: var(--v2-mut); font-size: 13px; line-height: 19px; }
+.world-rewards { display: grid; gap: 6px; min-width: 0; }
+.world-rewards .b12-card { margin-top: 0; }
+@media (max-width: 360px) {
+  .world-body { padding-right: 16px; padding-left: 16px; }
+  .world-header { padding-right: 12px; padding-left: 8px; }
+  .world-status { display: grid; }
+  .world-status-actions { justify-content: flex-start; }
+  .world-entry-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-contrast: more) {
+  .world-status, .world-card, .world-alert, .world-closed { background: var(--v2-card); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+.world-page.b10-theme--high-contrast .world-status,
+.world-page.b10-theme--high-contrast .world-card,
+.world-page.b10-theme--high-contrast .world-alert,
+.world-page.b10-theme--high-contrast .world-closed { background: var(--v2-card); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.world-page.b10-theme--dark .world-hero,
+.world-page.b10-theme--high-contrast .world-hero { color: var(--v2-ink); background-image: none; background-color: var(--v2-side); }
+.world-page.b10-theme--dark .world-hero-level,
+.world-page.b10-theme--high-contrast .world-hero-level { color: var(--v2-mut); }
+.world-page.b10-theme--dark .world-hero-xp,
+.world-page.b10-theme--high-contrast .world-hero-xp { color: var(--v2-ink); }
+.world-page.b10-theme--dark .world-hero-rocket,
+.world-page.b10-theme--high-contrast .world-hero-rocket { filter: brightness(0) invert(1); }
 </style>

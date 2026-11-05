@@ -1470,7 +1470,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "FROZEN_COMPOSITION_PENDING",
+      "status": "INTEGRATED_H5_FUNCTIONAL_DESIGN_HOLD",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1518,14 +1518,14 @@
         "b12/b12-mobile-contract.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "REVIEW_HOLD",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md"
       },
       "current_job": "dsh/commerce-batch-05-world-implementation",
       "pause_handoff": "PAUSE-20261104.md"
@@ -1671,7 +1671,7 @@
       "name": "头像与衣柜",
       "owner": "DSH",
       "wave": "D2",
-      "status": "FROZEN_COMPOSITION_PENDING",
+      "status": "INTEGRATED_H5_FUNCTIONAL_DESIGN_HOLD",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -1716,14 +1716,14 @@
         "b4-avatar-display.e2e.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
+        "visual": "REVIEW_HOLD",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md"
       },
       "current_job": "dsh/batch-29-avatar-implementation",
       "pause_handoff": "PAUSE-20261104.md"
@@ -2900,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T06:08:17.074457+00:00",
+  "updated_at": "2026-11-05T06:19:34.597898+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4092,6 +4092,25 @@
     "browserChecks": 547,
     "screenshots": 19,
     "productPaths": 11,
+    "doD": false
+  },
+  "integration_batch_41_avatar_world": {
+    "status": "SCOPED_H5_FUNCTIONAL_REVIEW_PASSED_DESIGN_HOLD",
+    "buildIndex": "8c9d787220e77406a4a729aea6e8381564e28d2f743dd030d479f5ced48a05d2",
+    "evidence": "evidence/ROOT-B41-AVATAR-WORLD-20261105.json",
+    "review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md",
+    "scopeTests": 52,
+    "browser": {
+      "avatar_core": 196,
+      "avatar_owner": 22,
+      "held_and_duplicate_cases": 3,
+      "world_contract_cases": 11,
+      "screenshots": 33,
+      "transport": "three origin local fixtures",
+      "unknown_after_targeted_fixture": 0,
+      "page_errors": 0
+    },
+    "routeCountDelta": 0,
     "doD": false
   }
 }
