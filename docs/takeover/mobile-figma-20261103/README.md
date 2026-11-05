@@ -12,6 +12,7 @@
 - [关闭页 B65](reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md) 写作和两条 B11 的遗留工作区清理已通过 255 项受控浏览器检查。
 - [关闭页 B56](reviews/INTEGRATION-B56-CLOSED-PRACTICE.md) 收口旧听力与口语关闭页，组合 H5 116 项受控检查通过。
 - [报告分享 B71](reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md) 隔离 MySQL 验证同键并发签发和既有撤销边界。 [移动端 B73](reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md) 54 项受控浏览器检查通过。
+- [日常 H5 入口 B74](reviews/INTEGRATION-B74-CURRENT-H5-RUNNER.md) 默认构建的匿名与关闭页检查覆盖 43 个场景。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。
 - [词汇与语法 B54](reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md) 验证复习队列、冷启动、同步回执与语法交互。新增 MB-012、MB-013，累计 32/33 条本地 UI 候选。
 - [访问受限 B53](reviews/INTEGRATION-B53-FORBIDDEN.md) 19 项组合检查通过。新增 MB-005，累计 30/33 条本地 UI 候选。

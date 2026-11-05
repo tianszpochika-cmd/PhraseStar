@@ -3607,7 +3607,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T22:02:52.772464+08:00",
+  "updated_at": "2026-11-05T22:27:55.992451+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5329,5 +5329,15 @@
       "fileCount": 797,
       "treeSha256": "5c10d1db5dd0f8174cfcfbdb0cbd1d1dc1bb2a2cfc4ed20f5e6693afbe505740"
     }
+  },
+  "integration_batch_74_current_h5_runner": {
+    "scope": "current H5 test entry",
+    "status": "SCOPED_SYNTHETIC_H5_PASS",
+    "review": "reviews/INTEGRATION-B74-CURRENT-H5-RUNNER.md",
+    "receipt": "evidence/ROOT-B74-CURRENT-H5-RUNNER-20261105.json",
+    "browser_scenarios": 43,
+    "browser_checks": 477,
+    "native_host_tools_passed": 8,
+    "native_device": "NOT_RUN"
   }
 }

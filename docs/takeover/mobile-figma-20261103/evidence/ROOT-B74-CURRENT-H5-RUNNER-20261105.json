@@ -1,0 +1,53 @@
+{
+  "scope": "Current documented H5 smoke entry, with a separate native host readiness check",
+  "author": "DSH27 and DSH28, root exact script with two README clarifications",
+  "integration_parent": "77d80524183d893d838b7e5b39d865b671b87ed7",
+  "applied_files": {
+    "apps/mobile/README.md": {
+      "candidate_sha256": "70ddf98c9bf22be2f46d8399ef77afab56432e2c138c491a5c7fdd415919756e",
+      "applied_sha256": "4e1e668da872812a0c878b21a51d9b0a140d3643ecb4c15deef68adc47c2bee8"
+    },
+    "apps/mobile/tests/mobile-experience.e2e.mjs": {
+      "candidate_sha256": "b75794763116949bd6c3b40fd9377b8bd92a8bcf9aaa3a4766e577dd42285814",
+      "applied_sha256": "b75794763116949bd6c3b40fd9377b8bd92a8bcf9aaa3a4766e577dd42285814"
+    }
+  },
+  "browser_tool": "Repo Playwright 1.63.0",
+  "artifact_index_sha256": "1a76e5ba2f09234e58704512785628251a386b3e66e9b9de5cb48635965e23fc",
+  "tests": {
+    "anonymous": {
+      "rows": 34,
+      "checks": 243
+    },
+    "signedIn": {
+      "rows": 9,
+      "checks": 234
+    }
+  },
+  "browser_checks_total": 477,
+  "browser_scenarios": 43,
+  "outside_index_symlink_rejected": true,
+  "proof_sha256": {
+    "default-h5-build.log": "d4a4fdc4a4b14da45ee85b97c818663f702951fca61121115d6c2c6813398a39",
+    "default-entry/result.json": "562421abdecba2fe9d02dad4cf413885cf761888ce171ee1a92f0107fa5735d8",
+    "symlink-proof/result.json": "5532088d349e1f990c92cec4d9107654b5d88d8773638c02eefff459a39fd984"
+  },
+  "native_host": {
+    "tools_passed": 8,
+    "ios_runtime": "iOS 27.0",
+    "repository_native_project_entries": [
+      "apps/mobile/android/.gitkeep",
+      "apps/mobile/ios/.gitkeep"
+    ],
+    "device_and_package": "NOT_RUN",
+    "proof_sha256": {
+      "toolchain.json": "3bec0c9fa64543ee3232acf1136065a743ae0be7416b8e28fb3e3a710bfb3682",
+      "ios-runtime.log": "39763374e04bf8e993d6b97d59cbdb3eceb507d74e978e0513f98cf1c6c61e71",
+      "native-project-files.log": "9cca0bb68aebdc3e36f09046a6afbcdbae52da669764c7a0fb52ed6c3dcc17d2"
+    }
+  },
+  "limits": [
+    "Offline synthetic API/asset delivery, 33 distinct official routes plus Home alias, nine bounded closed-page combinations.",
+    "The September 31-page / five-viewport evidence stays historical. Device, installed package, reader and deployment remain separate."
+  ]
+}
