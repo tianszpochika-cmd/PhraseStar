@@ -51,6 +51,7 @@ function environment({ unauthorizedHandler } = {}) {
   }
   const platform = { getUniRuntime: () => runtime, isNativeAppRuntime: () => false }
   const cache = { removeAllLearningCaches() {} }
+  const secureStorageProvider = load('src/platform/secure-storage-provider.ts', { './uni-runtime': platform })
   const sessionModule = load('src/stores/session.ts', {
     vue: vuePackage,
     pinia: piniaPackage,
@@ -61,6 +62,7 @@ function environment({ unauthorizedHandler } = {}) {
     },
     '../auth/gateway-auth': { createGatewayMobileAuthAdapter: () => { throw new Error('A test auth adapter must be installed') }, safeMobileReturnTo: (value) => typeof value === 'string' ? value : '/pages/home/home' },
     '../platform/uni-runtime': platform,
+    '../platform/secure-storage-provider': secureStorageProvider,
     '../auth/auth-failure-copy': { mobileAuthFailureMarker: () => 'failed' },
     './learning-cache': cache,
   })

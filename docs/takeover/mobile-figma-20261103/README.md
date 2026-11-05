@@ -7,7 +7,7 @@
 - 当前 33/33 条路由进入本地 UI 候选。引导目标保存与读回已复验，首次签署的 9 个模拟场景通过。IAM 本地 V18 到 V19 升级和 41 项候选检查通过。本机 Gateway 和 IAM TLS 合成签署链路共 184 项通过。正式发布与部署后签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。 [引导首次签署 B57](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md)
 - 33 条路由的源码调用与限制已对照静态契约，完整追溯仍待签收。错题详情旧地址缺网关精确转发，设置页客服查询已补兼容说明。全量契约门禁保留既有 Gateway 与事件基线差异。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md) · [需求与门禁缺项](reviews/TRACE-AUDIT-20261105.md)
 - [当前 H5 签署与设备 B84](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md#b84-当前-h5-签署与设备复验) 最新 H5 的三份模拟签署、目标页过渡及设备撤销再次通过。
-- [App-Plus 构建 B86](reviews/INTEGRATION-B86-APP-PLUS-COMPILER.md) 编译和核对全部 33 条路由的 App 资源。APK、IPA、安全存储与设备运行继续验收。
+- [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。安装宿主与系统存储读写继续验收。
 - [本机学习计划 B91](reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md) 真实定级后生成启用计划，今日任务及同键重试读回通过。
 - [本机定级完成 B90](reviews/INTEGRATION-B49-ASSESSMENT.md#b90-本机十题定级和报告) 十题评分、同键重试、报告及数据库读回通过。
 - [当前 H5 定级首题 B89](reviews/INTEGRATION-B49-ASSESSMENT.md#b89-当前-h5-真实首题) 真实目标读回后键盘创建会话，题干、选项和未答状态匹配服务端。

@@ -64,12 +64,14 @@ function sessionFactory() {
   const gateway = { createGatewayMobileAuthAdapter: () => { throw new Error('controlled adapter must be set') }, safeMobileReturnTo: (value, fallback = '/pages/home/home') => typeof value === 'string' && /^\/pages\//.test(value) ? value : fallback }
   const uni = { isNativeAppRuntime: () => false, getUniRuntime: () => ({}) }
   const cache = { removeAllLearningCaches: () => {} }
+  const secureStorageProvider = loadTs('src/platform/secure-storage-provider.ts', { './uni-runtime': uni })
   const sessionModule = loadTs('src/stores/session.ts', {
     vue: require('vue'), pinia: require('pinia'),
     '../auth/access-token': tokenModule,
     '../auth/auth-failure-copy': failureModule,
     '../auth/gateway-auth': gateway,
     '../platform/uni-runtime': uni,
+    '../platform/secure-storage-provider': secureStorageProvider,
     './learning-cache': cache,
   })
   tokenModule.setInMemoryAccessToken(null)

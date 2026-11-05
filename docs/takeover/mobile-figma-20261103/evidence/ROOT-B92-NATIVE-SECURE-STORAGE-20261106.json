@@ -1,0 +1,186 @@
+{
+  "batch": "B92",
+  "at": "2026-11-06T02:19:11.567369+08:00",
+  "integration_base": "b0caba63df74c77e02137506294dc6199636275b",
+  "source_base": "b87644c5ed43d49a21dc8e99647ba5a374919697",
+  "implementation": [
+    "DSH CLI 40 and 41",
+    "Grok CLI 84"
+  ],
+  "integrator": "root",
+  "source_files": [
+    {
+      "path": "apps/mobile/package.json",
+      "sha256": "fb879d23fbe334f119a0951a7ba000b55e3fc5154c8480af1a51d5e8edf8aa4d",
+      "bytes": 1909,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/main.ts",
+      "sha256": "294edaa8cd31bb1ec9785885bf4ee3ae87e56a39e3bb9673db09e3eb649a08bc",
+      "bytes": 1625,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/platform/native-secure-storage.ts",
+      "sha256": "a114c700e34dcd3276ad75cd20338f837f7f84da4b0227b40c95582b7326b4b2",
+      "bytes": 3871,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/platform/secure-storage-provider.ts",
+      "sha256": "c1f9e7a8f961771bcdd9ba4b3448495e33da145a40700e43f0970a0cbd765807",
+      "bytes": 1727,
+      "origin": "G84"
+    },
+    {
+      "path": "apps/mobile/src/stores/session.ts",
+      "sha256": "0f8a7cfe54cc0cb178e4f0d70f4a8f8b37851216f068e6fa4e8eefcb458afba1",
+      "bytes": 21702,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/index.d.ts",
+      "sha256": "00bdee84d3d587f3764dbe4c7d0785b6ae44595c627aaeb83fb0815258f3e1c7",
+      "bytes": 251,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/package.json",
+      "sha256": "ee3278a08c02ffd98bba792346156c5a242f7cfc6a4f6fd844832f6b12daa583",
+      "bytes": 222,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/utssdk/app-android/YXSecureStorageNative.kt",
+      "sha256": "d0b2bdb2a37c8722c1320181d7bf4f12bba4539120ee23c5c50588740ec254be",
+      "bytes": 13228,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/utssdk/app-android/index.uts",
+      "sha256": "7363488a27f52924b3d3583a1f44af06f718885b035bb2589b1f00f7d2dcc59e",
+      "bytes": 394,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/utssdk/app-ios/YXSecureStorageNative.swift",
+      "sha256": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+      "bytes": 5551,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/utssdk/app-ios/index.uts",
+      "sha256": "79a1d413c2585be6add5eb71a182d934f136251d955433a3f72ae9ed6dd44d71",
+      "bytes": 321,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/src/uni_modules/yx-secure-storage/utssdk/interface.uts",
+      "sha256": "97600350aa510b282adcb002b5ea0845ed365c4c5023d2ddc7113f0190e184fa",
+      "bytes": 522,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-api-client-account-scope.test.mjs",
+      "sha256": "420b4d19c53bd419f854a582f02416ee4ae7ac162c90d5a95fa46008767099e7",
+      "bytes": 16214,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-auth-expiry-session.test.mjs",
+      "sha256": "e353a90c3b45f40a3e475d6f806e7138a21f76a5144bd4edf01b74f7053c15c0",
+      "bytes": 13211,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs",
+      "sha256": "55b983568a6be5a56be4a01cd0c8c478c29f0dc9f8bec774f971f9e2e3409a97",
+      "bytes": 27058,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-learning-account-scope.test.mjs",
+      "sha256": "9e03d573dfc06773b1145e029cd7514a356969a2b4e5cbc8bf8bf6c82d79cd19",
+      "bytes": 22436,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-native-secure-storage.test.mjs",
+      "sha256": "9a95b34fd433544e0448a866401d8c40909da126f552ec80f25785eba5e00a7e",
+      "bytes": 8673,
+      "origin": "G84"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-native-session-fail-closed.test.mjs",
+      "sha256": "185bcfbc116cc3f3b3f87420622a556740f7c82b2f651b09e785fd1b7c865e99",
+      "bytes": 5745,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/mobile-reset-gate.test.mjs",
+      "sha256": "31550e0d39f5f79158c6c9452ab7618b50c049206bb820bd863c126b9d81a14b",
+      "bytes": 8496,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/onboarding-adult-verdict.test.mjs",
+      "sha256": "93b4fcc6e8ed217824ad681cae02ee800bc95f894cef582c4de232271d2e47c4",
+      "bytes": 5042,
+      "origin": "DSH41"
+    },
+    {
+      "path": "apps/mobile/tests/password-reset-failure-marker.test.mjs",
+      "sha256": "36d460402e466f3230b94826514929398c64bd705611bc95b68e548776da6a16",
+      "bytes": 3795,
+      "origin": "DSH41"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "2893c70c02b105ae9fe4aea626a47d44af70dfe9161567def286a300b9465f1c",
+      "bytes": 410467,
+      "origin": "DSH41"
+    }
+  ],
+  "worker_report_sha256": {
+    "dsh40": "3f4462a18897699e2774a21cc2ec92bd6f8cec1abc11510c1f09827a9ff46caf",
+    "dsh41": "f7aec2cd56b9afe00c974d9f827c2207860ce6f8ece6dac009e98b56a3f9c11e",
+    "grok84": "38e02e22c9303a9ed669fb7534b37b688b7ff77368a7d738c44004a4ad5e25fe"
+  },
+  "checks": {
+    "mobile_source": "675/675",
+    "typescript": "PASS",
+    "standard_app_build": "PASS",
+    "standard_h5_build": "PASS",
+    "offline_h5": "43/43",
+    "native_proxies_absent_h5": true,
+    "host_injected_receiver_preserved": true
+  },
+  "artifacts": {
+    "appFiles": 748,
+    "appTreeSha256": "64d6ff749841d4fb1c3d383e5fa86310ed916e0a097eb03523ceea0cd9f5a819",
+    "routes": 33,
+    "nativeFiles": {
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/YXSecureStorageNative.kt": "d0b2bdb2a37c8722c1320181d7bf4f12bba4539120ee23c5c50588740ec254be",
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/index.kt": "61b9998de41abbdd1488c664f4217e2470fcec50ec394487062140bd375a9428",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/YXSecureStorageNative.swift": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/index.swift": "f7535f708021512a23671630155a9ad5b392fb4f280b04926a1a29680da0923b"
+    },
+    "h5Files": 797,
+    "h5TreeSha256": "9d593eb7a5777147bd9a845f10d180f3aa04f11c22e95bef01a91c3be410f42d",
+    "h5IndexSha256": "01149cc6141683052afc28c3f38f875c0b81ae63ba0cf1d2845ccba363b94120",
+    "browserCases": 43,
+    "browserScreenshots": 23
+  },
+  "native_compile": {
+    "bound_to_identical_generated_native_bytes": true,
+    "android": "Kotlin 2.2.10 compiled the hybrid implementation against android-36 with only a DCloud app-context test stub. D8 produced an API 23 DEX. Vendor wrapper linkage not run.",
+    "ios": "arm64 Swift objects for iOS 12 and 17 with the Apple SDK and a DCloud import test stub. Native host linkage not run.",
+    "android_bytecode_review_sha256": "fadf256aa591e8d0f37edc9e0b6521fbea08c5126971f9164c570ed1b6cde9ed"
+  },
+  "qualification": "Initial 68 suite failures were caused by old test module loaders missing the new provider. The six loader fixes preserve existing assertions. Root reran the complete composite.",
+  "installable_package": "NOT_RUN",
+  "device_secure_storage": "NOT_RUN",
+  "device_accessibility": "NOT_RUN",
+  "deploy": "NOT_RUN"
+}

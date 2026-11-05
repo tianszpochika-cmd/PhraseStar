@@ -3925,7 +3925,7 @@
         "runtime": "NOT_RUN",
         "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/native-toolchain-readiness/result.json"
       },
-      "current_compiler_evidence": "B86 App-Plus resources PASS. Native host/package and operating-system verification remain NOT_RUN."
+      "current_compiler_evidence": "B92 App-Plus resources and native bridge source with SDK compile checks PASS. Native host/package and operating-system verification remain NOT_RUN."
     }
   },
   "integration_batch_23_devices": {
@@ -5658,5 +5658,17 @@
     "h5_plan_surface_task_completion_deploy": "NOT_RUN",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B91-LOCAL-LEARNING-PLAN-20261106.json"
+  },
+  "integration_batch_92_native_secure_storage": {
+    "state": "ACCEPTED_LOCAL_NATIVE_BRIDGE_SOURCE_AND_APP_RESOURCES",
+    "app_files": 748,
+    "app_routes": 33,
+    "h5_files": 797,
+    "h5_index_sha256": "01149cc6141683052afc28c3f38f875c0b81ae63ba0cf1d2845ccba363b94120",
+    "mobile_source_tests": "675/675",
+    "offline_h5_cases": "43/43",
+    "native_sdk_compile": "PASS_WITH_DCLOUD_TEST_STUBS",
+    "app_host_package_device_storage_accessibility_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B92-NATIVE-SECURE-STORAGE-20261106.json"
   }
 }

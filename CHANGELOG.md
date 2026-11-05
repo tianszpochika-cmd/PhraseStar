@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B92-20261106] 移动 App 接入 Keychain／Android Keystore 源码桥接，保留宿主兼容并验证 App、H5 产物隔离。
+
 - [MOBILE-FIGMA-B91-20261106] 本机完成定级后创建学习计划，同键重试、今日任务与数据库读回通过。
 
 - [MOBILE-FIGMA-B90-20261106] 本机十题定级完成，评分复算、第十题同键重试、会话和报告读回通过。

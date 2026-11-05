@@ -9,7 +9,7 @@
 
 5. 本轮移动端改造先读[监督账](docs/takeover/mobile-figma-20261103/README.md)，核对监督账中的工作树、唯一写者、18183 租约和实际 CLI 检查点（不查看额度面板，以两家实际耗尽停机回执为准）；旧页面签收不自动继承到新候选。
 
-App 构建使用同版 App-Plus 编译器，B86 已核对 33 条路由资源。安装宿主和 Keychain／Keystore 继续单列。[构建交接](docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B86-APP-PLUS-COMPILER.md)
+App 构建使用同版 App-Plus 与 UTS 工具链。B92 已核对 33 条路由和原生安全存储桥接源码。安装宿主和系统 Keychain／Keystore 运行继续单列。[构建交接](docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md)
 
 过期交接记录已从当前工作树清理；需要追溯时可查阅 Git 历史。签收账和验收证据保留在原位置。
 

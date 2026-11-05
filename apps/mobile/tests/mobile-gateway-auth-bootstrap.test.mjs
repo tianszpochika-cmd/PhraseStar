@@ -60,12 +60,14 @@ function environment() {
     '../api/client': api,
     '../platform/gateway': gateway,
   })
+  const secureStorageProvider = load('src/platform/secure-storage-provider.ts', { './uni-runtime': platform })
   const sessionModule = load('src/stores/session.ts', {
     vue: vuePackage,
     pinia: piniaPackage,
     '../auth/access-token': accessTokens,
     '../auth/gateway-auth': auth,
     '../platform/uni-runtime': platform,
+    '../platform/secure-storage-provider': secureStorageProvider,
     '../auth/auth-failure-copy': { mobileAuthFailureMarker: () => 'failed' },
     './learning-cache': { removeAllLearningCaches() { cacheWipes.count += 1 } },
   })

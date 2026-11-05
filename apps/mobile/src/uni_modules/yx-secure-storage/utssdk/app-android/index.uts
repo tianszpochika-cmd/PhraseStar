@@ -1,0 +1,13 @@
+import { YXSecureStorageNative } from 'uts.sdk.modules.yxSecureStorage'
+
+export function readSecureItem(key: string): string {
+  return YXSecureStorageNative.read(key)
+}
+
+export function writeSecureItem(key: string, value: string): string {
+  return YXSecureStorageNative.write(key, value)
+}
+
+export function removeSecureItem(key: string): string {
+  return YXSecureStorageNative.remove(key)
+}

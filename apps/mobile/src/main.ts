@@ -8,8 +8,14 @@ import { pinia } from './stores/pinia'
 // #ifdef H5
 import { uni as h5Uni } from '@dcloudio/uni-h5'
 // #endif
+// #ifdef APP-PLUS
+import { installNativeSecureStorage } from './platform/native-secure-storage'
+// #endif
 
 export function createApp() {
+  // #ifdef APP-PLUS
+  installNativeSecureStorage()
+  // #endif
   // #ifdef H5
   // The production global can be empty while the dev global already has
   // read-only getters. Add only missing official APIs before app setup.
