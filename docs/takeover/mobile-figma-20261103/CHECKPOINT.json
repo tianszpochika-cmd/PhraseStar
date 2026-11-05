@@ -356,7 +356,7 @@
       "name": "成人门、同意与目标",
       "owner": "GROK",
       "wave": "G1",
-      "status": "LOCAL_H5_PARTIAL_CONSENT_AUTHORITY_OPEN",
+      "status": "LOCAL_H5_UI_CANDIDATE_SIMULATED_CONSENT_TRACE_PENDING",
       "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
       "services_data_owners": [
         "iam-service",
@@ -434,10 +434,14 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B48-ONBOARDING.md"
+        "independent_review": "reviews/INTEGRATION-B48-ONBOARDING.md",
+        "b57_simulated_first_sign": "9 controlled scenarios, 213 PASS, no unexpected or page errors",
+        "additional_scoped_reviews": [
+          "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md"
+        ]
       },
       "pause_handoff": "PAUSE-20261104.md",
-      "current_job": null,
+      "current_job": "ROOT_B57_SIMULATED_FIRST_SIGNING_VERIFIED",
       "resume_evidence_20261105": "layout13 + smoke4 + flow15 + boundary8 + matrix128 + restoring2, separate goal6; compiled private-internals cases being adapted"
     },
     {
@@ -3347,7 +3351,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T09:52:04.432128+00:00",
+  "updated_at": "2026-11-05T09:58:10.888538+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3545,11 +3549,11 @@
     "WORLD_CALENDAR_DATE": "FROZEN_B06_NEGATIVE_ZONE_PREVIOUS_DAY/INVALID_NORMALIZES; MainDSH_B32",
     "RESET_B30": "Root64matrix+4textscale/7groups and7icon scenarios passed; SDK100ms observer closure byDSH_COMMERCE_B08; not yet committed",
     "onboarding_new_consent_authority": {
-      "status": "SIMULATED_CONTRACT_READY_REAL_PUBLICATION_OPEN",
+      "status": "SIMULATED_H5_PASS_REAL_PUBLICATION_OPEN",
       "design": "164:5944",
       "r1": "R1-008",
       "owner": "iam-service",
-      "evidence": "88e4c3ed describes an optional, principal-only IAM publication read; 76e0dab2 holds three synthetic fixture documents. Current IAM runtime publication, formal documents and live signing/read-back remain open. Simulated browser product candidate is under review.",
+      "evidence": "B57 first-signing simulation passed. Formal publication and actual IAM read/write remain open.",
       "historical_runtime_audit": "GET /iam/consents returns recorded facts. GET /iam/principal/me projects a single aggregate version. The source reviewed exposes no pre-acceptance per-document version/digest/content binding for all three published required documents. Legacy helper uses fallback and can retry a new unseen version. Scope remains closed and real publish/sign/readback is not verified."
     },
     "native_toolchain_20261105": {
@@ -4147,12 +4151,12 @@
     "remote": "NOT_PUSHED_PHASE_CONTINUES"
   },
   "integration_scope_count": {
-    "routesWithLocalUICandidates": 32,
+    "routesWithLocalUICandidates": 33,
     "formalRouteDenominator": 33,
     "notDoD": true,
     "notOverallProjectPercentage": true,
     "historical_b40_routes": 19,
-    "source": "integration_batch_55_anonymous / active_resume_review_20261105"
+    "source": "integration_batch_57_onboarding_consent"
   },
   "pending_quota_candidates": {
     "grammarB34": "56browser checks/11failed/12shots; frozen288; NOT_ACCEPTED",
@@ -4619,7 +4623,7 @@
   "active_resume_review_20261105": {
     "at": "2026-11-05T08:48:34.869835+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 32,
+    "local_ui_candidates": 33,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4631,9 +4635,9 @@
       {
         "id": "MB-004",
         "cli": "grok",
-        "job": "grok/resume-20261105-iam-consent-authority-audit-12",
-        "state": "dependency_open",
-        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-iam-consent-authority-audit-12.checkpoint.json"
+        "job": "grok/resume-20261105-consent-onboarding-26",
+        "state": "simulated_functional_verified",
+        "checkpoint": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-consent-onboarding-26.checkpoint.json"
       },
       {
         "id": "MB-005",
@@ -4923,6 +4927,16 @@
     "local_ui_candidates": 32,
     "formal_routes": 33,
     "browser_checks": 116,
+    "scope": "local synthetic H5"
+  },
+  "integration_batch_57_onboarding_consent": {
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "evidence": "evidence/ROOT-B57-ONBOARDING-CONSENT-20261105.json",
+    "browser_checks": 213,
+    "source_tests": 642,
+    "local_ui_candidates": 33,
+    "formal_routes": 33,
+    "formal_publication": "PENDING",
     "scope": "local synthetic H5"
   }
 }

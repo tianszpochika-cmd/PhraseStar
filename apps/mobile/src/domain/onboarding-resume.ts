@@ -1,4 +1,4 @@
-import type { B8AdultGateResponse } from '@englishflow/contracts'
+import type { B8AdultGateResponse, B8PublishedConsentDocument } from '@englishflow/contracts'
 
 // Resume facts for BC-011. Step choice uses IAM adult gate, IAM consent and
 // GET /learner/targets only. First-day blockers and registration time are not inputs.
@@ -13,6 +13,8 @@ export interface OnboardingConsentFact {
   readable: boolean
   accepted: boolean | null
   unsatisfiedPurposes: readonly string[]
+  /** Present only for a complete in-memory publication. Never persisted. */
+  publishedDocuments?: readonly B8PublishedConsentDocument[]
 }
 
 export interface OnboardingTargetFact {

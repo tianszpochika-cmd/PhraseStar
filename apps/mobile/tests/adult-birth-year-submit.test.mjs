@@ -46,6 +46,7 @@ test('mobile onboarding submits a minor year and opens the no-access page', asyn
   let restoreCalls = 0
   let resumeReads = 0
   let targetSaves = 0
+  let firstSignUses = 0
   const pendingFacts = {
     adultGate: 'REQUIRED', adultLearningAccess: 'RESTRICTED',
     consent: { readable: true, accepted: false, unsatisfiedPurposes: ['ACCOUNT_TERMS', 'PRIVACY_NOTICE', 'ADULT_LEARNING_ELIGIBILITY'] },
@@ -91,6 +92,12 @@ test('mobile onboarding submits a minor year and opens the no-access page', asyn
         '@englishflow/i18n': { interpolate: (value) => value },
         '../../platform/v2-foundation': { mobileI18n: { formatNumber: (value) => String(value) } },
         '../../api/client': { mobileApiClient: { request: async () => { throw new Error('A rejected gate must not read consent records') } } },
+        '../../api/learner-content': {
+          consentGrantMatchesPublication() { return false },
+          explicitIncompleteConsent() { return false },
+          mobileLearnerContentApi: { async acceptViewedRequiredConsents() { firstSignUses += 1; throw new Error('A rejected age must not PUT a first-sign decision') } },
+        },
+        '../../platform/client-id': { createClientId() { firstSignUses += 1; throw new Error('A rejected age must not create a first-sign client id') } },
         '../../platform/uni-runtime': { getUniRuntime: () => ({ async navigateTo({ url }) { opened.push(url) }, async reLaunch({ url }) { opened.push(url) } }) },
         '../../platform/pointer-feedback': loadTs('src/platform/pointer-feedback.ts', { vue: vuePort }),
         '../../domain/adult-birth-year': birthYearModule,
@@ -125,6 +132,7 @@ test('mobile onboarding submits a minor year and opens the no-access page', asyn
     assert.equal(resumeReads, 1, 'A rejected adult must not advance to resume learning facts')
     assert.equal(targetSaves, 0)
     assert.deepEqual(opened, ['/pages/forbidden/forbidden'])
+    assert.equal(firstSignUses, 0, 'A rejected age must not use a first-sign decision, PUT, or client id')
   } finally {
     lifecycle.hide?.()
     scope.stop()

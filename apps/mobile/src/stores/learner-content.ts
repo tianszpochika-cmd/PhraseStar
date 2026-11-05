@@ -7,7 +7,7 @@ import type { MobileFirstDayModel, MobileGoalOption, MobileHomeModel, MobileLear
 import { getUniRuntime } from '../platform/uni-runtime'
 import { createClientId } from '../platform/client-id'
 import { mobileI18n } from '../platform/v2-foundation'
-import { mapUiGoal, type OnboardingResumeFacts } from '../domain/onboarding-resume'
+import { mapUiGoal, type OnboardingConsentFact, type OnboardingResumeFacts } from '../domain/onboarding-resume'
 import { useSessionStore } from './session'
 import { LEARNER_CONTENT_STORAGE_KEY, removeLearningCache } from './learning-cache'
 
@@ -171,6 +171,12 @@ export const useLearnerContentStore = defineStore('mobile-learner-content', () =
   function resumeKey(owner: Scope | null): string {
     return owner ? `${owner.subject}:${owner.revision}` : ''
   }
+  function copyResumeConsent(consent: { readable: boolean; accepted: boolean | null; unsatisfiedPurposes: readonly string[]; publishedDocuments?: OnboardingConsentFact['publishedDocuments'] }): OnboardingConsentFact {
+    const summary = { readable: consent.readable, accepted: consent.accepted, unsatisfiedPurposes: [...consent.unsatisfiedPurposes] }
+    const documents = consent.publishedDocuments
+    if (!documents || documents.length !== 3) return summary
+    return { ...summary, publishedDocuments: documents.map((document) => ({ ...document })) }
+  }
   async function loadOnboardingResume(force = false): Promise<OnboardingResumeFacts> {
     const owner = scope()
     const key = resumeKey(owner)
@@ -182,11 +188,7 @@ export const useLearnerContentStore = defineStore('mobile-learner-content', () =
       adultGate: remote.adultGate,
       adultLearningAccess: remote.adultLearningAccess,
       sessionRefreshRequired: remote.sessionRefreshRequired === true,
-      consent: {
-        readable: remote.consent.readable,
-        accepted: remote.consent.accepted,
-        unsatisfiedPurposes: [...remote.consent.unsatisfiedPurposes],
-      },
+      consent: copyResumeConsent(remote.consent),
       target: {
         readable: remote.target.readable,
         saved: remote.target.saved,
