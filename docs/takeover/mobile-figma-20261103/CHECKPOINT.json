@@ -702,7 +702,7 @@
         "h5": "PASS_SHA256_c19c6b0c5cc62c0d921be74329ded3b8289b1969141e60ead65b092673354da6",
         "cross_viewport": "GEOMETRY_390_COMBINED",
         "accessibility": "LOCAL_DISABLED_STATE_CHECK_SCREEN_READER_NOT_RUN",
-        "real_api": "LOCAL_SYNTHETIC_START_READ_FIRST_CHECKPOINT_PASS_DEPLOYED_AND_COMPLETION_NOT_RUN",
+        "real_api": "LOCAL_SYNTHETIC_TEN_ITEM_COMPLETION_AND_REPORT_PASS_DEPLOYED_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md",
         "current_h5_owner_browser": "LOCAL_CHROME_TARGET_AND_FIRST_QUESTION_PASS_B89"
@@ -3706,7 +3706,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T01:24:56.212920+08:00",
+  "updated_at": "2026-11-06T01:40:30.657048+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5622,5 +5622,20 @@
     "first_run": "OBSERVER_LATE_TARGET_REVALIDATION_FALSE_NEGATIVE",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B89-CURRENT-H5-PLACEMENT-FIRST-QUESTION-20261106.json"
+  },
+  "integration_batch_90_local_placement_completion": {
+    "state": "ACCEPTED_LOCAL_OWNER_TEN_ITEM_COMPLETION_AND_REPORT",
+    "owner_source": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+    "iam_http": "184/184",
+    "learner_and_placement_assertions": "80/80",
+    "gateway_calls": 15,
+    "answers": 10,
+    "checkpoints": 10,
+    "assessed_reports": 1,
+    "same_tenth_key_report_stable": true,
+    "report_read": 200,
+    "browser_completion_learning_plan_native_deploy": "NOT_RUN",
+    "cleanup": "PASS",
+    "evidence": "evidence/ROOT-B90-LOCAL-PLACEMENT-COMPLETION-20261106.json"
   }
 }

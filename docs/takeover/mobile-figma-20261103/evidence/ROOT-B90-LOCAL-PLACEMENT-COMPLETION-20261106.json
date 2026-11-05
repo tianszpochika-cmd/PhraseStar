@@ -1,0 +1,119 @@
+{
+  "batch": "B90",
+  "at": "2026-11-06T01:40:30.657048+08:00",
+  "owner_source": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+  "author": "Grok CLI 80",
+  "scope": "local real ten-item placement through Gateway, tenth replay, completed session and owner report",
+  "iam_separate": "184/184",
+  "learner_and_placement_assertions": "80/80",
+  "http": [
+    {
+      "action": "create",
+      "status": 201
+    },
+    {
+      "action": "read",
+      "status": 200
+    },
+    {
+      "action": "respond-1",
+      "status": 200
+    },
+    {
+      "action": "respond-2",
+      "status": 200
+    },
+    {
+      "action": "respond-3",
+      "status": 200
+    },
+    {
+      "action": "respond-4",
+      "status": 200
+    },
+    {
+      "action": "respond-5",
+      "status": 200
+    },
+    {
+      "action": "respond-6",
+      "status": 200
+    },
+    {
+      "action": "respond-7",
+      "status": 200
+    },
+    {
+      "action": "respond-8",
+      "status": 200
+    },
+    {
+      "action": "respond-9",
+      "status": 200
+    },
+    {
+      "action": "respond-10",
+      "status": 200
+    },
+    {
+      "action": "replay-10",
+      "status": 200
+    },
+    {
+      "action": "read_after",
+      "status": 200
+    },
+    {
+      "action": "report",
+      "status": 200
+    }
+  ],
+  "scoring": {
+    "basis": "ten real workload-scored outcome receipts on bank 266100",
+    "dimensions": "3/3/2/2",
+    "full": 3,
+    "zero": 7,
+    "aggregate_score": 29,
+    "reference_level": "A1",
+    "confidence": "HIGH",
+    "score_exchange": "IAM_CLIENT_CREDENTIALS"
+  },
+  "readback": {
+    "same_tenth_key_same_report": true,
+    "report_and_session_stable": true,
+    "session_version": 11,
+    "answers_accepted": 10,
+    "status": "COMPLETED"
+  },
+  "owner_db": {
+    "sessions": 1,
+    "responses": 10,
+    "checkpoints": 10,
+    "assessed_results": 1,
+    "idempotency_records": 11,
+    "create_operations": 1,
+    "response_operations": 10
+  },
+  "cleanup": {
+    "pass": true,
+    "released_ports": [
+      18070,
+      18087,
+      18088,
+      18089,
+      18090,
+      18091,
+      13306
+    ],
+    "temporary_db_tls_and_scratch_released": true
+  },
+  "not_run": [
+    "whole browser placement and report",
+    "learning plan",
+    "Kafka",
+    "retest or skip",
+    "DEC-04 new feedback policy",
+    "native/deployed"
+  ],
+  "local_evidence": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/placement-completion-80-root"
+}
