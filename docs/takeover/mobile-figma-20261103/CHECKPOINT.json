@@ -5723,5 +5723,14 @@
     "disposable_simulators_removed": 4,
     "device_app_host_android_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B98-IOS-SIMULATOR-KEYCHAIN-20261106.json"
+  },
+  "integration_batch_99_today_high_contrast": {
+    "state": "ACCEPTED_LOCAL_TODAY_HIGH_CONTRAST_SCOPE",
+    "viewport_cases": "13/13",
+    "high_contrast": "4/4",
+    "mobile_source": "676/676",
+    "offline_h5": "43/43",
+    "h5_index_sha256": "85e2f1ccfc20d556565d575c27eabf235201f69e3110bf1aa3804066952a9fb8",
+    "evidence": "evidence/ROOT-B99-TODAY-HIGH-CONTRAST-20261106.json"
   }
 }

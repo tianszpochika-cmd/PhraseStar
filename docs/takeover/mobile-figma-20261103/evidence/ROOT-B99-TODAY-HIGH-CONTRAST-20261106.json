@@ -1,0 +1,54 @@
+{
+  "batch": "B99",
+  "at": "2026-11-06T04:15:32.225047+08:00",
+  "integration_base": "b486099fd681105d764eabab18ceb74cc68749cf",
+  "source_file": {
+    "path": "apps/mobile/src/pages/today/today.vue",
+    "sha256": "c308f51fc2240dd3be94c87fc32e6122bc8db198dcf3dbce18c17ae9d45fde75",
+    "bytes": 19370
+  },
+  "worker_report_sha256": "14899ae0e58963ce72b2d548721c998aa0ab66a708ada0ef5da248a62064a097",
+  "implementation": [
+    "Grok CLI 105",
+    "Grok CLI 110"
+  ],
+  "old_fixture": {
+    "passed": 9,
+    "total": 13,
+    "failed_assertions": 8,
+    "root_border": true
+  },
+  "fixed_fixture": {
+    "passed": 13,
+    "total": 13,
+    "high_contrast": 4,
+    "h5_overflow_cases": 0,
+    "screenshots": 5,
+    "dark_light_text200": true
+  },
+  "tests": {
+    "mobile_source": "676/676",
+    "types": "PASS",
+    "h5": "PASS",
+    "app_plus": "PASS",
+    "offline_h5": "43/43"
+  },
+  "artifacts": {
+    "appFiles": 748,
+    "appTreeSha256": "214ca5efe4022b8e0d7c7edfde4880fb9606b574d9d83c3b72ff74e995b8f927",
+    "routes": 33,
+    "nativeFiles": {
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/YXSecureStorageNative.kt": "d0b2bdb2a37c8722c1320181d7bf4f12bba4539120ee23c5c50588740ec254be",
+      "uni_modules/yx-secure-storage/utssdk/app-android/src/index.kt": "61b9998de41abbdd1488c664f4217e2470fcec50ec394487062140bd375a9428",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/YXSecureStorageNative.swift": "524307d89b61e8f593cf86bc6563656ef678d87618a0583f1cc0b1c3d3a91005",
+      "uni_modules/yx-secure-storage/utssdk/app-ios/src/index.swift": "f7535f708021512a23671630155a9ad5b392fb4f280b04926a1a29680da0923b"
+    },
+    "h5Files": 797,
+    "h5TreeSha256": "776bf3ff0b81d9bad8612d6df6af5c4f0008c424577104ff087eccdad929d6e3",
+    "h5IndexSha256": "85e2f1ccfc20d556565d575c27eabf235201f69e3110bf1aa3804066952a9fb8",
+    "browserCases": 43,
+    "browserScreenshots": 23
+  },
+  "receipt_sha256": "3926995d783b8f8425f443cc6990532f9b744169077e51923629e9246434b8c5",
+  "live_owner_and_native_device": "SEPARATE_B96_OWNER_AND_B98_IOS_SIM_EVIDENCE"
+}

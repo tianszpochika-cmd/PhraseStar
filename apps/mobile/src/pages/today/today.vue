@@ -304,5 +304,5 @@ function taskMeta(task: MobileTask): string {
 }
 @media (min-width: 768px) { .today-column { max-width: 720px; margin: 0 auto; } }
 .today[data-motion='reduced'] .today-cta:active, .today[data-motion='off'] .today-cta:active { transform: none; }
-:global(:root[data-theme='high-contrast']) .today-card, :global(:root[data-theme='high-contrast']) .today-note, :global(:root[data-theme='high-contrast']) .today-cta { border: 2px solid var(--v2-ink); }
+:global(:root[data-theme='high-contrast'] .today .today-card), :global(:root[data-theme='high-contrast'] .today .today-note), :global(:root[data-theme='high-contrast'] .today .today-cta) { border: 2px solid var(--v2-ink); }
 </style>
