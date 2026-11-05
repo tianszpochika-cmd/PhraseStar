@@ -2,6 +2,11 @@
 
 每个 CLI 仅在自身工作树落盘；主导人维护集成树与文档。修改共享文件前必须分配唯一写者；跨工作树无实时共享文件，请勿把另一个 worktree 的未审稿当作已存在接口。下面是当前分配，具体停点和状态以 [CHECKPOINT.json](CHECKPOINT.json) 及本机 CLI 回执为准。
 
+## 2026-11-05 恢复分配
+
+Grok 各自独占原引导、语法和今日任务工作树。词汇、阅读及引导独立观察器按只读产品范围运行，写入各自 QA 输出，词汇仅可更新其具名观察器。DSH 首页平板在 `codex/mobile-figma-home-tablet-20261105` 独立写入。Root 工作树的 MB-027 临时 CSS 写者已退出，Root 核对其余 102 个暂停路径原字节后整合。18183 暂无租约。下方早期写者与额度记录保留作追溯。
+
+
 | 区域 | 当前写者 | 边界 |
 |---|---|---|
 | `apps/mobile/src/components/**`、`src/theme/**`、`src/static/**`、`src/uni.scss`、`src/App.vue`、`src/pages.json`、`src/main.ts`、`src/manifest.json` | Grok | 共享壳/组件/素材/适配器唯一写者；需改共享接口时先公布签名、旧页影响和测试。不得仅为视觉改变路由或开放 Gate |

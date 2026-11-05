@@ -1,7 +1,7 @@
 {
   "schema_version": "mobile-figma-supervision-v1",
   "generated_at": "2026-11-03",
-  "status": "PAUSED_BY_USER",
+  "status": "IN_PROGRESS_NOT_ACCEPTED",
   "base_commit": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
   "remote_verified_by": "root",
   "figma": {
@@ -76,7 +76,7 @@
   "stop_policy": "两个 CLI 的周额度均以真实来源证实耗尽后，快照、审核、更新文档并正常推送后暂停；UNKNOWN/短期限流不等于周额度耗尽；仅一方耗尽时另一方继续有效且可转交的任务。全部真实任务提前完成则正常收口。",
   "runtime_lease": {
     "at": "2026-11-03T22:03:21.286853+00:00",
-    "holder": "ROOT_INTEGRATION_REGISTER_B26_QA",
+    "holder": null,
     "port": 18183,
     "pid": null,
     "ptySession": 47549,
@@ -86,7 +86,7 @@
     "previousStopExit": 0,
     "guardBeforeStart": "FREE18183",
     "allCLIs": "compiledartifactonly;no18183",
-    "status": "STOPPED_BY_USER_PAUSE",
+    "status": "RELEASED_NO_LISTENER",
     "previous_pid": 11064,
     "port18183": "NO_LISTENER"
   },
@@ -356,7 +356,7 @@
       "name": "成人门、同意与目标",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "GROK_VISUAL_REPAIR_RUNNING",
       "scope": "服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集",
       "services_data_owners": [
         "iam-service",
@@ -613,7 +613,7 @@
       "name": "首页",
       "owner": "GROK",
       "wave": "G1",
-      "status": "CANDIDATE_IN_PROGRESS_NOT_ACCEPTED",
+      "status": "DSH_TABLET_LAYOUT_RUNNING",
       "scope": "真实计划摘要、首学、空/错/401、切号及迟到响应",
       "services_data_owners": [
         "learner-service",
@@ -690,7 +690,7 @@
       "name": "今日任务",
       "owner": "GROK",
       "wave": "G1",
-      "status": "PENDING",
+      "status": "GROK_IMPLEMENTATION_RUNNING",
       "scope": "区分无计划/已完成/无内容/无到期/失败；无有效 practiceRef 不编题",
       "services_data_owners": [
         "learning-service"
@@ -995,7 +995,7 @@
       "name": "词汇与复习",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "GROK_BROWSER_OBSERVER_RUNNING",
       "scope": "词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放",
       "services_data_owners": [
         "content-service",
@@ -1073,7 +1073,7 @@
       "name": "语法与长难句",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "GROK_VISUAL_REPAIR_RUNNING",
       "scope": "内容与练习版本、已保存再反馈、缺题关闭和降级",
       "services_data_owners": [
         "content-service",
@@ -1153,7 +1153,7 @@
       "name": "阅读精练",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "GROK_BROWSER_OBSERVER_RUNNING",
       "scope": "阅读内容/题目授权、保存后反馈、返回原位置",
       "services_data_owners": [
         "content-service",
@@ -1231,7 +1231,7 @@
       "name": "分级阅读",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "GROK_BROWSER_OBSERVER_RUNNING",
       "scope": "正文长文、进度与内容下线；恢复身份与内容版本",
       "services_data_owners": [
         "content-service",
@@ -1470,7 +1470,7 @@
       "name": "成长世界",
       "owner": "DSH_COMMERCE",
       "wave": "D2",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "FROZEN_COMPOSITION_PENDING",
       "scope": "成长事实、赛季、空态及关闭模块；无权威事实不造奖励",
       "services_data_owners": [
         "gamification-service",
@@ -1671,7 +1671,7 @@
       "name": "头像与衣柜",
       "owner": "DSH",
       "wave": "D2",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "FROZEN_COMPOSITION_PENDING",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -2106,7 +2106,7 @@
       "name": "语言主题与性能",
       "owner": "DSH_DEVICES",
       "wave": "D2",
-      "status": "PAUSED_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+      "status": "REVIEWED_LOCAL_H5_CANDIDATE_TRACE_PENDING",
       "scope": "主题、语言、画质和动效的可用偏好及持久化失败；共享 token 由 Grok 写",
       "services_data_owners": [
         "learner-service"
@@ -2154,14 +2154,14 @@
         "mobile-settings-devices.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "SCOPED_ROOT_REVIEW_19_SHOTS",
+        "interaction": "SYNTHETIC_547_CHECKS_WITH_PROVENANCE",
+        "h5": "BUILD_PASS",
+        "cross_viewport": "LOCAL_320_390_768_1024_200_PERCENT",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN",
+        "independent_review": "reviews/INTEGRATION-B40-PLATFORM.md",
         "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN",
         "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate"
       },
@@ -2688,7 +2688,7 @@
       "quota": "UNKNOWN_NO_DASHBOARD_PROBES"
     }
   },
-  "state": "PAUSED_BY_USER",
+  "state": "ACTIVE_USER_RESUMED",
   "dedicated_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -2900,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-04T03:05:36.666612+00:00",
+  "updated_at": "2026-11-05T06:08:17.074457+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -3008,7 +3008,7 @@
     "new_leaf_count": 0
   },
   "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
-  "remote_push": "NOT_PUSHED_MANUAL_PAUSE",
+  "remote_push": "NOT_PUSHED_STAGE_IN_PROGRESS",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
     "pages": 7,
@@ -3677,7 +3677,7 @@
     "remote": "NOT_PUSHED_PHASE_CONTINUES"
   },
   "integration_scope_count": {
-    "routesWithLocalUICandidates": 18,
+    "routesWithLocalUICandidates": 19,
     "formalRouteDenominator": 33,
     "notDoD": true,
     "notOverallProjectPercentage": true
@@ -3979,5 +3979,119 @@
       "Grok": "USER_PAUSE_NOT_QUOTA_STOP"
     },
     "remote": "NOT_PUSHED_MERGED_OR_DEPLOYED"
+  },
+  "user_resume_20261105": {
+    "at": "2026-11-05T06:08:17.074457+00:00",
+    "source": "explicit user resume",
+    "pause_snapshot_hash_match": 6,
+    "root_paths_at_resume": 103,
+    "priority": "Grok CLI with DSH CLI",
+    "model_delegation": "local Grok and DSH only",
+    "project_docker_started": false,
+    "jobs_at_review": [
+      {
+        "state": "exited",
+        "cli": "dsh",
+        "session": "session-de346794-f56b-4dda-b9a6-303a613dda81",
+        "cli_pid": 83929,
+        "worktree": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/audit-workspace",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-home-b30-independent-qa-job.json",
+        "exit_code": 0
+      },
+      {
+        "state": "running",
+        "cli": "dsh",
+        "session": "session-73c2ab50-886b-4471-ae3f-4204a1b55a22",
+        "cli_pid": 87236,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-home-tablet-20261105/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/resume-20261105-home-tablet-01-job.json",
+        "exit_code": null
+      },
+      {
+        "state": "running",
+        "cli": "grok",
+        "session": "fd00f2ca-d71d-447a-8da8-23968f726ed0",
+        "cli_pid": 83930,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-20261103/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-grammar-08-job.json",
+        "exit_code": null
+      },
+      {
+        "state": "running",
+        "cli": "grok",
+        "session": "91c9ab9d-03da-4d4f-a8b4-3ea04dda4bf3",
+        "cli_pid": 83927,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-grok-20261103/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-onboarding-32-job.json",
+        "exit_code": null
+      },
+      {
+        "state": "running",
+        "cli": "grok",
+        "session": "b1c3c46c-17e8-4b31-9059-863b70e8bab4",
+        "cli_pid": 86073,
+        "worktree": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/audit-workspace",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-onboarding-compiled-04-job.json",
+        "exit_code": null
+      },
+      {
+        "state": "exited",
+        "cli": "grok",
+        "session": "b51d2541-777c-4bf7-a4cb-2df6fd6afb6d",
+        "cli_pid": 86072,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-platform-chip-row-job.json",
+        "exit_code": 0
+      },
+      {
+        "state": "exited",
+        "cli": "grok",
+        "session": "1bc59316-276c-483b-9ab4-f3f6860234b4",
+        "cli_pid": 83928,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-profile-20261104/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-reading-04-job.json",
+        "exit_code": 0
+      },
+      {
+        "state": "exited",
+        "cli": "grok",
+        "session": "0b845774-2301-4f47-a75a-312ab4afff1c",
+        "cli_pid": 84632,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-commerce-20261104/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-today-06-job.json",
+        "exit_code": 0
+      },
+      {
+        "state": "running",
+        "cli": "grok",
+        "session": "0b845774-2301-4f47-a75a-312ab4afff1c",
+        "cli_pid": 87578,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-commerce-20261104/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-today-07-job.json",
+        "exit_code": null
+      },
+      {
+        "state": "running",
+        "cli": "grok",
+        "session": "785cfc0d-ffbe-4de5-ab82-73e1c124269a",
+        "cli_pid": 83926,
+        "worktree": "/Users/Admin/.codex/worktrees/mobile-figma-dsh-devices-20261104/cloudstudy",
+        "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-vocab-observer-08-job.json",
+        "exit_code": null
+      }
+    ],
+    "home_qa": "DSH browser verified canonical #/ and exact Learn and Assessment navigation; iPad design gaps remain",
+    "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105"
+  },
+  "integration_batch_40_platform": {
+    "evidence": "evidence/ROOT-B40-PLATFORM-20261105.json",
+    "review": "reviews/INTEGRATION-B40-PLATFORM.md",
+    "status": "REVIEWED_LOCAL_H5_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "8553e162acebb7193db8f0809da089103d1c9b99bb0c4cba0c236b8554816b10",
+    "sourceTests": 25,
+    "browserChecks": 547,
+    "screenshots": 19,
+    "productPaths": 11,
+    "doD": false
   }
 }

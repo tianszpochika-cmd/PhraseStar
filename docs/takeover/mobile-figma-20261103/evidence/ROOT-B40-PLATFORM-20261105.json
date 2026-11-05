@@ -1,0 +1,103 @@
+{
+  "at": "2026-11-05T06:08:17.074457+00:00",
+  "status": "REVIEWED_LOCAL_H5_CANDIDATE_TRACE_PENDING",
+  "route": "MB-027",
+  "base": "e06308f7e869ff369b6b462a15dedd994776b4c2",
+  "source_sha256": {
+    "apps/mobile/src/pages/b6-platform/b6-platform.vue": "6627804024bbc64edb16f70ba4bbee21ee5e16fda945724d88aed64b5712cb1e",
+    "apps/mobile/src/pages/b6-platform/platform-page.ts": "a10054949a53e953e77db01409d448ea96dc2667cc3addb3eff0345f8d79ec24",
+    "apps/mobile/src/static/figma-platform-169-11915/1284c006-b245-425b-946c-213d01904fae.svg": "2cd732016bb1c74b23e6951aafa71dc9165e32c8502ab9ffa759dff0e14a1a06",
+    "apps/mobile/src/static/figma-platform-169-11915/217bc5b6-dbf9-4818-a096-08437599a4ba.svg": "f17ba6b7b33a3094039952909145dcb397c13cf6aa8f86ee960b38a28aaff9c5",
+    "apps/mobile/src/static/figma-platform-169-11915/4d001dc4-0a0c-47cb-bcb9-341762f1234c.svg": "626f22fd0e5492d1af91036575680295fca2a3428f4a28ff34aab5d797d8e4a9",
+    "apps/mobile/src/static/figma-platform-169-11915/740be94e-dc88-4954-8d44-340fff1bd592.svg": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+    "apps/mobile/src/static/figma-platform-169-11915/a47ee5e6-e735-4070-a6f4-78692db5c6ca.svg": "63d6e02fddb26b8a20e0716d65b01c1867f04f98bcafb240a0bb3a8437703681",
+    "apps/mobile/src/static/figma-platform-169-11915/cbfee287-d3de-460b-ba26-7c5283027089.svg": "c49c57ed4b84fba65505a7d45d5f8e34b90986043105f614f1e1ea4a36bf1128",
+    "apps/mobile/src/static/figma-platform-169-11915/ed65bf0a-535a-4862-9c5f-39238762ac13.svg": "c71a8975cccc554921c9b1793f08465c1c3e8961921b599a475f2dc797871c01",
+    "apps/mobile/tests/b6-platform-page.test.mjs": "66db3ee0358cf2784bce790cb9a6ef9b94bdce55fba6f5bed4e9e40baa17e759",
+    "packages/i18n/src/mobile-resources/platform-page.ts": "0aae3fe24f20aad163deda294221aeba541f45506204b78cff661893174b3b7f"
+  },
+  "build": {
+    "indexSha256": "8553e162acebb7193db8f0809da089103d1c9b99bb0c4cba0c236b8554816b10",
+    "fileCount": 552,
+    "digestStart": "6fe32dc3a9d3292ac2d59e8718d85af0eaf87c2ccb491a03d0b25ce21eb8be06",
+    "digestEnd": "6fe32dc3a9d3292ac2d59e8718d85af0eaf87c2ccb491a03d0b25ce21eb8be06",
+    "stable": true
+  },
+  "browser_checks": 547,
+  "screenshots": 19,
+  "source_tests": {
+    "platform": 9,
+    "shared_hydration": 16
+  },
+  "mobile_and_i18n_typecheck": 0,
+  "h5_build": 0,
+  "viewport_checks": [
+    "320",
+    "390",
+    "768",
+    "1024",
+    "200% browser scale"
+  ],
+  "zh_390_choice_rects": [
+    {
+      "text": "超高",
+      "x": 45,
+      "y": 470.4375,
+      "width": 58,
+      "height": 44,
+      "top": 470.4375,
+      "right": 103,
+      "bottom": 514.4375,
+      "left": 45
+    },
+    {
+      "text": "高",
+      "x": 111,
+      "y": 470.4375,
+      "width": 44,
+      "height": 44,
+      "top": 470.4375,
+      "right": 155,
+      "bottom": 514.4375,
+      "left": 111
+    },
+    {
+      "text": "均衡",
+      "x": 163,
+      "y": 470.4375,
+      "width": 58,
+      "height": 44,
+      "top": 470.4375,
+      "right": 221,
+      "bottom": 514.4375,
+      "left": 163
+    },
+    {
+      "text": "省资源",
+      "x": 229,
+      "y": 470.4375,
+      "width": 72,
+      "height": 44,
+      "top": 470.4375,
+      "right": 301,
+      "bottom": 514.4375,
+      "left": 229
+    }
+  ],
+  "figma_node": "169:11915",
+  "fixture": "three approved local fixture origins using Chromium route.fulfill, no real backend",
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/platform-final",
+  "not_run": [
+    "real device",
+    "screen reader",
+    "live services",
+    "deployment",
+    "auto performance sampler"
+  ],
+  "open": [
+    "full trace",
+    "u17 is a full settings reference, no independent platform artboard",
+    "persistent storage failure receipt",
+    "device/accessibility availability remains pending"
+  ]
+}
