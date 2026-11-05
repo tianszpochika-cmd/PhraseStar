@@ -1,0 +1,51 @@
+{
+  "scope": "MB-011 active B2 practice shares the mobile effective quality and user-selected preference",
+  "author": "Grok71 source, Root review and verification",
+  "integration_parent": "600d45cd6433f59f1efc111761617e96b13bf63f",
+  "source_files": [
+    {
+      "path": "apps/mobile/src/pages/b2-practice/b2-practice.vue",
+      "sha256": "4f8ffa662a746650dcfbe5be833d170c197a8d89f81611e8dee4b32e90319eca",
+      "bytes": 21378
+    },
+    {
+      "path": "apps/mobile/tests/practice-core-pages.test.mjs",
+      "sha256": "e6636710fe9c9585ec53695153422512959a7540d461ba34cbd7b0f2833c4057",
+      "bytes": 21970
+    }
+  ],
+  "focused_source_passed": 5,
+  "all_mobile_source_passed": 662,
+  "typecheck": "PASS",
+  "app_source_files": 3,
+  "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
+  "h5_tree_manifest_sha256": "a7ac25b511b17a1f8a40c309e0c75f5671cd588140e08e4c28c90f2098bdec10",
+  "h5_files": 797,
+  "daily_browser": {
+    "scenarios": 43,
+    "checks": 477,
+    "result_sha256": "7857894102b7e5725dd931b42b73109c195a733a924c14404e0d1fa1bf1f2bfc"
+  },
+  "practice_browser": {
+    "passed": 140,
+    "not_run": [
+      {
+        "branch": "live-backend-practice",
+        "reason": "Real tokens and a live assessment service are outside this intercepted run."
+      },
+      {
+        "branch": "idempotency-replay",
+        "reason": "The frozen page does not expose a second submit of the same Idempotency-Key."
+      },
+      {
+        "branch": "destination-page-body",
+        "reason": "Enabled routes are observed by hash only. Vocabulary, grammar, assessment, and home bodies are not claimed."
+      }
+    ],
+    "screenshots": 13,
+    "result_sha256": "f1606c56ea744aaa07a036d45de190e850ef1435af7ea5d33d76f81a8c8a7eb5"
+  },
+  "local_artifact_basename": "practice-shared-performance-71-root",
+  "native_device_live_practice_and_deployment": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}

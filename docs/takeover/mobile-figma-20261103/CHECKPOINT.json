@@ -1306,7 +1306,14 @@
         "accessibility": "LOCAL_CONTROL_STATES_SCREEN_READER_NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md"
+        "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md",
+        "b81_practice_shared_quality": {
+          "status": "SCOPED_MOBILE_PRACTICE_QUALITY_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B81-PRACTICE-SHARED-PERFORMANCE-20261105.json",
+          "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+          "source_tests": 662,
+          "practice_browser_checks": 140
+        }
       },
       "current_job": null,
       "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab.",
@@ -3662,7 +3669,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:41:36.883698+08:00",
+  "updated_at": "2026-11-05T23:45:20.010460+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5456,5 +5463,14 @@
     "browser_scenarios": 43,
     "native_pressure": "NOT_RUN",
     "telemetry": "UNPROVISIONED"
+  },
+  "integration_batch_81_practice_shared_quality": {
+    "scope": "MB-011 active practice shared quality consumer",
+    "status": "SCOPED_MOBILE_PRACTICE_QUALITY_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B81-PRACTICE-SHARED-PERFORMANCE-20261105.json",
+    "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+    "source_tests": 662,
+    "practice_browser_checks": 140,
+    "native_and_live_practice": "NOT_RUN"
   }
 }

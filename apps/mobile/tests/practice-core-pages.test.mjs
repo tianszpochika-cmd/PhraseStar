@@ -112,17 +112,37 @@ function legacyPage({ allowed = true } = {}) {
     async completePractice() { calls.complete += 1 },
   })
   const session = vue.reactive({ identityRevision: 1, isAuthenticated: allowed })
+  const unmounted = []
+  const quality = {
+    level: 'High',
+    state: { level: 'High' },
+    listeners: new Set(),
+    publish(level) {
+      this.level = level
+      this.state = { level }
+      for (const listener of this.listeners) listener(this.state)
+    },
+    subscribe(listener) {
+      this.listeners.add(listener)
+      listener(this.state)
+      return () => { this.listeners.delete(listener) }
+    },
+  }
   const page = compilePage('apps/mobile/src/pages/b2-practice/b2-practice.vue', {
-    vue: { ...vue, onUnmounted: (callback) => { callback?.dispose?.() } },
+    vue: { ...vue, onUnmounted: (callback) => { unmounted.push(callback) } },
     '@dcloudio/uni-app': { onShow: (callback) => shown.push(callback) },
-    '@englishflow/performance': { createAdaptivePerformanceEngine: () => ({ level: 'High', setLevel() {}, dispose() {} }) },
     '../../components/MobilePageHeader.vue': {},
     '../../components/AppIcon.vue': {},
     '../../components/b10/B10ExerciseCard.vue': {},
     '../../components/b10/B10StatusPanel.vue': {},
     '../../domain/practice-loop': loadModule('apps/mobile/src/domain/practice-loop.ts'),
     '../../auth/navigation': { ensureMobilePageAccess: async () => { calls.ensure += 1; return allowed } },
-    '../../platform/experience': { mobileT: (key) => key, useMobileExperience: () => ({ experienceStyle: {}, experienceMotion: 'on', theme: 'light' }) },
+    '../../platform/experience': {
+      mobileExperienceEngine: quality,
+      setMobileQuality(level) { quality.publish(level) },
+      mobileT: (key) => key,
+      useMobileExperience: () => ({ experienceStyle: {}, experienceMotion: 'on', theme: 'light' }),
+    },
     '../../platform/b10-foundation': { b10ThemeMode: vue.ref('light'), b10T: (key) => key },
     '../../stores/b10-learning': { useB10LearningStore: () => store },
     '../../platform/uni-runtime': {
@@ -130,8 +150,8 @@ function legacyPage({ allowed = true } = {}) {
       getUniRuntime: () => ({ navigateTo: (options) => { calls.report.push(options.url) } }),
     },
     '../../stores/session': { useSessionStore: () => session },
-  }, ['answer', 'checkpoint', 'openReport', 'openLegacyAlternative', 'retryLegacyLoad', 'backLegacyHome', 'reopenLegacyAccess'], ['accessGranted', 'viewState', 'authKind', 'answerFeedback'])
-  return { ...page, calls, shown, store }
+  }, ['answer', 'checkpoint', 'openReport', 'openLegacyAlternative', 'retryLegacyLoad', 'backLegacyHome', 'reopenLegacyAccess', 'setPerformance'], ['accessGranted', 'viewState', 'authKind', 'answerFeedback', 'performanceLevel'])
+  return { ...page, calls, shown, store, quality, unmounted }
 }
 
 function assertNoWrites(page) {
@@ -199,6 +219,27 @@ test('practice hub template compiles and gates the registered route table', asyn
   for (const target of OPEN_SKILLS) page.test.openHubTarget(target, 'skill')
   for (const target of OPEN_ENTRIES) page.test.openHubTarget(target, 'entry')
   assert.deepEqual(page.calls.navigate, [...OPEN_SKILLS, ...OPEN_ENTRIES].map((item) => `/pages/${item}/${item}`))
+})
+
+test('legacy practice follows the shared performance engine until unmount', () => {
+  const source = read('apps/mobile/src/pages/b2-practice/b2-practice.vue')
+  assert.doesNotMatch(source, /createAdaptivePerformanceEngine/)
+  assert.doesNotMatch(source, /\.dispose\(/)
+  assert.match(source, /mobileExperienceEngine\.subscribe\(\(state\) => \{ performanceLevel\.value = state\.level \}\)/)
+  assert.match(source, /setMobileQuality\(level\)/)
+  assert.match(source, /onUnmounted\(\(\) => \{ unsubscribeQuality\(\) \}\)/)
+  const page = legacyPage()
+  assert.equal(page.refs.performanceLevel.value, 'High')
+  assert.equal(page.quality.listeners.size, 1)
+  page.test.setPerformance('Medium')
+  assert.equal(page.quality.level, 'Medium')
+  assert.equal(page.refs.performanceLevel.value, 'Medium')
+  page.quality.publish('Performance')
+  assert.equal(page.refs.performanceLevel.value, 'Performance')
+  for (const callback of page.unmounted) callback()
+  assert.equal(page.quality.listeners.size, 0)
+  page.quality.publish('Ultra')
+  assert.equal(page.refs.performanceLevel.value, 'Performance')
 })
 
 test('legacy empty, failure and forbidden states keep real practice callers closed', async () => {

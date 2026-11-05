@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { createAdaptivePerformanceEngine, type PerformanceLevel } from '@englishflow/performance'
+import type { PerformanceLevel } from '@englishflow/performance'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
 import AppIcon from '../../components/AppIcon.vue'
 import B10ExerciseCard from '../../components/b10/B10ExerciseCard.vue'
@@ -9,7 +9,7 @@ import B10StatusPanel from '../../components/b10/B10StatusPanel.vue'
 import type { B10AnswerInput, B10AnswerResult } from '../../domain/b10'
 import { acceptSubmission, practiceFeedback, resumeView, showPracticeReward } from '../../domain/practice-loop'
 import { ensureMobilePageAccess } from '../../auth/navigation'
-import { mobileT, useMobileExperience } from '../../platform/experience'
+import { mobileExperienceEngine, mobileT, setMobileQuality, useMobileExperience } from '../../platform/experience'
 import { b10ThemeMode, b10T } from '../../platform/b10-foundation'
 import { useB10LearningStore } from '../../stores/b10-learning'
 import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
@@ -33,8 +33,8 @@ const alternatives = [
 const session = useSessionStore()
 const store = useB10LearningStore()
 const { experienceStyle, experienceMotion, theme } = useMobileExperience()
-const engine = createAdaptivePerformanceEngine()
-const performanceLevel = ref<PerformanceLevel>(engine.level)
+const performanceLevel = ref<PerformanceLevel>(mobileExperienceEngine.state.level)
+const unsubscribeQuality = mobileExperienceEngine.subscribe((state) => { performanceLevel.value = state.level })
 const lastResult = ref<B10AnswerResult | null>(null)
 const submitting = ref(false)
 const accessGranted = ref(false)
@@ -81,7 +81,7 @@ const viewState = computed(() => {
 const showEngineChrome = computed(() => accessGranted.value && (resume.value.stopped || Boolean(exercise.value) || finished.value || store.practiceStatus === 'loading' || store.practiceStatus === 'idle'))
 const glowSrc = computed(() => viewState.value === 'unavailable' ? offlineGlow : legacyGlow)
 
-function setPerformance(level: PerformanceLevel): void { engine.setLevel(level, 'manual'); performanceLevel.value = level }
+function setPerformance(level: PerformanceLevel): void { setMobileQuality(level) }
 function load(): void { lastResult.value = null; void store.loadPractice() }
 async function answer(value: B10AnswerInput): Promise<void> {
   if (!accessGranted.value || !exercise.value || !acceptSubmission(submitting.value)) return
@@ -124,7 +124,7 @@ onShow(async () => {
   if (!allowed) return
   load()
 })
-onUnmounted(() => engine.dispose())
+onUnmounted(() => { unsubscribeQuality() })
 </script>
 
 <template>
