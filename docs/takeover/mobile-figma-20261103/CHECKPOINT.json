@@ -476,6 +476,11 @@
           "status": "LOCAL_IAM_JDBC_AND_CONTROLLER_PASS_TRACE_PENDING",
           "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
           "receipt": "evidence/ROOT-B69-IAM-CONSENT-PUBLICATION-20261105.json"
+        },
+        "b70_onboarding_keyboard": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "checks": 74,
+          "receipt": "evidence/ROOT-B70-ONBOARDING-KEYBOARD-20261105.json"
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3576,7 +3581,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:57:20.279473+08:00",
+  "updated_at": "2026-11-05T21:20:00.347082+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5258,5 +5263,13 @@
     "baseline_v18_passed": 2,
     "candidate_v19_passed": 41,
     "formal_publication_and_deployed_gateway": "NOT_RUN"
+  },
+  "integration_batch_70_onboarding_keyboard": {
+    "scope": "MB-004",
+    "status": "SCOPED_SYNTHETIC_H5_PASS",
+    "checks": 74,
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "receipt": "evidence/ROOT-B70-ONBOARDING-KEYBOARD-20261105.json",
+    "device_and_reader": "NOT_RUN"
   }
 }

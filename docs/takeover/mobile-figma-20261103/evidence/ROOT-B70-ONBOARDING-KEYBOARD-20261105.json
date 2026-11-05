@@ -1,0 +1,28 @@
+{
+  "scope": "MB-004 first-consent document keyboard and H5 text",
+  "source": "Grok CLI 51 harness, Root exact script execution",
+  "status": "SCOPED_SYNTHETIC_H5_PASS",
+  "artifact": {
+    "indexSha256": "0c638ce14f6bf006dcdada9dd918f5fb6849fb4cff8c9b051ee94c2f75b21379",
+    "fileCount": 797,
+    "treeSha256": "246548187cab62599291e32cc4b405ebe7f19cf6e27ff86e8a140c4f2392297a"
+  },
+  "checks": {
+    "zh-320-dark": 33,
+    "en-390-high-contrast": 33,
+    "zh-320-dark-large-label": 8
+  },
+  "checks_total": 74,
+  "screenshots": 5,
+  "sha256": {
+    "results.json": "e864e7d357e75b0ceef54967c12d72d96383025f46e8f87ba1109b10baa7c421",
+    "run.cjs": "3dff3740d01d45585b08269a914455b57bfdf9b74b55df888b10a0a2600c633b",
+    "grok-cli-not-run.json": "f29857213ece8dd3c5b1e6a201f9449365c7493c854e932a82d374f8bf637818"
+  },
+  "boundaries": [
+    "Grok CLI Chromium startup did not run a page; exact same harness worked when invoked directly under the local test environment.",
+    "Fixture HTTP only, no consent PUT. Actual disclosure keyboard focus, selected relationships, enabled after three documents opened.",
+    "Body uses intentional bounded overflow auto. This run verifies the region is focusable and unclipped by hidden overflow. It does not independently assert keyboard scrolling to the end.",
+    "H5 computed large-text probe only. Real browser/production release, OS text scaling, native and screen reader remain separately tracked."
+  ]
+}
