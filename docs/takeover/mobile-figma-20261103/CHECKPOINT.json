@@ -438,7 +438,8 @@
         "b57_simulated_first_sign": "9 controlled scenarios, 213 PASS, no unexpected or page errors",
         "additional_scoped_reviews": [
           "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md"
-        ]
+        ],
+        "b58_layout": "PASS 194 checks on five H5 layouts. Dark enabled CTA min contrast 6.11:1."
       },
       "pause_handoff": "PAUSE-20261104.md",
       "current_job": "ROOT_B57_SIMULATED_FIRST_SIGNING_VERIFIED",
@@ -3351,7 +3352,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T09:58:10.888538+00:00",
+  "updated_at": "2026-11-05T11:14:43.232307+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4938,5 +4939,13 @@
     "formal_routes": 33,
     "formal_publication": "PENDING",
     "scope": "local synthetic H5"
+  },
+  "integration_batch_58_onboarding_contrast": {
+    "status": "LOCAL_H5_PASS",
+    "evidence": "evidence/ROOT-B58-ONBOARDING-CONTRAST-20261105.json",
+    "layout_checks": 194,
+    "local_ui_candidates": 33,
+    "formal_routes": 33,
+    "artifact_index_sha256": "39ad98875987629e5bc18bf82445c0e448428ac9a6901df8b697d663516500d7"
   }
 }

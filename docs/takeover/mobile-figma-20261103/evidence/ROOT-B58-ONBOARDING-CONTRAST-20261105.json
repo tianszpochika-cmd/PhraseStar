@@ -1,0 +1,57 @@
+{
+  "source": {
+    "base": "68b2d8c34d09a80adba0f4f011b9e8997a2220e5",
+    "changes": [
+      {
+        "path": "apps/mobile/src/pages/onboarding/onboarding.vue",
+        "sha256": "08149aff8ceeb6c5b1ab15340e21935f62af3c2bff3ac1ed2001577a9a6fa10b",
+        "bytes": 63851
+      }
+    ]
+  },
+  "artifact_index_sha256": "39ad98875987629e5bc18bf82445c0e448428ac9a6901df8b697d663516500d7",
+  "status": "PASS_LOCAL_H5",
+  "h5_layout_checks": 194,
+  "layout": [
+    {
+      "layout": "light-320",
+      "status": "PASS",
+      "checks": 38,
+      "primary_min_contrast": 6.15
+    },
+    {
+      "layout": "dark-390",
+      "status": "PASS",
+      "checks": 38,
+      "primary_min_contrast": 6.11
+    },
+    {
+      "layout": "tablet-834",
+      "status": "PASS",
+      "checks": 38,
+      "primary_min_contrast": 6.15
+    },
+    {
+      "layout": "english-320",
+      "status": "PASS",
+      "checks": 39,
+      "primary_min_contrast": 6.15
+    },
+    {
+      "layout": "high-contrast-320",
+      "status": "PASS",
+      "checks": 41,
+      "primary_min_contrast": 11.31
+    }
+  ],
+  "first_signing_browser_checks": 213,
+  "mobile_source_tests": 642,
+  "old_dark_ratio": 1.57,
+  "artifact_files": 800,
+  "app_source_files": 3,
+  "real_devices": "NOT_RUN",
+  "screen_reader": "NOT_RUN",
+  "raw_layout": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/consent-simulation/combined-27-dark/layout-final/results.json",
+  "raw_functional": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/consent-simulation/combined-27-dark/strict-signing/results.json",
+  "raw_before": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/consent-simulation/layout-17-original/results.json"
+}

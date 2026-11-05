@@ -707,6 +707,7 @@ async function cancel(): Promise<void> {
 .onboarding-tip .onboarding-note-title { color: var(--v2-ink); }
 .yx-onboarding[data-theme="high-contrast"] .onboarding-note-badge { background: var(--v2-brand); box-shadow: none; }
 .yx-onboarding .onboarding-primary { display: flex; width: 100%; min-height: 48px; padding: 14px 20px; margin: 0; align-items: center; justify-content: center; border: 0; border-radius: 14px; background: var(--v2-grad); color: var(--v2-inverse); font-size: 16px; font-weight: 700; line-height: 1.5; }
+.yx-onboarding[data-theme="dark"] .onboarding-primary { color: var(--v2-ink); }
 .yx-onboarding .onboarding-text { display: inline-flex; min-height: 44px; min-width: 44px; padding: 8px; margin: 0; align-items: center; justify-content: center; gap: 6px; background: transparent; border: 0; color: var(--v2-brand); font-size: 14px; font-weight: 500; line-height: 20px; }
 .onboarding-choices { display: grid; gap: 8px; }
 .yx-onboarding .onboarding-choice { display: flex; gap: 12px; width: 100%; margin: 0; padding: 12px 16px 12px 14px; min-height: 70px; align-items: center; border: 1px solid var(--v2-mut); border-radius: 16px; background: var(--v2-card); color: var(--v2-ink); text-align: left; }
