@@ -6,6 +6,7 @@
 
 - 当前 33/33 条路由进入本地 UI 候选。引导目标保存与读回已复验，首次签署的 9 个模拟场景通过。正式发布和实际 IAM 签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。 [引导首次签署 B57](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md)
 - 33 条路由的源码调用与限制已对照静态契约，完整追溯仍待签收。错题详情旧地址缺网关精确转发，设置页客服查询已补兼容说明。全量契约门禁保留既有 Gateway 与事件基线差异。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md) · [需求与门禁缺项](reviews/TRACE-AUDIT-20261105.md)
+- [边界与键盘 B62](reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md) 小游戏与自习室的空态、非空、退出和回跳已在冻结 H5 复验，错题弹层键盘和三页 H5 文字放大单列。
 - [首次签署模拟发布包](../../../apps/mobile/tests/fixtures/mock-consent-publication.json) 含三份独立版本的测试正文和逐份 SHA-256 摘要，用于受控验收。正式发布文档和实际 IAM 投影继续单列。
 - [关闭页 B56](reviews/INTEGRATION-B56-CLOSED-PRACTICE.md) 收口旧听力与口语关闭页，组合 H5 116 项受控检查通过。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。

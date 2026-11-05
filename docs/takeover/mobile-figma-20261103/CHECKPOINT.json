@@ -203,7 +203,13 @@
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B21-LOGIN.md",
-        "partial_browser": "30 matrix rows and6 immediate-input probes;privacyGap18px;stopped at legal popup test observer"
+        "partial_browser": "30 matrix rows and6 immediate-input probes;privacyGap18px;stopped at legal popup test observer",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B60_FROZEN_KEYBOARD_TEXT",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "current_job": "grok/batch-11-legal-observer",
       "candidate_manifest": "evidence/integration-batch-21-login-source-manifest.json",
@@ -454,7 +460,13 @@
         "additional_scoped_reviews": [
           "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md"
         ],
-        "b58_layout": "PASS 194 checks on five H5 layouts. Dark enabled CTA min contrast 6.11:1."
+        "b58_layout": "PASS 194 checks on five H5 layouts. Dark enabled CTA min contrast 6.11:1.",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B60_FROZEN_KEYBOARD_TEXT",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "pause_handoff": "PAUSE-20261104.md",
       "current_job": "ROOT_B57_SIMULATED_FIRST_SIGNING_VERIFIED",
@@ -1762,6 +1774,12 @@
           "review": "reviews/INTEGRATION-B60-REPORT-DETAIL-FOCUS.md",
           "receipt": "evidence/ROOT-B60-REPORT-DETAIL-FOCUS-20261105.json",
           "real_api": "NOT_RUN"
+        },
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B60_FROZEN_KEYBOARD_TEXT",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
         }
       },
       "current_job": null,
@@ -2029,7 +2047,13 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B20.md",
         "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
-        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
+        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B58_FROZEN_BOUNDARY",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "candidate_manifest": "evidence/integration-batch-20-source-manifest.json",
       "source_operation_trace_b59": {
@@ -2098,7 +2122,13 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B20.md",
         "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
-        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
+        "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B58_FROZEN_BOUNDARY",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "candidate_manifest": "evidence/integration-batch-20-source-manifest.json",
       "source_operation_trace_b59": {
@@ -2944,7 +2974,13 @@
           "reviews/INTEGRATION-B13.md",
           "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
+        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B58_FROZEN_BOUNDARY",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
       "source_operation_trace_b59": {
@@ -3113,7 +3149,13 @@
           "reviews/INTEGRATION-B13.md",
           "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
+        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B58_FROZEN_BOUNDARY",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
       "source_operation_trace_b59": {
@@ -3196,7 +3238,13 @@
           "reviews/INTEGRATION-B13.md",
           "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY"
+        "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY",
+        "b62_scoped_browser": {
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
+          "group": "B58_FROZEN_BOUNDARY",
+          "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+          "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        }
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
       "source_operation_trace_b59": {
@@ -3491,7 +3539,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T19:42:26.872837+08:00",
+  "updated_at": "2026-11-05T19:49:00.494567+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5123,5 +5171,12 @@
     "review": "reviews/INTEGRATION-B61-SUPPORT-IT7-CONTRACT.md",
     "receipt": "evidence/ROOT-B61-SUPPORT-IT7-CONTRACT-20261105.json",
     "status": "DESCRIPTIVE_CONTRACT_REVIEWED_TRACE_PENDING"
+  },
+  "integration_batch_62_scoped_browser": {
+    "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
+    "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json",
+    "boundary_checks": 140,
+    "keyboard_and_h5_text_checks": 54,
+    "native_reader_and_deployment": "NOT_RUN"
   }
 }

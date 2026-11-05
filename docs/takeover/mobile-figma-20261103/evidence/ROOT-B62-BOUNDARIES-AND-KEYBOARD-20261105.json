@@ -1,0 +1,87 @@
+{
+  "status": "SCOPED_SYNTHETIC_H5_CHECKS_PASS_TRACE_PENDING",
+  "boundary": {
+    "artifact_index_sha256": "39ad98875987629e5bc18bf82445c0e448428ac9a6901df8b697d663516500d7",
+    "artifact_tree_sha256": "06735dc742f9b3cf2572ef05d38e1444f6b8ea85eb4bc415a1569d57b8b32c5f",
+    "source": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+    "checks": 140,
+    "screenshots": 12,
+    "scenario_results": [
+      [
+        "games-empty",
+        "PASS"
+      ],
+      [
+        "games-catalog",
+        "PASS"
+      ],
+      [
+        "social-no-rooms",
+        "PASS"
+      ],
+      [
+        "social-rooms",
+        "PASS"
+      ],
+      [
+        "anonymous-games",
+        "PASS"
+      ],
+      [
+        "anonymous-social",
+        "PASS"
+      ],
+      [
+        "mb033-writing",
+        "PASS"
+      ],
+      [
+        "mb030-listening",
+        "PASS"
+      ],
+      [
+        "mb032-speaking",
+        "PASS"
+      ]
+    ],
+    "raw_sha256": "09fcab90fe02545cc0b0a85e51ee3d5e1bdef10fba1de31e32af5a0b2735ffeb",
+    "initial_raw_sha256": "0426ce7af671813eaf4552f2aa7723ed40fb2faaacc3588457de0180b79434b3",
+    "notes": [
+      "Synthetic empty and nonempty games and study rooms render; closed game cards show no play action.",
+      "The two protected anonymous routes preserve decoded return intent and send zero private traffic.",
+      "Writing legacy Retry remains mounted, CSS hidden/non-focusable with zero writing requests. Both B11 routes mount two CSS-hidden legacy status workspaces, only one visible/focusable main exit.",
+      "No real social writes, IAM or device."
+    ]
+  },
+  "report_keyboard": {
+    "artifact_index_sha256": "44722a6712a1b46ce6f4d1c4db327d9484a1a92fc52acb0c7391aa3e82e1d2bb",
+    "artifact_tree_sha256": "14be11a365994f53c8981ef35cb2fe2abb02263e1717b50c7286ffdb6c78531d",
+    "source": "35b3a4bb7567119b34d89dd5f7abf2ac185e01cc",
+    "checks": 54,
+    "screenshots": 8,
+    "raw_sha256": "d07336c732962560fed5aa7d792d1edf4095a303ca307627ff363599df33b867",
+    "text_scaling": "Inline 2x computed H5 font size and pixel line-height probe at 320 and 768. Actual keyboard plus layout; no browser zoom, OS scaling, or reader evidence.",
+    "keyboard": "Actual keyboard opens synthetic 200 and 404, initially focuses close, keeps Tab in dialog, Escape and click restore focus. Failure copy with no fabricated detail.",
+    "cache": "Response-side real no-store remains NOT_OBSERVABLE under the Playwright fulfillment seam."
+  },
+  "mistake_owner": {
+    "source_pin": "d33ac9b8",
+    "producer_gaps": [
+      "Current ZERO projection persists the admission and source attempt, and lacks real event identity, versioned content pin and canonical mastery/repair state.",
+      "IAM does not currently grant the declared repair read permission.",
+      "Legacy list emits OPEN/REVIEW and allows noninteger item keys, rejected by the strict mobile parser."
+    ],
+    "characterization": "PASS_REPRODUCES_EXISTING_MISMATCH",
+    "characterization_sha256": "54cc9846592db5a643d4ee6f512f8fb0649bdaddce20113f8543b8f329e6dd1b",
+    "zero_projection_and_projector_tests": {
+      "passed": 4,
+      "log_sha256": "dd3b9218f1d06850ac5a7c061d23a4ecfa8f69d584d8c107d9e0722ae43692a5"
+    },
+    "raw_sha256": "915439b5481e9eafa6a8a45dc92afb0912b215533601f672fe39519cb46212e2"
+  },
+  "release": {
+    "trace": "TRACE_PENDING",
+    "real_deployed_gateway_and_owner": "NOT_RUN",
+    "reader_device_and_deploy": "NOT_RUN"
+  }
+}
