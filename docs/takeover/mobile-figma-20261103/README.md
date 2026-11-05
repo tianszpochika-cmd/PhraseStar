@@ -4,8 +4,9 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
-- [形象与成长 B41](reviews/INTEGRATION-B41-AVATAR-WORLD.md) 验证迟到请求与重复读取并分批整合，保留首屏视觉差异。两页当前为功能候选，UI 候选计数保持 19/33。
-- [画质与设备 B40](reviews/INTEGRATION-B40-PLATFORM.md)：Root 25 项源码检查、两端类型、H5、547 项本地浏览器检查与 19 图通过，包含 390px 四档同排。当前 19/33 为本地 UI 候选；实服、设备、读屏、部署待验。
+- [形象与衣柜 B44](reviews/INTEGRATION-B44-AVATAR.md) 通过 42 项源码、52 项组合浏览器检查和 16 图。新增 MB-021，本地 UI 候选累计 20/33。
+- [形象与成长 B41](reviews/INTEGRATION-B41-AVATAR-WORLD.md) 验证迟到请求与重复读取并分批整合，保留首屏视觉差异。当批两页只进入功能候选。形象页见 B44，成长页继续视觉复核。
+- [画质与设备 B40](reviews/INTEGRATION-B40-PLATFORM.md)：Root 25 项源码检查、两端类型、H5、547 项本地浏览器检查与 19 图通过，包含 390px 四档同排。该批 19/33 为本地 UI 候选；实服、设备、读屏、部署待验。
 - 首页 B30 的旧测试误把路由别名当成 canonical。DSH 通过冻结 H5 验证登录返回 `#/`，开始学习、任务查看及进入测评跳转已观察。目标页两条接口缺少 fixture，目标数据展示待验。iPad 侧栏、布局及手机回归正在独立工作树推进。
 - [错题与报告 B37](reviews/INTEGRATION-B37-PRIVATE-REPORT.md)：最终13项源测试、核心55项/18图与身份21项/5图通过；词汇C1接口与队列另行整合。
 - [启动偏好恢复 B36](reviews/INTEGRATION-B36-HYDRATION.md)：18项源测试、组合25项/4图通过，原生滚轮等待停稳后复验；平台页临时恢复另待清理。

@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-05",
+  "scope": "MB-021",
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "parentIntegration": "27b84d4f",
+  "source": {
+    "apps/mobile/src/components/MobilePageHeader.vue": "c204508f899cec39da23a61f2ca9441c9aed3af2b5c4afda67cd204740c82e41",
+    "apps/mobile/src/pages/b4-avatar/b4-avatar.vue": "2b7f8f5f6fcf3a9aa97e6641c9f80e7ba35a865a9868b1676d0757d3bb4c7528",
+    "apps/mobile/tests/b4-avatar-page.test.mjs": "60207a3082cdce6b299c93e754d02758be04365d12444de749f84c5d08063845",
+    "packages/i18n/src/mobile-resources/avatar-page.ts": "b4d7d3d19be14df2766bd3f447f77337e2e94481fbb69821fa0bd672e8934248"
+  },
+  "artifact": {
+    "index_sha256": "4b15b3a9062825b160addf3a83a8007bce8d60dca5addaab08ee01ffb6a37b80",
+    "file_count": 584,
+    "includes_separately_pending_MB004": true
+  },
+  "node_tests": {
+    "pass": 42,
+    "fail": 0,
+    "includes_settings_notification_regression": true
+  },
+  "typecheck": "PASS",
+  "h5": "PASS",
+  "browser": {
+    "transport": "Playwright route.fulfill with three synthetic origins",
+    "visual_and_interaction": 26,
+    "visual_screenshots": 7,
+    "lifecycle_cases": 3,
+    "lifecycle_checks": 26,
+    "lifecycle_screenshots": 9,
+    "failure_count": 0,
+    "avatar_after_hide_private_gets": 0,
+    "avatar_reopen_private_gets": 4,
+    "avatar_wardrobe_to_preview_extra_private_gets": 0,
+    "avatar_writes": 0
+  },
+  "visual_refs": [
+    "169:8026",
+    "169:8100",
+    "169:8202",
+    "169:7955"
+  ],
+  "pending": [
+    "real_gateway_and_iam",
+    "native_device",
+    "screen_reader",
+    "deployment",
+    "full_trace"
+  ],
+  "local_ui_candidate_count": 20,
+  "formal_route_count": 33,
+  "raw": "resume-20261105/avatar-07-review/root-combined"
+}

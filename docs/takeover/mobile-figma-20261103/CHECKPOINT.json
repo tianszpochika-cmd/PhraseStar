@@ -1671,7 +1671,7 @@
       "name": "头像与衣柜",
       "owner": "DSH",
       "wave": "D2",
-      "status": "INTEGRATED_H5_FUNCTIONAL_DESIGN_HOLD",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "可操作与仅展示分开，权属和奖励来自真实服务",
       "services_data_owners": [
         "gamification-service"
@@ -1716,14 +1716,14 @@
         "b4-avatar-display.e2e.mjs"
       ],
       "evidence": {
-        "visual": "REVIEW_HOLD",
+        "visual": "LOCAL_SCOPED_H5_PASS",
         "interaction": "LOCAL_SCOPED_H5_PASS",
         "h5": "BUILD_PASS",
-        "cross_viewport": "NOT_RUN",
+        "cross_viewport": "LOCAL_H5_320_390_768_PASS",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B41-AVATAR-WORLD.md"
+        "independent_review": "reviews/INTEGRATION-B44-AVATAR.md"
       },
       "current_job": "dsh/batch-29-avatar-implementation",
       "pause_handoff": "PAUSE-20261104.md"
@@ -2900,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T06:50:47.994679+00:00",
+  "updated_at": "2026-11-05T07:17:10.638656+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4123,5 +4123,15 @@
     "evidence": "evidence/ROOT-B43-REGISTRY-20261105.json",
     "localRouteDelta": 0,
     "sourceSha": "d471704b6c615c538b477d366ca0d10644c86bf5091a14540e4209913d389879"
+  },
+  "integration_batch_44_avatar": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "4b15b3a9062825b160addf3a83a8007bce8d60dca5addaab08ee01ffb6a37b80",
+    "evidence": "evidence/ROOT-B44-AVATAR-20261105.json",
+    "review": "reviews/INTEGRATION-B44-AVATAR.md",
+    "routeCountDelta": 1,
+    "localUICandidateRoutes": 20,
+    "formalRoutes": 33,
+    "doD": false
   }
 }
