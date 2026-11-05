@@ -2999,7 +2999,7 @@
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
         },
         "b65_closed_workspaces": {
-          "status": "SOURCE_AND_BUILD_PASS",
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
           "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
           "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
@@ -3179,7 +3179,7 @@
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
         },
         "b65_closed_workspaces": {
-          "status": "SOURCE_AND_BUILD_PASS",
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
           "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
           "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
@@ -3273,7 +3273,7 @@
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
         },
         "b65_closed_workspaces": {
-          "status": "SOURCE_AND_BUILD_PASS",
+          "status": "SCOPED_SYNTHETIC_H5_PASS",
           "review": "reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md",
           "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json"
         }
@@ -3571,7 +3571,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:22:27.212633+08:00",
+  "updated_at": "2026-11-05T20:27:29.701972+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5233,7 +5233,10 @@
     "receipt": "evidence/ROOT-B65-CLOSED-WORKSPACES-20261105.json",
     "source_tests_passed": 645,
     "cross_tests_passed": 18,
-    "status": "SOURCE_AND_BUILD_PASS_BROWSER_PENDING"
+    "status": "SCOPED_SYNTHETIC_H5_PASS_TRACE_PENDING",
+    "browser_checks": 255,
+    "anonymous_routes": 33,
+    "simulated_first_sign_checks": 213
   },
   "integration_batch_66_report_revoke": {
     "scope": "MB-016/017 existing owner revoke",

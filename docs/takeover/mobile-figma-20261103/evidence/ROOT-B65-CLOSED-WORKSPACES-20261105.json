@@ -30,5 +30,32 @@
     "candidate_42_comment_only_source_assertion": "5cf5eac6641b519de2a9330ebd8309ac84503c82828bc59d74c5a6e1c465a428",
     "cross_repo_stale_base": "3e54f13f956f923ba8a8d069957e490575070396b85004ae9430a43e9361b4ee"
   },
-  "acceptance": "SOURCE_AND_BUILD_PASS; exact candidate browser, device, native, reader, real owner and deployment not run at this point"
+  "acceptance": "SOURCE_AND_BUILD_PASS; exact candidate browser, device, native, reader, real owner and deployment not run at this point",
+  "current_frozen_h5_browser": {
+    "source": "9f7f65dbacb2a5a67f16472931e94623d289696a",
+    "index_sha256": "0c638ce14f6bf006dcdada9dd918f5fb6849fb4cff8c9b051ee94c2f75b21379",
+    "files": 797,
+    "tree_sha256": "246548187cab62599291e32cc4b405ebe7f19cf6e27ff86e8a140c4f2392297a",
+    "closed_synthetic_browser": {
+      "checks": 255,
+      "scenarios": 22,
+      "screenshots": 31,
+      "raw_sha256": "f33d1345bccf08f7c8055cb5480e3f0a295eac6cab761a03d197a774b5e6d458",
+      "conditions": "three closed pages, safe primary exit and vocabulary alternate, B11 default/reduced motion at 320/390, games/social, four anonymous paths"
+    },
+    "anonymous_all_routes": {
+      "passed": 33,
+      "private_requests": 0,
+      "unknown": 0,
+      "outside": 0,
+      "page_errors": 0,
+      "raw_sha256": "bd2fee958badeb0db1006ce8e498b49f1fd6dbdbff2d46e761bd82c0e51e7da2"
+    },
+    "simulated_first_sign": {
+      "checks": 213,
+      "scenarios": 9,
+      "raw_sha256": "2313c08c14cbbb6978370f3f72ecc60eb861a29feab3bd1285ea3fe899eea1c6"
+    },
+    "proof_limits": "H5 with synthetic data. The per-store B11 motion override is source-tested only. Reader/native devices/real owners/deployment remain NOT_RUN."
+  }
 }
