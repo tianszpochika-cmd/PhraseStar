@@ -1,0 +1,44 @@
+{
+  "scope": "MB-027 current compiled H5 application lifecycle and visible login motion under synthetic animation scheduling",
+  "author": "Grok72 external browser probe, Root independent execution",
+  "integration_head_at_run": "d3274a3669436ebbd2d95c755bd51586fca561c1",
+  "h5_candidate": "c7429cb480a2a32ef93383133527cade8ea07b72",
+  "root_exit_code": 0,
+  "browser": {
+    "status": "PASS",
+    "indexSha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
+    "reducedMotion": false,
+    "visibilityState": "visible",
+    "motion": {
+      "initial": "on",
+      "throttled": "off",
+      "afterNormal": [
+        "off"
+      ],
+      "offWithinMs": 16348
+    },
+    "promoteBoundMs": 3000,
+    "offBoundMs": 32000,
+    "persistedQuality": {
+      "local": null,
+      "session": null
+    },
+    "staticFulfilled": 35,
+    "requiredStatic": {
+      "/": true,
+      "/assets/index-Br5uZ2V1.js": true,
+      "/assets/pages-login-login.Do7MRIcW.js": true
+    },
+    "aborted": [],
+    "pageErrors": [],
+    "notes": [
+      "Scheduler timestamps are performance.now values paced by a bounded timeout of about 50ms. This is not a physical display rate.",
+      "data-motion is the compiled .v2-login attribute. The script does not call application performance methods."
+    ]
+  },
+  "probe_sha256": "6b9f8fe3cb5cbe10145e24fa215bc5b9acc5f330044dcf9a5e6f3740a3c406d1",
+  "result_sha256": "63150bd79f0f660b556093ab2f356b740b92d0e9babd3ed5278d75863559c4e6",
+  "local_artifact_basename": "h5-performance-rendered-72-root",
+  "native_device_physical_frame_rate_and_deployment": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}

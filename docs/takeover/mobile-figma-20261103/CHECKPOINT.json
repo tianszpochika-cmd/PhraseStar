@@ -2841,6 +2841,12 @@
           "source_tests": 661,
           "browser_scenarios": 43,
           "native_pressure": "NOT_RUN"
+        },
+        "b83_rendered_h5_performance": {
+          "status": "SCOPED_RENDERED_H5_PERFORMANCE_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B83-RENDERED-H5-PERFORMANCE-20261105.json",
+          "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+          "motion_off_ms": 16348
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3677,7 +3683,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:55:52.187117+08:00",
+  "updated_at": "2026-11-05T23:59:14.297508+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5490,5 +5496,13 @@
     "owner_requests": 9,
     "owner_assertions": 78,
     "independent_http_checks": 184
+  },
+  "integration_batch_83_rendered_h5_performance": {
+    "scope": "MB-027 current H5 synthetic timing, normal app launch",
+    "status": "SCOPED_RENDERED_H5_PERFORMANCE_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B83-RENDERED-H5-PERFORMANCE-20261105.json",
+    "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
+    "motion_off_ms": 16348,
+    "physical_device": "NOT_RUN"
   }
 }
