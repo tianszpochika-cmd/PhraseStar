@@ -7,6 +7,7 @@ import { computed, ref, watch } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { interpolate } from '@englishflow/i18n'
 import { B4_PERFORMANCE_LEVELS, type B4GameCode, type B4PerformanceLevel } from '../../domain/b4'
+import { ensureMobilePageAccess } from '../../auth/navigation'
 import { getUniRuntime } from '../../platform/uni-runtime'
 import { b10ThemeMode } from '../../platform/b10-foundation'
 import { useSessionStore } from '../../stores/session'
@@ -88,7 +89,7 @@ watch(() => b4.lastGameResult, () => { settlementDismissed.value = false }, { fl
 
 onShow(async () => {
   await session.restore()
-  if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return }
+  if (!await ensureMobilePageAccess('/pages/b4-games/b4-games')) return
   b4.restore()
   void b4.loadWorld()
 })

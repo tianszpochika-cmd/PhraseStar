@@ -9,7 +9,8 @@ test('MB029 b3-listening gates unauthenticated users before rendering closed con
   assert.equal(page.mounted.length, 1)
   await page.mounted[0]()
   assert.equal(page.calls.sessionRestore, 1)
-  assert.deepEqual(page.calls.navigate, ['/pages/login/login'])
+  assert.deepEqual(page.calls.ensure, ['/pages/b3-listening/b3-listening'])
+  assert.deepEqual(page.calls.navigate, [])
   assert.equal(page.calls.api.length, 0)
 })
 

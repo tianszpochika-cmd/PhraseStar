@@ -12,6 +12,7 @@ import B10StatusPanel from '../../components/b10/B10StatusPanel.vue'
 import type { B10RuleFeedback, B10WritingPrompt } from '../../domain/b10'
 import { b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../../api/b10'
 import { b10ContentLocale, b10ThemeMode, b10T, b10UiLocale } from '../../platform/b10-foundation'
+import { ensureMobilePageAccess } from '../../auth/navigation'
 import { getUniRuntime } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
 
@@ -116,7 +117,7 @@ function onInput(): void { clearTimeout(draftTimer); draftTimer = setTimeout(per
 async function submit(): Promise<void> { const scope = accountScope(); if (!isCurrent(scope)) return; const prompt = selectedPrompt.value; const text = answer.value; if (!prompt || !text.trim()) { message.value = '请先读取题目并填写答案。'; return } status.value = 'loading'; message.value = null; const clientEventId = createB10ClientEventId(`writing-${prompt.promptId}`); try { const result = prompt.promptType === 'CORRECTION' ? await b10LearningApi.submitCorrection(context.value, prompt, text, clientEventId) : await b10LearningApi.submitWriting(context.value, prompt, text, prompt.promptType === 'TRANSLATION' ? 'TRANSLATION' : 'WRITING', clientEventId); if (!isCurrent(scope)) return; if (selectedPrompt.value !== prompt || answer.value !== text) { status.value = 'ready'; return } feedback.value = result; status.value = result.contentVersionStale ? 'stale' : 'ready'; message.value = result.contentVersionStale ? b10T('common.stale') : null; persistDraft() } catch (error) { if (!isCurrent(scope)) return; if (selectedPrompt.value !== prompt || answer.value !== text) { status.value = 'ready'; return } const info = b10ErrorInfo(error, '写作提交失败，草稿仍保留。'); status.value = info.kind; message.value = info.message; persistDraft() } }
 watch(answer, onInput)
 watch(() => session.identityRevision, clearPage, { flush: 'sync' })
-onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } /* closed practice: no live load */ undefined })
+onMounted(async () => { await session.restore(); if (!await ensureMobilePageAccess('/pages/b3-writing/b3-writing')) return; /* closed practice: no live load */ undefined })
 onUnmounted(() => { clearTimeout(draftTimer); engine.dispose() })
 </script>
 

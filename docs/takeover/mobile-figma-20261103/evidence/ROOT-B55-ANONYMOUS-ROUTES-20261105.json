@@ -1,0 +1,226 @@
+{
+  "date": "2026-11-05",
+  "scope": "ANONYMOUS_FORMAL_ROUTES",
+  "status": "LOCAL_H5_ANONYMOUS_33_PASS",
+  "doD": false,
+  "source": {
+    "apps/mobile/src/pages/b3-listening/b3-listening.vue": "a57134992ca10456d43fd7248154682199c996463f6af0ce8502854fbdd7f14a",
+    "apps/mobile/src/pages/b3-speaking/b3-speaking.vue": "c92c2ec80a15c543ace22524a5b4a3c814ac6065d907db4219b7de08478a77eb",
+    "apps/mobile/src/pages/b3-writing/b3-writing.vue": "fb9360a7ab74af6e4f80d5ed1c7700ab3f3164818e4261320b9686580ef52069",
+    "apps/mobile/src/pages/b4-games/b4-games.vue": "d95e7cfd43d8c0e91a976e7b40cfebeaea7d3fc8b1e51ddef9ebeccd85f6ab20",
+    "apps/mobile/src/pages/b4-offline/b4-offline.vue": "e5590d9a10335c97bf919f0f4d8f3713b1492652d1718e18994465cd8a541f5b",
+    "apps/mobile/tests/b3-listening-closed.test.mjs": "0624d544e7893ff6976806d783d39413fd26b8c861895023a995d36823a4734e",
+    "apps/mobile/tests/b3-speaking-closed.test.mjs": "b5a9db67b5e18b3c763bf954aab7da6ad1fc231a34558b5158ae268a720195ca",
+    "apps/mobile/tests/b3-writing.test.mjs": "f6a5e416f3cb1d280bd9f232d6ade8339f1feb115850d0f1e4489faa66b977cf",
+    "apps/mobile/tests/b4-games-page-reentry.test.mjs": "598ab5817dbb5d06ac4ecbede3b2fb0cc00616672d53afa38dda26d78c493ceb",
+    "apps/mobile/tests/b4-offline.test.mjs": "32c46f1e9171e7e3dc1bcc7040dfca875bc54d1e353e2b4999227177b31286a3",
+    "apps/mobile/tests/closed-page-test-harness.mjs": "1099e7290e436532a26648cb42a7a9e5ba3f45d305386ed346743e94deb8b4ef"
+  },
+  "build": {
+    "h5Index": "ce363349e566a6a7069c97550aeffe5618ff851b0ebdc0e05f304646b0fa5444",
+    "nativeSource": "PASS",
+    "nativePackaging": "NOT_RUN"
+  },
+  "verification": {
+    "combinedNode": 582,
+    "anonymous": {
+      "total": 33,
+      "pass": 33,
+      "fail": 0,
+      "publicRows": 5,
+      "protectedRows": 28,
+      "privateTrafficWhileAnonymous": [],
+      "unknown": 0,
+      "outside": 0,
+      "pageErrors": 0
+    },
+    "rows": [
+      {
+        "route": "pages/home/home",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/learn/learn",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/practice/practice",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b2-vocabulary/b2-vocabulary",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b2-practice/b2-practice",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b3-grammar/b3-grammar",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b3-writing/b3-writing",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b3-listening/b3-listening",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b3-reading/b3-reading",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b3-speaking/b3-speaking",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b11-listening/b11-listening",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b11-reading/b11-reading",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b11-speaking/b11-speaking",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/world/world",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b5-commerce/b5-commerce",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b6-platform/b6-platform",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b4-games/b4-games",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b4-social/b4-social",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b4-avatar/b4-avatar",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/b4-offline/b4-offline",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/profile/profile",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/login/login",
+        "status": "PASS",
+        "landing": "欢迎回来"
+      },
+      {
+        "route": "pages/register/register",
+        "status": "PASS",
+        "landing": "创建账号"
+      },
+      {
+        "route": "pages/reset-password/reset-password",
+        "status": "PASS",
+        "landing": "忘记密码"
+      },
+      {
+        "route": "pages/forbidden/forbidden",
+        "status": "PASS",
+        "landing": "暂时无法确认访问状态"
+      },
+      {
+        "route": "pages/onboarding/onboarding",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/assessment/assessment",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/today/today",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/report-share/report-share",
+        "status": "PASS",
+        "landing": "分享的学习报告"
+      },
+      {
+        "route": "pages/b10-report/b10-report",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/settings/settings",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/devices/devices",
+        "status": "PASS",
+        "landing": "login"
+      },
+      {
+        "route": "pages/support/support",
+        "status": "PASS",
+        "landing": "login"
+      }
+    ],
+    "fixedAfterRed": [
+      "pages/b3-grammar/b3-grammar",
+      "pages/b3-writing/b3-writing",
+      "pages/b3-listening/b3-listening",
+      "pages/b3-speaking/b3-speaking",
+      "pages/b4-games/b4-games",
+      "pages/b4-offline/b4-offline"
+    ],
+    "baselineReceiptSha256": "dfe4e2f8bb304a8021a3749afab798900509c23c21e73b17dc54ae7c99fb3fd0",
+    "finalReceiptSha256": "1303bf103ea21200a61f17f43e7ea6a1954b9a43b56ecb57e1cf446cc146dce6",
+    "mode": "compiled H5 Chromium and strict synthetic routes"
+  },
+  "limits": {
+    "realServices": "NOT_RUN",
+    "nativeDevices": "NOT_RUN",
+    "screenReader": "NOT_RUN",
+    "deployment": "NOT_RUN"
+  },
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/mobile-auth-smoke-06-green",
+  "routeCountDelta": 0,
+  "localUiCandidates": 32,
+  "formalRoutes": 33
+}

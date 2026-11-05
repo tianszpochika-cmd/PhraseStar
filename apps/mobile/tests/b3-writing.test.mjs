@@ -50,7 +50,9 @@ test('B3 mobile writing delegates the m01 closed body and keeps manifest assets'
 test('B3 mobile writing routes unauthenticated users to login and keeps both exits working', async () => {
   const unauth = loadClosedPage(pagePath, { authenticated: false })
   await unauth.mounted[0]()
-  assert.deepEqual(unauth.calls.navigate, ['/pages/login/login'])
+  assert.deepEqual(unauth.calls.ensure, ['/pages/b3-writing/b3-writing'])
+  assert.deepEqual(unauth.calls.navigate, [])
+  assert.equal(unauth.calls.api.length, 0)
 
   const page = loadClosedPage(pagePath, { authenticated: true })
   await page.mounted[0]()

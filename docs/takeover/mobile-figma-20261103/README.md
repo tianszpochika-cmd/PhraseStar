@@ -5,6 +5,7 @@
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
 - 当前有 1 条路由待完整整合。引导的目标保存与读回已复验，首次签署依赖 IAM 提供待签三份文档各自的发布版本、摘要及内容对应关系。词汇与语法按同一 C2 兼容包整合。Android 工具可用性已读，iOS 工具首启检查尚未通过。实际真机、读屏和部署继续单列。
+- [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。
 - [词汇与语法 B54](reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md) 验证复习队列、冷启动、同步回执与语法交互。新增 MB-012、MB-013，累计 32/33 条本地 UI 候选。
 - [访问受限 B53](reviews/INTEGRATION-B53-FORBIDDEN.md) 19 项组合检查通过。新增 MB-005，累计 30/33 条本地 UI 候选。
 - [练习 B52](reviews/INTEGRATION-B52-PRACTICE.md) 140 项实际浏览器检查通过，包含提交、断点与日报。新增 MB-010、MB-011，累计 29/33 条本地 UI 候选。

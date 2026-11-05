@@ -7,7 +7,8 @@ const pagePath = 'src/pages/b3-speaking/b3-speaking.vue'
 test('MB031 b3-speaking gates unauthenticated users without requesting recording services', async () => {
   const page = loadClosedPage(pagePath, { authenticated: false })
   await page.mounted[0]()
-  assert.deepEqual(page.calls.navigate, ['/pages/login/login'])
+  assert.deepEqual(page.calls.ensure, ['/pages/b3-speaking/b3-speaking'])
+  assert.deepEqual(page.calls.navigate, [])
   assert.equal(page.calls.api.length, 0)
   assert.equal(page.calls.audioContexts, 0)
 })

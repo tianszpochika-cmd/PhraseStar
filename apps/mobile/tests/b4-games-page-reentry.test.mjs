@@ -22,6 +22,7 @@ function loadPage({ authenticated = true } = {}) {
     finish: 0,
     sync: 0,
     performance: [],
+    ensure: [],
   }
   const session = {
     isAuthenticated: authenticated,
@@ -65,6 +66,7 @@ function loadPage({ authenticated = true } = {}) {
       useMobileExperience: () => ({ experienceStyle: {}, experienceMotion: 'on' }),
     },
     '../../domain/b4': { B4_PERFORMANCE_LEVELS: ['Ultra', 'High', 'Medium', 'Performance'] },
+    '../../auth/navigation': { ensureMobilePageAccess: async (target) => { calls.ensure.push(target); return authenticated } },
     '../../platform/uni-runtime': { getUniRuntime: () => runtime },
     '../../platform/b10-foundation': { b10ThemeMode: { value: 'light' } },
     '../../stores/session': { useSessionStore: () => session },
@@ -100,14 +102,20 @@ test('B4 games reloads the protected world each time the page is shown again', a
   await page.mounted[0]()
   assert.equal(page.calls.restore, 2)
   assert.equal(page.calls.loadWorld, 2)
+  assert.deepEqual(page.calls.ensure, ['/pages/b4-games/b4-games', '/pages/b4-games/b4-games'])
   assert.equal(page.source.includes('void b4.loadWorld()'), true)
 })
 
-test('B4 games redirects an unauthenticated visitor without loading the world', async () => {
+test('B4 games uses the shared guard and does not load the world when access is denied', async () => {
   const page = loadPage({ authenticated: false })
+  const show = page.source.slice(page.source.indexOf('onShow('), page.source.indexOf('function gameTitle'))
+  assert.match(show, /ensureMobilePageAccess\('\/pages\/b4-games\/b4-games'\)/)
+  assert.equal(show.includes('navigateTo'), false)
   await page.mounted[0]()
-  assert.deepEqual(page.calls.navigate, ['/pages/login/login'])
+  assert.deepEqual(page.calls.ensure, ['/pages/b4-games/b4-games'])
+  assert.deepEqual(page.calls.navigate, [])
   assert.equal(page.calls.loadWorld, 0)
+  assert.equal(page.calls.restore, 1)
 })
 
 test('B4 games maps loading, error, catalog, empty, active and settlement states to store facts', () => {

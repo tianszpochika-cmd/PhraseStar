@@ -12,8 +12,11 @@ test('MB022 b4-offline gates unauthenticated users before loading the closed pag
   assert.equal(page.shown.length, 1)
   await page.shown[0]()
   assert.equal(page.calls.sessionRestore, 1)
-  assert.deepEqual(page.calls.navigate, ['/pages/login/login'])
+  assert.deepEqual(page.calls.ensure, ['/pages/b4-offline/b4-offline'])
+  assert.deepEqual(page.calls.navigate, [])
+  assert.equal(page.calls.b4Restore, 0)
   assert.equal(page.calls.b4LoadWorld, 0)
+  assert.equal(page.calls.b4Sync, 0)
 })
 
 test('MB022 b4-offline delegates closed UI while retaining owner recovery and no download actions', async () => {

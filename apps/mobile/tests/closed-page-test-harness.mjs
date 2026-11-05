@@ -17,6 +17,7 @@ export function loadClosedPage(relativePath, options = {}) {
 
   const calls = {
     navigate: [],
+    ensure: [],
     api: [],
     sessionRestore: 0,
     audioContexts: 0,
@@ -201,6 +202,12 @@ export function loadClosedPage(relativePath, options = {}) {
     },
     '../../api/b11': b11Api,
     '../../domain/b11': { createB11ClientEventId: (prefix) => prefix },
+    '../../auth/navigation': {
+      ensureMobilePageAccess: async (target) => {
+        calls.ensure.push(target)
+        return session.isAuthenticated
+      },
+    },
     '../../stores/session': { useSessionStore: () => session },
     '../../stores/b4': { useB4Store: () => b4 },
     '../../stores/b11-learning': { useB11LearningStore: () => store },

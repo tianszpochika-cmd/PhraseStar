@@ -12,6 +12,7 @@ import { createListeningSession, isB3OfflineError, listListeningMaterials, submi
 import type { B3Status, DictationResult, ListeningMaterial } from '../../domain/b3'
 import { enableUniAudioPitchPreservation, getUniRuntime, type UniAudioContext } from '../../platform/uni-runtime'
 import { b10ThemeMode } from '../../platform/b10-foundation'
+import { ensureMobilePageAccess } from '../../auth/navigation'
 import { useSessionStore } from '../../stores/session'
 
 const session = useSessionStore(); const engine = createAdaptivePerformanceEngine(); const performanceLevel = ref<PerformanceLevel>(engine.level)
@@ -47,7 +48,7 @@ const alternatives = [
     tone: 'ok' as const,
   },
 ]
-onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } /* closed practice: no live load */ undefined })
+onMounted(async () => { await session.restore(); if (!await ensureMobilePageAccess('/pages/b3-listening/b3-listening')) return; /* closed practice: no live load */ undefined })
 onUnmounted(() => { audio.value?.destroy(); unsubscribe(); engine.dispose() })
 </script>
 

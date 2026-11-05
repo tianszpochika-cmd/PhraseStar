@@ -7,6 +7,7 @@ const { experienceStyle, experienceMotion } = useMobileExperience()
 import { computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { interpolate } from '@englishflow/i18n'
+import { ensureMobilePageAccess } from '../../auth/navigation'
 import { getUniRuntime } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
 import { useB4Store } from '../../stores/b4'
@@ -19,7 +20,7 @@ const queueCountLabel = computed(() => interpolate(mobileT('closed.offline.queue
 
 onShow(async () => {
   await session.restore()
-  if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return }
+  if (!await ensureMobilePageAccess('/pages/b4-offline/b4-offline')) return
   b4.restore()
   void b4.loadWorld()
 })

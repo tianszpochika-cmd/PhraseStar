@@ -11,6 +11,7 @@ import B2StatusPanel from '../../components/b2/B2StatusPanel.vue'
 import { createRecording, createRoleplaySession, deleteRecording, getPhonetics, isB3OfflineError, listListeningMaterials, submitRoleplayTurn, submitSelfRating } from '../../api/b3'
 import type { B3Status, ListeningMaterial, Phoneme, RoleplaySession, SpeakingRecording } from '../../domain/b3'
 import { getUniRuntime, type UniAudioContext, type UniRuntime, type UniSecureRecordingVault } from '../../platform/uni-runtime'
+import { ensureMobilePageAccess } from '../../auth/navigation'
 import { useSessionStore } from '../../stores/session'
 import { b10ThemeMode } from '../../platform/b10-foundation'
 
@@ -54,7 +55,7 @@ const alternatives = [
     tone: 'ok' as const,
   },
 ]
-onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } /* closed practice: no live load */ undefined }); onUnmounted(() => { demoAudio.value?.destroy(); unsubscribe(); engine.dispose() })
+onMounted(async () => { await session.restore(); if (!await ensureMobilePageAccess('/pages/b3-speaking/b3-speaking')) return; /* closed practice: no live load */ undefined }); onUnmounted(() => { demoAudio.value?.destroy(); unsubscribe(); engine.dispose() })
 </script>
 
 <template>
