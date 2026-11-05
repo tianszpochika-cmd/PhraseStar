@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-05",
+  "scope": [
+    "MB-014",
+    "MB-015"
+  ],
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "source": {
+    "apps/mobile/src/domain/reading-page.ts": "991b416faaa41fdf820821c87e5c384103c5f8c99cd45980399aaefd5a6b39e7",
+    "apps/mobile/src/pages/b11-reading/b11-reading.vue": "c1953340fd53e0fa63f339a5c6b9198c6f0d3ee872b840e742a5f1ce5ec945fc",
+    "apps/mobile/src/pages/b3-reading/b3-reading.vue": "eab134075c53690274211ec5d3e6b42d79ea63c1a314587d67ced5e92800f476",
+    "apps/mobile/src/static/figma-reading-core/reading-article-168-1313/imgGlow.svg": "cbdb6a618dc4dc2fbbb595a90530229d961c2884997c7a6b468ef1bc1baeeaee",
+    "apps/mobile/src/static/figma-reading-core/reading-article-168-1313/imgIconChevL.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-reading-core/reading-article-168-1313/imgTrack.svg": "5d776f5e39e71fe7fb1855298f0f5d9382e8768c166017a458590bc2b2be0b89",
+    "apps/mobile/src/static/figma-reading-core/reading-empty-168-1246/imgGlow.svg": "cbdb6a618dc4dc2fbbb595a90530229d961c2884997c7a6b468ef1bc1baeeaee",
+    "apps/mobile/src/static/figma-reading-core/reading-empty-168-1246/imgIconBook.svg": "4f52d71ac3b7b424589b8a400eac10959444d448f51a8424a1e71e238d90bbcd",
+    "apps/mobile/src/static/figma-reading-core/reading-empty-168-1246/imgIconChevL.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-reading-core/reading-error-168-3333/imgGlow.svg": "a178f6a61ebb79cc28038bafb838a1cf62d48114e1449de06558d3b669a27fa4",
+    "apps/mobile/src/static/figma-reading-core/reading-error-168-3333/imgIconChevL.svg": "c49c57ed4b84fba65505a7d45d5f8e34b90986043105f614f1e1ea4a36bf1128",
+    "apps/mobile/src/static/figma-reading-core/reading-error-168-3333/imgIconMore.svg": "fa94a20cbf1166b1af9da9eb0b75e9adae1f2a1329463cd2c008bff965101ef9",
+    "apps/mobile/src/static/figma-reading-core/reading-error-168-3333/imgMascot.svg": "ac0360c44ea161ce9928e50497341b91b0df918c787848788a9dfcd26dd8f7dc",
+    "apps/mobile/src/static/figma-reading-core/reading-graded-168-2513/imgGlow.svg": "7e2a7d7c68ee18c8fc4ba84039fec7cfce9f601f5caa06b71a88a69b0fe472a6",
+    "apps/mobile/src/static/figma-reading-core/reading-graded-168-2513/imgIconCheckSq.svg": "f7a558fdb4ce5350a1647d845487afcf1cfa45e123e2beacbe4b37cbf692d2a6",
+    "apps/mobile/src/static/figma-reading-core/reading-graded-168-2513/imgIconChevL.svg": "c49c57ed4b84fba65505a7d45d5f8e34b90986043105f614f1e1ea4a36bf1128",
+    "apps/mobile/src/static/figma-reading-core/reading-graded-168-2513/imgIconChevR.svg": "404a3754c7054e96443c359a9846af71a63d9040081e22e72480910f475bb141",
+    "apps/mobile/src/static/figma-reading-core/reading-graded-168-2513/imgIconMore.svg": "fa94a20cbf1166b1af9da9eb0b75e9adae1f2a1329463cd2c008bff965101ef9",
+    "apps/mobile/src/static/figma-reading-core/reading-restricted-168-2234/imgGlow.svg": "efeff703eb6b829e5925e18ac7ebe9518e39672239a2614ec415368f99394965",
+    "apps/mobile/src/static/figma-reading-core/reading-restricted-168-2234/imgIconChevL.svg": "c7b88cc39c611f508d30b35543fa8fc5cc3b3f8a2cfb4d44a9ca64c18eaf1a2e",
+    "apps/mobile/src/static/figma-reading-core/reading-restricted-168-2234/imgMascot.svg": "9300d1685caf63cc6585e7c17bc31c0cf66689e574458131a358b15e17378a36",
+    "apps/mobile/src/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgGlow.svg": "34cb6c608c732d014d4ed17494551d443548c685264481bc1f297799ffa20d46",
+    "apps/mobile/src/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgIconChevL.svg": "c49c57ed4b84fba65505a7d45d5f8e34b90986043105f614f1e1ea4a36bf1128",
+    "apps/mobile/src/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgIconLock.svg": "c511e8f16857e5efde33a5360e5c1b43dfb7ee2953251cb01ba9396bd78494d1",
+    "apps/mobile/src/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgIconMore.svg": "fa94a20cbf1166b1af9da9eb0b75e9adae1f2a1329463cd2c008bff965101ef9",
+    "apps/mobile/tests/c08-reading.test.mjs": "4da4fe7ed0475dd33b9022218e932cd8b2eefd6a5e69a590ad0313709d56b703",
+    "apps/mobile/tests/reading-page.test.mjs": "ce9491897d343166b1d8cf2688855ae9e839d977670e2604cbad09e7623f0365",
+    "packages/i18n/src/mobile-resources/reading-page.ts": "6a82a06fbec653508880cf706f4374c76c9c8d371284783973c6be49dbd9f1b8"
+  },
+  "artifact": {
+    "index_sha256": "0cc7f94808f965b68e07284abb48f8c648198f5aea16f05353061fc51d818ca0",
+    "file_count": 607,
+    "includes_separately_pending_MB004": true
+  },
+  "node_tests": {
+    "pass": 6,
+    "fail": 0
+  },
+  "typecheck": "PASS",
+  "h5": "PASS",
+  "browser": {
+    "transport": "Playwright route.fulfill with three synthetic origins",
+    "strict_scenarios_passed": 21,
+    "strict_screenshots": 21,
+    "isolated_layout_checks": 16,
+    "isolated_layout_screenshots": 4,
+    "old_detail_reads_after_leave": 0
+  },
+  "refs": [
+    "168:1313",
+    "168:2513",
+    "168:1246",
+    "168:3333",
+    "168:2234",
+    "168:2607"
+  ],
+  "pending": [
+    "server_progress_and_answer_receipt",
+    "mining",
+    "real_gateway_and_iam",
+    "native_device",
+    "screen_reader",
+    "deployment",
+    "full_trace"
+  ],
+  "local_ui_candidate_count": 22,
+  "formal_route_count": 33,
+  "raw": "resume-20261105/reading-08-review/root-combined"
+}

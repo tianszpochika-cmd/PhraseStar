@@ -1153,7 +1153,7 @@
       "name": "阅读精练",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_BROWSER_OBSERVER_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "阅读内容/题目授权、保存后反馈、返回原位置",
       "services_data_owners": [
         "content-service",
@@ -1213,14 +1213,14 @@
         "c08-reading.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
+        "cross_viewport": "LOCAL_H5_320_390_768_PASS",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B45-READING.md"
       },
       "pause_handoff": "PAUSE-20261104.md"
     },
@@ -1231,7 +1231,7 @@
       "name": "分级阅读",
       "owner": "UNASSIGNED",
       "wave": "LATER",
-      "status": "GROK_BROWSER_OBSERVER_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "正文长文、进度与内容下线；恢复身份与内容版本",
       "services_data_owners": [
         "content-service",
@@ -1289,14 +1289,14 @@
         "b11/b11-mobile-contract.test.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
+        "cross_viewport": "LOCAL_H5_320_390_768_PASS",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B45-READING.md"
       },
       "pause_handoff": "PAUSE-20261104.md"
     },
@@ -2900,7 +2900,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T07:17:10.638656+00:00",
+  "updated_at": "2026-11-05T07:22:21.425800+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4131,6 +4131,16 @@
     "review": "reviews/INTEGRATION-B44-AVATAR.md",
     "routeCountDelta": 1,
     "localUICandidateRoutes": 20,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_45_reading": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "0cc7f94808f965b68e07284abb48f8c648198f5aea16f05353061fc51d818ca0",
+    "evidence": "evidence/ROOT-B45-READING-20261105.json",
+    "review": "reviews/INTEGRATION-B45-READING.md",
+    "routeCountDelta": 2,
+    "localUICandidateRoutes": 22,
     "formalRoutes": 33,
     "doD": false
   }
