@@ -1801,6 +1801,11 @@
           "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
           "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
           "actual_db_concurrency": "PASS_ISOLATED_MYSQL"
+        },
+        "b71_report_share_issue": {
+          "status": "SCOPED_MYSQL_AND_CONTRACT_PASS_TRACE_PENDING",
+          "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+          "receipt": "evidence/ROOT-B71-REPORT-SHARE-ISSUE-20261105.json"
         }
       },
       "current_job": null,
@@ -1887,6 +1892,11 @@
           "review": "reviews/INTEGRATION-B66-REPORT-REVOKE.md",
           "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
           "actual_db_concurrency": "PASS_ISOLATED_MYSQL"
+        },
+        "b71_report_share_issue": {
+          "status": "SCOPED_MYSQL_AND_CONTRACT_PASS_TRACE_PENDING",
+          "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+          "receipt": "evidence/ROOT-B71-REPORT-SHARE-ISSUE-20261105.json"
         }
       },
       "current_job": "dsh/profile-batch-15-share-matrix",
@@ -3581,7 +3591,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T21:20:00.347082+08:00",
+  "updated_at": "2026-11-05T21:22:18.076940+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5271,5 +5281,14 @@
     "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
     "receipt": "evidence/ROOT-B70-ONBOARDING-KEYBOARD-20261105.json",
     "device_and_reader": "NOT_RUN"
+  },
+  "integration_batch_71_report_share_issue": {
+    "scope": "MB-016/017 / owner optional idempotency",
+    "status": "SCOPED_MYSQL_AND_CONTRACT_PASS_TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+    "receipt": "evidence/ROOT-B71-REPORT-SHARE-ISSUE-20261105.json",
+    "mysql_profile_tests": 18,
+    "utc_focused_tests": 16,
+    "mobile_retry_and_deployment": "NOT_RUN"
   }
 }

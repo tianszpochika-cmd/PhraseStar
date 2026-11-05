@@ -1,0 +1,43 @@
+{
+  "scope": "MB-016/017 / R1-065/068 existing learning-owned share issuance; R1 mapping partial",
+  "author": "Grok CLI 50 exact source snapshot",
+  "candidate_base": "2da55735f5e99a771a8e663da5054ec729c714d5",
+  "integration_parent": "c2cef5f8cf3933e3f79a35929a6d5b9881420c70",
+  "candidate_file_sha256": {
+    "packages/contracts/openapi/v1/openapi.json": "ab80adde63b6e4b1fad00dedf1dfe0ad1e74a2895e43a70afc37f27dd8b41fa1",
+    "services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java": "4abf0d0c082599505ab2a45cd2cdf96909151f32b7d8a03a87a32e21f279f42d",
+    "services/learning-service/src/main/resources/db/migration/V14__learning_report_share_idempotency.sql": "a334c96d81be2cf06dcbbedfe4c0af3b901cc13ced60211da87a541abdc11bac",
+    "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java": "2b0d142936a7daf36427860dd492e429666bb80ca17cd7fa595652db5bf33202",
+    "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java": "d579636c5e45d4bfaecaf5c15bcb07763228981c96b70eb96fe03aa02af6191e"
+  },
+  "assertions": {
+    "isolated_mysql_8": {
+      "flyway_version": 14,
+      "spring_cglib_proxied_jdbc_methods": 2,
+      "other_controller_and_domain": 16,
+      "total_passed": 18,
+      "skipped": 0,
+      "real_new_key_exclusive_waiters": 2,
+      "persisted_keyed_rows": 1,
+      "default_connectorj_noop_rows": 1
+    },
+    "utc_controller_and_domain_passed": 16,
+    "contract_merge": "PASS",
+    "contract_generation": "PASS",
+    "contract_validation": "PASS",
+    "temporary_database_and_port": "RELEASED"
+  },
+  "raw_sha256": {
+    "jdbc-test.log": "b9a3608a88b03231e1e8f34a9146ddf88ccd86e5471a570f1f65c141e17441d3",
+    "utc-focused.log": "e6a99910653594569e16ea9ab7080af9428689663e458d8c8b4fbe485e03541c",
+    "cleanup-status.log": "86edc301936e16ce9606d6d1e7e5e4c0f145725b79a8cf16f9fc15f436d890b0",
+    "contract-merge.log": "90d20d62a388ca9f99ede7b1470d8a41f983c114cf75afa0c24bf141f76dc31f",
+    "contract-generate.log": "dc235242220e7f96fb691b7b89635103b3ac0f90a31b969ec7333c0bde685379",
+    "contract-validate.log": "f35fc5bc1d285ddec42e05d52354584ffb9b2ef7a981ce7b2a6af7fb5c96857f"
+  },
+  "boundaries": [
+    "Client rollout is separate. Existing headerless callers remain supported.",
+    "Isolated owner MySQL and unit/controller proofs. Actual deployed Gateway, live product data, mobile retry integration and full trace signoff remain open.",
+    "Earlier draft used affected-row counts and oversized duplicated test infrastructure, both replaced before integration."
+  ]
+}

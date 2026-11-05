@@ -20,11 +20,14 @@ import com.englishflow.learning.domain.LearningPeriodReport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -33,6 +36,8 @@ import static org.mockito.Mockito.when;
 
 class ReportShareControllerTest {
 
+    private static final String SHARE_KEY = "report-share-key-01";
+
     @Test
     void issueStoresOnlyPublicFieldsAndTheRefIsUnguessable() {
         JdbcTemplate jdbc = mock(JdbcTemplate.class);
@@ -40,7 +45,7 @@ class ReportShareControllerTest {
         when(jdbc.update(contains("b25_learning_report_share"), any(), any(), any(), any(), any(), any())).thenReturn(1);
         B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
 
-        Map<String, Object> issued = controller.issueReportShare(learner(), "DAILY", "2026-10-11");
+        Map<String, Object> issued = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
 
         String ref = String.valueOf(issued.get("ref"));
         assertTrue(ref.matches("[0-9a-f]{32}"));
@@ -163,6 +168,137 @@ class ReportShareControllerTest {
                 any(), eq(ref), eq("platform"), eq("learner-share-test"));
     }
 
+    @Test
+    void issueWithoutAKeyMintsAFreshRefEachTime() {
+        JdbcTemplate jdbc = mock(JdbcTemplate.class);
+        when(jdbc.queryForList(contains("b3_learning_interaction"), any(Object[].class))).thenReturn(List.of());
+        when(jdbc.update(contains("INSERT INTO b25_learning_report_share"), any(), any(), any(), any(), any(), any()))
+                .thenReturn(1);
+        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+
+        Map<String, Object> first = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
+        Map<String, Object> second = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
+        Map<String, Object> blank = controller.issueReportShare(learner(), "DAILY", "2026-10-11", "   ");
+
+        assertNotEquals(first.get("ref"), second.get("ref"));
+        assertNotEquals(first.get("ref"), blank.get("ref"));
+        assertNotEquals(second.get("ref"), blank.get("ref"));
+        for (Map<String, Object> issued : List.of(first, second, blank)) {
+            String ref = String.valueOf(issued.get("ref"));
+            assertTrue(ref.matches("[0-9a-f]{32}"));
+            assertEquals("/api/v1/public/learning/report-shares/" + ref, issued.get("publicPath"));
+            assertEquals("ACTIVE", issued.get("status"));
+            Instant expires = Instant.parse(String.valueOf(issued.get("expiresAt")));
+            assertEquals(expires.truncatedTo(ChronoUnit.MICROS), expires);
+        }
+        org.mockito.ArgumentCaptor<String> written = org.mockito.ArgumentCaptor.forClass(String.class);
+        verify(jdbc, times(3)).update(contains("INSERT INTO b25_learning_report_share"),
+                written.capture(), eq("platform"), eq("learner-share-test"), eq("DAILY"), any(), any());
+        assertEquals(List.of(first.get("ref"), second.get("ref"), blank.get("ref")), written.getAllValues());
+        verify(jdbc, never()).update(contains("idempotency_key"), any(), any(), any(), any(), any(), any(), any(), any());
+        verify(jdbc, never()).queryForList(contains("request_binding"), any(), any(), any());
+    }
+
+    @Test
+    void keyedIssueIgnoresAffectedRowOneAndReplaysTheLockedRow() {
+        JdbcTemplate jdbc = mock(JdbcTemplate.class);
+        when(jdbc.queryForList(contains("b3_learning_interaction"), any(Object[].class))).thenReturn(List.of());
+        // Connector/J can report 1 for a fresh insert and for a no-op duplicate. The receipt is the locked row.
+        when(jdbc.update(contains("ON DUPLICATE KEY UPDATE"), any(), any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(1);
+        java.sql.Timestamp expires = java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00.123456Z"));
+        String persisted = "11".repeat(16);
+        int[] plainReads = {0};
+        when(jdbc.queryForList(contains("request_binding"), eq("platform"), eq("learner-share-test"), eq(SHARE_KEY)))
+                .thenAnswer(invocation -> {
+                    String sql = invocation.getArgument(0, String.class);
+                    Map<String, Object> row = new LinkedHashMap<>();
+                    row.put("share_ref", persisted);
+                    row.put("request_binding", "DAILY|EXPLICIT|2026-10-11");
+                    row.put("expires_at", expires);
+                    if (sql.contains("FOR UPDATE")) return List.of(row);
+                    return plainReads[0]++ == 0 ? List.of() : List.of(row);
+                });
+        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+
+        Map<String, Object> issued = controller.issueReportShare(learner(), "DAILY", "2026-10-11", SHARE_KEY);
+        Map<String, Object> replay = controller.issueReportShare(learner(), "DAILY", "2026-10-11", SHARE_KEY);
+
+        assertEquals(issued, replay);
+        assertEquals(Set.of("ref", "expiresAt", "publicPath", "status"), issued.keySet());
+        assertEquals(persisted, issued.get("ref"));
+        assertEquals(expires.toInstant().toString(), issued.get("expiresAt"));
+        assertEquals("/api/v1/public/learning/report-shares/" + persisted, issued.get("publicPath"));
+        assertEquals("ACTIVE", issued.get("status"));
+        org.mockito.ArgumentCaptor<String> statement = org.mockito.ArgumentCaptor.forClass(String.class);
+        org.mockito.ArgumentCaptor<String> insertedRef = org.mockito.ArgumentCaptor.forClass(String.class);
+        verify(jdbc).update(statement.capture(), insertedRef.capture(), eq("platform"), eq("learner-share-test"),
+                eq("DAILY"), any(), any(), eq(SHARE_KEY), eq("DAILY|EXPLICIT|2026-10-11"));
+        assertNotEquals(insertedRef.getValue(), issued.get("ref"));
+        String assignment = statement.getValue().substring(statement.getValue().indexOf("ON DUPLICATE KEY UPDATE")).strip();
+        assertEquals("ON DUPLICATE KEY UPDATE idempotency_key = idempotency_key", assignment);
+        org.mockito.InOrder order = inOrder(jdbc);
+        order.verify(jdbc).queryForList(
+                argThat((String sql) -> sql.contains("request_binding") && !sql.contains("FOR UPDATE")),
+                eq("platform"), eq("learner-share-test"), eq(SHARE_KEY));
+        order.verify(jdbc).update(contains("ON DUPLICATE KEY UPDATE"),
+                any(), any(), any(), any(), any(), any(), any(), any());
+        order.verify(jdbc).queryForList(contains("FOR UPDATE"),
+                eq("platform"), eq("learner-share-test"), eq(SHARE_KEY));
+        order.verify(jdbc).queryForList(
+                argThat((String sql) -> sql.contains("request_binding") && !sql.contains("FOR UPDATE")),
+                eq("platform"), eq("learner-share-test"), eq(SHARE_KEY));
+        verify(jdbc, times(1)).queryForList(contains("FOR UPDATE"),
+                eq("platform"), eq("learner-share-test"), eq(SHARE_KEY));
+        verify(jdbc, times(1)).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+        verify(jdbc, times(1)).update(contains("ON DUPLICATE KEY UPDATE"),
+                any(), any(), any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void sameKeyWithADifferentReportBindingConflicts() {
+        JdbcTemplate jdbc = mock(JdbcTemplate.class);
+        Map<String, Object> row = new LinkedHashMap<>();
+        row.put("share_ref", "11".repeat(16));
+        row.put("request_binding", "DAILY|EXPLICIT|2026-10-11");
+        row.put("expires_at", java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00Z")));
+        when(jdbc.queryForList(contains("request_binding"), eq("platform"), eq("learner-share-test"), eq("daily-explicit-key1")))
+                .thenReturn(List.of(row));
+        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+
+        ResponseStatusException weekly = assertThrows(ResponseStatusException.class,
+                () -> controller.issueReportShare(learner(), "WEEKLY", "2026-10-14", "daily-explicit-key1"));
+        ResponseStatusException otherDay = assertThrows(ResponseStatusException.class,
+                () -> controller.issueReportShare(learner(), "DAILY", "2026-10-12", "daily-explicit-key1"));
+
+        assertEquals(HttpStatus.CONFLICT, weekly.getStatusCode());
+        assertEquals("idempotency key was used for a different report share", weekly.getReason());
+        assertEquals(HttpStatus.CONFLICT, otherDay.getStatusCode());
+        assertEquals("idempotency key was used for a different report share", otherDay.getReason());
+        verify(jdbc, never()).update(contains("b25_learning_report_share"), any(), any(), any(), any(), any(), any());
+        verify(jdbc, never()).update(contains("b25_learning_report_share"),
+                any(), any(), any(), any(), any(), any(), any(), any());
+        verify(jdbc, never()).queryForList(contains("FOR UPDATE"), any(), any(), any());
+        verify(jdbc, never()).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+    }
+
+    @Test
+    void unsafeIdempotencyKeyIsRejected() {
+        JdbcTemplate jdbc = mock(JdbcTemplate.class);
+        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+
+        ResponseStatusException rejected = assertThrows(ResponseStatusException.class,
+                () -> controller.issueReportShare(learner(), "DAILY", "2026-10-11", "too-short"));
+
+        assertEquals(HttpStatus.BAD_REQUEST, rejected.getStatusCode());
+        assertEquals("Idempotency-Key must contain 16-128 safe characters", rejected.getReason());
+        verify(jdbc, never()).update(contains("b25_learning_report_share"), any(), any(), any(), any(), any(), any());
+        verify(jdbc, never()).update(contains("b25_learning_report_share"),
+                any(), any(), any(), any(), any(), any(), any(), any());
+        verify(jdbc, never()).queryForList(contains("b25_learning_report_share"), any(Object[].class));
+        verify(jdbc, never()).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+    }
+
     private static void assertStoredRevoke(JdbcTemplate jdbc, B25LearningJdbcController controller, String ref,
             Object revokedAt, String expected) {
         Map<String, Object> row = new LinkedHashMap<>();
@@ -176,10 +312,14 @@ class ReportShareControllerTest {
     }
 
     private static JwtAuthenticationToken learner() {
+        return learner("learner-share-test");
+    }
+
+    private static JwtAuthenticationToken learner(String subject) {
         Instant now = Instant.parse("2026-10-11T00:00:00Z");
         Jwt jwt = Jwt.withTokenValue("test-token")
                 .header("alg", "RS256")
-                .subject("learner-share-test")
+                .subject(subject)
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(300))
                 .claim("tenant_id", "platform")

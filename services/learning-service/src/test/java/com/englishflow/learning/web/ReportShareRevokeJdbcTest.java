@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -45,7 +46,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,9 +59,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@code LEARNING_FLYWAY_TEST_ADMIN_URL}, {@code LEARNING_FLYWAY_TEST_ADMIN_USER},
  * and {@code LEARNING_FLYWAY_TEST_ADMIN_PASSWORD}. There is no default database.
  *
- * <p>Proof scope: a Spring CGLIB proxy applies {@code @Transactional} on
+ * <p>Revoke proof: a Spring CGLIB proxy applies {@code @Transactional} on
  * {@link B25LearningJdbcController#revokeReportShare}. Two calls use two
  * connections. An outer {@code TransactionTemplate} is not used.
+ *
+ * <p>Issue proof: the same proxy and the full Flyway chain, including V14.
+ * The test holder gap-locks one absent idempotency key. Production issue does
+ * not. Both proxied issues wait on that lock, then return the one stored row.
  */
 @EnabledIfSystemProperty(named = "learning.report-share.jdbc.integration", matches = "true")
 class ReportShareRevokeJdbcTest {
@@ -185,10 +192,199 @@ class ReportShareRevokeJdbcTest {
         }
     }
 
+    @Test
+    void simultaneousIssueOfANewKeyReplaysThePersistedShare() throws Exception {
+        String adminUrl = required("LEARNING_FLYWAY_TEST_ADMIN_URL");
+        String adminUser = required("LEARNING_FLYWAY_TEST_ADMIN_USER");
+        String adminPassword = required("LEARNING_FLYWAY_TEST_ADMIN_PASSWORD");
+        String jdbcUrl = withUtc(adminUrl);
+        assertFalse(jdbcUrl.contains("useAffectedRows=true"), "default Connector/J must report found rows");
+        String schema = "learning_report_share_jdbc_" + hex(8);
+        assertTrue(schema.matches("learning_report_share_jdbc_[0-9a-f]{16}"));
+        String owner = "synthetic-owner-" + hex(8);
+        String otherOwner = "synthetic-other-" + hex(8);
+        String key = "race-share-key-" + hex(4);
+        assertNotEquals(owner, otherOwner);
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        ExecutorService pool = Executors.newFixedThreadPool(2, runnable -> {
+            Thread thread = new Thread(runnable, "report-share-issue-jdbc");
+            thread.setDaemon(true);
+            return thread;
+        });
+        try {
+            execute(jdbcUrl, adminUser, adminPassword, "CREATE DATABASE " + schema
+                    + " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            DriverManagerDataSource adminDataSource = new DriverManagerDataSource(jdbcUrl, adminUser, adminPassword);
+            assertTrue(Flyway.configure()
+                    .dataSource(adminDataSource)
+                    .schemas(schema)
+                    .createSchemas(false)
+                    .locations("classpath:db/migration")
+                    .load()
+                    .migrate()
+                    .success);
+
+            FixtureDataSource fixture = new FixtureDataSource(jdbcUrl, adminUser, adminPassword, schema);
+            context.registerBean("dataSource", DataSource.class, () -> fixture);
+            context.register(ReportShareRevokeProxyConfiguration.class);
+            context.refresh();
+            B25LearningJdbcController controller = context.getBean(B25LearningJdbcController.class);
+            assertTrue(AopUtils.isCglibProxy(controller));
+            assertTrue(controller instanceof Advised);
+            assertTrue(Arrays.stream(((Advised) controller).getAdvisors())
+                    .anyMatch(advisor -> advisor.getAdvice() instanceof TransactionInterceptor));
+
+            JdbcTemplate jdbc = context.getBean(JdbcTemplate.class);
+            assertEquals("ascii_bin", jdbc.queryForObject("""
+                    SELECT COLLATION_NAME
+                      FROM information_schema.COLUMNS
+                     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'b25_learning_report_share'
+                       AND COLUMN_NAME = 'idempotency_key'
+                    """, String.class, schema));
+            Number idemIndex = jdbc.queryForObject("""
+                    SELECT COUNT(*)
+                      FROM information_schema.STATISTICS
+                     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'b25_learning_report_share'
+                       AND INDEX_NAME = 'uq_b25_learning_report_share_idem'
+                       AND NON_UNIQUE = 0
+                    """, Number.class, schema);
+            assertEquals(3, idemIndex.intValue());
+
+            CountDownLatch started = new CountDownLatch(2);
+            Future<Map<String, Object>> left = null;
+            Future<Map<String, Object>> right = null;
+            try (Connection holder = openHolder(jdbcUrl, adminUser, adminPassword, schema)) {
+                lockMissingKey(holder, owner, key);
+                left = pool.submit(() -> issue(controller, owner, "DAILY", "2026-10-14", key, started));
+                right = pool.submit(() -> issue(controller, owner, "DAILY", "2026-10-14", key, started));
+                assertTrue(started.await(3, TimeUnit.SECONDS), "both issue calls must start");
+                awaitTwoExclusiveRowLockWaits(jdbcUrl, adminUser, adminPassword, schema);
+                holder.commit();
+            }
+            Map<String, Object> first = left.get(8, TimeUnit.SECONDS);
+            Map<String, Object> second = right.get(8, TimeUnit.SECONDS);
+            assertEquals(first, second);
+            assertEquals(Set.of("ref", "expiresAt", "publicPath", "status"), first.keySet());
+            assertEquals("ACTIVE", first.get("status"));
+            String ref = String.valueOf(first.get("ref"));
+            assertTrue(ref.matches("[0-9a-f]{32}"));
+            assertEquals("/api/v1/public/learning/report-shares/" + ref, first.get("publicPath"));
+            assertEquals(1, rowCount(jdbc));
+
+            String[] winner = persistedShare(jdbc, owner, key);
+            assertEquals(ref, winner[0]);
+            assertEquals("DAILY|EXPLICIT|2026-10-14", winner[1]);
+            assertTrue(winner[2].matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}"), winner[2]);
+            Instant persisted = LocalDateTime.parse(winner[2].replace(' ', 'T')).toInstant(ZoneOffset.UTC);
+            assertEquals(persisted.toString(), first.get("expiresAt"));
+            assertEquals(persisted.toString(), second.get("expiresAt"));
+            assertTrue(winner[3].contains("NEVER_STUDIED"));
+            assertTrue(winner[3].contains("2026-10-14"));
+            assertFalse(winner[3].contains(owner));
+
+            Map<String, Object> view = controller.readReportShare(ref);
+            assertEquals("ACTIVE", view.get("status"));
+            assertEquals("NEVER_STUDIED", view.get("availability"));
+            assertEquals("2026-10-14", view.get("periodStart"));
+            assertFalse(view.containsKey("subject"));
+            assertFalse(view.containsKey("token"));
+            assertFalse(String.valueOf(view).contains(owner));
+
+            String loser = hex(16);
+            assertNotEquals(ref, loser);
+            int affected = jdbc.update("""
+                    INSERT INTO b25_learning_report_share
+                        (share_ref, tenant_id, principal_id, report_type, snapshot_json, expires_at,
+                         idempotency_key, request_binding)
+                    VALUES (?, 'platform', ?, 'DAILY', ?, ?, ?, 'DAILY|EXPLICIT|2026-10-14')
+                    ON DUPLICATE KEY UPDATE idempotency_key = idempotency_key
+                    """, loser, owner, "{\"availability\":\"REPLACED\"}",
+                    Timestamp.from(Instant.parse("2030-01-01T00:00:00Z")), key);
+            assertEquals(1, affected);
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+
+            Map<String, Object> replay = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", key);
+            assertEquals(first, replay);
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+
+            ResponseStatusException weekly = assertThrows(ResponseStatusException.class,
+                    () -> controller.issueReportShare(authentication(owner), "WEEKLY", "2026-10-14", key));
+            assertEquals(HttpStatus.CONFLICT, weekly.getStatusCode());
+            assertEquals("idempotency key was used for a different report share", weekly.getReason());
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+            ResponseStatusException otherDay = assertThrows(ResponseStatusException.class,
+                    () -> controller.issueReportShare(authentication(owner), "DAILY", "2026-10-12", key));
+            assertEquals(HttpStatus.CONFLICT, otherDay.getStatusCode());
+            assertEquals("idempotency key was used for a different report share", otherDay.getReason());
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+
+            Map<String, Object> other = controller.issueReportShare(authentication(otherOwner), "DAILY", "2026-10-14", key);
+            assertNotEquals(ref, other.get("ref"));
+            assertEquals("ACTIVE", other.get("status"));
+            assertEquals(String.valueOf(other.get("ref")), persistedShare(jdbc, otherOwner, key)[0]);
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+
+            String lower = "case-share-key-" + hex(4);
+            String upper = lower.toUpperCase(Locale.ROOT);
+            assertNotEquals(lower, upper);
+            Map<String, Object> lowerBody = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", lower);
+            Map<String, Object> upperBody = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", upper);
+            assertNotEquals(lowerBody.get("ref"), upperBody.get("ref"));
+            assertEquals(String.valueOf(lowerBody.get("ref")), persistedShare(jdbc, owner, lower)[0]);
+            assertEquals(String.valueOf(upperBody.get("ref")), persistedShare(jdbc, owner, upper)[0]);
+
+            Map<String, Object> headerless = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", null);
+            Map<String, Object> whitespace = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", "   ");
+            assertNotEquals(headerless.get("ref"), whitespace.get("ref"));
+            assertNotEquals(ref, headerless.get("ref"));
+            assertNotEquals(ref, whitespace.get("ref"));
+            assertEquals("ACTIVE", headerless.get("status"));
+            assertEquals("ACTIVE", whitespace.get("status"));
+            Number nullKeys = jdbc.queryForObject("""
+                    SELECT COUNT(*)
+                      FROM b25_learning_report_share
+                     WHERE principal_id = ? AND idempotency_key IS NULL
+                    """, Number.class, owner);
+            assertEquals(2, nullKeys.intValue());
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+            assertEquals(6, rowCount(jdbc));
+
+            Map<String, Object> revoked = controller.revokeReportShare(authentication(owner), ref);
+            assertEquals(ref, revoked.get("ref"));
+            assertEquals("REVOKED", revoked.get("status"));
+            Map<String, Object> afterRevoke = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", key);
+            assertEquals(first, afterRevoke);
+            assertEquals("ACTIVE", afterRevoke.get("status"));
+            assertEquals(Map.of("status", "REVOKED"), controller.readReportShare(ref));
+            assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+            Timestamp revokedAt = jdbc.queryForObject("""
+                    SELECT revoked_at FROM b25_learning_report_share WHERE share_ref = ?
+                    """, Timestamp.class, ref);
+            assertEquals(revokedAt.toInstant().toString(), revoked.get("revokedAt"));
+            assertEquals(6, rowCount(jdbc));
+        } finally {
+            pool.shutdownNow();
+            try {
+                pool.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+            }
+            context.close();
+            execute(jdbcUrl, adminUser, adminPassword, "DROP DATABASE IF EXISTS " + schema);
+        }
+    }
+
     private static Map<String, Object> revoke(B25LearningJdbcController controller, String owner, String ref,
             CountDownLatch started) {
         started.countDown();
         return controller.revokeReportShare(authentication(owner), ref);
+    }
+
+    private static Map<String, Object> issue(B25LearningJdbcController controller, String owner, String reportType,
+            String date, String key, CountDownLatch started) {
+        started.countDown();
+        return controller.issueReportShare(authentication(owner), reportType, date, key);
     }
 
     private static void awaitTwoExclusiveRowLockWaits(String url, String user, String password, String schema)
@@ -248,6 +444,40 @@ class ReportShareRevokeJdbcTest {
                 }
             }
         }
+    }
+
+    /** Test gate only. Production issue does not lock a key before its insert. */
+    private static void lockMissingKey(Connection connection, String owner, String key) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+                SELECT idempotency_key
+                  FROM b25_learning_report_share
+                 WHERE tenant_id = 'platform' AND principal_id = ? AND idempotency_key = ?
+                 FOR UPDATE
+                """)) {
+            statement.setString(1, owner);
+            statement.setString(2, key);
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    throw new AssertionError("new idempotency key already has a row");
+                }
+            }
+        }
+    }
+
+    private static String[] persistedShare(JdbcTemplate jdbc, String owner, String key) {
+        List<String[]> rows = jdbc.query("""
+                SELECT share_ref, request_binding,
+                       DATE_FORMAT(expires_at, '%Y-%m-%d %H:%i:%s.%f'),
+                       CAST(snapshot_json AS CHAR)
+                  FROM b25_learning_report_share
+                 WHERE tenant_id = 'platform' AND principal_id = ? AND idempotency_key = ?
+                """, (rs, rowNum) -> new String[] {
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)
+                }, owner, key);
+        if (rows.size() != 1) {
+            throw new AssertionError("expected one persisted share, observed " + rows.size());
+        }
+        return rows.get(0);
     }
 
     private static String storedWall(JdbcTemplate jdbc, String ref) {

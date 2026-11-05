@@ -34,6 +34,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.englishflow.learning.adapter.http.AssessmentMistakeQueueProjector;
 import com.englishflow.learning.adapter.http.BearerTokens;
 import com.englishflow.learning.domain.EmptyBook;
+import com.englishflow.learning.domain.IdempotencyKey;
 import com.englishflow.learning.domain.LearningPeriodReport;
 import com.englishflow.learning.domain.ReviewBudget;
 import com.englishflow.learning.domain.ReviewHistory;
@@ -456,34 +457,60 @@ public class B25LearningJdbcController {
         return report(principal.subject(), start, start.plusDays(7), "WEEKLY");
     }
 
-    /** A new unguessable ref each call. The stored snapshot has public fields only. */
+    /**
+     * A missing or blank Idempotency-Key still mints a new unguessable ref.
+     * A key replays the first share for this owner and tenant.
+     */
     @PostMapping("/reports/{reportType}/shares")
     @Transactional
     public Map<String, Object> issueReportShare(Authentication authentication, @PathVariable String reportType,
-            @RequestParam(required = false) String date) {
+            @RequestParam(required = false) String date,
+            @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
         Principal principal = principal(authentication, "learning.progress.read");
         String kind = reportKind(reportType);
-        LocalDate anchor = parseDate(date, LocalDate.now(ZoneOffset.UTC));
+        String key = shareIdempotencyKey(idempotencyKey);
+        boolean omitted = date == null || date.isBlank();
+        LocalDate explicit = omitted ? null : parseDate(date, LocalDate.now(ZoneOffset.UTC));
+        String binding = omitted ? kind + "|ABSENT" : kind + "|EXPLICIT|" + explicit;
+        String owner = principal.subject();
+        if (key != null) {
+            Map<String, Object> existing = plainShareByKey(owner, key);
+            if (existing != null) return replayShare(existing, binding);
+        }
+        LocalDate anchor = omitted ? LocalDate.now(ZoneOffset.UTC) : explicit;
         LocalDate start = "WEEKLY".equals(kind) ? anchor.with(DayOfWeek.MONDAY) : anchor;
         LocalDate end = start.plusDays("WEEKLY".equals(kind) ? 7 : 1);
-        Map<String, Object> periodReport = period(principal.subject(), kind, start, end);
+        Map<String, Object> periodReport = period(owner, kind, start, end);
         byte[] random = new byte[16];
         SECURE_RANDOM.nextBytes(random);
         String ref = HexFormat.of().formatHex(random);
-        Instant now = Instant.now();
+        Instant now = Instant.now().truncatedTo(ChronoUnit.MICROS);
         Map<String, Object> share = LearningPeriodReport.issue(periodReport, ref, now);
+        String expiresAt = String.valueOf(share.get("expiresAt"));
+        java.sql.Timestamp expires = java.sql.Timestamp.from(Instant.parse(expiresAt));
+        String snapshot = writeJson(share.get("publicFields"));
+        if (key == null) {
+            jdbc.update("""
+                    INSERT INTO b25_learning_report_share
+                        (share_ref, tenant_id, principal_id, report_type, snapshot_json, expires_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """, ref, TENANT, owner, kind, snapshot, expires);
+            return shareReceipt(ref, expiresAt);
+        }
+        // Insert first. A missing-key FOR UPDATE in REPEATABLE READ gap-locks both waiters.
+        // Default Connector/J useAffectedRows=false can report 1 for this no-op, so the count is not the receipt.
         jdbc.update("""
                 INSERT INTO b25_learning_report_share
-                    (share_ref, tenant_id, principal_id, report_type, snapshot_json, expires_at)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """, ref, TENANT, principal.subject(), kind, writeJson(share.get("publicFields")),
-                java.sql.Timestamp.from(Instant.parse(String.valueOf(share.get("expiresAt")))));
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("ref", ref);
-        body.put("expiresAt", share.get("expiresAt"));
-        body.put("publicPath", "/api/v1/public/learning/report-shares/" + ref);
-        body.put("status", "ACTIVE");
-        return body;
+                    (share_ref, tenant_id, principal_id, report_type, snapshot_json, expires_at,
+                     idempotency_key, request_binding)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE idempotency_key = idempotency_key
+                """, ref, TENANT, owner, kind, snapshot, expires, key, binding);
+        Map<String, Object> stored = lockedShareByKey(owner, key);
+        if (stored == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "report share idempotency key raced");
+        }
+        return replayShare(stored, binding);
     }
 
     @PostMapping("/report-shares/{ref}/revoke")
@@ -831,6 +858,56 @@ public class B25LearningJdbcController {
     }
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+    /** Blank, including whitespace, stays on the headerless insert. A present key uses the safe ASCII alphabet. */
+    private static String shareIdempotencyKey(String raw) {
+        if (raw == null || raw.isBlank()) return null;
+        try {
+            return new IdempotencyKey(raw.trim()).value();
+        } catch (IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+    }
+
+    /** Plain read. A missing unique key must not be locked before the insert. */
+    private Map<String, Object> plainShareByKey(String owner, String key) {
+        return one("""
+                SELECT share_ref, expires_at, request_binding
+                  FROM b25_learning_report_share
+                 WHERE tenant_id = ? AND principal_id = ? AND idempotency_key = ?
+                """, TENANT, owner, key);
+    }
+
+    private Map<String, Object> lockedShareByKey(String owner, String key) {
+        return one("""
+                SELECT share_ref, expires_at, request_binding
+                  FROM b25_learning_report_share
+                 WHERE tenant_id = ? AND principal_id = ? AND idempotency_key = ?
+                 FOR UPDATE
+                """, TENANT, owner, key);
+    }
+
+    /** The original issue receipt stays ACTIVE even after a later revoke or expiry. */
+    private Map<String, Object> replayShare(Map<String, Object> row, String binding) {
+        if (!binding.equals(text(row.get("request_binding")))) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "idempotency key was used for a different report share");
+        }
+        Object ref = row.get("share_ref");
+        if (!(ref instanceof String shareRef) || !shareRef.matches("[0-9a-f]{32}")) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "report share idempotency key raced");
+        }
+        return shareReceipt(shareRef, instantText(row.get("expires_at")));
+    }
+
+    private static Map<String, Object> shareReceipt(String ref, String expiresAt) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("ref", ref);
+        body.put("expiresAt", expiresAt);
+        body.put("publicPath", "/api/v1/public/learning/report-shares/" + ref);
+        body.put("status", "ACTIVE");
+        return body;
+    }
 
     private static String reportKind(String reportType) {
         if ("DAILY".equalsIgnoreCase(reportType)) return "DAILY";

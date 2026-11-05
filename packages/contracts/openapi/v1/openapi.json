@@ -20858,8 +20858,9 @@
         "x-owner": "learning-service",
         "x-idempotency": {
           "required": false,
-          "strategy": "new-unguessable-share-ref",
-          "replayBehavior": "每次成功签发一个新的 32 位引用，不改写已有快照"
+          "strategy": "optional-owner-report-share-ref",
+          "keyHeader": "Idempotency-Key",
+          "replayBehavior": "缺少 Idempotency-Key 时每次成功仍签发一个新的 32 位引用。同一认证主体、租户与键，且报告类型和日期语义一致时，保留已存公开快照、首次随机引用和精确 expiresAt；响应只回放原始签发回执（ref、expiresAt、publicPath、status=ACTIVE），不在响应体中返回快照。该分享之后撤销或过期仍回放这份原始签发回执，不另造公开链接，也不把公开读到的 REVOKED 或 EXPIRED 当作签发回执状态。键按 ASCII 大小写敏感区分。日期省略记为 ABSENT，缺省日期的重试跨过午夜仍回到原窗口；显式日期按解析后的日历日绑定，不按周一起始归一。同键但报告类型或日期语义不同时返回 HTTP 409，且不改写已存快照。"
         },
         "parameters": [
           {
@@ -20882,11 +20883,29 @@
               "type": "string",
               "format": "date"
             }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "可选。缺失或空白时保持已部署移动端和 Web 的无键签发。存在时只在当前认证主体和 platform 租户内绑定首次分享。比较区分 ASCII 大小写。",
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Share ref and public path"
+            "description": "回执只含 ref、expiresAt、publicPath 和原始签发 status=ACTIVE。相同 Idempotency-Key 且请求绑定一致时回放首次引用和精确 expiresAt，并保留已存快照；撤销或过期后仍是这份原始签发回执。"
+          },
+          "400": {
+            "$ref": "#/components/responses/ApiBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/ApiConflict"
           }
         }
       }
