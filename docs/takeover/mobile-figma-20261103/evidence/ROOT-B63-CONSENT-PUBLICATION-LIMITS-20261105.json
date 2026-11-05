@@ -1,0 +1,28 @@
+{
+  "source_base": "ee3ab537",
+  "scope": "MB-004 R1-008 B8 published consent read input lengths",
+  "sha256": {
+    "apps/mobile/src/api/learner-content.ts": "f0d938b0363b8b9140404893183e55b6d1f48c17dc65fc5f806087a9a6c22e04",
+    "apps/mobile/tests/onboarding-first-consent.test.mjs": "b07c8ba9bd136436dbf05d2ab3f94cc9ead7361603b4a5482ccbfcf7c9b640d5"
+  },
+  "fixture_sha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+  "validation": {
+    "iam_policy_reference_max": 192,
+    "b8_body_max_code_points": 65536,
+    "exact_utf8_digest": "PRESERVED"
+  },
+  "baseline": {
+    "failed_new_boundary_tests": [
+      "192-character IAM policy reference",
+      "65536 non-BMP Unicode body characters"
+    ],
+    "before_log_sha256": "38fb4878634360211a6a243489222de580c2d2145f2c91940d1577d723a3f628"
+  },
+  "verify": {
+    "isolated_after_passed": 14,
+    "integration_passed": 14,
+    "typecheck": "PASS",
+    "integration_log_sha256": "9527a91fc491773a87fac85cdba698ab2a50e8051999c13e88f17689756bc3bc"
+  },
+  "evidence_scope": "SOURCE_TEST_ONLY; real document publication, controlled current runtime, native package and deployment not run in this patch"
+}

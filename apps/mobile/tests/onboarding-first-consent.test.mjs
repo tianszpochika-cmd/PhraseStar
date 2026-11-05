@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
+import { createHash } from 'node:crypto'
 import ts from 'typescript'
 
 const fixture = JSON.parse(fs.readFileSync(new URL('./fixtures/mock-consent-publication.json', import.meta.url), 'utf8'))
@@ -147,4 +148,61 @@ test('valid viewed documents with an invalid published digest are blocked', asyn
   assert.equal(await accept(s), 'stale')
   assert.equal(s.puts().length, 0)
   assert.equal(s.refreshCalls(), 0)
+})
+
+const IAM_POLICY_REF = /^[A-Za-z][A-Za-z0-9:/._-]{2,191}$/
+const independentSha256 = (text) => createHash('sha256').update(text, 'utf8').digest('hex')
+const scalarCount = (text) => {
+  let count = 0
+  for (const _character of text) count += 1
+  return count
+}
+const withTerms = (patch) => docs.map((doc) => doc.type === 'TERMS' ? { ...doc, ...patch } : doc)
+async function acceptOwnedPublication(published) {
+  const s = setup({ published, records: published.map((doc) => exactRecord(doc)) })
+  return { result: await accept(s, { viewed: published }), puts: s.puts().length, refreshCalls: s.refreshCalls() }
+}
+
+test('largest allowed IAM policy reference is accepted by the publication parser', async () => {
+  const policyRef = `A${'a'.repeat(191)}`
+  assert.equal(policyRef.length, 192)
+  assert.match(policyRef, IAM_POLICY_REF)
+  const run = await acceptOwnedPublication(withTerms({ policyRef }))
+  assert.equal(run.result, 'accepted')
+  assert.equal(run.puts, 0)
+  assert.equal(run.refreshCalls, 1)
+})
+
+test('IAM policy reference past 192 characters is rejected before any write', async () => {
+  const policyRef = `A${'a'.repeat(192)}`
+  assert.equal(policyRef.length, 193)
+  assert.equal(IAM_POLICY_REF.test(policyRef), false)
+  const run = await acceptOwnedPublication(withTerms({ policyRef }))
+  assert.equal(run.result, 'stale')
+  assert.equal(run.puts, 0)
+  assert.equal(run.refreshCalls, 0)
+})
+
+test('hash parser accepts exactly 65536 non-BMP Unicode characters', async () => {
+  const scalar = String.fromCodePoint(0x10000)
+  const bodyText = scalar.repeat(65536)
+  assert.equal(scalarCount(bodyText), 65536)
+  assert.equal(bodyText.length, 131072)
+  const documentDigest = independentSha256(bodyText)
+  assert.match(documentDigest, /^[0-9a-f]{64}$/)
+  const run = await acceptOwnedPublication(withTerms({ bodyText, documentDigest }))
+  assert.equal(run.result, 'accepted')
+  assert.equal(run.puts, 0)
+  assert.equal(run.refreshCalls, 1)
+})
+
+test('hash parser rejects 65537 Unicode characters before any write', async () => {
+  const scalar = String.fromCodePoint(0x10000)
+  const bodyText = scalar.repeat(65537)
+  assert.equal(scalarCount(bodyText), 65537)
+  const documentDigest = independentSha256(bodyText)
+  const run = await acceptOwnedPublication(withTerms({ bodyText, documentDigest }))
+  assert.equal(run.result, 'stale')
+  assert.equal(run.puts, 0)
+  assert.equal(run.refreshCalls, 0)
 })

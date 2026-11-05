@@ -466,6 +466,11 @@
           "group": "B60_FROZEN_KEYBOARD_TEXT",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
+        },
+        "b63_publication_limits": {
+          "status": "SOURCE_TEST_AND_TYPECHECK_PASS",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "receipt": "evidence/ROOT-B63-CONSENT-PUBLICATION-LIMITS-20261105.json"
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3539,7 +3544,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T19:49:00.494567+08:00",
+  "updated_at": "2026-11-05T19:53:53.233376+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5178,5 +5183,12 @@
     "boundary_checks": 140,
     "keyboard_and_h5_text_checks": 54,
     "native_reader_and_deployment": "NOT_RUN"
+  },
+  "integration_batch_63_publication_limits": {
+    "scope": "MB-004 document compatibility limits",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "receipt": "evidence/ROOT-B63-CONSENT-PUBLICATION-LIMITS-20261105.json",
+    "source_tests_passed": 14,
+    "status": "SOURCE_TEST_AND_TYPECHECK_PASS_TRACE_PENDING"
   }
 }

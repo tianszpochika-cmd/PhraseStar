@@ -440,7 +440,8 @@ export function explicitIncompleteConsent(consent: Pick<MobileOnboardingResumeRe
 
 const PUBLICATION_VERSION_MAX = 64
 const PUBLICATION_POLICY_VERSION_MAX = 128
-const PUBLICATION_POLICY_REF_MAX = 160
+// IAM ConsentPolicyDescriptor SAFE_REF is one ASCII letter plus 2..191 safe characters (3..192).
+const PUBLICATION_POLICY_REF_MAX = 192
 const PUBLICATION_BODY_MAX = 65536
 const SHA256_LOWER = /^[0-9a-f]{64}$/
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/
@@ -456,7 +457,16 @@ function plainToken(value: unknown, max: number): string | null {
 }
 
 function plainBody(value: unknown): string | null {
-  if (typeof value !== 'string' || value.length < 1 || value.length > PUBLICATION_BODY_MAX || value.includes('\u0000')) return null
+  // maxLength is Unicode scalars. Each scalar is one or two UTF-16 code units, so longer inputs are closed without copying.
+  if (typeof value !== 'string' || value.length < 1 || value.length > PUBLICATION_BODY_MAX * 2 || value.includes('\u0000')) return null
+  if (value.length <= PUBLICATION_BODY_MAX) return value
+  let characters = 0
+  for (let index = 0; index < value.length; ) {
+    const point = value.codePointAt(index) ?? 0
+    index += point > 0xffff ? 2 : 1
+    characters += 1
+    if (characters > PUBLICATION_BODY_MAX) return null
+  }
   return value
 }
 
