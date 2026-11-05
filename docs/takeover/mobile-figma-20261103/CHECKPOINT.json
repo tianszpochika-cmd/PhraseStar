@@ -471,6 +471,11 @@
           "status": "SOURCE_TEST_AND_TYPECHECK_PASS",
           "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
           "receipt": "evidence/ROOT-B63-CONSENT-PUBLICATION-LIMITS-20261105.json"
+        },
+        "b69_iam_owner_read": {
+          "status": "LOCAL_IAM_JDBC_AND_CONTROLLER_PASS_TRACE_PENDING",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "receipt": "evidence/ROOT-B69-IAM-CONSENT-PUBLICATION-20261105.json"
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3571,7 +3576,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T20:42:56.646781+08:00",
+  "updated_at": "2026-11-05T20:57:20.279473+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5244,5 +5249,14 @@
     "receipt": "evidence/ROOT-B66-REPORT-REVOKE-20261105.json",
     "java_checks_per_timezone": 12,
     "real_db_concurrency": "PASS_ISOLATED_MYSQL"
+  },
+  "integration_batch_69_iam_publication": {
+    "scope": "MB-004 / R1-008 IAM owner read only",
+    "status": "LOCAL_IAM_JDBC_AND_CONTROLLER_PASS_TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "receipt": "evidence/ROOT-B69-IAM-CONSENT-PUBLICATION-20261105.json",
+    "baseline_v18_passed": 2,
+    "candidate_v19_passed": 41,
+    "formal_publication_and_deployed_gateway": "NOT_RUN"
   }
 }

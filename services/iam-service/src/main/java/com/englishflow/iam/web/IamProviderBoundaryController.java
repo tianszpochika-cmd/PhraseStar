@@ -1063,19 +1063,29 @@ class IamAuthenticationController {
 
     private PrincipalResponse principalResponse(AccountRecord account, Jwt jwt) {
         AdultGateResponse gate = adultGateResponse(adultGateFacts.find(account.principalId(), account.createdAt()));
-        ConsentState consent = consentState(account.principalId(), gate);
+        List<ConsentPolicyDescriptor> learningRequired = consents.publishedRequiredPoliciesFor("LEARNING");
+        ConsentState consent = consentState(account.principalId(), gate, learningRequired);
         String status = gate.learningAccess().equals("ELIGIBLE") && consent.accepted() ? "ACTIVE" : "RESTRICTED";
         SessionRecord session = sessions.find(sessionId(jwt));
         if (!session.principalId().equals(account.principalId()) || session.status() != SessionStatus.ACTIVE) {
             throw new IamPolicyException(IamDecisionCode.SESSION_REVOKED, "iam.session.revoked");
         }
+        boolean showBodies = "ELIGIBLE".equals(gate.learningAccess()) && !consent.accepted();
+        List<ConsentService.FirstConsentDocument> documents = showBodies
+                ? consents.projectFirstConsentDocuments(learningRequired).orElse(null)
+                : null;
         return new PrincipalResponse(account.principalId().toString(), properties.getPlatformTenant(),
                 session.sessionId().toString(), session.deviceId().value(), List.copyOf(account.roles()),
-                List.copyOf(tokenAccount(account).permissions()), "self-owned-jwt", status, gate, consent, "b30-rbac-v1");
+                List.copyOf(tokenAccount(account).permissions()), "self-owned-jwt", status, gate, consent,
+                documents, "b30-rbac-v1");
     }
 
     private ConsentState consentState(PrincipalId principal, AdultGateResponse adultGate) {
-        List<ConsentPolicyDescriptor> learningRequired = consents.publishedRequiredPoliciesFor("LEARNING");
+        return consentState(principal, adultGate, consents.publishedRequiredPoliciesFor("LEARNING"));
+    }
+
+    private ConsentState consentState(PrincipalId principal, AdultGateResponse adultGate,
+                                      List<ConsentPolicyDescriptor> learningRequired) {
         List<String> required = learningRequired.stream().map(ConsentPolicyDescriptor::purpose).toList();
         List<String> unsatisfied = learningRequired.stream()
                 .filter(descriptor -> !consentStore.find(principal, descriptor.type())
@@ -1369,7 +1379,15 @@ class IamAuthenticationController {
     }
     public record PrincipalResponse(String principalId, String tenantId, String sessionId, String deviceId,
                                     List<String> roles, List<String> permissions, String authMode, String status,
-                                    AdultGateResponse adultGate, ConsentState consentState, String policyVersion) {}
+                                    AdultGateResponse adultGate, ConsentState consentState,
+                                    @JsonInclude(JsonInclude.Include.NON_NULL)
+                                    List<ConsentService.FirstConsentDocument> publishedConsentDocuments,
+                                    String policyVersion) {
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        public List<ConsentService.FirstConsentDocument> publishedConsentDocuments() {
+            return publishedConsentDocuments;
+        }
+    }
     public record AdultGateResponse(String status, String learningAccess, Instant effectiveAt, String policyVersion,
                                     int minimumAge, String evidenceStatus, boolean retryAllowed) {
         public AdultGateResponse(String status, String policyVersion, Instant effectiveAt, boolean retryAllowed) {

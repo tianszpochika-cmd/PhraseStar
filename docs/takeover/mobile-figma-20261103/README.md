@@ -4,10 +4,10 @@
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 
-- 当前 33/33 条路由进入本地 UI 候选。引导目标保存与读回已复验，首次签署的 9 个模拟场景通过。正式发布和实际 IAM 签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。 [引导首次签署 B57](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md)
+- 当前 33/33 条路由进入本地 UI 候选。引导目标保存与读回已复验，首次签署的 9 个模拟场景通过。IAM 本地 V18 到 V19 升级和 41 项候选检查通过。正式发布与部署后签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。 [引导首次签署 B57](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md)
 - 33 条路由的源码调用与限制已对照静态契约，完整追溯仍待签收。错题详情旧地址缺网关精确转发，设置页客服查询已补兼容说明。全量契约门禁保留既有 Gateway 与事件基线差异。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md) · [需求与门禁缺项](reviews/TRACE-AUDIT-20261105.md)
 - [边界与键盘 B62](reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md) 小游戏与自习室的空态、非空、退出和回跳已在冻结 H5 复验，错题弹层键盘和三页 H5 文字放大单列。
-- [首次签署模拟发布包](../../../apps/mobile/tests/fixtures/mock-consent-publication.json) 含三份独立版本的测试正文和逐份 SHA-256 摘要，用于受控验收。正式发布文档和实际 IAM 投影继续单列。
+- [首次签署模拟发布包](../../../apps/mobile/tests/fixtures/mock-consent-publication.json) 含三份独立版本的测试正文和逐份 SHA-256 摘要，用于受控验收。IAM 本地正文投影有隔离数据库和控制器证据，正式发布继续单列。
 - [关闭页 B65](reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md) 写作和两条 B11 的遗留工作区清理已通过 255 项受控浏览器检查。
 - [关闭页 B56](reviews/INTEGRATION-B56-CLOSED-PRACTICE.md) 收口旧听力与口语关闭页，组合 H5 116 项受控检查通过。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。

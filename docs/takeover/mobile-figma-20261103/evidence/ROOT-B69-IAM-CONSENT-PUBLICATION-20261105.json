@@ -1,0 +1,47 @@
+{
+  "scope": "MB-004 / R1-008, BC-008; IAM self principal GET read projection only",
+  "author": "Grok CLI candidate 49, exact frozen files",
+  "candidate_base": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+  "integration_parent": "cd8baf96d9e4d5e68de460bfb7c1bcbe261c1c54",
+  "candidate_file_sha256": {
+    "services/iam-service/src/main/java/com/englishflow/iam/domain/ConsentPolicyPort.java": "0f9ce363b15df328035c0365d28700ea3e1b9ac65ca8cab481e89a0e5cfb588d",
+    "services/iam-service/src/main/java/com/englishflow/iam/domain/ConsentService.java": "a65fc31a94c9775ed4151ff96168b52c3db242b3619181f770f243d1df4f5f67",
+    "services/iam-service/src/main/java/com/englishflow/iam/domain/JdbcConsentPolicy.java": "f7d9b039f5708aec56ae6771e117e6fe9cfc30dacab9cf7111c67456963e0e15",
+    "services/iam-service/src/main/java/com/englishflow/iam/web/IamProviderBoundaryController.java": "215b056d7878330794c2310be9e728f16678cdd55d1a2826e62ea827d3eda5c1",
+    "services/iam-service/src/main/resources/db/migration/V19__add_iam_consent_document_body.sql": "143480d56243cbae1379e3401b0d2312b906da4f3c1226a9a103617efc7a0a88",
+    "services/iam-service/src/test/java/com/englishflow/iam/IamConsentPolicyJdbcPersistenceContextTest.java": "82e3cb71ac45722648c97ce150929a696a63c88e75d57dfb4c54d28a66dc4a78",
+    "services/iam-service/src/test/java/com/englishflow/iam/web/IamFirstConsentPublicationControllerTest.java": "cc0a4d2d5793f4c1db4b29ba41c7dfa789a11b99b616f07e278ba1e2c04f26dd"
+  },
+  "database": {
+    "engine": "MySQL 8.0; disposable local container",
+    "schema": "iam_service",
+    "baseline": {
+      "migrations": 17,
+      "version": 18,
+      "tests_passed": 2,
+      "skipped": 0
+    },
+    "candidate": {
+      "new_migrations": 1,
+      "version": 19,
+      "tests_passed": 41,
+      "skipped": 0,
+      "jdbc_policy_tests": 3,
+      "jdbc_rollback_tests": 2,
+      "controller_and_session_tests": 36
+    },
+    "column": "document_body nullable, migration does not seed rows",
+    "cleanup": "Container removed and host port 13306 verified free"
+  },
+  "logs_sha256": {
+    "base-v18-jdbc.log": "49843e7bc9413fa3bcc16b0113fb4a318d958420e7eee827aad3412ac28cc5e2",
+    "candidate-v19-jdbc.log": "2bd4606652fd3ec8a098a1ff82b069412f7c744358072b380295c5483685bc1d",
+    "flyway-and-column.log": "c430e43000aae7c238021c89da4a5be994be2527fa3ddabdb13c5f205c94c7ae",
+    "cleanup-status.log": "86edc301936e16ce9606d6d1e7e5e4c0f145725b79a8cf16f9fc15f436d890b0"
+  },
+  "boundaries": [
+    "The first disposable run used the wrong owner schema name and stopped before candidate execution. The second run used iam_service without changes to repository configuration.",
+    "Three independent synthetic document bodies. Real publishing and authorizer gates untouched.",
+    "IAM service JDBC and in-process controller/session checks. Actual deployed HTTP gateway, formal publication, device, reader, and production rollout remain NOT_RUN."
+  ]
+}
