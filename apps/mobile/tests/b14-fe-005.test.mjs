@@ -53,15 +53,28 @@ test('mobile does not send client authority facts or use Math.random', async () 
 })
 
 test('mobile deep-link pages use the shared auth gate before reading protected data', async () => {
-  const pages = await Promise.all([
-    'apps/mobile/src/pages/practice/practice.vue',
-    'apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue',
-    'apps/mobile/src/pages/profile/profile.vue',
-    'apps/mobile/src/pages/b6-platform/b6-platform.vue',
-    'apps/mobile/src/pages/settings/settings.vue',
-    'apps/mobile/src/pages/today/today.vue',
-  ].map(read)).then((parts) => parts.join('\n'))
-  assert.equal((pages.match(/ensureMobilePageAccess\('/g) ?? []).length, 6)
+  const pages = [
+    ['apps/mobile/src/pages/practice/practice.vue', '/pages/practice/practice'],
+    ['apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue', '/pages/b2-vocabulary/b2-vocabulary'],
+    ['apps/mobile/src/pages/profile/profile.vue', '/pages/profile/profile'],
+    ['apps/mobile/src/pages/b6-platform/b6-platform.vue', '/pages/b6-platform/b6-platform'],
+    ['apps/mobile/src/pages/settings/settings.vue', '/pages/settings/settings'],
+    ['apps/mobile/src/pages/today/today.vue', '/pages/today/today'],
+  ]
+  for (const [file, route] of pages) {
+    const source = await read(file)
+    assert.match(source, /import\s*\{[^}]*\bensureMobilePageAccess\b[^}]*\}\s*from\s*['"][^'"]*auth\/navigation['"]/, file)
+    const calls = [...source.matchAll(/ensureMobilePageAccess\(\s*([^)]+?)\s*\)/g)]
+    assert.equal(calls.length, 1, file)
+    const argument = calls[0][1].trim()
+    if (argument.startsWith("'") || argument.startsWith('"') || argument.startsWith('`')) {
+      assert.equal(argument.slice(1, -1), route, file)
+    } else {
+      assert.match(argument, /^[A-Za-z_$][\w$]*$/, `${file} route argument`)
+      const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      assert.match(source, new RegExp(`(?:const|let)\\s+${argument}\\s*=\\s*['"\`]${escaped}['"\`]`), `${file} binds ${argument}`)
+    }
+  }
 })
 
 test('mobile logout clears the session and returns to the login page', async () => {
