@@ -702,7 +702,7 @@
         "h5": "PASS_SHA256_c19c6b0c5cc62c0d921be74329ded3b8289b1969141e60ead65b092673354da6",
         "cross_viewport": "GEOMETRY_390_COMBINED",
         "accessibility": "LOCAL_DISABLED_STATE_CHECK_SCREEN_READER_NOT_RUN",
-        "real_api": "NOT_RUN",
+        "real_api": "LOCAL_SYNTHETIC_START_READ_PASS_DEPLOYED_AND_COMPLETION_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md"
       },
@@ -3705,7 +3705,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T00:40:30.812186+08:00",
+  "updated_at": "2026-11-06T00:59:18.616922+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5565,5 +5565,21 @@
     "apk_ipa_device_reader_deployed": "NOT_RUN",
     "keychain_keystore_bridge": "NOT_PRESENT",
     "evidence": "evidence/ROOT-B86-APP-PLUS-COMPILER-20261106.json"
+  },
+  "integration_batch_87_local_placement_start_read": {
+    "state": "ACCEPTED_LOCAL_OWNER_START_READ",
+    "candidate": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+    "iam_http": "184/184",
+    "learner_and_placement_assertions": "80/80",
+    "placement_create": 201,
+    "placement_read": 200,
+    "bank_version": 266100,
+    "items": 10,
+    "sessions": 1,
+    "answers": 0,
+    "h5_first_item_scoring_plan_native_deploy": "NOT_RUN",
+    "first_run": "CONTENT_V22_COLLATION_1267_ZERO_PLACEMENT_CALLS",
+    "resource_cleanup": "PASS",
+    "evidence": "evidence/ROOT-B87-LOCAL-PLACEMENT-START-READ-20261106.json"
   }
 }
