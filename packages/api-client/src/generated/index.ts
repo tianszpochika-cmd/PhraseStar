@@ -248,6 +248,9 @@ export interface GeneratedApiOperationRegistry {
   getB8Permissions: { method: "GET"; path: "/api/v1/iam/permissions"; request: never; requestBodyRequired: false; response: ApiSuccessEnvelope & { data: B8PermissionsResponse; }; };
   listB9PublicContentCatalog: { method: "GET"; path: "/api/v1/public/content/catalog"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: ReadonlyArray<B9PublicContentCard>; }; };
   getB9PublicContentProjection: { method: "GET"; path: "/api/v1/public/content/{contentCode}"; request: never; requestBodyRequired: false; response: ApiSuccessEnvelope & { data: B9PublicContentProjection; }; };
+  getLearningReportShare: { method: "GET"; path: "/api/v1/public/learning/report-shares/{ref}"; request: never; requestBodyRequired: false; response: unknown; };
+  issueLearningReportShare: { method: "POST"; path: "/api/v1/learning/reports/{reportType}/shares"; request: never; requestBodyRequired: false; response: unknown; };
+  revokeLearningReportShare: { method: "POST"; path: "/api/v1/learning/report-shares/{ref}/revoke"; request: never; requestBodyRequired: false; response: unknown; };
   getB9OfficialSiteProjection: { method: "GET"; path: "/api/v1/public/site/projection"; request: never; requestBodyRequired: false; response: ApiSuccessEnvelope & { data: B9PublicSiteProjection; }; };
   listB9LearnerContentCatalog: { method: "GET"; path: "/api/v1/content/learner/catalog"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: ReadonlyArray<B9PublicContentCard>; }; };
   getB9LearnerContentProjection: { method: "GET"; path: "/api/v1/content/learner/{contentCode}"; request: never; requestBodyRequired: false; response: ApiSuccessEnvelope & { data: B9LearnerContentProjection; }; };

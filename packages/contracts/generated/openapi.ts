@@ -4355,6 +4355,9 @@ export interface ApiOperationRegistry {
   getB8Permissions: { method: "GET"; path: "/api/v1/iam/permissions"; request: never; response: ApiSuccessEnvelope & { data: B8PermissionsResponse; }; idempotent: false };
   listB9PublicContentCatalog: { method: "GET"; path: "/api/v1/public/content/catalog"; request: never; response: ApiCursorPageEnvelope & { data: ReadonlyArray<B9PublicContentCard>; }; idempotent: false };
   getB9PublicContentProjection: { method: "GET"; path: "/api/v1/public/content/{contentCode}"; request: never; response: ApiSuccessEnvelope & { data: B9PublicContentProjection; }; idempotent: false };
+  getLearningReportShare: { method: "GET"; path: "/api/v1/public/learning/report-shares/{ref}"; request: never; response: unknown; idempotent: false };
+  issueLearningReportShare: { method: "POST"; path: "/api/v1/learning/reports/{reportType}/shares"; request: never; response: unknown; idempotent: true };
+  revokeLearningReportShare: { method: "POST"; path: "/api/v1/learning/report-shares/{ref}/revoke"; request: never; response: unknown; idempotent: true };
   getB9OfficialSiteProjection: { method: "GET"; path: "/api/v1/public/site/projection"; request: never; response: ApiSuccessEnvelope & { data: B9PublicSiteProjection; }; idempotent: false };
   listB9LearnerContentCatalog: { method: "GET"; path: "/api/v1/content/learner/catalog"; request: never; response: ApiCursorPageEnvelope & { data: ReadonlyArray<B9PublicContentCard>; }; idempotent: false };
   getB9LearnerContentProjection: { method: "GET"; path: "/api/v1/content/learner/{contentCode}"; request: never; response: ApiSuccessEnvelope & { data: B9LearnerContentProjection; }; idempotent: false };
