@@ -779,6 +779,25 @@
           "cursorParameter": "#/components/parameters/Cursor",
           "pageSizeParameter": "#/components/parameters/PageSize",
           "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+        },
+        "x-it7-closure-board-read": {
+          "role": "DESCRIPTIVE_COMPATIBILITY_READ",
+          "normative": false,
+          "method": "GET",
+          "path": "/api/v1/support/tickets",
+          "query": {
+            "name": "projection",
+            "required": false,
+            "exactValue": "it7"
+          },
+          "authorization": "Existing authenticated authorization remains. support.ticket.read.self is unchanged. Staff fields require admin.risk.read, admin.moderation.read, or admin.audit.read.",
+          "response": "Board data object. Not a cursor page and not the M1016SupportTicket array.",
+          "sharesCanonicalEnvelope": false,
+          "sharesCanonicalData": false,
+          "sharesCanonicalPagination": false,
+          "doesNotLoosenCanonicalAuthorization": true,
+          "unavailable": { "status": 503, "when": "closure desk unavailable" },
+          "clients": "Explicit clients, including readMobileClosureBoard and admin readClosureBoard, parse this compatibility shape separately from the generated list type."
         }
       },
       "post": {

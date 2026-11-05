@@ -2460,7 +2460,13 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B22-SETTINGS.md",
         "source_tests": "24/24;types/build0;finalCSS preserves identical script",
-        "candidate_browser": "B10 134 checks/28images;root boundarynegative unit+actual navigation,secondicon unavailable inauthor tree"
+        "candidate_browser": "B10 134 checks/28images;root boundarynegative unit+actual navigation,secondicon unavailable inauthor tree",
+        "b61_support_it7_compatibility": {
+          "status": "DESCRIPTIVE_CONTRACT_REVIEWED",
+          "review": "reviews/INTEGRATION-B61-SUPPORT-IT7-CONTRACT.md",
+          "receipt": "evidence/ROOT-B61-SUPPORT-IT7-CONTRACT-20261105.json",
+          "real_api": "NOT_RUN"
+        }
       },
       "current_job": "dsh/profile-batch-09-settings-visual",
       "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json",
@@ -3485,7 +3491,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T19:37:40.262936+08:00",
+  "updated_at": "2026-11-05T19:42:26.872837+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5111,5 +5117,11 @@
     "source_tests_passed": 13,
     "gateway_baseline_tests_passed": 2,
     "status": "SOURCE_TEST_AND_BUILD_PASS_TRACE_PENDING"
+  },
+  "integration_batch_61_support_it7_compatibility": {
+    "scope": "MB-024 read-only descriptive compatibility extension",
+    "review": "reviews/INTEGRATION-B61-SUPPORT-IT7-CONTRACT.md",
+    "receipt": "evidence/ROOT-B61-SUPPORT-IT7-CONTRACT-20261105.json",
+    "status": "DESCRIPTIVE_CONTRACT_REVIEWED_TRACE_PENDING"
   }
 }

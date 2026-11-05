@@ -1,0 +1,56 @@
+{
+  "source_base": "35b3a4bb",
+  "scope": "MB-024 support privacy board compatibility query read contract documentation",
+  "source_sha256": {
+    "packages/contracts/fragments/b5-commerce-admin.openapi.json": "9900fd300190cded8150654d49ffca45f2ad86303f676985e7a4eb1496ba1e71",
+    "packages/contracts/openapi/v1/openapi.json": "5d3228946e99020059a2193ffb042e0741dea4699f32c30a781360113653378b"
+  },
+  "method": "GET",
+  "path": "/api/v1/support/tickets",
+  "extension": {
+    "role": "DESCRIPTIVE_COMPATIBILITY_READ",
+    "normative": false,
+    "method": "GET",
+    "path": "/api/v1/support/tickets",
+    "query": {
+      "name": "projection",
+      "required": false,
+      "exactValue": "it7"
+    },
+    "authorization": "Existing authenticated authorization remains. support.ticket.read.self is unchanged. Staff fields require admin.risk.read, admin.moderation.read, or admin.audit.read.",
+    "response": "Board data object. Not a cursor page and not the M1016SupportTicket array.",
+    "sharesCanonicalEnvelope": false,
+    "sharesCanonicalData": false,
+    "sharesCanonicalPagination": false,
+    "doesNotLoosenCanonicalAuthorization": true,
+    "unavailable": {
+      "status": 503,
+      "when": "closure desk unavailable"
+    },
+    "clients": "Explicit clients, including readMobileClosureBoard and admin readClosureBoard, parse this compatibility shape separately from the generated list type."
+  },
+  "verify": {
+    "merge_generate_validate_and_checks": "PASS",
+    "exact_semantic_extension_only": "PASS",
+    "generated_registry_byte_identical": "PASS",
+    "support_contract_gate": "PASS_NOT_RUNTIME_VERIFIED",
+    "mobile_support_api_test": {
+      "passed": 11,
+      "log_sha256": "7ab2ea35dc1979240a4b86495938e05356a462ba8566ae5ca0048721b9124c0d"
+    },
+    "admin_ops_studio_tests": {
+      "passed": 17,
+      "log_sha256": "338cd87263c1b66d185a3401df1d887d551c006ac0d82087d29fcf556a6cc595"
+    },
+    "broad_api_contract_audit": {
+      "status": "BASELINE_FAIL_IDENTICAL",
+      "findings": 52,
+      "log_sha256": "a75d75828bf0ece3e14189a110a343e95965bdb02558164a332040f6903bd79e"
+    }
+  },
+  "outstanding": [
+    "The compatibility query uses a descriptive OpenAPI extension. Normative parameter and paginated response remain for the canonical list only.",
+    "Real Gateway+SupportController HTTP deployment acceptance NOT_RUN.",
+    "Historical broad contract governance failures and 33 route trace signoffs remain pending."
+  ]
+}
