@@ -1,0 +1,123 @@
+{
+  "scope": "MB-004 / R1-010 / R1-011 local Gateway, IAM TLS consent recheck and Learner JDBC target save",
+  "author": "DSH33 external learner proof, Root review and execution",
+  "integration_head_at_run": "c7429cb480a2a32ef93383133527cade8ea07b72",
+  "learner_candidate": "f74974b25c4f1d6cd5683ac646bd7c8e66f29ebc",
+  "learner_jar_sha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "iam_gateway_jars_receipt": "ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+  "root_wrapper_exit_code": 0,
+  "independent_http_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "owner_proof": {
+    "status": "PASS",
+    "counters": {
+      "requests": 9,
+      "anonymous": 1,
+      "reads": 7,
+      "writes": 2,
+      "replays": 1,
+      "ownerReadbacks": 3
+    },
+    "assertions_passed": 78,
+    "consent_recheck": {
+      "enabled": true,
+      "iamBaseUrl": "https://127.0.0.1:18087",
+      "clientId": "learner-service",
+      "digestMatched": true
+    },
+    "route": {
+      "gatewayB14Enabled": true,
+      "learner": "TARGET",
+      "otherDomains": "LEGACY"
+    },
+    "observations": {
+      "anonymousStatus": 401,
+      "priorStateVersion": 0,
+      "profileStatusBefore": "ONBOARDING",
+      "targetPresentBefore": false,
+      "preferencesBefore": {
+        "uiLocale": "zh-CN",
+        "contentLocale": "en-US",
+        "timezone": "Asia/Shanghai",
+        "themeMode": "SYSTEM",
+        "highContrast": false,
+        "motionMode": "FULL"
+      },
+      "returnedStateVersion": 1,
+      "targetRefSha256": "fe675fe7aaee830b6fed09b64e034f84dcbdaeb429d9cccd4ebb90e15af8dd71",
+      "target": {
+        "goalCodeInput": "CET_4_6",
+        "goalCodeReturned": "COLLEGE_CET",
+        "profileGoalCode": "CET_4_6",
+        "targetLevel": "B1",
+        "dailyQuotaMinutes": 30,
+        "quotaAllowed": true,
+        "status": "ACTIVE",
+        "returnedStateVersion": 1,
+        "targetVersion": 1,
+        "replayed": true,
+        "preferencesUnchanged": true,
+        "writes": 2,
+        "distinctWriteKeys": 1
+      }
+    },
+    "http_statuses": [
+      {
+        "id": "anonymous.profile.status",
+        "status": 401
+      },
+      {
+        "id": "profile.before.status",
+        "status": 200
+      },
+      {
+        "id": "targets.before.status",
+        "status": 404
+      },
+      {
+        "id": "preferences.before.status",
+        "status": 200
+      },
+      {
+        "id": "target.put.status",
+        "status": 200
+      },
+      {
+        "id": "target.put_replay.status",
+        "status": 200
+      },
+      {
+        "id": "targets.after.status",
+        "status": 200
+      },
+      {
+        "id": "profile.after.status",
+        "status": 200
+      },
+      {
+        "id": "preferences.after.status",
+        "status": 200
+      }
+    ]
+  },
+  "probe_sha256": "ba2beadad59d900f9db5d4b7db34116dd1fba9e5dcebf1e81a965ab441e21b8a",
+  "result_sha256": "4e21bb054ad38797bda157d7c38099a6e54a102dec4ddf1224971d4579b6d000",
+  "local_artifact_basename": "learner-target-33-root",
+  "cleanup": [
+    "PORT_18070_RELEASED",
+    "PORT_18087_RELEASED",
+    "PORT_18088_RELEASED",
+    "PORT_13306_RELEASED",
+    "TEMP_DB_RELEASED",
+    "TEMP_TLS_RELEASED",
+    "TEMP_PRIVATE_RUN_RELEASED"
+  ],
+  "actual_browser_target_save_learning_plan_and_deployment": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}

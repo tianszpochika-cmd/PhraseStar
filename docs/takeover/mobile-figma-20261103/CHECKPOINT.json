@@ -503,6 +503,14 @@
           "script_checks": 184,
           "rendered_documents_matched": 3,
           "owner_consents_matched": 3
+        },
+        "b82_local_learner_target": {
+          "status": "SCOPED_LOCAL_LEARNER_TARGET_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B82-LOCAL-LEARNER-TARGET-20261105.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "owner_requests": 9,
+          "owner_assertions": 78,
+          "independent_http_checks": 184
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3669,7 +3677,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:45:20.010460+08:00",
+  "updated_at": "2026-11-05T23:55:52.187117+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5472,5 +5480,15 @@
     "source_tests": 662,
     "practice_browser_checks": 140,
     "native_and_live_practice": "NOT_RUN"
+  },
+  "integration_batch_82_local_learner_target": {
+    "scope": "MB-004 target save after actual local IAM consent",
+    "browser_target_save_and_deployment": "NOT_RUN",
+    "status": "SCOPED_LOCAL_LEARNER_TARGET_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B82-LOCAL-LEARNER-TARGET-20261105.json",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "owner_requests": 9,
+    "owner_assertions": 78,
+    "independent_http_checks": 184
   }
 }
