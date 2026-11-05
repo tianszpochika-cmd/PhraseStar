@@ -7,8 +7,9 @@
 - 当前 33/33 条路由进入本地 UI 候选。引导目标保存与读回已复验，首次签署的 9 个模拟场景通过。IAM 本地 V18 到 V19 升级和 41 项候选检查通过。本机 Gateway 和 IAM TLS 合成签署链路共 184 项通过。正式发布与部署后签署待验。Xcode 首启已通过，Android 工具已读取。原生打包、实机、读屏和部署单列。 [引导首次签署 B57](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md)
 - 33 条路由的源码调用与限制已对照静态契约，完整追溯仍待签收。错题详情旧地址缺网关精确转发，设置页客服查询已补兼容说明。全量契约门禁保留既有 Gateway 与事件基线差异。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md) · [需求与门禁缺项](reviews/TRACE-AUDIT-20261105.md)
 - [当前 H5 签署与设备 B84](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md#b84-当前-h5-签署与设备复验) 最新 H5 的三份模拟签署、目标页过渡及设备撤销再次通过。
+- [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
-- [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。安装宿主与系统存储读写继续验收。
+- [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
 - [测评事件编号 B97](reviews/INTEGRATION-B97-ASSESSMENT-EVENT-CORRELATION.md) 逐题事件信封和正文通过编译后校验，消息消费仍待验。
 - [定级主题 B100](reviews/INTEGRATION-B100-ASSESSMENT-THEME.md) 暗色与高对比组件样式通过 34 项受控浏览器检查。
 - [今日高对比 B99](reviews/INTEGRATION-B99-TODAY-HIGH-CONTRAST.md) 亮色、暗色、高对比与放大文字的 13 个受控视口通过。

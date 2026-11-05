@@ -5742,5 +5742,14 @@
     "h5_index_sha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
     "feedback_decision": "DEC-04_PENDING",
     "evidence": "evidence/ROOT-B100-ASSESSMENT-THEME-20261106.json"
+  },
+  "integration_batch_101_android_simulator_keystore": {
+    "state": "ACCEPTED_ISOLATED_ANDROID_SIMULATOR_KOTLIN_KEYSTORE",
+    "phases": "3/3",
+    "sdk": 36,
+    "key_exportable_via_jca": false,
+    "disposable_avds_removed": 2,
+    "device_app_host_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B101-ANDROID-SIMULATOR-KEYSTORE-20261106.json"
   }
 }
