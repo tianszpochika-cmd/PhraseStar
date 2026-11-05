@@ -8,6 +8,7 @@
 - 33 条路由的源码调用与限制已对照静态契约，完整追溯仍待签收。错题详情旧地址缺网关精确转发，设置页客服查询已补兼容说明。全量契约门禁保留既有 Gateway 与事件基线差异。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md) · [需求与门禁缺项](reviews/TRACE-AUDIT-20261105.md)
 - [当前 H5 签署与设备 B84](reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md#b84-当前-h5-签署与设备复验) 最新 H5 的三份模拟签署、目标页过渡及设备撤销再次通过。
 - [App-Plus 构建 B86](reviews/INTEGRATION-B86-APP-PLUS-COMPILER.md) 编译和核对全部 33 条路由的 App 资源。APK、IPA、安全存储与设备运行继续验收。
+- [本机学习计划 B91](reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md) 真实定级后生成启用计划，今日任务及同键重试读回通过。
 - [本机定级完成 B90](reviews/INTEGRATION-B49-ASSESSMENT.md#b90-本机十题定级和报告) 十题评分、同键重试、报告及数据库读回通过。
 - [当前 H5 定级首题 B89](reviews/INTEGRATION-B49-ASSESSMENT.md#b89-当前-h5-真实首题) 真实目标读回后键盘创建会话，题干、选项和未答状态匹配服务端。
 - [本机定级断点 B88](reviews/INTEGRATION-B49-ASSESSMENT.md#b88-本机首题评分和断点) 首题真实评分、同键重试和第二题读回通过。

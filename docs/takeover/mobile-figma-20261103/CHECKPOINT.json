@@ -873,7 +873,7 @@
         "h5": "PASS_SHA256_a8bebee0a2d7a9fd50d13675710b4b8f41c34ac60a89aa2d43cc16a8e713ebb4",
         "cross_viewport": "MATRIX_31_PHONE_TABLET_AND_8_INDEPENDENT",
         "accessibility": "LOCAL_KEYBOARD_HIGH_CONTRAST_SCREEN_READER_NOT_RUN",
-        "real_api": "NOT_RUN",
+        "real_api": "LOCAL_SYNTHETIC_PLAN_ENSURE_AND_TODAY_READ_PASS_B91_OTHER_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B50-HOME.md"
       },
@@ -958,7 +958,7 @@
         "h5": "BUILD_PASS",
         "cross_viewport": "390_PX_PRIMARY_AND_TASK_GAP_MEASURED_B46",
         "accessibility": "NOT_RUN",
-        "real_api": "NOT_RUN",
+        "real_api": "LOCAL_SYNTHETIC_PLAN_ENSURE_AND_TODAY_READ_PASS_B91_OTHER_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md"
       },
@@ -3706,7 +3706,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T01:40:30.657048+08:00",
+  "updated_at": "2026-11-06T02:09:01.473328+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5637,5 +5637,26 @@
     "browser_completion_learning_plan_native_deploy": "NOT_RUN",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B90-LOCAL-PLACEMENT-COMPLETION-20261106.json"
+  },
+  "integration_batch_91_local_learning_plan": {
+    "state": "ACCEPTED_LOCAL_OWNER_LEARNING_PLAN_ENSURE_AND_TODAY",
+    "candidate": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+    "iam_http": "184/184",
+    "learner_and_placement_assertions": "80/80",
+    "placement_http_calls": 15,
+    "learning_http_statuses": [
+      200,
+      200,
+      200
+    ],
+    "plan_status": "ACTIVE",
+    "plan_version": 2,
+    "daily_minutes": 30,
+    "same_key_stable": true,
+    "total_tasks": 10,
+    "today_tasks_with_refs": 3,
+    "h5_plan_surface_task_completion_deploy": "NOT_RUN",
+    "cleanup": "PASS",
+    "evidence": "evidence/ROOT-B91-LOCAL-LEARNING-PLAN-20261106.json"
   }
 }

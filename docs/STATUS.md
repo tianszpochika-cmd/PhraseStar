@@ -8,7 +8,7 @@
 
 移动端 B86 已核对 744 个 App-Plus 资源和 33 条页面路由，当前 H5 的 662 项源码测试与 43 个离线浏览器场景通过。安装包、安全存储、实机读屏和部署待验。[App-Plus 构建回执](takeover/mobile-figma-20261103/reviews/INTEGRATION-B86-APP-PLUS-COMPILER.md)
 
-移动端 B87 本机定级会话创建和读回通过，真实目标与题库版本绑定，数据库确认 1 条会话和 0 条答案。B88 首题评分、同键重试和第二题读回通过，B89 当前 H5 复验通过，真实目标读回后键盘创建会话并显示首题。B90 本机十题定级和报告读回通过。整轮 H5 作答、学习计划、真机和部署单列。[定级 B87](takeover/mobile-figma-20261103/reviews/INTEGRATION-B49-ASSESSMENT.md#b87-本机定级会话创建和读回)
+移动端 B87 本机定级会话创建和读回通过，真实目标与题库版本绑定，数据库确认 1 条会话和 0 条答案。B88 首题评分、同键重试和第二题读回通过，B89 当前 H5 复验通过，真实目标读回后键盘创建会话并显示首题。B90 本机十题定级和报告读回通过。B91 本机学习计划创建、同键重试及今日任务读回通过。整轮 H5 作答、报告和计划页面、真机及部署单列。[学习计划 B91](takeover/mobile-figma-20261103/reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md)[定级 B87](takeover/mobile-figma-20261103/reviews/INTEGRATION-B49-ASSESSMENT.md#b87-本机定级会话创建和读回)
 
 ## 分支
 
