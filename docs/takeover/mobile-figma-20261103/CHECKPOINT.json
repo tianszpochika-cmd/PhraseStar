@@ -705,7 +705,7 @@
         "real_api": "LOCAL_SYNTHETIC_TEN_ITEM_COMPLETION_AND_REPORT_PASS_DEPLOYED_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B49-ASSESSMENT.md",
-        "current_h5_owner_browser": "LOCAL_CHROME_TARGET_AND_FIRST_QUESTION_PASS_B89"
+        "current_h5_owner_browser": "LOCAL_CHROME_TARGET_TEN_ANSWERS_REPORT_AND_ENSURE_PASS_B96"
       },
       "current_job": null,
       "resume_evidence_20261105": "B49 frozen exact product source and portable tests. DEC-04 and TRACE_PENDING remain.",
@@ -958,7 +958,7 @@
         "h5": "BUILD_PASS",
         "cross_viewport": "390_PX_PRIMARY_AND_TASK_GAP_MEASURED_B46",
         "accessibility": "NOT_RUN",
-        "real_api": "LOCAL_SYNTHETIC_PLAN_ENSURE_AND_TODAY_READ_PASS_B91_OTHER_NOT_RUN",
+        "real_api": "LOCAL_CHROME_TODAY_THREE_DUE_ITEMS_MATCH_PASS_B96_COMPLETION_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md",
         "today_due_rows_review": "reviews/INTEGRATION-B93-TODAY-DUE-ROWS.md"
@@ -5696,5 +5696,16 @@
     "historical_and_new_rows": "VERIFIED",
     "broker_and_learning_projection": "NOT_RUN",
     "evidence": "evidence/ROOT-B95-ASSESSMENT-BANK-PIN-20261106.json"
+  },
+  "integration_batch_96_h5_placement_learning": {
+    "state": "ACCEPTED_LOCAL_CHROME_TARGET_PLACEMENT_PLAN_TODAY",
+    "iam_http": "184/184",
+    "placement_responses": 10,
+    "report": "ASSESSED_VISIBLE_MATCH",
+    "plan": "ACTIVE_V2_30_MIN",
+    "today_due_items": "3/3_RENDERED_MATCH",
+    "practice_completion_device_deploy": "NOT_RUN",
+    "cleanup": "PASS",
+    "evidence": "evidence/ROOT-B96-H5-PLACEMENT-LEARNING-20261106.json"
   }
 }

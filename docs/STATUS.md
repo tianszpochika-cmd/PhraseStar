@@ -8,9 +8,9 @@
 
 移动端 B92 已整合 App 安全存储桥接，核对 748 个 App-Plus 资源、33 条路由与两端原生源码。H5 43 个离线浏览器场景通过。安装包、系统安全存储读写、实机读屏和部署待验。[原生存储 B92](takeover/mobile-figma-20261103/reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md)
 
-移动端 B87 本机定级会话创建和读回通过，真实目标与题库版本绑定，数据库确认 1 条会话和 0 条答案。B88 首题评分、同键重试和第二题读回通过，B89 当前 H5 复验通过，真实目标读回后键盘创建会话并显示首题。B90 本机十题定级和报告读回通过。B91 本机学习计划创建、同键重试及今日任务读回通过。整轮 H5 作答、报告和计划页面、真机及部署单列。[学习计划 B91](takeover/mobile-figma-20261103/reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md)[定级 B87](takeover/mobile-figma-20261103/reviews/INTEGRATION-B49-ASSESSMENT.md#b87-本机定级会话创建和读回)
+移动端 B87 本机定级会话创建和读回通过，真实目标与题库版本绑定，数据库确认 1 条会话和 0 条答案。B88 首题评分、同键重试和第二题读回通过，B89 当前 H5 复验通过，真实目标读回后键盘创建会话并显示首题。B90 本机十题定级和报告读回通过。B91 本机学习计划创建、同键重试及今日任务读回通过。B96 本机 H5 整轮作答、报告、自动计划及今日记录通过。真机和部署单列。[学习计划 B91](takeover/mobile-figma-20261103/reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md)[定级 B87](takeover/mobile-figma-20261103/reviews/INTEGRATION-B49-ASSESSMENT.md#b87-本机定级会话创建和读回)
 
-移动端 B93 修正了「今日任务」误显示空态的问题。学习服务确认的到期条目进入就绪清单。原有课程任务导航与空态通过受控回归。真实浏览器路径、练习完成与学习进度分别验收。[今日记录 B93](takeover/mobile-figma-20261103/reviews/INTEGRATION-B93-TODAY-DUE-ROWS.md)
+移动端 B93 修正了「今日任务」误显示空态的问题。学习服务确认的到期条目进入就绪清单。原有课程任务导航与空态通过受控回归。真实浏览器确认三条到期记录逐项一致。练习完成与学习进度继续验收。[完整 H5 B96](takeover/mobile-figma-20261103/reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md)
 
 ## 分支
 

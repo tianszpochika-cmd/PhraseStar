@@ -1,0 +1,128 @@
+{
+  "batch": "B96",
+  "at": "2026-11-06T03:48:12.580724+08:00",
+  "frontend_candidate": "7e92282d585a9bb678660226558bb4af76ea39a0",
+  "frontend_h5_index_sha256": "8493c786ac57fe421742f5640eb52a6f6f4c82d9fcfafe1cc3a853290a30fa69",
+  "owner_service_candidate": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+  "implementation": [
+    "Grok CLI 85, 89, 90, 94, 96, 101",
+    "DSH CLI 42"
+  ],
+  "root_acceptance": true,
+  "iam_checks": "184/184",
+  "one_browser_actor": true,
+  "target_put_and_readback": "PASS",
+  "assessment": {
+    "created_sessions": 1,
+    "answer_http_statuses": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ],
+    "persisted_answers": 10,
+    "persisted_checkpoints": 10,
+    "report_count": 1,
+    "report_kind": "ASSESSED",
+    "browser_report_level_and_score_match": true,
+    "idempotency_rows": 11
+  },
+  "learning": {
+    "ensure_http_status": 200,
+    "ensure_requests": 1,
+    "plan_status": "ACTIVE",
+    "plan_version": 2,
+    "daily_minutes": 30,
+    "plan_tasks": 10,
+    "today_visible_due_rows": 3,
+    "today_due_ids_match": true,
+    "today_false_empty_visible": false,
+    "today_rows_read_only": true,
+    "home_and_catalog_statuses": [
+      200,
+      200
+    ],
+    "today_reads_including_pre_plan": 3,
+    "db_facts": {
+      "learning_plan": [
+        "1",
+        "ACTIVE",
+        "30",
+        "266100",
+        "1",
+        "2"
+      ],
+      "learning_task": [
+        "10",
+        "1",
+        "10"
+      ],
+      "learning_input": [
+        "1",
+        "266100",
+        "1",
+        "1"
+      ],
+      "learning_today": [
+        "1",
+        "ACTIVE",
+        "30",
+        "2"
+      ],
+      "learning_srs": [
+        "3",
+        "3"
+      ],
+      "learning_idempotency": [
+        "2",
+        "1",
+        "1",
+        "1"
+      ],
+      "learning_unexercised": [
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  },
+  "cleanup": {
+    "temporary_mysql_and_tls_released": true,
+    "owned_process_group_released": true,
+    "fixed_ports_released": 8,
+    "private_scratch_released": true
+  },
+  "prior_attempts": [
+    {
+      "result": "OBSERVER_USED_REPLACED_OPTION_LABEL",
+      "assessment_session_created": 1,
+      "assessment_answers": 0,
+      "cleanup": "PASS",
+      "receipt_sha256": "72ea0fb80fec4fe11a5b8008bb5c25a0ebbafbae5268c5c59b457c5fb7e4fd8b"
+    },
+    {
+      "result": "OBSERVER_ASYNC_SETTLE_MISSING_CONTEXT",
+      "node_exit": 1,
+      "owner_counts_available": false,
+      "six_owned_jvms_recovered": true,
+      "cleanup_receipt_sha256": "d004c46100f3fc5d3c10e6155110ff3d3cd1e34e9aae7748fcfe7f20c6ddcd31"
+    }
+  ],
+  "hashes": {
+    "result.json": "0358953866c8e55fffbd9067d09796862b7f8bbf5e08d9484fbe0b77b4c6baf8",
+    "browser-target-module-result.json": "8dceaa883954115d4db5ce979cb55cae699fd067c3307f02c764708f7f8a301b",
+    "owner-db-facts.tsv": "bb0375b6cd36af4ea01183e06789123eea9885a33c85d911b0320bd5bd6ab329",
+    "learning-owner-db-facts.tsv": "aade279647198a64d7813a7d088cdc9f0be185dc42b9d77262773e5e3bc73135",
+    "process-guard.json": "d57052c9197e102df2bb2e6507a89617bf162c134c6a8c28d76f19720a3ae24e",
+    "cleanup-status.log": "eb49e4a68513b2ad726656d1cf6c4988e25f65d56311d604215a82260098e919"
+  },
+  "harness_manifest_sha256": "8b9492879bf011d5dd3705b95f288697fa38d051f7be0f37d52de0850ee542db",
+  "process_guard_dummy_acceptance_sha256": "90b40bf73f796199a842c1fbeab685732a042adcf68b3213ff1e7d9f3f622294",
+  "exercise_completion_deploy_device_reader_dec04": "NOT_RUN_OR_UNDECIDED"
+}
