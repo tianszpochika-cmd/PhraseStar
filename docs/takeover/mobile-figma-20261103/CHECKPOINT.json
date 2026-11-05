@@ -206,7 +206,12 @@
         "partial_browser": "30 matrix rows and6 immediate-input probes;privacyGap18px;stopped at legal popup test observer"
       },
       "current_job": "grok/batch-11-legal-observer",
-      "candidate_manifest": "evidence/integration-batch-21-login-source-manifest.json"
+      "candidate_manifest": "evidence/integration-batch-21-login-source-manifest.json",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "f6ed75a50a4bccbcce338c1097daf04d300c2428b5f27be0423b7bf71ff108ae"
+      }
     },
     {
       "id": "MB-002",
@@ -279,6 +284,11 @@
         "independent_review": "reviews/INTEGRATION-B26-REGISTER.md",
         "candidate_browser": "Rootcombined51matrix14groups43shots;dark/HC/systemicon contrast+allauthscoped behaviors pass",
         "source_tests": "Root12/12 auth/publicdocs+types/H5build0;globalb23 1pass5fail retained"
+      },
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "64603f4c9eb17c62702b2ea02c469c860ffa200de5c5c1a45b1204a95c3d5f88"
       }
     },
     {
@@ -347,7 +357,12 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B34-RESET.md"
       },
-      "current_job": null
+      "current_job": null,
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "58b33a5872108205ef7c800d11843ac20d8664d3cbd8b1505ae2b6e0fbaef8ad"
+      }
     },
     {
       "id": "MB-004",
@@ -523,7 +538,12 @@
         "independent_review": "reviews/INTEGRATION-B53-FORBIDDEN.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "F39 exact visual/token scope and 19 combined checks; DSH safe re-login and withdrawal cross-check."
+      "resume_evidence_20261105": "F39 exact visual/token scope and 19 combined checks; DSH safe re-login and withdrawal cross-check.",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "ec5cd80d72075c1bbfeff395b91b4e3cdb6346e66742e1911103568b12f25ee0"
+      }
     },
     {
       "id": "MB-006",
@@ -785,7 +805,12 @@
         "independent_review": "reviews/INTEGRATION-B50-HOME.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "B50 exact Home02 + composed Home dictionary + strict combined fixture. Native devices and TRACE_PENDING remain."
+      "resume_evidence_20261105": "B50 exact Home02 + composed Home dictionary + strict combined fixture. Native devices and TRACE_PENDING remain.",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "2d11b56ee1875d90ab383b17fd4ee7b4cde7cef918c02f9a435d859dcd660a51"
+      }
     },
     {
       "id": "MB-008",
@@ -1154,7 +1179,12 @@
         "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab."
+      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab.",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "b3aa7962b185ddef7f69828b92f1e482f84efe3b0e56d85807c789ba37638545"
+      }
     },
     {
       "id": "MB-011",
@@ -1230,7 +1260,12 @@
         "independent_review": "reviews/INTEGRATION-B52-PRACTICE.md"
       },
       "current_job": null,
-      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab."
+      "resume_evidence_20261105": "B52 combined hub/legacy, bound receipt/checkpoint and canonical report -> Daily tab.",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "335fa297a8e05b8a0896ad575a2c97becedbf5559f5cd09e28844e3fcafdf7f0"
+      }
     },
     {
       "id": "MB-012",
@@ -1310,7 +1345,12 @@
       },
       "pause_handoff": "PAUSE-20261104.md",
       "current_job": null,
-      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed."
+      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed.",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "a7ec6d6506ebd852a7a955ec4319c882c11c59dd674595b5823953ad5c0448dd"
+      }
     },
     {
       "id": "MB-013",
@@ -1392,7 +1432,12 @@
       },
       "pause_handoff": "PAUSE-20261104.md",
       "current_job": null,
-      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed."
+      "resume_evidence_20261105": "B54 compatible shared C2, combined browser and strict report regression passed.",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "aaeb6bab52b09fc02829723f48e2087856e03254aec1783656f4f0380fcbb4a1"
+      }
     },
     {
       "id": "MB-014",
@@ -1713,7 +1758,13 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B37-PRIVATE-REPORT.md"
       },
-      "current_job": null
+      "current_job": null,
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "dbd699dd0834bd9ea2bee5096f44ad362ff9cc6aea352eddcb90564627572160",
+        "open_gap": "GET /api/v1/mastery/mistakes/{mistakeId} exists in merged OpenAPI but no exact static Gateway execution. The formal alternate is a reference only pending owner-side proof."
+      }
     },
     {
       "id": "MB-017",
@@ -1787,7 +1838,12 @@
         "source_tests": "Root11/11+types/H5build0",
         "candidate_browser": "Root73matrix21shots+14authenticated4shots;UTC+publicnoBearer verified"
       },
-      "current_job": "dsh/profile-batch-15-share-matrix"
+      "current_job": "dsh/profile-batch-15-share-matrix",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "9d031981ffb4c891a30a679227111aa1c94ad85a09de8fcb0d37c673e135e4fc"
+      }
     },
     {
       "id": "MB-018",
@@ -1969,7 +2025,12 @@
         "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
         "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
       },
-      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json"
+      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "d95e7cfd43d8c0e91a976e7b40cfebeaea7d3fc8b1e51ddef9ebeccd85f6ab20"
+      }
     },
     {
       "id": "MB-020",
@@ -2033,7 +2094,12 @@
         "source_tests": "25/25 combined targeted tests; typecheck/H5 build exit0",
         "combined_browser": "41 local checks across social light/dark/HC and games empty;4 screenshots; synthetic APIs"
       },
-      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json"
+      "candidate_manifest": "evidence/integration-batch-20-source-manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "c7f0f5ade74a234a79eae61a1010f6f96385322ad2951174d463cb5db14cd714"
+      }
     },
     {
       "id": "MB-021",
@@ -2208,7 +2274,12 @@
         ],
         "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "e5590d9a10335c97bf919f0f4d8f3713b1492652d1718e18994465cd8a541f5b"
+      }
     },
     {
       "id": "MB-023",
@@ -2285,7 +2356,12 @@
         ],
         "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-01-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-01-source-snapshot/manifest.json",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944"
+      }
     },
     {
       "id": "MB-024",
@@ -2381,7 +2457,13 @@
         "candidate_browser": "B10 134 checks/28images;root boundarynegative unit+actual navigation,secondicon unavailable inauthor tree"
       },
       "current_job": "dsh/profile-batch-09-settings-visual",
-      "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json"
+      "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+        "open_gap": "GET /api/v1/support/tickets?projection=it7 is a server-supported compatibility projection. Merged GET parameters currently contain only Cursor and PageSize. No runtime acceptance."
+      }
     },
     {
       "id": "MB-025",
@@ -2451,7 +2533,12 @@
         "source_tests": "Root final41/41+mobile/i18n types/build0",
         "candidate_browser": "Prelocale-only patch:247core+131matrix;final enerror26checks PASS;authorB16running"
       },
-      "current_job": "dsh/devices-batch-16-error-locale-browser"
+      "current_job": "dsh/devices-batch-16-error-locale-browser",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d"
+      }
     },
     {
       "id": "MB-026",
@@ -2518,7 +2605,12 @@
         "source_tests": "Root11/11; mobile type/build0",
         "candidate_browser": "Root208core+39CTA independent scopes,24+12screenshots; no real API/device/deploy"
       },
-      "current_job": "Frozen commerceB07; Root integrationB31 reviewed"
+      "current_job": "Frozen commerceB07; Root integrationB31 reviewed",
+      "source_operation_trace_b59": {
+        "group": "learning",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4"
+      }
     },
     {
       "id": "MB-027",
@@ -2586,7 +2678,12 @@
         "source_tests": "B14 author7/7+types/build0;singlecontroller/evidence parser;browserNOT_RUN",
         "candidate_browser": "B17 545/545,19shots;pageb8f92c3e;sharedprefrestore/oldsettingslabel gaps separate"
       },
-      "pause_handoff": "PAUSE-20261104.md"
+      "pause_handoff": "PAUSE-20261104.md",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "6627804024bbc64edb16f70ba4bbee21ee5e16fda945724d88aed64b5712cb1e"
+      }
     },
     {
       "id": "MB-028",
@@ -2668,7 +2765,12 @@
         "source_tests": "Root49/49 support/API/settings+types/H5build0",
         "candidate_browser": "Root198/24;authorB26samepage220/13;tabletvisualsignoffpending"
       },
-      "current_job": "dsh/batch-26-support-matrix"
+      "current_job": "dsh/batch-26-support-matrix",
+      "source_operation_trace_b59": {
+        "group": "auth",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "5a55baa420c1c6a39965e7a1080b7aa3bc7777b0baaa4835cc724009cadfd041"
+      }
     },
     {
       "id": "MB-029",
@@ -2749,7 +2851,12 @@
         "b56_closed_dom": "PASS zero legacy controls or workspaces including hidden DOM"
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
-      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED"
+      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "c4594ec4ab5cd555e0a856f06d36fa195c187256e39cd27625a1ab9025e58a07"
+      }
     },
     {
       "id": "MB-030",
@@ -2827,7 +2934,12 @@
         ],
         "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53"
+      }
     },
     {
       "id": "MB-031",
@@ -2908,7 +3020,12 @@
         "b56_closed_dom": "PASS zero legacy controls or workspaces including hidden DOM"
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
-      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED"
+      "current_job": "ROOT_B56_CLOSED_COMBINATION_VERIFIED",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "64dae3efc076962583fec9be0f475c25c1554d9a650683cae761e47d99dadcac"
+      }
     },
     {
       "id": "MB-032",
@@ -2986,7 +3103,12 @@
         ],
         "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7"
+      }
     },
     {
       "id": "MB-033",
@@ -3064,7 +3186,12 @@
         ],
         "review_binding_20261105": "CURRENT_SOURCE_GUARD_CHANGED__B55_ONLY"
       },
-      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json"
+      "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/batch-03-source-snapshot/manifest.json",
+      "source_operation_trace_b59": {
+        "group": "limited",
+        "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+        "source_sha256": "fb9360a7ab74af6e4f80d5ed1c7700ab3f3164818e4261320b9686580ef52069"
+      }
     }
   ],
   "unassigned": "MB-011…016、018、021 的执行者在前批完成后由 Root 调度并先登记唯一写者。",
@@ -3352,7 +3479,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T11:14:43.232307+00:00",
+  "updated_at": "2026-11-05T19:28:23.306936+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4947,5 +5074,28 @@
     "local_ui_candidates": 33,
     "formal_routes": 33,
     "artifact_index_sha256": "39ad98875987629e5bc18bf82445c0e448428ac9a6901df8b697d663516500d7"
+  },
+  "integration_batch_59_operation_trace": {
+    "source_pin": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+    "status": "SOURCE_OPERATION_TRACE_ONLY",
+    "review": "reviews/INTEGRATION-B59-OPERATION-TRACE.md",
+    "receipt": "evidence/ROOT-B59-OPERATION-TRACE-20261105.json",
+    "coverage": {
+      "auth": 9,
+      "learning": 8,
+      "limited": 8,
+      "prior_source_trace": 7,
+      "consent_review": 1,
+      "distinct_inventory": 33
+    },
+    "counts": {
+      "exact_path_method_id": 77,
+      "operation_only_query_unregistered": 1,
+      "auth_operation_rows": 26,
+      "learning_operation_rows": 31,
+      "closed_shared_registry_rows": 21
+    },
+    "trace_pending": 33,
+    "real_service": "NOT_RUN"
   }
 }

@@ -1,0 +1,1760 @@
+{
+  "source_pin": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+  "raw_receipts_sha256": {
+    "auth": "78bc4cf30639fa321487e9980f6ecf1abfd5b0e9e2777829805b6c52d35eabb8",
+    "learning": "a9325a1bce41201f2929341b4433ce77b185b6cb6dfba6f6dd7e13380326e822",
+    "limited": "1bc08a27202fcd17739bfc72a27dce0c4168c4376c0c5ed883896a4f711b5722"
+  },
+  "groups": {
+    "auth": {
+      "MB-001": {
+        "source_sha256": "f6ed75a50a4bccbcce338c1097daf04d300c2428b5f27be0423b7bf71ff108ae",
+        "calls": [
+          {
+            "operationId": "loginB8Account",
+            "method": "POST",
+            "path": "/api/v1/auth/login",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-login.login",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/login"
+              }
+            ],
+            "via": "auth/gateway-auth.ts:157-163; stores/session.ts:169-176",
+            "transport": "IAM_TLS"
+          },
+          {
+            "operationId": "getB8Principal",
+            "method": "GET",
+            "path": "/api/v1/iam/principal/me",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.principal",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/principal/me"
+              }
+            ],
+            "via": "auth/gateway-auth.ts:209-212 after login",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "onLoad session.restore",
+            "source": "pages/login/login.vue:117",
+            "calls": [
+              "refreshB8JwtSession when in-memory access token is absent and an H5 session hint or native refresh token exists",
+              "getB8Principal"
+            ]
+          }
+        ]
+      },
+      "MB-002": {
+        "source_sha256": "64603f4c9eb17c62702b2ea02c469c860ffa200de5c5c1a45b1204a95c3d5f88",
+        "calls": [
+          {
+            "operationId": "registerB8Account",
+            "method": "POST",
+            "path": "/api/v1/auth/register",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-register.register",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/register"
+              }
+            ],
+            "via": "pages/register/register.vue:225; auth/gateway-auth.ts:165-171",
+            "transport": "IAM_TLS"
+          },
+          {
+            "operationId": "getB8Principal",
+            "method": "GET",
+            "path": "/api/v1/iam/principal/me",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.principal",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/principal/me"
+              }
+            ],
+            "via": "stores/session.ts:210-213",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": []
+      },
+      "MB-003": {
+        "source_sha256": "58b33a5872108205ef7c800d11843ac20d8664d3cbd8b1505ae2b6e0fbaef8ad",
+        "calls": [
+          {
+            "operationId": "requestB8PasswordReset",
+            "method": "POST",
+            "path": "/api/v1/auth/password-reset/request",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-password-reset.password-reset-request",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/password-reset/request"
+              }
+            ],
+            "via": "pages/reset-password/reset-password.vue:287; auth/gateway-auth.ts:173-180",
+            "transport": "IAM_TLS"
+          },
+          {
+            "operationId": "confirmB8PasswordReset",
+            "method": "POST",
+            "path": "/api/v1/auth/password-reset/confirm",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-password-reset.password-reset-confirm",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/password-reset/confirm"
+              }
+            ],
+            "via": "pages/reset-password/reset-password.vue:288; auth/gateway-auth.ts:182-188",
+            "transport": "IAM_TLS"
+          }
+        ],
+        "conditional_wrappers": []
+      },
+      "MB-005": {
+        "source_sha256": "ec5cd80d72075c1bbfeff395b91b4e3cdb6346e66742e1911103568b12f25ee0",
+        "calls": [
+          {
+            "operationId": "getB8Principal",
+            "method": "GET",
+            "path": "/api/v1/iam/principal/me",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.principal",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/principal/me"
+              }
+            ],
+            "via": "stores/session.ts:387-394; forbidden.vue:77",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "logoutB8JwtSession",
+            "method": "POST",
+            "path": "/api/v1/auth/logout",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "auth-domain.logout",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/logout"
+              }
+            ],
+            "via": "forbidden.vue:127-132; gateway-auth.ts:226-233",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "readCurrent session.restore",
+            "source": "pages/forbidden/forbidden.vue:66-77",
+            "calls": [
+              "refreshB8JwtSession only when restore has no usable access token",
+              "getB8Principal"
+            ]
+          }
+        ]
+      },
+      "MB-023": {
+        "source_sha256": "81011a298cf28ee0d418accebcb0ee1cd02a8432e302efdf09573c1860649944",
+        "calls": [
+          {
+            "operationId": "getB9LearnerProfile",
+            "method": "GET",
+            "path": "/api/v1/learner/profile",
+            "contract_owner": {
+              "required_permission": "learner.profile.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.profile",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/profile"
+              }
+            ],
+            "via": "profile.vue:253; api/learner-content.ts:956-961",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract_owner": {
+              "required_permission": "learner.target.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.targets",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/targets"
+              }
+            ],
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "getB9LearnerPreferences",
+            "method": "GET",
+            "path": "/api/v1/learner/preferences",
+            "contract_owner": {
+              "required_permission": "learner.preference.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.preferences",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/preferences"
+              }
+            ],
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "logoutB8JwtSession",
+            "method": "POST",
+            "path": "/api/v1/auth/logout",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "auth-domain.logout",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/auth/logout"
+              }
+            ],
+            "via": "profile.vue:170",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "ensureMobilePageAccess",
+            "source": "profile.vue:289; navigation.ts:229-249",
+            "calls": [
+              "refreshB8JwtSession when restore needs it",
+              "getB8Principal"
+            ]
+          }
+        ]
+      },
+      "MB-024": {
+        "source_sha256": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+        "calls": [
+          {
+            "operationId": "getB9LearnerProfile",
+            "method": "GET",
+            "path": "/api/v1/learner/profile",
+            "contract_owner": {
+              "required_permission": "learner.profile.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.profile",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/profile"
+              }
+            ],
+            "via": "settings.vue:407-411"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract_owner": {
+              "required_permission": "learner.target.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.targets",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/targets"
+              }
+            ]
+          },
+          {
+            "operationId": "getB9LearnerPreferences",
+            "method": "GET",
+            "path": "/api/v1/learner/preferences",
+            "contract_owner": {
+              "required_permission": "learner.preference.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.preferences",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/preferences"
+              }
+            ]
+          },
+          {
+            "operationId": "patchB9LearnerPreferences",
+            "method": "PATCH",
+            "path": "/api/v1/learner/preferences",
+            "contract_owner": {
+              "required_permission": "learner.preference.write"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.preferences",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/preferences"
+              }
+            ],
+            "via": "settings.vue:587-625; api/learner-content.ts:965-980",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "listM1016NotificationPreferences",
+            "method": "GET",
+            "path": "/api/v1/notifications/preferences",
+            "contract_owner": {
+              "x-owner": "notification-service",
+              "x-permission": "notification.preference.read.self",
+              "required_permission": "notification.preference.read.self"
+            },
+            "gateway": [
+              {
+                "id": "notifications-domain.preferences",
+                "status": "AVAILABLE",
+                "owner": "notification-service",
+                "target": "/internal/v1/notifications/preferences"
+              }
+            ],
+            "via": "api/b12.ts:39-43; settings.vue:426-434",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "updateM1016NotificationPreference",
+            "method": "PUT",
+            "path": "/api/v1/notifications/preferences/{notificationType}/{channel}",
+            "contract_owner": {
+              "x-owner": "notification-service",
+              "x-permission": "notification.preference.write.self",
+              "required_permission": "notification.preference.write.self"
+            },
+            "gateway": [
+              {
+                "id": "notifications-domain.preference",
+                "status": "AVAILABLE",
+                "owner": "notification-service",
+                "target": "/internal/v1/notifications/preferences/{notificationType}/{channel}"
+              }
+            ],
+            "via": "api/b12.ts:46-54; settings.vue:474-492",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "listM1016LearnerSupportTickets",
+            "method": "GET",
+            "path": "/api/v1/support/tickets?projection=it7",
+            "contract_owner": {
+              "x-owner": "admin-ops-service",
+              "x-data-owner": "admin-ops-service.support",
+              "x-permission": "support.ticket.read.self",
+              "required_permission": "support.ticket.read.self"
+            },
+            "gateway": [
+              {
+                "id": "support-domain.tickets",
+                "status": "AVAILABLE",
+                "owner": "admin-ops-service",
+                "target": "/internal/v1/admin-ops/support/tickets"
+              }
+            ],
+            "via": "api/support.ts:185-189; settings.vue:354",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "getB8Principal",
+            "method": "GET",
+            "path": "/api/v1/iam/principal/me",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.principal",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/principal/me"
+              }
+            ],
+            "via": "domain/learning-consent-withdrawal.ts:51-53"
+          },
+          {
+            "operationId": "updateB8Consent",
+            "method": "PUT",
+            "path": "/api/v1/iam/consents",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.consents",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/consents"
+              }
+            ],
+            "via": "domain/learning-consent-withdrawal.ts:54-59",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "getB9LearnerTarget",
+            "method": "GET",
+            "path": "/api/v1/learner/targets",
+            "contract_owner": {
+              "required_permission": "learner.target.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.targets",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/targets"
+              }
+            ],
+            "via": "domain/learning-consent-withdrawal.ts:63-68"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "ensureMobilePageAccess",
+            "calls": [
+              "getB8Principal",
+              "refreshB8JwtSession when restore needs it"
+            ]
+          }
+        ]
+      },
+      "MB-025": {
+        "source_sha256": "7344e9fc373147a63d8942f789949a4850f492e8bb944a8d1849c54d9fec2b8d",
+        "calls": [
+          {
+            "operationId": "listB8Devices",
+            "method": "GET",
+            "path": "/api/v1/iam/devices",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.devices",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/devices"
+              }
+            ],
+            "via": "api/devices.ts:35-41; devices.vue:194",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "kickoutB8Device",
+            "method": "POST",
+            "path": "/api/v1/iam/devices/{deviceId}/kickout",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "iam-domain.kickout",
+                "status": "AVAILABLE",
+                "owner": "iam-service",
+                "target": "/api/v1/iam/devices/{deviceId}/kickout"
+              }
+            ],
+            "via": "api/devices.ts:44-51; devices.vue:301-363",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "ensureMobilePageAccess",
+            "calls": [
+              "getB8Principal",
+              "refreshB8JwtSession when restore needs it"
+            ]
+          }
+        ]
+      },
+      "MB-027": {
+        "source_sha256": "6627804024bbc64edb16f70ba4bbee21ee5e16fda945724d88aed64b5712cb1e",
+        "calls": [],
+        "conditional_wrappers": [
+          {
+            "via": "ensureMobilePageAccess only",
+            "calls": [
+              "getB8Principal",
+              "refreshB8JwtSession when restore needs it"
+            ]
+          }
+        ]
+      },
+      "MB-028": {
+        "source_sha256": "5a55baa420c1c6a39965e7a1080b7aa3bc7777b0baaa4835cc724009cadfd041",
+        "calls": [
+          {
+            "operationId": "listM1016LearnerSupportTickets",
+            "method": "GET",
+            "path": "/api/v1/support/tickets",
+            "contract_owner": {
+              "x-owner": "admin-ops-service",
+              "x-data-owner": "admin-ops-service.support",
+              "x-permission": "support.ticket.read.self",
+              "required_permission": "support.ticket.read.self"
+            },
+            "gateway": [
+              {
+                "id": "support-domain.tickets",
+                "status": "AVAILABLE",
+                "owner": "admin-ops-service",
+                "target": "/internal/v1/admin-ops/support/tickets"
+              }
+            ],
+            "via": "api/support.ts:192-202; support.vue:181,213",
+            "transport": "GATEWAY_BEARER"
+          },
+          {
+            "operationId": "getM1016LearnerSupportTicket",
+            "method": "GET",
+            "path": "/api/v1/support/tickets/{ticketId}",
+            "contract_owner": {
+              "x-owner": "admin-ops-service",
+              "x-data-owner": "admin-ops-service.support",
+              "x-permission": "support.ticket.read.self",
+              "required_permission": "support.ticket.read.self"
+            },
+            "gateway": [
+              {
+                "id": "support-domain.ticket",
+                "status": "AVAILABLE",
+                "owner": "admin-ops-service",
+                "target": "/internal/v1/admin-ops/support/tickets/{ticketId}"
+              }
+            ],
+            "via": "api/support.ts:205-208; support.vue:245",
+            "transport": "GATEWAY_BEARER"
+          }
+        ],
+        "conditional_wrappers": [
+          {
+            "via": "ensureMobilePageAccess",
+            "calls": [
+              "getB8Principal",
+              "refreshB8JwtSession when restore needs it"
+            ]
+          }
+        ]
+      }
+    },
+    "learning": {
+      "MB-007": {
+        "source_sha256": "2d11b56ee1875d90ab383b17fd4ee7b4cde7cef918c02f9a435d859dcd660a51",
+        "calls": [
+          {
+            "operationId": "getB9LearnerHomeProjection",
+            "method": "GET",
+            "path": "/api/v1/learner/home",
+            "contract_owner": {
+              "required_permission": "learner.home.read"
+            },
+            "gateway": [
+              {
+                "id": "learner-domain.home",
+                "status": "AVAILABLE",
+                "owner": "learner-service",
+                "target": "/api/v1/learner/home"
+              }
+            ],
+            "via": "api/learner-content.ts:732-736",
+            "query_source": "contentLocale"
+          },
+          {
+            "operationId": "listB9LearnerContentCatalog",
+            "method": "GET",
+            "path": "/api/v1/content/learner/catalog",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "content-domain.learner-catalog",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/api/v1/content/learner/catalog"
+              }
+            ],
+            "via": "api/learner-content.ts:735",
+            "query_source": "contentLocale"
+          },
+          {
+            "operationId": "getB10LearningToday",
+            "method": "GET",
+            "path": "/api/v1/learning/today",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.today.read"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.today-v2",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/api/v1/learning/today"
+              }
+            ],
+            "via": "stores/learner-content.ts:469,474; api/plan-today.ts:9-10"
+          },
+          {
+            "operationId": "getB10LearningToday",
+            "method": "GET",
+            "path": "/api/v1/learning/today",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.today.read"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.today-v2",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/api/v1/learning/today"
+              }
+            ]
+          }
+        ]
+      },
+      "MB-010": {
+        "source_sha256": "b3aa7962b185ddef7f69828b92f1e482f84efe3b0e56d85807c789ba37638545",
+        "calls": []
+      },
+      "MB-011": {
+        "source_sha256": "335fa297a8e05b8a0896ad575a2c97becedbf5559f5cd09e28844e3fcafdf7f0",
+        "calls": [
+          {
+            "operationId": "createB10AssessmentSession",
+            "method": "POST",
+            "path": "/api/v1/assessment/sessions",
+            "contract_owner": {
+              "x-owner": "assessment-service",
+              "required_permission": "assessment.session.write"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.session-create",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions"
+              }
+            ],
+            "via": "stores/b10-learning.ts:590-597; api/b10.ts:972-974"
+          },
+          {
+            "operationId": "getB10AssessmentSession",
+            "method": "GET",
+            "path": "/api/v1/assessment/sessions/{sessionId}",
+            "contract_owner": {
+              "x-owner": "assessment-service",
+              "required_permission": "assessment.session.read"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.session",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions/{sessionId}"
+              }
+            ],
+            "via": "api/b10.ts:978-979"
+          },
+          {
+            "operationId": "submitB10AssessmentAttempt",
+            "method": "POST",
+            "path": "/api/v1/assessment/sessions/{sessionId}/attempts",
+            "contract_owner": {
+              "x-owner": "assessment-service",
+              "required_permission": "assessment.session.write"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.attempt-create",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions/{sessionId}/attempts"
+              }
+            ],
+            "via": "stores/b10-learning.ts:609-618; api/b10.ts:983-985"
+          },
+          {
+            "operationId": "putB10AssessmentCheckpoint",
+            "method": "PUT",
+            "path": "/api/v1/assessment/sessions/{sessionId}/attempts/{attemptId}/checkpoint",
+            "contract_owner": {
+              "x-owner": "assessment-service"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.attempt-checkpoint",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions/{sessionId}/attempts/{attemptId}/checkpoint"
+              }
+            ],
+            "via": "apps/mobile/src/api/b10.ts saveAssessmentCheckpoint",
+            "canonical_reference_only": "putB10AssessmentSessionCheckpoint"
+          }
+        ]
+      },
+      "MB-012": {
+        "source_sha256": "a7ec6d6506ebd852a7a955ec4319c882c11c59dd674595b5823953ad5c0448dd",
+        "calls": [
+          {
+            "operationId": "createSrsBatch",
+            "method": "POST",
+            "path": "/api/v1/learning/srs/batches",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.plan.read"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.srs-batches",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/srs/batches"
+              }
+            ],
+            "via": "stores/b10-learning.ts:355-361; api/b10.ts:917-923",
+            "canonical_reference_only": "getB10LearningToday"
+          },
+          {
+            "operationId": "getVocabDetail",
+            "method": "GET",
+            "path": "/api/v1/content/learner/vocabulary/{vocabularyId}",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "content-domain.learner-vocabulary",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/internal/v1/content/learner/vocabulary/{vocabularyId}"
+              }
+            ],
+            "via": "stores/b10-learning.ts:409-422; api/b10.ts:937-938",
+            "query_source": "contentLocale, projection=front, contentVersion"
+          },
+          {
+            "operationId": "getVocabDetail",
+            "method": "GET",
+            "path": "/api/v1/content/learner/vocabulary/{vocabularyId}",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "content-domain.learner-vocabulary",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/internal/v1/content/learner/vocabulary/{vocabularyId}"
+              }
+            ],
+            "via": "stores/b10-learning.ts:384-391; api/b10.ts:932-933",
+            "query_source": "contentLocale, contentVersion"
+          },
+          {
+            "operationId": "submitReviewEvent",
+            "method": "POST",
+            "path": "/api/v1/learning/srs/reviews",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.srs.write"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.srs-reviews",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/srs/reviews"
+              }
+            ],
+            "via": "stores/b10-learning.ts:468-485; api/b10.ts:942-961",
+            "canonical_reference_only": "completeB10LearningReview"
+          },
+          {
+            "operationId": "syncReviewEvents",
+            "method": "POST",
+            "path": "/api/v1/learning/srs/reviews:sync",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.srs.write"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.srs-reviews-sync",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/srs/reviews:sync"
+              }
+            ],
+            "via": "stores/b10-learning.ts:520-528; api/b10.ts:966-968",
+            "canonical_reference_only": "completeB10LearningReview"
+          }
+        ]
+      },
+      "MB-013": {
+        "source_sha256": "aaeb6bab52b09fc02829723f48e2087856e03254aec1783656f4f0380fcbb4a1",
+        "calls": [
+          {
+            "operationId": "listB3GrammarPoints",
+            "method": "GET",
+            "path": "/api/v1/grammar/points",
+            "contract_owner": {
+              "x-owner": "content-service",
+              "x-permission": "content.read",
+              "required_permission": "content.read"
+            },
+            "gateway": [
+              {
+                "id": "grammar-points-read.list",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/internal/v1/content/learner/grammar/points"
+              }
+            ],
+            "via": "api/b10.ts:1060-1061",
+            "query_source": "pageSize=50"
+          },
+          {
+            "operationId": "listB3GrammarExercises",
+            "method": "GET",
+            "path": "/api/v1/grammar/exercises",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "grammar-exercises-read.list",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/internal/v1/content/learner/grammar/exercises"
+              }
+            ],
+            "via": "api/b10.ts:1071-1081; api/b3.ts:23",
+            "query_source": "limit=20"
+          },
+          {
+            "operationId": "listB3GrammarExercises",
+            "method": "GET",
+            "path": "/api/v1/grammar/exercises",
+            "contract_owner": {},
+            "gateway": [
+              {
+                "id": "grammar-exercises-read.list",
+                "status": "AVAILABLE",
+                "owner": "content-service",
+                "target": "/internal/v1/content/learner/grammar/exercises"
+              }
+            ],
+            "via": "api/b10.ts:1084-1085"
+          },
+          {
+            "operationId": "createB10AssessmentSession",
+            "method": "POST",
+            "path": "/api/v1/assessment/sessions",
+            "contract_owner": {
+              "x-owner": "assessment-service",
+              "required_permission": "assessment.session.write"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.session-create",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions"
+              }
+            ],
+            "via": "api/b10.ts:1095-1098"
+          },
+          {
+            "operationId": "submitB10AssessmentAttempt",
+            "method": "POST",
+            "path": "/api/v1/assessment/sessions/{sessionId}/attempts",
+            "contract_owner": {
+              "x-owner": "assessment-service",
+              "required_permission": "assessment.session.write"
+            },
+            "gateway": [
+              {
+                "id": "assessment-domain.attempt-create",
+                "status": "AVAILABLE",
+                "owner": "assessment-service",
+                "target": "/internal/v1/assessment/sessions/{sessionId}/attempts"
+              }
+            ],
+            "via": "api/b10.ts:1102-1110"
+          }
+        ]
+      },
+      "MB-016": {
+        "source_sha256": "dbd699dd0834bd9ea2bee5096f44ad362ff9cc6aea352eddcb90564627572160",
+        "calls": [
+          {
+            "operationId": "listB2Mistakes",
+            "method": "GET",
+            "path": "/api/v1/mastery/mistakes",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.repair.read"
+            },
+            "gateway": [
+              {
+                "id": "mastery-domain.mistakes",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/experiences/mastery/mistakes"
+              }
+            ],
+            "via": "stores/b10-learning.ts:655-659; api/b10.ts:1009-1010",
+            "canonical_reference_only": "listB10LearningRepairs"
+          },
+          {
+            "operationId": "getB2DailyReport",
+            "method": "GET",
+            "path": "/api/v1/learning/stats/daily-report",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.report.read"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.daily-report",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/stats/daily-report"
+              }
+            ],
+            "via": "api/b10.ts:1055-1057",
+            "canonical_reference_only": "getB10LearningReport"
+          },
+          {
+            "operationId": "getB2WeeklyReport",
+            "method": "GET",
+            "path": "/api/v1/learning/stats/weekly-report",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.report.read"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.weekly-report",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/stats/weekly-report"
+              }
+            ],
+            "via": "api/b10.ts:1055-1057",
+            "canonical_reference_only": "getB10LearningReport"
+          },
+          {
+            "operationId": "getB2MistakeDetail",
+            "method": "GET",
+            "path": "/api/v1/mastery/mistakes/{mistakeId}",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.repair.read"
+            },
+            "gateway": [],
+            "via": "api/b10.ts:1004-1005",
+            "canonical_reference_only": "getB10LearningRepair"
+          },
+          {
+            "operationId": "startB2MistakeRetry",
+            "method": "POST",
+            "path": "/api/v1/mastery/mistakes/{mistakeId}/retry",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.srs.write"
+            },
+            "gateway": [
+              {
+                "id": "mastery-domain.mistake-retry",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/experiences/mastery/mistakes/{mistakeId}/retry"
+              }
+            ],
+            "via": "stores/b10-learning.ts:663-667; api/b10.ts:1023-1024",
+            "canonical_reference_only": "completeB10LearningReview"
+          },
+          {
+            "operationId": "listB2Mistakes",
+            "method": "GET",
+            "path": "/api/v1/mastery/mistakes",
+            "contract_owner": {
+              "x-owner": "learning-service",
+              "required_permission": "learning.repair.read"
+            },
+            "gateway": [
+              {
+                "id": "mastery-domain.mistakes",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/experiences/mastery/mistakes"
+              }
+            ],
+            "via": "stores/b10-learning.ts:667",
+            "canonical_reference_only": "listB10LearningRepairs"
+          },
+          {
+            "operationId": "issueLearningReportShare",
+            "method": "POST",
+            "path": "/api/v1/learning/reports/{reportType}/shares",
+            "contract_owner": {
+              "x-owner": "learning-service"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.report-share-issue",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/reports/{reportType}/shares"
+              }
+            ],
+            "via": "api/b10.ts:1042-1044"
+          },
+          {
+            "operationId": "revokeLearningReportShare",
+            "method": "POST",
+            "path": "/api/v1/learning/report-shares/{ref}/revoke",
+            "contract_owner": {
+              "x-owner": "learning-service"
+            },
+            "gateway": [
+              {
+                "id": "learning-domain.report-share-revoke",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/report-shares/{ref}/revoke"
+              }
+            ],
+            "via": "api/b10.ts:1051-1052"
+          }
+        ]
+      },
+      "MB-017": {
+        "source_sha256": "9d031981ffb4c891a30a679227111aa1c94ad85a09de8fcb0d37c673e135e4fc",
+        "calls": [
+          {
+            "operationId": "getLearningReportShare",
+            "method": "GET",
+            "path": "/api/v1/public/learning/report-shares/{ref}",
+            "contract_owner": {
+              "x-owner": "learning-service"
+            },
+            "gateway": [
+              {
+                "id": "public-learning-report-share.read",
+                "status": "AVAILABLE",
+                "owner": "learning-service",
+                "target": "/internal/v1/learning/report-shares/{ref}"
+              }
+            ],
+            "via": "report-share.vue:101-102"
+          }
+        ]
+      },
+      "MB-026": {
+        "source_sha256": "68241bae2416263e60e5952ecd470358dffe5b1aaf5d1c75878ff19232fbe6f4",
+        "calls": [
+          {
+            "operationId": "getB13PublicCommerceCatalog",
+            "method": "GET",
+            "path": "/api/v1/public/commerce/catalog",
+            "contract_owner": {
+              "x-owner": "commerce-service",
+              "required_permission": "commerce.catalog.read.public"
+            },
+            "gateway": [
+              {
+                "id": "public-commerce.catalog",
+                "status": "AVAILABLE",
+                "owner": "commerce-service",
+                "target": "/internal/v1/commerce/public/catalog"
+              }
+            ],
+            "via": "api/b5.ts:6-8; api/b13.ts:27"
+          },
+          {
+            "operationId": "listB13MyEntitlements",
+            "method": "GET",
+            "path": "/api/v1/commerce/entitlements/me",
+            "contract_owner": {
+              "x-owner": "commerce-service",
+              "required_permission": "commerce.entitlement.read.self"
+            },
+            "gateway": [
+              {
+                "id": "commerce-domain.entitlements",
+                "status": "AVAILABLE",
+                "owner": "commerce-service",
+                "target": "/internal/v1/commerce/entitlements/me"
+              }
+            ],
+            "via": "api/b13.ts:29"
+          },
+          {
+            "operationId": "listB13CommerceOrders",
+            "method": "GET",
+            "path": "/api/v1/commerce/orders",
+            "contract_owner": {
+              "x-owner": "commerce-service",
+              "required_permission": "commerce.order.read.self"
+            },
+            "gateway": [
+              {
+                "id": "commerce-domain.orders",
+                "status": "AVAILABLE",
+                "owner": "commerce-service",
+                "target": "/internal/v1/commerce/orders"
+              }
+            ],
+            "via": "api/b13.ts:6,28",
+            "query_source": "limit=50"
+          },
+          {
+            "operationId": "listB13CommerceOrders",
+            "method": "GET",
+            "path": "/api/v1/commerce/orders",
+            "contract_owner": {
+              "x-owner": "commerce-service",
+              "required_permission": "commerce.order.read.self"
+            },
+            "gateway": [
+              {
+                "id": "commerce-domain.orders",
+                "status": "AVAILABLE",
+                "owner": "commerce-service",
+                "target": "/internal/v1/commerce/orders"
+              }
+            ],
+            "query_source": "limit=50"
+          }
+        ]
+      }
+    },
+    "limited": {
+      "MB-019": {
+        "source_sha256": "d95e7cfd43d8c0e91a976e7b40cfebeaea7d3fc8b1e51ddef9ebeccd85f6ab20",
+        "page_or_visible_read": [
+          "/api/v1/games/catalog"
+        ],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [
+          "/api/v1/gamification/me/summary",
+          "/api/v1/gamification/streak",
+          "/api/v1/gamification/quests",
+          "/api/v1/gamification/season",
+          "/api/v1/avatar/profile",
+          "/api/v1/avatar/items",
+          "/api/v1/avatar/loadouts",
+          "/api/v1/avatar/resources",
+          "/api/v1/games/catalog",
+          "/api/v1/social/rooms",
+          "/api/v1/notifications/messages"
+        ],
+        "browser_existing": "NOT_AVAILABLE",
+        "legacy": []
+      },
+      "MB-020": {
+        "source_sha256": "c7f0f5ade74a234a79eae61a1010f6f96385322ad2951174d463cb5db14cd714",
+        "page_or_visible_read": [
+          "/api/v1/social/rooms",
+          "/api/v1/social/leaderboards",
+          "/api/v1/notifications/messages"
+        ],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [
+          "/api/v1/gamification/me/summary",
+          "/api/v1/gamification/streak",
+          "/api/v1/gamification/quests",
+          "/api/v1/gamification/season",
+          "/api/v1/avatar/profile",
+          "/api/v1/avatar/items",
+          "/api/v1/avatar/loadouts",
+          "/api/v1/avatar/resources",
+          "/api/v1/games/catalog",
+          "/api/v1/social/rooms",
+          "/api/v1/notifications/messages"
+        ],
+        "browser_existing": "NOT_AVAILABLE",
+        "legacy": [
+          {
+            "kind": "B12 social extension wrappers",
+            "counts": {
+              "b12-card": 2,
+              "v2-social-ext": 1
+            },
+            "evidence": "B20 current-page-but-shared-source-stale receipt",
+            "notConnected": [
+              "social-report deeper B12 state not exercised",
+              "social-leaderboard deeper B12 state not exercised"
+            ]
+          }
+        ]
+      },
+      "MB-022": {
+        "source_sha256": "e5590d9a10335c97bf919f0f4d8f3713b1492652d1718e18994465cd8a541f5b",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [
+          "/api/v1/gamification/me/summary",
+          "/api/v1/gamification/streak",
+          "/api/v1/gamification/quests",
+          "/api/v1/gamification/season",
+          "/api/v1/avatar/profile",
+          "/api/v1/avatar/items",
+          "/api/v1/avatar/loadouts",
+          "/api/v1/avatar/resources",
+          "/api/v1/games/catalog",
+          "/api/v1/social/rooms",
+          "/api/v1/notifications/messages"
+        ],
+        "browser_existing": "PASS",
+        "legacy": []
+      },
+      "MB-029": {
+        "source_sha256": "c4594ec4ab5cd555e0a856f06d36fa195c187256e39cd27625a1ab9025e58a07",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [],
+        "browser_existing": "PASS",
+        "legacy": []
+      },
+      "MB-030": {
+        "source_sha256": "61948c42bfac00abc795fd2eef1088bee2d9e7578bc0c8996a27c2044ac1aa53",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [],
+        "browser_existing": "PASS",
+        "legacy": [
+          {
+            "kind": "legacy B11 status workspace",
+            "selectors": [
+              ".b11-status",
+              ".v2-b11listen-status"
+            ],
+            "workspaces": 2,
+            "controls": 0,
+            "observedCalls": "no media/mic requests in B56",
+            "phase1Status": "hidden mount only; not active"
+          }
+        ]
+      },
+      "MB-031": {
+        "source_sha256": "64dae3efc076962583fec9be0f475c25c1554d9a650683cae761e47d99dadcac",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [],
+        "browser_existing": "PASS",
+        "legacy": []
+      },
+      "MB-032": {
+        "source_sha256": "ab793ae5a1bd837eaf93828e50f36b028105540310db99cd54debbeed056bcb7",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [],
+        "browser_existing": "PASS",
+        "legacy": [
+          {
+            "kind": "legacy B11 status workspace",
+            "selectors": [
+              ".b11-status",
+              ".v2-b11speak-status"
+            ],
+            "workspaces": 2,
+            "controls": 0,
+            "observedCalls": "no media/mic requests in B56",
+            "phase1Status": "hidden mount only; not active"
+          }
+        ]
+      },
+      "MB-033": {
+        "source_sha256": "fb9360a7ab74af6e4f80d5ed1c7700ab3f3164818e4261320b9686580ef52069",
+        "page_or_visible_read": [],
+        "conditional_shared_context": [
+          "/api/v1/iam/principal/me",
+          "/api/v1/auth/login",
+          "/api/v1/learner/profile",
+          "/api/v1/learner/targets",
+          "/api/v1/learner/preferences",
+          "/api/v1/learner/home",
+          "/api/v1/content/learner/catalog",
+          "/api/v1/learning/today"
+        ],
+        "potential_shared_background_reads": [],
+        "browser_existing": "PASS",
+        "legacy": [
+          {
+            "kind": "legacy retry control",
+            "controls": [
+              "重试"
+            ],
+            "count": 1,
+            "sourceHandler": "load() -> b10LearningApi.listWritingPrompts",
+            "observedCalls": "none in B56",
+            "phase1Status": "separate; not an authorized closed-screen exit"
+          }
+        ]
+      }
+    }
+  },
+  "closed_shared_registry": {
+    "/api/v1/auth/login": {
+      "operationId": "loginB8Account",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "iam-login.login",
+          "status": "AVAILABLE",
+          "owner": "iam-service",
+          "target": "/api/v1/auth/login"
+        }
+      ]
+    },
+    "/api/v1/auth/token/refresh": {
+      "operationId": "refreshB8JwtSession",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "iam-refresh.refresh",
+          "status": "AVAILABLE",
+          "owner": "iam-service",
+          "target": "/api/v1/auth/token/refresh"
+        }
+      ]
+    },
+    "/api/v1/iam/principal/me": {
+      "operationId": "getB8Principal",
+      "method": "GET",
+      "path": "/api/v1/iam/principal/me",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "iam-domain.principal",
+          "status": "AVAILABLE",
+          "owner": "iam-service",
+          "target": "/api/v1/iam/principal/me"
+        }
+      ]
+    },
+    "/api/v1/learner/profile": {
+      "operationId": "getB9LearnerProfile",
+      "method": "GET",
+      "path": "/api/v1/learner/profile",
+      "contract_owner": {
+        "required_permission": "learner.profile.read"
+      },
+      "gateway": [
+        {
+          "id": "learner-domain.profile",
+          "status": "AVAILABLE",
+          "owner": "learner-service",
+          "target": "/api/v1/learner/profile"
+        }
+      ]
+    },
+    "/api/v1/learner/targets": {
+      "operationId": "getB9LearnerTarget",
+      "method": "GET",
+      "path": "/api/v1/learner/targets",
+      "contract_owner": {
+        "required_permission": "learner.target.read"
+      },
+      "gateway": [
+        {
+          "id": "learner-domain.targets",
+          "status": "AVAILABLE",
+          "owner": "learner-service",
+          "target": "/api/v1/learner/targets"
+        }
+      ]
+    },
+    "/api/v1/learner/preferences": {
+      "operationId": "getB9LearnerPreferences",
+      "method": "GET",
+      "path": "/api/v1/learner/preferences",
+      "contract_owner": {
+        "required_permission": "learner.preference.read"
+      },
+      "gateway": [
+        {
+          "id": "learner-domain.preferences",
+          "status": "AVAILABLE",
+          "owner": "learner-service",
+          "target": "/api/v1/learner/preferences"
+        }
+      ]
+    },
+    "/api/v1/learner/home": {
+      "operationId": "getB9LearnerHomeProjection",
+      "method": "GET",
+      "path": "/api/v1/learner/home",
+      "contract_owner": {
+        "required_permission": "learner.home.read"
+      },
+      "gateway": [
+        {
+          "id": "learner-domain.home",
+          "status": "AVAILABLE",
+          "owner": "learner-service",
+          "target": "/api/v1/learner/home"
+        }
+      ]
+    },
+    "/api/v1/content/learner/catalog": {
+      "operationId": "listB9LearnerContentCatalog",
+      "method": "GET",
+      "path": "/api/v1/content/learner/catalog",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "content-domain.learner-catalog",
+          "status": "AVAILABLE",
+          "owner": "content-service",
+          "target": "/api/v1/content/learner/catalog"
+        }
+      ]
+    },
+    "/api/v1/learning/today": {
+      "operationId": "getB10LearningToday",
+      "method": "GET",
+      "path": "/api/v1/learning/today",
+      "contract_owner": {
+        "x-owner": "learning-service",
+        "required_permission": "learning.today.read"
+      },
+      "gateway": [
+        {
+          "id": "learning-domain.today-v2",
+          "status": "AVAILABLE",
+          "owner": "learning-service",
+          "target": "/api/v1/learning/today"
+        }
+      ]
+    },
+    "/api/v1/gamification/me/summary": {
+      "operationId": "getM1014GamificationSummary",
+      "method": "GET",
+      "path": "/api/v1/gamification/me/summary",
+      "contract_owner": {
+        "x-owner": "gamification-service",
+        "required_permission": "gamification.read.self"
+      },
+      "gateway": [
+        {
+          "id": "gamification-domain.me-summary",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/summary"
+        }
+      ]
+    },
+    "/api/v1/gamification/streak": {
+      "operationId": "getB4Streak",
+      "method": "GET",
+      "path": "/api/v1/gamification/streak",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "gamification-domain.streak",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/streak"
+        }
+      ]
+    },
+    "/api/v1/gamification/quests": {
+      "operationId": "listB4Quests",
+      "method": "GET",
+      "path": "/api/v1/gamification/quests",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "gamification-domain.quests",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/quests"
+        }
+      ]
+    },
+    "/api/v1/gamification/season": {
+      "operationId": "getB4Season",
+      "method": "GET",
+      "path": "/api/v1/gamification/season",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "gamification-domain.season",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/season"
+        }
+      ]
+    },
+    "/api/v1/avatar/profile": {
+      "operationId": "getB4AvatarProfile",
+      "method": "GET",
+      "path": "/api/v1/avatar/profile",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "avatar-domain.profile",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/avatar/profile"
+        }
+      ]
+    },
+    "/api/v1/avatar/items": {
+      "operationId": "listB4AvatarItems",
+      "method": "GET",
+      "path": "/api/v1/avatar/items",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "avatar-domain.items",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/avatar/items"
+        }
+      ]
+    },
+    "/api/v1/avatar/loadouts": {
+      "operationId": "listB4AvatarLoadouts",
+      "method": "GET",
+      "path": "/api/v1/avatar/loadouts",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "avatar-domain.loadouts",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/avatar/loadouts"
+        }
+      ]
+    },
+    "/api/v1/avatar/resources": {
+      "operationId": "getB4AvatarResources",
+      "method": "GET",
+      "path": "/api/v1/avatar/resources",
+      "contract_owner": {},
+      "gateway": [
+        {
+          "id": "avatar-domain.resources",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/avatar/resources"
+        }
+      ]
+    },
+    "/api/v1/games/catalog": {
+      "operationId": "listM1014GameCatalog",
+      "method": "GET",
+      "path": "/api/v1/games/catalog",
+      "contract_owner": {
+        "x-owner": "gamification-service",
+        "required_permission": "gamification.game.read.self"
+      },
+      "gateway": [
+        {
+          "id": "games-domain.catalog",
+          "status": "AVAILABLE",
+          "owner": "gamification-service",
+          "target": "/internal/v1/gamification/games/catalog"
+        }
+      ]
+    },
+    "/api/v1/social/rooms": {
+      "operationId": "listM1014StudyRooms",
+      "method": "GET",
+      "path": "/api/v1/social/rooms",
+      "contract_owner": {
+        "x-owner": "social-service",
+        "required_permission": "social.room.read"
+      },
+      "gateway": [
+        {
+          "id": "social-domain.rooms",
+          "status": "AVAILABLE",
+          "owner": "social-service",
+          "target": "/api/v1/social/rooms"
+        }
+      ]
+    },
+    "/api/v1/social/leaderboards": {
+      "operationId": "getM1014Leaderboard",
+      "method": "GET",
+      "path": "/api/v1/social/leaderboards",
+      "contract_owner": {
+        "x-owner": "social-service",
+        "required_permission": "social.leaderboard.read"
+      },
+      "gateway": [
+        {
+          "id": "social-domain.leaderboards",
+          "status": "AVAILABLE",
+          "owner": "social-service",
+          "target": "/api/v1/social/leaderboards"
+        }
+      ]
+    },
+    "/api/v1/notifications/messages": {
+      "operationId": "listM1016NotificationMessages",
+      "method": "GET",
+      "path": "/api/v1/notifications/messages",
+      "contract_owner": {
+        "x-owner": "notification-service",
+        "x-permission": "notification.message.read.self",
+        "required_permission": "notification.message.read.self"
+      },
+      "gateway": [
+        {
+          "id": "notifications-domain.messages",
+          "status": "AVAILABLE",
+          "owner": "notification-service",
+          "target": "/internal/v1/notifications/messages"
+        }
+      ]
+    }
+  },
+  "coverage": {
+    "auth": 9,
+    "learning": 8,
+    "limited": 8,
+    "prior_source_trace": 7,
+    "consent_review": 1,
+    "distinct_inventory": 33
+  },
+  "counts": {
+    "exact_path_method_id": 77,
+    "operation_only_query_unregistered": 1,
+    "auth_operation_rows": 26,
+    "learning_operation_rows": 31,
+    "closed_shared_registry_rows": 21
+  },
+  "worker_discrepancies": [
+    {
+      "route": "MB-011",
+      "operationId": "putB10AssessmentSessionCheckpoint",
+      "method": "PUT",
+      "path": "/api/v1/assessment/sessions/{sessionId}/attempts/{attemptId}/checkpoint",
+      "merged_id": "putB10AssessmentCheckpoint",
+      "resolution": "Use the actual attempt-scoped adapter operationId in the trace. Its canonical session checkpoint is a reference only."
+    }
+  ],
+  "current_gaps": {
+    "MB-024": "GET /api/v1/support/tickets?projection=it7 is a server-supported compatibility projection. Merged GET parameters currently contain only Cursor and PageSize. No runtime acceptance.",
+    "MB-016": "GET /api/v1/mastery/mistakes/{mistakeId} exists in merged OpenAPI but no exact static Gateway execution. The formal alternate is a reference only pending owner-side proof."
+  },
+  "status": "SOURCE_OPERATION_TRACE_ONLY; ALL_ROUTE_TRACE_SIGNOFF_PENDING",
+  "source_rebind": {
+    "auth": "9 page files byte-matched to current integration; later shared-source changes checked within the consent-onboarding functions only. Normalize latest merged OpenAPI, including additive B8 principal field.",
+    "learning": "8 page files byte-matched to current integration; later shared learner-content changes checked within the consent-onboarding functions only.",
+    "limited": "8 page hashes and 7 shared source hashes independently checked on current integration.",
+    "counts": "Counts are reference rows, including duplicates across actions, and the shared registry. Operation match compares HTTP method, path template and ID. Gateway projection is static; passing this does not exercise any controller. Query strings outside the explicitly isolated support compatibility row were not contract-validated."
+  },
+  "fixture_iam_java": {
+    "selected": [
+      "IamAdultGateControllerTest",
+      "IdempotencyCredentialReplayControllerTest",
+      "IamLearningConsentControllerTest",
+      "IamConsentIdempotencyRollbackSafetyTest"
+    ],
+    "passed": 34,
+    "skipped": 2,
+    "skip_condition": "iam.jdbc.integration is not set",
+    "command": "mvn -o -B -f services/iam-service/pom.xml -Dtest=IamAdultGateControllerTest,IdempotencyCredentialReplayControllerTest,IamLearningConsentControllerTest,IamConsentIdempotencyRollbackSafetyTest test",
+    "log_sha256": "a7d5df6fe2c9dfec0c93ec7dc0d0a510e262d724254fd082096b3913d444e39f",
+    "actual_deployed_or_jdbc": "NOT_RUN"
+  }
+}

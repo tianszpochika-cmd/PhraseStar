@@ -16,7 +16,7 @@
 | MB-008 今日任务 | `#/pages/today/today` | 本地 UI 候选 B46 / TRACE_PENDING | 区分无计划/已完成/无内容/无到期/失败；无有效 practiceRef 不编题 | learning-service | R1-034、R1-035、R1-037、R1-041、BC-027、BC-028、BC-030、IC-017、IC-018 | PAGE-P1-TODAY | FEAT-ONB-012→V2-980-0012；PRD-ATOM-0494→V2-980-0255；TRACE_PENDING |
 | MB-009 学习与课程 | `#/pages/learn/learn` | 本地 UI 候选 B47 / TRACE_PENDING | 书架/继续学习、内容授权与版本、空目录/无结果/失败分开 | content-service、learner-service、learning-service | R1-037、R1-040、R1-041、BC-199、IC-029、IC-039 | PAGE-P1-PLAN-MAP、PAGE-P1-COURSE-SHELF | FEAT-ONB-014→V2-980-0014；TRACE_PENDING |
 | MB-010 练习入口 | `#/pages/practice/practice` | 本地 UI 候选 B52 / TRACE_PENDING | 真实可用入口、队列、能力关闭原因；不开放隐藏功能 | assessment-service、learning-service、content-service | R1-043、R1-048、R1-058、BC-033、BC-043、IC-022 | PAGE-P1-PRACTICE-HUB | FEAT-ASM-012→V2-980-0226；PRD-ATOM-0474→V2-980-0236；TRACE_PENDING |
-| MB-011 旧综合练习入口 | `#/pages/b2-practice/b2-practice` | 本地 UI 候选 B52 / TRACE_PENDING | 旧入口迁移说明/可用出口，保持现有网关与权限边界 | assessment-service、content-service | R1-043、R1-048、BC-033、BC-043、IC-022 | PAGE-P1-PRACTICE-SESSION | FEAT-ASM-012→V2-980-0226；PRD-ATOM-0474→V2-980-0236；TRACE_PENDING |
+| MB-011 旧综合练习入口 | `#/pages/b2-practice/b2-practice` | 本地 UI 候选 B52 / TRACE_PENDING | 迁移说明与替代入口，获准会话保留答题、尝试级断点和报告跳转 | assessment-service、content-service | R1-043、R1-048、BC-033、BC-043、IC-022 | PAGE-P1-PRACTICE-SESSION | FEAT-ASM-012→V2-980-0226；PRD-ATOM-0474→V2-980-0236；TRACE_PENDING |
 | MB-012 词汇与复习 | `#/pages/b2-vocabulary/b2-vocabulary` | 本地 UI 候选 B54 / TRACE_PENDING | 词义/例句/音频真实资源、SRS 与空/错态；缺音频不假播放 | content-service、learning-service | R1-048、R1-054、R1-055、R1-056、BC-042、BC-055、BC-056、IC-025、IC-032 | PAGE-P1-VOCAB、PAGE-P1-SRS | FEAT-VOC-005→V2-980-0027；PRD-ATOM-0176→V2-980-0068；TRACE_PENDING |
 | MB-013 语法与长难句 | `#/pages/b3-grammar/b3-grammar` | 本地 UI 候选 B54 / TRACE_PENDING | 内容与练习版本、已保存再反馈、缺题关闭和降级 | content-service、assessment-service | R1-043、R1-044、R1-045、R1-046、R1-058、BC-033、BC-034、BC-036、BC-037、IC-022、IC-023 | PAGE-P1-GRAMMAR、PAGE-P1-PRACTICE-SESSION | FEAT-GRM-001→V2-980-0071；PRD-ATOM-0474→V2-980-0236；TRACE_PENDING |
 | MB-014 阅读精练 | `#/pages/b3-reading/b3-reading` | 本地 UI 候选 B45 / TRACE_PENDING | 阅读内容/题目授权、保存后反馈、返回原位置 | content-service、assessment-service | R1-043、R1-044、R1-045、R1-046、BC-035、BC-036、BC-038、IC-022、IC-023 | PAGE-P1-READING、PAGE-P1-PRACTICE-SESSION | FEAT-RDG-002→V2-980-0136；PRD-ATOM-0392→V2-980-0151；TRACE_PENDING |
@@ -54,6 +54,7 @@
 
 ## 追溯与交付门
 
+- 33 条路由已登记当前源码调用或关闭边界。实际网关执行、真实 owner 数据和未齐需求标识继续单列。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md)
 - 每行的 ACT/JNY/RULE/INT/E2E、ARCH、FEAT/PRD 与 V2 对应锚点保存在 [CHECKPOINT.json](CHECKPOINT.json) 的 `pages[].trace`。`design-source-traceability.md` 的 RT 是查表引用，机器账展开为 canonical ID；其范围只是所引设计规则，不是整页或服务已完成。FEAT 与 PRD 列缺项都继续 `TRACE_PENDING`；标注的 ID 也需按具体功能确认适用，不可用邻近功能冒充。
 - 首先对照 [980 登记](../../06-design/v2-980plus/08-980plus-功能点设计登记册.md)、[角色/旅程/页面/规则/联调](../../06-design/v2-980plus/phase1-business-operation/README.md)、[业务与交互链](../../06-design/v2-980plus/redesign/README.md)、[契约](../../../packages/contracts/README.md)、[架构](../../02-architecture/v2-microservices-architecture.md)，逐页补 operation、当前 Gateway/owner、状态和证据定位。无相应规则时说明 `N/A` 及原因，不伪造编号。
 - UI 页的最低审查覆盖：正常、加载、空、错误、离线、无权、冲突/恢复、提交中按适用逐项；安全回跳、重复点击、切号、迟到响应、焦点/键盘和 320px/200% 视口；设计节点和素材来源逐页记录。关闭能力只能提供已获准出口。
