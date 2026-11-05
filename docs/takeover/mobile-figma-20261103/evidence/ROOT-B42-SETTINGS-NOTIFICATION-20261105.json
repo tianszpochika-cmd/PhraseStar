@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-05T06:34:10.022859+00:00",
+  "scope": "test-loader only",
+  "test_sha256": "177dd90837859f37ad90c919bd6ae5c4b8155862258ecf2c0fd6582fc625b9f0",
+  "settings_source_sha256": "72a33a7ad792cc773839bd7abbd440e0225d072f0b44f272c3b8e33e12cefd71",
+  "product_source_changed": false,
+  "original_combined": {
+    "pass": 76,
+    "fail": 3,
+    "cause": "notification recovery test loader did not support Settings imports"
+  },
+  "new_combined": {
+    "pass": 79,
+    "fail": 0
+  },
+  "focused": {
+    "pass": 21,
+    "fail": 0,
+    "skip": 0
+  },
+  "raw": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/settings-notification-review"
+}

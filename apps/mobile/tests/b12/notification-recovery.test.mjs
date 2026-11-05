@@ -3,6 +3,10 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import ts from 'typescript'
+import { createRequire } from 'node:module'
+
+const requireFromTest = createRequire(import.meta.url)
+const vue = requireFromTest('vue')
 
 const appRoot = path.resolve(import.meta.dirname, '..', '..')
 const categories = ['ACCOUNT', 'LEARNING', 'REVIEW', 'ACHIEVEMENT', 'SYSTEM', 'SECURITY', 'BILLING', 'CONTENT', 'STUDY_ROOM', 'SOCIAL', 'SUPPORT', 'MARKETING', 'REMINDER', 'OTHER']
@@ -67,6 +71,28 @@ function makePreferenceHelpers() {
   }
 }
 
+function copyAt(root, key) {
+  let value = root
+  for (const part of key.split('.')) value = value?.[part]
+  return value
+}
+
+const settingsCopyZh = loadTypeScriptModule('../../packages/i18n/src/mobile-resources/settings-page.ts', {}).settingsPageCopy(false)
+
+function settingsMobileT(key) {
+  if (key.startsWith('settingsPage.')) {
+    const value = copyAt(settingsCopyZh, key.slice('settingsPage.'.length))
+    if (typeof value === 'string') return value
+  }
+  if (key === 'settings') return '设置'
+  if (key === 'forbidden.navigationFailed') return '页面未能打开，请重试。'
+  return key
+}
+
+function interpolateMessage(message, values = {}) {
+  return String(message).replace(/\{(\w+)\}/g, (_, token) => values[token] === undefined ? `{${token}}` : String(values[token]))
+}
+
 function makeSettingsHarness(api) {
   const session = {
     verifiedSubject: 'learner-a', identityRevision: 4,
@@ -77,32 +103,46 @@ function makeSettingsHarness(api) {
     account: { themeMode: 'SYSTEM', motionMode: 'FULL', highContrast: false, contentLocale: 'en-US', goal: null, quota: 10 },
     goals: [], async loadAccount() {}, async savePreferences() {}, async saveContentLocale() { return 'en-US' },
   }
+  const themeState = { theme: 'light', resolvedTheme: 'light' }
+  const mobileThemeController = {
+    get theme() { return themeState.theme },
+    get resolvedTheme() { return themeState.resolvedTheme },
+    subscribe(listener) { listener({ resolvedTheme: themeState.resolvedTheme }); return () => {} },
+    setTheme(value) {
+      themeState.theme = value
+      themeState.resolvedTheme = value === 'system' ? 'light' : value
+    },
+  }
   const modules = {
     '../../components/MobilePageHeader.vue': {},
-    '../../platform/v2-foundation': { mobileThemeController: { theme: 'light', setTheme() {} } },
-    '../../platform/b10-foundation': { b10ContentLocale: { value: 'en-US' }, b10UiLocale: { value: 'zh-CN' } },
+    '../../platform/v2-foundation': {
+      mobileThemeController,
+      mobileI18n: { formatNumber: (value) => new Intl.NumberFormat('zh-CN').format(value) },
+    },
+    '../../platform/b10-foundation': { b10ContentLocale: vue.ref('en-US'), b10UiLocale: vue.ref('zh-CN') },
     '../../platform/experience': {
       mobileExperienceEngine: { state: { level: 'High' }, subscribe() { return () => {} } },
-      mobileMotionMode: { value: 'FULL' }, restoreMobileQualityDefault() {}, setMobileMotion() {}, setMobileQuality() {},
+      mobileMotionMode: vue.ref('FULL'),
+      mobileT: settingsMobileT,
+      restoreMobileQualityDefault() {},
+      setMobileMotion() {},
+      setMobileQuality() {},
       useMobileExperience() { return { experienceStyle: {}, experienceMotion: 'FULL' } },
     },
-    vue: { ref: value => ({ value }), watch() {}, onBeforeUnmount() {} },
+    vue: { ...vue, onBeforeUnmount() {}, onMounted() {} },
     '@dcloudio/uni-app': { onHide() {}, onShow() {} },
     '../../auth/navigation': { ensureMobilePageAccess: async () => true },
     '../../domain/it7-closure': { privacyNotices: () => [] },
     '../../api/support': { readMobileClosureBoard: async () => null },
     '../../api/learning-consent-withdrawal': { withdrawLearningConsent: async () => ({ withdrawn: false, targetsStatus: null, notice: '', version: 'b30-consent-v1' }) },
-    '../../domain/learning-consent-withdrawal': {
-      WITHDRAW_BUTTON_LABEL: '撤回学习同意',
-      WITHDRAW_CONFIRM_COPY: '确认撤回后，学习能力会收回。账号仍会保留。',
-    },
     '@englishflow/contracts': {},
     '@englishflow/performance': {},
+    '@englishflow/i18n': { interpolate: interpolateMessage },
     '../../stores/learner-content': { useLearnerContentStore: () => store },
     '../../stores/session': { useSessionStore: () => session },
     '../../api/b12': api,
     '../../domain/notification-preferences': makePreferenceHelpers(),
-    '../../platform/uni-runtime': { getUniRuntime: () => null },
+    '../../platform/uni-runtime': { getUniRuntime: () => null, openUniPage() {} },
     '../../domain/mobile-preference-sync': {
       hasPendingMobilePreferenceSync: () => false,
       sameMobilePreferenceIdentity: (expected, current) => Boolean(expected && current && expected.subject === current.subject && expected.revision === current.revision),
@@ -110,16 +150,20 @@ function makeSettingsHarness(api) {
       transitionMobilePreferenceSubject: (_previous, next) => ({ subject: next ?? null, pendingSync: false }),
     },
   }
-  const view = loadSetupScript('src/pages/settings/settings.vue', modules, [
-    'notificationSettings', 'notificationRows', 'notificationStatus', 'notificationError', 'notificationDndEnabled',
-    'notificationDndStart', 'notificationDndEnd', 'notificationDndDirty', 'notificationDndRetryPending',
-    'notificationDndConflict', 'notificationDndRetryTarget', 'notificationSuccess',
-    'loadNotificationSettings', 'toggleNotification', 'saveNotificationDnd',
-  ])
-  return { view, session }
+  const scope = vue.effectScope()
+  let view
+  scope.run(() => {
+    view = loadSetupScript('src/pages/settings/settings.vue', modules, [
+      'notificationSettings', 'notificationRows', 'notificationStatus', 'notificationError', 'notificationDndEnabled',
+      'notificationDndStart', 'notificationDndEnd', 'notificationDndDirty', 'notificationDndRetryPending',
+      'notificationDndConflict', 'notificationDndRetryTarget', 'notificationSuccess',
+      'loadNotificationSettings', 'toggleNotification', 'saveNotificationDnd',
+    ])
+  })
+  return { view, session, stop: () => scope.stop() }
 }
 
-test('failed category write reloads the owner version and keeps the failure visible for retry', async () => {
+test('failed category write reloads the owner version and keeps the failure visible for retry', async (t) => {
   const rows = categories.map((category, index) => preference(category, index + 1))
   const commands = []
   let reads = 0
@@ -138,7 +182,8 @@ test('failed category write reloads the owner version and keeps the failure visi
       return row
     },
   }
-  const { view } = makeSettingsHarness(api)
+  const { view, stop } = makeSettingsHarness(api)
+  t.after(stop)
   await view.loadNotificationSettings()
   await view.toggleNotification(view.notificationSettings.value.find(row => row.category === 'ACCOUNT'))
 
@@ -152,7 +197,7 @@ test('failed category write reloads the owner version and keeps the failure visi
   assert.equal(view.notificationRows.value.find(row => row.category === 'ACCOUNT').enabled, true)
 })
 
-test('category write reconciles a lost response against the refreshed owner state', async () => {
+test('category write reconciles a lost response against the refreshed owner state', async (t) => {
   const rows = categories.map((category, index) => preference(category, index + 1))
   let reads = 0
   let writes = 0
@@ -174,7 +219,8 @@ test('category write reconciles a lost response against the refreshed owner stat
       throw new Error('response lost after the owner committed')
     },
   }
-  const { view } = makeSettingsHarness(api)
+  const { view, stop } = makeSettingsHarness(api)
+  t.after(stop)
   await view.loadNotificationSettings()
   await view.toggleNotification(view.notificationSettings.value.find(row => row.category === 'ACCOUNT'))
 
@@ -187,7 +233,7 @@ test('category write reconciles a lost response against the refreshed owner stat
   assert.equal(view.notificationSuccess.value, '设置已保存。')
 })
 
-test('partial DND success keeps one retry target and retries using freshly loaded versions', async () => {
+test('partial DND success keeps one retry target and retries using freshly loaded versions', async (t) => {
   const rows = categories.map((category, index) => preference(category, index + 1))
   const attempts = new Map()
   const commands = []
@@ -204,7 +250,8 @@ test('partial DND success keeps one retry target and retries using freshly loade
       return row
     },
   }
-  const { view } = makeSettingsHarness(api)
+  const { view, stop } = makeSettingsHarness(api)
+  t.after(stop)
   await view.loadNotificationSettings()
   await view.saveNotificationDnd(true)
 
