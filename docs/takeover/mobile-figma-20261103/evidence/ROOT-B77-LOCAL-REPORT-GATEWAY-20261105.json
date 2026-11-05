@@ -1,0 +1,147 @@
+{
+  "scope": "MB-016/017 local HTTP Gateway, IAM TLS and Learning JDBC with empty synthetic report history",
+  "author": "DSH29 external report proof, DSH30 isolated lifecycle and scope, DSH31 canonical local JDBC startup, Root execution",
+  "integration_head_at_run": "a4ef5c504846ad90200f958899b635654b846ba7",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "learning_candidate": "8e16cc14f4dbc636c54eb60a3b8eec388a5baeda",
+  "learning_jar_sha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+  "iam_gateway_jars_receipt": "ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+  "root_wrapper_exit_code": 0,
+  "independent_http_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "report_http": {
+    "result": "PASS",
+    "counters": {
+      "requests": 9,
+      "issue": 5,
+      "concurrentIssues": 2,
+      "anonymousDenied": 1,
+      "mismatch": 1,
+      "headerless": 1,
+      "publicReads": 2,
+      "revokes": 2
+    },
+    "steps": [
+      {
+        "id": "issue.anonymous",
+        "method": "POST",
+        "path": "/learning/reports/WEEKLY/shares?date=2026-10-05",
+        "status": 401,
+        "bodySha256": "a4341bd326d8abfda273f424c18829e7fe39411df568fa342cc333d5eb3e360d"
+      },
+      {
+        "id": "issue.concurrent.repeat",
+        "method": "POST",
+        "path": "/learning/reports/WEEKLY/shares?date=2026-10-05",
+        "status": 200,
+        "bodySha256": "9be7480133c1f6e5a58382208eb925ef48c2c5e6ae553172bbfeb6ebdf1529bb",
+        "keySha256": "9e3eb9f38d16af78c6a344850993472cc127aa193aaa127c72a58cb4b7155107",
+        "refSha256": "ae217584b55f2218e533f38a2439c273cf65426507024fe77f8b8eb07278a525",
+        "expiresAt": "2026-11-12T15:11:26.850892Z"
+      },
+      {
+        "id": "issue.concurrent.first",
+        "method": "POST",
+        "path": "/learning/reports/WEEKLY/shares?date=2026-10-05",
+        "status": 200,
+        "bodySha256": "9be7480133c1f6e5a58382208eb925ef48c2c5e6ae553172bbfeb6ebdf1529bb",
+        "keySha256": "9e3eb9f38d16af78c6a344850993472cc127aa193aaa127c72a58cb4b7155107",
+        "refSha256": "ae217584b55f2218e533f38a2439c273cf65426507024fe77f8b8eb07278a525",
+        "expiresAt": "2026-11-12T15:11:26.850892Z"
+      },
+      {
+        "id": "issue.mismatch_date",
+        "method": "POST",
+        "path": "/learning/reports/WEEKLY/shares?date=2026-10-12",
+        "status": 409,
+        "bodySha256": "104876e7e2e8b85bbbea214eff132487aa573c3f90ed81f39a45acf14e298153",
+        "keySha256": "9e3eb9f38d16af78c6a344850993472cc127aa193aaa127c72a58cb4b7155107"
+      },
+      {
+        "id": "issue.headerless",
+        "method": "POST",
+        "path": "/learning/reports/WEEKLY/shares?date=2026-10-05",
+        "status": 200,
+        "bodySha256": "3f328876f6d81ab08e90a1ff21d8af6169d9a91d02e32554b8c1ec2d1f51a9e9",
+        "optional": true,
+        "ok": true,
+        "refSha256": "c7bc1eca059394f8f224cefbf9c3540ffb2270291bd98c0d1b73a980249b796d"
+      },
+      {
+        "id": "public.active",
+        "method": "GET",
+        "path": "/public/learning/report-shares/{ref}",
+        "status": 200,
+        "bodySha256": "7ac0e819d3d18704ed9e589e714f8a3d206ab9c4ec7277c38b24dfb5a01be157"
+      },
+      {
+        "id": "revoke.first",
+        "method": "POST",
+        "path": "/learning/report-shares/{ref}/revoke",
+        "status": 200,
+        "bodySha256": "8f9d025abd6e197fa1dddad5f4cc699f6887cbd9f1d2c04b42c5a2248e3dd8dd",
+        "revokedAt": "2026-11-05T15:11:26.988580Z"
+      },
+      {
+        "id": "revoke.repeat",
+        "method": "POST",
+        "path": "/learning/report-shares/{ref}/revoke",
+        "status": 200,
+        "bodySha256": "8f9d025abd6e197fa1dddad5f4cc699f6887cbd9f1d2c04b42c5a2248e3dd8dd",
+        "retained": true,
+        "revokedAt": "2026-11-05T15:11:26.988580Z"
+      },
+      {
+        "id": "public.revoked",
+        "method": "GET",
+        "path": "/public/learning/report-shares/{ref}",
+        "status": 200,
+        "bodySha256": "3282d49509320b103875a645f38c813ffeb637d310c9753e7a98e798bd0a637e"
+      }
+    ],
+    "idempotent_receipt_same": true,
+    "active_public_scope": "NEVER_STUDIED with exact allowlisted fields",
+    "revoked_public_scope": "only status=REVOKED",
+    "real_iam_bearer": {
+      "alg": "RS256",
+      "issuer": "http://127.0.0.1:18087",
+      "audience": [
+        "yuxuexing-api"
+      ],
+      "tenant": "platform",
+      "subjectPresent": true,
+      "roleLearner": true,
+      "permission": true,
+      "tokenType": "access",
+      "scopePresent": true,
+      "adultGate": "PASSED",
+      "consentState": "GRANTED",
+      "phase": "phase-1",
+      "accountStatus": "ACTIVE"
+    }
+  },
+  "previous_local_startup": {
+    "result_sha256": "7cba1dc3c0d94f92bf13885cee33fcd0a1949b00a9a777c5264e13bf2bc7da61",
+    "report_requests": 0,
+    "learning_start_error": "The fail-closed adapter mode left HttpLearnerTargetPort unavailable for V2PlansController.",
+    "correction": "Canonical local JDBC uses HTTP owner adapter beans on registered loopback ports. Learner, Content and Assessment listeners stayed down."
+  },
+  "probe_sha256": "4e74ad55114319b653bd9048a11bdfbf0facd1f7027aecdfb94a13b9e2fdd1f2",
+  "result_sha256": "bcb4f1e5f1bd3b26b7c41038821e9aef0b88bc4ef3bace30098f3116ab83b6ad",
+  "local_artifact_basename": "report-gateway-31-root",
+  "cleanup": [
+    "PORT_18070_RELEASED",
+    "PORT_18087_RELEASED",
+    "PORT_18090_RELEASED",
+    "PORT_13306_RELEASED",
+    "TEMP_DB_RELEASED",
+    "TEMP_TLS_RELEASED"
+  ],
+  "ready_report_browser_and_deployment": "NOT_RUN",
+  "mistake_detail_owner_and_trace": "TRACE_PENDING"
+}

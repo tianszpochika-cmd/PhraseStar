@@ -13,6 +13,7 @@
 - [关闭页 B65](reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md) 写作和两条 B11 的遗留工作区清理已通过 255 项受控浏览器检查。
 - [关闭页 B56](reviews/INTEGRATION-B56-CLOSED-PRACTICE.md) 收口旧听力与口语关闭页，组合 H5 116 项受控检查通过。
 - [报告分享 B71](reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md) 隔离 MySQL 验证同键并发签发和既有撤销边界。 [移动端 B73](reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md) 54 项受控浏览器检查通过。
+- [报告分享 B77](reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md#b77-本机-gateway-报告分享) 本机 Gateway 和学习服务的并发签发、冲突、旧调用与撤销读回通过。
 - [设备退出 B76](reviews/INTEGRATION-B23-DEVICES.md#b76-本机设备退出接口) 本机 Gateway 与 IAM 通过设备列表、同键重试、单设备撤销及刷新拒绝验证。
 - [日常 H5 入口 B74](reviews/INTEGRATION-B74-CURRENT-H5-RUNNER.md) 默认构建的匿名与关闭页检查覆盖 43 个场景。
 - [匿名路由 B55](reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md) 33/33 通过，覆盖安全返回与零匿名私有请求。

@@ -1825,6 +1825,13 @@
           "status": "SCOPED_SOURCE_AND_SYNTHETIC_H5_PASS_TRACE_PENDING",
           "review": "reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md",
           "receipt": "evidence/ROOT-B73-REPORT-SHARE-MOBILE-20261105.json"
+        },
+        "b77_local_report_gateway": {
+          "status": "SCOPED_LOCAL_REPORT_GATEWAY_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B77-LOCAL-REPORT-GATEWAY-20261105.json",
+          "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+          "report_http_requests": 9,
+          "independent_http_checks": 184
         }
       },
       "current_job": null,
@@ -1921,6 +1928,13 @@
           "status": "SCOPED_SOURCE_AND_SYNTHETIC_H5_PASS_TRACE_PENDING",
           "review": "reviews/INTEGRATION-B73-REPORT-SHARE-MOBILE.md",
           "receipt": "evidence/ROOT-B73-REPORT-SHARE-MOBILE-20261105.json"
+        },
+        "b77_local_report_gateway": {
+          "status": "SCOPED_LOCAL_REPORT_GATEWAY_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B77-LOCAL-REPORT-GATEWAY-20261105.json",
+          "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+          "report_http_requests": 9,
+          "independent_http_checks": 184
         }
       },
       "current_job": "dsh/profile-batch-15-share-matrix",
@@ -3624,7 +3638,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:05:09.887933+08:00",
+  "updated_at": "2026-11-05T23:13:54.192457+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5378,5 +5392,15 @@
     "target_refresh_status": 401,
     "current_bearer_status": 200,
     "deployed_gateway_and_native": "NOT_RUN"
+  },
+  "integration_batch_77_local_report_gateway": {
+    "scope": "MB-016/017 share only, synthetic empty history",
+    "status": "SCOPED_LOCAL_REPORT_GATEWAY_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B77-LOCAL-REPORT-GATEWAY-20261105.json",
+    "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
+    "report_http_requests": 9,
+    "independent_http_checks": 184,
+    "canonical_mistake_detail": "NOT_RUN",
+    "deployment": "NOT_RUN"
   }
 }
