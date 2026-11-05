@@ -5798,5 +5798,15 @@
     "next": "G144_ACTUAL_ATTEMPT_OUTCOME",
     "h5_same_attempt_broker_acl_learning_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B106-ASSESSMENT-KAFKA-TRANSPORT-20261106.json"
+  },
+  "integration_batch_107_assessment_submitted_items": {
+    "state": "ACCEPTED_SOURCE_CURRENT_ATTEMPT_ONLY",
+    "old_regressions_reproduced": 3,
+    "intermediate_grade_reuse_red": 1,
+    "offline_maven": "175 pass, 7 opt-in skip",
+    "current_grade_calls_per_answer": 1,
+    "next": "EXACT_COMBINED_PUBLISHER_RUNTIME",
+    "h5_broker_acl_learning_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B107-ASSESSMENT-SUBMITTED-ITEMS-20261106.json"
   }
 }

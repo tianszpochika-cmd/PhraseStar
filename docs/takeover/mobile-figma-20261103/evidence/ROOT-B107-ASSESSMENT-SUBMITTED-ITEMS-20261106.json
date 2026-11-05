@@ -1,0 +1,109 @@
+{
+  "batch": "B107",
+  "status": "ACCEPTED_SOURCE_ASSESSMENT_CURRENT_ATTEMPT_OUTCOMES",
+  "source_jobs": [
+    "G144",
+    "G146"
+  ],
+  "source_files": [
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "sha256": "834f1136216dc918645f1033b19b14d5001b3cf83a2b8398be668c0d424bdbb9",
+      "bytes": 81404
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10AssessmentEventCorrelationTest.java",
+      "sha256": "d801138663dc17cb4d7b13ea34ea991ae9934d95463a1b3a740f3f95be9b51c1",
+      "bytes": 30295
+    }
+  ],
+  "source_parent_before_application": "5315a60a2928266836901dff6c9501215f64c252",
+  "trace": {
+    "route": "MB-013",
+    "owner": "assessment-service",
+    "event": "assessment.item.assessed.v2",
+    "page_trace": {
+      "act": [
+        "ACT-P1-LEARNER"
+      ],
+      "jny": [
+        "JNY-P1-06"
+      ],
+      "rule": [
+        "RULE-P1-SESSION",
+        "RULE-P1-TIME-SYNC"
+      ],
+      "int_ids": [
+        "INT-P1-005",
+        "INT-P1-006"
+      ],
+      "e2e": [
+        "E2E-P1-MULTISKILL"
+      ],
+      "arch": [
+        "ARCH-API-001",
+        "ARCH-REL-001"
+      ],
+      "page": [
+        "PAGE-P1-GRAMMAR",
+        "PAGE-P1-PRACTICE-SESSION"
+      ],
+      "r1": [
+        "R1-043",
+        "R1-044",
+        "R1-045",
+        "R1-046",
+        "R1-058"
+      ],
+      "bc": [
+        "BC-033",
+        "BC-034",
+        "BC-036",
+        "BC-037"
+      ],
+      "ic": [
+        "IC-022",
+        "IC-023"
+      ],
+      "feat_v2": [
+        "FEAT-GRM-001→V2-980-0071"
+      ],
+      "prd_atom_v2": [
+        "PRD-ATOM-0474→V2-980-0236"
+      ],
+      "trace_status": "TRACE_PENDING",
+      "note": "为准备性来源锚点；须逐页核对本轮具体动作、operation、差量及缺失项，完成前补齐；部分链接为相关链路非全量覆盖。"
+    }
+  },
+  "baseline_red": {
+    "executed": 5,
+    "failures": 3,
+    "partial_attempt_events": 3,
+    "expected_events": 1,
+    "duplicate_alias_accepted": true,
+    "blank_outcome": "INCORRECT",
+    "log_sha256": "4388f2771957b00a212676049a0a73ed6c5809af7d221e3131c449f81b798172"
+  },
+  "intermediate_red": {
+    "executed": 6,
+    "unexpected_second_grade_errors": 1,
+    "log_sha256": "e617ffd03e4639c0dbbdbf7c81ec76d0c330050ea6aa47efd7c25d15a9cd47e8"
+  },
+  "candidate": {
+    "passed": 175,
+    "opt_in_skipped": 7,
+    "focused": "6/6",
+    "log_sha256": "cdcca981b4ba73c684fed88ca213441fbf0a0372b07b32a111c6bf3a960f20b2",
+    "one_current_grade_feeds_event_and_report": true,
+    "no_untouched_or_historical_item_event_for_current_attempt": true,
+    "duplicate_alias_status": 400,
+    "out_of_scope_status": 404,
+    "blank_outcome": "UNANSWERED",
+    "same_key_replay": "PASS"
+  },
+  "runtime_scope": "NONE_THIS_BATCH",
+  "next": [
+    "Candidate-bound Assessment publisher compose and current H5-to-Kafka proof",
+    "Broker ACL, Learning processing and runtime progression remain separate."
+  ]
+}

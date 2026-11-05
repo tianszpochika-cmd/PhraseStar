@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B107 修正部分提交的逐题事件范围及重复判分。旧版差异复现，最终 175 项离线测试通过。现进入同一笔 H5 作答到 Kafka 的联合验收。[逐题作答 B107](takeover/mobile-figma-20261103/reviews/INTEGRATION-B107-ASSESSMENT-SUBMITTED-ITEMS.md)
+
 移动端 B106 的独立测评候选通过本机 Kafka 模拟事件传输。数据库与 broker 的编号、关联字段和正文一致。部分作答事件修复进入发布合入门，真实浏览器作答接 broker、权限和 Learning 消费继续验收。[测评 Kafka B106](takeover/mobile-figma-20261103/reviews/INTEGRATION-B106-ASSESSMENT-KAFKA-TRANSPORT.md)
 
 移动端 B105 在同一 H5 浏览器完成真实语法单题作答并显示服务端回执。测评库 17 项核对通过，包含题库快照与待发布事件。Kafka 和学习侧另行验收。[语法单题 B105](takeover/mobile-figma-20261103/reviews/INTEGRATION-B105-GRAMMAR-H5-OWNER.md)
