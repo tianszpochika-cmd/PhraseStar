@@ -778,7 +778,7 @@
       "name": "学习与课程",
       "owner": "GROK",
       "wave": "G1",
-      "status": "GROK_VISUAL_REFINEMENT_RUNNING",
+      "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
       "scope": "书架/继续学习、内容授权与版本、空目录/无结果/失败分开",
       "services_data_owners": [
         "content-service",
@@ -837,16 +837,16 @@
         "mobile-state-boundaries.e2e.mjs"
       ],
       "evidence": {
-        "visual": "NOT_RUN",
-        "interaction": "NOT_RUN",
-        "h5": "NOT_RUN",
-        "cross_viewport": "NOT_RUN",
+        "visual": "LOCAL_SCOPED_H5_PASS",
+        "interaction": "LOCAL_SCOPED_H5_PASS",
+        "h5": "BUILD_PASS",
+        "cross_viewport": "LOCAL_H5_320_390_768_PASS",
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "NOT_RUN"
+        "independent_review": "reviews/INTEGRATION-B47-LEARN.md"
       },
-      "current_job": "grok/resume-20261105-learn-visual-10",
+      "current_job": null,
       "resume_evidence_20261105": "49 checks and 9 shots; zero duplicate login rejection in six real compiled runs"
     },
     {
@@ -2921,7 +2921,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T07:41:24.758972+00:00",
+  "updated_at": "2026-11-05T07:47:14.697608+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -4182,7 +4182,7 @@
   "active_resume_review_20261105": {
     "at": "2026-11-05T07:30:14.429880+00:00",
     "status": "ACTIVE_USER_RESUMED",
-    "local_ui_candidates": 24,
+    "local_ui_candidates": 25,
     "formal_routes": 33,
     "real_services": "NOT_RUN",
     "native_devices": "NOT_RUN",
@@ -4271,6 +4271,16 @@
     "review": "reviews/INTEGRATION-B46-WORLD-TODAY.md",
     "routeCountDelta": 2,
     "localUICandidateRoutes": 24,
+    "formalRoutes": 33,
+    "doD": false
+  },
+  "integration_batch_47_learn": {
+    "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+    "buildIndex": "61a79d80525d84c40c0da8f112871aa2c1ed3f696e3eff62e8ee2846fb9580a8",
+    "evidence": "evidence/ROOT-B47-LEARN-20261105.json",
+    "review": "reviews/INTEGRATION-B47-LEARN.md",
+    "routeCountDelta": 1,
+    "localUICandidateRoutes": 25,
     "formalRoutes": 33,
     "doD": false
   }

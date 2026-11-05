@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-05",
+  "scope": "MB-009",
+  "status": "LOCAL_H5_UI_CANDIDATE_TRACE_PENDING",
+  "doD": false,
+  "source": {
+    "apps/mobile/src/pages/learn/learn-page.ts": "c58272696d4aecf2d2959da25afbd262b3ce7db26ca9ec7fa3436197d3c05dc1",
+    "apps/mobile/src/pages/learn/learn.vue": "ce5bc49098a4894e6938a51a79dba328d9a88c6ea48a2a91e8d32562a1239b49",
+    "apps/mobile/src/static/figma-learn-detail-167-2065/imgGlow.svg": "4d264c9e47af57203d86572a92e6bfd83f4b58fc5558331b9293ab10711e7ad6",
+    "apps/mobile/src/static/figma-learn-detail-167-2065/imgIconBook.svg": "2c19e4b26950187a548df0cc9badb9612794582ff44d4c8cba0ddfd2e8b97f80",
+    "apps/mobile/src/static/figma-learn-detail-167-2065/imgIconBook1.svg": "179bad2bf6e6716d7c010350bec0709a98a156234d6141512b96de512988f21a",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgFeatIconSolarAll.svg": "ba904e9114642924e23fa8eee6c3db71d7ffdd2bb986753a8a8c98f2d08fbe93",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgFeatIconSolarBook.svg": "0524de650187a8c541f94e820606e5c185f8af8736d0b42dbb8a579b5a3c35ae",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgFeatIconSolarGrammar.svg": "619ec98870e3000ed76f55872af1805521edba288d36998dd1165a572bc94d69",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgGlow.svg": "925ad54b31d9eee3ddca95815d08c11cf4ba548260b079543c9acd043e4c35ff",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgIconBook.svg": "5812c095ca5260c31e88ed3a90033ba6a6ebe0d98bccf86e1ec2d23c2b3768ef",
+    "apps/mobile/src/static/figma-learn-shelf-167-1933/imgWeightRegular.svg": "787acd6b60505e65f659c96533f7ee42c8151f98052295d85903401f683fdd62",
+    "apps/mobile/tests/learn-page.test.mjs": "71196f6fe0cd5839ad6f590a896e7440edc3d2104c766796540cd84be4e24dcf",
+    "packages/i18n/src/mobile-resources/learn-page.ts": "841ff0cfc02d47acc55542c560b703daa9b3a2e02ac99b960ddfacbab549ea9e"
+  },
+  "artifact": {
+    "index_sha256": "61a79d80525d84c40c0da8f112871aa2c1ed3f696e3eff62e8ee2846fb9580a8",
+    "file_count": 640,
+    "includes_separately_pending_MB004": true
+  },
+  "node_tests": {
+    "pass": 4,
+    "fail": 0
+  },
+  "typecheck": "PASS",
+  "h5": "PASS",
+  "browser": {
+    "checks": 49,
+    "screenshots": 9,
+    "rejection_trace_cases": 6,
+    "unhandled_navigation_rejections": 0,
+    "transport": "Playwright route.fulfill with three synthetic origins"
+  },
+  "figma": [
+    "167:1933",
+    "167:2065"
+  ],
+  "pending": [
+    "real_gateway_and_iam",
+    "native_device",
+    "screen_reader",
+    "deployment",
+    "full_trace"
+  ],
+  "local_ui_candidate_count": 25,
+  "formal_route_count": 33,
+  "raw": "resume-20261105/learn-10-review/root-combined"
+}
