@@ -487,6 +487,14 @@
           "receipt": "evidence/ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
           "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
           "script_checks": 184
+        },
+        "b75_local_h5_iam": {
+          "status": "SCOPED_LOCAL_H5_IAM_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B75-LOCAL-H5-IAM-CONSENT-20261105.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "script_checks": 184,
+          "rendered_documents_matched": 3,
+          "owner_consents_matched": 3
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -3607,7 +3615,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T22:27:55.992451+08:00",
+  "updated_at": "2026-11-05T22:55:06.330850+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5339,5 +5347,16 @@
     "browser_checks": 477,
     "native_host_tools_passed": 8,
     "native_device": "NOT_RUN"
+  },
+  "integration_batch_75_local_h5_iam": {
+    "scope": "MB-004 / R1-008 local Chrome with IAM/Gateway/MySQL and synthetic publications",
+    "status": "SCOPED_LOCAL_H5_IAM_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B75-LOCAL-H5-IAM-CONSENT-20261105.json",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "script_checks": 184,
+    "rendered_documents_matched": 3,
+    "owner_consents_matched": 3,
+    "formal_publication_and_deployed_gateway": "NOT_RUN",
+    "native_and_screen_reader": "NOT_RUN"
   }
 }

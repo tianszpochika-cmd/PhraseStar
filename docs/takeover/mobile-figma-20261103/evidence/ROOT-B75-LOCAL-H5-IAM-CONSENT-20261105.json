@@ -1,0 +1,207 @@
+{
+  "scope": "MB-004 / R1-008 local Chrome H5, Gateway, IAM TLS and MySQL V19 with synthetic publications",
+  "author": "Grok61 scoped static server, Grok65 exact DOM text observer, Root review and execution",
+  "h5_candidate": "77d80524",
+  "integration_head_at_run": "8e16cc14f4dbc636c54eb60a3b8eec388a5baeda",
+  "h5_index_sha256": "1a76e5ba2f09234e58704512785628251a386b3e66e9b9de5cb48635965e23fc",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "service_jars_receipt": "ROOT-B72-LOCAL-IAM-GATEWAY-CONSENT-20261105.json",
+  "fixture_sha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+  "browser_probe_sha256": "bbad2a87a6d71a497bad63315033f1fa0acd9a171d99f47612dbe34dcc9310b5",
+  "http_probe_sha256": "b7a68d9f0ecfab2710285cea1206cef314d11b296f41606eadfde2c09fdcdb5a",
+  "root_wrapper_exit_code": 0,
+  "independent_http_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "actual_chrome": {
+    "result": "OBSERVED",
+    "loopback_origin": "http://127.0.0.1:18183",
+    "network": "System Chrome ephemeral profile, normal local network access and CORS, single run IAM SPKI trust",
+    "requests": [
+      {
+        "method": "POST",
+        "path": "/api/v1/auth/login",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/learner/targets",
+        "status": 404,
+        "reason": "unavailable-non-iam"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "PUT",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "PUT",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "PUT",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/consents",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/auth/token/refresh",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "reason": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/learner/targets",
+        "status": 404,
+        "reason": "unavailable-non-iam"
+      }
+    ],
+    "expectations": {
+      "separateFromHttpChecks": true,
+      "bodyControls": 3,
+      "opened": [
+        {
+          "type": "TERMS",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 180,
+          "expectedCodePoints": 180
+        },
+        {
+          "type": "PRIVACY",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 165,
+          "expectedCodePoints": 165
+        },
+        {
+          "type": "ADULT_LEARNING",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 156,
+          "expectedCodePoints": 156
+        }
+      ],
+      "openedByUi": true,
+      "documentsMatch": true,
+      "agreeClicks": 1,
+      "successfulConsentPuts": 3,
+      "consentPutStatuses": [
+        200,
+        200,
+        200
+      ],
+      "consentGetsAfterPuts": 1,
+      "extraContinuedWrites": 0,
+      "abortedWriteCount": 0,
+      "syntheticTarget404s": 2,
+      "staticFulfills": 55,
+      "refreshObserved": 1,
+      "refreshAcceptedCount": 1,
+      "towardGoal": true,
+      "toward": "goal-title",
+      "quotaClicks": 0
+    },
+    "owner_readback": {
+      "status": 200,
+      "count": 3,
+      "matched": 3,
+      "expected": 3,
+      "reason": null
+    }
+  },
+  "prior_observer_failure": {
+    "result_sha256": "7afdfdf2d3d7ba3e254aa6c9df9c06e2a8cbbe233773fe54898d924e4d900754",
+    "document_comparison": [
+      [
+        174,
+        180
+      ],
+      [
+        159,
+        165
+      ],
+      [
+        150,
+        156
+      ]
+    ],
+    "signed_owner_readback": 3,
+    "explanation": "uni-h5 renders line breaks as BR. The previous textContent read skipped them."
+  },
+  "cleanup": [
+    "PORT_18070_RELEASED",
+    "PORT_18087_RELEASED",
+    "PORT_13306_RELEASED",
+    "PORT_18183_RELEASED",
+    "TEMP_DB_RELEASED",
+    "TEMP_TLS_RELEASED"
+  ],
+  "result_sha256": "bf67f32d16be1a9ee128049cbc9a2fb7e75107b5232fbc15e2371c9d434fddfb",
+  "report_sha256": "394fd496755aac7d944fee53038747c125cd00d4978f0cffa99976bc7abe0159",
+  "local_artifact_basename": "iam-browser-text-65-b73-root",
+  "formal_publication_deployed_gateway_native_and_screen_reader": "NOT_RUN",
+  "learner_target_read": "SCOPED_SYNTHETIC_404",
+  "learner_goal_write": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}
