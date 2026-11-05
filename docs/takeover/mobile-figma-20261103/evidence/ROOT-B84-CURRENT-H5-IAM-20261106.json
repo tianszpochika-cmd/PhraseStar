@@ -1,0 +1,145 @@
+{
+  "scope": "MB-004 and MB-025 local Chrome rechecks on current B81 H5 with actual Gateway/IAM/MySQL and synthetic identities",
+  "author": "Grok74 consent observer correction, Root review and rechecks",
+  "h5_candidate": "c7429cb480a2a32ef93383133527cade8ea07b72",
+  "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
+  "integration_head_at_run": "3fb50f4672f72d1d254c4c20092a9622e5c5e61b",
+  "iam_gateway_candidate": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+  "artifact_binding": "Only ARTIFACT and EXPECTED_INDEX_SHA constants changed in earlier consent/device observers.",
+  "consent": {
+    "result_sha256": "fdd698074bd3593b091fb339e372fb7092ea4bc5334d912a48f9d5720f9b22af",
+    "probe_sha256": "974aba5b0b8badeaf50eab6155b7b0a3761a39c44925cbc784cecc6b6429fdb7",
+    "status": "OBSERVED",
+    "http_checks": 184,
+    "expectations": {
+      "separateFromHttpChecks": true,
+      "bodyControls": 3,
+      "opened": [
+        {
+          "type": "TERMS",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 180,
+          "expectedCodePoints": 180
+        },
+        {
+          "type": "PRIVACY",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 165,
+          "expectedCodePoints": 165
+        },
+        {
+          "type": "ADULT_LEARNING",
+          "via": "keyboard",
+          "versionMatch": true,
+          "contentMatch": true,
+          "visibleCodePoints": 156,
+          "expectedCodePoints": 156
+        }
+      ],
+      "openedByUi": true,
+      "documentsMatch": true,
+      "agreeClicks": 1,
+      "successfulConsentPuts": 3,
+      "consentPutStatuses": [
+        200,
+        200,
+        200
+      ],
+      "consentGetsAfterPuts": 1,
+      "extraContinuedWrites": 0,
+      "abortedWriteCount": 0,
+      "syntheticTarget404s": 2,
+      "staticFulfills": 55,
+      "refreshObserved": 1,
+      "refreshAcceptedCount": 1,
+      "towardGoal": true,
+      "toward": "goal-title",
+      "quotaClicks": 0
+    },
+    "readback": {
+      "status": 200,
+      "count": 3,
+      "matched": 3,
+      "expected": 3,
+      "reason": null
+    }
+  },
+  "device": {
+    "result_sha256": "3148408432f240bd0600d55bc61afbe538bbc723a44b3b360339e381d1c8d2cb",
+    "probe_sha256": "c33a4b6aba96f714dbe3fcd34e2d2696d9ddf5e411bcf23aa14e590b70c4fcd2",
+    "status": "OBSERVED",
+    "http_checks": 184,
+    "expectations": {
+      "separateFromHttpChecks": true,
+      "reachedDevices": true,
+      "webRowSelected": true,
+      "confirmVia": "keyboard",
+      "principalGets": 2,
+      "principalOptions": 0,
+      "deviceGets": 2,
+      "deviceOptions": 0,
+      "deviceGetsAfterKick": 1,
+      "kickoutPosts": 1,
+      "kickoutOptions": 0,
+      "kickoutStatus": 200,
+      "kickoutPathExact": true,
+      "idempotencyKeyNonempty": true,
+      "loginPosts": 1,
+      "loginOptions": 0,
+      "refreshPosts": 0,
+      "targetRevokedOnReadback": true,
+      "currentActiveOnReadback": true,
+      "uiSuccessAfterReadback": true,
+      "uiSuccessBeforeReadback": false,
+      "extraContinuedWrites": 0,
+      "abortedWriteCount": 0,
+      "unknownApiCount": 0,
+      "syntheticTarget404s": 0,
+      "syntheticTargetOptions": 0,
+      "syntheticScope": "GET /api/v1/learner/targets 404 and OPTIONS 204 only; not a Gateway response",
+      "staticFulfills": 52,
+      "toward": "/pages/devices/devices",
+      "webRefreshStatus": 401,
+      "webRefreshNoToken": true
+    }
+  },
+  "early_observer": {
+    "result_sha256": "5d51bb1b63eb1a1139d51375bf77f27bd5312097e2525486468a58a193c4d0d3",
+    "status": "FAILED",
+    "observed_retry": "consent-refresh-retry",
+    "matched_consents": 3,
+    "reason": "Earlier observer ended as soon as retry became visible, before final awaited readback. The button is disabled during that interval. The revised observer keeps the goal deadline and performs no retry action."
+  },
+  "cleanup": {
+    "consent": [
+      "PORT_18070_RELEASED",
+      "PORT_18087_RELEASED",
+      "PORT_13306_RELEASED",
+      "PORT_18183_RELEASED",
+      "TEMP_DB_RELEASED",
+      "TEMP_TLS_RELEASED"
+    ],
+    "device": [
+      "PORT_18070_RELEASED",
+      "PORT_18087_RELEASED",
+      "PORT_13306_RELEASED",
+      "PORT_18183_RELEASED",
+      "TEMP_DB_RELEASED",
+      "TEMP_TLS_RELEASED"
+    ],
+    "early_observer": [
+      "PORT_18070_RELEASED",
+      "PORT_18087_RELEASED",
+      "PORT_13306_RELEASED",
+      "PORT_18183_RELEASED",
+      "TEMP_DB_RELEASED",
+      "TEMP_TLS_RELEASED"
+    ]
+  },
+  "formal_publication_deployed_gateway_native": "NOT_RUN",
+  "trace": "TRACE_PENDING"
+}

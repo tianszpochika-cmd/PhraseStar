@@ -511,6 +511,13 @@
           "owner_requests": 9,
           "owner_assertions": 78,
           "independent_http_checks": 184
+        },
+        "b84_current_h5_iam": {
+          "status": "SCOPED_CURRENT_H5_IAM_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B84-CURRENT-H5-IAM-20261106.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "http_checks_each": 184,
+          "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e"
         }
       },
       "pause_handoff": "PAUSE-20261104.md",
@@ -2688,6 +2695,13 @@
           "script_checks": 184,
           "ui_success_after_owner_readback": true,
           "target_refresh_status": 401
+        },
+        "b84_current_h5_iam": {
+          "status": "SCOPED_CURRENT_H5_IAM_PASS_TRACE_PENDING",
+          "receipt": "evidence/ROOT-B84-CURRENT-H5-IAM-20261106.json",
+          "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+          "http_checks_each": 184,
+          "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e"
         }
       },
       "current_job": "dsh/devices-batch-16-error-locale-browser",
@@ -3683,7 +3697,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-05T23:59:14.297508+08:00",
+  "updated_at": "2026-11-06T00:09:19.444944+08:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5504,5 +5518,14 @@
     "review": "reviews/INTEGRATION-B80-PERFORMANCE-RUNTIME.md",
     "motion_off_ms": 16348,
     "physical_device": "NOT_RUN"
+  },
+  "integration_batch_84_current_h5_iam": {
+    "scope": "MB-004 / MB-025 actual local H5 rechecks",
+    "status": "SCOPED_CURRENT_H5_IAM_PASS_TRACE_PENDING",
+    "receipt": "evidence/ROOT-B84-CURRENT-H5-IAM-20261106.json",
+    "review": "reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md",
+    "http_checks_each": 184,
+    "h5_index_sha256": "3d97632ece70cc3ffb00b6d2c296bbc63f77cb252b3f93bdc7bac4b7333b1c6e",
+    "deployed_and_native": "NOT_RUN"
   }
 }
