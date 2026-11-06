@@ -1,0 +1,47 @@
+{
+  "batch": "B144",
+  "at": "2026-11-06T09:17:13.491333+00:00",
+  "classification": "LOCAL_REAL_PROTECTED_READING_SCORE_AND_REPLAY_PASS",
+  "worker": "G387",
+  "runtimeSha256": "bb5fa9c5f5ca45f4bcc14c6d203d980a2ad7226b3ec2ef622134a445b8f0b7a3",
+  "scoring": {
+    "services": [
+      "assessment",
+      "content",
+      "gateway",
+      "iam",
+      "learner"
+    ],
+    "publishedVersion": 266101,
+    "ownerSnapshot": "snap_reading_266101",
+    "transport": "assess-to-content",
+    "bucket": "FULL",
+    "sameKeyAttemptCount": 1,
+    "ownerCountUnchanged": true,
+    "db": {
+      "attemptCountUnchanged": true,
+      "attempts": 1,
+      "checkpoints": 0,
+      "outbox": 3,
+      "session_all": 1,
+      "session_ok": 1
+    },
+    "h5": false,
+    "kafka": false,
+    "learningStarted": false
+  },
+  "cleanup": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "pending": [
+    "actual H5 score and feedback rendering",
+    "broker delivery and Learning consumption",
+    "native device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
