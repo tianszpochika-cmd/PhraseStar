@@ -29,13 +29,14 @@ test('B10 mobile mutations carry stable idempotency ids and never send answer ke
   assert.match(store, /queuedReviews/) 
 })
 
-test('B10 mobile SRS review carries the B25 top-level item id', () => {
+test('B10 mobile SRS review carries the contract LearningItemRef and never a top-level itemId', () => {
   const api = read('src/api/b10.ts')
-  const store = read('src/stores/b10-learning.ts')
-  assert.match(api, /data:\s*\{\s*itemId:\s*card\.itemId/)
+  const domain = read('src/domain/b10.ts')
+  assert.match(api, /item:\s*srsItemRef\(card\.itemType, card\.itemId\)/)
   assert.match(api, /rawQuality:\s*quality/)
-  assert.match(store, /return \{ itemId: card\.itemId, snapshotId:/)
-  assert.match(api, /itemId: number \| string/)
+  assert.match(api, /snapshotItemId:\s*card\.snapshotItemId/)
+  assert.doesNotMatch(api, /itemId:\s*card\.itemId,\s*snapshotId:/)
+  assert.match(domain, /itemId: number\b/)
 })
 
 test('B10 mobile covers recovery states, content-version staleness and performance downgrade', () => {

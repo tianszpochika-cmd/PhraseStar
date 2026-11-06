@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppIcon from '../../components/AppIcon.vue'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import { useMobileExperience } from '../../platform/experience'
+import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
+import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
@@ -87,18 +88,50 @@ function toggleMotion(disabled: boolean): void { store.setMotionDisabled(disable
 function setA(): void { if (!accountScope()) return; store.setABPoint('A'); pageMessage.value = `A 点：${Math.round(store.mediaPositionMs / 1000)}s` }
 function setB(): void { if (!accountScope()) return; store.setABPoint('B'); pageMessage.value = `B 点：${Math.round(store.mediaPositionMs / 1000)}s` }
 function selectClip(clipId: string): void { if (!accountScope()) return; store.selectLanguageClip(clipId); pageMessage.value = '已切换 Language Clip；播放地址仍需权益清单确认。' }
+function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
+function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
+const alternatives = [
+  {
+    id: 'vocab',
+    target: '/pages/b2-vocabulary/b2-vocabulary',
+    iconSrc: '/static/figma-closed-168-4327/d91329fd-0c05-46c3-9a5d-f300190c7d9b.svg',
+    chevronSrc: '/static/figma-closed-168-4327/4e7c093b-c2f2-44c5-b33b-4f4877a79499.svg',
+    titleKey: 'closed.alternatives.vocab',
+    metaKey: 'closed.alternatives.vocabMeta',
+    tone: 'brand' as const,
+  },
+  {
+    id: 'reading',
+    target: '/pages/b3-reading/b3-reading',
+    iconSrc: '/static/figma-closed-168-4327/050695e7-7f3d-4007-9760-3d89c94e6725.svg',
+    chevronSrc: '/static/figma-closed-168-4327/4e7c093b-c2f2-44c5-b33b-4f4877a79499.svg',
+    titleKey: 'closed.alternatives.reading',
+    metaKey: 'closed.alternatives.readingMeta',
+    tone: 'ok' as const,
+  },
+]
 
 onMounted(() => { /* closed practice: no live load */ undefined })
 onUnmounted(stopPlayback)
 </script>
 
 <template>
-  <view class="yx-page b11-page v2-b11listen-page" :class="themeClass" :style="experienceStyle" :data-motion="store.motionDisabled || store.performanceLevel === 'Performance' ? 'off' : experienceMotion">
-    <MobilePageHeader page="b11-listening" />
+  <view class="yx-page b11-page v2-b11listen-page v2-closed-page" :class="themeClass" :style="experienceStyle" :data-motion="store.motionDisabled || store.performanceLevel === 'Performance' ? 'off' : experienceMotion">
+    <MobilePageHeader page="b11-listening" compact :title="mobileT('closed.b11Listening.navTitle')" back-icon-src="/static/figma-closed-168-4327/3a7b6e37-d5f6-4494-8b21-2e493d4581ab.svg" :show-settings="false" />
     <view class="v2-b11listen-body">
-    <view class="yx-card card v2-b11listen-card" data-closed-practice role="status"><view class="eyebrow v2-b11listen-eyebrow"><AppIcon name="lock" :size="14" /><text>听力</text></view><text class="v2-b11listen-title v2-b11listen-h2">听力练习<text class="yx-soon-badge" data-coming-soon>即将开放</text></text><text class="yx-soon-reason" data-closed-reason>音频素材尚未上传到媒体库，播放地址无法签发；素材上线后即可在这里播放并听写。</text><button type="button" class="btn v2-b11listen-btn" data-closed-back @click="getUniRuntime().navigateTo({ url: '/pages/today/today' })"><AppIcon name="back" :size="14" />回到可用学习</button></view>
+    <MobileClosedPracticeNotice
+      variant="listening"
+      title-key="closed.b11Listening.title"
+      description-key="closed.listening.reason"
+      aria-label-key="closed.b11Listening.title"
+      glow-src="/static/figma-closed-168-4327/235a9127-86dc-4f14-b784-028d2b50ce74.svg"
+      icon-src="/static/figma-closed-168-4327/39e8258c-9396-4ce3-8d3b-286415020f26.svg"
+      :alternatives="alternatives"
+      @back="backToLearning"
+      @select="openRelated"
+    />
 
-    <B11StatusPanel class="v2-b11listen-status" :status="store.listeningStatus" :message="statusMessage" :queue-count="store.queueCount" :performance-level="store.performanceLevel" :motion-disabled="store.motionDisabled" @retry="load" @sync="sync" @performance="setPerformance" @motion="toggleMotion" />
+<B11StatusPanel class="v2-b11listen-status" :status="store.listeningStatus" :message="statusMessage" :queue-count="store.queueCount" :performance-level="store.performanceLevel" :motion-disabled="store.motionDisabled" @retry="load" @sync="sync" @performance="setPerformance" @motion="toggleMotion" />
 
     <view v-if="store.listening && segment" class="yx-card listening-card card v2-b11listen-card">
       <view class="card-heading v2-b11listen-heading"><view class="v2-b11listen-titlewrap"><text class="kicker eyebrow v2-b11listen-eyebrow">{{ store.listening.material.title }}</text><text class="v2-b11listen-title v2-b11listen-h2">{{ store.listening.material.title }}</text><text class="subtle d v2-b11listen-d">{{ b11T('common.contentVersion') }} {{ store.listening.contentVersion }}</text></view><text class="rights v2-b11listen-meta" :class="`rights--${store.mediaRightsState.toLowerCase()}`">{{ store.mediaRightsState }}</text></view>
@@ -172,4 +205,7 @@ onUnmounted(stopPlayback)
 .v2-b11listen-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700}
 .v2-b11listen-submit:hover{border-color:var(--v2-brand)}
 .v2-b11listen-fb{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
+
+.v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+@media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

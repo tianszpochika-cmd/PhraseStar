@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
+import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
 import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
+import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
@@ -34,6 +35,28 @@ const sourceText = computed(() => {
 const storageKey = 'yx.b10.mobile.writing.draft.v1'
 const WRITING_PROMPT_TYPE_LABELS: Record<string, string> = { TRANSLATION: '翻译', EMAIL: '邮件', SHORT_ESSAY: '短文', SENTENCE: '句子', CORRECTION: '改错' }
 function promptTypeLabel(promptType: unknown): string { return typeof promptType === 'string' ? (WRITING_PROMPT_TYPE_LABELS[promptType] ?? '写作') : '写作' }
+function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
+function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
+const alternatives = [
+  {
+    id: 'vocab',
+    target: '/pages/b2-vocabulary/b2-vocabulary',
+    iconSrc: '/static/figma-closed-168-6945/160841d4-c5ed-477c-889d-09d66d800524.svg',
+    chevronSrc: '/static/figma-closed-168-6945/3c5187e8-0de1-47b7-a99f-096226453a9f.svg',
+    titleKey: 'closed.alternatives.vocab',
+    metaKey: 'closed.alternatives.vocabMeta',
+    tone: 'brand' as const,
+  },
+  {
+    id: 'reading',
+    target: '/pages/b3-reading/b3-reading',
+    iconSrc: '/static/figma-closed-168-6945/a2fb823f-a42c-4ae9-9e76-da240a0d712a.svg',
+    chevronSrc: '/static/figma-closed-168-6945/3c5187e8-0de1-47b7-a99f-096226453a9f.svg',
+    titleKey: 'closed.alternatives.reading',
+    metaKey: 'closed.alternatives.readingMeta',
+    tone: 'ok' as const,
+  },
+]
 let draftTimer: ReturnType<typeof setTimeout> | undefined
 let loadRequest = 0
 type AccountScope = { subject: string; revision: number }
@@ -98,17 +121,25 @@ onUnmounted(() => { clearTimeout(draftTimer); engine.dispose() })
 </script>
 
 <template>
-  <view class="yx-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="b3-writing" />
-    <view class="v2-b3write-body">
-    <view class="yx-card card v2-b3write-card" data-closed-practice role="status"><view class="eyebrow v2-b3write-eyebrow"><AppIcon name="lock" :size="14" /><text>写作</text></view><text class="v2-b3write-title v2-b3write-h2">写作练习<text class="yx-soon-badge" data-coming-soon>即将开放</text></text><text class="yx-soon-reason" data-closed-reason>作文批改服务尚未接入，现在提交只能得到占位分数，不能作为真实反馈。</text><button type="button" class="btn v2-b3write-btn" data-closed-back @click="getUniRuntime().navigateTo({ url: '/pages/today/today' })"><AppIcon name="back" :size="14" />回到可用学习</button></view>
+  <view class="yx-page v2-closed-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
+    <MobilePageHeader page="b3-writing" compact :title="mobileT('closed.writing.navTitle')" back-icon-src="/static/figma-closed-168-6945/c2887965-483d-4879-8090-ebece5c7c6a6.svg" :show-settings="false" />
+    <MobileClosedPracticeNotice
+      variant="writing"
+      title-key="closed.writing.title"
+      description-key="closed.writing.reason"
+      aria-label-key="closed.writing.title"
+      glow-src="/static/figma-closed-168-6945/b58014db-d97f-4102-b67a-add6a602160c.svg"
+      icon-src="/static/figma-closed-168-6945/3cfa29d3-5518-43db-9c68-8ddefe5c9e9a.svg"
+      :alternatives="alternatives"
+      @back="backToLearning"
+      @select="openRelated"
+    />
 
     <B10StatusPanel class="v2-b3write-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" />
     <view v-if="prompts.length" class="yx-card b10-writing-card card v2-b3write-card"><view class="eyebrow v2-b3write-eyebrow"><AppIcon name="type" :size="14" /><text>写作题目</text></view><picker class="v2-b3write-picker" :range="prompts.map((prompt) => `${promptTypeLabel(prompt.promptType)} · ${prompt.title}`)" :value="Math.max(0, prompts.findIndex((prompt) => prompt.promptId === selectedPrompt?.promptId))" @change="selectPrompt(Number($event.detail.value))"><view class="b10-prompt-picker opt v2-b3write-opt v2-b3write-picker btn">{{ promptTypeLabel(selectedPrompt?.promptType) }} · {{ selectedPrompt?.title }}<AppIcon name="chev" :size="14" /></view></picker><view class="v2-b3write-head"><view class="v2-b3write-titles"><text class="b10-kicker v2-b3write-kicker">{{ promptTypeLabel(selectedPrompt?.promptType) }}</text><text class="v2-b3write-title v2-b3write-h2">{{ selectedPrompt?.title }}</text></view></view><text v-if="sourceText" class="b10-writing-card__source">{{ sourceText }}</text><text class="b10-writing-card__task d v2-b3write-d v2-b3write-stem">{{ selectedPrompt?.taskText }}</text><view v-if="selectedPrompt?.targetStructure?.length" class="b10-targets v2-b3write-list"><text v-for="target in selectedPrompt.targetStructure" :key="target" class="b10-target opt v2-b3write-opt v2-b3write-row"><AppIcon name="list" :size="14" />{{ target }}</text></view><textarea v-model="answer" class="b10-textarea v2-b3write-input" maxlength="12000" placeholder="输入答案；提交后由服务端返回规则反馈。" /><view class="b10-draft-row v2-b3write-row"><text class="d v2-b3write-d">{{ b10T('writing.draft') }}：{{ draftSavedAt ? '已保存' : '输入中' }}</text><button tabindex="0" role="button" class="b10-draft-button btn opt v2-b3write-btn v2-b3write-opt" type="button" @click="persistDraft">{{ b10T('writing.save') }}</button></view><button tabindex="0" role="button" class="yx-button btn v2-b3write-btn v2-b3write-submit" type="button" @click="submit"><AppIcon name="check" :size="14" />{{ selectedPrompt?.promptType === 'CORRECTION' ? b10T('writing.correction') : b10T('writing.submit') }}</button></view>
     <view v-else-if="status === 'loading'" class="yx-card b10-empty card v2-b3write-card"><view class="eyebrow v2-b3write-eyebrow"><AppIcon name="refresh" :size="14" /><text>加载中</text></view><text class="d v2-b3write-d">{{ b10T('status.loading') }}</text></view>
     <view v-else class="yx-card b10-empty card v2-b3write-card"><view class="eyebrow v2-b3write-eyebrow"><AppIcon name="inbox" :size="14" /><text>暂无题目</text></view><text class="v2-b3write-title v2-b3write-h2">{{ b10T('writing.noPrompt') }}</text><text class="d v2-b3write-d">题目还在准备，提交与反馈链也没接好；现在放空白编辑器写了也存不下来，所以没放。</text><button tabindex="0" role="button" class="yx-button btn v2-b3write-btn v2-b3write-submit" type="button" @click="load"><AppIcon name="refresh" :size="14" />{{ b10T('status.retry') }}</button></view>
     <B10FeedbackCard class="v2-b3write-fb" :feedback="feedback" />
-    </view>
   </view>
 </template>
 
@@ -155,4 +186,35 @@ onUnmounted(() => { clearTimeout(draftTimer); engine.dispose() })
 .v2-b3write-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
 .v2-b3write-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
 .v2-b3write-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
+/* m01 关闭提示：参考 Figma 168:6945，关闭态卡片与可练替代入口；不含设备外壳或假状态栏。 */
+.v2-b3write-page.v2-b3write-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+.v2-b3write-body{min-height:calc(100vh - 190px)}
+.v2-b3write-closed{display:flex;flex:1 1 auto;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;min-width:0;max-width:100%;padding-bottom:calc(var(--v2-space-2) + env(safe-area-inset-bottom));font-family:var(--v2-font)}
+.v2-b3write-scroll{display:flex;flex:1 1 auto;flex-direction:column;justify-content:center;gap:var(--v2-space-3);box-sizing:border-box;min-width:0;max-width:100%;padding:var(--v2-space-2) 0}
+.v2-b3write-hero{display:flex;flex-direction:column;align-items:center;gap:var(--v2-space-3);box-sizing:border-box;width:100%;min-width:0;max-width:520px;margin:0 auto;padding:28px 20px;border:1px solid var(--v2-line);border-radius:24px;background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font);text-align:center}
+.v2-b3write-art{display:flex;flex:none;align-items:center;justify-content:center;width:88px;height:88px;border-radius:28px;background:linear-gradient(128deg,var(--v2-ok) 7%,var(--v2-info) 82%);box-shadow:var(--v2-shadow-pop);color:var(--v2-inverse)}
+.v2-b3write-tag{margin-left:0;padding:3px 10px;border-radius:var(--v2-radius-pill);background:var(--v2-soft);color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;line-height:1.5;white-space:nowrap}
+.v2-b3write-herotitle{display:block;color:var(--v2-ink);font-family:var(--v2-font);font-size:22px;font-weight:700;line-height:1.4;text-align:center;overflow-wrap:anywhere}
+.v2-b3write-desc{display:block;max-width:320px;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.65;text-align:center;overflow-wrap:anywhere}
+.v2-b3write-alt{box-sizing:border-box;width:100%;min-width:0;max-width:520px;margin:0 auto;padding:6px 20px;border:1px solid var(--v2-line);border-radius:24px;background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
+.v2-b3write-alttitle{display:block;padding:10px 0 8px;color:var(--v2-ink);font-family:var(--v2-font);font-size:18px;font-weight:700;line-height:1.5}
+.v2-b3write-divider{height:1px;background:var(--v2-line)}
+.v2-b3write-altrow{display:flex;align-items:center;gap:var(--v2-space-3);box-sizing:border-box;width:100%;min-width:0;min-height:56px;margin:0;padding:10px 0;border:0;border-radius:0;background:transparent;color:var(--v2-mut);font-family:var(--v2-font);text-align:left}
+.v2-b3write-altrow:hover{background:var(--v2-surface)}
+.v2-b3write-altrow:active{transform:none}
+.v2-b3write-altrow:focus-visible{box-shadow:var(--v2-focus);outline:none}
+.v2-b3write-alttile{display:flex;flex:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;background:var(--v2-soft);color:var(--v2-brand)}
+.v2-b3write-alttile--ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
+.v2-b3write-altcopy{display:flex;flex:1 1 auto;flex-direction:column;gap:2px;min-width:0;max-width:100%}
+.v2-b3write-altname{display:block;color:var(--v2-ink);font-family:var(--v2-font);font-size:15px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.v2-b3write-altmeta{display:block;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);line-height:1.5;overflow-wrap:anywhere}
+.v2-b3write-bottom{display:flex;justify-content:center;margin-top:auto;padding:var(--v2-space-3) 0 var(--v2-space-2);border-top:1px solid var(--v2-line);background:var(--v2-card)}
+.v2-b3write-cta{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin:0;padding:14px 20px;border:0;border-radius:14px;background:var(--v2-grad);color:var(--v2-inverse);font-family:var(--v2-font);font-size:var(--v2-text-md);font-weight:700;line-height:1.5;box-shadow:var(--v2-shadow)}
+.v2-b3write-cta:hover{border-color:var(--v2-brand)}
+.v2-b3write-cta:active{transform:scale(.99)}
+.v2-b3write-cta:focus-visible{box-shadow:var(--v2-focus);outline:none}
+@media(max-width:360px){.v2-b3write-page.yx-page{padding-inline:16px}.v2-b3write-hero{padding:24px 16px;border-radius:20px}.v2-b3write-art{width:76px;height:76px;border-radius:24px}.v2-b3write-herotitle{font-size:20px}.v2-b3write-desc{max-width:100%}.v2-b3write-alt{padding:6px 16px;border-radius:20px}.v2-b3write-altname{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.v2-b3write-cta{transition:none}}
+.v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+@media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

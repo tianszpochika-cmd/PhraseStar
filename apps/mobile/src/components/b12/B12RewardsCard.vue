@@ -98,9 +98,89 @@ onMounted(() => { void loadRewards() })
 </script>
 
 <template>
-  <view class="b12-card"><view class="b12-heading"><view><text class="b12-kicker">奖励发放</text><text class="b12-title">{{ b12T('rewards.title') }}</text></view><text class="b12-state">{{ summary() }}</text></view><text class="b12-muted">{{ b12T('rewards.freeNotice') }}</text><view v-if="actionKey === 'rewards.load'" class="b12-state-box">{{ b12T('status.loading') }}</view><view v-else-if="chests.length && status !== 'permission' && status !== 'unauthenticated'" class="b12-list"><view v-for="chest in chests" :key="chest.grantId" class="b12-chest"><view class="b12-chest-main"><text class="b12-strong">{{ chest.rewardCode }}</text><text class="b12-muted">{{ chest.status === 'CLAIMED' ? b12T('rewards.opened') : b12T('rewards.granted') }} · {{ chest.probabilityVersion }}</text></view><text class="b12-kind">免费</text><view class="b12-actions"><button tabindex="0" role="button" class="b12-button secondary" type="button" :disabled="Boolean(actionKey) || !online" @click="loadProbability(chest.grantId)">{{ actionKey === `probability.${chest.grantId}` ? b12T('status.loading') : b12T('rewards.probability') }}</button><button tabindex="0" role="button" class="b12-button" type="button" :disabled="chest.status !== 'GRANTED' || Boolean(actionKey) || !online" @click="openChest(chest.grantId)">{{ actionKey === `claim.${chest.grantId}` ? b12T('rewards.opening') : chest.status === 'CLAIMED' ? b12T('rewards.opened') : b12T('rewards.open') }}</button></view></view></view><text v-else-if="status === 'empty'" class="b12-state-box">{{ b12T('rewards.empty') }}</text><view v-if="chestProbability" class="b12-probability"><text class="b12-strong">{{ b12T('rewards.probability') }} · {{ chestProbability.probabilityVersion }}</text><text v-for="outcome in chestProbability.outcomes" :key="outcome.outcomeCode" class="b12-muted">{{ b12T('rewards.tier') }} {{ outcome.outcomeCode }}：{{ percent(outcome.probability, chestProbability.totalProbability) }}</text><text class="b12-muted">{{ chestProbability.disclosedBeforeClaim ? '服务端已在领取前披露规则' : '服务端规则未披露' }} · {{ chestProbability.probabilitySnapshotHash ?? '服务端快照' }}</text></view><view v-if="lastChestResult" class="b12-result"><text class="b12-strong">{{ b12T('rewards.confirmed') }}</text><text class="b12-muted">{{ lastChestResult.outcomeCode ?? '结果未返回' }} · {{ lastChestResult.replayed ? '幂等重放' : '首次返回' }}</text><text class="b12-muted">{{ b12T('rewards.audit') }}：{{ lastChestResult.grantId }} · {{ b12T('rewards.rule') }}：{{ lastChestResult.probabilityVersion ?? '未返回' }}</text></view><text v-if="status === 'unauthenticated'" class="b12-state-box">{{ lastError ?? '请先登录后查看奖励数据。' }}</text><button tabindex="0" role="button" v-if="status === 'unauthenticated'" class="b12-button secondary" type="button" @click="openLogin">去登录</button><text v-else-if="status === 'permission'" class="b12-state-box">{{ lastError ?? b12T('status.permission') }}</text><text v-else-if="status === 'offline'" class="b12-state-box">{{ b12T('status.offline') }}</text><text v-else-if="status === 'recovery'" class="b12-state-box">{{ b12T('status.recovery') }}</text><text v-else-if="lastError" class="b12-state-box">{{ lastError }}</text></view>
+  <view class="b12-card" data-b12-rewards>
+    <view class="b12-heading">
+      <view class="b12-heading-copy">
+        <text class="b12-title">{{ b12T('rewards.title') }}</text>
+        <text class="b12-notice">{{ b12T('rewards.freeNotice') }}</text>
+      </view>
+      <text v-if="status === 'success'" class="b12-count">{{ chests.length }}</text>
+    </view>
+
+    <view v-if="status === 'loading'" class="b12-state-box" role="status">{{ b12T('status.loading') }}</view>
+    <view v-else-if="chests.length && status !== 'permission' && status !== 'unauthenticated'" class="b12-list">
+      <view v-for="chest in chests" :key="chest.grantId" class="b12-chest" :data-grant-id="chest.grantId">
+        <view class="b12-tile" aria-hidden="true"><image class="b12-tile-icon" src="/static/figma-world-core/imgIconGift-b89f33ab.svg" mode="aspectFit" /></view>
+        <view class="b12-chest-copy">
+          <view class="b12-chest-head">
+            <text class="b12-strong">{{ chest.status === 'CLAIMED' ? b12T('rewards.opened') : b12T('rewards.granted') }}</text>
+          </view>
+          <text class="b12-meta">{{ chest.rewardCode }} · {{ chest.probabilityVersion }}</text>
+        </view>
+        <button tabindex="0" role="button" class="b12-link" type="button" :disabled="Boolean(actionKey) || !online" @click="loadProbability(chest.grantId)">
+          {{ actionKey === `probability.${chest.grantId}` ? b12T('status.loading') : b12T('rewards.probability') }}
+        </button>
+        <button tabindex="0" role="button" class="b12-button b12-button--primary" type="button" :disabled="chest.status !== 'GRANTED' || Boolean(actionKey) || !online" @click="openChest(chest.grantId)">
+          {{ actionKey === `claim.${chest.grantId}` ? b12T('rewards.opening') : chest.status === 'CLAIMED' ? b12T('rewards.opened') : b12T('rewards.open') }}
+        </button>
+      </view>
+    </view>
+    <text v-else-if="status === 'empty'" class="b12-state-box">{{ b12T('rewards.empty') }}</text>
+
+    <view v-if="chestProbability" class="b12-probability">
+      <text class="b12-panel-title">{{ b12T('rewards.rule') }} · {{ chestProbability.probabilityVersion }}</text>
+      <view v-for="outcome in chestProbability.outcomes" :key="outcome.outcomeCode" class="b12-outcome">
+        <text class="b12-meta">{{ b12T('rewards.tier') }} {{ outcome.outcomeCode }}</text>
+        <text class="b12-outcome-value">{{ percent(outcome.probability, chestProbability.totalProbability) }}</text>
+      </view>
+      <text class="b12-meta">{{ chestProbability.disclosedBeforeClaim ? '服务端已在领取前披露规则' : '服务端规则未披露' }} · {{ chestProbability.probabilitySnapshotHash ?? '服务端快照' }}</text>
+    </view>
+
+    <view v-if="lastChestResult" class="b12-result">
+      <text class="b12-panel-title">{{ b12T('rewards.confirmed') }}</text>
+      <text class="b12-meta">{{ lastChestResult.outcomeCode ?? '结果未返回' }} · {{ lastChestResult.replayed ? '幂等重放' : '首次返回' }}</text>
+      <text class="b12-meta">{{ b12T('rewards.audit') }}：{{ lastChestResult.grantId }} · {{ b12T('rewards.rule') }}：{{ lastChestResult.probabilityVersion ?? '未返回' }}</text>
+    </view>
+
+    <text v-if="status === 'unauthenticated'" class="b12-state-box">{{ lastError ?? '请先登录后查看奖励数据。' }}</text>
+    <button v-if="status === 'unauthenticated'" tabindex="0" role="button" class="b12-button b12-button--secondary" type="button" @click="openLogin">{{ b12T('status.login') }}</button>
+    <text v-else-if="status === 'permission'" class="b12-state-box">{{ lastError ?? b12T('status.permission') }}</text>
+    <text v-else-if="status === 'offline'" class="b12-state-box">{{ b12T('status.offline') }}</text>
+    <text v-else-if="status === 'recovery'" class="b12-state-box">{{ b12T('status.recovery') }}</text>
+    <text v-else-if="lastError" class="b12-state-box">{{ lastError }}</text>
+  </view>
 </template>
 
 <style scoped lang="scss">
-.b12-card{display:grid;gap:16rpx;margin-top:24rpx;padding:22rpx;border:1rpx solid var(--yx-border);border-radius:16rpx;background:var(--yx-surface-card)}.b12-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16rpx}.b12-kicker{display:block;color:var(--yx-brand);font-size:21rpx;font-weight:800;letter-spacing:2rpx}.b12-title{display:block;margin-top:8rpx;font-size:34rpx;font-weight:750}.b12-state,.b12-muted{color:var(--yx-text-secondary);font-size:22rpx;line-height:1.6}.b12-muted{display:block}.b12-state-box{display:block;padding:18rpx;border:1rpx dashed var(--yx-border);border-radius:12rpx;color:var(--yx-text-secondary);font-size:23rpx;line-height:1.6}.b12-list{display:grid;gap:12rpx}.b12-chest{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12rpx;padding:18rpx;border:1rpx solid var(--yx-border);border-radius:12rpx}.b12-chest-main{display:grid;gap:6rpx}.b12-strong{display:block;color:var(--yx-text-primary);font-size:25rpx;font-weight:700}.b12-kind{align-self:start;padding:6rpx 10rpx;border-radius:8rpx;color:var(--yx-success-strong);background:var(--yx-success-soft);font-size:21rpx;font-weight:700}.b12-actions{grid-column:1/-1;display:flex;gap:10rpx;flex-wrap:wrap}.b12-button{min-height:64rpx;padding:0 18rpx;border:0;border-radius:12rpx;color:var(--yx-on-brand);background:var(--yx-action);font-size:22rpx;line-height:64rpx}.b12-button.secondary{border:1rpx solid var(--yx-border);color:var(--yx-brand);background:var(--yx-surface-card)}.b12-button:disabled{opacity:.5}.b12-probability,.b12-result{display:grid;gap:6rpx;padding:16rpx;border-radius:12rpx;background:var(--yx-brand-soft)}.b12-result{background:var(--yx-success-soft)}@media(max-width:520px){.b12-chest{grid-template-columns:1fr}.b12-kind{justify-self:start}.b12-actions{grid-column:auto;display:grid}.b12-button{width:100%}}
+.b12-card{position:relative;display:grid;gap:12px;box-sizing:border-box;min-width:0;width:100%;padding:20px;border:1px solid var(--v2-line);border-radius:24px;background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font);overflow:hidden}
+.b12-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-width:0}
+.b12-heading-copy{display:grid;gap:4px;min-width:0}
+.b12-title{display:block;color:var(--v2-ink);font-size:18px;font-weight:700;line-height:26px;overflow-wrap:anywhere}
+.b12-notice{display:block;color:var(--v2-mut);font-size:12px;line-height:18px;overflow-wrap:anywhere}
+.b12-count{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:28px;min-height:28px;padding:2px 8px;border-radius:999px;background:var(--v2-soft);color:var(--v2-brand);font-size:12px;font-weight:700}
+.b12-list{display:grid;gap:0;min-width:0}
+.b12-chest{display:grid;grid-template-columns:56px minmax(0,1fr) auto;grid-template-areas:"tile copy link" "tile cta cta";align-items:center;gap:10px 12px;min-width:0;padding:12px 0 14px;border-top:1px solid var(--v2-line)}
+.b12-chest:first-child{border-top:0;padding-top:2px}
+.b12-tile{grid-area:tile;display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:18px;background:linear-gradient(128.66deg,var(--v2-brand2,var(--v2-brand)) 7.4%,var(--v2-brand) 81.5%)}
+.b12-tile-icon{display:block;width:28px;height:28px}
+.b12-chest-copy{grid-area:copy;display:grid;gap:2px;min-width:0}
+.b12-chest-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.b12-strong{display:block;color:var(--v2-ink);font-size:16px;font-weight:700;line-height:22px;overflow-wrap:anywhere}
+.b12-tag{display:inline-flex;align-items:center;flex:none;padding:3px 10px;border-radius:999px;background:var(--v2-soft);color:var(--v2-brand);font-size:12px;font-weight:700;line-height:18px;white-space:nowrap}
+.b12-meta{display:block;color:var(--v2-mut);font-size:12px;line-height:18px;overflow-wrap:anywhere}
+.b12-link{grid-area:link;display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:0;padding:10px 8px;border:0!important;border-radius:12px;background:transparent!important;color:var(--v2-brand)!important;font:inherit;font-size:14px;font-weight:600;line-height:20px;text-align:center;white-space:normal}
+.b12-button{grid-area:cta;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-height:48px;margin:0;padding:12px 20px;border:1px solid transparent;border-radius:14px;font:inherit;font-size:16px;font-weight:700;line-height:1.4;text-align:center;white-space:normal}
+.b12-button--primary{background:var(--v2-brand)!important;color:var(--v2-inverse,#fff)!important;border-color:transparent!important;box-shadow:var(--v2-shadow)}
+.b12-button--secondary{border-color:var(--v2-line)!important;background:var(--v2-card)!important;color:var(--v2-brand)!important}
+.b12-button:disabled{opacity:.55;box-shadow:none}
+.b12-link:disabled{opacity:.55}
+.b12-link:focus-visible,.b12-button:focus-visible{outline:2px solid var(--v2-brand);outline-offset:2px}
+.b12-state-box{display:block;padding:14px;border:1px dashed var(--v2-line);border-radius:14px;color:var(--v2-mut);font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.b12-probability,.b12-result{display:grid;gap:6px;padding:14px;border:1px solid var(--v2-line);border-radius:16px;background:var(--v2-soft);min-width:0}
+.b12-result{background:var(--v2-card)}
+.b12-panel-title{display:block;color:var(--v2-ink);font-size:14px;font-weight:700;line-height:20px;overflow-wrap:anywhere}
+.b12-outcome{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:2px 0}
+.b12-outcome-value{flex:none;color:var(--v2-ink);font-size:13px;font-weight:700;line-height:18px}
+@media(max-width:420px){.b12-chest{grid-template-columns:56px minmax(0,1fr);grid-template-areas:"tile copy" "link link" "cta cta"}.b12-link{justify-self:start;text-align:left}.b12-tile{width:52px;height:52px;border-radius:16px}.b12-tile-icon{width:26px;height:26px}}
+@media(prefers-reduced-motion:reduce){.b12-button:active{transform:none}}
 </style>

@@ -71,6 +71,10 @@ export const useSessionStore = defineStore('session', () => {
   let activeAdapter: MobileAuthAdapter | null = null
   let restorePromise: Promise<void> | null = null
   let refreshPromise: Promise<boolean> | null = null
+  let refreshFailureStatus: number | null = null
+  let refreshExpirySerial = 0
+  let pendingAuthExpiryId: number | null = null
+  let lastMintedAuthExpiryId: number | null = null
   let transientReturnTo: string | null = null
   let authEpoch = 0
 
@@ -95,6 +99,7 @@ export const useSessionStore = defineStore('session', () => {
     return verifiedSubject.value === identity.subject && identityRevision.value === identity.revision
   }
   function setTokenPair(pair: MobileTokenPair): void {
+    pendingAuthExpiryId = null
     if (!pair.accessToken.trim()) throw new Error('认证服务没有返回访问凭证。')
     setInMemoryRequestIdentity(null, identityRevision.value)
     const native = isNativeAppRuntime()
@@ -241,6 +246,7 @@ export const useSessionStore = defineStore('session', () => {
     if (status.value === 'revoking') return false
     if (refreshPromise) return refreshPromise
     refreshPromise = (async () => {
+      refreshFailureStatus = null
       const epoch = authEpoch
       const verifiedSubjectAtRefresh = verifiedSubject.value
       const native = isNativeAppRuntime()
@@ -263,6 +269,9 @@ export const useSessionStore = defineStore('session', () => {
         return true
       } catch (error) {
         if (epoch !== authEpoch) return false
+        const failureStatus = typeof (error as { status?: unknown } | null)?.status === 'number' ? (error as { status: number }).status : 0
+        refreshFailureStatus = failureStatus
+        if (failureStatus === 401 || failureStatus === 403) refreshExpirySerial += 1
         clear()
         lastError.value = error instanceof Error ? error.message : 'SESSION_EXPIRED'
         return false
@@ -274,6 +283,30 @@ export const useSessionStore = defineStore('session', () => {
     if (!hasMobileApiIdentity(identity)) return false
     const refreshed = await refreshSilently()
     return refreshed && hasMobileApiIdentity(identity) && isAuthenticated.value
+  }
+  async function refreshForIdentity(identity: { subject: string; revision: number }): Promise<{ refreshed: boolean; expired?: boolean; expiryId?: number; consume?: () => boolean }> {
+    if (!hasMobileApiIdentity(identity)) return { refreshed: false }
+    const expiryBefore = refreshExpirySerial
+    const refreshed = await refreshSilently()
+    if (refreshed && hasMobileApiIdentity(identity) && isAuthenticated.value) return { refreshed: true }
+    if (!refreshed && refreshFailureStatus !== null && (refreshFailureStatus === 401 || refreshFailureStatus === 403) && refreshExpirySerial !== expiryBefore && status.value === 'unauthenticated' && !isAuthenticated.value) {
+      const expiryId = refreshExpirySerial
+      if (pendingAuthExpiryId === null && lastMintedAuthExpiryId !== expiryId) {
+        pendingAuthExpiryId = expiryId
+        lastMintedAuthExpiryId = expiryId
+      }
+      return {
+        refreshed: false,
+        expired: true,
+        expiryId,
+        consume: () => {
+          if (pendingAuthExpiryId !== expiryId || status.value !== 'unauthenticated' || isAuthenticated.value) return false
+          pendingAuthExpiryId = null
+          return true
+        },
+      }
+    }
+    return { refreshed: false }
   }
   async function logout(): Promise<boolean> {
     authEpoch += 1
@@ -368,6 +401,7 @@ export const useSessionStore = defineStore('session', () => {
   function clear(): void {
     const withdrawn = withdrawnMarker()
     authEpoch += 1
+    pendingAuthExpiryId = null
     invalidateLearningIdentity()
     accessToken.value = null
     refreshToken.value = null
@@ -384,7 +418,7 @@ export const useSessionStore = defineStore('session', () => {
     if (withdrawn) learningConsentWithdrawn.value = true
   }
 
-  return { accessToken, deviceId, sessionId, verifiedSubject, identityRevision, permissions, status, adultGate, adultLearningAccess, learningConsentWithdrawn, lastError, restored, isAuthenticated, isLearningReady, getMobileApiIdentity, restore, login, register, requestPasswordReset, confirmPasswordReset, refreshSilently, refreshSilentlyForIdentity, logout, revokeCurrentSession, confirmAdultGate, setReturnTo, peekReturnTo, consumeReturnTo, setAuthAdapter, markLearningConsentWithdrawn, refreshGateFromServer, clear }
+  return { accessToken, deviceId, sessionId, verifiedSubject, identityRevision, permissions, status, adultGate, adultLearningAccess, learningConsentWithdrawn, lastError, restored, isAuthenticated, isLearningReady, getMobileApiIdentity, restore, login, register, requestPasswordReset, confirmPasswordReset, refreshSilently, refreshSilentlyForIdentity, refreshForIdentity, logout, revokeCurrentSession, confirmAdultGate, setReturnTo, peekReturnTo, consumeReturnTo, setAuthAdapter, markLearningConsentWithdrawn, refreshGateFromServer, clear }
 })
 
 export function readAccessToken(): string | null { return getInMemoryAccessToken() }

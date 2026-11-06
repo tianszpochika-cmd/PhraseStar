@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppIcon from '../../components/AppIcon.vue'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import { useMobileExperience } from '../../platform/experience'
+import MobileClosedPracticeNotice from '../../components/MobileClosedPracticeNotice.vue'
+import { mobileT, useMobileExperience } from '../../platform/experience'
 const { experienceStyle, experienceMotion } = useMobileExperience()
 
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -24,17 +25,49 @@ async function submit(): Promise<void> { if (!sessionId.value || !segment.value 
 function playAudio(): void { if (!audioSource.value) { message.value = '当前内容没有授权播放地址；未伪造音频播放。'; return } audio.value?.destroy(); const context = getUniRuntime().createInnerAudioContext?.(); if (!context) { message.value = '当前平台没有音频适配器；未伪造音频播放。'; return } audio.value = context; enableUniAudioPitchPreservation(context, () => { message.value = '当前平台未声明音高保持能力；速度控制仍可用，已记录降级。' }); context.src = audioSource.value; context.playbackRate = playbackRate.value; context.play() }
 function pauseAudio(): void { audio.value?.pause() }
 function changeRate(): void { if (audio.value) audio.value.playbackRate = playbackRate.value }
+function backToLearning(): void { getUniRuntime().navigateTo({ url: '/pages/today/today' }) }
+function openRelated(url: string): void { getUniRuntime().navigateTo({ url }) }
+const alternatives = [
+  {
+    id: 'vocab',
+    target: '/pages/b2-vocabulary/b2-vocabulary',
+    iconSrc: '/static/figma-closed-168-3746/c783b91a-2153-42e2-acc6-7d5c181423e8.svg',
+    chevronSrc: '/static/figma-closed-168-3746/1ad156ec-6c46-46a7-afde-69003eae8577.svg',
+    titleKey: 'closed.alternatives.vocab',
+    metaKey: 'closed.alternatives.vocabMeta',
+    tone: 'brand' as const,
+  },
+  {
+    id: 'reading',
+    target: '/pages/b3-reading/b3-reading',
+    iconSrc: '/static/figma-closed-168-3746/afc85b52-a417-48b4-a07c-4f301dc9a259.svg',
+    chevronSrc: '/static/figma-closed-168-3746/1ad156ec-6c46-46a7-afde-69003eae8577.svg',
+    titleKey: 'closed.alternatives.reading',
+    metaKey: 'closed.alternatives.readingMeta',
+    tone: 'ok' as const,
+  },
+]
 onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } /* closed practice: no live load */ undefined })
 onUnmounted(() => { audio.value?.destroy(); unsubscribe(); engine.dispose() })
 </script>
 
 <template>
-  <view class="yx-page" :style="experienceStyle" :data-motion="experienceMotion" :class="themeClass">
-    <MobilePageHeader page="b3-listening" />
+  <view class="yx-page v2-closed-page" :style="experienceStyle" :data-motion="experienceMotion" :class="themeClass">
+    <MobilePageHeader page="b3-listening" compact :title="mobileT('closed.b3Listening.navTitle')" back-icon-src="/static/figma-closed-168-3746/59736468-29fc-451d-b095-809594a1ff91.svg" :show-settings="false" />
     <view class="v2-b3listen-body">
-      <view class="yx-card card v2-b3listen-card" data-closed-practice role="status"><view class="eyebrow v2-b3listen-eyebrow"><AppIcon name="lock" :size="14" /><text>听力</text></view><text class="v2-b3listen-title v2-b3listen-h2">听力练习<text class="yx-soon-badge" data-coming-soon>即将开放</text></text><text class="yx-soon-reason" data-closed-reason>音频素材尚未上传到媒体库，播放地址无法签发；素材上线后即可在这里播放并听写。</text><button type="button" class="btn v2-b3listen-btn" data-closed-back @click="getUniRuntime().navigateTo({ url: '/pages/today/today' })"><AppIcon name="back" :size="14" />回到可用学习</button></view>
+      <MobileClosedPracticeNotice
+        variant="listening"
+        title-key="closed.b3Listening.title"
+        description-key="closed.listening.reason"
+        aria-label-key="closed.b3Listening.title"
+        glow-src="/static/figma-closed-168-3746/055e2e46-2327-4a80-8732-dc6ba0135825.svg"
+        icon-src="/static/figma-closed-168-3746/7473ba78-43b2-49ac-949f-bf252f5b027c.svg"
+        :alternatives="alternatives"
+        @back="backToLearning"
+        @select="openRelated"
+      />
 
-      <B2StatusPanel class="v2-b3listen-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" @sync="() => undefined" />
+<B2StatusPanel class="v2-b3listen-status" :status="status" :message="message" :performance-level="performanceLevel" @retry="load" @performance="setPerformance" @sync="() => undefined" />
       <view v-if="material && segment" class="yx-card listening-card card v2-b3listen-card">
         <view class="eyebrow v2-b3listen-eyebrow"><AppIcon name="activity" :size="14" /><text>听力材料</text></view>
         <view class="v2-b3listen-head"><view class="v2-b3listen-titles"><text class="card-kicker v2-b3listen-kicker">{{ material.title }} · {{ Math.round(material.durationMs / 1000) }}s</text><text class="v2-b3listen-title v2-b3listen-h2">{{ material.title }}</text></view></view>
@@ -101,4 +134,7 @@ onUnmounted(() => { audio.value?.destroy(); unsubscribe(); engine.dispose() })
 .v2-b3listen-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
 .v2-b3listen-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
 .v2-b3listen-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
+
+.v2-closed-page.v2-closed-page{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:hidden;background:linear-gradient(180deg,var(--v2-soft) 0%,var(--v2-bg) 42%,var(--v2-card) 100%);font-family:var(--v2-font)}
+@media(max-width:360px){.v2-closed-page.yx-page{padding-inline:16px}}
 </style>

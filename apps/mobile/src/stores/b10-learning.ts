@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import type { B10AnswerInput, B10AnswerResult, B10AssessmentSession, B10Mistake, B10Report, B10RequestContext, B10SrsBatch, B10SrsCard } from '../domain/b10'
+import type { B10AnswerInput, B10AnswerResult, B10AssessmentSession, B10Mistake, B10Report, B10RequestContext, B10SrsBatch, B10SrsCard, B10SrsMasteryStatus } from '../domain/b10'
 import { b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../api/b10'
 import { b10ContentLocale, b10UiLocale } from '../platform/b10-foundation'
 import { getUniRuntime } from '../platform/uni-runtime'
@@ -10,8 +10,10 @@ import { B10_LEARNING_STORAGE_KEY, removeLearningCache } from './learning-cache'
 const STORAGE_KEY = B10_LEARNING_STORAGE_KEY
 
 interface QueuedReview { clientEventId: string; payload: Record<string, unknown>; cardId: string }
+interface VerifiedSrsReceipt { reviewEventId: number; eventStatus: 'ACCEPTED' | 'DUPLICATE'; stateVersion: number; masteryStatus: B10SrsMasteryStatus; dueLocalDate: string }
 interface PersistedState {
   subject: string
+  revision?: number
   batch?: B10SrsBatch | null
   currentIndex?: number
   queuedReviews?: QueuedReview[]
@@ -25,44 +27,82 @@ interface PersistedState {
 function context(): B10RequestContext { return { uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value } }
 function nowId(prefix: string): string { return createB10ClientEventId(prefix) }
 function isRecord(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null && !Array.isArray(value) }
-const CONFIRMED_SRS_STATUSES = ['ACCEPTED', 'DUPLICATE', 'RISK_FILTERED'] as const
+const SETTLED_SRS_STATUSES = ['ACCEPTED', 'DUPLICATE'] as const
+const TERMINAL_SRS_STATUSES = ['CONFLICT', 'EXPIRED', 'REJECTED', 'RISK_FILTERED'] as const
+const SRS_MASTERY_STATUSES = ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED', 'SHORT_TERM', 'CONSOLIDATING', 'AT_RISK', 'SUSPENDED'] as const
 
 function responseRecord(value: unknown): Record<string, unknown> {
   let source = value
-  if (isRecord(source) && isRecord(source.data)) source = source.data
-  else if (isRecord(source) && isRecord(source.result)) source = source.result
+  for (let depth = 0; depth < 3; depth += 1) {
+    if (!isRecord(source)) return {}
+    if (isRecord(source.data)) { source = source.data; continue }
+    if (isRecord(source.result)) { source = source.result; continue }
+    break
+  }
   return isRecord(source) ? source : {}
 }
 
 function responseStatus(value: unknown): string | null {
-  const status = responseRecord(value).status
-  return typeof status === 'string' && status.trim() ? status.trim().toUpperCase() : null
+  const direct = isRecord(value) ? value : {}
+  const status = direct.eventStatus ?? direct.status
+  if (typeof status === 'string' && status.trim()) return status.trim().toUpperCase()
+  const nested = responseRecord(value)
+  const nestedStatus = nested.eventStatus ?? nested.status
+  return typeof nestedStatus === 'string' && nestedStatus.trim() ? nestedStatus.trim().toUpperCase() : null
 }
 
-function responseMessage(value: unknown, fallback: string): string {
+function responseClientEventId(value: unknown): string | null {
+  const id = isRecord(value) ? value.clientEventId : null
+  return typeof id === 'string' && id.trim() ? id.trim() : null
+}
+
+function isSettledSrsStatus(status: string | null): status is 'ACCEPTED' | 'DUPLICATE' {
+  return status !== null && (SETTLED_SRS_STATUSES as readonly string[]).includes(status)
+}
+
+function isTerminalSrsStatus(status: string | null): boolean {
+  return status !== null && (TERMINAL_SRS_STATUSES as readonly string[]).includes(status)
+}
+
+function verifiedSrsReceipt(value: unknown, card: B10SrsCard): VerifiedSrsReceipt | null {
   const source = responseRecord(value)
-  for (const candidate of [source.feedbackCode, source.message, source.explanation]) if (typeof candidate === 'string' && candidate.trim()) return candidate.trim()
-  return fallback
+  const eventStatus = source.eventStatus
+  if (eventStatus !== 'ACCEPTED' && eventStatus !== 'DUPLICATE') return null
+  const reviewEventId = source.reviewEventId
+  if (typeof reviewEventId !== 'number' || !Number.isInteger(reviewEventId) || reviewEventId < 1) return null
+  if (card.stateVersion === null) return null
+  const stateVersion = source.stateVersion
+  if (typeof stateVersion !== 'number' || !Number.isInteger(stateVersion) || stateVersion < 0) return null
+  const state = source.srsState
+  if (!isRecord(state)) return null
+  if (state.itemType !== card.itemType || state.itemId !== card.itemId) return null
+  if (typeof state.stateVersion !== 'number' || state.stateVersion !== stateVersion) return null
+  const masteryStatus = state.masteryStatus
+  if (typeof masteryStatus !== 'string' || !(SRS_MASTERY_STATUSES as readonly string[]).includes(masteryStatus)) return null
+  const dueLocalDate = state.dueLocalDate
+  if (typeof dueLocalDate !== 'string' || !dueLocalDate.trim()) return null
+  if (stateVersion < card.stateVersion) return null
+  return { reviewEventId, eventStatus, stateVersion, masteryStatus: masteryStatus as B10SrsMasteryStatus, dueLocalDate: dueLocalDate.trim() }
+}
+
+function applyVerifiedSrsReceipt(card: B10SrsCard, receipt: VerifiedSrsReceipt): void {
+  if (card.stateVersion !== null && receipt.stateVersion < card.stateVersion) return
+  card.masteryStatus = receipt.masteryStatus
+  card.dueLocalDate = receipt.dueLocalDate
+  card.stateVersion = receipt.stateVersion
+}
+
+function reviewItemRef(card: B10SrsCard): Record<string, unknown> | null {
+  if (card.itemType === 'VOCAB') return { itemType: 'VOCAB', vocabId: card.itemId }
+  if (card.itemType === 'CHUNK') return { itemType: 'CHUNK', chunkId: card.itemId }
+  if (card.itemType === 'EXPRESSION') return { itemType: 'EXPRESSION', expressionId: card.itemId }
+  return null
 }
 
 function responseItems(value: unknown): unknown[] {
   const source = responseRecord(value)
   const items = source.results ?? source.items
   return Array.isArray(items) ? items : []
-}
-
-function isConfirmedSrsStatus(status: string | null): boolean {
-  return status !== null && (CONFIRMED_SRS_STATUSES as readonly string[]).includes(status)
-}
-
-function applyRemoteSrsView(card: B10SrsCard, value: unknown): void {
-  const source = responseRecord(value)
-  const masteryStatus = source.masteryStatus ?? source.stage
-  if (masteryStatus === 'NEW' || masteryStatus === 'LEARNING' || masteryStatus === 'MASTERED' || masteryStatus === 'CONSOLIDATED') card.masteryStatus = masteryStatus
-  const due = source.nextReviewLocalDate ?? source.dueLocalDate ?? source.dueAt
-  if (typeof due === 'string' && due.trim()) card.dueLocalDate = due.trim()
-  const stateVersion = typeof source.stateVersion === 'number' ? source.stateVersion : typeof source.stateVersion === 'string' ? Number(source.stateVersion) : NaN
-  if (Number.isFinite(stateVersion)) card.stateVersion = stateVersion
 }
 
 async function hashState(value: unknown): Promise<string> {
@@ -100,6 +140,11 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
   const srsQueueCount = computed(() => queuedReviews.value.length)
   const currentCard = computed(() => batch.value?.items[currentIndex.value] ?? null)
   const currentExercise = computed(() => practice.value?.exercises.find((exercise) => !answerResults.value[String(exercise.exerciseId)]) ?? practice.value?.exercises[0] ?? null)
+  let syncingSrs = false
+  let srsLoadSeq = 0
+  const revealInFlight = new Set<string>()
+  const frontReady = new Set<string>()
+  const frontInFlight = new Map<string, Promise<void>>()
 
   type Scope = { subject: string; revision: number }
   function scope(): Scope | null {
@@ -116,12 +161,20 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     practice.value = null; answers.value = {}; answerResults.value = {}; mistakes.value = []; attemptCount.value = 0; emptyCopy.value = ''; projectionVersion.value = 'IT4-MISTAKE-1'; remediationId.value = null; report.value = null
     reportStatus.value = 'idle'; practiceStatus.value = 'idle'; practiceMessage.value = null
   }
-  watch(() => session.identityRevision, reset, { flush: 'sync' })
+  watch(() => `${session.verifiedSubject ?? ''}:${session.identityRevision}`, () => {
+    srsLoadSeq += 1
+    syncingSrs = false
+    revealInFlight.clear()
+    frontReady.clear()
+    frontInFlight.clear()
+    reset()
+    removeLearningCache(STORAGE_KEY)
+  }, { flush: 'sync' })
 
   function persist(): void {
     const owner = scope()
     if (!owner) return
-    getUniRuntime().setStorageSync(STORAGE_KEY, JSON.stringify({ subject: owner.subject, batch: batch.value, currentIndex: currentIndex.value, queuedReviews: queuedReviews.value, practice: practice.value, answers: answers.value, answerResults: answerResults.value, mistakes: mistakes.value, report: report.value } satisfies PersistedState))
+    getUniRuntime().setStorageSync(STORAGE_KEY, JSON.stringify({ subject: owner.subject, revision: owner.revision, batch: batch.value, currentIndex: currentIndex.value, queuedReviews: queuedReviews.value, practice: practice.value, answers: answers.value, answerResults: answerResults.value, mistakes: mistakes.value, report: report.value } satisfies PersistedState))
   }
 
   function restore(): void {
@@ -132,10 +185,22 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     if (typeof raw === 'string') {
       try {
         const saved = JSON.parse(raw) as PersistedState
-        if (saved.subject !== owner.subject) { removeLearningCache(STORAGE_KEY); restored.value = true; return }
-        if (saved.batch) batch.value = saved.batch
-        if (typeof saved.currentIndex === 'number') currentIndex.value = Math.max(0, saved.currentIndex)
-        if (Array.isArray(saved.queuedReviews)) queuedReviews.value = saved.queuedReviews.filter((item): item is QueuedReview => isRecord(item) && typeof item.clientEventId === 'string' && typeof item.cardId === 'string' && isRecord(item.payload))
+        const scopedRevision = typeof saved.revision === 'number'
+        if (saved.subject !== owner.subject || (scopedRevision && saved.revision !== owner.revision)) { removeLearningCache(STORAGE_KEY); restored.value = true; return }
+        // A pre-revision cache may still hold non-SRS drafts, but never an SRS batch or pending review queue.
+        if (scopedRevision && saved.revision === owner.revision) {
+          if (saved.batch) batch.value = saved.batch
+          if (typeof saved.currentIndex === 'number') currentIndex.value = Math.max(0, saved.currentIndex)
+          if (Array.isArray(saved.queuedReviews)) {
+            const seen = new Set<string>()
+            queuedReviews.value = saved.queuedReviews.filter((item): item is QueuedReview => {
+              if (!isRecord(item) || typeof item.clientEventId !== 'string' || typeof item.cardId !== 'string' || !isRecord(item.payload)) return false
+              if (item.payload.clientEventId !== item.clientEventId || seen.has(item.clientEventId)) return false
+              seen.add(item.clientEventId)
+              return true
+            })
+          }
+        }
         if (saved.practice) practice.value = saved.practice
         if (isRecord(saved.answers)) answers.value = saved.answers as Record<string, B10AnswerInput>
         if (isRecord(saved.answerResults)) answerResults.value = saved.answerResults as Record<string, B10AnswerResult>
@@ -146,13 +211,30 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     restored.value = true
   }
 
+  function advanceSettledCards(): void {
+    const items = batch.value?.items
+    if (!items) return
+    while (currentIndex.value < items.length && items[currentIndex.value]?.reviewStatus === 'ACCEPTED') currentIndex.value += 1
+  }
+
+  function enqueueReview(card: B10SrsCard, payload: Record<string, unknown>, clientEventId: string): boolean {
+    const existingId = queuedReviews.value.find((item) => item.clientEventId === clientEventId)
+    if (existingId) return existingId.cardId === card.id
+    if (queuedReviews.value.some((item) => item.cardId === card.id)) return false
+    queuedReviews.value.push({ clientEventId, payload, cardId: card.id })
+    return true
+  }
+
   async function loadSrs(): Promise<void> {
     const owner = scope()
-    if (!owner) { reset(); status.value = 'forbidden'; return }
+    if (!owner) { srsLoadSeq += 1; reset(); status.value = 'forbidden'; return }
+    const requestSeq = ++srsLoadSeq
     restore(); status.value = 'loading'; message.value = null
     try {
       const remote = await b10LearningApi.createSrsBatch(context(), nowId('srs-batch'))
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || requestSeq !== srsLoadSeq) return
+      frontReady.clear()
+      frontInFlight.clear()
       batch.value = remote
       if (batch.value.status === 'RECOVERY_REQUIRED') {
         status.value = 'stale'; message.value = '复习记录待核验，暂不可结算。'; persist(); return
@@ -161,7 +243,7 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
       status.value = batch.value.items.length ? 'ready' : 'empty'
       persist()
     } catch (error) {
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || requestSeq !== srsLoadSeq) return
       const info = b10ErrorInfo(error, '词汇批次暂时无法加载。')
       status.value = info.kind; message.value = info.message; persist()
     }
@@ -169,57 +251,131 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
 
   async function revealCard(card = currentCard.value): Promise<void> {
     const owner = scope()
-    if (!owner || !card || !batch.value?.items.includes(card) || card.revealed || card.reviewStatus === 'SUBMITTING') return
+    const selectedBatch = batch.value
+    if (!owner || !card || !selectedBatch?.items.includes(card) || card.revealed || card.reviewStatus === 'SUBMITTING' || revealInFlight.has(card.id)) return
+    revealInFlight.add(card.id)
     status.value = 'loading'; message.value = null
     try {
       const detail = await b10LearningApi.getVocabularyDetail(context(), card.itemId, card.contentVersion)
-      if (!stillCurrent(owner)) return
-      Object.assign(card, detail, { revealed: true, reviewStatus: 'PENDING' as const })
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card)) return
+      Object.assign(card, detail)
+      card.revealed = true
+      if (card.reviewStatus === 'PENDING' || card.reviewStatus === 'FAILED') card.reviewStatus = 'PENDING'
       status.value = 'ready'; persist()
     } catch (error) {
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card)) return
       const info = b10ErrorInfo(error, '词卡背面暂时无法加载，答案未被伪造。')
       status.value = info.kind; message.value = info.message
       if (info.kind === 'stale') card.reviewStatus = 'STALE'
       persist()
+    } finally {
+      revealInFlight.delete(card.id)
     }
   }
 
-  function reviewPayload(card: NonNullable<typeof currentCard.value>, quality: 0 | 1 | 2 | 3, clientEventId: string): Record<string, unknown> {
-    const item = card.itemType === 'VOCAB' ? { itemType: 'VOCAB', vocabId: card.itemId } : card.itemType === 'PHRASE' ? { itemType: 'PHRASE', phraseId: card.itemId } : { itemType: 'EXPRESSION', expressionId: card.itemId }
-    return { itemId: card.itemId, snapshotId: card.snapshotId, snapshotItemId: card.snapshotItemId, item, rawQuality: quality, answerOutcome: 'REVEALED_WITHOUT_ANSWER', responseTimeMs: 0, revealElapsedMs: 0, clientEventId, clientOccurredAt: new Date().toISOString(), baseStateVersion: card.stateVersion }
+  // Device calls this after loadSrs for the current card only. loadSrs, revealCard, and rateCard do not call it.
+  async function loadCurrentFront(card = currentCard.value): Promise<void> {
+    const owner = scope()
+    const selectedBatch = batch.value
+    if (!owner || !card || currentCard.value !== card || !selectedBatch?.items.includes(card)) return
+    if (card.itemType !== 'VOCAB' || card.revealed || selectedBatch.status === 'RECOVERY_REQUIRED' || selectedBatch.items.length === 0) return
+    const flightKey = `${selectedBatch.snapshotId}:${card.id}`
+    if (frontReady.has(flightKey)) return
+    const pending = frontInFlight.get(flightKey)
+    if (pending) { await pending; return }
+    let finishFlight: () => void = () => {}
+    const flight = new Promise<void>((resolve) => { finishFlight = resolve })
+    frontInFlight.set(flightKey, flight)
+    try {
+      const front = await b10LearningApi.getVocabularyFront(context(), card.itemId, card.contentVersion)
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card) || currentCard.value !== card) return
+      if (String(front.vocabId) !== String(card.itemId)) {
+        status.value = 'stale'; message.value = '词汇正面与当前卡片不一致，未显示。'; persist(); return
+      }
+      if ((front.contentVersion && card.contentVersion && front.contentVersion !== card.contentVersion) || (front.contentVersionId !== null && card.contentVersionId !== null && front.contentVersionId !== card.contentVersionId)) {
+        status.value = 'stale'; message.value = '词汇正面版本与当前卡片不一致，未写入。'; persist(); return
+      }
+      card.title = front.word
+      card.phoneticUs = front.phoneticUs
+      card.phoneticUk = front.phoneticUk
+      card.phonetic = front.phonetic
+      card.audio = front.audio
+      card.audioUrl = front.audioUrl
+      if (card.contentVersion === null && front.contentVersion) card.contentVersion = front.contentVersion
+      if (card.contentVersionId === null && front.contentVersionId !== null) card.contentVersionId = front.contentVersionId
+      card.meaningCn = null
+      card.definitionEn = null
+      card.definitions = []
+      card.examples = []
+      card.exampleItems = []
+      card.hint = null
+      frontReady.add(flightKey)
+      status.value = 'ready'; message.value = null; persist()
+    } catch (error) {
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card) || currentCard.value !== card) return
+      if (error instanceof Error && error.message.includes('接口契约')) {
+        status.value = 'stale'; message.value = '词汇正面不符合契约，未显示答案或自造词。'; persist(); return
+      }
+      const info = b10ErrorInfo(error, '词汇正面暂时无法加载。')
+      status.value = info.kind; message.value = info.message
+      if (info.kind === 'stale') card.reviewStatus = 'STALE'
+      persist()
+    } finally {
+      if (frontInFlight.get(flightKey) === flight) frontInFlight.delete(flightKey)
+      finishFlight()
+    }
+  }
+
+  function reviewPayload(card: B10SrsCard, quality: 0 | 1 | 2 | 3, clientEventId: string): Record<string, unknown> | null {
+    if (!card.snapshotId || !card.snapshotItemId || card.stateVersion === null) return null
+    const item = reviewItemRef(card)
+    if (!item) return null
+    return { snapshotId: card.snapshotId, snapshotItemId: card.snapshotItemId, item, rawQuality: quality, answerOutcome: 'REVEALED_WITHOUT_ANSWER', responseTimeMs: 0, revealElapsedMs: 0, clientEventId, clientOccurredAt: new Date().toISOString(), baseStateVersion: card.stateVersion }
   }
 
   async function rateCard(quality: 0 | 1 | 2 | 3, card = currentCard.value): Promise<void> {
     const owner = scope()
-    if (!owner || !card || !batch.value?.items.includes(card) || !card.revealed || card.reviewStatus === 'SUBMITTING' || card.reviewStatus === 'ACCEPTED' || card.reviewStatus === 'QUEUED') return
-    if (!card.snapshotId || !card.snapshotItemId) { status.value = 'error'; message.value = '当前卡片缺少服务端批次标识，不能提交复习事件。'; return }
+    const selectedBatch = batch.value
+    if (!owner || !card || !selectedBatch?.items.includes(card) || !card.revealed || card.reviewStatus === 'SUBMITTING' || card.reviewStatus === 'ACCEPTED') return
+    if (card.reviewStatus === 'QUEUED') { status.value = 'offline'; message.value = '该卡片已在待同步队列，评分不会改写已排队事件。'; return }
+    if (card.reviewStatus === 'STALE') { status.value = 'stale'; message.value = '当前卡片未获可信回执，请重新读取复习批次。'; return }
+    if (!card.snapshotId || !card.snapshotItemId) { card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '当前卡片缺少服务端批次标识，不能提交复习事件。'; persist(); return }
+    if (card.stateVersion === null) { card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '当前卡片缺少可信 SRS 状态版本，暂不可结算。'; persist(); return }
     const clientEventId = nowId(`srs-review-${card.id}`)
     const payload = reviewPayload(card, quality, clientEventId)
+    if (!payload) { card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '当前卡片没有可提交的合同项标识，暂不可结算。'; persist(); return }
     card.reviewStatus = 'SUBMITTING'; status.value = 'loading'; message.value = null
     try {
-      const response = await b10LearningApi.submitSrsReview(context(), card, quality, clientEventId)
-      if (!stillCurrent(owner)) return
+      const response = await b10LearningApi.submitSrsReview(context(), card, quality, clientEventId, payload)
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card)) return
       const remoteStatus = responseStatus(response)
       if (remoteStatus === 'PENDING_SYNC') {
-        if (!queuedReviews.value.some((item) => item.clientEventId === clientEventId)) queuedReviews.value.push({ clientEventId, payload, cardId: card.id })
-        card.reviewStatus = 'QUEUED'; status.value = 'offline'; message.value = '本次复习已排队待同步，服务端尚未确认掌握变化。'; currentIndex.value = Math.min(currentIndex.value + 1, batch.value?.items.length ?? currentIndex.value + 1); persist(); return
+        if (enqueueReview(card, payload, clientEventId)) { card.reviewStatus = 'QUEUED'; status.value = 'offline'; message.value = '本次复习已排队待同步，服务端尚未确认掌握变化。' }
+        else { card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '该卡片已有待同步事件，未生成新的复习 ID。' }
+        persist(); return
       }
-      if (!isConfirmedSrsStatus(remoteStatus)) {
-        card.reviewStatus = remoteStatus === 'CONFLICT' ? 'STALE' : 'FAILED'
-        status.value = remoteStatus === 'CONFLICT' ? 'stale' : 'error'
-        message.value = responseMessage(response, '服务端未确认本次复习，当前卡片未推进。')
-        persist()
-        return
+      const verified = verifiedSrsReceipt(response, card)
+      if (verified) {
+        applyVerifiedSrsReceipt(card, verified)
+        card.reviewStatus = 'ACCEPTED'; status.value = 'ready'; message.value = '复习已记录。'
+        advanceSettledCards(); persist(); return
       }
-      applyRemoteSrsView(card, response)
-      card.reviewStatus = 'ACCEPTED'; status.value = 'ready'; message.value = '复习已记录。'; currentIndex.value = Math.min(currentIndex.value + 1, batch.value?.items.length ?? currentIndex.value + 1); persist()
+      const stale = remoteStatus === 'CONFLICT' || remoteStatus === 'EXPIRED' || !isTerminalSrsStatus(remoteStatus)
+      card.reviewStatus = stale ? 'STALE' : 'FAILED'
+      status.value = stale ? 'stale' : 'error'
+      message.value = remoteStatus === 'CONFLICT' || remoteStatus === 'EXPIRED'
+        ? '服务端状态已冲突或过期，请重新读取复习批次。'
+        : isTerminalSrsStatus(remoteStatus) ? '服务端未接受本次复习，未更新掌握度。' : '服务端回执缺少可核验的状态版本，当前卡片未推进。'
+      persist()
     } catch (error) {
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || batch.value !== selectedBatch || !selectedBatch.items.includes(card)) return
+      if (error instanceof Error && error.message.includes('接口契约')) {
+        card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '复习服务回执不符合契约，当前卡片未推进。'; persist(); return
+      }
       const info = b10ErrorInfo(error, '复习提交失败。')
       if (info.kind === 'offline') {
-        if (!queuedReviews.value.some((item) => item.clientEventId === clientEventId)) queuedReviews.value.push({ clientEventId, payload, cardId: card.id })
-        card.reviewStatus = 'QUEUED'; status.value = 'offline'; message.value = '本次复习已排队待同步，服务端尚未确认掌握变化。'; currentIndex.value = Math.min(currentIndex.value + 1, batch.value?.items.length ?? currentIndex.value + 1)
+        if (enqueueReview(card, payload, clientEventId)) { card.reviewStatus = 'QUEUED'; status.value = 'offline'; message.value = '本次复习已排队待同步，服务端尚未确认掌握变化。' }
+        else { card.reviewStatus = 'STALE'; status.value = 'stale'; message.value = '该卡片已有待同步事件，未生成新的复习 ID。' }
       } else { card.reviewStatus = info.kind === 'stale' ? 'STALE' : 'FAILED'; status.value = info.kind; message.value = info.message }
       persist()
     }
@@ -227,28 +383,70 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
 
   async function syncSrs(): Promise<void> {
     const owner = scope()
-    if (!owner || !queuedReviews.value.length) return
-    status.value = 'loading'; message.value = null
+    if (!owner || syncingSrs || !queuedReviews.value.length) return
+    const selectedBatch = batch.value
+    const queued = [...queuedReviews.value]
+    syncingSrs = true; status.value = 'loading'; message.value = null
     try {
-      const queued = [...queuedReviews.value]
       const response = await b10LearningApi.syncSrsReviews(context(), queued.map((item) => item.payload), nowId('srs-sync'))
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || batch.value !== selectedBatch) return
       const results = responseItems(response)
-      const remaining: QueuedReview[] = []
-      for (const [index, item] of queued.entries()) {
-        const result = results[index]
-        const remoteStatus = responseStatus(result)
-        const card = batch.value?.items.find((entry) => entry.id === item.cardId)
-        if (isConfirmedSrsStatus(remoteStatus)) { if (card) { applyRemoteSrsView(card, result); card.reviewStatus = 'ACCEPTED' } }
-        else { if (card) card.reviewStatus = remoteStatus === 'CONFLICT' ? 'STALE' : 'FAILED'; remaining.push(item) }
+      const grouped = new Map<string, unknown[]>()
+      let malformedResult = false
+      for (const result of results) {
+        const id = responseClientEventId(result)
+        if (!id) { malformedResult = true; continue }
+        const bucket = grouped.get(id) ?? []
+        bucket.push(result)
+        grouped.set(id, bucket)
       }
-      queuedReviews.value = remaining
-      if (remaining.length) { status.value = results.some((result) => responseStatus(result) === 'CONFLICT') ? 'stale' : 'offline'; message.value = '部分复习未获服务端确认，队列仍保留。' }
-      else { status.value = 'ready'; message.value = '待同步复习已提交。' }
+      const removable = new Set<string>()
+      let stale = malformedResult
+      let refused = false
+      for (const item of queued) {
+        const card = selectedBatch?.items.find((entry) => entry.id === item.cardId)
+        const matches = grouped.get(item.clientEventId) ?? []
+        if (matches.length === 0) { if (card) card.reviewStatus = 'QUEUED'; continue }
+        if (matches.length > 1) { if (card) card.reviewStatus = 'STALE'; stale = true; continue }
+        const result = matches[0]
+        const remoteStatus = responseStatus(result)
+        if (isSettledSrsStatus(remoteStatus)) {
+          const verified = card ? verifiedSrsReceipt(result, card) : null
+          if (!verified || !card) { if (card) card.reviewStatus = 'STALE'; stale = true; continue }
+          applyVerifiedSrsReceipt(card, verified)
+          card.reviewStatus = 'ACCEPTED'
+          removable.add(item.clientEventId)
+        } else if (remoteStatus === 'CONFLICT' || remoteStatus === 'EXPIRED') {
+          if (card) { card.reviewStatus = 'STALE'; removable.add(item.clientEventId) }
+          stale = true
+        } else if (isTerminalSrsStatus(remoteStatus)) {
+          if (card) { card.reviewStatus = 'FAILED'; removable.add(item.clientEventId) }
+          refused = true
+        } else {
+          if (card) card.reviewStatus = 'QUEUED'
+        }
+      }
+      if (removable.size) queuedReviews.value = queuedReviews.value.filter((item) => !removable.has(item.clientEventId))
+      advanceSettledCards()
+      if (queuedReviews.value.length) {
+        status.value = stale ? 'stale' : 'offline'
+        message.value = stale ? '部分复习回执无法核验，未结算项仍保留。' : '部分复习尚未获得服务端确认，队列仍保留。'
+      } else if (stale) {
+        status.value = 'stale'; message.value = '复习回执无法核验，未标记为已掌握。'
+      } else if (refused) {
+        status.value = 'error'; message.value = '服务端拒绝了部分复习，未标记为已掌握。'
+      } else {
+        status.value = 'ready'; message.value = '待同步复习已结算。'
+      }
       persist()
     } catch (error) {
-      if (!stillCurrent(owner)) return
+      if (!stillCurrent(owner) || batch.value !== selectedBatch) return
+      if (error instanceof Error && error.message.includes('接口契约')) {
+        status.value = 'stale'; message.value = '同步回执不符合契约，队列仍保留。'; persist(); return
+      }
       const info = b10ErrorInfo(error, '同步失败，队列仍保留。'); status.value = info.kind; message.value = info.message; persist()
+    } finally {
+      syncingSrs = false
     }
   }
 
@@ -341,5 +539,5 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     catch (error) { if (!stillCurrent(owner)) return; const info = b10ErrorInfo(error, '报告暂时不可用。'); reportStatus.value = info.kind; message.value = info.message; persist() }
   }
 
-  return { restored, status, message, batch, currentIndex, queuedReviews, practice, answers, answerResults, mistakes, attemptCount, emptyCopy, projectionVersion, remediationId, report, reportStatus, practiceStatus, practiceMessage, srsQueueCount, currentCard, currentExercise, restore, persist, loadSrs, revealCard, rateCard, syncSrs, loadPractice, submitAnswer, saveCheckpoint, completePractice, loadMistakes, startMistakeRetry, loadReport }
+  return { restored, status, message, batch, currentIndex, queuedReviews, practice, answers, answerResults, mistakes, attemptCount, emptyCopy, projectionVersion, remediationId, report, reportStatus, practiceStatus, practiceMessage, srsQueueCount, currentCard, currentExercise, restore, persist, loadSrs, loadCurrentFront, revealCard, rateCard, syncSrs, loadPractice, submitAnswer, saveCheckpoint, completePractice, loadMistakes, startMistakeRetry, loadReport }
 })

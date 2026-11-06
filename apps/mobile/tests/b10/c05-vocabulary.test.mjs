@@ -6,21 +6,24 @@ import path from 'node:path'
 const appRoot = path.resolve(import.meta.dirname, '..', '..')
 const read = (relativePath) => fs.readFileSync(path.join(appRoot, relativePath), 'utf8')
 
-test('C05 mobile requires a confirmed SRS response before advancing', () => {
+test('C05 mobile requires a verified ACCEPTED/DUPLICATE receipt before advancing', () => {
   const store = read('src/stores/b10-learning.ts')
-  assert.match(store, /CONFIRMED_SRS_STATUSES/)
-  assert.match(store, /responseStatus\(response\)/)
-  assert.match(store, /服务端未确认本次复习，当前卡片未推进/)
+  assert.match(store, /SETTLED_SRS_STATUSES = \['ACCEPTED', 'DUPLICATE'\]/)
+  assert.match(store, /verifiedSrsReceipt\(response, card\)/)
   assert.match(store, /remoteStatus === 'PENDING_SYNC'/)
+  assert.match(store, /服务端回执缺少可核验的状态版本/)
+  assert.doesNotMatch(store, /CONFIRMED_SRS_STATUSES/)
+  assert.match(store, /card\.stateVersion === null[\s\S]{0,120}'STALE'/)
 })
 
-test('C05 mobile preserves unconfirmed sync entries and reads back SRS state', () => {
+test('C05 mobile preserves unconfirmed sync entries and reads back nested SRS state', () => {
   const store = read('src/stores/b10-learning.ts')
   assert.match(store, /responseItems\(response\)/)
-  assert.match(store, /const remaining: QueuedReview\[\] = \[\]/)
-  assert.match(store, /queuedReviews\.value = remaining/)
-  assert.match(store, /applyRemoteSrsView\(card, result\)/)
-  assert.match(store, /source\.nextReviewLocalDate \?\? source\.dueLocalDate \?\? source\.dueAt/)
+  assert.match(store, /const grouped = new Map<string, unknown\[\]>\(\)/)
+  assert.match(store, /queuedReviews\.value = queuedReviews\.value\.filter/)
+  assert.match(store, /verifiedSrsReceipt\(result, card\)/)
+  assert.match(store, /card\.stateVersion = receipt\.stateVersion/)
+  assert.doesNotMatch(store, /applyRemoteSrsView/)
 })
 
 test('C05 mobile distinguishes completed batches from legitimate empty data', () => {

@@ -1,12 +1,12 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { createAdaptivePerformanceEngine, type PerformanceStrategy } from '@englishflow/performance'
+import type { PerformanceStrategy } from '@englishflow/performance'
 import { MobileApiError } from '../api/client'
 import { authorizeB4OfflinePackage, cleanupB4OfflineDownload, createB4GameSession, equipB4Loadout, finishB4GameSession, getB4AvatarProfile, getB4AvatarResources, getB4Profile, getB4Season, getB4Streak, joinB4Room, leaveB4Room, listB4AvatarItems, listB4Games, listB4Loadouts, listB4Notifications, listB4OfflinePackages, listB4Quests, listB4Rooms, pauseB4GameSession, pushB4SyncEvents, readAllB4Notifications, readB4Notification, rescueB4Streak, resumeB4GameSession, saveB4AvatarProfile, saveB4StreakSettings, sendB4Interaction, startB4Focus, submitB4GameEvent, updateB4Focus, updateB4OfflineDownload, getB4GameSession } from '../api/b4'
 import { B4_GAME_RELEASE_PHASES, B4_PERFORMANCE_LEVELS, createB4ClientEventId, isRecord, numberValue, recordList, recordValue, stringValue, unwrapB4, type B4AvatarItem, type B4AvatarProfile, type B4AvatarResources, type B4FocusAction, type B4FocusSession, type B4GameCatalogItem, type B4GameCode, type B4GameFinishResult, type B4GameSession, type B4Galaxy, type B4InteractionCode, type B4Loadout, type B4Notification, type B4OfflinePackage, type B4PerformanceLevel, type B4Profile, type B4Quest, type B4Room, type B4Season, type B4Status, type B4Streak, type B4SyncEvent, type B4GameReleasePhase } from '../domain/b4'
 import { createB4OfflineQueue } from '../platform/b4-offline'
+import { mobileExperienceEngine, setMobileQuality } from '../platform/experience'
 import { useSessionStore } from './session'
-import { getUniRuntime } from '../platform/uni-runtime'
 import { createB4ModerationReport, getB4ChestProbability, getB4SocialLeaderboard, listB4Chests, openB4Chest } from '../api/b4'
 import { B4_REPORT_REASONS, type B4ChestOpenResult, type B4ChestProbability, type B4Leaderboard, type B4LeaderboardEntry, type B4ModerationReceipt, type B4ReportReason, type B4RewardChest } from '../domain/b4'
 
@@ -54,13 +54,11 @@ function parsePackage(value: Record<string, unknown>): B4OfflinePackage | null {
 function parseGalaxy(value: unknown): B4Galaxy | null { const source = recordValue(unwrapB4(value), 'growth'); if (!source) return null; const nodes = Array.isArray(source.nodes) ? source.nodes.filter(isRecord).map((item) => ({ nodeCode: stringValue(item.nodeCode) ?? 'UNKNOWN', status: stringValue(item.status) ?? 'UNKNOWN', progress: numberValue(item.progress) ?? 0, requiredProgress: numberValue(item.requiredProgress) ?? 0, progressPercent: numberValue(item.progressPercent) ?? 0 })) : []; const trajectory = Array.isArray(source.trajectory) ? source.trajectory.filter(isRecord).map((item) => ({ sourceEventId: stringValue(item.sourceEventId), updatedAt: stringValue(item.updatedAt) })) : []; return { enabled: source.enabled !== false, totalXp: numberValue(source.totalXp) ?? 0, nodes, trajectory, ruleVersion: stringValue(source.ruleVersion) } }
 function parseOfflineAuthorization(value: unknown): B4OfflinePackage | null { const source = unwrapB4(value); if (!isRecord(source)) return null; const manifest = recordValue(source, 'manifest') ?? recordValue(source, 'package') ?? source; return parsePackage({ ...manifest, downloadId: source.downloadId, signedPartUrls: source.signedPartUrls, expiresAt: source.expiresAt }) }
 
-function performanceStorage(): { getItem(key: string): string | null; setItem(key: string, value: string): void } { return { getItem: (key) => { try { const value = getUniRuntime().getStorageSync(key); return typeof value === 'string' ? value : null } catch { return null } }, setItem: (key, value) => { try { getUniRuntime().setStorageSync(key, value) } catch { /* runtime may not be ready during static analysis */ } } } }
 
 export const useB4Store = defineStore('b4', () => {
   const session = useSessionStore()
-  const engine = createAdaptivePerformanceEngine({ storage: performanceStorage() })
-  const performanceLevel = ref<B4PerformanceLevel>(engine.level)
-  const performanceStrategy = ref<PerformanceStrategy>(engine.state.strategy)
+  const performanceLevel = ref<B4PerformanceLevel>(mobileExperienceEngine.level)
+  const performanceStrategy = ref<PerformanceStrategy>(mobileExperienceEngine.state.strategy)
   const status = ref<B4Status>('idle')
   const online = ref(true)
   const lastError = ref<string | null>(null)
@@ -69,7 +67,7 @@ export const useB4Store = defineStore('b4', () => {
   const games = ref<B4GameCatalogItem[]>([]); const activeGame = ref<B4GameSession | null>(null); const lastGameResult = ref<B4GameFinishResult | null>(null)
   const rooms = ref<B4Room[]>([]); const activeFocus = ref<B4FocusSession | null>(null); const notifications = ref<B4Notification[]>([]); const notificationStatus = ref<'loading' | 'ready' | 'error'>('loading'); const offlinePackages = ref<B4OfflinePackage[]>([]); const chests = ref<B4RewardChest[]>([]); const chestProbability = ref<B4ChestProbability | null>(null); const lastChestResult = ref<B4ChestOpenResult | null>(null); const leaderboard = ref<B4Leaderboard | null>(null); const lastModerationReport = ref<B4ModerationReceipt | null>(null); const actionKey = ref<string | null>(null)
   const offline = createB4OfflineQueue(); offline.bindSubject(session.verifiedSubject)
-  const offlineRecords = ref(offline.records.slice()); const queueCount = computed(() => currentOwner() && offline.subject === session.verifiedSubject ? offlineRecords.value.length : 0); const effectiveAvatarRenderMode = computed<'3D' | '2D_FALLBACK'>(() => performanceLevel.value === 'Performance' ? '2D_FALLBACK' : avatarProfile.value?.renderMode ?? '2D_FALLBACK'); const unsubscribe = engine.subscribe((state) => { performanceLevel.value = state.level; performanceStrategy.value = state.strategy })
+  const offlineRecords = ref(offline.records.slice()); const queueCount = computed(() => currentOwner() && offline.subject === session.verifiedSubject ? offlineRecords.value.length : 0); const effectiveAvatarRenderMode = computed<'3D' | '2D_FALLBACK'>(() => performanceLevel.value === 'Performance' ? '2D_FALLBACK' : avatarProfile.value?.renderMode ?? '2D_FALLBACK'); const unsubscribe = mobileExperienceEngine.subscribe((state) => { performanceLevel.value = state.level; performanceStrategy.value = state.strategy })
   type Owner = { subject: string; revision: number; feedGeneration: number }
   const staleIdentity = Symbol('B4_STALE_IDENTITY')
   let worldRequest = 0
@@ -100,8 +98,8 @@ export const useB4Store = defineStore('b4', () => {
   }
   watch(() => session.identityRevision, resetPersonal, { flush: 'sync' })
   function refreshQueue(): void { offlineRecords.value = offline.records.slice() }
-  function restore(): void { engine.restore() }
-  function setPerformance(level: B4PerformanceLevel): void { engine.setLevel(level, 'manual') }
+  function restore(): void { mobileExperienceEngine.restore() }
+  function setPerformance(level: B4PerformanceLevel): void { setMobileQuality(level) }
   function fail(error: unknown, fallback: string): void { if (error === staleIdentity) return; if (offlineError(error)) online.value = false; const httpStatus = error instanceof MobileApiError ? error.status : 0; status.value = offlineError(error) ? 'offline' : httpStatus === 401 || httpStatus === 403 ? 'permission' : httpStatus === 409 ? 'recovery' : 'error'; lastError.value = message(error, fallback) }
   async function guardedAction<T>(key: string, action: () => Promise<T>): Promise<T | undefined> { const owner = currentOwner(); if (!owner || actionKey.value) return undefined; actionKey.value = key; try { return await action() } finally { if (session.verifiedSubject === owner.subject && session.identityRevision === owner.revision && actionKey.value === key) actionKey.value = null } }
   async function loadWorld(): Promise<void> {
@@ -201,5 +199,5 @@ export const useB4Store = defineStore('b4', () => {
       fail(error, '待同步事件提交失败，队列仍保留。')
     }
   }
-  return { status, online, lastError, profile, galaxy, streak, quests, season, avatarProfile, avatarItems, loadouts, avatarResources, games, activeGame, lastGameResult, rooms, activeFocus, notifications, notificationStatus, offlinePackages, chests, chestProbability, lastChestResult, leaderboard, lastModerationReport, actionKey, performanceLevel, performanceStrategy, effectiveAvatarRenderMode, offlineRecords, queueCount, restore, setPerformance, loadWorld, loadChests, loadChestProbability, openChest, loadLeaderboard, reportUser, saveStreakSettings, rescueStreak, saveAvatarProfile, equipLoadout, startGame, refreshGame, submitGameEvent, pauseGame, resumeGame, finishGame, joinRoom, leaveRoom, startFocus, updateFocus, sendInteraction, readNotification, readAllNotifications, authorizeOfflinePackage, updateOfflineDownload, cleanupOfflineDownload, syncOffline, dispose: () => { unsubscribe(); engine.dispose() } }
+  return { status, online, lastError, profile, galaxy, streak, quests, season, avatarProfile, avatarItems, loadouts, avatarResources, games, activeGame, lastGameResult, rooms, activeFocus, notifications, notificationStatus, offlinePackages, chests, chestProbability, lastChestResult, leaderboard, lastModerationReport, actionKey, performanceLevel, performanceStrategy, effectiveAvatarRenderMode, offlineRecords, queueCount, restore, setPerformance, loadWorld, loadChests, loadChestProbability, openChest, loadLeaderboard, reportUser, saveStreakSettings, rescueStreak, saveAvatarProfile, equipLoadout, startGame, refreshGame, submitGameEvent, pauseGame, resumeGame, finishGame, joinRoom, leaveRoom, startFocus, updateFocus, sendInteraction, readNotification, readAllNotifications, authorizeOfflinePackage, updateOfflineDownload, cleanupOfflineDownload, syncOffline, dispose: () => { unsubscribe() } }
 })
