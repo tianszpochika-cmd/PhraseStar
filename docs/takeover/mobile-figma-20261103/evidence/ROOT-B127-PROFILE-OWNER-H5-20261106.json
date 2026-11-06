@@ -1,0 +1,54 @@
+{
+  "batch": "B127",
+  "root_run": "G307",
+  "source_receipt_sha256": "8cdf52636f66e8935142218540ffcc1c4b9aff1da808179ba973f3dfedb3bbff",
+  "release_receipt_sha256": "e5402117699c5c7c6c1a1f31d4208143d731a70d330830a422d66dc3f8e19c90",
+  "integration_head": "9af546fd",
+  "page": "MB-023",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_H5_PROFILE_PASS",
+  "h5_index_sha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+  "observer_sha256": "11909ac3b67ba1abd49a23759d733280d811822b3aba77214fde517534e38aed",
+  "runtime": {
+    "synthetic_actor": true,
+    "profile_state": "ready",
+    "visible_goal_matched": true,
+    "counts": {
+      "loginPost": 1,
+      "profileGet": 1,
+      "targetGet": 1,
+      "preferenceGet": 1,
+      "principalGet": 2,
+      "budgetClosed": 0,
+      "missingAuthorization": 0
+    },
+    "target_initialization": {
+      "put_count": 1,
+      "status": 200,
+      "readback": true
+    },
+    "preferences_durable": {
+      "before_observer": "ABSENT",
+      "after_observer": "ABSENT",
+      "invariant_pass": true,
+      "preference_patch_count": 0
+    },
+    "parser_cases": 6
+  },
+  "release": {
+    "container_removed": true,
+    "ports": {
+      "13306": "free",
+      "18070": "free",
+      "18087": "free",
+      "18088": "free",
+      "18183": "free"
+    }
+  },
+  "pending": [
+    "FULL_TRACE",
+    "NATIVE_DEVICE",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

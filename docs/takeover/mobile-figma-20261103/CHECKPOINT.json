@@ -2506,7 +2506,8 @@
           "reviews/INTEGRATION-B13.md",
           "reviews/INTEGRATION-B55-ANONYMOUS-ROUTES.md"
         ],
-        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13"
+        "review_binding_20261105": "CURRENT_SOURCE_MATCHES_B01_B13",
+        "profile_owner_h5_b127": "evidence/ROOT-B127-PROFILE-OWNER-H5-20261106.json"
       },
       "candidate_manifest": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/dsh/profile-batch-01-source-snapshot/manifest.json",
       "source_operation_trace_b59": {
@@ -3709,7 +3710,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T06:44:20.330204+00:00",
+  "updated_at": "2026-11-06T06:45:44.184492+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6003,5 +6004,13 @@
     "review": "reviews/INTEGRATION-B126-READING-PUBLISHED-H5.md",
     "evidence": "evidence/ROOT-B126-READING-PUBLISHED-H5-20261106.json",
     "practice": "NOT_RUN"
+  },
+  "integration_batch_127_profile_owner_h5": {
+    "status": "LOCAL_REAL_H5_PROFILE_PASS",
+    "page": "MB-023",
+    "h5": "B116",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B127-PROFILE-OWNER-H5.md",
+    "evidence": "evidence/ROOT-B127-PROFILE-OWNER-H5-20261106.json"
   }
 }
