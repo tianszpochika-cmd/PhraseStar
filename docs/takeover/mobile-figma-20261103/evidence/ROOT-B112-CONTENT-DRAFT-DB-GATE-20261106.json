@@ -1,0 +1,45 @@
+{
+  "batch": "B112",
+  "candidate": {
+    "path": "services/content-service/src/test/java/com/englishflow/content/web/B9GradableDraftMySqlTest.java",
+    "sha256": "e19657c28aea37499fbeef23359d9bbe5d1e1648aa5f15b2223be9096d6ae992",
+    "bytes": 33929
+  },
+  "baseline_red": "CONTENT_GRADABLE_DRAFT_SCHEMA is required before connection",
+  "actual": {
+    "modes": {
+      "auto": {
+        "exit": 0,
+        "v34": true,
+        "two_pass": true,
+        "partial_rejected": false
+      },
+      "manual": {
+        "exit": 0,
+        "v34": true,
+        "two_pass": true,
+        "partial_rejected": false
+      },
+      "partial": {
+        "exit": 1,
+        "v34": false,
+        "two_pass": false,
+        "partial_rejected": true
+      }
+    },
+    "cleanup": true,
+    "literal_runner_environment": [
+      "CONTENT_FLYWAY_TEST_ADMIN_PASSWORD",
+      "CONTENT_FLYWAY_TEST_ADMIN_URL",
+      "CONTENT_FLYWAY_TEST_ADMIN_USER"
+    ],
+    "auto_resources_gone": true,
+    "manual_fixture_kept": true
+  },
+  "actual_sha256": "b04db8cb065117ac03b3a172ec10431b28dd61dd486f735be432a227586a4d09",
+  "default_maven": {
+    "passed": 309,
+    "opt_in_skipped": 6
+  },
+  "limit": "B9 test fixture entrypoint only. Real V34 with synthetic isolated accounts. No B9 production source."
+}

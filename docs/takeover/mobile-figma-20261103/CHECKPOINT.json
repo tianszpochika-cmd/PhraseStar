@@ -5847,5 +5847,12 @@
     "cleanup": "PASS",
     "learning_consumer_reader_and_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B111-ASSESSMENT-PIN-TIME-20261106.json"
+  },
+  "integration_batch_112_content_draft_db_gate": {
+    "state": "ACCEPTED_LOCAL_TEST_ENTRYPOINT",
+    "default_content_maven": "309 pass, 6 opt-in skip",
+    "actual_mysql_v34": "2/2 auto + 2/2 manual, partial rejected",
+    "cleanup": "PASS",
+    "evidence": "evidence/ROOT-B112-CONTENT-DRAFT-DB-GATE-20261106.json"
   }
 }
