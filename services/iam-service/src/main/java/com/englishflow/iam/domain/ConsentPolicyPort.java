@@ -3,6 +3,8 @@ package com.englishflow.iam.domain;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /** Server-owned published consent policy boundary. */
@@ -23,6 +25,18 @@ public interface ConsentPolicyPort {
     default boolean evaluationEnabled() {
         return true;
     }
+
+    /**
+     * First ACTIVE row of each storage spelling, with that row's body, in control-plane order.
+     * Empty when the read fails. Older and missing rows are not included. Token issuance and
+     * consent writes must not call this method.
+     */
+    default Optional<List<ActivePublishedDocument>> activePublishedDocuments() {
+        return Optional.empty();
+    }
+
+    /** One ACTIVE control-plane row and the plain text stored on that same row. */
+    record ActivePublishedDocument(ConsentPolicyDescriptor descriptor, String body) {}
 
     default Set<ConsentPolicyDescriptor> descriptors() {
         return Set.copyOf(Arrays.stream(ConsentType.values())

@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -21,12 +23,25 @@ import java.util.Set;
  */
 public class JdbcConsentPolicy implements ConsentPolicyPort {
 
-    private static final String ACTIVE_SELECT =
-            "SELECT consent_type, document_version, document_digest, published_at, policy_version, "
+    // Metadata only. Plain text stays out of descriptor reads used by token issuance and consent writes.
+    private static final String ACTIVE_COLUMNS =
+            "consent_type, document_version, document_digest, published_at, policy_version, "
                     + "policy_digest, requirement, capabilities, withdrawal_effect, revoke_sessions, "
-                    + "policy_ref, runtime_status FROM iam_consent_document_version "
+                    + "policy_ref, runtime_status";
+    private static final String ACTIVE_SELECT =
+            "SELECT " + ACTIVE_COLUMNS + " FROM iam_consent_document_version "
                     + "WHERE tenant_id = ? AND lifecycle_status = 'ACTIVE' "
                     + "ORDER BY consent_type ASC, published_at DESC, consent_document_id DESC";
+    // Rank without the body, then read document_body only for that winning row of each spelling.
+    private static final String ACTIVE_BODY_SELECT =
+            "SELECT " + ACTIVE_COLUMNS + ", document_body FROM iam_consent_document_version src "
+                    + "INNER JOIN (SELECT consent_document_id FROM ("
+                    + "SELECT consent_document_id, ROW_NUMBER() OVER (PARTITION BY consent_type "
+                    + "ORDER BY published_at DESC, consent_document_id DESC) AS body_rank "
+                    + "FROM iam_consent_document_version "
+                    + "WHERE tenant_id = ? AND lifecycle_status = 'ACTIVE') ranked WHERE body_rank = 1"
+                    + ") winner ON winner.consent_document_id = src.consent_document_id "
+                    + "ORDER BY src.consent_type ASC, src.published_at DESC, src.consent_document_id DESC";
 
     private final JdbcTemplate jdbc;
     private final ObjectMapper objectMapper;
@@ -60,6 +75,30 @@ public class JdbcConsentPolicy implements ConsentPolicyPort {
     @Override
     public boolean evaluationEnabled() {
         return true;
+    }
+
+    /**
+     * One snapshot of the first ACTIVE row per storage spelling. Alias mapping uses the same
+     * {@code map} row reader and source order as descriptor reads.
+     */
+    @Override
+    public Optional<List<ConsentPolicyPort.ActivePublishedDocument>> activePublishedDocuments() {
+        try {
+            List<ConsentPolicyPort.ActivePublishedDocument> rows = jdbc.query(ACTIVE_BODY_SELECT,
+                    (ResultSet rs, int rowNum) -> new ConsentPolicyPort.ActivePublishedDocument(
+                            map(rs), rs.getString("document_body")),
+                    TenantScope.PLATFORM_TENANT);
+            EnumMap<ConsentType, ConsentPolicyPort.ActivePublishedDocument> first = new EnumMap<>(ConsentType.class);
+            List<ConsentPolicyPort.ActivePublishedDocument> winners = new ArrayList<>();
+            for (ConsentPolicyPort.ActivePublishedDocument row : rows) {
+                if (first.putIfAbsent(row.descriptor().type(), row) == null) {
+                    winners.add(row);
+                }
+            }
+            return Optional.of(List.copyOf(winners));
+        } catch (RuntimeException exception) {
+            return Optional.empty();
+        }
     }
 
     private Map<ConsentType, ConsentPolicyDescriptor> activeDescriptors() {

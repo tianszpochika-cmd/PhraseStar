@@ -1,7 +1,14 @@
 package com.englishflow.iam.domain;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +21,7 @@ public final class ConsentService {
     private static final Set<String> SUPPORTED_CAPABILITIES = Set.of(
             "ACCOUNT", "LEARNING", "ANALYTICS", "VOICE_REMOTE_RECORD", "VOICE_REMOTE_UPLOAD",
             "VOICE_REMOTE_PROCESS", "VOICE_REMOTE_REPLAY");
+    private static final int MAX_BODY_CODE_POINTS = 65_536;
 
     /**
      * Canonical consent types every capability needs. The aggregate must not infer its
@@ -336,6 +344,63 @@ public final class ConsentService {
         return policy.evaluationEnabled();
     }
 
+    /**
+     * All-or-nothing plain text for the canonical LEARNING set already chosen by
+     * {@link #publishedRequiredPoliciesFor}. Empty unless {@code selected} has exactly that
+     * type set and every descriptor is still the first ACTIVE row of its type, with a body of
+     * 1..65536 Unicode code points, no NUL, and a stored digest equal to the lowercase SHA-256
+     * of the exact UTF-8 bytes. One gap omits the whole set.
+     */
+    public Optional<List<FirstConsentDocument>> projectFirstConsentDocuments(
+            List<ConsentPolicyDescriptor> selected) {
+        try {
+            Set<ConsentType> required = CANONICAL_REQUIRED_TYPES.get("LEARNING");
+            if (selected == null || required == null || selected.size() != required.size()) {
+                return Optional.empty();
+            }
+            List<ConsentPolicyPort.ActivePublishedDocument> active = policy.activePublishedDocuments().orElse(null);
+            if (active == null) {
+                return Optional.empty();
+            }
+            EnumMap<ConsentType, ConsentPolicyPort.ActivePublishedDocument> first = new EnumMap<>(ConsentType.class);
+            for (ConsentPolicyPort.ActivePublishedDocument row : active) {
+                if (row != null && row.descriptor() != null) {
+                    first.putIfAbsent(row.descriptor().type(), row);
+                }
+            }
+            List<FirstConsentDocument> documents = new ArrayList<>(selected.size());
+            EnumSet<ConsentType> seen = EnumSet.noneOf(ConsentType.class);
+            for (ConsentPolicyDescriptor descriptor : selected) {
+                if (descriptor == null || !required.contains(descriptor.type()) || !seen.add(descriptor.type())) {
+                    return Optional.empty();
+                }
+                ConsentPolicyPort.ActivePublishedDocument row = first.get(descriptor.type());
+                String body = row == null || !descriptor.equals(row.descriptor()) ? null : row.body();
+                int codePoints = body == null || body.indexOf('\0') >= 0 ? -1 : body.codePointCount(0, body.length());
+                if (codePoints < 1 || codePoints > MAX_BODY_CODE_POINTS
+                        || !descriptor.documentDigest().equals(sha256Utf8Hex(body))) {
+                    return Optional.empty();
+                }
+                documents.add(new FirstConsentDocument(descriptor.type().wireType(), descriptor.purpose(),
+                        descriptor.documentVersion().value(), descriptor.documentDigest(), body,
+                        descriptor.publishedAt(), descriptor.policyVersion().value(), descriptor.policyRef()));
+            }
+            return Optional.of(List.copyOf(documents));
+        } catch (RuntimeException exception) {
+            return Optional.empty();
+        }
+    }
+
+    /** Exact UTF-8 SHA-256, lowercase, with no change to the stored body or digest. */
+    private static String sha256Utf8Hex(String body) {
+        try {
+            return HexFormat.of().formatHex(
+                    MessageDigest.getInstance("SHA-256").digest(body.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("SHA-256 is required by the JDK", exception);
+        }
+    }
+
     private static void assertExpectedDigest(String expected, String published) {
         if (expected != null
                 && !SecretDigests.constantTimeEquals(expected, published)) {
@@ -377,4 +442,10 @@ public final class ConsentService {
 
     private record WithdrawalOutcome(ConsentRecord record, IamPolicyException failure) {}
     private record RecordOutcome(ConsentRecord record, IamPolicyException failure) {}
+
+    /** Wire projection of one verified canonical document. The stored lowercase digest is not rewritten. */
+    public record FirstConsentDocument(String type, String purpose, String documentVersion,
+                                       String documentDigest, String bodyText, Instant publishedAt,
+                                       String policyVersion, String policyRef) {
+    }
 }
