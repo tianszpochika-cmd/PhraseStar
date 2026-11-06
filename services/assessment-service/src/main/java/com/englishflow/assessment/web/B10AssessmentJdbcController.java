@@ -652,6 +652,24 @@ public class B10AssessmentJdbcController {
         return Instant.parse(String.valueOf(value));
     }
 
+    /**
+     * Pin time is persisted {@code started_at}. Conversion is {@link #instantOf}: a Timestamp
+     * keeps its instant, a zone-less LocalDateTime uses that UTC owner convention, and an ISO
+     * instant string parses as itself. Full local compose and the current probes set
+     * {@code serverTimezone=UTC}; an arbitrary deployment URL is not assumed. Missing or
+     * malformed values fail closed.
+     */
+    private static Instant pinInstant(Object value) {
+        if (value == null) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "assessment pin time is unavailable");
+        }
+        try {
+            return instantOf(value);
+        } catch (java.time.DateTimeException invalid) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "assessment pin time is unavailable", invalid);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private List<Map<String, Object>> readTrace(String raw) {
         if (raw == null || raw.isBlank()) return List.of();
@@ -882,7 +900,7 @@ public class B10AssessmentJdbcController {
         pin.put("snapshotId", number(row == null ? null : row.get("snapshot_id"), SNAPSHOT_ID));
         pin.put("snapshotHash", text(row == null ? null : row.get("snapshot_hash"), SNAPSHOT_HASH));
         pin.put("pinStatus", "PINNED");
-        pin.put("pinnedAt", Instant.now().toString());
+        pin.put("pinnedAt", pinInstant(row == null ? null : row.get("started_at")).toString());
         String pinnedCode = text(row == null ? null : row.get("content_code"), CONTENT_CODE);
         long pinnedVersion = number(row == null ? null : row.get("content_version_id"), DEFAULT_CONTENT_VERSION);
         pin.put("ruleVersion", AttemptGuard.pinnedRuleVersion(pinnedCode, pinnedVersion));
