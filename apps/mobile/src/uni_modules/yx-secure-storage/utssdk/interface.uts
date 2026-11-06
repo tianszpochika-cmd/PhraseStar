@@ -1,0 +1,11 @@
+/**
+ * App-only refresh-token secure storage.
+ *
+ * The native implementations reject every key except the one mobile session
+ * key, so this is not a general-purpose secret store. Each function returns a
+ * JSON envelope: {"ok":true,"value":string|null,...} or
+ * {"ok":false,"value":null,"code":string,"osStatus":number,"message":string}.
+ */
+export function readSecureItem(key: string): string;
+export function writeSecureItem(key: string, value: string): string;
+export function removeSecureItem(key: string): string;

@@ -1,0 +1,7 @@
+{
+  "id": "yx-secure-storage",
+  "displayName": "YX refresh-token secure storage",
+  "version": "1.0.0",
+  "description": "App-only Keychain/Keystore bridge for the single mobile refresh-token key.",
+  "uni_modules": {}
+}

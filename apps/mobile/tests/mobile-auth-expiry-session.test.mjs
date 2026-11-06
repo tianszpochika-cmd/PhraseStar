@@ -39,6 +39,7 @@ new Function('require', 'module', 'exports', compiled)((name) => {
   if (name === '../auth/auth-failure-copy') return { mobileAuthFailureMarker: () => 'failed' }
   if (name === '../auth/gateway-auth') return { createGatewayMobileAuthAdapter: () => adapter, safeMobileReturnTo: (value) => value }
   if (name === '../platform/uni-runtime') return { getUniRuntime: () => runtime, isNativeAppRuntime: () => false }
+  if (name === '../platform/secure-storage-provider') return { resolveSecureStorage: () => undefined }
   if (name === './learning-cache') return { removeAllLearningCaches() {} }
   throw new Error(`unexpected import ${name}`)
 }, module, module.exports)

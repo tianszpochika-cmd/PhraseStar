@@ -47,6 +47,7 @@ function environment() {
   }
   const platform = { getUniRuntime: () => runtime, isNativeAppRuntime: () => false }
   const cache = load('src/stores/learning-cache.ts', { '../platform/uni-runtime': platform })
+  const secureStorageProvider = load('src/platform/secure-storage-provider.ts', { './uni-runtime': platform })
   let token = null
   const sessionModule = load('src/stores/session.ts', {
     vue: require('vue'), pinia: require('pinia'),
@@ -54,6 +55,7 @@ function environment() {
     '../auth/auth-failure-copy': { mobileAuthFailureMarker: () => 'failed' },
     '../auth/gateway-auth': { createGatewayMobileAuthAdapter: () => { throw new Error('Use a test auth adapter') }, safeMobileReturnTo: (value) => typeof value === 'string' ? value : '/pages/home/home' },
     '../platform/uni-runtime': platform,
+    '../platform/secure-storage-provider': secureStorageProvider,
     './learning-cache': cache,
   })
   const session = sessionModule.useSessionStore()

@@ -4,6 +4,7 @@ import { getInMemoryAccessToken, setInMemoryAccessToken, setInMemoryRequestIdent
 import { mobileAuthFailureMarker } from '../auth/auth-failure-copy'
 import { createGatewayMobileAuthAdapter, safeMobileReturnTo, type MobileAdultGateStatus, type MobileAdultLearningAccess, type MobileAuthAdapter, type MobileAuthSnapshot, type MobileLoginCredentials, type MobileTokenPair } from '../auth/gateway-auth'
 import { getUniRuntime, isNativeAppRuntime, type UniSecureStorage, type UniRuntime } from '../platform/uni-runtime'
+import { resolveSecureStorage } from '../platform/secure-storage-provider'
 import { removeAllLearningCaches } from './learning-cache'
 
 const REFRESH_TOKEN_KEY = 'yx.auth.mobile.refresh-token'
@@ -41,7 +42,7 @@ function clearMobileSessionHint(): void {
 export const ADULT_GATE_POLICY_VERSION = 'b30-adult-v1'
 
 function runtimeOrNull(): UniRuntime | null { try { return getUniRuntime() } catch { return null } }
-function secureStorage(): UniSecureStorage | undefined { return runtimeOrNull()?.getSecureStorage?.() }
+function secureStorage(): UniSecureStorage | undefined { return resolveSecureStorage() }
 function secureValue(key: string): string | null { try { const value = secureStorage()?.getItem(key); return typeof value === 'string' && value.trim() ? value.trim() : null } catch { return null } }
 function deviceType(): MobileLoginCredentials['device']['deviceType'] {
   if (!isNativeAppRuntime()) return 'H5'

@@ -22,6 +22,7 @@ function load(relativePath, modules = {}) {
 }
 
 const failureCopy = load('src/auth/auth-failure-copy.ts')
+const secureStorageProvider = load('src/platform/secure-storage-provider.ts')
 
 function sessionWithResponse(response) {
   pinia.setActivePinia(pinia.createPinia())
@@ -32,6 +33,7 @@ function sessionWithResponse(response) {
     '../auth/auth-failure-copy': failureCopy,
     '../auth/gateway-auth': { createGatewayMobileAuthAdapter: () => ({}), safeMobileReturnTo: (value, fallback) => value ?? fallback },
     '../platform/uni-runtime': { getUniRuntime: () => { throw new Error('No native runtime in this unit test') }, isNativeAppRuntime: () => false },
+    '../platform/secure-storage-provider': secureStorageProvider,
     './learning-cache': { removeAllLearningCaches: () => {} },
   })
   const store = module.useSessionStore()
