@@ -127,7 +127,7 @@ public final class GamificationApplicationService {
     }
 
     public GamificationSummary summary(String subjectId) {
-        return store.inUserTransaction(subjectId, facts -> {
+        return store.inUserReadTransaction(subjectId, facts -> {
             ZoneId zone = timeZones.zoneFor(subjectId);
             LevelProjection level = LevelProjection.fromXp(facts.xpBalance());
             StreakProjection streak = StreakProjection.from(zone, facts.activeDates());
@@ -140,12 +140,12 @@ public final class GamificationApplicationService {
 
     public LedgerView ledger(String subjectId, int limit) {
         int boundedLimit = Math.min(Math.max(limit, 1), 100);
-        return store.inUserTransaction(subjectId, facts -> new LedgerView(subjectId,
+        return store.inUserReadTransaction(subjectId, facts -> new LedgerView(subjectId,
                 tail(facts.xpLedger(), boundedLimit), tail(facts.coinLedger(), boundedLimit), facts.isConserved()));
     }
 
     public RewardListView rewards(String subjectId) {
-        return store.inUserTransaction(subjectId, facts -> {
+        return store.inUserReadTransaction(subjectId, facts -> {
             List<com.englishflow.gamification.domain.RewardGrantView> grants = new ArrayList<>(facts.rewardViews());
             grants.sort(Comparator.comparing(com.englishflow.gamification.domain.RewardGrantView::grantedAt).reversed());
             return new RewardListView(subjectId, List.copyOf(grants));
@@ -153,7 +153,7 @@ public final class GamificationApplicationService {
     }
 
     public RewardProbabilityDisclosure rewardProbability(String subjectId, String grantId) {
-        return store.inUserTransaction(subjectId, facts -> facts.reward(grantId)
+        return store.inUserReadTransaction(subjectId, facts -> facts.reward(grantId)
                 .map(grant -> probabilities.disclosure(grantId, grant.rewardCode()))
                 .orElseThrow(GamificationDomainException::notFound));
     }
@@ -178,12 +178,12 @@ public final class GamificationApplicationService {
     }
 
     public StreakProjection streak(String subjectId) {
-        return store.inUserTransaction(subjectId, facts -> StreakProjection.from(
+        return store.inUserReadTransaction(subjectId, facts -> StreakProjection.from(
                 timeZones.zoneFor(subjectId), facts.activeDates()));
     }
 
     public SeasonProjection season(String subjectId) {
-        return store.inUserTransaction(subjectId, facts -> {
+        return store.inUserReadTransaction(subjectId, facts -> {
             ZoneId zone = timeZones.zoneFor(subjectId);
             return season(facts, seasonId(clock.instant().atZone(zone).toLocalDate()));
         });

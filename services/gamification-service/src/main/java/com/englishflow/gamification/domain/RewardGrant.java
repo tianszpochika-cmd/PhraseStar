@@ -50,6 +50,20 @@ public final class RewardGrant {
                 outcome == null ? null : outcome.outcomeCode(), false, 0L, grantedAt, claimedAt);
     }
 
+    /**
+     * Precise snapshot of this grant. The public view drops outcome description,
+     * so an owned read must not rebuild claim state from that view.
+     */
+    RewardGrant ownedCopy() {
+        RewardGrant copied = new RewardGrant(grantId, sourceEventId, subjectId, rewardCode,
+                probabilityVersion, grantedAt);
+        copied.claimed = claimed;
+        copied.outcome = outcome == null ? null
+                : new RewardOutcome(outcome.outcomeCode(), outcome.description());
+        copied.claimedAt = claimedAt;
+        return copied;
+    }
+
     public String grantId() {
         return grantId;
     }

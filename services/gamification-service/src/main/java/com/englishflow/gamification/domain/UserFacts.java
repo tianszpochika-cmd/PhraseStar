@@ -148,6 +148,27 @@ public final class UserFacts {
         return List.copyOf(coinLedger);
     }
 
+    /**
+     * Owned snapshot for a detached read. Immutable records and collections are
+     * copied in one pass. Each reward grant is a distinct instance.
+     */
+    public UserFacts ownedCopy() {
+        UserFacts copy = new UserFacts(subjectId);
+        copy.xpBalance = xpBalance;
+        copy.coinBalance = coinBalance;
+        copy.xpLedger.addAll(xpLedger);
+        copy.coinLedger.addAll(coinLedger);
+        copy.events.putAll(events);
+        copy.idempotencies.putAll(idempotencies);
+        for (RewardGrant grant : rewardGrants.values()) {
+            copy.rewardGrants.put(grant.grantId(), grant.ownedCopy());
+        }
+        copy.seasonFacts.addAll(seasonFacts);
+        copy.activeDates.addAll(activeDates);
+        copy.assertConservation();
+        return copy;
+    }
+
     public boolean isConserved() {
         return sum(xpLedger) == xpBalance && sum(coinLedger) == coinBalance
                 && xpBalance >= 0 && coinBalance >= 0;

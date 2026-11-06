@@ -49,11 +49,6 @@ test('main navigation drops closed skills and old pages explain how to leave', (
     'apps/learner-web/src/pages/B3ListeningPage.vue',
     'apps/learner-web/src/pages/B3SpeakingPage.vue',
     'apps/learner-web/src/pages/B3WritingPage.vue',
-    'apps/mobile/src/pages/b3-listening/b3-listening.vue',
-    'apps/mobile/src/pages/b3-speaking/b3-speaking.vue',
-    'apps/mobile/src/pages/b3-writing/b3-writing.vue',
-    'apps/mobile/src/pages/b11-listening/b11-listening.vue',
-    'apps/mobile/src/pages/b11-speaking/b11-speaking.vue',
   ]) {
     const source = readFileSync(resolve(path), 'utf8')
     assert.match(source, /data-closed-practice/)
@@ -61,15 +56,39 @@ test('main navigation drops closed skills and old pages explain how to leave', (
     assert.match(source, /data-coming-soon[^>]*>即将开放</)
     assert.match(source, /data-closed-reason/)
   }
-  const listening = readFileSync(resolve('apps/learner-web/src/pages/B3ListeningPage.vue'), 'utf8')
-  assert.match(listening, /class="waveform"/)
+  const notice = readFileSync(resolve('apps/mobile/src/components/MobileClosedPracticeNotice.vue'), 'utf8')
+  assert.match(notice, /data-closed-practice/)
+  assert.match(notice, /data-closed-back/)
+  assert.match(notice, /data-closed-reason/)
+  assert.match(notice, /data-coming-soon/)
+  assert.match(notice, /mobileT\(props\.badgeKey \?\? 'closed\.comingSoon'\)/)
+  assert.match(notice, /mobileT\(props\.ctaKey \?\? 'closed\.backToAvailableLearning'\)/)
   for (const path of [
-    'apps/learner-web/src/pages/VocabularyPage.vue',
-    'apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue',
+    'apps/mobile/src/pages/b3-listening/b3-listening.vue',
+    'apps/mobile/src/pages/b3-speaking/b3-speaking.vue',
+    'apps/mobile/src/pages/b3-writing/b3-writing.vue',
+    'apps/mobile/src/pages/b11-listening/b11-listening.vue',
+    'apps/mobile/src/pages/b11-speaking/b11-speaking.vue',
   ]) {
     const source = readFileSync(resolve(path), 'utf8')
-    assert.match(source, /vocabPlayable/)
-    assert.match(source, /data-vocab-play/)
-    assert.match(source, /data-vocab-silent/)
+    assert.match(source, /<MobileClosedPracticeNotice/)
+    assert.match(source, /@back="backToLearning"/)
+    assert.match(source, /@select="openRelated"/)
+    assert.match(source, /navigateTo\(\{ url: '\/pages\/today\/today' \}\)/)
+    assert.match(source, /target: '\/pages\/b2-vocabulary\/b2-vocabulary'/)
+    assert.match(source, /target: '\/pages\/b3-reading\/b3-reading'/)
   }
+  const listening = readFileSync(resolve('apps/learner-web/src/pages/B3ListeningPage.vue'), 'utf8')
+  assert.match(listening, /class="waveform"/)
+  const webVocab = readFileSync(resolve('apps/learner-web/src/pages/VocabularyPage.vue'), 'utf8')
+  assert.match(webVocab, /vocabPlayable/)
+  assert.match(webVocab, /data-vocab-play/)
+  assert.match(webVocab, /data-vocab-silent/)
+  const mobileVocab = readFileSync(resolve('apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue'), 'utf8')
+  assert.match(mobileVocab, /vocabPlayable/)
+  assert.match(mobileVocab, /v-if="view\.audioMode === 'play'"/)
+  assert.match(mobileVocab, /@click="playAudio"/)
+  assert.match(mobileVocab, /mobileT\('vocabularyPage\.noAudio'\)/)
+  assert.match(mobileVocab, /mobileT\('vocabularyPage\.audioFailed'\)/)
+  assert.doesNotMatch(mobileVocab, /data-vocab-play|data-vocab-silent/)
 })

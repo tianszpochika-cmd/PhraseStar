@@ -217,21 +217,34 @@ test('B11 V0019 is additive, manifest-complete and replay-safe', () => {
 });
 
 test('B3 and B11 listening controls keep six frozen rates and preserve pitch where supported', () => {
-  const pages = [
-    readText('apps/mobile/src/pages/b3-listening/b3-listening.vue'),
-    readText('apps/mobile/src/pages/b11-listening/b11-listening.vue'),
+  const sixRates = /PLAYBACK_RATES\s*=\s*\[0\.5, 0\.75, 1, 1\.25, 1\.5, 2\]/;
+  const bareSeventh = /(?<![\d.])0\.7(?![\d.])/;
+  const sharedRates = readText('apps/mobile/src/stores/b11-learning.ts');
+  assert.match(sharedRates, sixRates);
+  assert.doesNotMatch(sharedRates, bareSeventh);
+  const webPages = [
     readText('apps/learner-web/src/pages/B3ListeningPage.vue'),
     readText('apps/learner-web/src/pages/B11ListeningPage.vue'),
   ];
-  const sixRates = /PLAYBACK_RATES\s*=\s*\[0\.5, 0\.75, 1, 1\.25, 1\.5, 2\]/;
-  for (const page of pages) {
+  for (const page of webPages) {
     assert.match(page, sixRates);
-    assert.doesNotMatch(page, /(?<![\d.])0\.7(?![\d.])/);
+    assert.doesNotMatch(page, bareSeventh);
   }
-  const webPages = pages.slice(2).join('\n');
-  assert.match(webPages, /preservesPitch\s*=\s*true/);
+  assert.match(webPages.join('\n'), /preservesPitch\s*=\s*true/);
   const mobileAdapter = readText('apps/mobile/src/platform/uni-runtime.ts');
   assert.match(mobileAdapter, /preservesPitch\?: boolean/);
   assert.match(mobileAdapter, /enableUniAudioPitchPreservation/);
-  assert.match(pages.slice(0, 2).join('\n'), /已记录降级/);
+  const closedMobile = [
+    ['apps/mobile/src/pages/b3-listening/b3-listening.vue', 'closed.b3Listening.title'],
+    ['apps/mobile/src/pages/b11-listening/b11-listening.vue', 'closed.b11Listening.title'],
+  ];
+  for (const [path, titleKey] of closedMobile) {
+    const page = readText(path);
+    assert.match(page, /<MobileClosedPracticeNotice/);
+    assert.match(page, new RegExp(`variant="listening"[\\s\\S]*title-key="${titleKey.replaceAll('.', '\\.')}"`));
+    assert.match(page, /navigateTo\(\{ url: '\/pages\/today\/today' \}\)/);
+    assert.match(page, /target: '\/pages\/b2-vocabulary\/b2-vocabulary'/);
+    assert.match(page, /target: '\/pages\/b3-reading\/b3-reading'/);
+    assert.doesNotMatch(page, /PLAYBACK_RATES|已记录降级|enableUniAudioPitchPreservation|createInnerAudioContext|authorizeB11Playback|playbackRate|<audio|<video|recorderManager|B10StatusPanel|B11StatusPanel/);
+  }
 });

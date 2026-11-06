@@ -16,4 +16,10 @@ public final class FailClosedGamificationFactStore implements GamificationFactSt
         throw GamificationPersistenceException.localRealUnavailable(
                 "gamification owner-schema JDBC aggregate store");
     }
+
+    @Override
+    public <T> T inUserReadTransaction(String subjectId, Function<UserFacts, T> work) {
+        throw GamificationPersistenceException.localRealUnavailable(
+                "gamification owner-schema JDBC aggregate store");
+    }
 }
