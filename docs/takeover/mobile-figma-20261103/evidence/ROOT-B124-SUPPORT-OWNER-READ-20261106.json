@@ -1,0 +1,555 @@
+{
+  "projection": "sanitized-exact-source-receipt",
+  "batch": "B124",
+  "page": "MB-028",
+  "route": "#/pages/support/support",
+  "sourceFile": "apps/mobile/src/pages/support/support.vue",
+  "serviceOwner": "admin-ops-service.support",
+  "traceStatus": "TRACE_PENDING",
+  "pageStatusPreserved": "REVIEWED_LOCAL_UI_CANDIDATE_TRACE_PENDING",
+  "formalDoD": "NOT_SIGNED",
+  "h5": "NOT_RUN",
+  "source": {
+    "run": "G282",
+    "receiptJobField": "G247",
+    "status": "PASS",
+    "reason": "pass",
+    "httpRun": true,
+    "namedSha256": "9e11bcb9d6885f816e858e212c54a23599710672a2cb5136858eb22bbda7ef6d",
+    "fieldsCheckedAgainstReceipt": true,
+    "integrationHead": "981be677",
+    "sourceJarPinnedSeparately": true
+  },
+  "anchors": {
+    "act": [
+      "ACT-P1-LEARNER",
+      "ACT-P1-SUPPORT",
+      "ACT-P1-SYSTEM"
+    ],
+    "jny": [
+      "JNY-P1-14"
+    ],
+    "rule": [
+      "RULE-P1-TIME-SYNC"
+    ],
+    "int": [
+      "INT-P1-012",
+      "INT-P1-013",
+      "INT-P1-017"
+    ],
+    "e2e": [
+      "E2E-P1-SUPPORT",
+      "E2E-P1-RECOVERY"
+    ],
+    "arch": [
+      "ARCH-IAM-002",
+      "ARCH-REL-001"
+    ],
+    "page": [
+      "PAGE-P1-SUPPORT"
+    ],
+    "r1": [
+      "R1-100",
+      "R1-101",
+      "R1-114"
+    ],
+    "bc": [
+      "BC-185",
+      "BC-186"
+    ],
+    "ic": [
+      "IC-037",
+      "IC-103",
+      "IC-104"
+    ],
+    "featV2": [
+      "FEAT-INF-008→V2-980-0412"
+    ],
+    "prdAtomV2": [
+      "PRD-ATOM-1545→V2-980-0530"
+    ],
+    "traceStatus": "TRACE_PENDING",
+    "role": "preparatory-source-anchors"
+  },
+  "ports": {
+    "bind": "127.0.0.1",
+    "mysql": 13306,
+    "gateway": 18070,
+    "iam": 18087,
+    "adminOps": 18097,
+    "h5Dev": 18183,
+    "h5DevUsed": false,
+    "portsFreeAfter": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18097": true
+    }
+  },
+  "counts": {
+    "catalogued": 20,
+    "executedAccepted": 10,
+    "skipped": 10,
+    "healthWithinAccepted": 1,
+    "routedBusinessReadsWithinAccepted": 9
+  },
+  "counters": {
+    "guardedCreate": 0,
+    "health": 1,
+    "learnerAdminOwnScope": 1,
+    "learnerCross": 0,
+    "learnerDeniedStaffQueue": 1,
+    "learnerOwnDetail": 0,
+    "learnerOwnList": 1,
+    "learnerSettingsIt7": 1,
+    "learnerUnknown": 1,
+    "noAuth": 4,
+    "requests": 10,
+    "skipped": 10,
+    "staffAdminOwnScope": 0,
+    "staffCross": 0,
+    "staffOwnDetail": 0,
+    "staffQueue": 0,
+    "staffSettingsIt7": 0,
+    "staffSubjectOwnList": 0,
+    "staffUnknown": 0,
+    "transportErrors": 0
+  },
+  "hook": {
+    "status": "PASS",
+    "reason": "pass",
+    "executed": true,
+    "httpRun": true,
+    "profileAttested": "local-real",
+    "adminReady": true,
+    "profileLine": true,
+    "securityHold": false,
+    "falseInbox": false,
+    "staff": "ACTOR_MISSING",
+    "guardedCreate": "GUARD_DISABLED",
+    "boardGetSideEffect": "separate-from-support-ticket",
+    "diagnostic": null,
+    "jwt": {
+      "alg": "RS256",
+      "audience": [
+        "yuxuexing-api"
+      ],
+      "issuer": "http://127.0.0.1:18087",
+      "verified": true,
+      "kidPresent": true
+    },
+    "supportProbeWriteRequests": 0
+  },
+  "cases": [
+    {
+      "id": "gateway-health",
+      "accepted": true,
+      "actor": "none",
+      "family": "PREREQUISITE",
+      "method": "GET",
+      "path": "/api/v1/health",
+      "httpStatus": 200,
+      "boundary": "READY",
+      "errorCode": null,
+      "proves": "GATEWAY_LISTENING",
+      "fullyReal": false,
+      "reason": null
+    },
+    {
+      "id": "noauth-learner-list",
+      "accepted": true,
+      "actor": "none",
+      "family": "NO_AUTH",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?pageSize=20",
+      "httpStatus": 401,
+      "boundary": "DENIED",
+      "errorCode": "AUTH_REQUIRED",
+      "proves": "NO_AUTH_STATUS",
+      "fullyReal": false,
+      "unauthenticatedVisible": false
+    },
+    {
+      "id": "noauth-unknown-detail",
+      "accepted": true,
+      "actor": "none",
+      "family": "NO_AUTH",
+      "method": "GET",
+      "path": "/api/v1/support/tickets/{unknown-id}",
+      "ticketId": "redacted",
+      "httpStatus": 401,
+      "boundary": "DENIED",
+      "errorCode": "AUTH_REQUIRED",
+      "proves": "NO_AUTH_STATUS",
+      "fullyReal": false,
+      "unauthenticatedVisible": false
+    },
+    {
+      "id": "noauth-settings-it7",
+      "accepted": true,
+      "actor": "none",
+      "family": "NO_AUTH",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?projection=it7",
+      "httpStatus": 401,
+      "boundary": "DENIED",
+      "errorCode": "AUTH_REQUIRED",
+      "proves": "NO_AUTH_STATUS",
+      "fullyReal": false,
+      "unauthenticatedVisible": false
+    },
+    {
+      "id": "noauth-staff-queue",
+      "accepted": true,
+      "actor": "none",
+      "family": "NO_AUTH",
+      "method": "GET",
+      "path": "/api/v1/admin/ops/tickets?includeAll=true",
+      "httpStatus": 401,
+      "boundary": "DENIED",
+      "errorCode": "AUTH_REQUIRED",
+      "proves": "NO_AUTH_STATUS",
+      "fullyReal": false,
+      "includeAllOpen": false,
+      "unauthenticatedVisible": false
+    },
+    {
+      "id": "learner-own-list",
+      "accepted": true,
+      "actor": "learner",
+      "family": "LEARNER_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?pageSize=20",
+      "httpStatus": 200,
+      "boundary": "EMPTY",
+      "errorCode": null,
+      "proves": "LEARNER_OWN_LIST",
+      "fullyReal": true,
+      "ticketCount": 0,
+      "includeAllOpen": false
+    },
+    {
+      "id": "learner-unknown-detail",
+      "accepted": true,
+      "actor": "learner",
+      "family": "LEARNER_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/support/tickets/{unknown-id}",
+      "ticketId": "redacted",
+      "httpStatus": 404,
+      "boundary": "NOT_VISIBLE",
+      "errorCode": "SUPPORT_TICKET_NOT_FOUND",
+      "proves": "UNKNOWN_ID",
+      "fullyReal": false,
+      "includeAllOpen": false
+    },
+    {
+      "id": "learner-own-detail",
+      "accepted": false,
+      "actor": "learner",
+      "family": "LEARNER_OWN_TICKET",
+      "method": "GET",
+      "path": null,
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "LEARNER_OWN_DETAIL",
+      "reason": "EMPTY_LIST_NO_OWN_ID",
+      "fullyReal": false,
+      "actorOwnedExistingTicket": false
+    },
+    {
+      "id": "learner-cross-actor",
+      "accepted": false,
+      "actor": "learner",
+      "family": "CROSS_ACTOR",
+      "method": "GET",
+      "path": null,
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "LEARNER_CROSS_ACTOR",
+      "reason": "CROSS_ACTOR_ID_ABSENT",
+      "fullyReal": false
+    },
+    {
+      "id": "learner-settings-it7",
+      "accepted": true,
+      "actor": "learner",
+      "family": "SETTINGS_IT7",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?projection=it7",
+      "httpStatus": 200,
+      "boundary": "WORKBENCH_NO_TRACES",
+      "errorCode": null,
+      "proves": "SETTINGS_IT7_LEARNER_BOARD",
+      "fullyReal": false,
+      "writeSwitch": "FROZEN",
+      "staffFieldsPresent": false,
+      "auditVisible": false,
+      "workbenchTraceCount": 0,
+      "includeAllOpen": false
+    },
+    {
+      "id": "learner-admin-own-scope",
+      "accepted": true,
+      "actor": "learner",
+      "family": "LEARNER_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/admin/ops/tickets",
+      "httpStatus": 200,
+      "boundary": "EMPTY",
+      "errorCode": null,
+      "proves": "ADMIN_ROUTE_OWN_SCOPE",
+      "fullyReal": false,
+      "ticketCount": 0,
+      "includeAllOpen": false
+    },
+    {
+      "id": "learner-denied-staff-queue",
+      "accepted": true,
+      "actor": "learner",
+      "family": "STAFF_COMPAT_WORKBENCH",
+      "method": "GET",
+      "path": "/api/v1/admin/ops/tickets?includeAll=true",
+      "httpStatus": 403,
+      "boundary": "DENIED",
+      "errorCode": "ADMIN_PERMISSION_DENIED",
+      "proves": "LEARNER_DENIED_STAFF_QUEUE",
+      "fullyReal": false,
+      "includeAllOpen": false
+    },
+    {
+      "id": "staff-subject-own-list",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_SUBJECT_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?pageSize=20",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "STAFF_SUBJECT_OWN_LIST",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-unknown-detail",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_SUBJECT_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/support/tickets/{unknown-id}",
+      "ticketId": "redacted",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "UNKNOWN_ID",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-own-detail",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_SUBJECT_OWN_TICKET",
+      "method": "GET",
+      "path": null,
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "STAFF_SUBJECT_OWN_DETAIL",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-admin-own-scope",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_SUBJECT_OWN_TICKET",
+      "method": "GET",
+      "path": "/api/v1/admin/ops/tickets",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "ADMIN_ROUTE_OWN_SCOPE",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-queue",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_COMPAT_WORKBENCH",
+      "method": "GET",
+      "path": "/api/v1/admin/ops/tickets?includeAll=true",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "STAFF_QUEUE",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-cross-actor",
+      "accepted": false,
+      "actor": "staff",
+      "family": "STAFF_COMPAT_WORKBENCH",
+      "method": "GET",
+      "path": null,
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "STAFF_CROSS_ACTOR",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "staff-settings-it7",
+      "accepted": false,
+      "actor": "staff",
+      "family": "SETTINGS_IT7",
+      "method": "GET",
+      "path": "/api/v1/support/tickets?projection=it7",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "SETTINGS_IT7_STAFF_BOARD",
+      "reason": "ACTOR_MISSING",
+      "fullyReal": false
+    },
+    {
+      "id": "learner-guarded-create",
+      "accepted": false,
+      "actor": "learner",
+      "family": "LEARNER_OWN_TICKET",
+      "method": "POST",
+      "path": "/api/v1/support/tickets",
+      "httpStatus": null,
+      "boundary": "SKIP",
+      "proves": "GUARDED_CREATE",
+      "reason": "GUARD_DISABLED",
+      "fullyReal": false
+    }
+  ],
+  "persistence": {
+    "supportTicketCountBefore": "0",
+    "supportTicketCountAfter": "0",
+    "supportTicketWrites": 0,
+    "closureDeskCountBefore": "0",
+    "closureDeskCountAfter": "1",
+    "boardGetSideEffect": true,
+    "boardDeskScope": "separate-from-support-ticket",
+    "flyway": [
+      "1:1",
+      "2:1",
+      "3:1",
+      "4:1",
+      "5:1",
+      "6:1",
+      "7:1"
+    ],
+    "migrations": [
+      "V1__create_admin_ops_service_schema.sql",
+      "V2__create_admin_ops_durable_runtime.sql",
+      "V3__standardize_admin_ops_outbox_event_shape.sql",
+      "V4__widen_outbox_event_id.sql",
+      "V5__index_admin_audit_tenant_sequence.sql",
+      "V6__risk_case.sql",
+      "V7__it7_closure_desk.sql"
+    ]
+  },
+  "scope": {
+    "boardDesk": "separate-from-support-ticket",
+    "browser": false,
+    "guardedCreate": "disabled",
+    "staff": "absent",
+    "supportTicketWrites": "gated-at-zero",
+    "supportProbeWriteRequests": 0,
+    "syntheticIamSetup": true,
+    "closureDeskGetRowDelta": 1
+  },
+  "pins": {
+    "adminJarSha256": "817936e9781182911c9d99bca8eccd8c36790e3f2d18a14243473b903d369cff",
+    "gatewayJarSha256": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "iamJarSha256": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "probeSha256": "dd47c27084c8addf051bff50cec2d7b699e39e9ea56218163c975e049bd52787",
+    "fixtureSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+    "seedSqlSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+    "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b",
+    "dockerContext": "desktop-linux"
+  },
+  "interpreters": [
+    {
+      "python": "3.9",
+      "mode": "preflight",
+      "sameScripts": true,
+      "status": "FAIL",
+      "reason": "TypeError",
+      "stage": "script-root",
+      "errno": null,
+      "httpRun": false
+    },
+    {
+      "python": "3.12",
+      "mode": "preflight",
+      "sameScripts": true,
+      "status": "PREFLIGHT",
+      "reason": "preflight",
+      "preflightOnly": true,
+      "httpRun": false
+    },
+    {
+      "python": "3.12",
+      "mode": "run",
+      "sameScripts": true,
+      "status": "PASS",
+      "reason": "pass",
+      "httpRun": true,
+      "interpreterFieldInPassReceipt": false
+    }
+  ],
+  "cleanup": {
+    "attempts": [
+      {
+        "step": "processes",
+        "ok": true,
+        "errno": null,
+        "errorType": null
+      },
+      {
+        "step": "container",
+        "ok": true,
+        "errno": null,
+        "errorType": null
+      },
+      {
+        "step": "scratch",
+        "ok": true,
+        "errno": null,
+        "errorType": null
+      },
+      {
+        "step": "ports",
+        "ok": true,
+        "errno": null,
+        "errorType": null
+      }
+    ],
+    "containerReleased": true,
+    "autoRemoved": false,
+    "identityAmbiguous": false,
+    "scratchRemoved": true,
+    "ownedChildren": {
+      "reaped": 1,
+      "remaining": 0,
+      "signaled": 4,
+      "unverified": 0
+    },
+    "ownResourcesReleased": true
+  },
+  "g270IndependentVerification": {
+    "result": "released",
+    "containerPresent": false,
+    "portsFree": true,
+    "scratchRemoved": true,
+    "supportTicketCounts": "0/0",
+    "flywaySuccessThrough": 7,
+    "learnerHttpReached": false,
+    "failClosedStage": "script-root",
+    "receiptContainerReleased": false,
+    "receiptAutoRemoved": false,
+    "actualTakenFrom": "independent-verification"
+  }
+}

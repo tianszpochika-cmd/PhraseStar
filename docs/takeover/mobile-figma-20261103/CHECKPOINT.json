@@ -2953,12 +2953,13 @@
         "h5": "NOT_RUN",
         "cross_viewport": "NOT_RUN",
         "accessibility": "NOT_RUN",
-        "real_api": "NOT_RUN",
+        "real_api": "LOCAL_GATEWAY_SCOPED_READ_PASS_B124",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B24-SUPPORT.md",
         "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore",
         "source_tests": "Root49/49 support/API/settings+types/H5build0",
-        "candidate_browser": "Root198/24;authorB26samepage220/13;tabletvisualsignoffpending"
+        "candidate_browser": "Root198/24;authorB26samepage220/13;tabletvisualsignoffpending",
+        "support_owner_read_b124": "evidence/ROOT-B124-SUPPORT-OWNER-READ-20261106.json"
       },
       "current_job": "dsh/batch-26-support-matrix",
       "source_operation_trace_b59": {
@@ -3707,7 +3708,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T02:09:01.473328+08:00",
+  "updated_at": "2026-11-06T06:08:54.255140+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5974,5 +5975,14 @@
     ],
     "review": "reviews/INTEGRATION-B123-LEARNER-PREFERENCE-FINGERPRINT.md",
     "evidence": "evidence/ROOT-B123-LEARNER-PREFERENCE-FINGERPRINT-20261106.json"
+  },
+  "integration_batch_124_support_owner_read": {
+    "page": "MB-028",
+    "status": "LOCAL_REAL_SCOPED_GATEWAY_READ_PASS",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B124-SUPPORT-OWNER-READ.md",
+    "evidence": "evidence/ROOT-B124-SUPPORT-OWNER-READ-20261106.json",
+    "h5": "NOT_RUN",
+    "deployed": "NOT_RUN"
   }
 }

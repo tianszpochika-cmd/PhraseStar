@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B124 已在本机核对客服空列表、无权和未知工单。工作台快照写入单列，H5 仍待验。 [客服 B124](takeover/mobile-figma-20261103/reviews/INTEGRATION-B124-SUPPORT-OWNER-READ.md)
+
 移动端 B123 的偏好长请求、同键冲突及历史回执在本机真实数据库通过。H5 外观保存继续验收。 [偏好幂等 B123](takeover/mobile-figma-20261103/reviews/INTEGRATION-B123-LEARNER-PREFERENCE-FINGERPRINT.md)
 
 移动端 B122 真实本机 Kafka 通过两条主题的 10 条权限和 25 项用例。Learning 实际消费继续验收。 [测评 Kafka 权限复验 B122](takeover/mobile-figma-20261103/reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md)
