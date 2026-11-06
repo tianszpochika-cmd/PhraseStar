@@ -21379,7 +21379,7 @@
           "owner": "content-service",
           "caller": "admin-ops-service/admin-web",
           "commandBoundary": "admin sends command; it never writes content tables",
-          "authorization": "content-editor/reviewer-l1/reviewer-l2/release-operator scopes plus ABAC rights and stage",
+          "authorization": "content-editor/reviewer-l1/reviewer-l2/release-operator scopes plus ABAC rights and stage. BIND_PUBLISHED_READING uses the existing publisher gate (content-publisher role or content:publish) and the verified subject must equal the stored publisher.",
           "dualReview": "REVIEW_FIRST and REVIEW_FINAL require distinct verified actors; author cannot review own version"
         },
         "x-idempotency": {
@@ -21453,7 +21453,7 @@
             "$ref": "#/components/responses/ApiConflict"
           }
         },
-        "description": "LEXEME_* commands manage row-level word master under a vocabulary pack (contentCode, kind VOCABULARY). The pack is auto-provisioned on first LEXEME_UPSERT. Author cannot self-review (FIRST/FINAL must differ); PUBLISH/UNPUBLISH/ARCHIVE require reasonCode for audit. Pronunciation rows reference media-service assets by id; audio bytes never flow through content-service."
+        "description": "LEXEME_* commands manage row-level word master under a vocabulary pack (contentCode, kind VOCABULARY). The pack is auto-provisioned on first LEXEME_UPSERT. Author cannot self-review (FIRST/FINAL must differ); PUBLISH/UNPUBLISH/ARCHIVE require reasonCode for audit. Pronunciation rows reference media-service assets by id; audio bytes never flow through content-service. BIND_PUBLISHED_READING is an additive command on this same route. It does not add a path, and it does not accept article text, questions, answers, actors, or tenant."
       }
     },
     "/api/v1/admin/content-commands/{contentCode}": {
@@ -36974,7 +36974,7 @@
           "keyHeader": "Idempotency-Key",
           "replayBehavior": "same actor and batch key returns the original per-item results; existing codes report SKIPPED"
         },
-        "description": "Each entry carries contentCode (pack) plus exactly one of content (pack draft), lexeme (word-master upsert) or item (row-level upsert). Entries are keyed {batchKey}:item:{index}:{code} so replay never duplicates.",
+        "description": "Each entry carries contentCode (pack) plus exactly one of content (pack draft), lexeme (word-master upsert) or item (row-level upsert). Entries are keyed {batchKey}:item:{index}:{code} so replay never duplicates. Batch import does not accept content.gradableQuestions or content.readingArticle, and it is not a publication or B3 binding shortcut.",
         "parameters": [
           {
             "$ref": "#/components/parameters/B9IdempotencyKey"
@@ -52032,6 +52032,9 @@
             "x-max-items-source": "B10CreateAssessmentSessionRequest.itemIds maxItems 100",
             "x-runtime-support": "Content authoring-only",
             "x-runtime-gap": "Content authoring-only: single CREATE_DRAFT and SAVE_DRAFT persist gradableQuestions on the immutable version payload. Assessment and reading runtimes do not read gradableQuestions."
+          },
+          "readingArticle": {
+            "$ref": "#/components/schemas/B9ReadingArticleAuthoring"
           }
         }
       },
@@ -52053,6 +52056,34 @@
           "contentRights",
           "reviewStage"
         ],
+        "x-bind-published-reading": {
+          "command": "BIND_PUBLISHED_READING",
+          "route": "existing submitB9ContentCommand",
+          "bodyFields": [
+            "command",
+            "contentCode",
+            "expectedStateVersion",
+            "contentVersionId",
+            "expectedHash"
+          ],
+          "idempotency": "existing Idempotency-Key header; same actor, key and request digest returns the original acceptance and writes no second binding; a different digest with the same key returns 409 and writes nothing",
+          "cas": "current_published_version_id equals contentVersionId, stored payload hash equals expectedHash, and aggregate state version equals expectedStateVersion; any mismatch returns 409 and writes nothing",
+          "expectedStateVersionZero": "rejected; a published aggregate uses B9StateVersion starting at 1",
+          "actors": "stored editor, first reviewer, final reviewer and publisher are non-blank and pairwise distinct; this command does not accept or invent them",
+          "publisher": "existing canPublish gate (content-publisher role or content:publish) AND verified subject equals the stored publisher",
+          "rights": "G164: stored channels contain LEARNER and ASSESSMENT, or historical SEALED, or wildcard * which grants both LEARNER and ASSESSMENT. Existing PUBLISH still requires LEARNER and PUBLIC and is unchanged.",
+          "ownerTransaction": "one content-service transaction locks the definition and version, derives the B3 rows, and commits them together; tenant stays server platform; the publication pointer is not moved",
+          "bindings": "one READING_ARTICLE plus one READING_QUESTION per frozen gradableQuestions entry, in array order. Article question_item_id is the first itemId and never articleId. Each question row uses its own itemId. Count is the stored array length, not 2.",
+          "articleRequired": "the frozen version payload must contain readingArticle; omission fails closed and writes nothing",
+          "questionsRequired": "gradableQuestions must be present because content_b3_item_binding.question_item_id is NOT NULL and must be an existing itemId; absence fails closed and writes nothing. This is not an R1-044 cardinality.",
+          "r1-044": "GrammarReadingPack reading packs are FULL or ZERO. Unnamed reading selection needs 2 READING items or CLOSED_MISSING before idempotency claim. Named itemIds stay as given. course-b25-basics and p1.placement.v1 are outside that pack. This command does not apply that count.",
+          "reservedKeys": "reject articleId or itemId 3501, 3950, and 266001 through 266010; reject content version 301 and 266100; do not adopt another content_code on the binding unique key",
+          "crossOwner": "unique key is tenant, domain, resource type and resource key. A row with a different content_code is a conflict and writes nothing. The same content_code on another version flips that one row from a non-current version to REVOKED, then ACTIVE for this version. No delete and no second row.",
+          "experienceIds": "b3-reading-article-{articleId} and b3-reading-question-{itemId}. An existing experience whose type, key or content code differs is a conflict.",
+          "projection": "article and question payloads copy text, stem and options only. Question options map optionId to optionCode. answerRule and correctOption stay out. Payloads include articleId. content_version_id is this version.",
+          "withdrawal": "inactive copyright, learning not allowed, blank source, license or evidence, a closed rights window, or channels that no longer meet G164 fail closed and write nothing",
+          "inactiveResponseFields": "B9ContentCommandAccepted has no per-command closure. practiceRef, question ids and payload hash are not added to it. The existing optional contentVersionId may be echoed."
+        },
         "properties": {
           "command": {
             "type": "string",
@@ -52083,7 +52114,8 @@
               "ITEM_REVIEW_FINAL",
               "ITEM_PUBLISH",
               "ITEM_UNPUBLISH",
-              "ITEM_ARCHIVE"
+              "ITEM_ARCHIVE",
+              "BIND_PUBLISHED_READING"
             ]
           },
           "contentCode": {
@@ -52091,6 +52123,15 @@
           },
           "expectedStateVersion": {
             "$ref": "#/components/schemas/B9ExpectedStateVersion"
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B9ContentVersionId",
+            "description": "仅 BIND_PUBLISHED_READING 提交。它是期望的 current_published_version_id，不是客户端分配的新版本，也不是 targetVersionNumber。其他命令不得携带。"
+          },
+          "expectedHash": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$",
+            "description": "仅 BIND_PUBLISHED_READING 提交。与该版本已存储的 payload hash 做比较，64 位十六进制。它不是草稿 content.contentHash，也不是排期快照里的 contentHash。其他命令不得携带。"
           },
           "targetVersionNumber": {
             "type": "integer",
@@ -52492,6 +52533,19 @@
               "itemId",
               "reasonCode"
             ]
+          },
+          "BIND_PUBLISHED_READING": {
+            "required": [
+              "contentVersionId",
+              "expectedHash"
+            ],
+            "allowed": [
+              "command",
+              "contentCode",
+              "expectedStateVersion",
+              "contentVersionId",
+              "expectedHash"
+            ]
           }
         },
         "oneOf": [
@@ -52508,6 +52562,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -52556,6 +52620,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "reasonCode"
                   ]
                 },
@@ -52592,6 +52666,16 @@
             },
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -52640,6 +52724,16 @@
             },
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -52694,6 +52788,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -52733,6 +52837,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "reasonCode"
@@ -52781,6 +52895,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -52822,6 +52946,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -52861,6 +52995,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -52910,6 +53054,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "content"
                   ]
                 },
@@ -52949,6 +53103,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -53002,6 +53166,16 @@
             },
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -53066,6 +53240,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -53117,6 +53301,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -53176,6 +53370,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -53225,6 +53429,16 @@
             ],
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -53283,6 +53497,16 @@
             },
             "not": {
               "anyOf": [
+                {
+                  "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
                 {
                   "required": [
                     "targetVersionNumber"
@@ -53352,6 +53576,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -53410,6 +53644,16 @@
               "anyOf": [
                 {
                   "required": [
+                    "contentVersionId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedHash"
+                  ]
+                },
+                {
+                  "required": [
                     "targetVersionNumber"
                   ]
                 },
@@ -53451,6 +53695,98 @@
                 {
                   "required": [
                     "item"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "properties": {
+              "command": {
+                "enum": [
+                  "BIND_PUBLISHED_READING"
+                ]
+              }
+            },
+            "required": [
+              "contentVersionId",
+              "expectedHash"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "targetVersionNumber"
+                  ]
+                },
+                {
+                  "required": [
+                    "reasonCode"
+                  ]
+                },
+                {
+                  "required": [
+                    "content"
+                  ]
+                },
+                {
+                  "required": [
+                    "reviewDecision"
+                  ]
+                },
+                {
+                  "required": [
+                    "reviewNote"
+                  ]
+                },
+                {
+                  "required": [
+                    "schedule"
+                  ]
+                },
+                {
+                  "required": [
+                    "scheduledPublishTaskId"
+                  ]
+                },
+                {
+                  "required": [
+                    "lexeme"
+                  ]
+                },
+                {
+                  "required": [
+                    "pronunciation"
+                  ]
+                },
+                {
+                  "required": [
+                    "lexemeId"
+                  ]
+                },
+                {
+                  "required": [
+                    "item"
+                  ]
+                },
+                {
+                  "required": [
+                    "itemId"
+                  ]
+                },
+                {
+                  "required": [
+                    "targetType"
+                  ]
+                },
+                {
+                  "required": [
+                    "targetRef"
+                  ]
+                },
+                {
+                  "required": [
+                    "cohort"
                   ]
                 }
               ]
@@ -53511,7 +53847,8 @@
               "ITEM_REVIEW_FINAL",
               "ITEM_PUBLISH",
               "ITEM_UNPUBLISH",
-              "ITEM_ARCHIVE"
+              "ITEM_ARCHIVE",
+              "BIND_PUBLISHED_READING"
             ],
             "readOnly": true
           },
@@ -82021,6 +82358,122 @@
         },
         "x-answer-member-check": "correctOption exact-case member of the same question options[].optionId",
         "x-answer-retention": "server-only"
+      },
+      "B9ReadingArticleBlockInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "description": "阅读文章的一块作者输入。只含 contentLocale 下的纯文本，以及可选的单条对照译文。blockId、blockIndex、token 和分支由服务端派生或不接收。",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "该版本 contentLocale 下的纯文本。长度上限与 B10LearnerContentItem.stem 以及 B9 公开 displayText 的 4096 一致。不得提交 token、HTML 对象或分支选项。仅空白字符非法。学习者解析只保留含文本的块。"
+          },
+          "translation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "可选的单条对照译文，只属于本块。省略表示没有译文。不是 locale 映射，不另带 contentLocale，也不携带答案、演员或租户。长度上限同样是 4096。仅空白字符非法。"
+          }
+        }
+      },
+      "B9ReadingArticleAuthoring": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "articleId",
+          "blocks"
+        ],
+        "description": "可选的管理端输入，只随既有 submitB9ContentCommand 的 CREATE_DRAFT 或 SAVE_DRAFT 中的 content 提交。省略表示新版本没有阅读文章；必填 items 与可选 gradableQuestions 保持原语义，不得从 items、title 或散落的 articleId/blocks 推断本文。版本 payload 只应白名单 summary、contentLocale、targetLevel、items、gradableQuestions 和本对象，因此未命名的 articleId 或 blocks 不会留下。出现时成为该 contentVersionId 的不可变 payload 字节；SAVE_DRAFT 只追加新版本。批量导入不接收本字段。客户端只提交 articleId 与 blocks。title 复制必填草稿 title，cefrLevel 复制必填 targetLevel，wordCount 由块文本按单个空格连接再按单个空格拆分得到，与既有阅读种子的 wordCount 算法相同。blockId 为 block- 加从 1 起的序号，blockIndex 为从 0 起的数组下标。contentVersionId 由所分配版本写入体验行，并写入投影 payload 以便既有版本一致性检查。不接收 estimatedMinutes、rightsStatus、practiceRef、token、分支、答案、规则、演员或租户；学习者解析对缺省 estimatedMinutes 使用 5，对缺省 rightsStatus 使用 AUTHORIZED。articleId 必须是与同内容 gradableQuestions.itemId 都不同的安全整数，且不得为保留旧键 3501 或 3950，也不得落入 266001 至 266010。同内容的 itemId 也不得取这些保留值。命令 contentCode 精确等于 p1.placement.v1，或内容标识精确等于 p1-placement-bank-v1 时必须拒绝。本对象不规定可判分题的道数，也不进入学习者、公开、评估快照或管理端响应。",
+        "x-admin-input-only": true,
+        "x-commands": [
+          "CREATE_DRAFT",
+          "SAVE_DRAFT"
+        ],
+        "x-optional-absence": "omitted means the new version has no readingArticle; required items and optional gradableQuestions stay unchanged and are not inferred into this object",
+        "x-owner-whitelist": [
+          "summary",
+          "contentLocale",
+          "targetLevel",
+          "items",
+          "gradableQuestions",
+          "readingArticle"
+        ],
+        "x-does-not-replace": [
+          "items",
+          "gradableQuestions"
+        ],
+        "x-version-immutability": "contentVersionId and payload bytes are immutable after creation; a later SAVE_DRAFT allocates a new version",
+        "x-rejected-content-codes": [
+          "p1.placement.v1"
+        ],
+        "x-rejected-content-ids": [
+          "p1-placement-bank-v1"
+        ],
+        "x-batch-import": "rejected; single CREATE_DRAFT and SAVE_DRAFT only",
+        "x-response-absence": "absent from learner, public, assessment-snapshot, and admin response schemas",
+        "x-server-derived": [
+          "title",
+          "cefrLevel",
+          "wordCount",
+          "blockId",
+          "blockIndex",
+          "contentVersionId"
+        ],
+        "x-client-forbidden-fields": [
+          "title",
+          "cefrLevel",
+          "wordCount",
+          "estimatedMinutes",
+          "rightsStatus",
+          "contentVersionId",
+          "practiceRef",
+          "tokens",
+          "branchChoices",
+          "answerRule",
+          "correctOption",
+          "actor",
+          "tenant",
+          "owner",
+          "questionType"
+        ],
+        "x-word-count": "join block text with one space, then split on one space; same derivation as the existing reading seed wordCount",
+        "x-block-identity": "server assigns block-{1-based index} and 0-based blockIndex from array order",
+        "x-article-id-independent-of-question-ids": "articleId exact integer inequality against every gradableQuestions itemId in the same content object",
+        "x-rejected-numeric-ids": [
+          3501,
+          3950
+        ],
+        "x-rejected-numeric-id-range": {
+          "minimum": 266001,
+          "maximum": 266010,
+          "reason": "placement item ids and legacy dangling reading keys stay reserved"
+        },
+        "x-item-count": "R1-044 does not set this object's question cardinality. GrammarReadingPack.required(READING) is 2 only for an unnamed assessment pack and returns CLOSED_MISSING when shorter; named itemIds stay as given. gradableQuestions remains omitted or 1 to 100.",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "JSON 整数，含端点 1 与 9007199254740991。下限与 B10Int64Id 一致，上限是可往返的安全整数。禁止字符串、小数和前导零。必须与同一次 content.gradableQuestions 的每个 itemId 不同。不得为 3501 或 3950，不得落入 266001 至 266010。"
+          },
+          "blocks": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10000,
+            "description": "至少一块。上限与同一 B9ContentDraftInput.items 的 maxItems 10000 相同。数组顺序即稳定块序。B3 学习者解析保留每一块非空白 text，本上限只封闭作者输入。",
+            "items": {
+              "$ref": "#/components/schemas/B9ReadingArticleBlockInput"
+            }
+          }
+        }
       }
     },
     "requestBodies": {},
