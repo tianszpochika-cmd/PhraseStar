@@ -1,0 +1,344 @@
+{
+  "batch": "MOBILE-FIGMA-B122-20261106",
+  "scope": "isolated real Kafka, synthetic messages",
+  "receipt": {
+    "probe": "assessment-kafka-acl-160",
+    "status": "PASS",
+    "cleanup": "PASS",
+    "image": "sha256:05b4616e0702ef2729327705d54ad6b50ea70b271c4b730fabd2320789fb7b02",
+    "authorizer": "org.apache.kafka.metadata.authorizer.StandardAuthorizer",
+    "allow_everyone_if_no_acl_found": false,
+    "allow_everyone_describe_configs": "absent",
+    "allow_everyone_file_readback": "mounted-server-properties",
+    "super_users_describe_configs": "absent",
+    "super_users_file_readback": "mounted-server-properties",
+    "super_user_behavior": {
+      "installer_acl_managed": true,
+      "ordinary_principal": "svc.assessment-service",
+      "action": "DescribeAcls",
+      "denial": "org.apache.kafka.common.errors.ClusterAuthorizationException"
+    },
+    "no_acl_probe": {
+      "topic": "qa-acl205-no-acl",
+      "principal": "svc.assessment-service",
+      "denial": "org.apache.kafka.common.errors.TopicAuthorizationException",
+      "records": 0,
+      "acl_rows": 0,
+      "distinct_from_product": true
+    },
+    "external_protocol": "SASL_SSL",
+    "controller_protocol": "SASL_SSL",
+    "inter_broker_listener": "EXTERNAL",
+    "internal_listeners_published": false,
+    "plaintext_listener": false,
+    "auto_create_topics": false,
+    "installer_principal": "User:qainstaller",
+    "installer_used_for_setup": true,
+    "installer_used_in_allow_deny_cases": false,
+    "idempotent_without_cluster_acl": true,
+    "wildcard_principal_acl": false,
+    "third_application_topic": false,
+    "acl_count": 10,
+    "topics": {
+      "platform.assessment.v1": {
+        "partitions": 12,
+        "replication": 1,
+        "min_isr": 1,
+        "records": 1,
+        "retention_ms": "604800000",
+        "cleanup_policy": "delete"
+      },
+      "platform.events.dlq.v1": {
+        "partitions": 6,
+        "replication": 1,
+        "min_isr": 1,
+        "records": 1
+      }
+    },
+    "kafka_clients_version": "4.2.1",
+    "kafka_clients_jar": "kafka-clients-4.2.1.jar",
+    "classpath_sha256": [
+      "6a281026416938a53c105f2d91d2807fdc83d5658452abf0ad1b6d8ab8a553c8",
+      "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    ],
+    "cases": [
+      {
+        "id": "assessment-write",
+        "principal": "svc.assessment-service",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "allow",
+        "observed": "allow",
+        "acked": true,
+        "partition": 10,
+        "offset": 0
+      },
+      {
+        "id": "learning-read",
+        "principal": "cg.learning-from-assessment.v1",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.learning-from-assessment.v1",
+        "expect": "allow",
+        "observed": "allow",
+        "count": 1,
+        "matched": true,
+        "partition": 10,
+        "offset": 0
+      },
+      {
+        "id": "gamification-read",
+        "principal": "cg.gamification-from-assessment.v1",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.gamification-from-assessment.v1",
+        "expect": "allow",
+        "observed": "allow",
+        "count": 1,
+        "matched": true,
+        "partition": 10,
+        "offset": 0
+      },
+      {
+        "id": "workflow-assessment-read",
+        "principal": "cg.workflow-from-assessment.v1",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.workflow-from-assessment.v1",
+        "expect": "allow",
+        "observed": "allow",
+        "count": 1,
+        "matched": true,
+        "partition": 10,
+        "offset": 0
+      },
+      {
+        "id": "workflow-dlq-write",
+        "principal": "svc.workflow-service",
+        "operation": "WRITE",
+        "topic": "platform.events.dlq.v1",
+        "group": null,
+        "expect": "allow",
+        "observed": "allow",
+        "acked": true,
+        "partition": 2,
+        "offset": 0
+      },
+      {
+        "id": "workflow-dlq-read",
+        "principal": "cg.workflow-manual-recovery-dlq.v1",
+        "operation": "READ",
+        "topic": "platform.events.dlq.v1",
+        "group": "cg.workflow-manual-recovery-dlq.v1",
+        "expect": "allow",
+        "observed": "allow",
+        "count": 1,
+        "matched": true,
+        "partition": 2,
+        "offset": 0
+      },
+      {
+        "id": "assessment-dlq-write",
+        "principal": "svc.assessment-service",
+        "operation": "WRITE",
+        "topic": "platform.events.dlq.v1",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "learning-write-assessment",
+        "principal": "svc.learning-service",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "workflow-write-assessment",
+        "principal": "svc.workflow-service",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "recovery-write-dlq",
+        "principal": "cg.workflow-manual-recovery-dlq.v1",
+        "operation": "WRITE",
+        "topic": "platform.events.dlq.v1",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "assessment-write-learning-topic",
+        "principal": "svc.assessment-service",
+        "operation": "WRITE",
+        "topic": "platform.learning.v1",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "assessment-write-outside-name",
+        "principal": "svc.assessment-service",
+        "operation": "WRITE",
+        "topic": "qa-acl160-outside",
+        "group": null,
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "assessment-read",
+        "principal": "svc.assessment-service",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.svc.assessment-service.probe",
+        "expect": "any-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.GroupAuthorizationException"
+      },
+      {
+        "id": "assessment-other-group",
+        "principal": "svc.assessment-service",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.learning-from-assessment.v1",
+        "expect": "any-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.GroupAuthorizationException"
+      },
+      {
+        "id": "recovery-read-assessment",
+        "principal": "cg.workflow-manual-recovery-dlq.v1",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.workflow-manual-recovery-dlq.v1",
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "content-read-assessment",
+        "principal": "cg.assessment-from-content.v1",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.assessment-from-content.v1",
+        "expect": "any-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "assessment-read-dlq",
+        "principal": "svc.assessment-service",
+        "operation": "READ",
+        "topic": "platform.events.dlq.v1",
+        "group": "cg.svc.assessment-service.probe",
+        "expect": "any-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "learning-read-dlq",
+        "principal": "cg.learning-from-assessment.v1",
+        "operation": "READ",
+        "topic": "platform.events.dlq.v1",
+        "group": "cg.learning-from-assessment.v1",
+        "expect": "topic-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.TopicAuthorizationException"
+      },
+      {
+        "id": "workflow-read-dlq",
+        "principal": "svc.workflow-service",
+        "operation": "READ",
+        "topic": "platform.events.dlq.v1",
+        "group": "cg.svc.workflow-service.probe",
+        "expect": "any-authz",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.GroupAuthorizationException"
+      },
+      {
+        "id": "wrong-credential",
+        "principal": "svc.assessment-service",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "authn",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.SaslAuthenticationException"
+      },
+      {
+        "id": "anonymous-write",
+        "principal": "ANONYMOUS",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "authn",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.SaslAuthenticationException"
+      },
+      {
+        "id": "anonymous-read",
+        "principal": "ANONYMOUS",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.svc.anonymous.probe",
+        "expect": "authn",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.SaslAuthenticationException"
+      },
+      {
+        "id": "wildcard-write",
+        "principal": "*",
+        "operation": "WRITE",
+        "topic": "platform.assessment.v1",
+        "group": null,
+        "expect": "authn",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.SaslAuthenticationException"
+      },
+      {
+        "id": "wildcard-read",
+        "principal": "*",
+        "operation": "READ",
+        "topic": "platform.assessment.v1",
+        "group": "cg.svc.wildcard.probe",
+        "expect": "authn",
+        "observed": "deny",
+        "error_class": "org.apache.kafka.common.errors.SaslAuthenticationException"
+      },
+      {
+        "id": "anonymous-handshake",
+        "principal": null,
+        "operation": "HANDSHAKE",
+        "topic": null,
+        "group": null,
+        "expect": "handshake",
+        "observed": "deny",
+        "error_class": "handshake-closed"
+      }
+    ]
+  },
+  "priorFailure": "ClusterAuthorizationException before topic guard; isolated negative topic writes",
+  "remaining": [
+    "Learning consumer and offsets",
+    "business effects",
+    "deployment"
+  ],
+  "baseCommit": "ce8b2346",
+  "status": "LOCAL_KAFKA_ACL_VERIFIED",
+  "routes": [
+    "MB-013"
+  ]
+}

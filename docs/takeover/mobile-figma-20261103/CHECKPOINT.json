@@ -5958,5 +5958,13 @@
     ],
     "review": "reviews/INTEGRATION-B121-AUTH-H5-RETURN.md",
     "evidence": "evidence/ROOT-B121-AUTH-H5-RETURN-20261106.json"
+  },
+  "integration_b122_assessment_kafka_acl": {
+    "status": "LOCAL_KAFKA_ACL_VERIFIED",
+    "scope": [
+      "MB-013"
+    ],
+    "review": "reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md",
+    "evidence": "evidence/ROOT-B122-ASSESSMENT-KAFKA-ACL-20261106.json"
   }
 }

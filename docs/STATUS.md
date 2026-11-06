@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B122 真实本机 Kafka 通过两条主题的 10 条权限和 25 项用例。Learning 实际消费继续验收。 [测评 Kafka 权限复验 B122](takeover/mobile-figma-20261103/reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md)
+
 移动端 B121 登录 200 后进入个人页，注册 201 后进入引导。两条链路的浏览器 Cookie 与 IAM 响应一致。 [登录注册浏览器落点 B121](takeover/mobile-figma-20261103/reviews/INTEGRATION-B121-AUTH-H5-RETURN.md)
 
 移动端 B120 本机语法作答的版本、归属和固定时间通过 Learning 服务身份读回。事件消费和进度写入继续验收。 [测评作答归属与版本读回 B120](takeover/mobile-figma-20261103/reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md)

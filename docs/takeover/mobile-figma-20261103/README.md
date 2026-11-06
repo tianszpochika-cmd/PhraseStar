@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [测评 Kafka 权限复验 B122](reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md) 本机 Kafka 核对 10 条权限及 6 项放行、19 项拒绝。
 - [登录注册浏览器落点 B121](reviews/INTEGRATION-B121-AUTH-H5-RETURN.md) 已签署登录和待评估注册两条真实落点通过。
 - [测评作答归属与版本读回 B120](reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md) 同一真实语法作答的固定版本与时间通过服务身份读回。
 - [分级阅读键盘 B119](reviews/INTEGRATION-B119-GRADED-READING-TOOLS.md) 四组键盘顺序、字号上下限和原文／双语切换通过。
