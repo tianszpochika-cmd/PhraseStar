@@ -141,3 +141,8 @@ iam:
       permissions:
         - iam.consent.read
       token-ttl: ${IAM_SERVICE_CLIENT_LEARNER_TOKEN_TTL:5m}
+    learning-service:
+      secret-digest: ${IAM_SERVICE_CLIENT_LEARNING_SECRET_DIGEST:}
+      permissions:
+        - assessment:attempt-binding:read
+      token-ttl: ${IAM_SERVICE_CLIENT_LEARNING_TOKEN_TTL:5m}
