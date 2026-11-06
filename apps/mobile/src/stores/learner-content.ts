@@ -463,6 +463,15 @@ export const useLearnerContentStore = defineStore('mobile-learner-content', () =
       persist()
     } catch (error) {
       if (!current()) return
+      // ensureContentLocale swallows account-locale status. Only this paired home/catalog read can deny.
+      const status = httpStatus(error)
+      if (status === 401 || status === 403) {
+        home.value = null
+        homeStatus.value = 'forbidden'
+        lastError.value = mobileLearnerContentError(error).message
+        persist()
+        return
+      }
       homeStatus.value = 'offline'
       lastError.value = mobileLearnerContentError(error).message
       persist()

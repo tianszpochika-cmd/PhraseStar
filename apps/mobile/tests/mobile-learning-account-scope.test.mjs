@@ -82,6 +82,7 @@ function environment() {
   const persistedAccounts = new Map()
   const accountReads = []
   const learningLocales = []
+  const planReads = []
   function accountFor(subject) {
     return persistedAccounts.get(subject) ?? { uiLocale: 'zh-CN', contentLocale: 'en-US', timezone: 'Asia/Shanghai', themeMode: 'SYSTEM', highContrast: false, motionMode: 'FULL', goal: null, quota: null, stateVersion: 3 }
   }
@@ -120,7 +121,7 @@ function environment() {
   const contentModule = load('src/stores/learner-content.ts', {
     vue: require('vue'), pinia: require('pinia'),
     '../api/learner-content': { mobileLearnerContentApi: contentApi, mobileLearnerContentError: (error) => ({ message: error.message }) },
-    '../api/plan-today': { readPlanToday: async () => ({ planId: '', planVersion: 0, itemCount: 0 }), ensureLearningPlan: async () => ({}), replanLearningPlan: async () => ({}) },
+    '../api/plan-today': { readPlanToday: async () => { planReads.push(session.verifiedSubject); return { planId: '', planVersion: 0, itemCount: 0 } }, ensureLearningPlan: async () => ({}), replanLearningPlan: async () => ({}) },
     '../domain/plan-today': { shouldEnsurePlan: () => false },
     '../domain/onboarding-resume': load('src/domain/onboarding-resume.ts', {}),
     '../platform/uni-runtime': platform,
@@ -152,7 +153,7 @@ function environment() {
     '../domain/b11': { contentVersionOf: (value, fallback) => value ?? fallback, createB11ClientEventId: (prefix) => `${prefix}-fixture` },
     './session': sessionModule, './learning-cache': cache,
   })
-  return { session, auth, storage, b10: b10Module.useB10LearningStore(), content: contentModule.useLearnerContentStore(), b1: b1Module.useB1Store(), b11: b11Module.useB11LearningStore(), b10Api, contentApi, b11Api, mobileI18n, persistedAccounts, accountReads, learningLocales }
+  return { session, auth, storage, b10: b10Module.useB10LearningStore(), content: contentModule.useLearnerContentStore(), b1: b1Module.useB1Store(), b11: b11Module.useB11LearningStore(), b10Api, contentApi, b11Api, mobileI18n, persistedAccounts, accountReads, learningLocales, planReads }
 }
 
 function practice(sessionId) {
@@ -193,6 +194,30 @@ test('A to B clears cached practice and onboarding, and drops late A owner respo
   assert.equal(storage.has(B10_KEY), false)
   assert.equal(JSON.parse(storage.get(CONTENT_KEY)).subject, 'B')
   assert.equal(JSON.parse(storage.get(CONTENT_KEY)).home, null)
+})
+
+test('home or catalog 403 stays forbidden and does not keep the previous home or read the queue', async () => {
+  const { session, storage, content, contentApi, planReads } = environment()
+  assert.equal(await session.login('A', 'fixture'), true)
+  contentApi.readHome = async () => ({ tasks: [{ id: 'old-home' }], content: [{ contentCode: 'old-course' }], contentStatus: 'READY', targetMinutes: 15, completedMinutes: 4 })
+  await content.loadHome()
+  assert.equal(content.homeStatus, 'ready')
+  assert.equal(content.home.tasks[0].id, 'old-home')
+  assert.equal(planReads.length, 1)
+  contentApi.readHome = async () => {
+    const denied = new Error('当前会话没有访问该学习投影的权限。')
+    denied.status = 403
+    throw denied
+  }
+  await content.loadHome()
+  assert.equal(content.homeStatus, 'forbidden')
+  assert.notEqual(content.homeStatus, 'offline')
+  assert.notEqual(content.homeStatus, 'empty')
+  assert.equal(content.home, null)
+  assert.equal(planReads.length, 1)
+  const saved = JSON.parse(storage.get(CONTENT_KEY))
+  assert.equal(saved.subject, 'A')
+  assert.equal(saved.home, null)
 })
 
 test('same verified subject refresh keeps drafts; logout clears them immediately', async () => {
