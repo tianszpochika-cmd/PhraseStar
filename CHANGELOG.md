@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B135-20261106] 五条移动 H5 路由通过平板横竖屏、两倍字号和键盘的 53 项受控检查。
+
 - [MOBILE-FIGMA-B134-20261106] Learning Java 候选客户端通过实际 Assessment 归属和版本核对。
 
 - [MOBILE-FIGMA-B133-20261106] 移动设置发送偏好版本条件，首次外观保存本机实测通过。

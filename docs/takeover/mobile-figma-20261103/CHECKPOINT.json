@@ -3722,7 +3722,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:35:41.165693+00:00",
+  "updated_at": "2026-11-06T07:48:55.256607+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6085,5 +6085,19 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B134-LEARNING-JAVA-OWNER-BINDING.md",
     "evidence": "evidence/ROOT-B134-LEARNING-JAVA-OWNER-BINDING-20261106.json"
+  },
+  "integration_batch_135_tablet_h5_a11y": {
+    "status": "LOCAL_OFFLINE_H5_TABLET_A11Y_PASS",
+    "pages": [
+      "MB004",
+      "MB006",
+      "MB008",
+      "MB023",
+      "MB024"
+    ],
+    "checksPassed": 53,
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B135-TABLET-H5-A11Y.md",
+    "evidence": "evidence/ROOT-B135-TABLET-H5-A11Y-20261106.json"
   }
 }

@@ -1,0 +1,41 @@
+{
+  "batch": "B135",
+  "at": "2026-11-06T07:42:17.376Z",
+  "classification": "LOCAL_OFFLINE_H5_TABLET_A11Y_PASS",
+  "inputIndexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+  "observerSha256": "6e156889a2848733fae1fca6084b1550feb8ccfdcf50f514595fe6633f7743c0",
+  "fullBrowserReceiptSha256": "83848494c6fe4efcee66f319f07fc7d29bc5182ce3403dd0abe1e660cb6ef511",
+  "previousObserver": "G322 40/53",
+  "routes": [
+    "MB004",
+    "MB006",
+    "MB008",
+    "MB023",
+    "MB024"
+  ],
+  "viewports": [
+    "1024x768",
+    "768x1024"
+  ],
+  "textScale": "computed-font-size-x2-inside-route-region",
+  "reducedMotion": "reduce",
+  "assertions": {
+    "passed": 53,
+    "failed": 0,
+    "routeAssertions": 50,
+    "runAssertions": 3,
+    "fixtureResponses": 96,
+    "unmarkedResponses": 0
+  },
+  "unexpectedWrites": 0,
+  "externalCalls": 0,
+  "scope": "SYNTHETIC_LOCAL_FIXTURE",
+  "pending": [
+    "latest modified settings interaction replay",
+    "real Gateway and IAM in this run",
+    "native iPad",
+    "screen reader",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
