@@ -98,6 +98,8 @@ G391 定级同键重放、G392 书架、G394 设备批量退出、G397 登录返
 
 ## 分支来源与保留记录
 
+旧分支名、提交指纹及恢复来源收录在分支清理记录中。需要复核时，可在拉取 `dev` 和标签后按记录中的提交创建独立工作树。 [分支清理记录](BRANCH-RETIREMENT.json)
+
 - 官网旧分支 `codex/official-site-v1-20261103` 的 `8a694055` 已进入 `dev`。
 - 移动端来源分支 `codex/mobile-figma-integration-20261103` 的已审核记录截至 `c4dcfc10`，本次作为 `dev` 续作基线。
 - 归档来源分支 `codex/cloudstudy-handoff-20261106` 的 `580c17d1` 由 `archive/cloudstudy-20261106` 保存。待复核候选逐份审查。

@@ -6234,6 +6234,7 @@
     "githubDefaultAtReview": "master",
     "executionStatus": "USER_PAUSED",
     "productStatus": "IN_PROGRESS_NOT_ACCEPTED",
-    "tracePending": 33
+    "tracePending": 33,
+    "retirementManifest": "cross-machine-20261106/BRANCH-RETIREMENT.json"
   }
 }

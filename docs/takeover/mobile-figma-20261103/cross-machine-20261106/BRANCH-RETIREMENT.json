@@ -1,0 +1,355 @@
+{
+  "formatVersion": 1,
+  "inventoryAt": "2026-11-06T21:24:07.742515+08:00",
+  "retainedBranchNames": [
+    "dev",
+    "master"
+  ],
+  "githubDefaultBranch": "master",
+  "developmentBranch": "dev",
+  "oldDevHead": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+  "mobileIntegrationSource": "c4dcfc10fbcbb7b49dc42bafb65668cb5e191752",
+  "masterHead": "9d9b2d4f2373b02ce76d57552403d1848e58a5d0",
+  "localMasterHeadBeforeCleanup": "a9856986d50603796726a00438ec12ba8dd3a68d",
+  "archiveTag": "archive/cloudstudy-20261106",
+  "archiveCommit": "580c17d1412beb9131ecd0e0899b724b9ec77b67",
+  "archiveWorktrees": 61,
+  "preservedWorktrees": 70,
+  "localBranchRetirement": [
+    {
+      "branch": "codex/cloudstudy-handoff-20261106",
+      "head": "580c17d1412beb9131ecd0e0899b724b9ec77b67",
+      "recoverFrom": "archive/cloudstudy-20261106"
+    },
+    {
+      "branch": "codex/figma-web-coverage-20261103",
+      "head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "recoverFrom": "dev",
+      "worktree": "figma-web-coverage-20261103",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/mobile-assessment-runtime-20261106",
+      "head": "3953f8b80d463f3f2a8ebba758b10a4a2610d934",
+      "recoverFrom": "dev",
+      "worktree": "mobile-assessment-runtime-20261106",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/mobile-b23-regression-20261105",
+      "head": "88e4c3ed863d57b039ef657d969c91784be981be",
+      "recoverFrom": "dev",
+      "worktree": "mobile-b23-regression-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-closed-workspaces-20261105",
+      "head": "d33ac9b81b21a06482620cb4d014c3a7ea50e654",
+      "recoverFrom": "dev",
+      "worktree": "mobile-closed-workspaces-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-consent-boundaries-20261105",
+      "head": "792f160c903b48dd2bb78ffe8663839736d23b18",
+      "recoverFrom": "dev",
+      "worktree": "mobile-consent-boundaries-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-consent-contract-20261105",
+      "head": "75fb5207213d95b5c6baa74f9a8f549991a5c0b0",
+      "recoverFrom": "dev",
+      "worktree": "mobile-consent-contract-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-consent-frontend-20261105",
+      "head": "75fb5207213d95b5c6baa74f9a8f549991a5c0b0",
+      "recoverFrom": "dev",
+      "worktree": "mobile-consent-frontend-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-contract-ci-20261105",
+      "head": "76e0dab23c68db2df1ab6a3bd2497e8d689ed311",
+      "recoverFrom": "dev",
+      "worktree": "mobile-contract-ci-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-experience-runner-20261105",
+      "head": "7b30cdf6a31ba1078219fd856a30b8f94bbc0977",
+      "recoverFrom": "dev",
+      "worktree": "mobile-experience-runner-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-dsh-20261103",
+      "head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-dsh-20261103",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-dsh-commerce-20261104",
+      "head": "bd649198721f3d0660e0726632ce553391874400",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-dsh-commerce-20261104",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-dsh-devices-20261104",
+      "head": "3a91f6ec48022e9564268e126427c0410cde2f86",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-dsh-devices-20261104",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-dsh-profile-20261104",
+      "head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-dsh-profile-20261104",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-grok-20261103",
+      "head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-grok-20261103",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-home-tablet-20261105",
+      "head": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-home-tablet-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-figma-integration-20261103",
+      "head": "c4dcfc10fbcbb7b49dc42bafb65668cb5e191752",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-integration-20261103",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/mobile-figma-visual-finishing-20261105",
+      "head": "27b84d4f81bc1a54d7db23d8cdcd87cef42f1ed1",
+      "recoverFrom": "dev",
+      "worktree": "mobile-figma-visual-finishing-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-iam-http-acceptance-20261105",
+      "head": "034bac4565d3b8bae7fa6b27499fa174fd3d3364",
+      "recoverFrom": "dev",
+      "worktree": "mobile-iam-http-acceptance-20261105",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/mobile-iam-publication-20261105",
+      "head": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+      "recoverFrom": "dev",
+      "worktree": "mobile-iam-publication-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-mistake-detail-20261105",
+      "head": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+      "recoverFrom": "dev",
+      "worktree": "mobile-mistake-detail-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-mistake-owner-20261105",
+      "head": "d33ac9b81b21a06482620cb4d014c3a7ea50e654",
+      "recoverFrom": "dev",
+      "worktree": "mobile-mistake-owner-20261105",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/mobile-report-client-idempotency-20261105",
+      "head": "4770365f20301bdd14f9d55a96e7df00a3fc6fd1",
+      "recoverFrom": "dev",
+      "worktree": "mobile-report-client-idempotency-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-report-revoke-jdbc-20261105",
+      "head": "47043d4a46d2870a61ea9d89c6f66fa8b91bf990",
+      "recoverFrom": "dev",
+      "worktree": "mobile-report-revoke-jdbc-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-report-share-20261105",
+      "head": "2da55735f5e99a771a8e663da5054ec729c714d5",
+      "recoverFrom": "dev",
+      "worktree": "mobile-report-share-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/mobile-support-contract-20261105",
+      "head": "2df3e56de6cb1389e26c39100c9433e7f7d28526",
+      "recoverFrom": "dev",
+      "worktree": "mobile-support-contract-20261105",
+      "hasUncommittedChanges": true
+    },
+    {
+      "branch": "codex/official-site-dev-integration-20261103",
+      "head": "58711c87f9d8352e9a6e20483c533c085aa04505",
+      "recoverFrom": "dev",
+      "worktree": "official-site-dev-integration-20261103",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "codex/official-site-v1-20261103",
+      "head": "8a6940553e83ee6079055c54b0ad7e3cb8038389",
+      "recoverFrom": "dev",
+      "worktree": "official-site-v1-20261103",
+      "hasUncommittedChanges": false
+    },
+    {
+      "branch": "dev-redesign",
+      "head": "3230ac94188748a66f49c43678781bdd03711af6",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "feat/v2-content-ops",
+      "head": "fae4c74f68b7654c1fd31f1a90b288220ce1203e",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "feat/v2-stats-skills",
+      "head": "4990dd295419de7f376f82b01975a5738b059b24",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "feat/v2-support-governance",
+      "head": "1b512a383e4951b9433c0e02f319ca7f9c70e66f",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r1-20261010",
+      "head": "c0f4498a647490ca0881c9fd58b2dae285e6ec23",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r2-20261010",
+      "head": "2fa91e8e3c4fd11caf865662b990569405dbce8e",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r3-20261011",
+      "head": "693310cda172747f23fbc9cfa5363b56cdfa41c0",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r4-20261011",
+      "head": "c40a3efaf005701dfa1e33d2537d7e4568d1296e",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r5-20261011",
+      "head": "ce7c54d61051e87ab81e800937cb636584193223",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r6-20261011",
+      "head": "88a2d39b9d77046cba70af8eabf1bb80964d7af2",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r7-20261011",
+      "head": "bd66572204654dd7cfc085d8ce8ecf70ff27c8d4",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-r8-20261011",
+      "head": "809dfcfed923258de64a3d01cf2234e365f74436",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-rv1-20261011",
+      "head": "cca21449712a3a9fca93feb6be1370972bd01d8b",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-rv2-20261011",
+      "head": "59ab6837d24d5fb72e1347cf595ca853935de201",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "grok/cs-rv3-20261011",
+      "head": "a500ee895fa99acafdfe9ac73f3e80c3d57cab82",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "muse/v2-admin-b1",
+      "head": "572ff35ba9f7be028aa66d3a94381c6bdabd8508",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "muse/v2-learner-web-b3",
+      "head": "e29c4a952386471fe2356221eb3b5a64b35d1214",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "muse/v2-mobile-phase2-b1",
+      "head": "17559db02edebbe4943c582fa86526206cfdd138",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "muse/v2-mobile-phase2-b2",
+      "head": "decc082c7109a66c6b35b91ce7e95d367790deef",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "muse/v2-mobile-phase2-b3",
+      "head": "5fe8568d590894411ee57662a91c13f8bd984e5c",
+      "recoverFrom": "dev"
+    }
+  ],
+  "remoteBranchRetirement": [
+    {
+      "branch": "codex/cloudstudy-handoff-20261106",
+      "head": "580c17d1412beb9131ecd0e0899b724b9ec77b67",
+      "recoverFrom": "archive/cloudstudy-20261106"
+    },
+    {
+      "branch": "codex/mobile-figma-integration-20261103",
+      "head": "c4dcfc10fbcbb7b49dc42bafb65668cb5e191752",
+      "recoverFrom": "dev"
+    },
+    {
+      "branch": "codex/official-site-v1-20261103",
+      "head": "8a6940553e83ee6079055c54b0ad7e3cb8038389",
+      "recoverFrom": "dev"
+    }
+  ],
+  "pendingMobile": {
+    "status": "IN_PROGRESS_NOT_ACCEPTED",
+    "execution": "USER_PAUSED",
+    "uiCandidates": 33,
+    "routeTracePending": 33,
+    "acceptedEvidenceHead": "230d19ece835018eefdce1bbad52838a40abd912",
+    "scopedH5Pending": [
+      "G392",
+      "G394",
+      "G391",
+      "G399",
+      "G398",
+      "G397"
+    ],
+    "openGates": [
+      "Figma RC1 formal freeze",
+      "three formally published consent documents",
+      "DEC-04",
+      "Learning Kafka consumer and projection evidence",
+      "DCloud installable host",
+      "physical devices and screen readers",
+      "deployment and full Definition of Done"
+    ]
+  }
+}

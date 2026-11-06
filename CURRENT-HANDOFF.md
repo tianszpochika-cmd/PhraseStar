@@ -2,7 +2,7 @@
 
 > 更新：2026-11-06。当前状态只看 [docs/STATUS.md](docs/STATUS.md)；本页只给接手顺序。
 
-1. 迭代 2 和移动端 Figma 改造统一从 `dev` 接手，接手时与 `origin/dev` 对比。保留当前工作树的未提交文件和 stash。
+1. 迭代 2 和移动端 Figma 改造统一从 `dev` 接手，接手时与 `origin/dev` 对比。保留当前工作树的未提交文件和 stash。常设分支为 `dev` 和 `master`，项目续作以 `dev` 为准。 [分支清理记录](docs/takeover/mobile-figma-20261103/cross-machine-20261106/BRANCH-RETIREMENT.json)
 2. 读 [STATUS](docs/STATUS.md)：分支、R1（115/115 已签收）、移动端 UI 规格、MB 页面状态和部署版本。
 3. 按任务读：[迭代 2 进度页](docs/06-design/v2-980plus/redesign/CURRENT-PROGRESS.md)、[R1 计划](docs/06-design/v2-980plus/redesign/dev-plan-R1.md)、[CARD-LEDGER](docs/takeover/CARD-LEDGER.md)、[UI-PAGE-AUDIT](docs/takeover/UI-PAGE-AUDIT-20261013.md)、[文档中心](docs/README.md)、[AGENTS](AGENTS.md)。
 4. Figma Web 学员端继续任务先读[业务覆盖与恢复入口](docs/06-design/v2-980plus/redesign/figma-web-learner/README.md)。先核对原型计时校准和实际停点，再处理未执行批；已成功主体禁止重复创建，单条浏览器样例不代替全量签收。
@@ -19,4 +19,4 @@ App 构建使用同版 App-Plus 与 UTS 工具链。B92 已核对 33 条路由�
 
 待复核的 61 份工作树快照与冻结探针通过标签 `archive/cloudstudy-20261106` 保存。清单按候选列出原基线、快照提交和文件指纹。 [跨机快照清单](docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md)
 
-恢复须由用户明确提出。优先核对已准备的书架 H5、设备批量退出、定级同键重试、阅读反馈和成长世界 H5。Figma 正式冻结、正式协议、DEC-04、部署与原生验收分开跟踪。
+恢复须由用户明确提出。优先核对已准备的书架 H5、设备批量退出、定级同键重试、阅读反馈和成长世界 H5。产品决策、真实服务、原生和部署待办在暂停交接中按验收范围分列。
