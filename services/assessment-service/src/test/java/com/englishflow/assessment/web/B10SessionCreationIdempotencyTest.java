@@ -209,6 +209,7 @@ class B10SessionCreationIdempotencyTest {
                 row.put("content_epoch", args[9]);
                 row.put("snapshot_id", args[10]);
                 row.put("snapshot_hash", args[11]);
+                row.put("owner_snapshot_ref", args[14]);
                 row.put("items_json", args[12]);
                 row.put("idempotency_key", args[13]);
                 row.put("attempt_count", 0);

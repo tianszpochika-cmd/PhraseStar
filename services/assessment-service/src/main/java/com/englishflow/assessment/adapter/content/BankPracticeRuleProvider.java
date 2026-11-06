@@ -24,6 +24,11 @@ import java.util.Map;
  * its existing unavailable-content behavior (410 at session creation); rules
  * are never invented, substituted from legacy sets, or persisted here.
  *
+ * <p>The sealed {@code snapshotId} is kept only when it is already the canonical
+ * {@code snap_} token on this response. A missing or malformed id stays empty.
+ * It is not rebuilt from the numeric content version, and caller input is not
+ * a source for it.
+ *
  * <p>The sealed route does not carry {@code answerRule}. A stray correct
  * option on that payload is ignored. Each row is marked
  * {@code grader=PLACEMENT_SCORE} so the attempt path asks the service-token
@@ -36,9 +41,26 @@ public final class BankPracticeRuleProvider {
 
     public static final String BANK_CODE = "p1.placement.v1";
     public static final String BANK_CONTENT_CODE = "p1.placement.v1";
+    /** Same token the assessment.item.assessed.v2 contentPin already accepts. */
+    public static final String OWNER_SNAPSHOT_REF = "snap_[A-Za-z0-9._:-]{8,127}";
 
     public record BankRules(long contentVersionId, long contentEpoch,
-                            String snapshotHash, List<Map<String, Object>> rows) {
+                            String snapshotHash, List<Map<String, Object>> rows,
+                            String ownerSnapshotRef) {
+        /** Existing stubs have no Content-owned ref. That absence stays empty. */
+        public BankRules(long contentVersionId, long contentEpoch, String snapshotHash,
+                         List<Map<String, Object>> rows) {
+            this(contentVersionId, contentEpoch, snapshotHash, rows, null);
+        }
+    }
+
+    /**
+     * Returns the server snapshot id only when it already matches the canonical
+     * snap_ token. Numbers, blanks, and lookalikes are not rewritten into one.
+     */
+    public static String canonicalOwnerSnapshotRef(Object raw) {
+        if (raw instanceof String ref && ref.matches(OWNER_SNAPSHOT_REF)) return ref;
+        return null;
     }
 
     private final ObjectMapper mapper;
@@ -70,6 +92,8 @@ public final class BankPracticeRuleProvider {
                 || !snapshotHash.matches("[a-f0-9]{64}")) {
             return null;
         }
+        // Content owns this id. Keep the exact sealed string, or nothing.
+        String ownerSnapshotRef = canonicalOwnerSnapshotRef(bank.get("snapshotId"));
         if (!(bank.get("items") instanceof List<?> values) || values.isEmpty()) return null;
         try {
             List<Map<String, Object>> rows = new ArrayList<>();
@@ -79,7 +103,7 @@ public final class BankPracticeRuleProvider {
                 Map<String, Object> item = (Map<String, Object>) raw;
                 rows.add(row(item, contentVersionId));
             }
-            return new BankRules(contentVersionId, epoch, snapshotHash, List.copyOf(rows));
+            return new BankRules(contentVersionId, epoch, snapshotHash, List.copyOf(rows), ownerSnapshotRef);
         } catch (ResponseStatusException miss) {
             // A drifted bank shape is unavailable practice content, not a 500:
             // the B10 caller keeps its 410 behavior.

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,7 +39,12 @@ class B10BankSessionCreationTest {
         Map<String, Object> pin = (Map<String, Object>) data.get("pin");
         assertEquals("p1.placement.v1", pin.get("contentCode"));
         assertEquals(266100L, ((Number) pin.get("contentVersionId")).longValue());
+        assertEquals(266100L, ((Number) pin.get("snapshotId")).longValue());
         assertEquals("a".repeat(64), pin.get("snapshotHash"));
+        Map<String, Object> stored = jdbc.sessions.values().iterator().next();
+        assertEquals("snap_p1.placement.v1-266100", stored.get("owner_snapshot_ref"));
+        assertEquals("snap_p1.placement.v1-266100",
+                B10AssessmentJdbcController.assessedContentSnapshotId(stored));
         List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("items");
         assertEquals(1, items.size());
         assertEquals("266004", String.valueOf(items.getFirst().get("itemCode")));
@@ -47,6 +53,27 @@ class B10BankSessionCreationTest {
                 .createSession(learner(), body, "b10-bank-key-0001", "Bearer bank").get("data");
         assertEquals(data.get("sessionId"), replay.get("sessionId"));
         assertEquals(1, jdbc.sessions.size());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void malformedOwnerRefIsNotPersistedOrEmitted() {
+        BankJdbc jdbc = new BankJdbc();
+        B10AssessmentJdbcController controller = bankController(jdbc, "266100");
+        Map<String, Object> body = Map.of("contentCode", "p1.placement.v1",
+                "contentVersionId", 266100, "mode", "PRACTICE", "itemIds", List.of(266004));
+        Map<String, Object> data = (Map<String, Object>) controller
+                .createSession(learner(), body, "b10-bank-key-bad01", "Bearer bank").get("data");
+        Map<String, Object> pin = (Map<String, Object>) data.get("pin");
+        assertEquals(266100L, ((Number) pin.get("snapshotId")).longValue());
+        Map<String, Object> stored = jdbc.sessions.values().iterator().next();
+        assertNull(stored.get("owner_snapshot_ref"));
+        assertEquals("snap_assessment_266100", B10AssessmentJdbcController.assessedContentSnapshotId(stored));
+        stored.put("owner_snapshot_ref", " snap_p1.placement.v1-266100");
+        assertEquals("snap_assessment_266100", B10AssessmentJdbcController.assessedContentSnapshotId(stored));
+        Map<String, Object> historical = new LinkedHashMap<>();
+        historical.put("snapshot_id", 25001L);
+        assertEquals("snap_assessment_25001", B10AssessmentJdbcController.assessedContentSnapshotId(historical));
     }
 
     @Test
@@ -75,6 +102,10 @@ class B10BankSessionCreationTest {
     }
 
     private B10AssessmentJdbcController bankController(BankJdbc jdbc) {
+        return bankController(jdbc, "snap_p1.placement.v1-266100");
+    }
+
+    private B10AssessmentJdbcController bankController(BankJdbc jdbc, String ownerSnapshotRef) {
         return new B10AssessmentJdbcController(jdbc, mapper, "http://127.0.0.1:9") {
             @Override
             BankPracticeRuleProvider.BankRules bankRules(String contentCode, long contentVersionId,
@@ -85,7 +116,8 @@ class B10BankSessionCreationTest {
                         "prompt", "She ___ to school every day.",
                         "options_json", "[{\"optionId\":\"a\",\"label\":\"go\"},{\"optionId\":\"b\",\"label\":\"goes\"}]",
                         "dimension", "GRAMMAR", "answer_rule_json", "{\"answer\":\"b\"}"));
-                return new BankPracticeRuleProvider.BankRules(266100L, 1L, "a".repeat(64), rows);
+                return new BankPracticeRuleProvider.BankRules(266100L, 1L, "a".repeat(64), rows,
+                        ownerSnapshotRef);
             }
         };
     }
@@ -134,6 +166,7 @@ class B10BankSessionCreationTest {
                 row.put("content_epoch", args[9]);
                 row.put("snapshot_id", args[10]);
                 row.put("snapshot_hash", args[11]);
+                row.put("owner_snapshot_ref", args[14]);
                 row.put("items_json", args[12]);
                 row.put("state_version", 1L);
                 row.put("attempt_count", 0);

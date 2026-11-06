@@ -186,25 +186,28 @@ public class B10AssessmentJdbcController {
         }
         String sessionId = "asess_" + compactUuid();
         List<Map<String, Object>> items = rules.stream().map(this::learnerItem).toList();
-        // Bank sessions pin the sealed bank facts: the numeric snapshot_id
-        // carries the bank content version (BIGINT cannot hold snap_ strings)
-        // while snapshot_hash carries the full bank digest, so no pin identity
-        // is lost. Default sessions keep the frozen B25 constants.
+        // Bank sessions keep the numeric snapshot_id and the sealed hash.
+        // BIGINT cannot store the Content snap_ id, so that exact server token
+        // goes in owner_snapshot_ref when it validates. It is never derived
+        // from the numeric id. Default sessions keep the frozen B25 constants
+        // and a null owner ref.
         long pinEpoch = bank == null ? CONTENT_EPOCH : bank.contentEpoch();
         long pinSnapshotId = bank == null ? SNAPSHOT_ID : bank.contentVersionId();
         String pinSnapshotHash = bank == null ? SNAPSHOT_HASH : bank.snapshotHash();
+        String ownerSnapshotRef = bank == null ? null
+                : BankPracticeRuleProvider.canonicalOwnerSnapshotRef(bank.ownerSnapshotRef());
         jdbc.update("""
                 INSERT INTO b10_assessment_session
                     (session_id, principal_id, tenant_id, mode, status, content_code,
                      content_version_id, alternative_content_version_id, alternative_content_code,
                      alternative_reason_code, content_epoch, snapshot_id, snapshot_hash,
                      items_json, answers_json, state_version, attempt_count,
-                     idempotency_key, started_at)
-                VALUES (?, ?, ?, ?, 'IN_PROGRESS', ?, ?, ?, ?, ?, ?, ?, ?, ?, '{}', 1, 0, ?, CURRENT_TIMESTAMP(6))
+                     idempotency_key, started_at, owner_snapshot_ref)
+                VALUES (?, ?, ?, ?, 'IN_PROGRESS', ?, ?, ?, ?, ?, ?, ?, ?, ?, '{}', 1, 0, ?, CURRENT_TIMESTAMP(6), ?)
                 """, sessionId, principal.subject(), TENANT, mode, requestedCode,
                 contentVersionId, alternativeVersion, alternativeCode, alternativeReason,
                 pinEpoch, pinSnapshotId, pinSnapshotHash,
-                json(items), idempotencyKey);
+                json(items), idempotencyKey, ownerSnapshotRef);
         Map<String, Object> response = envelope(sessionView(one(
                 "SELECT * FROM b10_assessment_session WHERE session_id = ?", sessionId)));
         int saved = jdbc.update("""
@@ -937,6 +940,12 @@ public class B10AssessmentJdbcController {
         }
     }
 
+    static String assessedContentSnapshotId(Map<String, Object> session) {
+        String ownerRef = BankPracticeRuleProvider.canonicalOwnerSnapshotRef(session.get("owner_snapshot_ref"));
+        if (ownerRef != null) return ownerRef;
+        return "snap_assessment_" + text(session.get("snapshot_id"), String.valueOf(SNAPSHOT_ID));
+    }
+
     private void emitAssessedEvents(String subject, Map<String, Object> session, String gradingCode,
             long gradingVersion, String attemptId, String reportId, String submissionId,
             List<Map<String, Object>> rules, List<String> mistakes, String totalScoreBucket,
@@ -946,9 +955,7 @@ public class B10AssessmentJdbcController {
         Map<String, Object> contentPin = new LinkedHashMap<>();
         contentPin.put("contentVersionId", gradingVersion);
         contentPin.put("contentEpoch", number(session.get("content_epoch"), CONTENT_EPOCH));
-        // The contract snapshotId is a snap_-prefixed string; derive it
-        // deterministically from the numeric session snapshot.
-        contentPin.put("snapshotId", "snap_assessment_" + text(session.get("snapshot_id"), String.valueOf(SNAPSHOT_ID)));
+        contentPin.put("snapshotId", assessedContentSnapshotId(session));
         contentPin.put("snapshotHash", text(session.get("snapshot_hash"), SNAPSHOT_HASH));
         for (Map<String, Object> rule : rules) {
             String ruleItemId = text(rule.get("item_id"));
