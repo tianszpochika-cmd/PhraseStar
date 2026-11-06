@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,8 @@ public final class LearnerHttpController {
     private final VerifiedLearnerPrincipalFactory principalFactory;
     private final com.englishflow.learner.application.TargetPinService targetPins;
     private final LearningPlanViewClient planViews;
+    /** Same lexical rule as B9IfMatch: one canonical decimal, no leading zeroes. */
+    private static final Pattern CANONICAL_DECIMAL_VERSION = Pattern.compile("^(?:0|[1-9][0-9]{0,18})$");
 
     public LearnerHttpController(
             DefaultLearnerProfileCommandService commands,
@@ -155,11 +158,16 @@ public final class LearnerHttpController {
 
     @PatchMapping("/preferences")
     public Envelope<PreferencesData> patchPreferences(
-            @RequestBody PreferencesPatchRequest request,
+            @RequestBody(required = false) PreferencesPatchRequest request,
             Authentication authentication,
             @RequestHeader(value = "Idempotency-Key") String idempotencyKey,
             @RequestHeader HttpHeaders headers) {
         LearnerPrincipalContext context = context(authentication);
+        // Write permission is decided before any owner read. If-Match is compared
+        // only with the body; stored-version CAS stays inside the command.
+        // A missing If-Match remains accepted until body-only clients migrate.
+        commands.authorizePreferenceWrite(context);
+        requirePreferenceIfMatch(headers, request);
         LearnerProfileView current = queries.getProfile(context);
         LearnerPreferences existing = current.preferences().orElseGet(() -> LearnerPreferences.defaults(Instant.now()));
         ThemeMode theme = request.highContrast() ? ThemeMode.HIGH_CONTRAST
@@ -252,6 +260,39 @@ public final class LearnerHttpController {
 
     private static RequestMetadata metadata(HttpHeaders headers) {
         return new RequestMetadata(headers.getFirst("X-Request-Id"), headers.getFirst("X-Trace-Id"));
+    }
+
+    /**
+     * B9IfMatch, when present, is one canonical decimal exactly equal to the body
+     * {@code expectedStateVersion}. Absence stays on the body-only path. Stored
+     * version CAS is not decided here.
+     */
+    private static void requirePreferenceIfMatch(HttpHeaders headers, PreferencesPatchRequest request) {
+        if (request == null) {
+            throw boundary("PREFERENCE_BODY_REQUIRED", "preferences patch body is required");
+        }
+        List<String> matches = headers == null ? List.of() : headers.get(HttpHeaders.IF_MATCH);
+        if (matches == null || matches.isEmpty()) {
+            return;
+        }
+        if (matches.size() != 1) {
+            throw boundary("IF_MATCH_DUPLICATE", "If-Match must contain one canonical decimal value");
+        }
+        String token = matches.get(0);
+        if (token == null || !CANONICAL_DECIMAL_VERSION.matcher(token).matches()) {
+            throw boundary("IF_MATCH_MALFORMED",
+                    "If-Match must be one canonical decimal without leading zeroes");
+        }
+        long parsed;
+        try {
+            parsed = Long.parseLong(token);
+        } catch (NumberFormatException overflow) {
+            throw boundary("IF_MATCH_OVERFLOW", "If-Match is outside the signed int64 state version range");
+        }
+        if (!token.equals(Long.toString(request.expectedStateVersion())) || parsed != request.expectedStateVersion()) {
+            throw new LearnerDomainException(LearnerDecisionCode.CONCURRENT_UPDATE,
+                    "If-Match does not equal expectedStateVersion");
+        }
     }
 
     static GoalType goalType(String value) {
@@ -437,8 +478,29 @@ public final class LearnerHttpController {
             boolean highContrast,
             String motionMode,
             java.util.List<Integer> weeklyStudyDays,
+            long preferenceVersion,
             long stateVersion,
             Instant updatedAt) {
+        public PreferencesData {
+            if (preferenceVersion != stateVersion) {
+                throw new IllegalArgumentException("preferenceVersion must equal stateVersion");
+            }
+        }
+
+        /** Existing callers pass the owner version once; the wire alias copies it. */
+        public PreferencesData(
+                String uiLocale,
+                String contentLocale,
+                String timezone,
+                String themeMode,
+                boolean highContrast,
+                String motionMode,
+                java.util.List<Integer> weeklyStudyDays,
+                long stateVersion,
+                Instant updatedAt) {
+            this(uiLocale, contentLocale, timezone, themeMode, highContrast, motionMode,
+                    weeklyStudyDays, stateVersion, stateVersion, updatedAt);
+        }
     }
 
     public record FirstDayEnvelope(FirstDayData data) {

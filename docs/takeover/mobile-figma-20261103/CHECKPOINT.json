@@ -2613,7 +2613,8 @@
           "review": "reviews/INTEGRATION-B61-SUPPORT-IT7-CONTRACT.md",
           "receipt": "evidence/ROOT-B61-SUPPORT-IT7-CONTRACT-20261105.json",
           "real_api": "NOT_RUN"
-        }
+        },
+        "preference_wire_b128": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json"
       },
       "current_job": "dsh/profile-batch-09-settings-visual",
       "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json",
@@ -3710,7 +3711,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T06:45:44.184492+00:00",
+  "updated_at": "2026-11-06T07:02:37.913268+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6012,5 +6013,13 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B127-PROFILE-OWNER-H5.md",
     "evidence": "evidence/ROOT-B127-PROFILE-OWNER-H5-20261106.json"
+  },
+  "integration_batch_128_learner_preference_version": {
+    "status": "LOCAL_REAL_GATEWAY_PREFERENCE_WIRE_PASS",
+    "page": "MB-024",
+    "h5": "NOT_RUN",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B128-LEARNER-PREFERENCE-VERSION.md",
+    "evidence": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json"
   }
 }

@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B128 已通过偏好版本条件保存、幂等与旧客户端兼容的 31 项本机网关检查。新版 H5 保存与恢复继续验收。 [偏好版本 B128](takeover/mobile-figma-20261103/reviews/INTEGRATION-B128-LEARNER-PREFERENCE-VERSION.md)
+
 移动端 B127 已通过个人页真实资料、目标和偏好读回，并在页面呈现已保存的学习摘要。 [个人页 B127](takeover/mobile-figma-20261103/reviews/INTEGRATION-B127-PROFILE-OWNER-H5.md)
 
 移动端 B126 已在本机通过真实 H5 读回发布文章和同版本练习引用。练习会话和作答继续验收。 [阅读发布 B126](takeover/mobile-figma-20261103/reviews/INTEGRATION-B126-READING-PUBLISHED-H5.md)

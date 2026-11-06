@@ -34,6 +34,8 @@ public final class DefaultLearnerProfileCommandService implements LearnerProfile
     private final LearnerAccessPolicy accessPolicy;
     private final LearnerTargetIdGenerator targetIdGenerator;
     private final Clock clock;
+    /** Canonical preference-write permission. The HTTP adapter and {@link #updatePreferences} share it. */
+    private static final String PREFERENCE_WRITE = "learner.preference.write";
 
     public DefaultLearnerProfileCommandService(
             LearnerProfileStore store,
@@ -119,7 +121,7 @@ public final class DefaultLearnerProfileCommandService implements LearnerProfile
             UpdateLearnerPreferencesCommand command,
             RequestMetadata metadata) {
         Objects.requireNonNull(command, "command is required");
-        return mutate(context, metadata, "preference.update", "learner.preference.write",
+        return mutate(context, metadata, "preference.update", PREFERENCE_WRITE,
                 command.idempotencyKey(), command.expectedVersion(), command.fingerprint(),
                 "learner.profile.updated.v1",
                 profile -> profile.withPreferences(command.toPreferences(clock.instant()), clock.instant()),
@@ -181,6 +183,15 @@ public final class DefaultLearnerProfileCommandService implements LearnerProfile
         LearnerCommitResult committed = store.commit(
                 new LearnerMutation(scope, expectedVersion, updated, idempotency, event));
         return result(committed.profile(), committed.replayed(), metadata);
+    }
+
+    /**
+     * Owner PEP for a preference write. Call this before any owner read so a denied
+     * writer never observes stored preferences. Store CAS and idempotency stay in
+     * {@link #updatePreferences}.
+     */
+    public void authorizePreferenceWrite(LearnerPrincipalContext context) {
+        authorize(context, PREFERENCE_WRITE).requireAllowed();
     }
 
     private AuthorizationDecision authorize(LearnerPrincipalContext context, String permission) {

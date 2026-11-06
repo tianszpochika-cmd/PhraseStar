@@ -1,0 +1,209 @@
+{
+  "batch": "B128",
+  "root_run": "G313",
+  "source_receipt_sha256": "4eb7ee7c70cfd11d1bceb0c97ba99dca607e4934ef1c32a32b30e6ecf6901f15",
+  "integration_head": "d4737bb7",
+  "page": "MB-024",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_GATEWAY_PREFERENCE_WIRE_PASS",
+  "runtime": {
+    "synthetic_actor": true,
+    "learner_jar_sha256": "0a9c41599ad3759ba37259308ffa36df35b65a52ee252c620ffe659b797687b1",
+    "cases": [
+      {
+        "id": "principal-approved",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "owner-get-stable",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "canonical-appearance",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-canonical",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "same-key-replay",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-replay",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "same-key-conflicting-version",
+        "status": 409,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-same-key-conflicting-version",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "header-body-version-mismatch",
+        "status": 409,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-header-body-version-mismatch",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "stale-body-cas",
+        "status": 409,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-stale-body-cas",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-leading-zero",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-leading-zero",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-comma",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-comma",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-space",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-space",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-overflow",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-overflow",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-quoted",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-quoted",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "malformed-duplicate",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-malformed-duplicate",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "missing-body",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-missing-body",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "missing-idempotency-key",
+        "status": 400,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-missing-idempotency-key",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "legacy-body-only",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "owner-get-after-legacy",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "id": "restore-previous-theme",
+        "status": 200,
+        "pass": true
+      }
+    ],
+    "versions": {
+      "initial": 0,
+      "afterCanonical": 1,
+      "owner-get-after-replay": 1,
+      "owner-get-after-stale-body-cas": 1,
+      "owner-get-after-malformed-leading-zero": 1,
+      "owner-get-after-malformed-comma": 1,
+      "owner-get-after-malformed-space": 1,
+      "owner-get-after-malformed-overflow": 1,
+      "owner-get-after-malformed-quoted": 1,
+      "owner-get-after-malformed-duplicate": 1,
+      "owner-get-after-missing-body": 1,
+      "afterMalformed": 1,
+      "afterLegacy": 2,
+      "restoreExpected": 2,
+      "afterRestore": 3
+    },
+    "restored": true
+  },
+  "offline": {
+    "passed": 98,
+    "skipped": 1
+  },
+  "release": {
+    "outer_exit": 1,
+    "outer_reported_container_removed": false,
+    "independent_exact_container_absent": true,
+    "independent_listener_absent": true,
+    "ports": {
+      "13306": "free",
+      "18070": "free",
+      "18087": "free",
+      "18088": "free"
+    }
+  },
+  "pending": [
+    "H5_PREFERENCE_SAVE_AND_RESTORE",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}
