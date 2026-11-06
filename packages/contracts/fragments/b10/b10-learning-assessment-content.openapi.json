@@ -6636,7 +6636,7 @@
           },
           "sourceAssessmentEventId": {
             "type": "string",
-            "pattern": "^evt_[A-Za-z0-9._:-]{8,127}$"
+            "pattern": "^(evt_[A-Za-z0-9._:-]{8,127}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
           },
           "repairWorkflowState": {
             "type": "string",
