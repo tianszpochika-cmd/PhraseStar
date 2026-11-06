@@ -1,8 +1,10 @@
 package com.englishflow.content.domain;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,12 +15,19 @@ import java.util.regex.Pattern;
 /**
  * Closed optional {@code gradableQuestions} array for a single owner draft.
  * Absence is not an empty array: callers keep the legacy payload when the key is missing.
+ * A present validated array on a new version also stores {@link #SEAL_FIELD}.
  */
 public final class GradableQuestions {
 
     public static final String FIELD = "gradableQuestions";
+    /** Private per-version salt. Internal payload key only; callers cannot supply it. */
+    public static final String SEAL_FIELD = "readingRuleSeal";
     public static final String SEALED_CODE = "p1.placement.v1";
     public static final String SEALED_OWNER_ID = "p1-placement-bank-v1";
+
+    private static final SecureRandom SEAL_RANDOM = new SecureRandom();
+    private static final HexFormat SEAL_HEX = HexFormat.of();
+    private static final int SEAL_BYTES = 32;
 
     private static final BigInteger MAX_ITEM_ID = BigInteger.valueOf(9007199254740991L);
     private static final int MAX_QUESTIONS = 100;
@@ -49,6 +58,20 @@ public final class GradableQuestions {
         } catch (ContentOperationException exception) {
             return false;
         }
+    }
+
+    public static boolean isWithheld(String key) {
+        return FIELD.equals(key) || SEAL_FIELD.equals(key);
+    }
+
+    /**
+     * Fresh 256-bit seal. SecureRandom, not a hash of the question, so two to eight
+     * known options cannot be reversed and known authoring bytes cannot be guessed through.
+     */
+    public static String mintSeal() {
+        byte[] bytes = new byte[SEAL_BYTES];
+        SEAL_RANDOM.nextBytes(bytes);
+        return SEAL_HEX.formatHex(bytes);
     }
 
     /** Closed copy. Array order and option order are the stored order. */
@@ -110,15 +133,16 @@ public final class GradableQuestions {
     }
 
     /**
-     * Same instance when the opt-in is absent. Otherwise a shallow copy that drops
-     * only that top-level field, valid or not, so a response cannot carry its answer.
+     * Same instance when neither private key is present. Otherwise a shallow copy that drops
+     * the top-level opt-in and seal, valid or not. Old payloads are not given a seal.
      */
     public static Map<String, Object> omitPrivateField(Map<String, Object> payload) {
-        if (payload == null || !payload.containsKey(FIELD)) {
+        if (payload == null || (!payload.containsKey(FIELD) && !payload.containsKey(SEAL_FIELD))) {
             return payload;
         }
         LinkedHashMap<String, Object> copy = new LinkedHashMap<>(payload);
         copy.remove(FIELD);
+        copy.remove(SEAL_FIELD);
         return Collections.unmodifiableMap(copy);
     }
 

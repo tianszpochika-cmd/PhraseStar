@@ -14,6 +14,7 @@ import com.englishflow.content.domain.ContentDefinition;
 import com.englishflow.content.domain.ContentId;
 import com.englishflow.content.domain.ContentKind;
 import com.englishflow.content.domain.ContentOperationException;
+import com.englishflow.content.domain.GradableQuestions;
 import com.englishflow.content.domain.ContentPayloadHash;
 import com.englishflow.content.domain.ContentRights;
 import com.englishflow.content.domain.ContentVersion;
@@ -294,6 +295,7 @@ class B9ContentAdminRightsBoundaryTest {
         long firstId = first.versionId().value();
         String firstHash = first.contentHash();
         Map<String, Object> firstPayload = first.payload().raw();
+        String firstSeal = seal(first);
 
         String token = "a" + "b".repeat(63);
         List<Map<String, Object>> eight = new ArrayList<>();
@@ -316,13 +318,48 @@ class B9ContentAdminRightsBoundaryTest {
         assertEquals(8, ((List<?>) question(second, 0).get("options")).size());
         assertEquals(64, option(second, 0, 0).get("optionId").toString().length());
         assertEquals(512, option(second, 0, 0).get("label").toString().length());
+        String secondSeal = seal(second);
+        Map<String, Object> secondPayload = second.payload().raw();
+        assertNotEquals(firstSeal, secondSeal);
+        assertEquals(firstSeal, seal(version(code, 0)));
+        assertSame(firstPayload, version(code, 0).payload().raw());
 
         command("SAVE_DRAFT", code, draft(), editor(), "gradable-version-clear");
         ContentVersion third = version(code, 2);
         assertLegacyPayload(third);
         assertSame(firstPayload, version(code, 0).payload().raw());
+        assertSame(secondPayload, version(code, 1).payload().raw());
+        assertEquals(firstSeal, seal(version(code, 0)));
+        assertEquals(secondSeal, seal(version(code, 1)));
         assertEquals(second.contentHash(), version(code, 1).contentHash());
         assertNotEquals(second.contentHash(), third.contentHash());
+
+        String legacyCode = "b109-unsealed";
+        ContentDefinition legacyOwner = ContentDefinition.create(
+                ContentId.of(legacyCode), "platform", legacyCode, ContentKind.COURSE_UNIT,
+                "Rights boundary lesson", "en-US", "A1", "PHASE1", "editor-1", Instant.now());
+        Map<String, Object> legacyFields = new LinkedHashMap<>();
+        legacyFields.put("summary", "");
+        legacyFields.put("contentLocale", "en-US");
+        legacyFields.put("targetLevel", "A1");
+        legacyFields.put("items", List.of(Map.of("displayText", "Read this sentence.")));
+        legacyFields.put("gradableQuestions", List.of(question(4, "Stem", twoOptions(), "alpha")));
+        legacyOwner.addDraft(ContentVersionId.of(1L), legacyFields, new ContentRights(
+                        "SOURCE-ONE", "LICENSE-ONE", CopyrightStatus.PENDING,
+                        false, Set.of(), null, null, null),
+                "editor-1", "draft", Instant.now());
+        repository.create(legacyOwner);
+        Map<String, Object> unmarked = version(legacyCode, 0).payload().raw();
+        assertFalse(unmarked.containsKey(GradableQuestions.SEAL_FIELD));
+        assertFalse(hasKey(editorDraft(legacyCode), GradableQuestions.SEAL_FIELD));
+        assertSame(unmarked, version(legacyCode, 0).payload().raw());
+        command("SAVE_DRAFT", legacyCode, questionsDraft(List.of(question(4, "Stem", twoOptions(), "alpha"))),
+                editor(), "b109-unsealed-save");
+        assertSame(unmarked, version(legacyCode, 0).payload().raw());
+        assertFalse(version(legacyCode, 0).payload().raw().containsKey(GradableQuestions.SEAL_FIELD));
+        String born = seal(version(legacyCode, 1));
+        assertFalse(hasKey(editorDraft(legacyCode), GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(editorDraft(legacyCode)).contains(born));
     }
 
     @Test
@@ -334,9 +371,16 @@ class B9ContentAdminRightsBoundaryTest {
         body.put("expectedStateVersion", 0);
         body.put("content", questionsDraft(List.of(question(4, "Stem", twoOptions(), "alpha"))));
         Map<String, Object> created = data(controller.command(body, editor(), "gradable-idem-key-1", HEADERS).getBody());
+        ContentVersion createdVersion = repository.findByCode(code).orElseThrow().versions().getFirst();
+        String createdSeal = seal(createdVersion);
+        Map<String, Object> createdPayload = createdVersion.payload().raw();
         Map<String, Object> replay = data(controller.command(body, editor(), "gradable-idem-key-1", HEADERS).getBody());
         assertEquals(created, replay);
         assertEquals(1, repository.findByCode(code).orElseThrow().versions().size());
+        assertSame(createdPayload, version(code, 0).payload().raw());
+        assertEquals(createdSeal, seal(version(code, 0)));
+        assertFalse(hasKey(created, GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(created).contains(createdSeal));
 
         Map<String, Object> changed = new LinkedHashMap<>(body);
         changed.put("content", questionsDraft(List.of(question(4, "Other stem", twoOptions(), "alpha"))));
@@ -348,6 +392,14 @@ class B9ContentAdminRightsBoundaryTest {
         assertEquals(1, repository.findByCode(code).orElseThrow().versions().size());
         assertEquals("Stem", question(stored, 0).get("stem"));
         assertEquals("alpha", ((Map<?, ?>) question(stored, 0).get("answerRule")).get("correctOption"));
+        assertEquals(createdSeal, seal(stored));
+        assertSame(createdPayload, stored.payload().raw());
+
+        command("SAVE_DRAFT", code, questionsDraft(List.of(question(4, "Stem", twoOptions(), "alpha"))),
+                editor(), "gradable-idem-save");
+        assertSame(createdPayload, version(code, 0).payload().raw());
+        assertEquals(createdSeal, seal(version(code, 0)));
+        assertNotEquals(createdSeal, seal(version(code, 1)));
     }
 
     @Test
@@ -414,6 +466,9 @@ class B9ContentAdminRightsBoundaryTest {
         Map<String, Object> openQuestion = question(4, "Stem", twoOptions(), "alpha");
         openQuestion.put("explanation", "because");
         assertQuestionsRejected("open-question", List.of(openQuestion));
+        Map<String, Object> plantedQuestion = question(4, "Stem", twoOptions(), "alpha");
+        plantedQuestion.put(GradableQuestions.SEAL_FIELD, "c".repeat(64));
+        assertQuestionsRejected("caller-question-seal", List.of(plantedQuestion));
         Map<String, Object> openOption = option("alpha", "Aye");
         openOption.put("correct", true);
         assertQuestionsRejected("open-option", List.of(question(4, "Stem",
@@ -444,6 +499,21 @@ class B9ContentAdminRightsBoundaryTest {
         assertEquals(1, content().versions().size());
         assertSame(savedPayload, latest().payload().raw());
         assertEquals(savedHash, latest().contentHash());
+
+        Map<String, Object> planted = questionsDraft(List.of(question(4, "Stem", twoOptions(), "alpha")));
+        planted.put(GradableQuestions.SEAL_FIELD, "f".repeat(64));
+        ContentOperationException callerSeal = assertThrows(ContentOperationException.class,
+                () -> command("SAVE_DRAFT", CODE, planted, editor(), "caller-seal-save"));
+        assertEquals(400, callerSeal.status());
+        assertEquals("CONTENT_COMMAND_INVALID", callerSeal.code());
+        assertFalse(callerSeal.getMessage().contains("f".repeat(64)));
+        assertEquals(1, content().versions().size());
+        assertSame(savedPayload, latest().payload().raw());
+        assertEquals(savedHash, latest().contentHash());
+        ContentOperationException plantedCreate = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "caller-seal-create", planted, editor(), "caller-seal-create"));
+        assertEquals("CONTENT_COMMAND_INVALID", plantedCreate.code());
+        assertTrue(repository.findByCode("caller-seal-create").isEmpty());
 
         List<Map<String, Object>> hundred = new ArrayList<>();
         for (int index = 1; index <= 100; index++) {
@@ -525,19 +595,27 @@ class B9ContentAdminRightsBoundaryTest {
         body.put("content", questionsDraft(List.of(
                 question(20, "Second stem", List.of(option("beta", "Bee"), option("alpha", "Aye")), "beta"))));
         Map<String, Object> receipt = controller.command(body, editor(), "redact-create-draft", HEADERS).getBody();
+        String storedSeal = seal(latest());
         assertFalse(hasKey(receipt, "gradableQuestions"));
         assertFalse(hasKey(receipt, "answerRule"));
         assertFalse(hasKey(receipt, "correctOption"));
+        assertFalse(hasKey(receipt, GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(receipt).contains(storedSeal));
         Map<String, Object> detail = data(controller.get(CODE, editor(), HEADERS).getBody());
         assertFalse(hasKey(detail, "gradableQuestions"));
         assertFalse(hasKey(detail, "answerRule"));
         assertFalse(hasKey(detail, "correctOption"));
+        assertFalse(hasKey(detail, GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(detail).contains(storedSeal));
         Map<String, Object> shown = editorDraft(CODE);
         Map<String, Object> stored = latest().payload().raw();
         Map<String, Object> visible = new LinkedHashMap<>(stored);
         visible.remove("gradableQuestions");
+        visible.remove(GradableQuestions.SEAL_FIELD);
         assertEquals(visible, shown.get("payload"));
         assertFalse(((Map<?, ?>) shown.get("payload")).containsKey("gradableQuestions"));
+        assertFalse(((Map<?, ?>) shown.get("payload")).containsKey(GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(shown).contains(storedSeal));
         assertSame(stored.get("items"), ((Map<?, ?>) shown.get("payload")).get("items"));
         assertTrue(hasKey(stored.get("gradableQuestions"), "correctOption"));
         assertEquals("beta", ((Map<?, ?>) question(latest(), 0).get("answerRule")).get("correctOption"));
@@ -581,6 +659,9 @@ class B9ContentAdminRightsBoundaryTest {
                 Map.of("contentCode", CODE), editor(), "validate-stored-opt-in", HEADERS).getBody());
         assertNoFinding(storedReport, "ANSWER_LEAK_DETECTED");
         assertNoFinding(storedReport, "GRADABLE_QUESTIONS_INVALID");
+        String storedSeal = seal(latest());
+        assertFalse(hasKey(storedReport, GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(storedReport).contains(storedSeal));
 
         String activeCode = "active-gradable";
         ContentDefinition active = ContentDefinition.create(
@@ -593,7 +674,12 @@ class B9ContentAdminRightsBoundaryTest {
                         Set.of("LEARNER", "PUBLIC"), null, null, "owner-evidence-1"),
                 "editor-1", "draft", Instant.now());
         repository.create(active);
+        Map<String, Object> unmarked = active.versions().getFirst().payload().raw();
+        assertFalse(unmarked.containsKey(GradableQuestions.SEAL_FIELD));
         Map<String, Object> activeState = data(controller.get(activeCode, editor(), HEADERS).getBody());
+        assertFalse(hasKey(activeState, GradableQuestions.SEAL_FIELD));
+        assertSame(unmarked, repository.findByCode(activeCode).orElseThrow().versions().getFirst().payload().raw());
+        assertFalse(hasKey(editorDraft(activeCode), GradableQuestions.SEAL_FIELD));
         assertEquals(false, activeState.get("reviewSubmissionReady"));
         assertEquals("VALIDATION_REPORT_UNAVAILABLE", activeState.get("reviewSubmissionReason"));
         ContentOperationException activeSubmit = assertThrows(ContentOperationException.class,
@@ -782,6 +868,23 @@ class B9ContentAdminRightsBoundaryTest {
     private static void assertLegacyPayload(ContentVersion version) {
         assertEquals(List.of("summary", "contentLocale", "targetLevel", "items"),
                 new ArrayList<>(version.payload().raw().keySet()));
+        assertFalse(version.payload().raw().containsKey(GradableQuestions.SEAL_FIELD));
+    }
+
+    private static String seal(ContentVersion version) {
+        Object value = version.payload().raw().get(GradableQuestions.SEAL_FIELD);
+        assertTrue(value instanceof String);
+        String seal = (String) value;
+        assertEquals(64, seal.length());
+        assertTrue(seal.matches("[0-9a-f]{64}"));
+        assertNotEquals(version.contentHash(), seal);
+        assertFalse(question(version, 0).containsKey(GradableQuestions.SEAL_FIELD));
+        Map<String, Object> withoutSeal = new LinkedHashMap<>(version.payload().raw());
+        withoutSeal.remove(GradableQuestions.SEAL_FIELD);
+        assertNotEquals(ContentPayloadHash.sha256(withoutSeal), seal);
+        Object correct = ((Map<?, ?>) question(version, 0).get("answerRule")).get("correctOption");
+        assertNotEquals(ContentPayloadHash.sha256(Map.of("correctOption", String.valueOf(correct))), seal);
+        return seal;
     }
 
     private static void assertQuestionOrder(ContentVersion version, List<Long> itemIds, List<String> firstOptionIds) {

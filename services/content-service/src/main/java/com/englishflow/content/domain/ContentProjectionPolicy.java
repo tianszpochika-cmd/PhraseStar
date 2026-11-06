@@ -86,12 +86,13 @@ public final class ContentProjectionPolicy {
             throw ContentOperationException.forbidden(
                     "CONTENT_RIGHTS_NOT_READY", "content copyright rights do not allow assessment");
         }
-        Map<String, Object> answerRules = findAnswerRules(version.payload().raw());
+        Map<String, Object> stored = GradableQuestions.omitPrivateField(version.payload().raw());
+        Map<String, Object> answerRules = findAnswerRules(stored);
         if (answerRules.isEmpty()) {
             throw ContentOperationException.badRequest(
                     "QUESTION_ANSWER_RULE_REQUIRED", "assessment content has no answer rule");
         }
-        Map<String, Object> learnerFields = sanitize(version.payload().raw(), ContentAudience.LEARNER);
+        Map<String, Object> learnerFields = sanitize(stored, ContentAudience.LEARNER);
         return new AssessmentContentSnapshot(
                 content.contentId(), version.versionId(), content.kind(), learnerFields, answerRules,
                 version.contentHash());
@@ -112,7 +113,7 @@ public final class ContentProjectionPolicy {
     private static Map<String, Object> sanitize(Map<String, Object> source, ContentAudience audience) {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         source.forEach((key, value) -> {
-            if (isAnswerRuleKey(key) || GradableQuestions.FIELD.equals(key)) {
+            if (isAnswerRuleKey(key) || GradableQuestions.isWithheld(key)) {
                 return;
             }
             if (!PUBLIC_KEYS.contains(key) && !(audience == ContentAudience.LEARNER && LEARNER_ONLY_KEYS.contains(key))) {
@@ -128,7 +129,9 @@ public final class ContentProjectionPolicy {
             LinkedHashMap<String, Object> nested = new LinkedHashMap<>();
             map.forEach((key, nestedValue) -> {
                 String stringKey = String.valueOf(key);
-                if (!isAnswerRuleKey(stringKey)) {
+                // Nested legacy items keep gradableQuestions. Drop only the seal here;
+                // top-level sanitize still omits the opt-in array and the seal.
+                if (!isAnswerRuleKey(stringKey) && !GradableQuestions.SEAL_FIELD.equals(stringKey)) {
                     nested.put(stringKey, sanitizeValue(nestedValue, audience));
                 }
             });
