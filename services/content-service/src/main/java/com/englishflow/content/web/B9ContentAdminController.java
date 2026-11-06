@@ -8,6 +8,7 @@ import com.englishflow.content.domain.ContentActor;
 import com.englishflow.content.release.ContentReleaseStudio;
 import com.englishflow.content.domain.ContentAutoValidation;
 import com.englishflow.content.domain.ContentDefinition;
+import com.englishflow.content.domain.GradableQuestions;
 import com.englishflow.content.domain.ContentId;
 import com.englishflow.content.domain.ContentItem;
 import com.englishflow.content.domain.ContentIdempotencyKey;
@@ -481,6 +482,8 @@ public final class B9ContentAdminController {
             Map<String, Object> input, String command, String contentCode,
             ContentActor actor, String requestKey, ContentRequestContext context) {
         String scope = actor.tenantId() + ":" + actor.subjectId() + ":content.b9.draft";
+        List<Map<String, Object>> gradableQuestions =
+                validatedGradableQuestions(record(input.get("content")));
         Map<String, Object> result = idempotency.executeMap(
                 scope, key(requestKey), ContentPayloadHash.sha256(input), () -> {
                     Map<String, Object> draft = record(input.get("content"));
@@ -492,6 +495,9 @@ public final class B9ContentAdminController {
                             throw ContentOperationException.conflict("CONTENT_EXISTS", "content code already exists");
                         }
                         contentId = ContentId.of(contentCode);
+                        if (gradableQuestions != null) {
+                            GradableQuestions.rejectSealedOwner(contentCode, contentId.value());
+                        }
                         commands.createContent(new ContentCommandService.CreateContent(
                                 contentId, contentCode, kind(draft.get("contentType")),
                                 required(draft, "title"), textOr(draft.get("contentLocale"), "en-US"),
@@ -516,10 +522,13 @@ public final class B9ContentAdminController {
                             }
                         }
                         contentId = current.contentId();
+                        if (gradableQuestions != null) {
+                            GradableQuestions.rejectSealedOwner(contentCode, contentId.value());
+                        }
                     }
                     ContentVersionSnapshot created = commands.createVersion(
                             new ContentCommandService.CreateVersion(
-                                    contentId, repository.nextVersionId(), payload(draft), draftRights,
+                                    contentId, repository.nextVersionId(), payload(draft, gradableQuestions), draftRights,
                                     proposal(draft).validated(),
                                     textOr(draft.get("releaseNote"), "draft revision")),
                             actor, key(requestKey + ":version"), context);
@@ -756,6 +765,10 @@ public final class B9ContentAdminController {
                                             "stateVersion", outcome.stateVersion());
                                 }));
                     }
+                } else if (draft.containsKey(GradableQuestions.FIELD) || item.containsKey(GradableQuestions.FIELD)) {
+                    throw ContentOperationException.badRequest(
+                            "GRADABLE_QUESTIONS_UNSUPPORTED",
+                            "batch draft import does not accept gradableQuestions");
                 } else if (dryRun) {
                     if (!seenInBatch.add("C:" + contentCode)) {
                         entry.putAll(skipped("DUPLICATE_IN_BATCH", "同一批次内重复的内容编码 " + contentCode));
@@ -1312,13 +1325,28 @@ public final class B9ContentAdminController {
         }
     }
 
+    private static List<Map<String, Object>> validatedGradableQuestions(Map<String, Object> draft) {
+        if (!draft.containsKey(GradableQuestions.FIELD)) {
+            return null;
+        }
+        return GradableQuestions.copy(draft.get(GradableQuestions.FIELD));
+    }
+
     private static Map<String, Object> payload(Map<String, Object> draft) {
+        return payload(draft, null);
+    }
+
+    private static Map<String, Object> payload(
+            Map<String, Object> draft, List<Map<String, Object>> gradableQuestions) {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("summary", textOr(draft.get("summary"), ""));
         result.put("contentLocale", textOr(draft.get("contentLocale"), "en-US"));
         result.put("targetLevel", textOr(draft.get("targetLevel"), "A1"));
         Object items = draft.get("items");
         result.put("items", items instanceof List<?> list && !list.isEmpty() ? list : List.of(Map.of("displayText", text(draft.get("title")))));
+        if (gradableQuestions != null) {
+            result.put(GradableQuestions.FIELD, gradableQuestions);
+        }
         return result;
     }
 
@@ -1553,7 +1581,7 @@ public final class B9ContentAdminController {
         draft.put("permittedChannels", proposal == null ? List.of() : proposal.channelList());
         draft.put("authorizationEvidenceRef", proposal == null ? null : proposal.proposedEvidenceRef());
         draft.put("allowsLearning", proposal != null && proposal.proposedAllowsLearning());
-        draft.put("payload", version.payload().raw());
+        draft.put("payload", GradableQuestions.omitPrivateField(version.payload().raw()));
         draft.put("publishedVersionNumber", content.currentPublishedVersion()
                 .map(ContentVersion::versionNumber).orElse(null));
         return draft;

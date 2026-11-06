@@ -51995,6 +51995,43 @@
             "items": {
               "$ref": "#/components/schemas/B9ContentItemDefinition"
             }
+          },
+          "gradableQuestions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "description": "可选的管理端输入，只随既有 submitB9ContentCommand 的 CREATE_DRAFT 或 SAVE_DRAFT 中的 content 提交。省略时新版本不携带可判分题，必填 items 保持原语义，不得从 items 或 kind QUESTION 推断本题。出现时为 1 至 100 道闭集题，上限与 B10CreateAssessmentSessionRequest.itemIds 的 maxItems 100 相同；数组顺序即该版本的稳定题序，服务端不得按 itemId 重排或改号。同一版本数组内 itemId 必须互异。itemId 按 JSON 整数精确比较，optionId 与 correctOption 按码位精确比较，不做去空白、大小写折叠或重新分配。写入后本题成为该 contentVersionId 的不可变 payload 字节；SAVE_DRAFT 只追加新版本，不得改写已创建版本的 id、题干、选项或答案。既有提交审核、不同人的一审与二审、版权在 L2 激活前保持 PENDING，以及 PUBLISH 所需的独立编辑、两名审核人、发布者、LEARNER 与 PUBLIC 权利均不因本字段改变或豁免。命令 contentCode 精确等于 p1.placement.v1，或内容标识精确等于 p1-placement-bank-v1 时必须拒绝；本题不是 content_placement_item，不得扩写密封题库。answerRule 只供服务端保留在版本 payload，本契约不把它加入学习者、公开、评估快照或管理端响应。运行时支持仅为 Content authoring-only：既有单条 CREATE_DRAFT 与 SAVE_DRAFT 写入不可变版本 payload，assessment 与阅读运行时仍不读取。",
+            "items": {
+              "$ref": "#/components/schemas/B9GradableQuestionInput"
+            },
+            "x-admin-input-only": true,
+            "x-commands": [
+              "CREATE_DRAFT",
+              "SAVE_DRAFT"
+            ],
+            "x-optional-absence": "omitted means the new version has no gradableQuestions; required items stay unchanged and are not inferred into this array",
+            "x-does-not-replace": [
+              "items"
+            ],
+            "x-unique-within-version": [
+              "itemId"
+            ],
+            "x-question-order": "array order is the stable display order for that content version",
+            "x-id-stability": "exact integer itemId and exact-case optionId; no trim, case-fold, or server reallocation",
+            "x-version-immutability": "contentVersionId and payload bytes are immutable after creation; a later SAVE_DRAFT allocates a new version",
+            "x-review-rights-publish": "existing review, PENDING-until-L2 rights, and PUBLISH actor and LEARNER plus PUBLIC rights rules stay in force",
+            "x-rejected-content-codes": [
+              "p1.placement.v1"
+            ],
+            "x-rejected-content-ids": [
+              "p1-placement-bank-v1"
+            ],
+            "x-sealed-bank": "rejected extension of p1.placement.v1 and content_placement_item",
+            "x-answer-retention": "server-only immutable version payload; absent from learner, public, assessment-snapshot, and admin response schemas",
+            "x-max-items-source": "B10CreateAssessmentSessionRequest.itemIds maxItems 100",
+            "x-runtime-support": "Content authoring-only",
+            "x-runtime-gap": "Content authoring-only: single CREATE_DRAFT and SAVE_DRAFT persist gradableQuestions on the immutable version payload. Assessment and reading runtimes do not read gradableQuestions."
           }
         }
       },
@@ -81899,6 +81936,91 @@
             "description": "Nonempty server policy reference that published this document."
           }
         }
+      },
+      "B9GradableQuestionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "itemId",
+          "stem",
+          "options",
+          "answerRule"
+        ],
+        "description": "管理端草稿中的一道闭集可判分题。只含 itemId、stem、options 与 answerRule。不是 ContentItemUpsertInput 的 qi_ 行，也不替换 B9ContentItemDefinition。",
+        "properties": {
+          "itemId": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "JSON 整数，含端点 1 与 9007199254740991。下限与 B10Int64Id 一致，上限是可往返的安全整数。禁止字符串、小数、前导零和 qi_ 前缀。同一 gradableQuestions 数组内必须唯一，并在所属 contentVersionId 上保持不变。"
+          },
+          "stem": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "非空白题干。长度上限与 B10LearnerContentItem.stem 的 4096 一致。仅空白字符非法。"
+          },
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 8,
+            "uniqueItems": true,
+            "description": "有序选项，2 至 8 个。数组顺序即展示顺序，服务端不得重排。同一题内 optionId 必须唯一，并按精确大小写比较。",
+            "items": {
+              "$ref": "#/components/schemas/B9GradableQuestionOptionInput"
+            },
+            "x-unique-within-question": [
+              "optionId"
+            ],
+            "x-option-order": "array order is the stable display order"
+          },
+          "answerRule": {
+            "$ref": "#/components/schemas/B9GradableQuestionAnswerRuleInput"
+          }
+        }
+      },
+      "B9GradableQuestionOptionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "optionId",
+          "label"
+        ],
+        "description": "闭集选项。optionId 是不透明令牌，label 是非空白展示文案。",
+        "properties": {
+          "optionId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._:-]{0,63}$",
+            "description": "不透明选项令牌，模式与 B10ContentItemOption.optionId 相同。精确大小写，长度 1 至 64，不得折叠，也不得用作文案或答案正文。"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "非空白选项文案。长度上限与 B10ContentItemOption.label 的 512 一致。仅空白字符非法。"
+          }
+        }
+      },
+      "B9GradableQuestionAnswerRuleInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "correctOption"
+        ],
+        "description": "闭集答案，且只能包含 correctOption。correctOption 必须与本题某个 optionId 精确相等。不得携带 acceptedKeys、correctKey、answer 或 explanation。答案只保留在服务端不可变版本 payload 中，不进入本契约的任何响应。",
+        "properties": {
+          "correctOption": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._:-]{0,63}$",
+            "description": "必须精确等于本题 options 里的一个 optionId。大小写敏感，成员检查由服务端执行。",
+            "x-must-equal-one-of": "options.optionId"
+          }
+        },
+        "x-answer-member-check": "correctOption exact-case member of the same question options[].optionId",
+        "x-answer-retention": "server-only"
       }
     },
     "requestBodies": {},

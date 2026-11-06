@@ -41,7 +41,8 @@ public final class ContentProjectionPolicy {
         if (audience == ContentAudience.ADMIN_PREVIEW) {
             return new PublicContentProjection(
                     content.contentId(), version.versionId(), content.kind(), content.title(), content.locale(),
-                    content.targetLevel(), content.goalCode(), audience, version.payload().raw(),
+                    content.targetLevel(), content.goalCode(), audience,
+                    GradableQuestions.omitPrivateField(version.payload().raw()),
                     version.contentHash(), now);
         }
         if (version.status() != ContentVersionStatus.PUBLISHED
@@ -111,7 +112,7 @@ public final class ContentProjectionPolicy {
     private static Map<String, Object> sanitize(Map<String, Object> source, ContentAudience audience) {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         source.forEach((key, value) -> {
-            if (isAnswerRuleKey(key)) {
+            if (isAnswerRuleKey(key) || GradableQuestions.FIELD.equals(key)) {
                 return;
             }
             if (!PUBLIC_KEYS.contains(key) && !(audience == ContentAudience.LEARNER && LEARNER_ONLY_KEYS.contains(key))) {
