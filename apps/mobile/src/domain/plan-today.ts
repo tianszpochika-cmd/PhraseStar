@@ -9,6 +9,16 @@ export interface DueArrangement {
   itemId: string
   arrangement: 'DUE' | 'DEFERRED'
   arrangementCopy: string
+  /** Payload itemId. An index fallback in `itemId` is only a fact-row key. */
+  durableItemId: string | null
+  /** Absent when the client budget supplied the mark. */
+  serverArrangement: 'DUE' | 'DEFERRED' | null
+  /** Shape check only. The sealed ref is not kept and is not a lesson route. */
+  confirmedPracticeRef: boolean
+}
+
+export interface ReadableDueItem {
+  itemId: string
 }
 
 export interface PlanTodayQueue {
@@ -124,15 +134,46 @@ export function arrangementLabel(arrangement: string, copy?: string | null): str
   return ''
 }
 
+function confirmedPracticeRef(value: unknown): boolean {
+  if (!record(value)) return false
+  const contentCode = text(value.contentCode)
+  const questionItemId = text(value.questionItemId)
+  const version = value.contentVersionId
+  return Boolean(contentCode && questionItemId && typeof version === 'number' && Number.isSafeInteger(version) && version > 0)
+}
+
+/** Server DUE rows with a durable id and a confirmed sealed ref. Index ids and budget marks stay out. */
+export function readableDueItems(arrangements: readonly Pick<DueArrangement, 'durableItemId' | 'serverArrangement' | 'confirmedPracticeRef'>[] | null | undefined): ReadableDueItem[] {
+  if (!arrangements) return []
+  const seen = new Set<string>()
+  const rows: ReadableDueItem[] = []
+  for (const item of arrangements) {
+    const itemId = typeof item?.durableItemId === 'string' ? item.durableItemId.trim() : ''
+    if (!itemId || item.serverArrangement !== 'DUE' || item.confirmedPracticeRef !== true || seen.has(itemId)) continue
+    seen.add(itemId)
+    rows.push({ itemId })
+  }
+  return rows
+}
+
 function parseArrangements(value: unknown, targetMinutes: number): DueArrangement[] {
   if (!Array.isArray(value)) return []
   const fallback = arrangeBudget(value.length, targetMinutes)
   return value.flatMap((item, index) => {
     if (!record(item)) return []
-    const itemId = text(item.itemId) ?? String(index + 1)
+    const durableItemId = text(item.itemId)
+    const itemId = durableItemId ?? String(index + 1)
     const server = text(item.arrangement)
-    const arrangement = server === 'DUE' || server === 'DEFERRED' ? server : fallback[index]
-    return [{ itemId, arrangement, arrangementCopy: text(item.arrangementCopy) ?? (arrangement === 'DEFERRED' ? DEFERRED_COPY : '') }]
+    const serverArrangement = server === 'DUE' || server === 'DEFERRED' ? server : null
+    const arrangement = serverArrangement ?? fallback[index] ?? 'DEFERRED'
+    return [{
+      itemId,
+      arrangement,
+      arrangementCopy: text(item.arrangementCopy) ?? (arrangement === 'DEFERRED' ? DEFERRED_COPY : ''),
+      durableItemId,
+      serverArrangement,
+      confirmedPracticeRef: confirmedPracticeRef(item.practiceRef),
+    }]
   })
 }
 

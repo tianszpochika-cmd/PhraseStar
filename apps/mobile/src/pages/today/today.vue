@@ -7,7 +7,7 @@ import { backMobile, mobileT, useMobileExperience } from '../../platform/experie
 import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
 import { ensureMobilePageAccess } from '../../auth/navigation'
 import type { MobileTask } from '../../domain/learner-content'
-import { arrangementLabel, emptyStateView, firstLearningGuideCopy, type EmptyStateView } from '../../domain/plan-today'
+import { arrangementLabel, emptyStateView, firstLearningGuideCopy, readableDueItems, type EmptyStateView } from '../../domain/plan-today'
 import { useLearnerContentStore } from '../../stores/learner-content'
 import { useSessionStore } from '../../stores/session'
 import {
@@ -38,10 +38,16 @@ function todayT(key: string, values?: Record<string, unknown>): string {
   return values ? interpolate(message, values) : message
 }
 
+const dueRows = computed(() => {
+  if ((store.home?.tasks.length ?? 0) > 0) return []
+  if (store.planQueueStatus !== 'ready') return []
+  if (store.planQueue?.emptyReason !== 'READY') return []
+  return readableDueItems(store.planQueue?.arrangements)
+})
 const visual = computed(() => todayVisual({
   homeStatus: store.homeStatus,
   planStatus: store.planQueueStatus,
-  taskCount: store.home?.tasks.length ?? 0,
+  taskCount: (store.home?.tasks.length ?? 0) + dueRows.value.length,
   emptyReason: store.planQueue?.emptyReason ?? null,
 }))
 const design = computed(() => visualDesign(visual.value))
@@ -67,8 +73,15 @@ const planEmpty = computed((): EmptyStateView | null => {
   if (store.planQueueStatus !== 'ready' && store.planQueueStatus !== 'empty') return null
   return emptyStateView({ failed: false, reason: store.planQueue?.emptyReason ?? null, hasTasks: false })
 })
+const arrangementFacts = computed(() => {
+  const shown = new Set(dueRows.value.map((item) => item.itemId))
+  return (store.planQueue?.arrangements ?? []).filter((item) => {
+    const id = item.durableItemId
+    return !(item.serverArrangement === 'DUE' && typeof id === 'string' && shown.has(id))
+  })
+})
 const showFacts = computed(() => visual.value === 'ready' || visual.value === 'no-plan' || visual.value === 'completed' || visual.value === 'no-content' || visual.value === 'no-due' || visual.value === 'no-tasks')
-const visiblePlanFacts = computed(() => showFacts.value && ((store.planQueue?.arrangements.length ?? 0) > 0 || Boolean(planExplanation.value) || Boolean(firstLearningCopy.value) || Boolean(store.planNotice)))
+const visiblePlanFacts = computed(() => showFacts.value && (arrangementFacts.value.length > 0 || Boolean(planExplanation.value) || Boolean(firstLearningCopy.value) || Boolean(store.planNotice)))
 
 function leaveRoute(): boolean {
   if (routeStillToday()) return false
@@ -155,14 +168,14 @@ function taskMeta(task: MobileTask): string {
           </view>
         </view>
         <view v-else class="today-scroll" :class="{ 'today-scroll--center': visual !== 'ready' && visual !== 'no-tasks' }">
-          <text v-if="visual === 'ready' && summary" class="today-summary">{{ summary }}</text>
+          <text v-if="visual === 'ready' && (store.home?.tasks.length ?? 0) > 0 && summary" class="today-summary">{{ summary }}</text>
           <view v-if="store.homeStatus === 'unavailable'" class="today-note unavailable" role="status">
             <text class="state-title">课程列表暂不可用</text>
             <text class="state-description">{{ todayT('catalogUnavailableBody') }}</text>
             <button tabindex="0" role="button" type="button" class="today-link" @click="store.loadHome()">{{ todayT('reload') }}</button>
           </view>
           <view v-if="visual === 'ready'" class="today-ready">
-            <view v-if="measured" class="today-card today-progress">
+            <view v-if="(store.home?.tasks.length ?? 0) > 0 && measured" class="today-card today-progress">
               <view class="today-ring" :style="{ '--today-pct': String(measured.percent) }">
                 <image class="today-ring-track" :src="TODAY_ASSETS.track" mode="aspectFit" aria-hidden="true" />
                 <view class="today-ring-arc" aria-hidden="true"></view>
@@ -176,7 +189,7 @@ function taskMeta(task: MobileTask): string {
             <view class="today-card">
               <view class="today-list-head">
                 <text class="today-card-title">{{ todayT('listTitle') }}</text>
-                <text class="today-count">{{ todayT('itemCount', { count: store.home?.tasks.length ?? 0 }) }}</text>
+                <text class="today-count">{{ todayT('itemCount', { count: (store.home?.tasks.length ?? 0) || dueRows.length }) }}</text>
               </view>
               <template v-for="task in store.home?.tasks" :key="task.id">
                 <button v-if="canLaunchTask(task)" tabindex="0" role="button" type="button" class="today-row" :data-task-id="task.id" @click="viewTask(task)">
@@ -190,6 +203,9 @@ function taskMeta(task: MobileTask): string {
                   <image v-if="task.status === 'COMPLETED'" class="today-check" :src="TODAY_ASSETS.check" mode="aspectFit" aria-hidden="true" />
                 </view>
               </template>
+              <view v-for="item in dueRows" :key="item.itemId" class="today-row" :data-due-item-id="item.itemId">
+                <view class="today-row-copy"><text class="today-row-title">{{ todayT('dueItemTitle') }}</text><text class="today-row-meta">{{ todayT('dueItemMeta') }}</text></view>
+              </view>
             </view>
           </view>
           <view v-else-if="visual === 'no-tasks'" class="today-state">
@@ -204,7 +220,7 @@ function taskMeta(task: MobileTask): string {
             </view>
           </view>
           <view v-if="visiblePlanFacts" class="today-facts">
-            <text v-for="item in store.planQueue?.arrangements ?? []" :key="item.itemId" data-arrangement class="today-fact">{{ arrangementLabel(item.arrangement, item.arrangementCopy) }}</text>
+            <text v-for="item in arrangementFacts" :key="item.itemId" data-arrangement class="today-fact">{{ arrangementLabel(item.arrangement, item.arrangementCopy) }}</text>
             <text v-if="planExplanation" class="today-fact" role="status">{{ planExplanation }}</text>
             <text v-if="firstLearningCopy" class="today-fact" role="status">{{ firstLearningCopy }}</text>
             <text v-if="store.planNotice" class="today-fact" role="status">{{ store.planNotice }}</text>
