@@ -1,5 +1,5 @@
 import { mobileApiClient, MobileApiError } from './client'
-import type { B8AdultGateResponse } from '@englishflow/contracts'
+import type { B8AdultGateResponse, B8PublishedConsentDocument } from '@englishflow/contracts'
 import type { MobileContentCard, MobileContentDetail, MobileFirstDayModel, MobileGoalOption, MobileHomeModel, MobileLearnerAccount, MobileMotionMode, MobileOnboardingModel, MobilePlacementModel, MobilePlacementQuestion, MobilePlacementReport, MobileTask, MobileThemeMode } from '../domain/learner-content'
 
 type RecordValue = Record<string, unknown>
@@ -417,8 +417,91 @@ export interface MobileOnboardingResumeRead {
   adultGate: string
   adultLearningAccess: NonNullable<B8AdultGateResponse['learningAccess']> | 'UNKNOWN'
   sessionRefreshRequired?: boolean
-  consent: { readable: boolean; accepted: boolean | null; unsatisfiedPurposes: readonly string[] }
+  consent: { readable: boolean; accepted: boolean | null; unsatisfiedPurposes: readonly string[]; publishedDocuments?: readonly B8PublishedConsentDocument[] }
   target: { readable: boolean; saved: boolean; goal: string | null; quota: number | null }
+}
+
+const REQUIRED_PUBLICATION = [
+  ['TERMS', 'ACCOUNT_TERMS'],
+  ['PRIVACY', 'PRIVACY_NOTICE'],
+  ['ADULT_LEARNING', 'ADULT_LEARNING_ELIGIBILITY'],
+] as const
+
+type RequiredPublicationType = (typeof REQUIRED_PUBLICATION)[number][0]
+
+/** Fresh signing needs an explicit incomplete summary. An absent or unreadable summary stays closed. */
+export function explicitIncompleteConsent(consent: Pick<MobileOnboardingResumeRead['consent'], 'readable' | 'accepted' | 'unsatisfiedPurposes'>): boolean {
+  if (!consent.readable) return false
+  const requiredOpen = consent.unsatisfiedPurposes.some((item) => REQUIRED_PUBLICATION.some((entry) => entry[1] === item))
+  if (consent.accepted === true && !requiredOpen) return false
+  if (consent.accepted === false) return true
+  return requiredOpen
+}
+
+const PUBLICATION_VERSION_MAX = 64
+const PUBLICATION_POLICY_VERSION_MAX = 128
+const PUBLICATION_POLICY_REF_MAX = 160
+const PUBLICATION_BODY_MAX = 65536
+const SHA256_LOWER = /^[0-9a-f]{64}$/
+const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/
+const DECISION_ID = /^[A-Za-z0-9-]{16,110}$/
+
+function plainToken(value: unknown, max: number): string | null {
+  if (typeof value !== 'string' || value.length < 1 || value.length > max || value !== value.trim()) return null
+  for (let index = 0; index < value.length; index += 1) {
+    const code = value.charCodeAt(index)
+    if (code <= 0x1f || code === 0x7f) return null
+  }
+  return value
+}
+
+function plainBody(value: unknown): string | null {
+  if (typeof value !== 'string' || value.length < 1 || value.length > PUBLICATION_BODY_MAX || value.includes('\u0000')) return null
+  return value
+}
+
+function plainTimestamp(value: unknown): string | null {
+  if (typeof value !== 'string' || !ISO_DATE_TIME.test(value) || !Number.isFinite(Date.parse(value))) return null
+  return value
+}
+
+async function digestMatches(bodyText: string, documentDigest: string): Promise<boolean> {
+  if (!SHA256_LOWER.test(documentDigest)) return false
+  try {
+    return await sha256Hex(bodyText) === documentDigest
+  } catch {
+    return false
+  }
+}
+
+/** A complete three-document publication, or null when it cannot be shown or signed. */
+async function parsePublishedConsentDocuments(value: unknown): Promise<readonly B8PublishedConsentDocument[] | null> {
+  if (!Array.isArray(value) || value.length !== REQUIRED_PUBLICATION.length) return null
+  const parsed = new Map<RequiredPublicationType, B8PublishedConsentDocument>()
+  for (const raw of value) {
+    if (!isRecord(raw)) return null
+    const match = REQUIRED_PUBLICATION.find((entry) => entry[0] === raw.type && entry[1] === raw.purpose)
+    if (!match || parsed.has(match[0])) return null
+    const documentVersion = plainToken(raw.documentVersion, PUBLICATION_VERSION_MAX)
+    const documentDigest = typeof raw.documentDigest === 'string' && SHA256_LOWER.test(raw.documentDigest) ? raw.documentDigest : null
+    const bodyText = plainBody(raw.bodyText)
+    const publishedAt = plainTimestamp(raw.publishedAt)
+    const policyVersion = plainToken(raw.policyVersion, PUBLICATION_POLICY_VERSION_MAX)
+    const policyRef = plainToken(raw.policyRef, PUBLICATION_POLICY_REF_MAX)
+    if (!documentVersion || !documentDigest || bodyText === null || !publishedAt || !policyVersion || !policyRef) return null
+    const document = { type: match[0], purpose: match[1], documentVersion, documentDigest, bodyText, publishedAt, policyVersion, policyRef } satisfies B8PublishedConsentDocument
+    parsed.set(match[0], document)
+  }
+  const documents: B8PublishedConsentDocument[] = []
+  for (const [type] of REQUIRED_PUBLICATION) {
+    const document = parsed.get(type)
+    if (!document) return null
+    documents.push(document)
+  }
+  for (const document of documents) {
+    if (!await digestMatches(document.bodyText, document.documentDigest)) return null
+  }
+  return documents
 }
 
 function parseAdultGateFact(value: unknown): string {
@@ -440,8 +523,18 @@ function parseConsentFact(value: unknown): MobileOnboardingResumeRead['consent']
   return { readable: true, accepted, unsatisfiedPurposes: purposes ?? [] }
 }
 
-async function readIamResumeFacts(): Promise<Pick<MobileOnboardingResumeRead, 'adultGate' | 'adultLearningAccess' | 'consent'>> {
-  const raw = await mobileApiClient.request<unknown>('/iam/principal/me')
+/** Read publishedConsentDocuments only as its own root field. Never from inside consentState. */
+async function readRootPublishedConsentDocuments(record: RecordValue, principal: RecordValue): Promise<readonly B8PublishedConsentDocument[] | null> {
+  const roots = record === principal ? [record] : [record, principal]
+  for (const root of roots) {
+    if (!Object.prototype.hasOwnProperty.call(root, 'publishedConsentDocuments')) continue
+    return parsePublishedConsentDocuments(root.publishedConsentDocuments)
+  }
+  return null
+}
+
+async function readIamResumeFacts(options?: { skipAuthRetry?: boolean }): Promise<Pick<MobileOnboardingResumeRead, 'adultGate' | 'adultLearningAccess' | 'consent'>> {
+  const raw = await mobileApiClient.request<unknown>('/iam/principal/me', options?.skipAuthRetry ? { skipAuthRetry: true } : undefined)
   const source = unwrap(raw)
   const record = isRecord(source) ? source : {}
   const principal = isRecord(record.principal) ? record.principal : record
@@ -450,7 +543,9 @@ async function readIamResumeFacts(): Promise<Pick<MobileOnboardingResumeRead, 'a
   const access = isRecord(adultFact) ? adultFact.learningAccess : undefined
   const adultLearningAccess = access === 'ELIGIBLE' || access === 'RESTRICTED' ? access : 'UNKNOWN'
   const consentSource = isRecord(record.consentState) ? record.consentState : isRecord(principal.consentState) ? principal.consentState : null
-  return { adultGate, adultLearningAccess, consent: parseConsentFact(consentSource) }
+  const consent = parseConsentFact(consentSource)
+  const publishedDocuments = await readRootPublishedConsentDocuments(record, principal)
+  return publishedDocuments ? { adultGate, adultLearningAccess, consent: { ...consent, publishedDocuments } } : { adultGate, adultLearningAccess, consent }
 }
 
 async function readTargetFact(): Promise<MobileOnboardingResumeRead['target'] & { consentRequired: boolean }> {
@@ -513,6 +608,232 @@ async function signRequiredConsents(clientEventId: string, isCurrent?: () => boo
   requireSameIdentity(isCurrent)
 }
 
+function consentDecisionKey(decisionId: string, type: RequiredPublicationType): string | null {
+  if (!DECISION_ID.test(decisionId)) return null
+  const suffix = type === 'TERMS' ? 'terms' : type === 'PRIVACY' ? 'privacy' : 'adult'
+  const key = `${decisionId}-${suffix}`
+  return key.length >= 16 && key.length <= 128 ? key : null
+}
+
+function sameViewedPublication(viewed: readonly B8PublishedConsentDocument[], published: readonly B8PublishedConsentDocument[] | undefined): boolean {
+  if (!published || published.length !== REQUIRED_PUBLICATION.length || viewed.length !== REQUIRED_PUBLICATION.length) return false
+  return REQUIRED_PUBLICATION.every(([type, purpose]) => {
+    const left = viewed.find((document) => document.type === type)
+    const right = published.find((document) => document.type === type)
+    return Boolean(left && right && left.purpose === purpose && right.purpose === purpose
+      && left.documentVersion === right.documentVersion
+      && left.documentDigest === right.documentDigest
+      && left.bodyText === right.bodyText
+      && left.publishedAt === right.publishedAt
+      && left.policyVersion === right.policyVersion
+      && left.policyRef === right.policyRef)
+  })
+}
+
+const CONSENT_RECORD_PAIRS = [
+  ['TERMS', 'ACCOUNT_TERMS'],
+  ['PRIVACY', 'PRIVACY_NOTICE'],
+  ['ADULT_LEARNING', 'ADULT_LEARNING_ELIGIBILITY'],
+  ['PRODUCT_ANALYTICS', 'PRODUCT_ANALYTICS'],
+  ['VOICE_RECORDING', 'ADULT_VOICE_RECORDING_REMOTE_STORAGE_AND_REPLAY'],
+] as const
+
+const OWNER_PROVENANCE = {
+  authority: 'IAM_SERVER_RECORDED_CONSENT',
+  documentSource: 'PUBLISHED_DOCUMENT_VERSION_AND_DIGEST',
+  policySource: 'IAM_ACTIVE_POLICY_CONTROL_PLANE',
+} as const
+
+interface TrustedConsentGrant {
+  type: (typeof CONSENT_RECORD_PAIRS)[number][0]
+  purpose: (typeof CONSENT_RECORD_PAIRS)[number][1]
+  required: boolean
+  state: 'GRANTED' | 'WITHDRAWN'
+  document: { version: string; digest: string }
+  policyVersion: string
+  policyRef: string
+  provenance: { authority: string; documentSource: string; policySource: string }
+}
+
+export function consentGrantMatchesPublication(record: {
+  type: string
+  purpose: string
+  required: boolean
+  state: string
+  document: { version: string; digest: string }
+  policyVersion: string
+  policyRef: string
+  provenance: { authority: string; documentSource: string; policySource: string }
+}, document: B8PublishedConsentDocument): boolean {
+  const pair = REQUIRED_PUBLICATION.find((entry) => entry[0] === document.type && entry[1] === document.purpose)
+  if (!pair) return false
+  return record.type === document.type
+    && record.purpose === document.purpose
+    && record.required === true
+    && record.state === 'GRANTED'
+    && record.document.version === document.documentVersion
+    && record.document.digest === document.documentDigest
+    && record.policyVersion === document.policyVersion
+    && record.policyRef === document.policyRef
+    && record.provenance.authority === OWNER_PROVENANCE.authority
+    && record.provenance.documentSource === OWNER_PROVENANCE.documentSource
+    && record.provenance.policySource === OWNER_PROVENANCE.policySource
+}
+
+function ownedText(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+function asTrustedGrant(value: unknown): TrustedConsentGrant | null {
+  if (!isRecord(value)) return null
+  const pair = CONSENT_RECORD_PAIRS.find((entry) => entry[0] === value.type && entry[1] === value.purpose)
+  if (!pair || typeof value.required !== 'boolean' || (value.state !== 'GRANTED' && value.state !== 'WITHDRAWN')) return null
+  const document = isRecord(value.document) ? value.document : null
+  const provenance = isRecord(value.provenance) ? value.provenance : null
+  if (!document || !provenance) return null
+  const version = ownedText(document.version)
+  const digest = ownedText(document.digest)
+  const publishedAt = ownedText(document.publishedAt)
+  const recordedAt = ownedText(provenance.recordedAt)
+  const policyRef = ownedText(value.policyRef)
+  const policyVersion = ownedText(value.policyVersion)
+  const decisionRef = ownedText(value.decisionRef)
+  if (!version || !digest || !publishedAt || !recordedAt || !policyRef || !policyVersion || !decisionRef) return null
+  if (provenance.authority !== OWNER_PROVENANCE.authority || provenance.documentSource !== OWNER_PROVENANCE.documentSource || provenance.policySource !== OWNER_PROVENANCE.policySource) return null
+  return {
+    type: pair[0],
+    purpose: pair[1],
+    required: value.required,
+    state: value.state,
+    document: { version, digest },
+    policyVersion,
+    policyRef,
+    provenance: {
+      authority: OWNER_PROVENANCE.authority,
+      documentSource: OWNER_PROVENANCE.documentSource,
+      policySource: OWNER_PROVENANCE.policySource,
+    },
+  }
+}
+
+function consentListRecord(raw: unknown): RecordValue | null {
+  const envelope = isRecord(raw) ? raw : null
+  const data = envelope && isRecord(envelope.data) ? envelope.data : envelope
+  const meta = envelope && isRecord(envelope.meta) ? envelope.meta : null
+  if (!data || !Array.isArray(data.items)) return null
+  if (data.hasMore === true || meta?.hasMore === true) return null
+  if (typeof data.nextCursor === 'string' && data.nextCursor) return null
+  if (typeof meta?.nextCursor === 'string' && meta.nextCursor) return null
+  if (typeof data.total === 'number' && data.total > data.items.length) return null
+  return data
+}
+
+function exactGrants(raw: unknown): readonly TrustedConsentGrant[] | null {
+  const data = consentListRecord(raw)
+  if (!data || !Array.isArray(data.items)) return null
+  const grants: TrustedConsentGrant[] = []
+  for (const rawItem of data.items) {
+    const grant = asTrustedGrant(rawItem)
+    if (!grant) return null
+    grants.push(grant)
+  }
+  return grants
+}
+
+function receiptStatus(raw: unknown, document: B8PublishedConsentDocument): 'match' | 'conflict' | 'malformed' {
+  const grant = asTrustedGrant(unwrap(raw))
+  if (!grant) return 'malformed'
+  return consentGrantMatchesPublication(grant, document) ? 'match' : 'conflict'
+}
+
+async function readConsentGrants(isCurrent?: () => boolean): Promise<readonly TrustedConsentGrant[] | 'forbidden' | 'malformed'> {
+  requireSameIdentity(isCurrent)
+  try {
+    const raw = await mobileApiClient.request<unknown>('/iam/consents', { skipAuthRetry: true })
+    requireSameIdentity(isCurrent)
+    return exactGrants(raw) ?? 'malformed'
+  } catch (error) {
+    if (error instanceof MobileApiError && error.status === 403) return 'forbidden'
+    throw error
+  }
+}
+
+type ViewedConsentResult = 'accepted' | 'stale' | 'refresh-failed' | 'malformed' | 'unreadable' | 'closed'
+
+/**
+ * Writes required documents the learner opened, skipping only an exact own grant.
+ * 409 or a conflicting receipt returns stale and does not retry.
+ * A malformed receipt stops so the caller can reread before an explicit retry.
+ * signRequiredConsents stays on its previous path.
+ */
+async function acceptViewedRequiredConsents(input: { decisionId: string; viewed: readonly B8PublishedConsentDocument[]; isCurrent?: () => boolean }): Promise<ViewedConsentResult> {
+  requireSameIdentity(input.isCurrent)
+  const viewed = REQUIRED_PUBLICATION.map(([type, purpose]) => input.viewed.find((document) => document.type === type && document.purpose === purpose))
+  if (input.viewed.length !== REQUIRED_PUBLICATION.length || viewed.some((document) => !document)) return 'closed'
+  const documents = viewed as B8PublishedConsentDocument[]
+  const keys = documents.map((document) => consentDecisionKey(input.decisionId, document.type))
+  if (keys.some((key) => !key)) return 'closed'
+  for (const document of documents) {
+    if (!await digestMatches(document.bodyText, document.documentDigest)) return 'closed'
+  }
+  const latest = await readIamResumeFacts({ skipAuthRetry: true })
+  requireSameIdentity(input.isCurrent)
+  if (latest.adultGate !== 'PASSED' || latest.adultLearningAccess !== 'ELIGIBLE' || !explicitIncompleteConsent(latest.consent)) return 'closed'
+  if (!sameViewedPublication(documents, latest.consent.publishedDocuments)) return 'stale'
+  let own: readonly TrustedConsentGrant[] | 'forbidden' | 'malformed'
+  try {
+    own = await readConsentGrants(input.isCurrent)
+  } catch {
+    return 'unreadable'
+  }
+  if (own === 'forbidden' || own === 'malformed') return 'unreadable'
+  const grants = own
+  const pending = documents.filter((document) => !grants.some((grant) => consentGrantMatchesPublication(grant, document)))
+  for (const document of pending) {
+    requireSameIdentity(input.isCurrent)
+    const key = consentDecisionKey(input.decisionId, document.type)
+    if (!key) return 'closed'
+    try {
+      const recorded = await mobileApiClient.request<unknown>('/iam/consents', {
+        method: 'PUT',
+        skipAuthRetry: true,
+        data: { type: document.type, version: document.documentVersion, decision: 'ACCEPTED', expectedDocumentDigest: document.documentDigest },
+        header: { 'Idempotency-Key': key },
+      })
+      requireSameIdentity(input.isCurrent)
+      const status = receiptStatus(recorded, document)
+      if (status === 'malformed') return 'malformed'
+      if (status === 'conflict') return 'stale'
+    } catch (error) {
+      if (error instanceof MobileApiError && error.status === 409) return 'stale'
+      throw error
+    }
+  }
+  let confirmed: readonly TrustedConsentGrant[] | 'forbidden' | 'malformed'
+  try {
+    confirmed = await readConsentGrants(input.isCurrent)
+  } catch (error) {
+    if (error instanceof MobileApiError && error.status === 403) return 'unreadable'
+    throw error
+  }
+  if (confirmed === 'forbidden') return 'unreadable'
+  if (confirmed === 'malformed') return 'malformed'
+  const verified = confirmed
+  const conflicts = documents.some((document) => {
+    const sameType = verified.filter((grant) => grant.type === document.type)
+    return sameType.length > 0 && sameType.every((grant) => !consentGrantMatchesPublication(grant, document))
+  })
+  if (conflicts) return 'stale'
+  if (documents.some((document) => !verified.some((grant) => consentGrantMatchesPublication(grant, document)))) return 'malformed'
+  const [{ useSessionStore }, { pinia }] = await Promise.all([import('../stores/session'), import('../stores/pinia')])
+  requireSameIdentity(input.isCurrent)
+  const session = useSessionStore(pinia)
+  const identity = session.getMobileApiIdentity()
+  const refreshed = identity ? await session.refreshSilentlyForIdentity(identity) : false
+  if (input.isCurrent && !input.isCurrent()) return 'refresh-failed'
+  return refreshed ? 'accepted' : 'refresh-failed'
+}
+
 export const mobileLearnerContentApi = {
   async readOnboardingResume(): Promise<MobileOnboardingResumeRead> {
     const iam = await readIamResumeFacts()
@@ -531,6 +852,8 @@ export const mobileLearnerContentApi = {
     }
     return { adultGate: iam.adultGate, adultLearningAccess: iam.adultLearningAccess, consent: iam.consent, target }
   },
+
+  acceptViewedRequiredConsents,
 
   async recordRequiredConsents(clientEventId: string, isCurrent?: () => boolean): Promise<void> {
     await signRequiredConsents(clientEventId, isCurrent)

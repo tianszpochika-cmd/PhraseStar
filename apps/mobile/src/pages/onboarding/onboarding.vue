@@ -4,10 +4,12 @@ import { goalArt, onboardingChrome, onboardingFrameRef } from '../../domain/onbo
 import { mobileT, useMobileExperience } from '../../platform/experience'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
-import type { B8Consent } from '@englishflow/contracts'
+import type { B8Consent, B8PublishedConsentDocument } from '@englishflow/contracts'
 import { interpolate } from '@englishflow/i18n'
 import { mobileI18n } from '../../platform/v2-foundation'
 import { mobileApiClient } from '../../api/client'
+import { consentGrantMatchesPublication, explicitIncompleteConsent, mobileLearnerContentApi } from '../../api/learner-content'
+import { createClientId } from '../../platform/client-id'
 import { getUniRuntime } from '../../platform/uni-runtime'
 import { usePointerFeedback } from '../../platform/pointer-feedback'
 import { currentBirthYearMax, isSubmittableBirthYear } from '../../domain/adult-birth-year'
@@ -39,6 +41,14 @@ const lastAgeError = ref('')
 const recordsOpen = ref(false)
 const recordsError = ref(false)
 const accountMenuOpen = ref(false)
+const publicationHold = ref(false)
+const publicationStale = ref(false)
+const consentRefreshPending = ref(false)
+const consentWritesSettled = ref(false)
+const openDocumentType = ref<B8PublishedConsentDocument['type'] | null>(null)
+const reviewedDocuments = ref<Partial<Record<B8PublishedConsentDocument['type'], { version: string; digest: string; policyVersion: string; policyRef: string }>>>({})
+const consentDecisionId = ref<string | null>(null)
+const consentDecisionFingerprint = ref<string | null>(null)
 type ConsentRecord = Pick<B8Consent, 'type' | 'purpose' | 'required' | 'document' | 'state' | 'provenance' | 'policyRef' | 'policyVersion' | 'decisionRef'>
 const consentRecords = ref<ConsentRecord[]>([])
 let active = false
@@ -114,7 +124,7 @@ watch([yearError, ageError], () => { if (!yearFocused.value) reportErrors() })
 function currentFeedback() {
   return { year: yearError.value ? lastYearError.value || null : null, lastYear: lastYearError.value, age: ageError.value ? lastAgeError.value || null : null, lastAge: lastAgeError.value, action: actionError.value }
 }
-const pointerFeedback = usePointerFeedback({ root: () => pageRoot.value?.$el ?? null, actions: '.onboarding-primary,.onboarding-text,.onboarding-record-toggle', capture: currentFeedback, disabled: () => busy.value, afterRelease: () => { syncNativeYear() } })
+const pointerFeedback = usePointerFeedback({ root: () => pageRoot.value?.$el ?? null, actions: '.onboarding-primary,.onboarding-text,.onboarding-record-toggle,.onboarding-document', capture: currentFeedback, disabled: () => busy.value, afterRelease: () => { syncNativeYear() } })
 const feedback = computed(() => pointerFeedback.value ?? currentFeedback())
 function syncNativeYear(): void {
   // #ifdef H5
@@ -128,22 +138,35 @@ watch([birthYear, yearFocused, feedback, busy, () => mobileT('onboarding.year')]
 onMounted(syncNativeYear)
 watch(step, async () => {
   accountMenuOpen.value = false
+  const request = generation
+  const revision = session.identityRevision
   await nextTick()
-  if (!active) return
+  if (!current(request, revision)) return
   // #ifdef H5
   const title = pageRoot.value?.$el?.querySelector<HTMLElement>('#mobile-onboarding-title')
   title?.focus({ preventScroll: true })
   title?.scrollIntoView({ block: 'start' })
   // #endif
-  uni.setNavigationBarTitle({ title: mobileT(`onboarding.${step.value}Title`) })
+  const report = (): void => { if (current(request, revision)) actionError.value = mobileT('onboarding.navigationFailed') }
+  try {
+    const result: unknown = uni.setNavigationBarTitle({ title: mobileT(`onboarding.${step.value}Title`), fail: report })
+    if (result && typeof (result as Promise<unknown>).then === 'function') void (result as Promise<unknown>).then(() => undefined, report)
+  } catch { report() }
 })
 function current(request: number, revision: number): boolean { return active && stillOnOnboarding() && request === generation && revision === session.identityRevision && session.isAuthenticated }
+function clearConsentReview(): void {
+  openDocumentType.value = null
+  reviewedDocuments.value = {}
+  consentDecisionId.value = null
+  consentDecisionFingerprint.value = null
+}
 function clearDrafts(): void {
   birthYear.value = ''; ageConfirmed.value = false; attempted.value = false; yearFocused.value = false
   lastYearError.value = ''; lastAgeError.value = ''; consentRecords.value = []; recordsOpen.value = false; recordsError.value = false
   goal.value = savedGoal.value; quota.value = savedQuota.value ?? 15
+  clearConsentReview(); consentRefreshPending.value = false; consentWritesSettled.value = false; publicationStale.value = false
 }
-function invalidate(): void { generation++; saving.value = false; reading.value = false; accountMenuOpen.value = false; clearDrafts() }
+function invalidate(): void { generation++; saving.value = false; reading.value = false; publicationHold.value = true; accountMenuOpen.value = false; clearDrafts() }
 watch(() => session.identityRevision, () => {
   invalidate(); savedGoal.value = null; savedQuota.value = null; goal.value = null; quota.value = 15; step.value = 'gate'; actionError.value = null
   if (active && !restoring.value && session.isAuthenticated) void loadResume()
@@ -216,6 +239,7 @@ async function loadResume(): Promise<void> {
     if (session.adultGate === 'REJECTED' || selectOnboardingResumeStep(facts) === 'rejected') { await navigate('/pages/forbidden/forbidden'); return }
     step.value = selectOnboardingResumeStep(facts); applySavedTarget(facts)
     if (step.value === 'consent') await readRecords(request, revision)
+    if (current(request, revision)) publicationHold.value = false
   } catch (error) { if (current(request, revision)) { actionError.value = mobileT(error instanceof OnboardingNavigationError ? 'onboarding.navigationFailed' : 'onboarding.readFailed'); step.value = session.adultGate === 'PASSED' ? 'consent' : 'gate' } }
   finally { if (active && request === generation) reading.value = false }
 }
@@ -264,6 +288,60 @@ async function focusRequiredField(kind: 'year' | 'age'): Promise<void> {
     // #endif
   }
 }
+const signableDocuments = computed(() => {
+  const facts = store.onboardingResume
+  if (publicationHold.value || reading.value || restoring.value || !facts || facts.sessionRefreshRequired) return []
+  if (facts.adultGate !== 'PASSED' || facts.adultLearningAccess !== 'ELIGIBLE' || session.adultGate !== 'PASSED' || session.adultLearningAccess !== 'ELIGIBLE') return []
+  if (!explicitIncompleteConsent(facts.consent)) return []
+  const documents = facts.consent.publishedDocuments
+  return documents && documents.length === 3 ? documents : []
+})
+function reviewedMatch(document: B8PublishedConsentDocument): boolean {
+  const mark = reviewedDocuments.value[document.type]
+  return Boolean(mark && mark.version === document.documentVersion && mark.digest === document.documentDigest && mark.policyVersion === document.policyVersion && mark.policyRef === document.policyRef)
+}
+function recordMatches(document: B8PublishedConsentDocument): boolean {
+  if (recordsError.value) return false
+  return consentRecords.value.some((record) => consentGrantMatchesPublication(record, document))
+}
+const pendingDocumentsOpened = computed(() => signableDocuments.value.every((document) => recordMatches(document) || reviewedMatch(document)))
+function documentStatus(document: B8PublishedConsentDocument): string {
+  if (recordMatches(document)) return mobileT('onboarding.recorded')
+  return mobileT(reviewedMatch(document) ? 'onboarding.documentOpened' : 'onboarding.documentNotOpened')
+}
+function focusDocument(selector: string): void {
+  // #ifdef H5
+  pageRoot.value?.$el?.querySelector<HTMLElement>(selector)?.focus()
+  // #endif
+}
+function toggleDocument(document: B8PublishedConsentDocument): void {
+  if (busy.value || publicationHold.value) return
+  if (openDocumentType.value === document.type) {
+    openDocumentType.value = null
+    void nextTick(() => focusDocument(`#mobile-onboarding-doc-open-${document.type}`))
+    return
+  }
+  openDocumentType.value = document.type
+  reviewedDocuments.value = { ...reviewedDocuments.value, [document.type]: { version: document.documentVersion, digest: document.documentDigest, policyVersion: document.policyVersion, policyRef: document.policyRef } }
+  void nextTick(() => focusDocument(`#mobile-onboarding-doc-${document.type}`))
+}
+function closeOpenDocument(): void {
+  const type = openDocumentType.value
+  if (!type) return
+  openDocumentType.value = null
+  void nextTick(() => focusDocument(`#mobile-onboarding-doc-open-${type}`))
+}
+function consentFingerprint(documents: readonly B8PublishedConsentDocument[]): string {
+  return documents.map((document) => [document.type, document.purpose, document.documentVersion, document.documentDigest, document.policyVersion, document.policyRef].join('\n')).join('\n')
+}
+function consentDecisionFor(documents: readonly B8PublishedConsentDocument[]): string {
+  const fingerprint = consentFingerprint(documents)
+  if (!consentDecisionId.value || consentDecisionFingerprint.value !== fingerprint) {
+    consentDecisionId.value = createClientId('mb004')
+    consentDecisionFingerprint.value = fingerprint
+  }
+  return consentDecisionId.value
+}
 function chooseGoal(value: string): void { if (!busy.value && step.value === 'goal') goal.value = value }
 function chooseQuota(value: number): void { if (!busy.value && step.value === 'goal' && store.quotas.includes(value)) quota.value = value }
 function adjustGoal(): void { if (!busy.value) { goal.value = savedGoal.value; quota.value = savedQuota.value ?? 15; actionError.value = null; step.value = 'goal' } }
@@ -297,9 +375,64 @@ async function next(event?: { detail?: { value?: { birthYear?: unknown } } }): P
         if (recovered === 'consent' || recovered === 'gate') {
           step.value = recovered
           if (recovered === 'consent') await readRecords(request, revision)
+          if (current(request, revision) && recovered === 'consent' && !requiredConsentsComplete(latest.consent)) {
+            clearConsentReview()
+            consentWritesSettled.value = false
+            consentRefreshPending.value = false
+          }
+          if (current(request, revision)) publicationHold.value = false
           return
         }
         actionError.value = mobileT('onboarding.saveFailed'); return
+      }
+    } else if (action === 'consent' && !consentCurrent.value) {
+      if (recordsError.value || publicationStale.value) return
+      if (consentRefreshPending.value) {
+        const identity = session.getMobileApiIdentity()
+        const refreshed = identity ? await session.refreshSilentlyForIdentity(identity) : false
+        if (!current(request, revision)) return
+        if (!refreshed) { actionError.value = mobileT('onboarding.consentRefreshRetry'); return }
+        consentRefreshPending.value = false
+      } else if (!consentWritesSettled.value) {
+        const documents = signableDocuments.value
+        if (publicationHold.value || documents.length !== 3 || !pendingDocumentsOpened.value || recordsError.value) return
+        const viewed = documents.map((document) => ({ ...document }))
+        const result = await mobileLearnerContentApi.acceptViewedRequiredConsents({ decisionId: consentDecisionFor(viewed), viewed, isCurrent: () => current(request, revision) })
+        if (!current(request, revision)) return
+        if (result === 'stale') {
+          publicationHold.value = true
+          publicationStale.value = true
+          clearConsentReview()
+          consentWritesSettled.value = false
+          consentRefreshPending.value = false
+          actionError.value = mobileT('onboarding.consentChanged')
+          return
+        }
+        if (result === 'closed') {
+          publicationHold.value = true
+          clearConsentReview()
+          consentWritesSettled.value = false
+          consentRefreshPending.value = false
+          return
+        }
+        if (result === 'unreadable') {
+          recordsError.value = true
+          consentWritesSettled.value = false
+          actionError.value = mobileT('onboarding.recordsFailed')
+          return
+        }
+        if (result === 'malformed') {
+          actionError.value = mobileT('onboarding.consentPartialFailed')
+          await readRecords(request, revision)
+          return
+        }
+        consentWritesSettled.value = true
+        if (result === 'refresh-failed') {
+          if (!current(request, revision)) return
+          consentRefreshPending.value = true
+          actionError.value = mobileT('onboarding.consentRefreshRetry')
+          return
+        }
       }
     }
     // The current server summary permits continuing existing consent; it is
@@ -319,7 +452,27 @@ async function next(event?: { detail?: { value?: { birthYear?: unknown } } }): P
     }
     applySavedTarget(facts); step.value = resolved
     if (step.value === 'consent') await readRecords(request, revision)
-  } catch (error) { if (current(request, revision)) actionError.value = mobileT(error instanceof OnboardingNavigationError ? 'onboarding.navigationFailed' : action === 'goal' ? 'onboarding.saveFailed' : 'onboarding.confirmFailed') }
+    if (current(request, revision)) {
+      const documents = store.onboardingResume?.consent.publishedDocuments ?? []
+      const fingerprint = consentFingerprint(documents)
+      if (consentDecisionFingerprint.value && fingerprint !== consentDecisionFingerprint.value) {
+        clearConsentReview()
+        consentWritesSettled.value = false
+        consentRefreshPending.value = false
+      }
+      publicationHold.value = false
+      publicationStale.value = false
+    }
+  } catch (error) {
+    if (current(request, revision)) {
+      if (error instanceof OnboardingNavigationError) actionError.value = mobileT('onboarding.navigationFailed')
+      else if (action === 'goal') actionError.value = mobileT('onboarding.saveFailed')
+      else if (action === 'consent') {
+        actionError.value = mobileT('onboarding.consentPartialFailed')
+        await readRecords(request, revision)
+      } else actionError.value = mobileT('onboarding.confirmFailed')
+    }
+  }
   finally { if (active && request === generation) saving.value = false }
 }
 async function accountSettings(): Promise<void> { if (!busy.value) { try { await navigate('/pages/settings/settings') } catch { actionError.value = mobileT('onboarding.navigationFailed') } } }
@@ -401,6 +554,21 @@ async function cancel(): Promise<void> {
           </view>
         </form>
         <view v-else-if="step === 'consent'" class="onboarding-body">
+          <text v-if="signableDocuments.length === 3" class="onboarding-hint">{{ mobileT('onboarding.firstSign') }}</text>
+          <view v-if="signableDocuments.length === 3" class="onboarding-documents">
+            <view v-for="published in signableDocuments" :key="published.type" class="onboarding-document-row">
+              <button :id="`mobile-onboarding-doc-open-${published.type}`" class="onboarding-document" type="button" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-expanded="openDocumentType === published.type" :aria-controls="openDocumentType === published.type ? `mobile-onboarding-doc-${published.type}` : undefined" @click="toggleDocument(published)" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="toggleDocument(published)" @keydown.space.stop.prevent @keyup.space.stop.prevent="toggleDocument(published)">
+                <FigmaAsset :src="onboardingChrome.file" :width="20" :height="20" />
+                <view class="onboarding-record-copy">
+                  <view class="onboarding-record-title"><text>{{ mobileT(`onboarding.purposes.${published.type}`) }}</text><text class="onboarding-tag">{{ mobileT('onboarding.required') }}</text></view>
+                  <text class="onboarding-help">{{ mobileT('onboarding.publishedVersion') }} {{ published.documentVersion }}</text>
+                  <text class="onboarding-help">{{ documentStatus(published) }}</text>
+                </view>
+                <text class="onboarding-document-action">{{ mobileT(openDocumentType === published.type ? 'onboarding.closeDocument' : 'onboarding.openDocument') }}</text>
+              </button>
+              <view v-if="openDocumentType === published.type" :id="`mobile-onboarding-doc-${published.type}`" class="onboarding-document-body" role="region" tabindex="-1" :aria-label="mobileT(`onboarding.purposes.${published.type}`)" @keydown.escape.prevent="closeOpenDocument"><text class="onboarding-document-text">{{ published.bodyText }}</text></view>
+            </view>
+          </view>
           <view v-for="record in consentRecords" :key="record.type" class="onboarding-record">
             <FigmaAsset :src="onboardingChrome.file" :width="20" :height="20" />
             <view class="onboarding-record-copy">
@@ -412,11 +580,15 @@ async function cancel(): Promise<void> {
           </view>
           <button v-if="consentRecords.length" class="onboarding-record-toggle onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" :aria-expanded="recordsOpen" @click="!busy && (recordsOpen = !recordsOpen)"><FigmaAsset :src="onboardingChrome.history" :width="18" :height="18" /><FigmaAsset :src="onboardingChrome.chevronDown" :width="18" :height="18" /><text>{{ mobileT(recordsOpen ? 'onboarding.hideSource' : 'onboarding.showSource') }}</text></button>
           <text v-if="recordsError" class="onboarding-error" role="alert">{{ mobileT('onboarding.recordsFailed') }}</text>
-          <text v-if="!consentCurrent" class="onboarding-blocked" role="status">{{ mobileT('onboarding.consentBlocked') }}</text><text v-else class="onboarding-help">{{ mobileT('onboarding.currentConsent') }}</text>
+          <text v-if="publicationStale && !reading && !restoring" class="onboarding-blocked" role="status">{{ mobileT('onboarding.consentChanged') }}</text>
+          <text v-else-if="consentCurrent" class="onboarding-help">{{ mobileT('onboarding.currentConsent') }}</text>
+          <text v-else-if="!reading && !restoring && signableDocuments.length !== 3 && !consentRefreshPending" class="onboarding-blocked" role="status">{{ mobileT('onboarding.consentBlocked') }}</text>
           <view class="onboarding-spacer" aria-hidden="true" />
           <text class="onboarding-hint onboarding-center">{{ mobileT('onboarding.consentFooter') }}</text>
           <text v-if="feedback.action" class="onboarding-error" role="alert">{{ feedback.action }}</text>
           <button v-if="consentCurrent" class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ primaryLabel }}</button>
+          <button v-else-if="consentRefreshPending || consentWritesSettled" class="onboarding-primary" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ mobileT('onboarding.retrySession') }}</button>
+          <button v-else-if="signableDocuments.length === 3" class="onboarding-primary" role="button" tabindex="0" :disabled="busy || recordsError || !pendingDocumentsOpened" :aria-disabled="busy || recordsError || !pendingDocumentsOpened" @click="next" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="next()" @keydown.space.stop.prevent @keyup.space.stop.prevent="next()">{{ mobileT('onboarding.agreeContinue') }}</button>
           <button class="onboarding-text" role="button" tabindex="0" :disabled="busy" :aria-disabled="busy" @click="loadResume">{{ mobileT('onboarding.reload') }}</button>
         </view>
         <view v-else-if="step === 'goal'" class="onboarding-body">
@@ -535,6 +707,7 @@ async function cancel(): Promise<void> {
 .onboarding-tip .onboarding-note-title { color: var(--v2-ink); }
 .yx-onboarding[data-theme="high-contrast"] .onboarding-note-badge { background: var(--v2-brand); box-shadow: none; }
 .yx-onboarding .onboarding-primary { display: flex; width: 100%; min-height: 48px; padding: 14px 20px; margin: 0; align-items: center; justify-content: center; border: 0; border-radius: 14px; background: var(--v2-grad); color: var(--v2-inverse); font-size: 16px; font-weight: 700; line-height: 1.5; }
+.yx-onboarding[data-theme="dark"] .onboarding-primary { color: var(--v2-ink); }
 .yx-onboarding .onboarding-text { display: inline-flex; min-height: 44px; min-width: 44px; padding: 8px; margin: 0; align-items: center; justify-content: center; gap: 6px; background: transparent; border: 0; color: var(--v2-brand); font-size: 14px; font-weight: 500; line-height: 20px; }
 .onboarding-choices { display: grid; gap: 8px; }
 .yx-onboarding .onboarding-choice { display: flex; gap: 12px; width: 100%; margin: 0; padding: 12px 16px 12px 14px; min-height: 70px; align-items: center; border: 1px solid var(--v2-mut); border-radius: 16px; background: var(--v2-card); color: var(--v2-ink); text-align: left; }
@@ -547,6 +720,13 @@ async function cancel(): Promise<void> {
 .onboarding-quotas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--v2-surface); }
 .yx-onboarding .onboarding-quota { display: flex; min-height: 44px; margin: 0; padding: 8px; align-items: center; justify-content: center; border: 1px solid var(--v2-mut); border-radius: 12px; background: var(--v2-card); color: var(--v2-ink); font-size: 14px; font-weight: 500; line-height: 20px; text-align: center; overflow-wrap: anywhere; }
 .yx-onboarding .onboarding-quota.is-selected { border-color: transparent; background: var(--v2-grad); color: var(--v2-inverse); font-weight: 700; }
+.onboarding-documents { display: grid; gap: 12px; min-width: 0; }
+.onboarding-document-row { display: grid; gap: 8px; min-width: 0; }
+.yx-onboarding .onboarding-document { display: flex; width: 100%; min-width: 0; min-height: 44px; margin: 0; padding: 12px 14px; align-items: flex-start; gap: 12px; border: 1px solid var(--v2-line); border-radius: 16px; background: var(--v2-card); color: var(--v2-ink); text-align: left; }
+.onboarding-document-action { flex: none; max-width: 40%; color: var(--v2-brand); font-size: 13px; font-weight: 500; line-height: 18px; overflow-wrap: anywhere; }
+.onboarding-document-body { box-sizing: border-box; width: 100%; min-width: 0; max-height: 40vh; overflow: auto; padding: 12px; border: 1px solid var(--v2-line); border-radius: 12px; background: var(--v2-surface); color: var(--v2-ink); }
+.onboarding-document-body:focus { outline: 2px solid var(--v2-brand); outline-offset: 2px; }
+.onboarding-document-text { display: block; font-size: 14px; line-height: 22px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .onboarding-record { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--v2-line); border-radius: 16px; background: var(--v2-card); }
 .onboarding-record-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; line-height: 22px; }
 .onboarding-tag { padding: 1px 6px; border-radius: 6px; background: var(--v2-soft); color: var(--v2-brand); font-size: 12px; font-weight: 500; line-height: 16px; }
@@ -567,6 +747,8 @@ async function cancel(): Promise<void> {
   .onboarding-progress { flex-wrap: wrap; row-gap: 8px; }
   .onboarding-quotas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .onboarding-particles { left: auto; right: 0; }
+  .yx-onboarding .onboarding-document { padding: 10px 12px; }
+  .onboarding-document-body { max-height: 50vh; }
 }
 .yx-onboarding[data-theme="high-contrast"] .onboarding-progress-item.is-current .onboarding-step-number { box-shadow: none; }
 .yx-onboarding[data-motion="reduced"] .onboarding-scene,
