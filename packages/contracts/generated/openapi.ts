@@ -4112,6 +4112,21 @@ export type B9GradableQuestionOptionInput = { optionId: string; label: string; }
  */
 export type B9GradableQuestionAnswerRuleInput = { correctOption: string; };
 
+/**
+ * Positive item id in the closed safe range 1 through 9007199254740991. This tightens B10Int64Id with that inclusive maximum.
+ */
+export type B10SafePositiveItemId = B10Int64Id & number;
+
+/**
+ * Closed score request for the path version. contentCode, snapshotId, snapshotHash, and ruleDigest are the expected immutable pin. The body carries no role, permission, tenant, owner, or client scope, and no version id.
+ */
+export type B10AssessmentContentScoreRequest = { contentCode: B10ContentCode; itemId: B10SafePositiveItemId; selectedOptionId: string; snapshotId: B10SnapshotId; snapshotHash: B10Sha256; ruleDigest: B10Sha256; };
+
+/**
+ * Closed score result. FULL is exact equality of the submitted option token with the owner-held token, with no trim and no case fold. Any other well-formed token is ZERO. The owner-held token, the raw rule, and any explanation stay inside content-service.
+ */
+export type B10AssessmentContentScore = { itemId: B10SafePositiveItemId; snapshotId: B10SnapshotId; ruleDigest: B10Sha256; outcome: "FULL" | "ZERO"; };
+
 export interface CanonicalIdRegistry {
   userId: CanonicalInt64Id;
   contentVersionId: CanonicalInt64Id;
@@ -4602,6 +4617,7 @@ export interface ApiOperationRegistry {
   getIamLearningConsentFact: { method: "GET"; path: "/internal/v1/iam/principals/{principalId}/learning-consent"; request: never; response: { data: B8LearningConsentFact; }; idempotent: false };
   retestB10PlacementSession: { method: "POST"; path: "/api/v1/assessment/placement/sessions/{sessionId}/retest"; request: never; response: ApiSuccessEnvelope & { data: B10PlacementSession; }; idempotent: true };
   replanB10LearningPlan: { method: "POST"; path: "/api/v1/learning/plans:replan"; request: B10PlanReplanRequest; response: ApiSuccessEnvelope & { data: B10PlanReplanResult; }; idempotent: true };
+  scoreB10AssessmentContentSnapshot: { method: "POST"; path: "/internal/v1/content/assessment-snapshots/{contentVersionId}/score"; request: B10AssessmentContentScoreRequest; response: B10AssessmentContentScore; idempotent: true };
 }
 
 export type ApiOperationId = keyof ApiOperationRegistry;

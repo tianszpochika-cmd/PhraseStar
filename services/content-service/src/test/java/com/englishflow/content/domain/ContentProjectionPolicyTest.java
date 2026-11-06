@@ -12,6 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -20,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ContentProjectionPolicyTest {
 
     private static final Instant NOW = Instant.parse("2026-08-22T00:00:00Z");
+    private static final String STORED_SEAL =
+            "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 
     private static ContentRights publishableRights(Set<String> channels) {
         return new ContentRights("src", "lic", CopyrightStatus.ACTIVE, true,
@@ -47,7 +50,8 @@ class ContentProjectionPolicyTest {
     void publicProjectionStripsAnswerRules() {
         Map<String, Object> fields = Map.of(
                 "term", "cat", "definition", "猫",
-                "answerRule", Map.of("correctOption", "A"));
+                "answerRule", Map.of("correctOption", "A"),
+                GradableQuestions.SEAL_FIELD, STORED_SEAL);
         ContentVersion version = publishedVersion(
                 publishableRights(Set.of("PUBLIC", "LEARNER")), fields, ContentVersionStatus.PUBLISHED);
         ContentDefinition content = definitionWith(version);
@@ -56,6 +60,9 @@ class ContentProjectionPolicyTest {
                 content, version, ContentAudience.PUBLIC, ContentChannel.PUBLIC, NOW, false);
         assertFalse(projection.fields().containsKey("answerRule"));
         assertTrue(projection.fields().containsKey("term"));
+        assertFalse(hasKey(projection.fields(), GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(projection.fields()).contains(STORED_SEAL));
+        assertNotEquals(STORED_SEAL, projection.contentHash());
     }
 
     @Test
@@ -137,7 +144,8 @@ class ContentProjectionPolicyTest {
     void assessmentSnapshotReturnsAnswerRules() {
         Map<String, Object> fields = Map.of(
                 "prompt", "choose", "options", List.of("A", "B"),
-                "answerRule", Map.of("correctOption", "A"));
+                "answerRule", Map.of("correctOption", "A"),
+                GradableQuestions.SEAL_FIELD, STORED_SEAL);
         ContentVersion version = publishedVersion(
                 publishableRights(Set.of("ASSESSMENT", "PUBLIC")), fields, ContentVersionStatus.PUBLISHED);
         ContentDefinition content = definitionWith(version);
@@ -146,6 +154,11 @@ class ContentProjectionPolicyTest {
                 content, version, ContentChannel.ASSESSMENT, NOW);
         assertTrue(snapshot.answerRules().containsKey("correctOption"));
         assertFalse(snapshot.learnerFields().containsKey("answerRule"));
+        assertFalse(hasKey(snapshot.learnerFields(), GradableQuestions.SEAL_FIELD));
+        assertFalse(hasKey(snapshot.answerRules(), GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(snapshot.learnerFields()).contains(STORED_SEAL));
+        assertFalse(String.valueOf(snapshot.answerRules()).contains(STORED_SEAL));
+        assertNotEquals(STORED_SEAL, snapshot.contentHash());
     }
 
     @Test
@@ -171,6 +184,7 @@ class ContentProjectionPolicyTest {
         assertFalse(ContentProjectionPolicy.isAnswerRuleKey("title"));
         assertFalse(ContentProjectionPolicy.isAnswerRuleKey("options"));
         assertFalse(ContentProjectionPolicy.isAnswerRuleKey(null));
+        assertFalse(ContentProjectionPolicy.isAnswerRuleKey(GradableQuestions.SEAL_FIELD));
     }
 
     @Test
@@ -202,6 +216,10 @@ class ContentProjectionPolicyTest {
             PublicContentProjection projection = ContentProjectionPolicy.project(
                     content, version, audience, channel, NOW, false);
             assertFalse(projection.fields().containsKey("gradableQuestions"), audience.name());
+            assertFalse(projection.fields().containsKey(GradableQuestions.SEAL_FIELD), audience.name());
+            assertFalse(hasKey(projection.fields(), GradableQuestions.SEAL_FIELD), audience.name());
+            assertFalse(String.valueOf(projection.fields()).contains(STORED_SEAL), audience.name());
+            assertNotEquals(STORED_SEAL, projection.contentHash(), audience.name());
             assertFalse(projection.containsAnswerRules(), audience.name());
             assertFalse(hasKey(projection.fields(), "answerRule"), audience.name());
             assertFalse(hasKey(projection.fields(), "correctOption"), audience.name());
@@ -227,6 +245,7 @@ class ContentProjectionPolicyTest {
                 ContentChannel.ADMIN, NOW, false);
         assertEquals(legacyVersion.payload().raw(), unchanged.fields());
         assertTrue(unchanged.fields().containsKey("answerRule"));
+        assertFalse(unchanged.fields().containsKey(GradableQuestions.SEAL_FIELD));
 
         Map<String, Object> fields = optInPayload();
         ContentVersion version = publishedVersion(
@@ -235,8 +254,11 @@ class ContentProjectionPolicyTest {
                 definitionWith(version), version, ContentAudience.ADMIN_PREVIEW, ContentChannel.ADMIN, NOW, false);
         Map<String, Object> expected = new LinkedHashMap<>(version.payload().raw());
         expected.remove("gradableQuestions");
+        expected.remove(GradableQuestions.SEAL_FIELD);
         assertEquals(expected, preview.fields());
         assertFalse(preview.fields().containsKey("gradableQuestions"));
+        assertFalse(preview.fields().containsKey(GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(preview.fields()).contains(STORED_SEAL));
         assertEquals(version.payload().raw().get("answerRule"), preview.fields().get("answerRule"));
         assertEquals(version.payload().raw().get("items"), preview.fields().get("items"));
         assertEquals("legacy", ((Map<?, ?>) preview.fields().get("answerRule")).get("correctOption"));
@@ -257,6 +279,7 @@ class ContentProjectionPolicyTest {
         malformedExpected.remove("gradableQuestions");
         assertEquals(malformedExpected, hidden.fields());
         assertFalse(hidden.fields().containsKey("gradableQuestions"));
+        assertFalse(hidden.fields().containsKey(GradableQuestions.SEAL_FIELD));
         assertEquals("A", ((Map<?, ?>) hidden.fields().get("answerRule")).get("correctOption"));
         assertFalse(String.valueOf(hidden.fields()).contains("secret"));
     }
@@ -274,18 +297,26 @@ class ContentProjectionPolicyTest {
         assertEquals("legacy", snapshot.answerRules().get("correctOption"));
         assertFalse(snapshot.answerRules().containsKey("itemId"));
         assertFalse(snapshot.learnerFields().containsKey("gradableQuestions"));
+        assertFalse(snapshot.learnerFields().containsKey(GradableQuestions.SEAL_FIELD));
         assertFalse(snapshot.learnerFields().containsKey("answerRule"));
         assertFalse(hasKey(snapshot.learnerFields(), "correctOption"));
+        assertFalse(hasKey(snapshot.learnerFields(), GradableQuestions.SEAL_FIELD));
+        assertFalse(hasKey(snapshot.answerRules(), GradableQuestions.SEAL_FIELD));
+        assertFalse(String.valueOf(snapshot.learnerFields()).contains(STORED_SEAL));
+        assertFalse(String.valueOf(snapshot.answerRules()).contains(STORED_SEAL));
+        assertNotEquals(STORED_SEAL, snapshot.contentHash());
 
         ContentVersion optInOnly = publishedVersion(
                 publishableRights(Set.of("ASSESSMENT")), Map.of(
                         "prompt", "choose",
-                        "gradableQuestions", List.of(closedQuestion())),
+                        "gradableQuestions", List.of(closedQuestion()),
+                        GradableQuestions.SEAL_FIELD, STORED_SEAL),
                 ContentVersionStatus.PUBLISHED);
         ContentOperationException missing = assertThrows(ContentOperationException.class,
                 () -> ContentProjectionPolicy.assessmentSnapshot(
                         definitionWith(optInOnly), optInOnly, ContentChannel.ASSESSMENT, NOW));
         assertEquals("QUESTION_ANSWER_RULE_REQUIRED", missing.code());
+        assertFalse(missing.getMessage().contains(STORED_SEAL));
     }
 
     private static Map<String, Object> optInPayload() {
@@ -295,6 +326,7 @@ class ContentProjectionPolicyTest {
         item.put("answerRule", Map.of("correctOption", "nested"));
         Map<String, Object> fields = new LinkedHashMap<>();
         fields.put("gradableQuestions", List.of(closedQuestion()));
+        fields.put(GradableQuestions.SEAL_FIELD, STORED_SEAL);
         fields.put("prompt", "choose");
         fields.put("items", List.of(item));
         fields.put("answerRule", Map.of("correctOption", "legacy"));

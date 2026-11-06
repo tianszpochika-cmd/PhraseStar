@@ -5854,5 +5854,15 @@
     "actual_mysql_v34": "2/2 auto + 2/2 manual, partial rejected",
     "cleanup": "PASS",
     "evidence": "evidence/ROOT-B112-CONTENT-DRAFT-DB-GATE-20261106.json"
+  },
+  "integration_batch_113_reading_protected_score": {
+    "state": "ACCEPTED_LOCAL_CONTENT_OWNER_SCORE_ONLY",
+    "content_maven": "313 pass, 6 opt-in skip",
+    "contract": "472 operations, 825 schemas, merge/generate/compatibility pass",
+    "actual_mysql_v34": "one exact four-actor publication and protected score scenario",
+    "copyright": "learner-only read allowed and score denied",
+    "cleanup": "PASS",
+    "article_assessment_client_gateway_h5_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B113-READING-PROTECTED-SCORE-20261106.json"
   }
 }

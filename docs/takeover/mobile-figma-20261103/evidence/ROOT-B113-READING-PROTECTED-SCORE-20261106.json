@@ -1,0 +1,88 @@
+{
+  "batch": "B113",
+  "candidate": [
+    {
+      "path": "packages/api-client/src/generated/index.ts",
+      "sha256": "d4df696665cafd5782d55b0674adeed6a8ef92a26725954156b53942de60e9a2",
+      "bytes": 105535
+    },
+    {
+      "path": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+      "sha256": "345485e33233fc3dbd68efcc321b30a9d6bb914822e7844a179768d593f67d88",
+      "bytes": 222079
+    },
+    {
+      "path": "packages/contracts/generated/openapi.ts",
+      "sha256": "c4c559a9d5df19056d8a8da77e6257abaecdc58697f9fd1101ffc5aea68893c6",
+      "bytes": 372740
+    },
+    {
+      "path": "packages/contracts/openapi/v1/openapi.json",
+      "sha256": "e0202aefdf4834b9037973d912f53f9b51f674ab7d244c3557b01ad16c5e0bef",
+      "bytes": 2596493
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/domain/ContentProjectionPolicy.java",
+      "sha256": "ce40394547b73330846a0e2e1f4bff6f8f52a273040e92d6d524da7b0690b526",
+      "bytes": 7728
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/domain/GradableQuestions.java",
+      "sha256": "87857ec402e065a802fbcba3ea2d46d881e5124190ef621385196f9b99255a33",
+      "bytes": 8918
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/web/B9ContentAdminController.java",
+      "sha256": "2416153bb52c63ce1dca320d1141ac7db974c2909a0db27fd33c686c71e0b20b",
+      "bytes": 92346
+    },
+    {
+      "path": "services/content-service/src/main/java/com/englishflow/content/web/GradableAssessmentSnapshotController.java",
+      "sha256": "51e26b7b4f6a3c6f87bb9256368cee27abd0370ea4fc664c257ce9683eb43e9b",
+      "bytes": 26577
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/domain/ContentProjectionPolicyTest.java",
+      "sha256": "3ee607a0384a02a49797dce758db655adef4ccbf54f435735fcd6a0688a0615f",
+      "bytes": 20278
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/web/B9ContentAdminRightsBoundaryTest.java",
+      "sha256": "2453e7dbfff960535671c0ad127b9edd131e675bf8cdf40fa12132c83a06760b",
+      "bytes": 55009
+    },
+    {
+      "path": "services/content-service/src/test/java/com/englishflow/content/web/GradableAssessmentSnapshotControllerTest.java",
+      "sha256": "b782dfa5cb62f4bc202283de2819fe3dd64edb36787b430596e5c1fe09980d20",
+      "bytes": 28994
+    }
+  ],
+  "worker_history": [
+    "G153 additive closed score contract",
+    "G155 private version seal, initial nested legacy projection regression",
+    "G159 restores nested legacy projection and uses exact verified workload",
+    "G164 verifies both rights channels and bounded owner snapshot ID",
+    "G172 actual owner proof"
+  ],
+  "content_maven": {
+    "pass": 313,
+    "opt_in_skip": 6
+  },
+  "actual_mysql": {
+    "cleanup": true,
+    "probe_sha256": "18dac5179473d2576483e6cf1a2da5b2d07cc03dec0d9003609b0c9bf0ff2db7",
+    "maven": {
+      "exit": 0,
+      "migrations_v34": true,
+      "one_test_pass": true
+    }
+  },
+  "actual_mysql_sha256": "f056f3039eb2ab410cef6fa1a9fabe80774119a57e8ea4839fb4d3684dd1413a",
+  "actual_identity": "Synthetic in-process scoped actors, actual Flyway V34 and JDBC transactions. No IAM issuance or HTTP PEP proof.",
+  "not_run": [
+    "real article binding",
+    "assessment workload integration",
+    "learner H5 positive scoring",
+    "production"
+  ]
+}

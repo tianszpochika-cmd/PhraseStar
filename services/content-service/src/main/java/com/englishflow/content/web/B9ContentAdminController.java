@@ -482,8 +482,12 @@ public final class B9ContentAdminController {
             Map<String, Object> input, String command, String contentCode,
             ContentActor actor, String requestKey, ContentRequestContext context) {
         String scope = actor.tenantId() + ":" + actor.subjectId() + ":content.b9.draft";
-        List<Map<String, Object>> gradableQuestions =
-                validatedGradableQuestions(record(input.get("content")));
+        Map<String, Object> supplied = record(input.get("content"));
+        if (supplied.containsKey(GradableQuestions.SEAL_FIELD)) {
+            throw ContentOperationException.badRequest(
+                    "CONTENT_COMMAND_INVALID", "content command is invalid");
+        }
+        List<Map<String, Object>> gradableQuestions = validatedGradableQuestions(supplied);
         Map<String, Object> result = idempotency.executeMap(
                 scope, key(requestKey), ContentPayloadHash.sha256(input), () -> {
                     Map<String, Object> draft = record(input.get("content"));
@@ -1346,6 +1350,8 @@ public final class B9ContentAdminController {
         result.put("items", items instanceof List<?> list && !list.isEmpty() ? list : List.of(Map.of("displayText", text(draft.get("title")))));
         if (gradableQuestions != null) {
             result.put(GradableQuestions.FIELD, gradableQuestions);
+            // Mint inside this idempotent draft write. Replay keeps the stored version.
+            result.put(GradableQuestions.SEAL_FIELD, GradableQuestions.mintSeal());
         }
         return result;
     }
