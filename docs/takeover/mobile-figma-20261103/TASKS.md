@@ -6,8 +6,8 @@
 
 | 编号 | 正式路由 | 当前执行批 / 写者 | 页面范围与须保留的边界 | 服务/数据 owner | R1 / BC / IC 参考 | PAGE | 来源与追溯 |
 |---|---|---|---|---|---|---|---|
-| MB-001 登录 | `#/pages/login/login` | G1 / GROK | 输入校验、提交中、失败、会话恢复与安全回跳；凭据只经 IAM TLS | iam-service | R1-004、R1-015、BC-004、IC-053 | PAGE-P1-AUTH-LOGIN | FEAT-USR-001→V2-980-0359；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |
-| MB-002 注册 | `#/pages/register/register` | G1 / GROK | 字段、去重、回执和成人门分流，不因注册成功直接放行学习 | iam-service | R1-002、R1-003、R1-015、BC-002、BC-003、IC-052 | PAGE-P1-AUTH-REGISTER-RESET | FEAT-USR-001→V2-980-0359；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |
+| MB-001 登录 | `#/pages/login/login` | 本地 UI 候选 B21 / B121 本机登录与个人页落点通过 | 输入校验、提交中、失败、会话恢复与安全回跳；凭据只经 IAM TLS | iam-service | R1-004、R1-015、BC-004、IC-053 | PAGE-P1-AUTH-LOGIN | FEAT-USR-001→V2-980-0359；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |
+| MB-002 注册 | `#/pages/register/register` | 本地 UI 候选 B26 / B121 本机注册与引导落点通过 | 字段、去重、回执和成人门分流，不因注册成功直接放行学习 | iam-service | R1-002、R1-003、R1-015、BC-002、BC-003、IC-052 | PAGE-P1-AUTH-REGISTER-RESET | FEAT-USR-001→V2-980-0359；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |
 | MB-003 找回密码 | `#/pages/reset-password/reset-password` | 本地 UI 候选 B34/B114 / B79 本机 IAM 隐私通过 | 申请与确认两步、恒定回执、过期及返回登录；不枚举账号 | iam-service | R1-012、R1-015、BC-012、IC-054 | PAGE-P1-AUTH-REGISTER-RESET | FEAT-USR-002→V2-980-0360；TRACE_PENDING |
 | MB-004 成人门、同意与目标 | `#/pages/onboarding/onboarding` | 本地 UI 候选 B57 / B84 模拟签署与 B85 H5 目标通过 | 服务端资格、版本化同意、目标/时长、草稿恢复；不新增敏感采集 | iam-service、learner-service | R1-006、R1-008、R1-010、R1-011、R1-016、R1-017、BC-006、BC-008、BC-010、BC-011、IC-055、IC-056、IC-057 | PAGE-P1-ADULT-CONSENT、PAGE-P1-ONB-GOAL | FEAT-ONB-001→V2-980-0001；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |
 | MB-005 访问受限 | `#/pages/forbidden/forbidden` | 本地 UI 候选 B53 / TRACE_PENDING | 拒绝原因、安全出口和退出；403 不伪装空态或越过 Gate | iam-service | R1-007、R1-013、BC-007、BC-201、IC-055 | PAGE-P1-ADULT-CONSENT | FEAT-USR-001→V2-980-0359；PRD-ATOM-1044→V2-980-0366；TRACE_PENDING |

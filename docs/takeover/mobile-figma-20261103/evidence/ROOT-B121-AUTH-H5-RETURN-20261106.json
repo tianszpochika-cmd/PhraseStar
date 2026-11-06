@@ -1,0 +1,247 @@
+{
+  "batch": "MOBILE-FIGMA-B121-20261106",
+  "indexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+  "scope": "actual isolated local H5 IAM Gateway MySQL",
+  "iamChecks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "approvedLogin": {
+    "case": "approved-login",
+    "status": "OBSERVED",
+    "reason": null,
+    "finalHash": "/pages/profile/profile",
+    "hashClass": "/pages/profile/profile",
+    "pathClass": "empty",
+    "originFixed": true,
+    "verifiedRoute": "/pages/profile/profile",
+    "routeCheckpoints": [
+      {
+        "at": "unsafe-return",
+        "hash": "/pages/login/login",
+        "path": "empty",
+        "returnTo": "/pages/home/home"
+      },
+      {
+        "at": "unsafe-return",
+        "hash": "/pages/login/login",
+        "path": "empty",
+        "returnTo": "/pages/home/home"
+      },
+      {
+        "at": "onlaunch-return",
+        "hash": "/pages/login/login",
+        "path": "empty",
+        "returnTo": "/pages/profile/profile"
+      },
+      {
+        "at": "login-open",
+        "hash": "/pages/login/login",
+        "path": "empty",
+        "returnTo": "/pages/profile/profile"
+      },
+      {
+        "at": "after-login",
+        "hash": "/pages/profile/profile",
+        "path": "empty",
+        "returnTo": "/pages/profile/profile"
+      }
+    ],
+    "profileShell": {
+      "present": true,
+      "visible": true,
+      "state": "loading",
+      "onIntendedRoute": true
+    },
+    "homeOpened": false,
+    "onboardingOpened": false,
+    "forbiddenOpened": false,
+    "learnerReadsContinued": false,
+    "realAuthPosts": [
+      {
+        "phase": "approved-login",
+        "path": "/api/v1/auth/login",
+        "status": 200,
+        "type": "iam-login"
+      }
+    ],
+    "extraAuth": false,
+    "cookieHttpOnly": true,
+    "cookieSecure": true,
+    "cookieSameSiteNone": true,
+    "cookiePartitioned": true,
+    "cookiePathAuth": true,
+    "cookieValueOmitted": true,
+    "cookieObserved": true,
+    "cookieComparison": {
+      "before": {
+        "source": "response-set-cookie",
+        "count": 1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSiteNone": true,
+        "partitioned": true,
+        "pathAuth": true,
+        "valueOmitted": true
+      },
+      "after": {
+        "source": "browser-context-cookies",
+        "count": 1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSiteNone": true,
+        "partitioned": false,
+        "pathAuth": true,
+        "valueOmitted": true,
+        "partitionKeyPresent": true
+      },
+      "httpOnly": true,
+      "secure": true,
+      "sameSiteNone": true,
+      "pathAuth": true,
+      "partitioned": true,
+      "valueOmitted": true
+    },
+    "refreshCookieVisibleToDocument": false,
+    "refreshTokenPresent": false,
+    "readback": {
+      "serverAdultStatus": "PASSED",
+      "clientAdultGate": "PASSED",
+      "learningAccess": "ELIGIBLE",
+      "learningPlanRead": true,
+      "refreshTokenKey": false,
+      "subjectOmitted": true
+    },
+    "contextIsolation": {
+      "unsafeContexts": 2,
+      "approvedContext": "blank-nonpersistent",
+      "sharedWithUnsafe": false,
+      "programmaticAssignment": false,
+      "routeFulfill": false,
+      "unsafeAuth": "negative",
+      "onLaunchReturnTo": "/pages/profile/profile"
+    }
+  },
+  "pendingSignup": {
+    "case": "pending-signup",
+    "status": "OBSERVED",
+    "reason": null,
+    "finalHash": "/pages/onboarding/onboarding",
+    "hashClass": "/pages/onboarding/onboarding",
+    "pathClass": "empty",
+    "originFixed": true,
+    "verifiedRoute": null,
+    "routeCheckpoints": [
+      {
+        "at": "onlaunch-return",
+        "hash": "/pages/register/register",
+        "path": "empty",
+        "returnTo": "/pages/home/home"
+      },
+      {
+        "at": "register-open",
+        "hash": "/pages/register/register",
+        "path": "empty",
+        "returnTo": "/pages/home/home"
+      },
+      {
+        "at": "after-register",
+        "hash": "/pages/onboarding/onboarding",
+        "path": "empty",
+        "returnTo": "/pages/home/home"
+      }
+    ],
+    "profileShell": null,
+    "homeOpened": false,
+    "onboardingOpened": true,
+    "forbiddenOpened": false,
+    "learnerReadsContinued": false,
+    "realAuthPosts": [
+      {
+        "phase": "pending-signup",
+        "path": "/api/v1/auth/register",
+        "status": 201,
+        "type": "iam-register"
+      }
+    ],
+    "extraAuth": false,
+    "cookieHttpOnly": true,
+    "cookieSecure": true,
+    "cookieSameSiteNone": true,
+    "cookiePartitioned": true,
+    "cookiePathAuth": true,
+    "cookieValueOmitted": true,
+    "cookieObserved": true,
+    "cookieComparison": {
+      "before": {
+        "source": "response-set-cookie",
+        "count": 1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSiteNone": true,
+        "partitioned": true,
+        "pathAuth": true,
+        "valueOmitted": true
+      },
+      "after": {
+        "source": "browser-context-cookies",
+        "count": 1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSiteNone": true,
+        "partitioned": false,
+        "pathAuth": true,
+        "valueOmitted": true,
+        "partitionKeyPresent": true
+      },
+      "httpOnly": true,
+      "secure": true,
+      "sameSiteNone": true,
+      "pathAuth": true,
+      "partitioned": true,
+      "valueOmitted": true
+    },
+    "refreshCookieVisibleToDocument": false,
+    "refreshTokenPresent": false,
+    "readback": {
+      "serverAdultStatus": "NOT_EVALUATED",
+      "clientAdultGate": "REQUIRED",
+      "learningAccess": "RESTRICTED",
+      "learningPlanRead": false,
+      "refreshTokenKey": false,
+      "subjectOmitted": true
+    }
+  },
+  "cleanup": {
+    "portsFree": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18183": true
+    },
+    "processes": {
+      "found_after_node": 0,
+      "still_alive": 0
+    }
+  },
+  "priorFailures": [
+    "asynchronous header observer",
+    "missing static helper",
+    "same browser context retained earlier return target"
+  ],
+  "remaining": [
+    "profile owner data",
+    "formal legal release",
+    "devices and deployment"
+  ],
+  "baseCommit": "50354919",
+  "status": "LOCAL_AUTH_H5_OBSERVED",
+  "routes": [
+    "MB-001",
+    "MB-002",
+    "MB-023"
+  ]
+}

@@ -5948,5 +5948,15 @@
     ],
     "review": "reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md",
     "evidence": "evidence/ROOT-B120-ASSESSMENT-OWNER-BINDING-20261106.json"
+  },
+  "integration_b121_auth_h5_return": {
+    "status": "LOCAL_AUTH_H5_OBSERVED",
+    "scope": [
+      "MB-001",
+      "MB-002",
+      "MB-023"
+    ],
+    "review": "reviews/INTEGRATION-B121-AUTH-H5-RETURN.md",
+    "evidence": "evidence/ROOT-B121-AUTH-H5-RETURN-20261106.json"
   }
 }
