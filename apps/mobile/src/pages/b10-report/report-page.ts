@@ -18,6 +18,40 @@ export function calendarDate(value: unknown): Date | null {
   return date
 }
 
+/** Share query date. Only an exact calendar day is sent; weekly start is already that day. */
+export function reportShareDate(value: unknown): string | null {
+  if (typeof value !== 'string' || calendarDate(value) === null) return null
+  return value
+}
+
+export interface ReportSharePeriodFact { readonly periodStart?: unknown; readonly periodEndExclusive?: unknown }
+
+/** Identity of the period on screen. Raw strings stay distinct when they are not calendar days. */
+export function reportSharePeriodToken(kind: 'daily' | 'weekly', period: ReportSharePeriodFact | null | undefined): string | null {
+  if (!period) return null
+  const start = typeof period.periodStart === 'string' ? period.periodStart : ''
+  const end = typeof period.periodEndExclusive === 'string' ? period.periodEndExclusive : ''
+  return `${kind}|${start}|${end}`
+}
+
+const CONFIRMED_REPORT_STATUS = new Set(['ready', 'empty'])
+
+/**
+ * A settled ready/empty report can retire a share bound to another period.
+ * Loading and a null store report are not a new period.
+ */
+export function confirmedReportSharePeriodChanged(input: {
+  boundToken: string | null
+  status: string
+  kind: string
+  period: ReportSharePeriodFact | null | undefined
+}): boolean {
+  if (!input.boundToken) return false
+  if (input.kind !== 'daily' && input.kind !== 'weekly') return false
+  if (!CONFIRMED_REPORT_STATUS.has(input.status)) return false
+  return reportSharePeriodToken(input.kind, input.period) !== input.boundToken
+}
+
 /** periodEndExclusive is a half-open end; display the last included UTC calendar day. */
 export function inclusivePeriod(startValue: unknown, endExclusiveValue: unknown): InclusivePeriod | null {
   const start = calendarDate(startValue)

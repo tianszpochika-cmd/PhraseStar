@@ -906,6 +906,8 @@ function parseContentVersion(value: unknown): B10ContentVersionContext {
   return { contentVersionId: nullableNumber(source.contentVersionId), contentEpoch: number(source.contentEpoch, 0), projectionVersion: number(source.projectionVersion, 1), contentLocale: text(source.contentLocale, 'en-US') }
 }
 
+const REPORT_SHARE_KEY = /^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$/
+
 export function createB10ClientEventId(prefix: string): string {
   return createClientId(`b10-${prefix}`)
 }
@@ -1039,9 +1041,21 @@ export const b10LearningApi = {
     return verification
   },
 
-  async issueReportShare(period: 'daily' | 'weekly'): Promise<{ ref: string; publicPath: string }> {
+  async issueReportShare(period: 'daily' | 'weekly', share?: { idempotencyKey?: string | null; date?: string | null }): Promise<{ ref: string; publicPath: string }> {
     const type = period === 'weekly' ? 'WEEKLY' : 'DAILY'
-    const response = await mobileApiClient.request<unknown>(`${B10_GATEWAY_PATHS.assessment.reportShare}/${type}/shares`, { method: 'POST', data: {} })
+    let key: string | undefined
+    if (share !== undefined && share !== null) {
+      if (typeof share.idempotencyKey !== 'string' || !REPORT_SHARE_KEY.test(share.idempotencyKey)) {
+        throw new MobileApiError('Idempotency-Key must contain 16-128 safe characters', 400, { code: 'IDEMPOTENCY_KEY_INVALID' })
+      }
+      key = share.idempotencyKey
+    }
+    const date = typeof share?.date === 'string' ? share.date : undefined
+    const response = await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.assessment.reportShare}/${type}/shares`, { date }), {
+      method: 'POST',
+      data: {},
+      ...(key ? { header: { 'Idempotency-Key': key } } : {}),
+    })
     const source = isRecord(unwrap(response)) ? unwrap(response) as RecordValue : {}
     const ref = typeof source.ref === 'string' ? source.ref : ''
     if (!/^[0-9a-f]{32}$/.test(ref)) throw new Error('分享链接没有生成。')
