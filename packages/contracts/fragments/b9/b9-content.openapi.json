@@ -1011,6 +1011,196 @@
         }
       }
     },
+    "/internal/v1/content/admin/reading-bindings": {
+      "post": {
+        "tags": [
+          "b9-content-admin"
+        ],
+        "summary": "Bind a published reading article from the frozen owner version",
+        "operationId": "bindB9PublishedReading",
+        "description": "内容所有者内部写入口。只绑定当前已发布版本上已经冻结的 readingArticle 与 gradableQuestions，调用方不能提交文章或题目数据，也不自动分配 articleId 或 itemId。本阶段没有 Gateway 投影，也没有 /api/v1 公开孪生路径。PUBLISH 仍负责移动发布指针，并仍要求 LEARNER 与 PUBLIC。既有 B9 命令字段与行为不变。",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-contract": {
+          "owner": "content-service",
+          "caller": "admin-ops-service",
+          "surface": "owner-internal",
+          "gatewayProjection": "none",
+          "publicTwin": "none",
+          "assignment": "none. articleId and each itemId stay the owner-authored exact decimals already frozen on the current version. This operation does not auto-assign, rewrite, or compose them.",
+          "securityScheme": "bearerAuth",
+          "securitySchemeSource": "existing IAM access token already used by admin content operations",
+          "permission": "actual verified content:publish is required. A content-publisher role, or any other role, without that permission does not authorize this operation. content-editor, reviewer-l1, reviewer-l2, and release-operator scopes do not authorize it. Existing submitB9ContentCommand authorization is unchanged.",
+          "publisher": "the same verified IAM subject must equal the stored publisher. A role match does not replace the content:publish permission or the stored publisher.",
+          "rejectedAuthority": "X-Role, X-B5-Role, and any caller actor, tenant, owner, role, or permission field are not authority and are not accepted",
+          "actors": "stored editor, first reviewer, final reviewer, and publisher are non-blank and pairwise distinct. This request does not accept or invent them.",
+          "tenant": "server platform tenant. The caller cannot select it.",
+          "publicationPointer": "unchanged. PUBLISH remains the pointer move and still requires LEARNER and PUBLIC."
+        },
+        "x-idempotency": {
+          "required": true,
+          "strategy": "content-reading-binding",
+          "keyHeader": "Idempotency-Key",
+          "scope": "verified content:publish subject equal to the stored publisher, the Idempotency-Key, and the byte digest of contentCode, contentVersionId, expectedHash, and expectedStateVersion",
+          "replayBehavior": "First commit is the only write of the binding. It returns replayed false and stores replayed false. A same-key replay is the same verified publisher, the same Idempotency-Key, and the same request digest: it writes nothing, leaves the stored receipt, experience rows, binding rows, and payload digest unchanged, and the returned replayed flag changes to true while every other returned field stays the stored receipt. The stored replayed value does not change. The same Idempotency-Key with a different digest returns 409 READING_BINDING_IDEMPOTENCY_CONFLICT, writes nothing, and returns no replayed flag.",
+          "returnedReplayedFlag": "false only on first commit. On same-key replay the returned flag changes to true and the stored flag stays false. A different digest does not return the flag. An exact current-version byte match under a new Idempotency-Key also writes no experience or binding row and returns replayed true, only when x-cross-owner allows that match."
+        },
+        "x-cas": {
+          "currentPublishedVersionId": "contentVersionId",
+          "storedPayloadHash": "expectedHash",
+          "aggregateStateVersion": "expectedStateVersion",
+          "sameIdentity": "contentVersionId is the current published version of the definition identified by contentCode",
+          "mismatch": "409 and writes nothing",
+          "expectedStateVersionZero": "rejected. A published aggregate uses a state version starting at 1."
+        },
+        "x-rights": {
+          "predicate": "LEARNER AND (ASSESSMENT OR historical SEALED)",
+          "starGrants": [
+            "LEARNER",
+            "ASSESSMENT"
+          ],
+          "accepted": [
+            "LEARNER+ASSESSMENT",
+            "LEARNER+historical SEALED",
+            "*"
+          ],
+          "rejected": [
+            "SEALED-only",
+            "ASSESSMENT-only",
+            "LEARNER-only",
+            "LEARNER+PUBLIC-only"
+          ],
+          "sealedOnly": "rejected. Historical SEALED is an assessment grant only together with LEARNER. It is not sufficient alone.",
+          "publishUnchanged": "PUBLISH still requires LEARNER and PUBLIC. This predicate does not change that command.",
+          "withdrawal": "inactive copyright, learning not allowed, blank source, license, or evidence, or a closed rights window fails closed and writes nothing"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/B9IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/B9ReadingBindingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "First commit returns replayed false. A same-key replay, or an exact current-version byte match, returns the stored receipt with only the returned replayed flag changed to true. Stored rows and the payload digest are not rewritten.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              },
+              "X-Trace-Id": {
+                "$ref": "#/components/headers/XTraceId"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/XApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B9ReadingBindingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request syntax or closed-field validation failed. Writes nothing.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              },
+              "X-Trace-Id": {
+                "$ref": "#/components/headers/XTraceId"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/XApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B9ReadingBindingErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "IAM access token is missing, invalid, expired, or revoked. Writes nothing.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              },
+              "X-Trace-Id": {
+                "$ref": "#/components/headers/XTraceId"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/XApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B9ReadingBindingErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Actual verified content:publish and the same stored publisher are both required. Role-only authorization, invalid stored four-actor facts, or the reading rights predicate failed. Writes nothing.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              },
+              "X-Trace-Id": {
+                "$ref": "#/components/headers/XTraceId"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/XApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B9ReadingBindingErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CAS, identity, idempotency, stored article, stored questions, reserved key, different-version key, mismatched experience, type, or status, or cross-owner key failed. Writes nothing. The old row is not flipped to REVOKED and is not reused in place.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              },
+              "X-Trace-Id": {
+                "$ref": "#/components/headers/XTraceId"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/XApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B9ReadingBindingErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/content-commands/import/batch": {
       "post": {
         "tags": [
@@ -1417,6 +1607,16 @@
             "x-max-items-source": "B10CreateAssessmentSessionRequest.itemIds maxItems 100",
             "x-runtime-support": "Content authoring-only",
             "x-runtime-gap": "Content authoring-only: single CREATE_DRAFT and SAVE_DRAFT persist gradableQuestions on the immutable version payload. Assessment and reading runtimes do not read gradableQuestions."
+          },
+          "readingArticle": {
+            "$ref": "#/components/schemas/B9ReadingArticleAuthoring",
+            "description": "可选。只随既有 CREATE_DRAFT 或 SAVE_DRAFT 的 content 提交。省略表示该版本没有阅读文章。importB9ContentBatch 拒绝本字段，且批量导入不是发布或 B3 绑定。此元数据不修改 B9ContentCommandRequest 的字段、枚举、oneOf 或 x-command-field-policy。",
+            "x-commands": [
+              "CREATE_DRAFT",
+              "SAVE_DRAFT"
+            ],
+            "x-batch-import": "denied",
+            "x-command-policy": "unchanged"
           }
         }
       },
@@ -1504,6 +1704,431 @@
         },
         "x-answer-member-check": "correctOption exact-case member of the same question options[].optionId",
         "x-answer-retention": "server-only"
+      },
+      "B9ReadingArticleBlockInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "description": "阅读文章的一块作者输入。只含 contentLocale 下的纯文本，以及可选的单条对照译文。blockId、blockIndex、token 和分支由服务端派生或不接收。",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "该版本 contentLocale 下的纯文本。长度上限与 B10LearnerContentItem.stem 以及 B9 公开 displayText 的 4096 一致。不得提交 token、HTML 对象或分支选项。仅空白字符非法。学习者解析只保留含文本的块。"
+          },
+          "translation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[\\s\\S]*\\S[\\s\\S]*$",
+            "description": "可选的单条对照译文，只属于本块。省略表示没有译文。不是 locale 映射，不另带 contentLocale，也不携带答案、演员或租户。长度上限同样是 4096。仅空白字符非法。"
+          }
+        }
+      },
+      "B9ReadingArticleAuthoring": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "articleId",
+          "blocks"
+        ],
+        "description": "可选的管理端输入，只随既有 submitB9ContentCommand 的 CREATE_DRAFT 或 SAVE_DRAFT 中的 content 提交。省略表示新版本没有阅读文章；必填 items 与可选 gradableQuestions 保持原语义，不得从 items、title 或散落的 articleId/blocks 推断本文。版本 payload 只应白名单 summary、contentLocale、targetLevel、items、gradableQuestions 和本对象，因此未命名的 articleId 或 blocks 不会留下。出现时成为该 contentVersionId 的不可变 payload 字节；SAVE_DRAFT 只追加新版本。批量导入不接收本字段。客户端只提交 articleId 与 blocks。title 复制必填草稿 title，cefrLevel 复制必填 targetLevel，wordCount 由块文本按单个空格连接再按单个空格拆分得到，与既有阅读种子的 wordCount 算法相同。blockId 为 block- 加从 1 起的序号，blockIndex 为从 0 起的数组下标。contentVersionId 由所分配版本写入体验行，并写入投影 payload 以便既有版本一致性检查。不接收 estimatedMinutes、rightsStatus、practiceRef、token、分支、答案、规则、演员或租户；学习者解析对缺省 estimatedMinutes 使用 5，对缺省 rightsStatus 使用 AUTHORIZED。articleId 必须是与同内容 gradableQuestions.itemId 都不同的安全整数，且不得为保留旧键 3501 或 3950，也不得落入 266001 至 266010。同内容的 itemId 也不得取这些保留值。命令 contentCode 精确等于 p1.placement.v1，或内容标识精确等于 p1-placement-bank-v1 时必须拒绝。本对象不规定可判分题的道数，也不进入学习者、公开、评估快照或管理端响应。",
+        "x-admin-input-only": true,
+        "x-commands": [
+          "CREATE_DRAFT",
+          "SAVE_DRAFT"
+        ],
+        "x-optional-absence": "omitted means the new version has no readingArticle; required items and optional gradableQuestions stay unchanged and are not inferred into this object",
+        "x-owner-whitelist": [
+          "summary",
+          "contentLocale",
+          "targetLevel",
+          "items",
+          "gradableQuestions",
+          "readingArticle"
+        ],
+        "x-does-not-replace": [
+          "items",
+          "gradableQuestions"
+        ],
+        "x-version-immutability": "contentVersionId and payload bytes are immutable after creation; a later SAVE_DRAFT allocates a new version",
+        "x-rejected-content-codes": [
+          "p1.placement.v1"
+        ],
+        "x-rejected-content-ids": [
+          "p1-placement-bank-v1"
+        ],
+        "x-batch-import": "rejected; single CREATE_DRAFT and SAVE_DRAFT only",
+        "x-response-absence": "absent from learner, public, assessment-snapshot, and admin response schemas",
+        "x-server-derived": [
+          "title",
+          "cefrLevel",
+          "wordCount",
+          "blockId",
+          "blockIndex",
+          "contentVersionId"
+        ],
+        "x-client-forbidden-fields": [
+          "title",
+          "cefrLevel",
+          "wordCount",
+          "estimatedMinutes",
+          "rightsStatus",
+          "contentVersionId",
+          "practiceRef",
+          "tokens",
+          "branchChoices",
+          "answerRule",
+          "correctOption",
+          "actor",
+          "tenant",
+          "owner",
+          "questionType"
+        ],
+        "x-word-count": "join block text with one space, then split on one space; same derivation as the existing reading seed wordCount",
+        "x-block-identity": "server assigns block-{1-based index} and 0-based blockIndex from array order",
+        "x-article-id-independent-of-question-ids": "articleId exact integer inequality against every gradableQuestions itemId in the same content object",
+        "x-rejected-numeric-ids": [
+          3501,
+          3950
+        ],
+        "x-rejected-numeric-id-range": {
+          "minimum": 266001,
+          "maximum": 266010,
+          "reason": "placement item ids and legacy dangling reading keys stay reserved"
+        },
+        "x-item-count": "R1-044 does not set this object's question cardinality. GrammarReadingPack.required(READING) is 2 only for an unnamed assessment pack and returns CLOSED_MISSING when shorter; named itemIds stay as given. gradableQuestions remains omitted or 1 to 100.",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "JSON 整数，含端点 1 与 9007199254740991。下限与 B10Int64Id 一致，上限是可往返的安全整数。禁止字符串、小数和前导零。必须与同一次 content.gradableQuestions 的每个 itemId 不同。不得为 3501 或 3950，不得落入 266001 至 266010。"
+          },
+          "blocks": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10000,
+            "description": "至少一块。上限与同一 B9ContentDraftInput.items 的 maxItems 10000 相同。数组顺序即稳定块序。B3 学习者解析保留每一块非空白 text，本上限只封闭作者输入。",
+            "items": {
+              "$ref": "#/components/schemas/B9ReadingArticleBlockInput"
+            }
+          }
+        }
+      },
+      "B9ReadingBindingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contentCode",
+          "contentVersionId",
+          "expectedHash",
+          "expectedStateVersion"
+        ],
+        "description": "发布绑定只提交当前所有者版本的身份和 CAS。不接收文章、题目、答案、演员、租户、角色或权限。服务端只读取该版本已经冻结的 payload。",
+        "x-rejected-fields": [
+          "command",
+          "readingArticle",
+          "articleId",
+          "blocks",
+          "gradableQuestions",
+          "items",
+          "stem",
+          "options",
+          "answerRule",
+          "correctOption",
+          "practiceRef",
+          "content",
+          "actor",
+          "tenant",
+          "owner",
+          "role",
+          "permission",
+          "editor",
+          "reviewer",
+          "publisher",
+          "targetVersionNumber"
+        ],
+        "x-cas": {
+          "currentPublishedVersionId": "contentVersionId",
+          "storedPayloadHash": "expectedHash",
+          "aggregateStateVersion": "expectedStateVersion",
+          "mismatch": "409 and writes nothing"
+        },
+        "x-identity": "contentCode and contentVersionId must name the same content definition. The version must be that definition's current published version. A key owned by a different content_code, or by any other content_version_id of this content_code including an archived version, is not adopted.",
+        "properties": {
+          "contentCode": {
+            "$ref": "#/components/schemas/B9ContentCode",
+            "description": "已发布内容定义的代码。必须与 contentVersionId 所属定义相同。"
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B9ContentVersionId",
+            "description": "期望的 current_published_version_id。不是 targetVersionNumber，也不是客户端分配的新版本。"
+          },
+          "expectedHash": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$",
+            "description": "该已发布版本已存储的 payload hash，64 位十六进制。不是草稿 content.contentHash，也不是排期快照里的 contentHash。"
+          },
+          "expectedStateVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "内容聚合的当前状态版本。已发布聚合从 1 起，0 被拒绝且不写入。此收紧只属于本请求，不修改 B9ExpectedStateVersion。"
+          }
+        }
+      },
+      "B9ReadingBindingPracticeRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "readOnly": true,
+        "required": [
+          "contentCode",
+          "contentVersionId",
+          "questionItemId"
+        ],
+        "description": "内容所有者回执里的答题坐标。字段与既有 B3 阅读读取写入的 practiceRef 相同，但不引用其他所有者的 schema。questionItemId 是文章绑定行的 question_item_id，为冻结 gradableQuestions 第一个 itemId 的十进制文本，绝不是 articleId。不含题干、选项或答案。",
+        "properties": {
+          "contentCode": {
+            "$ref": "#/components/schemas/B9ContentCode",
+            "readOnly": true
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B9ContentVersionId",
+            "readOnly": true
+          },
+          "questionItemId": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,15}$",
+            "readOnly": true,
+            "description": "第一个已存储题目 itemId 的无前导零十进制文本。"
+          }
+        }
+      },
+      "B9ReadingBindingReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "readOnly": true,
+        "required": [
+          "contentCode",
+          "contentVersionId",
+          "payloadHash",
+          "stateVersion",
+          "articleId",
+          "articleQuestionItemId",
+          "questionItemIds",
+          "practiceRef",
+          "articleExperienceId",
+          "questionExperienceIds",
+          "bindingStatus",
+          "replayed"
+        ],
+        "description": "一次内容所有者事务的回执。标识来自冻结版本，不回显文章正文、题干、选项或答案。首次提交返回 replayed false，存储回执也保持 false。同一已授权发布者、同一幂等键和同一请求摘要的重放不改存储回执、体验行、绑定行或 payload 摘要；返回体只有 replayed 从存储的 false 变为 true，其余字段与存储回执相同。",
+        "x-caller-content": "absent. The request cannot supply article or question data.",
+        "x-bindings": "one READING_ARTICLE plus one READING_QUESTION per stored gradableQuestions entry, in array order. The article question_item_id is the first itemId and never articleId. Count is the stored array length, not 2.",
+        "x-experience-ids": "experience_id is b3-reading-article-{articleId} for READING_ARTICLE and b3-reading-question-{itemId} for each READING_QUESTION, using the canonical decimal with no leading zero. resource_key is that same exact decimal articleId or itemId and nothing else. Mobile B3 detail loads the article with b.resource_key=? bound to the numeric articleId, so a composite, prefixed, versioned, or content-coded key would miss. An existing article or question key conflicts and writes nothing when any different content_version_id owns it, including the same content_code and an archived version, when another content owns it, or when experience_id, resource_type, or status does not match. The exact current published version is allowed only when every stored field is byte-equivalent and the caller is the same authorized publisher with the same payload fingerprint. A newer published version that needs its own reading mapping uses distinct owner-authored numeric ids for the article and each item. This operation does not auto-assign those ids.",
+        "x-payload": "server copies block text, stem, and options only. Question options map optionId to optionCode. answerRule and correctOption stay out. Payloads include articleId. content_version_id is this version.",
+        "x-cross-owner": "unique key is tenant, domain, resource type, and resource key. resource_key stays the exact decimal articleId for READING_ARTICLE and the exact decimal itemId for READING_QUESTION. No composite key. A matching key owned by any different version, even the same content_code and even an archived version, by different content, or by a mismatched experience_id, resource_type, or status, returns 409 READING_BINDING_CROSS_OWNER_KEY and writes nothing. Do not flip that row to REVOKED and do not reuse it in place. The original row and its digest stay unchanged. Old links then fail closed through the current published pointer without this operation moving the pointer. No other owner key is adopted and no second row is inserted for a taken key. The only non-mutating success is the exact current published version when every stored field is byte-equivalent, the verified subject is the stored publisher, and the payload fingerprint equals expectedHash. That match returns replayed true and does not rewrite the stored replayed flag.",
+        "x-reserved": {
+          "numericIds": [
+            3501,
+            3950
+          ],
+          "numericRange": {
+            "minimum": 266001,
+            "maximum": 266010
+          },
+          "versionIds": [
+            301,
+            266100
+          ],
+          "contentCodes": [
+            "p1.placement.v1"
+          ],
+          "contentIds": [
+            "p1-placement-bank-v1"
+          ],
+          "behavior": "reject and write nothing. Do not republish, rebind, or use these as fixtures."
+        },
+        "x-r1-044": "GrammarReadingPack reading packs are FULL or ZERO. An unnamed reading selection needs 2 READING items or CLOSED_MISSING before its idempotency claim. Named itemIds stay as given. course-b25-basics and p1.placement.v1 are outside that pack. This binding does not apply that count and does not invent 2 questions.",
+        "properties": {
+          "contentCode": {
+            "$ref": "#/components/schemas/B9ContentCode",
+            "readOnly": true
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B9ContentVersionId",
+            "readOnly": true
+          },
+          "payloadHash": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$",
+            "readOnly": true,
+            "description": "已核对的存储 payload hash，等于请求 expectedHash。"
+          },
+          "stateVersion": {
+            "$ref": "#/components/schemas/B9StateVersion",
+            "readOnly": true
+          },
+          "articleId": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "readOnly": true,
+            "description": "冻结 readingArticle.articleId。请求体没有此字段。"
+          },
+          "articleQuestionItemId": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,15}$",
+            "readOnly": true,
+            "description": "READING_ARTICLE 行的 question_item_id，等于 questionItemIds 的第一项，不等于 articleId。"
+          },
+          "questionItemIds": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "readOnly": true,
+            "description": "冻结 gradableQuestions 的 itemId 十进制文本，顺序与数组相同。至少一题，因为 question_item_id 不能为空。不补成 2。",
+            "items": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]{0,15}$"
+            }
+          },
+          "practiceRef": {
+            "$ref": "#/components/schemas/B9ReadingBindingPracticeRef",
+            "readOnly": true
+          },
+          "articleExperienceId": {
+            "type": "string",
+            "pattern": "^b3-reading-article-[1-9][0-9]{0,15}$",
+            "readOnly": true
+          },
+          "questionExperienceIds": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "readOnly": true,
+            "items": {
+              "type": "string",
+              "pattern": "^b3-reading-question-[1-9][0-9]{0,15}$"
+            }
+          },
+          "bindingStatus": {
+            "type": "string",
+            "const": "ACTIVE",
+            "readOnly": true
+          },
+          "replayed": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "首次提交返回 false，存储回执保持 false。同一已授权发布者、同一幂等键和同一请求摘要的重放，返回值变为 true，存储值不变。精确当前版本的全字段字节等价重入同样返回 true。不同摘要的同一幂等键不返回本字段。"
+          }
+        }
+      },
+      "B9ReadingBindingResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessEnvelope"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/B9ReadingBindingReceipt"
+              }
+            }
+          }
+        ]
+      },
+      "B9ReadingBindingError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "errorCode",
+          "message",
+          "retryable"
+        ],
+        "description": "本操作专用的封闭错误。不复用或扩展 ErrorCode。message 不得回显文章正文、题干、选项、答案、演员或租户。",
+        "x-status": {
+          "400": [
+            "READING_BINDING_VALIDATION"
+          ],
+          "401": [
+            "READING_BINDING_AUTH_REQUIRED"
+          ],
+          "403": [
+            "READING_BINDING_PUBLISH_PERMISSION_REQUIRED",
+            "READING_BINDING_PUBLISHER_MISMATCH",
+            "READING_BINDING_ACTORS_INVALID",
+            "READING_BINDING_RIGHTS_DENIED"
+          ],
+          "409": [
+            "READING_BINDING_CAS_CONFLICT",
+            "READING_BINDING_IDENTITY_MISMATCH",
+            "READING_BINDING_IDEMPOTENCY_CONFLICT",
+            "READING_BINDING_ARTICLE_REQUIRED",
+            "READING_BINDING_QUESTIONS_REQUIRED",
+            "READING_BINDING_RESERVED_KEY",
+            "READING_BINDING_CROSS_OWNER_KEY",
+            "READING_BINDING_NOT_PUBLISHED"
+          ]
+        },
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "enum": [
+              "READING_BINDING_VALIDATION",
+              "READING_BINDING_AUTH_REQUIRED",
+              "READING_BINDING_PUBLISH_PERMISSION_REQUIRED",
+              "READING_BINDING_PUBLISHER_MISMATCH",
+              "READING_BINDING_ACTORS_INVALID",
+              "READING_BINDING_RIGHTS_DENIED",
+              "READING_BINDING_CAS_CONFLICT",
+              "READING_BINDING_IDENTITY_MISMATCH",
+              "READING_BINDING_IDEMPOTENCY_CONFLICT",
+              "READING_BINDING_ARTICLE_REQUIRED",
+              "READING_BINDING_QUESTIONS_REQUIRED",
+              "READING_BINDING_RESERVED_KEY",
+              "READING_BINDING_CROSS_OWNER_KEY",
+              "READING_BINDING_NOT_PUBLISHED"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "description": "失败说明。禁止回显文章正文、题干、选项、答案、演员或租户。"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "B9ReadingBindingErrorEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "error",
+          "meta"
+        ],
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/B9ReadingBindingError"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ApiResponseMeta"
+          }
+        }
       },
       "B9PublishScheduleInput": {
         "type": "object",

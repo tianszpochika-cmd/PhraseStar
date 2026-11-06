@@ -138,6 +138,119 @@
         }
       }
     },
+    "/internal/v1/content/assessment-snapshots/{contentVersionId}/score": {
+      "post": {
+        "tags": [
+          "b10-content-snapshot"
+        ],
+        "summary": "Score one item on the exact protected assessment snapshot",
+        "operationId": "scoreB10AssessmentContentSnapshot",
+        "security": [
+          {
+            "B8WorkloadIdentity": []
+          }
+        ],
+        "x-contract": {
+          "task": "MB-014",
+          "after": "B109",
+          "owner": "content-service",
+          "consumer": "assessment-service",
+          "access": "verified assessment-service workload only",
+          "gateway": "NOT_PROJECTED",
+          "publicRoute": false,
+          "sameVersionAs": "getB10AssessmentContentSnapshot",
+          "versionBinding": "The path contentVersionId is the only version. This score and getB10AssessmentContentSnapshot address that same owner version. current_published_version_id is not a fallback. The sealed p1.placement.v1 bank is not a fallback.",
+          "rights": "Active legal rights and an approved owner version are required. Revoked or inactive rights, a missing approval, an archived or withdrawn version, and the sealed placement bank fail closed.",
+          "answerProtection": "The response is itemId, the exact owner snapshotId, a stable opaque ruleDigest, and outcome FULL or ZERO. It has no selected option, correct option, raw rule, or explanation. The producer proof is opaque and stable for one immutable owner version. It must not be a raw low-entropy hash of correctOption, and it must not be brute-forceable from a known list of two to eight choices.",
+          "credentialArchitecture": "UNCHANGED",
+          "reservationArchitecture": "UNCHANGED",
+          "runtimeStatus": "NOT_RUNTIME_VERIFIED",
+          "localRuntime": "JDBC_CONTROLLER_PRESENT_NOT_RUNTIME_VERIFIED",
+          "failClosed": {
+            "malformedClosedRequest": "400 #/components/responses/B10BadRequest",
+            "missingOrInvalidWorkloadSubject": "401 #/components/responses/B10Unauthorized",
+            "unauthorizedPrincipalOrInactiveRights": "403 #/components/responses/B10Forbidden",
+            "ownerVersionMissing": "404 #/components/responses/B10NotFound",
+            "mismatchedPin": "409 #/components/responses/B10Conflict",
+            "unapprovedWithdrawnPlacementOrMissingItem": "410 #/components/responses/B10ContentUnavailable"
+          },
+          "errorComponents": {
+            "400": "#/components/responses/B10BadRequest",
+            "401": "#/components/responses/B10Unauthorized",
+            "403": "#/components/responses/B10Forbidden",
+            "404": "#/components/responses/B10NotFound",
+            "409": "#/components/responses/B10Conflict",
+            "410": "#/components/responses/B10ContentUnavailable"
+          }
+        },
+        "x-authorization": {
+          "defaultDecision": "DENY",
+          "requiredPermission": "content:answer-rules:read",
+          "workloadClientId": "assessment-service",
+          "serviceIdBinding": "The verified JWT subject equals service_id, and both equal the registered assessment-service client.",
+          "tokenType": "service",
+          "clientAuthority": "none; the body has no role, permission, tenant, owner, or client scope",
+          "serviceSidePepRequired": true,
+          "trustedFacts": [
+            "service_id",
+            "token_type",
+            "permission",
+            "legalRights",
+            "ownerVersionApproval"
+          ]
+        },
+        "x-idempotency": {
+          "required": false,
+          "strategy": "pure-deterministic-read-on-unchanged-authorized-pin",
+          "replayBehavior": "The same closed request on the same unchanged authorized owner version recomputes the same FULL or ZERO result. No Idempotency-Key, durable receipt, reservation, or stored score state is created. Every retry revalidates the assessment-service workload, the bound service_id, content:answer-rules:read, active legal rights, and the approved owner version."
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/B10ContentVersionId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/B10AssessmentContentScoreRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "FULL or ZERO for the pinned item. The body is itemId, the exact snapshotId, the opaque ruleDigest, and outcome only.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B10AssessmentContentScore"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/B10BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/B10Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/B10Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/B10NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/B10Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/B10ContentUnavailable"
+          }
+        }
+      }
+    },
     "/internal/v1/content/assessment-snapshots/{contentVersionId}/recovery": {
       "get": {
         "tags": [
@@ -7218,6 +7331,107 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/B10LearnerContentSnapshot"
+          }
+        }
+      },
+      "B10SafePositiveItemId": {
+        "description": "Positive item id in the closed safe range 1 through 9007199254740991. This tightens B10Int64Id with that inclusive maximum.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/B10Int64Id"
+          },
+          {
+            "type": "integer",
+            "maximum": 9007199254740991
+          }
+        ]
+      },
+      "B10AssessmentContentScoreRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Closed score request for the path version. contentCode, snapshotId, snapshotHash, and ruleDigest are the expected immutable pin. The body carries no role, permission, tenant, owner, or client scope, and no version id.",
+        "required": [
+          "contentCode",
+          "itemId",
+          "selectedOptionId",
+          "snapshotId",
+          "snapshotHash",
+          "ruleDigest"
+        ],
+        "properties": {
+          "contentCode": {
+            "$ref": "#/components/schemas/B10ContentCode"
+          },
+          "itemId": {
+            "$ref": "#/components/schemas/B10SafePositiveItemId"
+          },
+          "selectedOptionId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._:-]{0,63}$",
+            "description": "One selected option token. The pattern is the existing B10ContentItemOption.optionId pattern."
+          },
+          "snapshotId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B10SnapshotId"
+              }
+            ],
+            "description": "Expected immutable B10 snapshot id for this owner version."
+          },
+          "snapshotHash": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B10Sha256"
+              }
+            ],
+            "description": "Expected immutable snapshot hash for this owner version."
+          },
+          "ruleDigest": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B10Sha256"
+              }
+            ],
+            "description": "Expected opaque rule digest for this item on this immutable owner version. Exact match only. This field does not define a hash of correctOption."
+          }
+        }
+      },
+      "B10AssessmentContentScore": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Closed score result. FULL is exact equality of the submitted option token with the owner-held token, with no trim and no case fold. Any other well-formed token is ZERO. The owner-held token, the raw rule, and any explanation stay inside content-service.",
+        "required": [
+          "itemId",
+          "snapshotId",
+          "ruleDigest",
+          "outcome"
+        ],
+        "properties": {
+          "itemId": {
+            "$ref": "#/components/schemas/B10SafePositiveItemId"
+          },
+          "snapshotId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B10SnapshotId"
+              }
+            ],
+            "description": "Exact snapshot id of the owner version addressed by the path. It equals the expected snapshotId when the pin matches."
+          },
+          "ruleDigest": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B10Sha256"
+              }
+            ],
+            "description": "Opaque producer proof that is stable for this item on this immutable owner version. B10Sha256 supplies only the 64-hex wire shape. The proof must not be a raw low-entropy hash of correctOption and must not be brute-forceable from a known list of two to eight choices. Equality is exact and does not fold case."
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "FULL",
+              "ZERO"
+            ]
           }
         }
       },
