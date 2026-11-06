@@ -708,7 +708,91 @@ function parseSyntaxGraph(value: unknown): B10SyntaxGraph | null {
   }
 }
 
-function parseReadingArticle(value: unknown): B10ReadingArticle | null {
+/** Sealed P1 placement bank. It is not a published reading practice pin. */
+const SEALED_PLACEMENT_CONTENT_CODE = 'p1.placement.v1'
+const READING_CONTENT_CODE = /^[a-z][a-z0-9._:-]{1,127}$/u
+const READING_ANSWER_KEY = /^(correctoptions?|acceptedkeys|correctkey|answerkeys?|answerrule)$/i
+
+function exactSafePositive(value: unknown): number | null {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0 ? value : null
+}
+
+function publishedReadingCode(value: unknown): string | null {
+  if (typeof value !== 'string' || !READING_CONTENT_CODE.test(value) || value === SEALED_PLACEMENT_CONTENT_CODE) return null
+  return value
+}
+
+function hasReadingAnswerMaterial(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some((entry) => hasReadingAnswerMaterial(entry))
+  if (!isRecord(value)) return false
+  for (const [key, nested] of Object.entries(value)) {
+    if (READING_ANSWER_KEY.test(key.replace(/[_\-\s]/g, ''))) return true
+    if (nested && typeof nested === 'object' && hasReadingAnswerMaterial(nested)) return true
+  }
+  return false
+}
+
+function publishedReadingPracticeRef(articleId: number, articleVersion: unknown, raw: unknown): { contentCode: string; contentVersionId: number; questionItemId: number } | null {
+  const version = exactSafePositive(articleVersion)
+  const article = exactSafePositive(articleId)
+  if (version == null || article == null || !isRecord(raw)) return null
+  const contentCode = publishedReadingCode(raw.contentCode)
+  const refVersion = exactSafePositive(raw.contentVersionId)
+  const questionItemId = grammarQuestionItemId(raw.questionItemId)
+  if (!contentCode || refVersion !== version || questionItemId == null || questionItemId === article) return null
+  return { contentCode, contentVersionId: version, questionItemId }
+}
+
+function publishedReadingSessionBody(contentCode: string, contentVersionId: number, questionItemId: number): { contentCode: string; contentVersionId: number; mode: 'PRACTICE'; itemIds: number[]; clientSessionRef: string } | null {
+  const code = publishedReadingCode(contentCode)
+  const version = exactSafePositive(contentVersionId)
+  const item = exactSafePositive(questionItemId)
+  if (!code || version == null || item == null || code !== contentCode || version !== contentVersionId || item !== questionItemId) return null
+  return { contentCode: code, contentVersionId: version, mode: 'PRACTICE', itemIds: [item], clientSessionRef: `h5-reading-${version}-${item}` }
+}
+
+function publishedReadingResponseMatches(value: unknown, pin: { contentCode: string; contentVersionId: number; questionItemId: number }): boolean {
+  const source = unwrap(value)
+  if (!isRecord(source) || !publishedReadingSessionBody(pin.contentCode, pin.contentVersionId, pin.questionItemId)) return false
+  if (source.mode !== 'PRACTICE' || source.status !== 'IN_PROGRESS') return false
+  if (typeof source.sessionId !== 'string' || !source.sessionId.startsWith('asess_') || source.sessionId.length <= 'asess_'.length) return false
+  if ('score' in source || 'scoreBucket' in source || 'savedReceipt' in source || 'correct' in source || 'isCorrect' in source) return false
+  const pinned = isRecord(source.pin) ? source.pin : null
+  if (!pinned || pinned.contentCode !== pin.contentCode || pinned.pinStatus !== 'PINNED') return false
+  if (pinned.contentVersionId !== pin.contentVersionId || !exactSafePositive(pinned.contentVersionId)) return false
+  if ('alternativeContentVersionId' in pinned || 'alternativeContentCode' in pinned || 'alternativeReasonCode' in pinned) return false
+  if (!Array.isArray(source.items) || source.items.length !== 1 || !isRecord(source.items[0])) return false
+  const item = source.items[0]
+  if (item.itemId !== pin.questionItemId || !exactSafePositive(item.itemId)) return false
+  if (hasReadingAnswerMaterial(item)) return false
+  return true
+}
+
+function publishedReadingParsedMatches(session: B10AssessmentSession, pin: { contentVersionId: number; questionItemId: number }): boolean {
+  if (!session.sessionId.startsWith('asess_') || session.sessionId.length <= 'asess_'.length) return false
+  if (session.sessionType !== 'PRACTICE' || session.status !== 'IN_PROGRESS') return false
+  if (session.exercises.length !== 1) return false
+  const exercise = session.exercises[0]
+  if (!exercise || exercise.exerciseId !== pin.questionItemId) return false
+  if (exercise.itemId != null && exercise.itemId !== pin.questionItemId) return false
+  if (exercise.contentVersionId != null && exercise.contentVersionId !== pin.contentVersionId) return false
+  return true
+}
+
+function publishedReadingReadbackMatches(value: unknown, sessionId: string, pin: { contentCode: string; contentVersionId: number; questionItemId: number }): boolean {
+  if (!publishedReadingResponseMatches(value, pin)) return false
+  const source = unwrap(value)
+  return isRecord(source) && source.sessionId === sessionId
+}
+
+/** Parsed pin check plus the verified session id. Callers still re-check the raw GET body. */
+export function acceptPinnedReadingSession(session: B10AssessmentSession, sessionId: string, pin: { contentCode: string; contentVersionId: number; questionItemId: number }): boolean {
+  if (!session || session.sessionId !== sessionId) return false
+  if (!publishedReadingSessionBody(pin.contentCode, pin.contentVersionId, pin.questionItemId)) return false
+  return publishedReadingParsedMatches(session, pin)
+}
+
+function parseReadingArticle(value: unknown, options?: { retainPracticeRef?: boolean }): B10ReadingArticle | null {
   const source = isRecord(unwrap(value)) ? unwrap(value) as RecordValue : {}
   const articleId = nullableNumber(source.articleId)
   if (!articleId) return null
@@ -717,6 +801,7 @@ function parseReadingArticle(value: unknown): B10ReadingArticle | null {
     const textValue = text(item.text)
     return textValue ? [{ blockId: text(item.blockId, `block-${index + 1}`), blockIndex: number(item.blockIndex, index), text: textValue, translation: text(item.translation) || null }] : []
   }) : []
+  const practiceRef = options?.retainPracticeRef ? publishedReadingPracticeRef(articleId, source.contentVersionId, source.practiceRef) : null
   return {
     articleId,
     title: text(source.title, '分级阅读'),
@@ -727,6 +812,7 @@ function parseReadingArticle(value: unknown): B10ReadingArticle | null {
     rightsStatus: source.rightsStatus === 'REVOKED' ? 'REVOKED' : 'AUTHORIZED',
     contentVersionId: nullableNumber(source.contentVersionId),
     contentEpoch: number(source.contentEpoch, 0),
+    ...(practiceRef ? { practiceRef } : {}),
   }
 }
 
@@ -1135,9 +1221,46 @@ export const b10LearningApi = {
   },
 
   async getReadingArticle(context: B10RequestContext, articleId: number): Promise<B10ReadingArticle> {
-    const article = parseReadingArticle(await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.content.readingArticles}/${encodeURIComponent(String(articleId))}`, { contentLocale: context.contentLocale }), { header: headers(context) }))
+    const article = parseReadingArticle(await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.content.readingArticles}/${encodeURIComponent(String(articleId))}`, { contentLocale: context.contentLocale }), { header: headers(context) }), { retainPracticeRef: true })
     if (!article) throw new Error('阅读服务没有返回可用文章。')
     return article
+  },
+
+  async openReadingPracticeSession(context: B10RequestContext, contentCode: string, contentVersionId: number, questionItemId: number): Promise<B10AssessmentSession> {
+    const body = publishedReadingSessionBody(contentCode, contentVersionId, questionItemId)
+    if (!body) throw new MobileApiError('当前文章没有可打开的已发布练习。', 422, { code: 'READING_PRACTICE_PIN_INVALID' })
+    const response = await mobileApiClient.request<unknown>(query(B10_GATEWAY_PATHS.assessment.sessions, { contentLocale: context.contentLocale }), {
+      method: 'POST',
+      data: body,
+      header: headers(context, body.clientSessionRef),
+    })
+    const pin = { contentCode: body.contentCode, contentVersionId: body.contentVersionId, questionItemId: body.itemIds[0] }
+    if (!publishedReadingResponseMatches(response, pin)) {
+      throw new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' })
+    }
+    const opened = parseAssessmentSession(response)
+    if (!publishedReadingParsedMatches(opened, pin)) {
+      throw new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' })
+    }
+    return opened
+  },
+
+  async readPinnedReadingSession(context: B10RequestContext, sessionId: string, pin: { contentCode: string; contentVersionId: number; questionItemId: number }): Promise<B10AssessmentSession> {
+    if (typeof sessionId !== 'string' || !sessionId.startsWith('asess_') || sessionId.length <= 'asess_'.length) {
+      throw new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' })
+    }
+    if (!publishedReadingSessionBody(pin.contentCode, pin.contentVersionId, pin.questionItemId)) {
+      throw new MobileApiError('当前文章没有可打开的已发布练习。', 422, { code: 'READING_PRACTICE_PIN_INVALID' })
+    }
+    const response = await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.assessment.sessions}/${encodeURIComponent(sessionId)}`, { contentLocale: context.contentLocale }))
+    if (!publishedReadingReadbackMatches(response, sessionId, pin)) {
+      throw new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' })
+    }
+    const opened = parseAssessmentSession(response)
+    if (opened.sessionId !== sessionId || !acceptPinnedReadingSession(opened, sessionId, pin)) {
+      throw new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' })
+    }
+    return opened
   },
 
   async saveReadingProgress(context: B10RequestContext, article: B10ReadingArticle, blockId: string, progressPercent: number, positionVersion: number, clientEventId: string): Promise<void> {

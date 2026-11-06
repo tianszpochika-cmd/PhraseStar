@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onHide, onShow } from '@dcloudio/uni-app'
 import type { PerformanceLevel } from '@englishflow/performance'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
 import AppIcon from '../../components/AppIcon.vue'
@@ -12,7 +12,7 @@ import { ensureMobilePageAccess } from '../../auth/navigation'
 import { mobileExperienceEngine, mobileT, setMobileQuality, useMobileExperience } from '../../platform/experience'
 import { b10ThemeMode, b10T } from '../../platform/b10-foundation'
 import { useB10LearningStore } from '../../stores/b10-learning'
-import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
+import { consumePendingNavigationQuery, getUniRuntime, openUniPage } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
 
 const UNAUTHORIZED_MESSAGE = '请先登录后再继续学习。'
@@ -32,6 +32,8 @@ const alternatives = [
 
 const session = useSessionStore()
 const store = useB10LearningStore()
+const readingRoute = ref(false)
+let practiceShowToken = 0
 const { experienceStyle, experienceMotion, theme } = useMobileExperience()
 const performanceLevel = ref<PerformanceLevel>(mobileExperienceEngine.state.level)
 const unsubscribeQuality = mobileExperienceEngine.subscribe((state) => { performanceLevel.value = state.level })
@@ -82,7 +84,18 @@ const showEngineChrome = computed(() => accessGranted.value && (resume.value.sto
 const glowSrc = computed(() => viewState.value === 'unavailable' ? offlineGlow : legacyGlow)
 
 function setPerformance(level: PerformanceLevel): void { setMobileQuality(level) }
-function load(): void { lastResult.value = null; void store.loadPractice() }
+function practiceEntryMarked(query: Record<string, string>): boolean {
+  return query.entry === 'reading'
+}
+function takePracticeEntryQuery(): Record<string, string> {
+  if (typeof consumePendingNavigationQuery !== 'function') return {}
+  return consumePendingNavigationQuery('/pages/b2-practice/b2-practice')
+}
+function load(): void {
+  lastResult.value = null
+  if (readingRoute.value && typeof store.loadReadingPractice === 'function') { void store.loadReadingPractice(); return }
+  void store.loadPractice()
+}
 async function answer(value: B10AnswerInput): Promise<void> {
   if (!accessGranted.value || !exercise.value || !acceptSubmission(submitting.value)) return
   submitting.value = true
@@ -118,10 +131,23 @@ async function reopenLegacyAccess(): Promise<void> {
   if (!allowed || store.practiceStatus === 'empty' || store.practiceStatus === 'forbidden') return
   load()
 }
+if (typeof onHide === 'function') onHide(() => { practiceShowToken += 1; store.abandonReadingPracticeRead?.() })
 onShow(async () => {
+  const token = ++practiceShowToken
   const allowed = await ensureMobilePageAccess('/pages/b2-practice/b2-practice')
+  if (token !== practiceShowToken) return
   accessGranted.value = allowed === true
   if (!allowed) return
+  const query = takePracticeEntryQuery()
+  const marked = practiceEntryMarked(query)
+  const visible = typeof store.readingPracticeVisible === 'function' && store.readingPracticeVisible()
+  if (marked || readingRoute.value || visible) {
+    readingRoute.value = true
+    if (!marked && visible) return
+    load()
+    return
+  }
+  readingRoute.value = false
   load()
 })
 onUnmounted(() => { unsubscribeQuality() })
