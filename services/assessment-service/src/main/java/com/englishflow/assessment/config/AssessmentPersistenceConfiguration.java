@@ -2,6 +2,8 @@ package com.englishflow.assessment.config;
 
 import com.englishflow.assessment.adapter.content.HttpPlacementBankPort;
 import com.englishflow.assessment.adapter.content.HttpPlacementRuleScorePort;
+import com.englishflow.assessment.adapter.content.HttpProtectedContentSnapshotTransport;
+import com.englishflow.assessment.adapter.content.IamServiceTokenSupplier;
 import com.englishflow.assessment.adapter.content.UnavailableContentSnapshotPort;
 import com.englishflow.assessment.adapter.content.UnavailableP1PlacementSourcePort;
 import com.englishflow.assessment.adapter.jdbc.JdbcAssessmentOutbox;
@@ -19,10 +21,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.time.Clock;
+import java.util.function.Supplier;
 
 /**
  * Runtime composition for durable assessment facts.  It is intentionally conditional: with no
@@ -127,7 +132,8 @@ public class AssessmentPersistenceConfiguration {
 
     /**
      * Service-token score call. An empty token fails closed on use and does not
-     * invent an outcome. It never forwards the learner JWT.
+     * invent an outcome. It never forwards the learner JWT. When protected
+     * reading is enabled, this is the same workload-token instance that transport uses.
      */
     @Bean
     PlacementRuleScorePort placementRuleScorePort(tools.jackson.databind.ObjectMapper objectMapper,
@@ -145,16 +151,70 @@ public class AssessmentPersistenceConfiguration {
             String clientId,
             @org.springframework.beans.factory.annotation.Value(
                     "${assessment.placement.score.client-secret:}")
-            String clientSecret) {
+            String clientSecret,
+            @Qualifier("assessmentOwnerWorkloadToken") ObjectProvider<Supplier<String>> ownerWorkloadTokens) {
+        Supplier<String> shared = ownerWorkloadTokens.getIfAvailable();
+        if (shared != null) {
+            return new HttpPlacementRuleScorePort(objectMapper, contentBaseUrl, shared,
+                    java.time.Duration.ofSeconds(5));
+        }
         if ((serviceToken == null || serviceToken.isBlank())
                 && iamBaseUrl != null && !iamBaseUrl.isBlank()
                 && clientSecret != null && !clientSecret.isBlank()) {
             return new HttpPlacementRuleScorePort(objectMapper, contentBaseUrl,
-                    new com.englishflow.assessment.adapter.content.IamServiceTokenSupplier(
-                            objectMapper, iamBaseUrl, clientId, clientSecret),
+                    new IamServiceTokenSupplier(objectMapper, iamBaseUrl, clientId, clientSecret),
                     java.time.Duration.ofSeconds(5));
         }
         return new HttpPlacementRuleScorePort(objectMapper, contentBaseUrl, serviceToken,
+                java.time.Duration.ofSeconds(5));
+    }
+
+    /**
+     * Current owner workload token. Absent unless protected reading is enabled,
+     * so a normal configuration does not construct the reading transport.
+     * IAM credentials pass the supplier instance through; a fixed token stays fixed.
+     * This is never a learner bearer.
+     */
+    @Bean
+    @Qualifier("assessmentOwnerWorkloadToken")
+    @ConditionalOnProperty(prefix = "assessment.protected-reading", name = "enabled",
+            havingValue = "true", matchIfMissing = false)
+    Supplier<String> assessmentOwnerWorkloadToken(tools.jackson.databind.ObjectMapper objectMapper,
+            @org.springframework.beans.factory.annotation.Value(
+                    "${assessment.placement.score.service-token:}")
+            String serviceToken,
+            @org.springframework.beans.factory.annotation.Value(
+                    "${assessment.placement.score.iam-base-url:}")
+            String iamBaseUrl,
+            @org.springframework.beans.factory.annotation.Value(
+                    "${assessment.placement.score.client-id:assessment-service}")
+            String clientId,
+            @org.springframework.beans.factory.annotation.Value(
+                    "${assessment.placement.score.client-secret:}")
+            String clientSecret) {
+        if ((serviceToken == null || serviceToken.isBlank())
+                && iamBaseUrl != null && !iamBaseUrl.isBlank()
+                && clientSecret != null && !clientSecret.isBlank()) {
+            return new IamServiceTokenSupplier(objectMapper, iamBaseUrl, clientId, clientSecret);
+        }
+        String fixed = serviceToken == null ? "" : serviceToken;
+        return () -> fixed;
+    }
+
+    /**
+     * Protected reading owner. The bean is not registered in the normal
+     * configuration, so {@code B10AssessmentJdbcController} does not call it.
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "assessment.protected-reading", name = "enabled",
+            havingValue = "true", matchIfMissing = false)
+    HttpProtectedContentSnapshotTransport httpProtectedContentSnapshotTransport(
+            tools.jackson.databind.ObjectMapper objectMapper,
+            @org.springframework.beans.factory.annotation.Value(
+                    "${assessment.placement.score.content-base-url:http://127.0.0.1:18089}")
+            String contentBaseUrl,
+            @Qualifier("assessmentOwnerWorkloadToken") Supplier<String> ownerWorkloadToken) {
+        return new HttpProtectedContentSnapshotTransport(objectMapper, contentBaseUrl, ownerWorkloadToken,
                 java.time.Duration.ofSeconds(5));
     }
 
