@@ -3830,7 +3830,7 @@
     "new_leaf_count": 0
   },
   "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
-  "remote_push": "CROSS_MACHINE_HANDOFF_BRANCHES",
+  "remote_push": "DEV_HANDOFF_AND_ARCHIVE_TAG",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
     "pages": 7,
@@ -6217,5 +6217,23 @@
     "tracePending": 33,
     "deploymentPerformed": false,
     "resumeRequiresUser": true
+  },
+  "dev_consolidation_20261106": {
+    "developmentBranch": "dev",
+    "base": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+    "integratedCandidate": "c4dcfc10fbcbb7b49dc42bafb65668cb5e191752",
+    "archiveTag": "archive/cloudstudy-20261106",
+    "archiveCommit": "580c17d1412beb9131ecd0e0899b724b9ec77b67",
+    "archiveIndex": "cross-machine-20261106/README.md",
+    "archiveWorktrees": 61,
+    "retirableTopicRefs": [
+      "codex/official-site-v1-20261103",
+      "codex/mobile-figma-integration-20261103",
+      "codex/cloudstudy-handoff-20261106"
+    ],
+    "githubDefaultAtReview": "master",
+    "executionStatus": "USER_PAUSED",
+    "productStatus": "IN_PROGRESS_NOT_ACCEPTED",
+    "tracePending": 33
   }
 }
