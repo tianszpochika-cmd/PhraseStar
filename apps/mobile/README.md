@@ -22,25 +22,35 @@
 
 ## B0 本地验证
 - H5 固定端口：`18183`；启动前执行根目录 `pnpm ports:check`。
-- H5 构建：`pnpm --filter @englishflow/mobile build:h5`。
+- H5 开发：`pnpm --filter @englishflow/mobile dev:h5`；构建：`pnpm --filter @englishflow/mobile build:h5`。
 - TypeScript 检查：`pnpm exec tsc --noEmit -p apps/mobile/tsconfig.json`。
 - DCloud 版本以本项目 `package.json` 与仓库锁文件为准；`src/compat/vue.ts` 兼容运行时导出差异，H5 的 `src/compat/page-lifecycle.ts` 补齐官方页面初始化调用，保证 `onLoad` 参数和 `onShow` 数据加载执行。业务页面接入前不得移除兼容层。
 
-## 官网风格移动端 UI（2026-09-22）
+## 官网风格移动端 UI（2026-09-22，历史基线）
 
-现有 31 个注册页面统一使用官网紫色、薰衣草色与柔和卡片。共享颜色位于 `packages/design-tokens/src/mobile.ts`，页面标题和公共文案位于 `packages/i18n/src/mobile-experience.ts`。页面接入 `useMobileExperience` 和 `MobilePageHeader`，主题/动效设置可即时预览，底部导航同步明暗主题。
+2026-09-22 的移动端 UI 统一交付覆盖当时注册的 31 个页面和 5 个屏幕/主题组合，结果与截图归档在 `artifacts/mobile-experience-2026-09-22/`。该 31 页 × 5 矩阵、旧阅读交互和对应结论只属于那次历史交付；当前入口不再复现，也不以它代表当前提交或完整业务验收。历史记录见 [移动端改造记录](../../docs/06-design/v2-980plus/mobile-experience-2026-09-22/README.md)。
 
-启动：`pnpm --filter @englishflow/mobile dev:h5`，固定地址 `http://127.0.0.1:18183/`。登录入口 `/#/pages/login/login`；注册和找回密码无需登录即可进入。应用继续连接 Gateway，后端不可用时显示错误或重试入口，不向正式应用注入示例账号。
+## 当前 H5 体验入口（mobile-experience.e2e.mjs）
 
-```powershell
-pnpm --filter @englishflow/mobile typecheck
+`apps/mobile/tests/mobile-experience.e2e.mjs` 是当前 H5 的可运行入口，以构建产物为运行对象、读取 `src/pages.json` 的路由清单，不启动服务器、监听端口或访问真实网络：
+
+- 匿名阶段读取 `src/pages.json` 的官方 33 条路由：公开页必须停留在原路由；受保护页必须回到登录并保留精确 `returnTo`。要求零私密请求、零意外请求、零页面异常。
+- 合成登录后的封闭练习阶段覆盖 `b11-listening`、`b11-speaking`、`b3-writing`，在 light/390、dark/390、high-contrast/320 三个代表性主题/视口组合下校验实际封闭文案、两个真实替代入口，以及键盘可操作的“回到可用学习”精确跳转 `#/pages/today/today`；不触发播放、录音、麦克风权限或业务写入。
+- 所有页面资源和合成 IAM/Gateway 响应均由 Playwright `route.fulfill` 离线提供；`result.json` 默认写入 `os.tmpdir()` 下每次运行唯一的目录，可用 `MOBILE_E2E_OUTPUT` 指定。
+
+前置条件与命令：
+
+```bash
 pnpm --filter @englishflow/mobile build:h5
-node scripts/dev/run-node-tests.mjs apps/mobile/tests
-# 先启动 18183；浏览器测试在独立上下文拦截 API，不连接真实账号或业务服务。
 node apps/mobile/tests/mobile-experience.e2e.mjs
+
+# 可选：使用已有的绝对路径 H5 产物（不启动服务）
+MOBILE_E2E_ARTIFACT=/absolute/path/to/h5 node apps/mobile/tests/mobile-experience.e2e.mjs
 ```
 
-浏览器检查覆盖 31 页 × 5 个屏幕/主题组合与认证、表单、主题、动效交互，结果与截图输出至 `artifacts/mobile-experience-2026-09-22/`。详情和业务验收边界见 [移动端改造记录](../../docs/06-design/v2-980plus/mobile-experience-2026-09-22/README.md)。本轮没有原生真机/小程序验收，也不改变 P1R 状态。
+默认产物目录为 `apps/mobile/dist/build/h5`；未构建且未设置 `MOBILE_E2E_ARTIFACT` 时入口会直接报错，不会回退到开发服务器。Playwright 通过仓库 workspace 依赖解析，无需全局安装。
+
+登录、注册、找回密码与逐页交互仍由独立套件承担，不在本入口范围内：`tests/ui-login.e2e.cjs`、`tests/ui-register.e2e.cjs`、`tests/ui-reset.e2e.cjs`，以及 `tests/ui-home.e2e.cjs`、`tests/ui-today.e2e.cjs`、`tests/ui-vocabulary.e2e.cjs`、`tests/ui-grammar.e2e.cjs`、`tests/ui-onboarding.e2e.cjs`、`tests/ui-forbidden.e2e.cjs` 等详细 UI 套件。封闭页结构还有 `tests/b11-listening-closed.test.mjs`、`tests/b11-speaking-closed.test.mjs`、`tests/b3-writing.test.mjs` 和 `tests/mobile-closed-practice-notice.test.mjs` 的静态/单元覆盖。
 
 ## B10-FE-005 / B10-FE-006 移动端切片
 
