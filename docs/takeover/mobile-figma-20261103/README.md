@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [课程书架权限 B131](reviews/INTEGRATION-B131-LEARN-HOME-OWNER-DENIAL.md) 共享读取拒绝状态与缓存隔离。
 - [客服读取 B130](reviews/INTEGRATION-B130-SUPPORT-READ-NO-SNAPSHOT.md) 普通列表与工作台读通过，数据库无快照写入。
 - [认证负向 H5 B129](reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md) 错误密码、未知账号找回、重复注册与数据库对照。
 - [学员偏好版本 B128](reviews/INTEGRATION-B128-LEARNER-PREFERENCE-VERSION.md) 网关版本条件与重试，H5 待验。

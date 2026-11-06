@@ -1,0 +1,31 @@
+{
+  "batch": "B131",
+  "root_run": "G326_SOURCE_REVIEW",
+  "integration_head": "ebcbad06",
+  "pages": [
+    "MB-007",
+    "MB-008",
+    "MB-009"
+  ],
+  "trace": "TRACE_PENDING",
+  "status": "SOURCE_AND_SYNTHETIC_REGRESSION_PASS",
+  "source_sha256": "1a78f8cf69e7250f12041516d55b244ccee6e2c28fa4c7c3a19164b51ba44cc8",
+  "test_sha256": "46144ccad0dfcb46b9e5acf384190597d54f29dfeccb66c051274273568da0a6",
+  "mobile_tests": {
+    "pass": 678,
+    "fail": 0
+  },
+  "types": "PASS",
+  "focused": {
+    "input_status": 403,
+    "classified": "forbidden",
+    "prior_home_cleared": true,
+    "queue_call_avoided": true
+  },
+  "pending": [
+    "LIVE_GATEWAY_SHELF",
+    "REAL_DENIAL_UI",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

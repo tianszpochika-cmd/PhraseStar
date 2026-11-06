@@ -878,7 +878,8 @@
         "accessibility": "LOCAL_KEYBOARD_HIGH_CONTRAST_SCREEN_READER_NOT_RUN",
         "real_api": "LOCAL_SYNTHETIC_PLAN_ENSURE_AND_TODAY_READ_PASS_B91_OTHER_NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B50-HOME.md"
+        "independent_review": "reviews/INTEGRATION-B50-HOME.md",
+        "owner_denial_b131": "evidence/ROOT-B131-LEARN-HOME-OWNER-DENIAL-20261106.json"
       },
       "current_job": null,
       "resume_evidence_20261105": "B50 exact Home02 + composed Home dictionary + strict combined fixture. Native devices and TRACE_PENDING remain.",
@@ -964,7 +965,8 @@
         "real_api": "LOCAL_CHROME_TODAY_THREE_DUE_ITEMS_MATCH_PASS_B96_COMPLETION_NOT_RUN",
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B46-WORLD-TODAY.md",
-        "today_due_rows_review": "reviews/INTEGRATION-B93-TODAY-DUE-ROWS.md"
+        "today_due_rows_review": "reviews/INTEGRATION-B93-TODAY-DUE-ROWS.md",
+        "owner_denial_b131": "evidence/ROOT-B131-LEARN-HOME-OWNER-DENIAL-20261106.json"
       },
       "current_job": null,
       "resume_evidence_20261105": "B46 final H5 measured the 390px primary at 48px and task spacing at 16px. 10 visual and 16 route checks.",
@@ -1099,7 +1101,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B47-LEARN.md"
+        "independent_review": "reviews/INTEGRATION-B47-LEARN.md",
+        "owner_denial_b131": "evidence/ROOT-B131-LEARN-HOME-OWNER-DENIAL-20261106.json"
       },
       "current_job": null,
       "resume_evidence_20261105": "49 checks and 9 shots; zero duplicate login rejection in six real compiled runs",
@@ -3716,7 +3719,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:20:37.701040+00:00",
+  "updated_at": "2026-11-06T07:27:09.789782+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6047,5 +6050,16 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B130-SUPPORT-READ-NO-SNAPSHOT.md",
     "evidence": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json"
+  },
+  "integration_batch_131_learn_home_owner_denial": {
+    "status": "SOURCE_AND_SYNTHETIC_REGRESSION_PASS",
+    "pages": [
+      "MB-007",
+      "MB-008",
+      "MB-009"
+    ],
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B131-LEARN-HOME-OWNER-DENIAL.md",
+    "evidence": "evidence/ROOT-B131-LEARN-HOME-OWNER-DENIAL-20261106.json"
   }
 }
