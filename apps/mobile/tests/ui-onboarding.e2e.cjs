@@ -3,22 +3,114 @@
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const ROOT = path.resolve(__dirname, '../../..'), BASE = 'http://127.0.0.1:18183';
-const OUT = path.resolve(ROOT, process.env.UI_AUDIT_OUTPUT || '.git/codex-local-backups/onboarding-' + Date.now());
+const ROOT = path.resolve(__dirname, '../../..');
+const ARTIFACT = path.resolve(process.env.ONBOARDING_H5_ARTIFACT || path.join(ROOT, 'apps/mobile/dist/build/h5'));
+const PAGE_ORIGIN = 'http://synthetic.invalid';
+const IAM_ORIGIN = 'https://127.0.0.1:18087';
+const GATEWAY_ORIGIN = 'http://127.0.0.1:18070';
+const BASE = PAGE_ORIGIN;
+const IAM_CREDENTIAL_PATHS = new Set(['/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/token/refresh', '/api/v1/auth/password-reset/request', '/api/v1/auth/password-reset/confirm']);
+function auditOutput() {
+  const requested = process.env.UI_AUDIT_OUTPUT;
+  if (typeof requested === 'string' && requested.length > 0) {
+    if (!path.isAbsolute(requested)) throw new Error('UI_AUDIT_OUTPUT must be an absolute path');
+    fs.mkdirSync(requested, { recursive: true });
+    return requested;
+  }
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'onboarding-ui-'));
+}
+const OUT = auditOutput();
 const GROUP = process.env.UI_AUDIT_GROUP || 'all';
 const DIAGNOSTIC = GROUP === 'restoring-diagnostic';
-fs.mkdirSync(OUT, { recursive: true });
 const sources = ['apps/mobile/src/pages/onboarding/onboarding.vue', 'packages/i18n/src/mobile-experience.ts', 'apps/mobile/src/api/learner-content.ts', 'apps/mobile/src/stores/session.ts', 'apps/mobile/src/auth/gateway-auth.ts', 'apps/mobile/src/domain/onboarding-resume.ts', 'apps/mobile/src/stores/learner-content.ts', 'apps/mobile/src/platform/pointer-feedback.ts', 'apps/mobile/tests/ui-onboarding.e2e.cjs'];
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, file))).digest('hex');
-const report = { at: new Date().toISOString(), scope: 'MB004_FORMAL_H5_SYNTHETIC_UI_ONLY', group: GROUP, browserPlugin: 'Browser plugin not available; Playwright Chromium', sourceHashes: Object.fromEntries(sources.map(file => [file, hash(file)])), checks: [], matrix: [], pageErrors: [], consoleErrors: [], fixtureRequests: [] };
+const report = { at: new Date().toISOString(), scope: 'MB004_FORMAL_H5_SYNTHETIC_UI_ONLY', group: GROUP, transport: 'playwright route.fulfill', origin: BASE, origins: { page: PAGE_ORIGIN, iam: IAM_ORIGIN, gateway: GATEWAY_ORIGIN }, artifact: ARTIFACT, realHttp: 'NOT_RUN', browserPlugin: 'Browser plugin not available; Playwright Chromium', sourceHashes: Object.fromEntries(sources.map(file => [file, hash(file)])), checks: [], matrix: [], pageErrors: [], consoleErrors: [], fixtureRequests: [], externalAborts: [] };
+function corsHeaders(request) {
+  const requested = typeof request.headerValue === 'function' ? request.headerValue('access-control-request-headers') : undefined;
+  return { 'access-control-allow-origin': PAGE_ORIGIN, 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': requested || 'authorization,content-type,idempotency-key,if-match', vary: 'origin' };
+}
 const save = () => fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(report, null, 2));
 function responseShape(value, depth = 0) { if (value === null) return 'null'; if (Array.isArray(value)) return value.length ? `array<${typeof value[0]}>` : 'array'; if (typeof value !== 'object') return typeof value; if (depth >= 3) return 'object'; return Object.fromEntries(Object.entries(value).map(([key, nested]) => [key, responseShape(nested, depth + 1)])); }
 function diagnostic(event, details = {}) { if (DIAGNOSTIC) { (report.diagnosticNetwork ||= []).push({ at: Date.now(), event, ...details }); save(); } }
 let browser;
 const releases = new Set();
-const titles = { 'zh-CN': { gate: '确认成人身份', consent: '查看同意事项', goal: '选择学习目标', assessment: '设置已完成' }, 'en-US': { gate: 'Confirm adult eligibility', consent: 'Review consent status', goal: 'Choose your learning goal', assessment: 'Your setup is saved' } };
+const titles = { 'zh-CN': { gate: '先确认你的年龄', consent: '开始学习前，先看这几条', goal: '你想先达成什么？', assessment: '设置完成，来做个定级测评' }, 'en-US': { gate: 'Confirm your age first', consent: 'Review these items before learning', goal: 'What do you want to reach first?', assessment: 'Setup is complete. Start placement.' } };
+function modeMarker(mode) {
+  if (mode === 'gate') return '#mobile-onboarding-year';
+  if (mode === 'consent') return '.onboarding-record,.onboarding-blocked,.onboarding-error';
+  if (mode === 'assessment') return '.onboarding-summary';
+  return '.onboarding-choice';
+}
+function layoutHeading(mode, locale) { return titles[locale][mode === 'unreadable' ? 'goal' : mode]; }
+async function revealExits(page) {
+  const exits = page.locator('#mobile-onboarding-exits');
+  if (await exits.count() && await exits.isVisible()) return;
+  await page.locator('.onboarding-more').click();
+  await exits.waitFor({ state: 'visible' });
+}
+async function assertMoreEscape(page) {
+  const more = page.locator('.onboarding-more');
+  const settings = page.locator('#mobile-onboarding-account-settings');
+  const menuHidden = () => page.locator('#mobile-onboarding-exits').waitFor({ state: 'hidden' });
+  const focusIs = id => page.waitForFunction(expected => document.activeElement && document.activeElement.id === expected, id);
+  await more.click();
+  await settings.waitFor();
+  assert.equal(await more.getAttribute('role'), 'button');
+  assert.equal(await more.getAttribute('tabindex'), '0');
+  assert.equal(await more.getAttribute('aria-expanded'), 'true');
+  await focusIs('mobile-onboarding-account-settings');
+  await page.keyboard.press('Escape');
+  await menuHidden();
+  assert.equal(await more.getAttribute('aria-expanded'), 'false');
+  await page.waitForFunction(() => document.activeElement && document.activeElement.classList.contains('onboarding-more'));
+  await page.keyboard.press('Enter');
+  await settings.waitFor();
+  assert.equal(await more.getAttribute('aria-expanded'), 'true');
+  await focusIs('mobile-onboarding-account-settings');
+  await page.keyboard.press('Escape');
+  await menuHidden();
+  assert.equal(await more.getAttribute('aria-expanded'), 'false');
+  await page.waitForFunction(() => document.activeElement && document.activeElement.classList.contains('onboarding-more'));
+}
+function assertLayout(facts, width, mode) {
+  assert.equal(facts.stepCount, 3);
+  assert.equal(facts.srClipped, true);
+  assert.equal(facts.overflow, false);
+  const cap = mode === 'consent' || mode === 'goal' ? 560 : 420;
+  if (width >= 360) {
+    assert.ok(Math.max(...facts.stepTops) - Math.min(...facts.stepTops) <= 1, `steps share one row: ${facts.stepTops.join(',')}`);
+    assert.equal(facts.wordmarkInline, true, 'wordmark stays on one row');
+  } else assert.equal(facts.wordmarkInsideBrand, true, 'wrapped wordmark stays inside the brand');
+  if (width <= cap) {
+    assert.ok(Math.abs(facts.panelLeft) <= 1.5, `panel left ${facts.panelLeft}`);
+    assert.ok(Math.abs(facts.panelWidth - width) <= 1.5, `panel width ${facts.panelWidth} vs ${width}`);
+  } else {
+    assert.ok(facts.bodyWidth <= cap + 0.1);
+    assert.ok(Math.abs(facts.contentLeft - (facts.viewportWidth - facts.bodyWidth) / 2) <= 2, `column left ${facts.contentLeft}`);
+  }
+  if (mode === 'gate') {
+    assert.ok(Math.abs(facts.noteGap - 16) <= 1, `note gap ${facts.noteGap}`);
+    assert.ok(Math.abs(facts.badgeWidth - 24) <= 1 && Math.abs(facts.badgeHeight - 24) <= 1, `badge ${facts.badgeWidth}x${facts.badgeHeight}`);
+    assert.equal(facts.primaryCoversYear, false);
+    if (facts.viewportHeight >= 800) {
+      assert.ok(facts.panelBottom >= facts.viewportHeight - 2, `panel bottom ${facts.panelBottom} viewport ${facts.viewportHeight}`);
+      assert.ok(facts.viewportHeight - facts.primaryBottom <= 48, `primary bottom gap ${facts.viewportHeight - facts.primaryBottom}`);
+    }
+  }
+}
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.json': 'application/json', '.map': 'application/json', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8' };
+function serveArtifact(route, url) {
+  const relative = decodeURIComponent(url.pathname) === '/' ? 'index.html' : decodeURIComponent(url.pathname).replace(/^\/+/, '');
+  const root = path.resolve(ARTIFACT);
+  const direct = path.resolve(root, relative);
+  if (direct !== root && !direct.startsWith(root + path.sep)) return route.abort();
+  const file = fs.existsSync(direct) && fs.statSync(direct).isFile() ? direct : (!path.extname(relative) && fs.existsSync(path.join(root, 'index.html')) ? path.join(root, 'index.html') : '');
+  if (!file) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'missing artifact' });
+  return route.fulfill({ status: 200, contentType: MIME[path.extname(file)] || 'application/octet-stream', body: fs.readFileSync(file) });
+}
 const purposes = ['ACCOUNT_TERMS', 'PRIVACY_NOTICE', 'ADULT_LEARNING_ELIGIBILITY'];
 const record = (type, purpose, required = true) => ({ type, purpose, required, document: { version: 'recorded-fixture-v1', digest: 'synthetic-document-digest', publishedAt: '2026-10-01T00:00:00Z' }, state: 'GRANTED', provenance: { authority: 'IAM_SERVER_RECORDED_CONSENT', recordedAt: '2026-10-02T00:00:00Z', documentSource: 'PUBLISHED_DOCUMENT_VERSION_AND_DIGEST', policySource: 'IAM_ACTIVE_POLICY_CONTROL_PLANE' }, policyRef: 'synthetic-policy-reference', policyVersion: 'fixture-policy-v1', decisionRef: 'synthetic-decision-reference' });
 async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light', height = 844) {
@@ -28,22 +120,40 @@ async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light
     const permissions = state.accepted && state.adult === 'PASSED' && state.access === 'ELIGIBLE' ? ['learning.plan.read', 'learner.target.read', 'learner.profile.read', 'learner.preference.read'] : [];
     return { principal: { subject: 'ui-onboarding-synthetic', permissions, roles: [], adultGate: state.adult }, adultGate: { status: state.adult, learningAccess: state.access }, learningAccess: state.access, permissions, consentState: { accepted: state.accepted, unsatisfiedPurposes: state.accepted ? [] : purposes, requiredPurposes: purposes, version: 'summary-not-a-published-catalog', learningAccess: state.accepted ? 'ELIGIBLE' : 'RESTRICTED' } };
   }
-  await context.route('**/*', route => { const url = new URL(route.request().url()); return url.hostname === '127.0.0.1' && url.port === '18183' ? route.continue() : route.abort(); });
-  await context.route('**/api/v1/**', async route => {
-    const request = route.request(), url = new URL(request.url()), p = url.pathname, method = request.method();
-    diagnostic('request', { method, path: p });
+  await context.route('**/*', async route => {
+    const request = route.request(), url = new URL(request.url());
+    const method = request.method();
+    if (url.origin === PAGE_ORIGIN) {
+      if (url.pathname.startsWith('/api/v1/')) {
+        report.fixtureRequests.push({ mode, method, origin: url.origin, path: url.pathname, result: 'page-origin-api-rejected' });
+        return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'NOT_FOUND' }) });
+      }
+      return serveArtifact(route, url);
+    }
+    if (url.origin !== IAM_ORIGIN && url.origin !== GATEWAY_ORIGIN) {
+      report.externalAborts.push({ mode, method, origin: url.origin, path: url.pathname });
+      diagnostic('external-abort', { method, origin: url.origin, path: url.pathname });
+      return route.abort();
+    }
+    const p = url.pathname;
+    const headers = { ...corsHeaders(request), 'content-type': 'application/json' };
+    diagnostic('request', { method, origin: url.origin, path: p });
     report.fixtureRequests.push({ mode, method, origin: url.origin, path: p });
-    const headers = { 'content-type': 'application/json', 'access-control-allow-origin': BASE, 'access-control-allow-credentials': 'true' };
-    if (method === 'OPTIONS') { await route.fulfill({ status: 204, headers, body: '' }); return; }
-    if (p === '/api/v1/iam/adult-gate') state.counts.adult++;
-    if (p === '/api/v1/auth/token/refresh') state.counts.refresh = (state.counts.refresh || 0) + 1;
-    if (p === '/api/v1/learner/targets' && method === 'GET') state.counts.targetGet = (state.counts.targetGet || 0) + 1;
-    if (p === '/api/v1/learner/targets' && method === 'PUT') state.counts.targetPut++;
-    if (p === '/api/v1/iam/consents' && method === 'PUT') state.counts.consentPut++;
+    if (method === 'OPTIONS') { await route.fulfill({ status: 204, headers: corsHeaders(request), body: '' }); return; }
+    const credentialPost = method === 'POST' && IAM_CREDENTIAL_PATHS.has(p);
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/iam/adult-gate') state.counts.adult++;
+    if (url.origin === IAM_ORIGIN && p === '/api/v1/auth/token/refresh') state.counts.refresh = (state.counts.refresh || 0) + 1;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/learner/targets' && method === 'GET') state.counts.targetGet = (state.counts.targetGet || 0) + 1;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/learner/targets' && method === 'PUT') state.counts.targetPut++;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/iam/consents' && method === 'PUT') state.counts.consentPut++;
     if (state.hold === p) await new Promise(resolve => { state.release = resolve; releases.add(resolve); diagnostic('fixture-held', { method, path: p }); state.onHeld?.(); state.onHeld = null; });
     let status = 200, data = {};
-    if (p === '/api/v1/auth/token/refresh' && state.refreshFailure) { status = 401; data = { code: 'INVALID_REFRESH_TOKEN' }; }
-    else if (p === '/api/v1/auth/login' || p === '/api/v1/auth/token/refresh') data = { accessToken: 'ui-synthetic-not-a-valid-credential', adultGate: { status: state.adult, learningAccess: state.access } };
+    if (url.origin === IAM_ORIGIN) {
+      if (!credentialPost) { status = 404; data = { code: 'NOT_FOUND' }; }
+      else if (p === '/api/v1/auth/token/refresh' && state.refreshFailure) { status = 401; data = { code: 'INVALID_REFRESH_TOKEN' }; }
+      else if (p === '/api/v1/auth/login' || p === '/api/v1/auth/token/refresh') data = { accessToken: 'ui-synthetic-not-a-valid-credential', adultGate: { status: state.adult, learningAccess: state.access } };
+      else { status = 404; data = { code: 'NOT_FOUND' }; }
+    } else if (credentialPost) { status = 404; data = { code: 'NOT_FOUND' }; }
     else if (p === '/api/v1/iam/permissions' || p === '/api/v1/iam/principal/me') data = principal();
     else if (p === '/api/v1/iam/adult-gate') {
       status = state.adultStatus;
@@ -64,7 +174,10 @@ async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light
       data = { uiLocale: locale, contentLocale: 'es-ES', timezone: 'Asia/Shanghai', themeMode: theme === 'dark' ? 'DARK' : 'LIGHT', highContrast: theme === 'high-contrast', motionMode: 'REDUCED', stateVersion: 0 };
     } else if (p === '/api/v1/learner/profile') data = { stateVersion: 0 };
     else if (p === '/api/v1/auth/logout') data = { success: true };
-    else if (p.includes('/plan')) data = { items: [], planVersion: 0 };
+    else if (p === '/api/v1/learning/today' || p.includes('/plan')) data = { items: [], planVersion: 0 };
+    else { status = 404; data = { code: 'NOT_FOUND' }; }
+    const recorded = report.fixtureRequests.at(-1);
+    if (recorded && recorded.origin === url.origin && recorded.path === p && recorded.method === method) recorded.result = status === 404 ? 'not-found' : 'fulfilled';
     diagnostic('response', { method, path: p, status, shape: responseShape(data) });
     await route.fulfill({ status, headers, body: JSON.stringify(data) });
   });
@@ -74,11 +187,11 @@ async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light
   await page.goto(`${BASE}/#/pages/login/login?theme=${theme}&uiLocale=${locale}&returnTo=%2Fpages%2Fonboarding%2Fonboarding`, { waitUntil: 'networkidle' });
   await page.locator('#mobile-login-identifier').fill('ui-onboarding-synthetic'); await page.locator('#mobile-login-password').fill('SyntheticOnly123'); await page.locator('.login-submit').click();
   await page.waitForURL(url => url.hash.startsWith('#/pages/onboarding/onboarding'));
-  await page.waitForFunction(expected => {
-    let component = document.querySelector('.yx-onboarding')?.__vueParentComponent;
-    while (component && !('step' in component.setupState)) component = component.parent;
-    return component && component.setupState.step === expected && !component.setupState.busy;
-  }, mode === 'unreadable' ? 'goal' : mode);
+  await page.waitForFunction(({ heading, marker }) => {
+    const root = document.querySelector('.yx-onboarding');
+    const title = document.getElementById('mobile-onboarding-title');
+    return Boolean(root && root.getAttribute('aria-busy') === 'false' && title && title.textContent === heading && root.querySelector(marker));
+  }, { heading: layoutHeading(mode, locale), marker: modeMarker(mode) });
   return { context, page, state, hold: p => { state.hold = p; return new Promise(resolve => { state.onHeld = resolve; }); }, release: () => { state.hold = null; if (state.release) { releases.delete(state.release); state.release(); state.release = null; } } };
 }
 async function snapshot(page) {
@@ -87,21 +200,40 @@ async function snapshot(page) {
     const luminance = color => color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => { const n = value / 255; return n <= .04045 ? n / 12.92 : ((n + .055) / 1.055) ** 2.4; }).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
     const contrast = node => { const a = luminance(getComputedStyle(node).color), b = luminance(getComputedStyle(root).backgroundColor); return (Math.max(a, b) + .05) / (Math.min(a, b) + .05); };
     const boundaries = [...root.querySelectorAll('.onboarding-input,.onboarding-choice:not(.is-selected),.onboarding-quota:not(.is-selected),.onboarding-check-row .uni-checkbox-input')].map(node => { const css = getComputedStyle(node), edge = luminance(css.borderTopColor), fill = luminance(css.backgroundColor), outside = luminance(getComputedStyle(root).backgroundColor); return { control: node.className, border: css.borderTopColor, againstFill: (Math.max(edge, fill) + .05) / (Math.min(edge, fill) + .05), againstPage: (Math.max(edge, outside) + .05) / (Math.min(edge, outside) + .05) }; });
-    return { url: location.hash, title: title?.textContent, titleFont: getComputedStyle(title).fontSize, titleWeight: getComputedStyle(title).fontWeight, descriptionFont: getComputedStyle(document.querySelector('.onboarding-description')).fontSize, brandIcon: document.querySelector('.onboarding-brand .app-icon').getBoundingClientRect().width, overflow: document.documentElement.scrollWidth > innerWidth + 1, bodyWidth: document.querySelector('.onboarding-content').getBoundingClientRect().width, inputFont: document.querySelector('#mobile-onboarding-year') ? getComputedStyle(document.querySelector('#mobile-onboarding-year')).fontSize : null, idleErrors: root.querySelectorAll('.onboarding-error').length, overlay: document.querySelectorAll('vite-error-overlay').length, rawKeys: /mobile\.onboarding\.|\{(?:count|max)\}/.test(root.textContent), titleContrast: contrast(title), descriptionContrast: contrast(document.querySelector('.onboarding-description')), boundaries, bodyGap: getComputedStyle(document.querySelector('.onboarding-body')).rowGap, primaryFont: root.querySelector('.onboarding-primary') ? getComputedStyle(root.querySelector('.onboarding-primary')).fontSize : null, targets: [...root.querySelectorAll('uni-button,uni-checkbox,.onboarding-check-row')].map(node => { const r = node.getBoundingClientRect(); return { width: r.width, height: r.height }; }) };
+    const box = node => { if (!node) return null; const r = node.getBoundingClientRect(); return { top: r.top, left: r.left, right: r.right, bottom: r.bottom, width: r.width, height: r.height }; };
+    const steps = [...root.querySelectorAll('.onboarding-progress-item')].map(node => box(node));
+    const name = box(root.querySelector('.onboarding-brand-name'));
+    const mark = box(root.querySelector('.onboarding-mark'));
+    const brand = box(root.querySelector('.onboarding-brand'));
+    const panel = box(root.querySelector('.onboarding-panel'));
+    const primary = box(root.querySelector('.onboarding-primary'));
+    const year = box(document.querySelector('#mobile-onboarding-year'));
+    const note = box(root.querySelector('.onboarding-note-card'));
+    const tip = box(root.querySelector('.onboarding-tip'));
+    const badge = box(root.querySelector('.onboarding-note-badge'));
+    const content = box(root.querySelector('.onboarding-content'));
+    const sr = root.querySelector('.onboarding-sr');
+    const srStyle = sr ? getComputedStyle(sr) : null;
+    return { url: location.hash, title: title?.textContent, titleFont: getComputedStyle(title).fontSize, titleWeight: getComputedStyle(title).fontWeight, descriptionFont: getComputedStyle(document.querySelector('.onboarding-description')).fontSize, brandIcon: document.querySelector('.onboarding-brand .app-icon').getBoundingClientRect().width, overflow: document.documentElement.scrollWidth > innerWidth + 1, bodyWidth: content.width, contentLeft: content.left, inputFont: document.querySelector('#mobile-onboarding-year') ? getComputedStyle(document.querySelector('#mobile-onboarding-year')).fontSize : null, idleErrors: root.querySelectorAll('.onboarding-error').length, overlay: document.querySelectorAll('vite-error-overlay').length, rawKeys: /mobile\.onboarding\.|\{(?:count|max)\}/.test(root.textContent), titleContrast: contrast(title), descriptionContrast: contrast(document.querySelector('.onboarding-description')), boundaries, bodyGap: getComputedStyle(document.querySelector('.onboarding-body')).rowGap, primaryFont: root.querySelector('.onboarding-primary') ? getComputedStyle(root.querySelector('.onboarding-primary')).fontSize : null, targets: [...root.querySelectorAll('uni-button,uni-checkbox,.onboarding-check-row')].map(node => { const r = node.getBoundingClientRect(); return { width: r.width, height: r.height }; }), stepTops: steps.map(item => item.top), stepCount: steps.length, wordmarkInline: Boolean(name && mark && Math.abs((name.top + name.bottom) / 2 - (mark.top + mark.bottom) / 2) <= 2 && mark.left >= name.right - 1), wordmarkInsideBrand: Boolean(name && mark && brand && mark.right <= brand.right + 1 && mark.left >= brand.left - 1), panelLeft: panel ? panel.left : null, panelWidth: panel ? panel.width : null, panelTop: panel ? panel.top : null, panelBottom: panel ? panel.bottom : null, noteGap: note && tip ? tip.top - note.bottom : null, badgeWidth: badge ? badge.width : null, badgeHeight: badge ? badge.height : null, primaryTop: primary ? primary.top : null, primaryBottom: primary ? primary.bottom : null, yearBottom: year ? year.bottom : null, primaryCoversYear: Boolean(primary && year && primary.top < year.bottom - 1 && primary.bottom > year.top + 1 && primary.left < year.right && primary.right > year.left), srClipped: Boolean(srStyle && srStyle.position === 'absolute' && parseFloat(srStyle.width) <= 1), viewportWidth: innerWidth, viewportHeight: innerHeight };
   });
 }
 async function smoke() {
   for (const mode of ['gate', 'consent', 'goal', 'assessment']) {
     const current = await open(mode), { page } = current;
     const facts = await snapshot(page); assert.equal(facts.title, titles['zh-CN'][mode]); assert.equal(facts.rawKeys, false); assert.equal(facts.overlay, 0); assert.equal(facts.overflow, false);
+    assertLayout(facts, 390, mode);
     await page.screenshot({ path: path.join(OUT, `${mode}-390-smoke.png`), fullPage: true });
     if (mode === 'gate') {
+      assert.equal(await page.locator('#mobile-onboarding-year').inputValue(), '');
+      assert.equal(await page.locator('#mobile-onboarding-year').getAttribute('placeholder'), '例如 1995');
+      assert.equal(await page.getByRole('checkbox').getAttribute('aria-checked'), 'false');
       assert.equal(await page.locator('#mobile-onboarding-year').getAttribute('name'), 'birthYear'); assert.equal(facts.inputFont, '16px');
       await page.locator('.onboarding-check-row').click();
-      assert.equal(await page.evaluate(() => { let c = document.querySelector('.yx-onboarding').__vueParentComponent; while (c && !('ageConfirmed' in c.setupState)) c = c.parent; return c.setupState.ageConfirmed; }), true, 'Entire checkbox row changes once');
+      assert.equal(await page.getByRole('checkbox').getAttribute('aria-checked'), 'true', 'Entire checkbox row changes once');
       assert.equal(await page.getByRole('checkbox').count(), 1, 'True checkbox needs accessible role');
       const checkbox = page.getByRole('checkbox'); await checkbox.click(); assert.equal(await checkbox.getAttribute('aria-checked'), 'false');
       await checkbox.focus(); await page.keyboard.press('Space'); assert.equal(await checkbox.getAttribute('aria-checked'), 'true'); await page.keyboard.press('Enter'); assert.equal(await checkbox.getAttribute('aria-checked'), 'false');
+      await assertMoreEscape(page);
     } else if (mode === 'consent') { assert.equal(await page.locator('.onboarding-primary').count(), 0); assert.equal(await page.locator('.onboarding-record').count(), 4); assert.equal(current.state.counts.consentPut, 0); }
     else if (mode === 'goal') { assert.equal(await page.locator('.onboarding-choice').count(), 4); assert.equal(await page.locator('.onboarding-quota').count(), 4); }
     else { assert.equal(await page.locator('.onboarding-choice').count(), 0); assert.equal(await page.locator('.onboarding-summary').count(), 1); }
@@ -112,9 +244,10 @@ async function matrix() {
   for (const mode of process.env.UI_MATRIX_MODES ? process.env.UI_MATRIX_MODES.split(',') : ['gate', 'consent', 'goal', 'assessment']) for (const width of [320, 390, 768, 1280]) for (const locale of ['zh-CN', 'en-US']) for (const theme of ['light', 'dark', 'high-contrast', 'system']) {
     const current = await open(mode, width, locale, theme), { page } = current;
     const facts = await snapshot(page); assert.equal(facts.title, titles[locale][mode]); assert.equal(facts.rawKeys, false); assert.equal(facts.overlay, 0); assert.equal(facts.overflow, false);
-    assert.equal(facts.titleFont, '28px'); assert.equal(facts.titleWeight, '650'); assert.equal(facts.descriptionFont, '14px'); assert.equal(facts.brandIcon, 25); assert.ok(facts.targets.every(target => target.width >= 44 && target.height >= 44));
-    assert.ok(facts.bodyWidth <= (mode === 'consent' || mode === 'goal' ? 560.1 : 420.1)); assert.ok(facts.titleContrast >= 4.5 && facts.descriptionContrast >= 4.5); assert.equal(facts.bodyGap, '24px'); if (facts.primaryFont) assert.equal(facts.primaryFont, '16px');
+    assert.equal(facts.titleFont, '24px'); assert.equal(facts.titleWeight, '700'); assert.equal(facts.descriptionFont, '14px'); assert.equal(facts.brandIcon, 40); assert.ok(facts.targets.every(target => target.width >= 44 && target.height >= 44));
+    assert.ok(facts.bodyWidth <= (mode === 'consent' || mode === 'goal' ? 560.1 : 420.1)); assert.ok(facts.titleContrast >= 4.5 && facts.descriptionContrast >= 4.5); assert.equal(facts.bodyGap, '16px'); if (facts.primaryFont) assert.equal(facts.primaryFont, '16px');
     assert.ok(facts.boundaries.every(edge => edge.againstFill >= 3 && edge.againstPage >= 3), 'Unselected control boundaries need 3:1 against fill and page');
+    assertLayout(facts, width, mode);
     if (mode === 'gate') {
       assert.equal(facts.inputFont, '16px');
       if (width === 390) {
@@ -250,7 +383,7 @@ async function textAndPointer() {
       for (const [element, size] of sizes) if (size) element.style.setProperty('font-size', size * 2 + 'px', 'important');
       const style = document.createElement('style'); style.textContent = '.yx-onboarding .onboarding-error{font-size:28px!important}'; document.head.append(style);
     });
-    await p.locator('.onboarding-exits').scrollIntoViewIfNeeded(); const facts = await snapshot(p);
+    await revealExits(p); await p.locator('.onboarding-exits').scrollIntoViewIfNeeded(); const facts = await snapshot(p);
     assert.equal(facts.overflow, false); assert.equal(facts.rawKeys, false); assert.ok(facts.targets.every(target => target.width >= 44 && target.height >= 44));
     if (mode === 'gate') assert.equal(facts.inputFont, '32px');
     await p.screenshot({ path: path.join(OUT, `${mode}-320-${locale}-200-short.png`), fullPage: true });
@@ -281,7 +414,7 @@ async function textAndPointer() {
       await year.fill('1990'); await button.click(); await p.locator('.onboarding-error[role=alert]').last().waitFor();
       assert.equal(next.state.counts.adult, 1); assert.equal(await p.locator('.yx-onboarding').getAttribute('aria-busy'), 'false');
       await year.fill('1820'); await p.keyboard.press('Enter'); await p.locator('#mobile-onboarding-year-error').waitFor();
-      const settings = p.getByRole('button', { name: 'Account settings', exact: true }); await settings.scrollIntoViewIfNeeded();
+      await revealExits(p); const settings = p.getByRole('button', { name: 'Account settings', exact: true }); await settings.scrollIntoViewIfNeeded();
       await year.evaluate(node => node.focus({ preventScroll: true }));
       const target = await settings.evaluate(node => { const r = node.getBoundingClientRect(); return { x:r.x+r.width/2,y:r.y+r.height/2 }; });
       await p.mouse.move(target.x,target.y);
@@ -296,11 +429,11 @@ async function restoring() {
   for (const failed of [false, true]) {
     const owner = await open('consent'), p = owner.page;
     if (DIAGNOSTIC) await installRestoringDiagnostic(p);
-    await p.getByRole('button', { name: '账号设置', exact: true }).click(); await p.waitForURL(url => url.hash.startsWith('#/pages/settings/settings'));
+    await revealExits(p); await p.getByRole('button', { name: '账号设置', exact: true }).click(); await p.waitForURL(url => url.hash.startsWith('#/pages/settings/settings'));
     owner.state.accepted = true; owner.state.targetClaimsStale = 'transient'; owner.state.refreshFailure = failed;
     const held = owner.hold('/api/v1/auth/token/refresh');
-    await p.evaluate(async () => { const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); await getUniRuntime().navigateTo({ url: '/pages/onboarding/onboarding' }); });
-    await p.waitForFunction(() => { let c = document.querySelector('.yx-onboarding')?.__vueParentComponent; while(c&&!('restoring' in c.setupState))c=c.parent; return c && c.setupState.restoring && c.setupState.reading && c.setupState.busy; });
+    await p.evaluate(async () => { const runtime = globalThis.uni; if (runtime && typeof runtime.navigateTo === 'function') await runtime.navigateTo({ url: '/pages/onboarding/onboarding' }); else window.location.hash = '#/pages/onboarding/onboarding'; });
+    await p.waitForFunction(() => document.querySelector('.yx-onboarding')?.getAttribute('aria-busy') === 'true');
     await held;
     assert.equal(owner.state.counts.refresh, 1); diagnostic('fixture-release-requested', { refreshFailure: failed }); owner.release();
     if (failed) {
@@ -356,7 +489,7 @@ async function checkboxMark(page) {
 async function race() {
   const hidden = await open(), h = hidden.page;
   await h.locator('#mobile-onboarding-year').fill('1990'); await h.locator('.onboarding-check-row').click(); hidden.hold('/api/v1/iam/adult-gate'); await h.locator('.onboarding-primary').click(); await h.locator('.yx-onboarding[aria-busy=true]').waitFor();
-  await h.evaluate(async () => { let c = document.querySelector('.yx-onboarding').__vueParentComponent; while(c&&!('birthYear' in c.setupState))c=c.parent; const s=c.setupState; window.__hiddenDraft=()=>s.birthYear===''&&!s.ageConfirmed&&!s.busy; const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); await getUniRuntime().navigateTo({ url: '/pages/settings/settings' }); });
+  await h.evaluate(async () => { let c = document.querySelector('.yx-onboarding').__vueParentComponent; while(c&&!('birthYear' in c.setupState))c=c.parent; const s=c.setupState; window.__hiddenDraft=()=>s.birthYear===''&&!s.ageConfirmed&&!s.busy; const runtime = globalThis.uni; if (runtime && typeof runtime.navigateTo === 'function') await runtime.navigateTo({ url: '/pages/settings/settings' }); else window.location.hash = '#/pages/settings/settings'; });
   await h.waitForURL(url => url.hash.startsWith('#/pages/settings/settings')); hidden.release();
   await h.waitForFunction(() => window.__hiddenDraft()); await h.waitForLoadState('networkidle');
   assert.ok(h.url().includes('/pages/settings/settings')); assert.equal(hidden.state.counts.consentPut, 0); assert.equal(hidden.state.counts.targetPut, 0);
@@ -367,17 +500,56 @@ async function race() {
   await i.waitForURL(url => url.hash.startsWith('#/pages/login/login')); identity.release(); await i.waitForLoadState('networkidle'); assert.equal(identity.state.counts.targetPut, 0); assert.equal(identity.state.counts.consentPut, 0);
   report.checks.push({ name: 'identity-revocation-late-adult-stays-public-no-write', result: 'PASS' }); save(); await identity.context.close();
   const navigation = await open('assessment'), n = navigation.page;
-  await n.evaluate(async () => { const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); const original = getUniRuntime().navigateTo.bind(getUniRuntime()); window.__navigationRejects = 0; globalThis.uni = { ...globalThis.uni, navigateTo: options => { if (options.url.startsWith('/pages/assessment/')) { window.__navigationRejects++; throw new Error('Synthetic navigation failure'); } return original(options); } }; });
+  await n.evaluate(async () => { const original = globalThis.uni.navigateTo.bind(globalThis.uni); window.__navigationRejects = 0; globalThis.uni = { ...globalThis.uni, navigateTo: options => { if (options.url.startsWith('/pages/assessment/')) { window.__navigationRejects++; throw new Error('Synthetic navigation failure'); } return original(options); } }; });
   await n.locator('.onboarding-primary').click(); await n.getByText('页面未能打开，请重试。', { exact: true }).waitFor({ timeout: 3000 });
   assert.equal(await n.locator('.yx-onboarding').getAttribute('aria-busy'), 'false'); assert.equal(await n.locator('.onboarding-primary').isDisabled(), false); assert.ok(n.url().includes('/pages/onboarding/onboarding'));
   assert.equal(await n.evaluate(() => window.__navigationRejects), 1);
   report.checks.push({ name: 'placement-navigation-rejection-unlocks-and-reports', result: 'PASS' }); save(); await navigation.context.close();
   const exiting = await open('gate'), x = exiting.page;
-  await x.getByRole('button', { name: '退出登录', exact: true }).click(); await x.waitForURL(url => url.hash.startsWith('#/pages/login/login'));
+  await revealExits(x); await x.getByRole('button', { name: '退出登录', exact: true }).click(); await x.waitForURL(url => url.hash.startsWith('#/pages/login/login'));
   report.checks.push({ name: 'normal-exit-identity-change-public-route', result: 'PASS' }); save(); await exiting.context.close();
+}
+async function layout() {
+  for (const mode of ['gate', 'consent', 'goal', 'assessment']) for (const width of [320, 390, 768]) {
+    const current = await open(mode, width), { page } = current;
+    const facts = await snapshot(page);
+    assert.equal(facts.title, titles['zh-CN'][mode]); assert.equal(facts.rawKeys, false); assert.equal(facts.overlay, 0);
+    assertLayout(facts, width, mode);
+    if (mode === 'gate') {
+      assert.equal(await page.locator('#mobile-onboarding-year').inputValue(), '');
+      assert.equal(await page.getByRole('checkbox').getAttribute('aria-checked'), 'false');
+      if (width === 390) {
+        await assertMoreEscape(page);
+      }
+    }
+    if (mode === 'goal' && width === 390) {
+      await page.locator('[data-goal-code=FOUNDATION]').click();
+      assert.equal(await page.locator('[data-goal-code=FOUNDATION]').getAttribute('aria-pressed'), 'true');
+      await page.getByText('这个选择还只在本页，保存后才会写入服务端。', { exact: true }).waitFor();
+      assert.equal(current.state.counts.targetPut, 0);
+    }
+    await page.screenshot({ path: path.join(OUT, `${mode}-${width}-layout.png`), fullPage: true });
+    report.checks.push({ name: `layout-${mode}-${width}`, facts, result: 'PASS' }); save(); await current.context.close();
+  }
+  const english = await open('gate', 390, 'en-US'), { page } = english;
+  const facts = await snapshot(page);
+  assert.equal(facts.title, titles['en-US'].gate);
+  assertLayout(facts, 390, 'gate');
+  const renderedYear = await page.evaluate(() => {
+    const input = document.querySelector('#mobile-onboarding-year');
+    const overlay = input?.closest('uni-input')?.querySelector('.uni-input-placeholder');
+    const shown = overlay ? getComputedStyle(overlay) : null;
+    return { native: input ? input.getAttribute('placeholder') : undefined, overlay: overlay ? overlay.textContent.trim() : null, overlayVisible: Boolean(overlay && overlay.getClientRects().length && shown.visibility !== 'hidden' && shown.display !== 'none') };
+  });
+  assert.equal(renderedYear.native, null);
+  assert.equal(renderedYear.overlayVisible, true);
+  assert.equal(renderedYear.overlay, 'e.g. 1995');
+  await page.screenshot({ path: path.join(OUT, 'gate-390-en-layout.png'), fullPage: true });
+  report.checks.push({ name: 'layout-gate-390-en', facts, result: 'PASS' }); save(); await english.context.close();
 }
 (async () => {
   browser = await chromium.launch();
+  if (GROUP === 'layout') await layout();
   if (['smoke', 'all'].includes(GROUP)) await smoke();
   if (['matrix', 'all'].includes(GROUP)) await matrix();
   if (['controls', 'all'].includes(GROUP)) await controls();

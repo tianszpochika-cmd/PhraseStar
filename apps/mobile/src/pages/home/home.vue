@@ -2,18 +2,22 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import AppIcon from '../../components/AppIcon.vue'
+import FigmaAsset from '../../components/FigmaAsset.vue'
+import { homeAssets, homeDarkAssets } from '../../theme/figma-r4-assets'
 import { mobileT, useMobileExperience } from '../../platform/experience'
 import { mobileI18n } from '../../platform/v2-foundation'
 import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
 import { ensureMobilePageAccess, currentMobilePagePath } from '../../auth/navigation'
 import type { MobileTask } from '../../domain/learner-content'
-import { hasPlacementEntryReached, isPlacementSatisfied, selectOnboardingResumeStep, showOnboardingGuide } from '../../domain/onboarding-resume'
+import { homeContentHref, homeGuidePath, homePrivateReadAllowed, homeProgressPercent, homeStillOnPage, homeTaskHref } from '../../domain/home-page'
+import { hasPlacementEntryReached, isPlacementSatisfied, onboardingRemainingStepLabels, selectOnboardingResumeStep, showOnboardingGuide } from '../../domain/onboarding-resume'
 import { isAccessibleContent, shelfSearchState, type EmptyReason, type ShelfSearchState } from '../../domain/plan-today'
 import { shelfNote } from '../../domain/content-release'
 import { useLearnerContentStore } from '../../stores/learner-content'
 import { useSessionStore } from '../../stores/session'
 
-const { experienceStyle, experienceMotion } = useMobileExperience()
+const { experienceStyle, experienceMotion, theme } = useMobileExperience()
+const art = computed(() => theme.value === 'dark' ? homeDarkAssets : homeAssets)
 const store = useLearnerContentStore()
 const session = useSessionStore()
 
@@ -74,11 +78,17 @@ function isThenable(value: unknown): value is Promise<unknown> {
 }
 
 const homeReady = computed(() => Boolean(store.home) && (store.homeStatus === 'ready' || store.homeStatus === 'empty' || store.homeStatus === 'unavailable'))
-const hasConfirmedProgress = computed(() => Boolean(store.home?.tasks.length && store.home.targetMinutes > 0 && !store.home.stale))
 const progressPercent = computed(() => {
-  if (!hasConfirmedProgress.value || !store.home) return null
-  return Math.min(100, store.home.completedMinutes / store.home.targetMinutes * 100)
+  const home = store.home
+  if (!home) return null
+  return homeProgressPercent({
+    completedMinutes: home.completedMinutes,
+    targetMinutes: home.targetMinutes,
+    stale: home.stale,
+    taskCount: home.tasks.length,
+  })
 })
+const hasConfirmedProgress = computed(() => progressPercent.value !== null)
 const progressValue = computed(() => progressPercent.value === null ? 0 : Math.round(progressPercent.value))
 const progressStale = computed(() => Boolean(store.home?.stale && store.home.tasks.length))
 const showProgress = computed(() => hasConfirmedProgress.value || progressStale.value)
@@ -86,6 +96,26 @@ const progressText = computed(() => {
   if (hasConfirmedProgress.value && store.home) return tr('progress', { done: store.home.completedMinutes, target: store.home.targetMinutes })
   if (progressStale.value) return tr('progressStale')
   return ''
+})
+const completedTaskCount = computed(() => store.home?.tasks.filter((task) => task.status === 'COMPLETED').length ?? 0)
+const openTaskCount = computed(() => store.home?.tasks.filter((task) => task.status === 'AVAILABLE' || task.status === 'IN_PROGRESS').length ?? 0)
+const greeting = computed(() => {
+  const hour = new Date().getHours()
+  if (hour < 5) return tr('greetingNight')
+  if (hour < 11) return tr('greetingMorning')
+  if (hour < 14) return tr('greetingNoon')
+  if (hour < 18) return tr('greetingAfternoon')
+  return tr('greetingEvening')
+})
+const heroMeta = computed(() => {
+  const home = store.home
+  if (!home || home.tasks.length === 0) return ''
+  return tr('heroMeta', { done: completedTaskCount.value, total: home.tasks.length, minutes: home.targetMinutes })
+})
+const heroRemain = computed(() => openTaskCount.value > 0 ? tr('heroRemain', { count: openTaskCount.value }) : '')
+const ringStyle = computed(() => {
+  if (progressPercent.value === null) return ''
+  return `conic-gradient(from -90deg, var(--yx-r4-brand, #5935b8) 0 ${progressPercent.value}%, transparent ${progressPercent.value}% 100%)`
 })
 
 const publishedContent = computed(() => (store.home?.content ?? []).filter((item) => isAccessibleContent(item)))
@@ -103,16 +133,12 @@ const shelf = computed((): ShelfSearchState => shelfSearchState(
 const resultCount = computed(() => tr('resultCount', { count: visibleContent.value.length, total: publishedContent.value.length }))
 
 function isActionable(task: MobileTask): boolean {
-  return (task.status === 'AVAILABLE' || task.status === 'IN_PROGRESS') && Boolean(task.contentCode)
+  return homeTaskHref(task) !== null
 }
 const firstTaskId = computed(() => store.home?.tasks.find(isActionable)?.id ?? '')
 function isFirstTask(task: MobileTask): boolean { return task.id === firstTaskId.value && isActionable(task) }
 function primaryLabel(task: MobileTask): string { return task.status === 'IN_PROGRESS' ? tr('continueLearning') : tr('startLearning') }
 function secondaryLabel(task: MobileTask): string { return task.status === 'IN_PROGRESS' ? tr('continueShort') : tr('viewShort') }
-function taskMeta(task: MobileTask): string {
-  if (task.status === 'UNAVAILABLE') return ''
-  return task.minutes > 0 ? tr('minutes', { count: task.minutes }) : ''
-}
 function taskDescription(task: MobileTask): string {
   if (task.status === 'UNAVAILABLE' && task.description === (task.unavailableReason ?? '')) return ''
   return task.description
@@ -126,6 +152,30 @@ function stateIcon(task: MobileTask): 'check' | 'lock' | 'x' {
   if (task.status === 'COMPLETED') return 'check'
   if (task.status === 'LOCKED') return 'lock'
   return 'x'
+}
+const heroTask = computed(() => store.home?.tasks.find(isActionable) ?? null)
+const heroLabel = computed(() => (heroTask.value ? primaryLabel(heroTask.value) : ''))
+function openHero(): void {
+  const task = heroTask.value
+  if (task) openTask(task)
+}
+function taskArt(task: MobileTask): { src: string; size: number } {
+  const assets = art.value
+  if (task.status === 'COMPLETED') return { src: assets.taskDone, size: 26 }
+  if (task.status === 'IN_PROGRESS') return { src: assets.taskPencil, size: 26 }
+  return { src: assets.book, size: 28 }
+}
+function taskStatusLine(task: MobileTask): string {
+  const minutes = task.minutes > 0 ? tr('minutes', { count: task.minutes }) : ''
+  const status = task.status === 'COMPLETED'
+    ? tr('statusCompleted')
+    : task.status === 'IN_PROGRESS'
+      ? tr('statusInProgress')
+      : task.status === 'AVAILABLE'
+        ? tr('statusNew')
+        : ''
+  if (!status) return stateLabel(task)
+  return minutes ? `${status} · ${minutes}` : status
 }
 
 const PLAN_CONFLICT_NOTICE = '计划版本已变化，请重新读取。'
@@ -200,9 +250,20 @@ const guideLabel = computed(() => {
 })
 const guideStepsText = computed(() => {
   const step = guideStep.value
-  return step && step !== 'rejected' ? tr(`stepsText.${step}`) : ''
+  const facts = store.onboardingResume
+  // Assessment keeps the ready line only. Do not list the single 定级 step.
+  if (!facts || !step || step === 'rejected' || step === 'assessment') return ''
+  const labels = onboardingRemainingStepLabels(facts, placementDone.value)
+  if (!labels.length) return ''
+  if (String(mobileI18n.locale).toLowerCase().startsWith('en')) return tr(`stepsText.${step}`)
+  return labels.join('、')
 })
-const guidePath = computed(() => guideStep.value === 'assessment' ? '/pages/assessment/assessment' : '/pages/onboarding/onboarding')
+const guideRemainingText = computed(() => {
+  if (!guideStepsText.value) return ''
+  if (String(mobileI18n.locale).toLowerCase().startsWith('en')) return tr('guideRemaining', { steps: guideStepsText.value })
+  return `剩余步骤：${guideStepsText.value}`
+})
+const guidePath = computed(() => homeGuidePath(guideStep.value) ?? '/pages/onboarding/onboarding')
 const assessmentGuideVisible = computed(() => guideVisible.value && guideStep.value === 'assessment')
 const secondaryVisible = computed(() => accessChecked.value && session.isAuthenticated && (store.homeStatus === 'ready' || store.homeStatus === 'empty' || store.homeStatus === 'unavailable'))
 const confirmedAnonymous = computed(() => pageVisible.value && !session.isAuthenticated && (session.status === 'unauthenticated' || session.status === 'error'))
@@ -227,6 +288,7 @@ async function recoverLogin(): Promise<void> {
   try {
     const allowed = await ensureMobilePageAccess('/pages/home/home')
     if (token !== loginSeq || epoch !== pageEpoch || !pageVisible.value) return
+    if (!homeStillOnPage(currentMobilePagePath())) return
     if (session.isAuthenticated) { maybeEnter(); return }
     if (allowed) { maybeEnter(); return }
     if (currentMobilePagePath() !== before) return
@@ -249,7 +311,7 @@ const statusMessages = computed(() => {
     skip.add(tr('guideContinueSetup'))
     skip.add(tr('guideAssessmentReady'))
     skip.add(tr('takeAssessment'))
-    skip.add(tr('guideRemaining', { steps: guideStepsText.value }))
+    skip.add(guideRemainingText.value)
   }
   const seen = new Set<string>()
   const list: Array<{ id: string; text: string }> = []
@@ -266,32 +328,36 @@ const statusMessages = computed(() => {
 })
 
 async function loadGuide(token: EntryToken): Promise<void> {
+  if (!homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true) || session.adultGate === 'REJECTED' || typeof store.loadOnboardingResume !== 'function') return
   guideReady.value = false
-  if (!entryCurrent(token) || session.adultGate === 'REJECTED' || typeof store.loadOnboardingResume !== 'function') return
   try {
     await store.loadOnboardingResume()
-    if (entryCurrent(token)) guideReady.value = true
+    if (homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true)) guideReady.value = true
   } catch {
     if (entryCurrent(token)) guideReady.value = false
   }
 }
 
 async function readEntry(token: EntryToken, key: string): Promise<void> {
+  if (!homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true)) {
+    if (activeEntry?.seq === token.seq) activeEntry = null
+    return
+  }
   accessChecked.value = true
   pageOwnerKey = key
   reading.value = true
   try {
     await store.loadHome()
-    if (entryCurrent(token)) await loadGuide(token)
+    if (homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true)) await loadGuide(token)
   } finally {
     if (entryCurrent(token)) {
       reading.value = false
-      enteredEpoch = pageEpoch
+      if (homeStillOnPage(currentMobilePagePath())) enteredEpoch = pageEpoch
       activeEntry = null
     } else if (activeEntry?.seq === token.seq) {
       activeEntry = null
     }
-    if (pageVisible.value && ownerKey() !== key) maybeEnter()
+    if (pageVisible.value && ownerKey() !== key && homeStillOnPage(currentMobilePagePath())) maybeEnter()
   }
 }
 
@@ -310,9 +376,11 @@ async function runEntry(): Promise<void> {
   reading.value = false
   let allowed = false
   try { allowed = await ensureMobilePageAccess('/pages/home/home') } catch { allowed = false }
-  if (!entryCurrent(token) || !allowed) {
+  // onHide can lag behind the hash. Do not read home after the top page has left.
+  const mayRead = homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), allowed)
+  if (!mayRead) {
     if (activeEntry?.seq === token.seq) activeEntry = null
-    if (!allowed && pageVisible.value && ownerKey() === key) return
+    if (pageVisible.value && ownerKey() === key && (!allowed || !homeStillOnPage(currentMobilePagePath()))) return
     maybeEnter()
     return
   }
@@ -389,13 +457,15 @@ async function runPlanEmpty(): Promise<void> {
 }
 
 function openTask(task: MobileTask): void {
-  if (!isActionable(task) || !task.contentCode || busy.value) return
-  void navigate(`/pages/learn/learn?contentCode=${encodeURIComponent(task.contentCode)}&taskId=${encodeURIComponent(task.id)}`, `task-${task.id}`)
+  const href = homeTaskHref(task)
+  if (!href || busy.value) return
+  void navigate(href, `task-${task.id}`)
 }
 
 function openCourse(contentCode: string): void {
-  if (busy.value) return
-  void navigate(`/pages/learn/learn?contentCode=${encodeURIComponent(contentCode)}`, `course-${contentCode}`)
+  const href = homeContentHref(contentCode)
+  if (!href || busy.value) return
+  void navigate(href, `course-${contentCode}`)
 }
 
 function onCourseInput(event: unknown): void {
@@ -434,6 +504,7 @@ function syncSearchAccessibility(): void {
 async function retryHome(): Promise<void> {
   if (busy.value) return
   const action = beginAction()
+  if (!homeStillOnPage(currentMobilePagePath())) return
   busy.value = 'retry'
   reading.value = true
   const key = ownerKey()
@@ -445,12 +516,13 @@ async function retryHome(): Promise<void> {
   const token: EntryToken = { epoch: pageEpoch, seq: ++entrySeq, owner: key }
   activeEntry = token
   try {
+    if (!homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true)) return
     await store.loadHome()
-    if (entryCurrent(token)) await loadGuide(token)
+    if (homePrivateReadAllowed(currentMobilePagePath(), entryCurrent(token), true)) await loadGuide(token)
   } finally {
     if (entryCurrent(token)) {
       reading.value = false
-      enteredEpoch = pageEpoch
+      if (homeStillOnPage(currentMobilePagePath())) enteredEpoch = pageEpoch
       if (activeEntry?.seq === token.seq) activeEntry = null
     } else if (activeEntry?.seq === token.seq) {
       activeEntry = null
@@ -532,9 +604,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <view class="yx-page home-page" :style="experienceStyle" :data-motion="experienceMotion">
+  <view class="yx-page yx-r4-screen home-page" :style="experienceStyle" :data-motion="experienceMotion" :data-theme="theme">
+    <view class="home-fx yx-r4-fx" aria-hidden="true">
+      <FigmaAsset class="home-fx__glow" :src="art.glow" :width="540" :height="480" />
+      <FigmaAsset class="home-fx__blob-a" :src="art.blobA" :width="460" :height="460" />
+      <FigmaAsset class="home-fx__blob-c" :src="art.blobC" :width="300" :height="300" />
+      <FigmaAsset class="home-fx__blob-d" :src="art.blobD" :width="340" :height="340" />
+    </view>
+    <view class="home-body">
     <view class="home-topbar">
-      <text class="home-brand">{{ mobileT('brand') }}</text>
+      <view class="home-brandline">
+        <FigmaAsset :src="art.sparkle" :width="22" :height="22" />
+        <view class="home-logo" aria-hidden="true">
+          <FigmaAsset class="home-logo__glow" :src="art.logoGlow" :width="64" :height="64" />
+          <FigmaAsset :src="art.logo" :width="40" :height="40" />
+        </view>
+        <view class="home-wordmark">
+          <text class="home-brand">{{ mobileT('brand') }}</text>
+          <text class="home-brand-en">{{ mobileT('brandEnglish') }}</text>
+        </view>
+      </view>
       <button tabindex="0" role="button" type="button" class="home-settings" :aria-label="mobileT('settings')" :disabled="busy !== null || reading" @click="navigate('/pages/settings/settings', 'settings')">
         <AppIcon name="gear" :size="22" />
       </button>
@@ -574,18 +663,46 @@ onMounted(() => {
         <template v-else>
           <view v-if="navError" class="home-line home-line--error" role="alert"><text>{{ navError }}</text></view>
 
-          <view v-if="homeReady && showProgress" class="home-progress">
-            <text class="home-progress__text">{{ progressText }}</text>
-            <view
-              v-if="progressPercent !== null"
-              class="home-progress__track"
-              role="progressbar"
-              :aria-label="tr('progressLabel')"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              :aria-valuenow="progressValue"
+          <view v-if="homeReady" class="home-hero home-glass">
+            <view class="home-hero__fx yx-r4-fx" aria-hidden="true">
+              <FigmaAsset class="home-hero__blob" :src="art.blobB" :width="440" :height="440" />
+              <FigmaAsset class="home-hero__particles" :src="art.particles" :width="180" :height="140" />
+            </view>
+            <view class="home-hero__top">
+              <view class="home-hero__copy">
+                <text class="home-hero__greet">{{ greeting }}</text>
+                <text v-if="heroRemain" class="home-hero__remain">{{ heroRemain }}</text>
+                <text v-if="progressText" class="home-progress__text">{{ progressText }}</text>
+              </view>
+              <view
+                v-if="showProgress"
+                class="home-ring"
+                :role="progressPercent !== null ? 'progressbar' : undefined"
+                :aria-label="tr('progressLabel')"
+                :aria-valuemin="progressPercent !== null ? 0 : undefined"
+                :aria-valuemax="progressPercent !== null ? 100 : undefined"
+                :aria-valuenow="progressPercent !== null ? progressValue : undefined"
+              >
+                <FigmaAsset :src="art.track" :width="96" :height="96" />
+                <view v-if="ringStyle" class="home-ring__value" :style="{ backgroundImage: ringStyle }"></view>
+                <text v-if="progressPercent !== null" class="home-ring__pct">{{ progressValue }}%</text>
+              </view>
+            </view>
+            <button
+              v-if="heroTask"
+              tabindex="0"
+              role="button"
+              type="button"
+              class="home-primary home-hero__cta"
+              :disabled="busy !== null"
+              @click="openHero"
             >
-              <view class="home-progress__value" :style="{ width: `${progressPercent}%` }"></view>
+              <text>{{ heroLabel }}</text>
+              <FigmaAsset class="home-hero__arrow" :src="art.arrow" :width="18" :height="18" />
+            </button>
+            <view v-if="heroMeta" class="home-hero__meta">
+              <FigmaAsset :src="art.schedule" :width="17" :height="17" />
+              <text>{{ heroMeta }}</text>
             </view>
           </view>
 
@@ -596,16 +713,17 @@ onMounted(() => {
           <view v-if="guideVisible" class="home-guide">
             <template v-if="assessmentGuideVisible">
               <text class="home-guide__label">{{ tr('guideAssessmentReady') }}</text>
-              <button tabindex="0" role="button" type="button" class="home-ghost" :disabled="busy !== null" @click="navigate('/pages/assessment/assessment', 'guide')">{{ tr('takeAssessment') }}</button>
+              <button tabindex="0" role="button" type="button" class="home-ghost" :disabled="busy !== null" @click="navigate(guidePath, 'guide')">{{ tr('takeAssessment') }}</button>
             </template>
             <template v-else>
               <text class="home-guide__label">{{ guideLabel }}</text>
-              <text v-if="guideStepsText" class="home-guide__steps">{{ tr('guideRemaining', { steps: guideStepsText }) }}</text>
+              <text v-if="guideRemainingText" class="home-guide__steps">{{ guideRemainingText }}</text>
               <button tabindex="0" role="button" type="button" class="home-ghost" :disabled="busy !== null" @click="navigate(guidePath, 'guide')">{{ tr('guideContinueSetup') }}</button>
             </template>
           </view>
 
-          <view class="home-section">
+          <view class="home-columns">
+          <view class="home-section home-card home-glass">
             <view class="home-section__head">
               <text class="home-section__title" role="heading" aria-level="2">{{ tr('tasks') }}</text>
               <text v-if="(store.home?.tasks.length ?? 0) > 0" class="home-section__count">{{ tr('taskCount', { count: store.home?.tasks.length ?? 0 }) }}</text>
@@ -628,42 +746,56 @@ onMounted(() => {
             </view>
 
             <template v-else-if="store.home?.tasks.length">
-              <view v-for="task in store.home.tasks" :key="task.id" class="home-task" :class="{ 'home-task--first': isFirstTask(task) }">
-                <view class="home-task__copy">
-                  <text class="home-task__title">{{ task.title }}</text>
-                  <text v-if="taskMeta(task)" class="home-task__meta">{{ taskMeta(task) }}</text>
-                  <text v-if="taskDescription(task)" class="home-task__desc">{{ taskDescription(task) }}</text>
-                </view>
+              <template v-for="task in store.home.tasks" :key="task.id">
                 <button
-                  v-if="isFirstTask(task)"
+                  v-if="isActionable(task)"
                   tabindex="0"
                   role="button"
                   type="button"
-                  class="home-primary home-task__primary"
+                  class="home-task home-task__secondary"
+                  :class="{ 'home-task--first': isFirstTask(task) }"
                   :disabled="busy !== null"
                   @click="openTask(task)"
-                >{{ primaryLabel(task) }}</button>
-                <button
-                  v-else-if="isActionable(task)"
-                  tabindex="0"
-                  role="button"
-                  type="button"
-                  class="home-ghost home-task__secondary"
-                  :disabled="busy !== null"
-                  @click="openTask(task)"
-                >{{ secondaryLabel(task) }}</button>
-                <view v-else class="home-task__state">
-                  <AppIcon :name="stateIcon(task)" :size="16" />
-                  <text>{{ stateLabel(task) }}</text>
+                >
+                  <view class="home-task__tile">
+                    <FigmaAsset :src="taskArt(task).src" :width="taskArt(task).size" :height="taskArt(task).size" />
+                  </view>
+                  <view class="home-task__copy">
+                    <text class="home-task__title">{{ task.title }}</text>
+                    <text v-if="taskStatusLine(task)" class="home-task__meta" :class="{ 'is-active': task.status === 'IN_PROGRESS' }">{{ taskStatusLine(task) }}</text>
+                    <text v-if="taskDescription(task)" class="home-task__desc">{{ taskDescription(task) }}</text>
+                  </view>
+                  <view class="home-task__trail">
+                    <text class="home-task__action">{{ secondaryLabel(task) }}</text>
+                    <FigmaAsset :src="art.chevron" :width="20" :height="20" />
+                  </view>
+                </button>
+                <view v-else class="home-task">
+                  <view class="home-task__tile">
+                    <FigmaAsset :src="taskArt(task).src" :width="taskArt(task).size" :height="taskArt(task).size" />
+                  </view>
+                  <view class="home-task__copy">
+                    <text class="home-task__title">{{ task.title }}</text>
+                    <text v-if="taskStatusLine(task)" class="home-task__meta" :class="{ 'is-active': task.status === 'IN_PROGRESS' }">{{ taskStatusLine(task) }}</text>
+                    <text v-if="taskDescription(task)" class="home-task__desc">{{ taskDescription(task) }}</text>
+                  </view>
+                  <view class="home-task__state">
+                    <view v-if="task.status === 'COMPLETED'" class="home-task__check">
+                      <FigmaAsset class="home-task__check-art" :src="art.check" :width="14" :height="14" />
+                      <view class="home-task__check-fallback"><AppIcon name="check" :size="16" /></view>
+                    </view>
+                    <AppIcon v-else :name="stateIcon(task)" :size="16" />
+                    <text>{{ stateLabel(task) }}</text>
+                  </view>
                 </view>
-              </view>
+              </template>
             </template>
           </view>
 
-          <view id="course-shelf" class="home-section">
+          <view id="course-shelf" class="home-section home-card home-glass">
             <text id="course-heading" class="home-section__title" role="heading" aria-level="2" tabindex="-1">{{ tr('courses') }}</text>
             <view class="home-search">
-              <AppIcon name="search" :size="18" />
+              <FigmaAsset :src="art.search" :width="20" :height="20" />
               <input
                 ref="searchField"
                 class="home-search__input"
@@ -705,21 +837,23 @@ onMounted(() => {
                 :disabled="busy !== null"
                 @click="openCourse(item.contentCode)"
               >
+                <FigmaAsset :src="art.courseArt" :width="40" :height="40" />
                 <view class="home-course__copy">
                   <text class="home-course__title">{{ item.title }}</text>
                   <text class="home-course__desc">{{ item.summary || tr('noSummary') }}</text>
                 </view>
-                <AppIcon name="chev" :size="16" />
+                <FigmaAsset :src="art.chevron" :width="20" :height="20" />
               </button>
             </view>
           </view>
+          </view>
 
-          <button tabindex="0" role="button" type="button" class="home-navrow" :disabled="busy !== null" @click="navigate('/pages/b10-report/b10-report', 'mistakes')">
+          <button tabindex="0" role="button" type="button" class="home-navrow home-glass" :disabled="busy !== null" @click="navigate('/pages/b10-report/b10-report', 'mistakes')">
             <view class="home-navrow__copy">
               <text class="home-navrow__title">{{ tr('mistakes') }}</text>
               <text class="home-navrow__desc">{{ tr('mistakesDesc') }}</text>
             </view>
-            <AppIcon name="chev" :size="16" />
+            <FigmaAsset :src="art.chevron" :width="20" :height="20" />
           </button>
 
           <view v-if="secondaryVisible" class="home-secondary-row">
@@ -729,66 +863,102 @@ onMounted(() => {
         </template>
       </template>
     </template>
+    </view>
   </view>
 </template>
 
 <style scoped>
-/* Global `.yx-page.yx-page` (0,2,0) sets 860px width and 22px padding. The
- * :root context raises this local selector one level so the page owns its
- * 720px reading line without duplicating the page class. */
+/* Device node 166:7348 and its 59px demo status bar are not copied.
+   The column is inner screen 166:7349 (390). Top inset is the real safe area. */
 :root .home-page {
-  max-width: 720px;
-  padding-left: 20px;
-  padding-right: 20px;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  max-width: 390px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: calc(8px + env(safe-area-inset-top, 0px)) 24px calc(108px + env(safe-area-inset-bottom, 0px));
+  overflow-x: hidden;
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  background-color: var(--yx-r4-page-color, var(--yx-surface-page));
+  background-image: var(--yx-r4-home-image, none);
   font-family: var(--v2-font);
 }
 .home-page button,
 .home-page input {
   font-family: var(--v2-font);
 }
-.home-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; }
-.home-brand { color: var(--yx-text-primary); font-size: 15px; font-weight: 650; line-height: 1.5; letter-spacing: .01em; }
-.home-settings { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 1px solid var(--yx-text-secondary); border-radius: 50%; background: var(--yx-surface-card); color: var(--yx-text-primary); }
+.home-fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.home-fx__glow { position: absolute; top: -200px; right: -160px; }
+.home-fx__blob-a { position: absolute; left: -240px; bottom: 80px; }
+.home-fx__blob-c { position: absolute; right: -140px; top: 180px; }
+.home-fx__blob-d { position: absolute; left: -80px; top: 420px; }
+.home-body { position: relative; z-index: 1; }
+.home-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.home-brandline { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.home-logo { position: relative; width: 40px; height: 40px; flex: 0 0 auto; }
+.home-logo__glow { position: absolute; left: -12px; top: -12px; }
+.home-wordmark { display: flex; flex-direction: column; min-width: 0; }
+.home-brand { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 15px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.home-brand-en { color: var(--yx-r4-wordmark, var(--yx-r4-muted, var(--yx-text-secondary))); font-size: 11px; line-height: 1.3; overflow-wrap: anywhere; }
+.home-settings { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 1px solid var(--yx-r4-glass-border, var(--yx-border)); border-radius: 50%; background: var(--yx-r4-glass, var(--yx-surface-card)); color: var(--yx-r4-ink, var(--yx-text-primary)); }
 .home-settings[disabled] { opacity: .55; }
-.home-title { display: block; margin: 20px 0 8px; color: var(--yx-text-primary); font-size: 28px; font-weight: 650; line-height: 1.4; letter-spacing: -.01em; overflow-wrap: break-word; word-break: normal; }
-.home-progress { display: grid; gap: 10px; margin: 0 0 8px; }
-.home-progress__text { color: var(--yx-text-secondary); font-size: 16px; line-height: 1.5; overflow-wrap: break-word; }
-.home-progress__track { width: 100%; height: 8px; overflow: hidden; border-radius: 999px; background: var(--yx-surface-soft); }
-.home-progress__value { height: 100%; border-radius: inherit; background: var(--yx-brand); }
+.home-title { display: block; margin: 12px 0 0; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 22px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.home-glass { position: relative; border: 1px solid var(--yx-r4-glass-border, rgba(255, 255, 255, .72)); background-color: var(--yx-r4-glass, rgba(250, 247, 255, .74)); box-shadow: var(--yx-r4-shadow-card, none); backdrop-filter: blur(var(--yx-r4-blur, 0px)); -webkit-backdrop-filter: blur(var(--yx-r4-blur, 0px)); }
+.home-page[data-motion="reduced"] .home-glass,
+.home-page[data-motion="off"] .home-glass { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.home-hero { display: flex; flex-direction: column; gap: 18px; margin-top: 12px; padding: 22px 22px 20px; overflow: hidden; border-radius: 28px; }
+.home-hero__fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.home-hero__blob { position: absolute; right: -180px; top: -120px; }
+.home-hero__particles { position: absolute; right: 0; top: 0; }
+.home-hero__top { position: relative; display: flex; align-items: center; gap: 12px; }
+.home-hero__copy { display: flex; flex: 1 1 auto; flex-direction: column; gap: 4px; min-width: 0; }
+.home-hero__greet { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 20px; }
+.home-hero__remain,
+.home-progress__text { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 22px; overflow-wrap: anywhere; }
+.home-ring { position: relative; width: 96px; height: 96px; flex: 0 0 auto; }
+.home-ring__value { position: absolute; inset: 0; border-radius: 50%; -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px)); mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px)); }
+.home-ring__pct { position: absolute; left: 0; top: 0; width: 96px; height: 96px; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 22px; font-weight: 700; line-height: 96px; text-align: center; }
+.home-hero__meta { position: relative; display: flex; align-items: flex-start; gap: 8px; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 18px; }
+.home-hero__meta text { min-width: 0; overflow-wrap: anywhere; }
 .home-line { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 0; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
 .home-line--error { color: var(--yx-danger); }
-.home-block { display: grid; justify-items: start; gap: 8px; padding: 20px 0; }
-.home-block__title { color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; }
-.home-block__desc { color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
+.home-block { display: grid; justify-items: start; gap: 8px; margin-top: 12px; padding: 16px; border: 1px solid var(--yx-r4-glass-border, var(--yx-border)); border-radius: 18px; background: var(--yx-r4-glass, var(--yx-surface-card)); }
+.home-block__title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.home-block__desc { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
 .home-status { display: grid; gap: 6px; margin: 12px 0 0; }
-.home-status__line { display: block; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-guide { display: grid; justify-items: start; gap: 6px; margin: 12px 0 0; padding: 14px 0; border-top: 1px solid var(--yx-border); border-bottom: 1px solid var(--yx-border); }
-.home-guide__label { color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; }
-.home-guide__steps { color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
-.home-section { margin-top: 32px; }
+.home-status__line { display: block; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-guide { display: grid; justify-items: start; gap: 6px; margin: 16px 0 0; padding: 14px 16px; border: 1px solid var(--yx-r4-glass-border, var(--yx-border)); border-radius: 18px; background: var(--yx-r4-glass, transparent); }
+.home-guide__label { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.home-guide__steps { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-section { margin-top: 16px; }
+.home-card { padding: 12px 20px 10px; border-radius: 24px; }
+#course-shelf.home-card { padding: 16px; border-radius: 18px; }
 .home-section__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
-.home-section__title { display: block; color: var(--yx-text-primary); font-size: 20px; font-weight: 650; line-height: 1.45; }
+.home-section__title { display: block; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 18px; font-weight: 700; line-height: 26px; overflow-wrap: anywhere; }
 .home-section__title:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 2px; }
-.home-section__count { color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
-.home-empty { display: grid; justify-items: start; gap: 6px; padding: 16px 0; }
-.home-empty__title { color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; }
-.home-empty__desc { color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-task { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 20px 0; border-top: 1px solid var(--yx-border); }
-.home-task__copy { flex: 1 1 240px; min-width: 0; }
-.home-task__title { display: block; color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: break-word; word-break: normal; }
-.home-task__meta { display: block; margin-top: 4px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
-.home-task__desc { display: block; margin-top: 4px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-task__state { display: inline-flex; flex: 0 1 auto; align-items: center; gap: 6px; max-width: 100%; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-task--first { align-items: stretch; }
-.home-task--first .home-task__copy { flex-basis: 100%; }
-.home-primary, .home-ghost { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: var(--yx-radius-button); font-family: inherit; font-weight: 650; line-height: 1.5; text-align: center; overflow-wrap: break-word; }
-.home-primary { min-height: 48px; padding: 12px 18px; border: 1px solid transparent; background: var(--yx-action); color: var(--yx-on-brand); font-size: 16px; }
-.home-task__primary { flex: 1 1 100%; width: 100%; }
-.home-ghost { min-height: 44px; padding: 10px 16px; border: 1px solid var(--yx-text-secondary); background: var(--yx-surface-card); color: var(--yx-brand); font-size: 16px; white-space: normal; }
-.home-task__secondary { flex: 0 0 auto; }
+.home-section__count { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 1.6; }
+.home-empty { display: grid; justify-items: start; gap: 6px; padding: 12px 0 8px; }
+.home-empty__title { color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.home-empty__desc { color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-task { display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 64px; margin: 0; padding: 10px 0; border: 0; background: transparent; color: inherit; text-align: left; }
+.home-task__tile { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--yx-r4-glass-border, rgba(255, 255, 255, .9)); border-radius: 14px; background: var(--yx-r4-field, rgba(255, 255, 255, .92)); }
+.home-task__copy { flex: 1 1 auto; min-width: 0; }
+.home-task__title { display: block; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 15px; font-weight: 700; line-height: 22px; overflow-wrap: anywhere; }
+.home-task__meta { display: block; margin-top: 2px; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 20px; overflow-wrap: anywhere; }
+.home-task__meta.is-active { color: var(--yx-r4-brand, var(--yx-brand)); }
+.home-task__desc { display: block; margin-top: 2px; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 20px; overflow-wrap: anywhere; }
+.home-task__trail { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; min-height: 44px; }
+.home-task__action { color: var(--yx-r4-brand, var(--yx-brand)); font-size: 14px; font-weight: 650; line-height: 1.4; }
+.home-task__state { display: inline-flex; flex: 0 1 auto; align-items: center; gap: 6px; max-width: 46%; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.home-task__check { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px; background: var(--yx-success); }
+.home-task__check-fallback { display: none; }
+.home-primary, .home-ghost { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: var(--yx-radius-button); font-family: inherit; font-weight: 650; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
+.home-primary.home-hero__cta { position: relative; width: 100%; min-height: 52px; height: auto; gap: 8px; padding: 12px 18px; border: 1px solid transparent; border-radius: 26px; background-color: var(--yx-r4-cta-color, var(--yx-brand)); background-image: var(--yx-r4-cta-image, none); box-shadow: var(--yx-r4-shadow-cta, none); color: var(--yx-r4-on-cta, var(--yx-on-brand)); font-size: 16px; font-weight: 700; }
+.home-ghost { min-height: 44px; padding: 10px 16px; border: 1px solid var(--yx-r4-brand, var(--yx-brand)); background: var(--yx-r4-field, var(--yx-surface-card)); color: var(--yx-r4-brand, var(--yx-brand)); font-size: 16px; white-space: normal; }
 .home-primary[disabled], .home-ghost[disabled], .home-text-action[disabled], .home-course[disabled], .home-navrow[disabled] { opacity: .55; }
-.home-search { display: flex; align-items: center; gap: 8px; box-sizing: border-box; margin-top: 12px; padding: 0 8px 0 12px; min-height: 48px; border: 1px solid var(--yx-text-secondary); border-radius: 12px; background: var(--yx-surface-card); color: var(--yx-text-secondary); }
-.home-search__input { flex: 1 1 auto; min-width: 0; height: auto; min-height: 46px; padding: 10px 0; border: 0; border-radius: 0; background: transparent; color: var(--yx-text-primary); font-size: 16px; line-height: 1.5; }
+.home-search { display: flex; align-items: center; gap: 8px; box-sizing: border-box; margin-top: 12px; padding: 0 8px 0 16px; min-height: 48px; border: 1px solid var(--yx-r4-field-border, var(--yx-border)); border-radius: 24px; background: var(--yx-r4-field, var(--yx-surface-card)); color: var(--yx-r4-muted, var(--yx-text-secondary)); }
+.home-search__input { flex: 1 1 auto; min-width: 0; height: auto; min-height: 46px; padding: 10px 0; border: 0; border-radius: 0; background: transparent; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; line-height: 1.5; }
 .home-search__input:focus-visible { outline: none; }
 /* uni-h5 renders its own placeholder overlay inside the input component and
  * the native input has a UA ::placeholder. Both must use the semantic
@@ -809,20 +979,37 @@ onMounted(() => {
 .home-search__clear { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--yx-text-secondary); }
 .home-search__count { display: block; margin-top: 8px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
 .home-note { display: block; margin-top: 8px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-course-list { margin-top: 12px; border-top: 1px solid var(--yx-border); }
-.home-course { display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 64px; padding: 16px 0; border: 0; border-bottom: 1px solid var(--yx-border); border-radius: 0; background: transparent; color: var(--yx-text-secondary); text-align: left; }
+.home-course-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.home-course { display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 64px; padding: 12px; border: 1px solid var(--yx-r4-glass-border, transparent); border-radius: 18px; background: var(--yx-r4-field, var(--yx-surface-card)); color: var(--yx-r4-muted, var(--yx-text-secondary)); text-align: left; }
 .home-course__copy { flex: 1 1 auto; min-width: 0; }
-.home-course__title { display: block; color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: break-word; word-break: normal; }
-.home-course__desc { display: block; margin-top: 2px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: break-word; }
-.home-navrow { display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 72px; margin-top: 32px; padding: 16px 0; border: 0; border-top: 1px solid var(--yx-border); border-bottom: 1px solid var(--yx-border); border-radius: 0; background: transparent; color: var(--yx-text-secondary); text-align: left; }
+.home-course__title { display: block; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.home-course__desc { display: block; margin-top: 2px; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-navrow { display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 72px; margin-top: 16px; padding: 16px; border-radius: 18px; color: var(--yx-r4-muted, var(--yx-text-secondary)); text-align: left; }
 .home-navrow__copy { flex: 1 1 auto; min-width: 0; }
-.home-navrow__title { display: block; color: var(--yx-text-primary); font-size: 16px; font-weight: 650; line-height: 1.5; }
-.home-navrow__desc { display: block; margin-top: 2px; color: var(--yx-text-secondary); font-size: 14px; line-height: 1.6; }
-.home-secondary-row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--yx-border); }
-.home-text-action { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 4px; border: 0; border-radius: var(--yx-radius-button); background: transparent; color: var(--yx-brand); font-size: 16px; font-weight: 650; line-height: 1.5; text-align: center; overflow-wrap: break-word; }
-.home-settings:focus-visible, .home-primary:focus-visible, .home-ghost:focus-visible, .home-text-action:focus-visible, .home-course:focus-visible, .home-navrow:focus-visible, .home-search__clear:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 2px; }
-@media (max-width: 360px) {
-  .home-task__copy { flex-basis: 100%; }
-  .home-task__secondary { margin-left: auto; }
+.home-navrow__title { display: block; color: var(--yx-r4-ink, var(--yx-text-primary)); font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.home-navrow__desc { display: block; margin-top: 2px; color: var(--yx-r4-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-secondary-row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; padding-top: 8px; }
+.home-text-action { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 4px; border: 0; border-radius: var(--yx-radius-button); background: transparent; color: var(--yx-r4-brand, var(--yx-brand)); font-size: 16px; font-weight: 650; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
+.home-settings:focus-visible, .home-primary:focus-visible, .home-ghost:focus-visible, .home-text-action:focus-visible, .home-course:focus-visible, .home-navrow:focus-visible, .home-task:focus-visible, .home-search__clear:focus-visible { outline: 2px solid var(--yx-focus); outline-offset: 2px; }
+:root[data-theme="high-contrast"] .home-hero__arrow,
+:root[data-theme="dark"] .home-task__check-art,
+:root[data-theme="high-contrast"] .home-task__check-art { display: none; }
+:root[data-theme="dark"] .home-task__check,
+:root[data-theme="high-contrast"] .home-task__check { background: transparent; }
+:root[data-theme="dark"] .home-task__check-fallback,
+:root[data-theme="high-contrast"] .home-task__check-fallback { display: inline-flex; }
+.home-columns { display: block; }
+.home-columns > .home-section { min-width: 0; }
+@media (max-width: 359px) {
+  :root .home-page { padding-left: 16px; padding-right: 16px; }
+  .home-task { flex-wrap: wrap; }
+  .home-hero__top { align-items: flex-start; }
+}
+@media (min-width: 768px) {
+  :root .home-page { max-width: 1024px; padding-left: 28px; padding-right: 28px; }
+  .home-columns { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr); gap: 16px; align-items: start; }
+}
+@media (min-width: 1024px) {
+  :root .home-page { max-width: 1180px; }
 }
 </style>

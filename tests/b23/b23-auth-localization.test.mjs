@@ -2,22 +2,24 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+import { register } from 'node:module'
 import ts from 'typescript'
 
 const root = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..')
 const read = (path) => readFileSync(join(root, path), 'utf8')
+const loaderReady = register(new URL('../../apps/official-site/tests/website-typescript-loader.mjs', import.meta.url), import.meta.url)
+if (loaderReady && typeof loaderReady.then === 'function') await loaderReady
 
 async function loadTypeScriptMessages(path) {
   const source = read(path)
-  const { outputText, diagnostics = [] } = ts.transpileModule(source, {
+  const { diagnostics = [] } = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
     reportDiagnostics: true,
   })
   const errors = diagnostics.filter((item) => item.category === ts.DiagnosticCategory.Error)
   assert.deepEqual(errors, [], `${path} should transpile for locale assertions`)
-  const encoded = Buffer.from(outputText).toString('base64')
-  return import(`data:text/javascript;base64,${encoded}`)
+  return import(pathToFileURL(join(root, path)).href)
 }
 
 const [learnerI18n, mobileI18n] = await Promise.all([

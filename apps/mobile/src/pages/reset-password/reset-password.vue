@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import AppIcon from '../../components/AppIcon.vue'
+import FigmaAsset from '../../components/FigmaAsset.vue'
+import { loginAssets, loginDarkAssets } from '../../theme/figma-r4-assets'
 import { openUniPage } from '../../platform/uni-runtime'
 import { mobileT, useMobileExperience } from '../../platform/experience'
 import { onLoad, onShow } from '@dcloudio/uni-app'
@@ -9,12 +10,44 @@ import { safeMobileRouteReturnTo } from '../../auth/gateway-auth'
 import { mobileAuthFailureCopy } from '../../auth/auth-failure-copy'
 import { useSessionStore } from '../../stores/session'
 
-const { experienceStyle, experienceMotion } = useMobileExperience()
+const requestRoot = '/static/figma-reset-request-98-3187'
+const confirmRoot = '/static/figma-reset-confirm-98-3496'
+const requestAssets = {
+  logo: `${requestRoot}/c6b72e83-7579-49a6-8f77-93d0cf7a32b9.png`,
+  mesh: `${requestRoot}/24ba3707-5595-45e0-8071-77974a83c135.svg`,
+  blobA: `${requestRoot}/6e250af8-330c-474d-a954-30ab74ad665e.svg`,
+  blobB: `${requestRoot}/fed73ed8-3c36-42c5-bcc2-ef2558a04904.svg`,
+  blobC: `${requestRoot}/c3c1ce6a-1c7e-44b1-98b3-a99e23149ee2.svg`,
+  particles: `${requestRoot}/b514a046-f64e-420f-9807-7670bd14cf22.svg`,
+  logoGlow: `${requestRoot}/656c9112-1523-4f77-94a4-5003d2ce1090.svg`,
+  user: `${requestRoot}/f183c114-f721-41cb-84f2-976e7007f9f7.svg`,
+  dot: `${requestRoot}/06e3c1bf-175f-498b-82ed-b595f062df16.svg`,
+} as const
+const confirmAssets = {
+  shield: `${confirmRoot}/ba66caf5-da10-4df3-806b-d921328d3ef2.svg`,
+  logo: `${confirmRoot}/d4fd84fd-04b3-4a40-a677-cf3fb16e078e.png`,
+  mesh: `${confirmRoot}/77f1647d-4413-4f8e-9f1c-85668a1f02a5.svg`,
+  blobA: `${confirmRoot}/d942ba15-6d1f-4d90-88a0-52e0d00336de.svg`,
+  blobB: `${confirmRoot}/cb97f0f2-6667-44b2-be3d-155535a4cd6f.svg`,
+  blobC: `${confirmRoot}/e9fb5194-39d2-4ad5-bbcd-88a2d81d5833.svg`,
+  particles: `${confirmRoot}/ff4f2f62-94a5-4562-9839-bcbbc39da0a1.svg`,
+  logoGlow: `${confirmRoot}/50303499-2f0b-48b3-8a7a-faee5d8366ed.svg`,
+  user: `${confirmRoot}/5e30a043-b716-4efd-8a7b-3339c910a35d.svg`,
+  lock: `${confirmRoot}/2506ca91-7ee3-45d9-821c-61518014dcb3.svg`,
+} as const
+
+const { experienceStyle, experienceMotion, theme } = useMobileExperience()
 const session = useSessionStore()
 type Field = 'identifier' | 'token' | 'newPassword'
-type FieldEvent = { detail?: { value?: string } }
+type FieldEvent = { detail?: { value?: string }; target?: EventTarget | null }
 type SubmitEvent = { detail?: { value?: Partial<Record<Field, string>> } }
 const step = ref<'request' | 'confirm'>('request')
+const frameAssets = computed(() => (step.value === 'confirm' ? confirmAssets : requestAssets))
+// Light field glyphs stay on the reset originals. The eye slot is empty in the confirm frame, so the published login eye fills it.
+// Dark and high contrast reuse loginDarkAssets. The light shield is #1C1633 and stays off those fields.
+const fieldIcons = computed(() => (theme.value === 'light'
+  ? { user: frameAssets.value.user, lock: confirmAssets.lock, eye: loginAssets.eye, shield: confirmAssets.shield }
+  : { user: loginDarkAssets.user, lock: loginDarkAssets.lock, eye: loginDarkAssets.eye, shield: '' }))
 const identifier = ref('')
 const token = ref('')
 const newPassword = ref('')
@@ -143,8 +176,12 @@ function initialize(options?: { token?: string; returnTo?: string; redirect?: st
     step.value = 'confirm'
   }
 }
+function syncNavigationTitle(): void {
+  uni.setNavigationBarTitle({ title: mobileT(step.value === 'request' ? 'auth.resetPassword.title' : 'auth.resetPassword.confirmTitle') })
+}
 onLoad((options) => { initialize(options) })
-onShow(() => { uni.setNavigationBarTitle({ title: mobileT('auth.resetPassword.title') }) })
+onShow(() => { syncNavigationTitle() })
+watch([step, () => mobileT('auth.resetPassword.title'), () => mobileT('auth.resetPassword.confirmTitle')], syncNavigationTitle)
 onMounted(() => {
   initialize()
   // #ifdef H5
@@ -162,6 +199,11 @@ function syncField(kind: Field, value: unknown): void {
   if (kind === 'identifier') identifier.value = value
   else if (step.value === 'confirm' && kind === 'token') token.value = value
   else if (step.value === 'confirm') newPassword.value = value
+}
+function inputField(kind: Field, event: FieldEvent): void {
+  const target = event.target as { value?: string } | null
+  const value = typeof event.detail?.value === 'string' ? event.detail.value : typeof target?.value === 'string' ? target.value : undefined
+  syncField(kind, value)
 }
 function blurField(kind: Field, event: FieldEvent): void {
   syncField(kind, event.detail?.value)
@@ -195,6 +237,23 @@ function togglePassword(): void { if (!submitting.value) showPassword.value = !s
 function returnLogin(): void {
   if (!submitting.value) openUniPage(`/pages/login/login?returnTo=${encodeURIComponent(returnTo.value)}`)
 }
+function forgetDisplayedResetToken(): void {
+  // #ifdef H5
+  try {
+    const hash = window.location.hash
+    const queryAt = hash.indexOf('?')
+    if (queryAt < 0) return
+    const params = new URLSearchParams(hash.slice(queryAt + 1))
+    if (!params.has('token')) return
+    params.delete('token')
+    const query = params.toString()
+    const nextHash = `${hash.slice(0, queryAt)}${query ? `?${query}` : ''}`
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}${nextHash}`)
+  } catch {
+    // The confirmation receipt stays even if this page cannot rewrite its own hash.
+  }
+  // #endif
+}
 // A keydown activation can focus the first error before this key's keyup.
 // uni-input would then treat that keyup as confirm and skip the first error.
 function submitKeyDown(event: KeyboardEvent): void {
@@ -223,6 +282,7 @@ async function submit(event?: SubmitEvent): Promise<void> {
   failureAction.value = activeStep === 'request' ? 'resetRequest' : 'resetConfirm'
   try {
     // Password reset stays on the existing IAM TLS client with bounded requests.
+    // Any 2xx is still treated as accepted by that client. This page does not close that gap.
     const success = activeStep === 'request'
       ? await session.requestPasswordReset(identifier.value)
       : await session.confirmPasswordReset(identifier.value, token.value, newPassword.value)
@@ -238,6 +298,7 @@ async function submit(event?: SubmitEvent): Promise<void> {
       requestSent.value = false
       receiptShown.value = false
       clearValidation()
+      forgetDisplayedResetToken()
     }
   } catch (cause) {
     serverFailure.value = cause ?? 'UNKNOWN_AUTH_ERROR'
@@ -248,96 +309,157 @@ async function submit(event?: SubmitEvent): Promise<void> {
 </script>
 
 <template>
-  <view ref="pageRoot" class="yx-page v2-reset" :style="experienceStyle" :data-motion="experienceMotion">
-    <view class="reset-topline">
-      <view class="reset-brand"><AppIcon name="brand" :size="25" /><text>{{ mobileT('brand') }}</text></view>
-      <text class="reset-adult-note">{{ mobileT('auth.resetPassword.note') }}</text>
+  <view ref="pageRoot" class="yx-page yx-r4-screen v2-reset" :style="experienceStyle" :data-motion="experienceMotion" :data-theme="theme">
+    <view class="reset-fx" aria-hidden="true">
+      <view class="reset-fx__mesh"><FigmaAsset :src="frameAssets.mesh" :width="630" :height="615" /></view>
+      <view class="reset-fx__blob reset-fx__blob--a"><FigmaAsset :src="frameAssets.blobA" :width="320" :height="320" /></view>
+      <view class="reset-fx__blob reset-fx__blob--b"><FigmaAsset :src="frameAssets.blobB" :width="400" :height="400" /></view>
+      <view class="reset-fx__blob reset-fx__blob--c"><FigmaAsset :src="frameAssets.blobC" :width="440" :height="440" /></view>
+      <view class="reset-fx__particles"><FigmaAsset :src="frameAssets.particles" :width="180" :height="140" /></view>
     </view>
-    <view class="reset-content" aria-labelledby="mobile-reset-title">
-      <text id="mobile-reset-title" class="reset-title" role="heading" aria-level="1">{{ mobileT(step === 'request' ? 'auth.resetPassword.title' : 'auth.resetPassword.confirmTitle') }}</text>
-      <text v-if="!resetCompleted" class="reset-description">{{ mobileT(step === 'request' ? 'auth.resetPassword.requestHint' : 'auth.resetPassword.confirmHint') }}</text>
-      <text v-if="resetCompleted" class="reset-success" role="status">{{ mobileT('resetComplete') }}</text>
-      <form v-else class="reset-form" :aria-busy="submitting" @submit="submit">
-        <view class="reset-fields">
-          <view class="reset-field">
-            <label id="mobile-reset-identifier-label" class="reset-label" for="mobile-reset-identifier-host" @click="focusField('identifier')">{{ mobileT('auth.resetPassword.identifier') }}</label>
-            <input id="mobile-reset-identifier-host" ref="identifierField" v-model="identifier" name="identifier" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.identifier.current, 'is-focused': focusedField === 'identifier' }" type="text" text-content-type="username" :confirm-type="step === 'request' ? 'go' : 'next'" :focus="focusedField === 'identifier'" :placeholder="mobileT(step === 'request' ? 'auth.resetPassword.requestIdentifierPlaceholder' : 'auth.resetPassword.confirmIdentifierPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.identifier.current ? true : undefined" :aria-describedby="visualFeedback.fields.identifier.current ? 'mobile-reset-identifier-error' : undefined" @focus="focusedField = 'identifier'" @blur="blurField('identifier', $event)" @confirm="confirmField('identifier', $event)" />
-            <text v-if="visualFeedback.active && visualFeedback.fields.identifier.last" id="mobile-reset-identifier-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.identifier.current }" :role="visualFeedback.fields.identifier.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.identifier.current">{{ visualFeedback.fields.identifier.current || visualFeedback.fields.identifier.last }}</text>
+    <view class="reset-column reset-content">
+      <view class="reset-hero">
+        <view class="reset-brand">
+          <view class="reset-logo">
+            <view class="reset-logo__glow"><FigmaAsset :src="frameAssets.logoGlow" :width="88" :height="88" /></view>
+            <FigmaAsset :src="frameAssets.logo" :width="54" :height="54" />
           </view>
-          <view v-if="step === 'confirm'" class="reset-field">
-            <label id="mobile-reset-token-label" class="reset-label" for="mobile-reset-token-host" @click="focusField('token')">{{ mobileT('auth.resetPassword.token') }}</label>
-            <input id="mobile-reset-token-host" ref="tokenField" v-model="token" name="token" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.token.current, 'is-focused': focusedField === 'token' }" type="text" text-content-type="oneTimeCode" confirm-type="next" :focus="focusedField === 'token'" :placeholder="mobileT('auth.resetPassword.tokenPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.token.current ? true : undefined" :aria-describedby="visualFeedback.fields.token.current ? 'mobile-reset-token-error' : undefined" @focus="focusedField = 'token'" @blur="blurField('token', $event)" @confirm="confirmField('token', $event)" />
-            <text v-if="visualFeedback.active && visualFeedback.fields.token.last" id="mobile-reset-token-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.token.current }" :role="visualFeedback.fields.token.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.token.current">{{ visualFeedback.fields.token.current || visualFeedback.fields.token.last }}</text>
+          <view class="reset-wordmark">
+            <text>{{ mobileT('brand') }}</text>
+            <text class="reset-wordmark__en">{{ mobileT('brandEnglish') }}</text>
           </view>
-          <view v-if="step === 'confirm'" class="reset-field">
-            <label id="mobile-reset-newPassword-label" class="reset-label" for="mobile-reset-newPassword-host" @click="focusField('newPassword')">{{ mobileT('auth.resetPassword.newPassword') }}</label>
-            <view class="reset-password">
-              <input id="mobile-reset-newPassword-host" ref="passwordField" v-model="newPassword" name="newPassword" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.newPassword.current, 'is-focused': focusedField === 'newPassword' }" type="text" :password="!showPassword" text-content-type="newPassword" confirm-type="go" :focus="focusedField === 'newPassword'" :placeholder="mobileT('auth.resetPassword.newPasswordPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.newPassword.current ? true : undefined" :aria-describedby="visualFeedback.fields.newPassword.current ? 'mobile-reset-password-hint mobile-reset-newPassword-error' : 'mobile-reset-password-hint'" @focus="focusedField = 'newPassword'" @blur="blurField('newPassword', $event)" @confirm="confirmField('newPassword', $event)" />
-              <button class="reset-password-toggle" tabindex="0" role="button" :aria-controls="passwordControls" :aria-label="mobileT(showPassword ? 'auth.resetPassword.hidePassword' : 'auth.resetPassword.showPassword')" :aria-pressed="showPassword" :disabled="submitting" :aria-disabled="submitting" @click="togglePassword"><AppIcon name="eye" :size="19" /></button>
-            </view>
-            <text id="mobile-reset-password-hint" class="reset-password-hint">{{ mobileT('auth.resetPassword.passwordHint') }}</text>
-            <text v-if="visualFeedback.active && visualFeedback.fields.newPassword.last" id="mobile-reset-newPassword-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.newPassword.current }" :role="visualFeedback.fields.newPassword.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.newPassword.current">{{ visualFeedback.fields.newPassword.current || visualFeedback.fields.newPassword.last }}</text>
-          </view>
-          <text v-if="visualFeedback.server" class="reset-server-error" role="alert">{{ visualFeedback.server }}</text>
-          <text v-if="visualFeedback.receipt && step === 'request'" class="reset-receipt" :class="{ 'is-clear': !requestSent }" :role="requestSent ? 'status' : undefined" :aria-hidden="!requestSent">{{ mobileT('resetSent') }}</text>
-          <button class="reset-submit" tabindex="0" role="button" form-type="submit" :disabled="submitting" :aria-disabled="submitting" @keydown="submitKeyDown" @keyup="submitKeyUp">{{ mobileT(step === 'request' ? submitting ? 'auth.resetPassword.sending' : 'auth.resetPassword.sendInstructions' : submitting ? 'auth.resetPassword.resetting' : 'auth.resetPassword.resetAction') }}</button>
         </view>
-        <view class="reset-switch"><button class="reset-step-button reset-text-button" tabindex="0" role="button" :disabled="submitting" :aria-disabled="submitting" @click="switchStep">{{ mobileT(step === 'request' ? 'auth.resetPassword.receivedCode' : 'auth.resetPassword.back') }}</button></view>
-      </form>
-      <view class="reset-exit"><button class="reset-login-button reset-text-button" tabindex="0" role="button" :disabled="submitting" :aria-disabled="submitting" @click="returnLogin">{{ mobileT('auth.resetPassword.returnLogin') }}</button></view>
+        <text id="mobile-reset-title" class="reset-title" role="heading" aria-level="1">{{ mobileT(step === 'request' ? 'auth.resetPassword.title' : 'auth.resetPassword.confirmTitle') }}</text>
+        <text v-if="!resetCompleted" class="reset-description">{{ mobileT(step === 'request' ? 'auth.resetPassword.requestSubtitle' : 'auth.resetPassword.confirmSubtitle') }}</text>
+        <text class="reset-adult-note">{{ mobileT('auth.resetPassword.note') }}</text>
+      </view>
+      <view class="reset-panel" aria-labelledby="mobile-reset-title">
+        <text class="reset-panel__title">{{ mobileT(step === 'request' ? 'auth.resetPassword.panelTitle' : 'auth.resetPassword.confirmPanelTitle') }}</text>
+        <text v-if="!resetCompleted" class="reset-panel__hint">{{ mobileT(step === 'request' ? 'auth.resetPassword.requestPanelHint' : 'auth.resetPassword.confirmPanelHint') }}</text>
+        <text v-if="resetCompleted" class="reset-success" role="status">{{ mobileT('auth.resetPassword.completedStatus') }}</text>
+        <form v-else class="reset-form" :aria-busy="submitting" @submit="submit">
+          <!-- Uni submit is a component event. The inner view carries the stack because uni-form wraps the slot in one span. -->
+          <view class="reset-form__body">
+            <view class="reset-fields">
+              <view class="reset-field">
+                <label id="mobile-reset-identifier-label" class="reset-label" for="mobile-reset-identifier-host" @click="focusField('identifier')">{{ mobileT('auth.resetPassword.identifier') }}</label>
+                <view class="reset-control" :class="{ 'is-invalid': visualFeedback.fields.identifier.current }">
+                  <FigmaAsset :src="fieldIcons.user" :width="20" :height="20" />
+                  <input id="mobile-reset-identifier-host" ref="identifierField" v-model="identifier" name="identifier" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.identifier.current, 'is-focused': focusedField === 'identifier' }" type="text" text-content-type="username" :confirm-type="step === 'request' ? 'go' : 'next'" :focus="focusedField === 'identifier'" :placeholder="mobileT(step === 'request' ? 'auth.resetPassword.requestIdentifierPlaceholder' : 'auth.resetPassword.confirmIdentifierPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.identifier.current ? true : undefined" :aria-describedby="visualFeedback.fields.identifier.current ? 'mobile-reset-identifier-error' : undefined" @focus="focusedField = 'identifier'" @input="inputField('identifier', $event)" @blur="blurField('identifier', $event)" @confirm="confirmField('identifier', $event)" />
+                </view>
+                <text v-if="visualFeedback.active && visualFeedback.fields.identifier.last" id="mobile-reset-identifier-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.identifier.current }" :role="visualFeedback.fields.identifier.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.identifier.current">{{ visualFeedback.fields.identifier.current || visualFeedback.fields.identifier.last }}</text>
+              </view>
+              <view v-if="step === 'confirm'" class="reset-field">
+                <label id="mobile-reset-token-label" class="reset-label" for="mobile-reset-token-host" @click="focusField('token')">{{ mobileT('auth.resetPassword.token') }}</label>
+                <view class="reset-control reset-control--token" :class="{ 'is-invalid': visualFeedback.fields.token.current }">
+                  <FigmaAsset v-if="fieldIcons.shield" :src="fieldIcons.shield" :width="20" :height="20" />
+                  <input id="mobile-reset-token-host" ref="tokenField" v-model="token" name="token" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.token.current, 'is-focused': focusedField === 'token' }" type="text" text-content-type="oneTimeCode" confirm-type="next" :focus="focusedField === 'token'" :placeholder="mobileT('auth.resetPassword.tokenPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.token.current ? true : undefined" :aria-describedby="visualFeedback.fields.token.current ? 'mobile-reset-token-error' : undefined" @focus="focusedField = 'token'" @input="inputField('token', $event)" @blur="blurField('token', $event)" @confirm="confirmField('token', $event)" />
+                </view>
+                <text v-if="visualFeedback.active && visualFeedback.fields.token.last" id="mobile-reset-token-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.token.current }" :role="visualFeedback.fields.token.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.token.current">{{ visualFeedback.fields.token.current || visualFeedback.fields.token.last }}</text>
+              </view>
+              <view v-if="step === 'confirm'" class="reset-field">
+                <label id="mobile-reset-newPassword-label" class="reset-label" for="mobile-reset-newPassword-host" @click="focusField('newPassword')">{{ mobileT('auth.resetPassword.newPassword') }}</label>
+                <view class="reset-password">
+                  <view class="reset-control reset-control--secret" :class="{ 'is-invalid': visualFeedback.fields.newPassword.current }">
+                    <FigmaAsset :src="fieldIcons.lock" :width="20" :height="20" />
+                    <input id="mobile-reset-newPassword-host" ref="passwordField" v-model="newPassword" name="newPassword" :maxlength="-1" class="reset-input" :class="{ 'is-invalid': visualFeedback.fields.newPassword.current, 'is-focused': focusedField === 'newPassword' }" type="text" :password="!showPassword" text-content-type="newPassword" confirm-type="go" :focus="focusedField === 'newPassword'" :placeholder="mobileT('auth.resetPassword.newPasswordPlaceholder')" :disabled="submitting" :aria-invalid="visualFeedback.fields.newPassword.current ? true : undefined" :aria-describedby="visualFeedback.fields.newPassword.current ? 'mobile-reset-password-hint mobile-reset-newPassword-error' : 'mobile-reset-password-hint'" @focus="focusedField = 'newPassword'" @input="inputField('newPassword', $event)" @blur="blurField('newPassword', $event)" @confirm="confirmField('newPassword', $event)" />
+                    <button class="reset-password-toggle" tabindex="0" role="button" :aria-controls="passwordControls" :aria-label="mobileT(showPassword ? 'auth.resetPassword.hidePassword' : 'auth.resetPassword.showPassword')" :aria-pressed="showPassword" :disabled="submitting" :aria-disabled="submitting" @click="togglePassword"><FigmaAsset :src="fieldIcons.eye" :width="20" :height="20" /></button>
+                  </view>
+                </view>
+                <text id="mobile-reset-password-hint" class="reset-password-hint">{{ mobileT('auth.resetPassword.passwordHint') }}</text>
+                <text v-if="visualFeedback.active && visualFeedback.fields.newPassword.last" id="mobile-reset-newPassword-error" class="reset-field-error" :class="{ 'is-clear': !visualFeedback.fields.newPassword.current }" :role="visualFeedback.fields.newPassword.current ? 'alert' : undefined" :aria-hidden="!visualFeedback.fields.newPassword.current">{{ visualFeedback.fields.newPassword.current || visualFeedback.fields.newPassword.last }}</text>
+              </view>
+            </view>
+            <view v-if="step === 'request'" class="reset-privacy"><FigmaAsset v-if="theme === 'light'" :src="requestAssets.dot" :width="8" :height="8" /><text>{{ mobileT('auth.login.privacyNote') }}</text></view>
+            <text v-if="visualFeedback.server" class="reset-server-error" role="alert">{{ visualFeedback.server }}</text>
+            <text v-if="visualFeedback.receipt && step === 'request'" class="reset-receipt" :class="{ 'is-clear': !requestSent }" :role="requestSent ? 'status' : undefined" :aria-hidden="!requestSent">{{ mobileT('resetSent') }}</text>
+            <button class="reset-submit" tabindex="0" role="button" form-type="submit" :disabled="submitting" :aria-disabled="submitting" @keydown="submitKeyDown" @keyup="submitKeyUp">{{ mobileT(step === 'request' ? submitting ? 'auth.resetPassword.sending' : 'auth.resetPassword.sendInstructions' : submitting ? 'auth.resetPassword.resetting' : 'auth.resetPassword.resetAction') }}</button>
+            <view class="reset-switch"><button class="reset-step-button reset-text-button" tabindex="0" role="button" :disabled="submitting" :aria-disabled="submitting" @click="switchStep">{{ mobileT(step === 'request' ? 'auth.resetPassword.receivedCode' : 'auth.resetPassword.back') }}</button></view>
+          </view>
+        </form>
+        <view class="reset-exit"><button class="reset-login-button reset-text-button" tabindex="0" role="button" :disabled="submitting" :aria-disabled="submitting" @click="returnLogin">{{ mobileT('auth.resetPassword.returnLogin') }}</button></view>
+      </view>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
+.yx-page.v2-reset, .yx-page.v2-reset * { box-sizing: border-box; }
 .yx-page.v2-reset {
+  position: relative;
   max-width: none;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: calc(20px + env(safe-area-inset-top)) 24px calc(40px + env(safe-area-inset-bottom));
-  background: var(--v2-bg);
-  color: var(--v2-ink);
+  overflow-x: hidden;
+  padding: calc(8px + env(safe-area-inset-top)) 0 calc(24px + env(safe-area-inset-bottom));
+  background-color: var(--yx-auth-page-color, var(--yx-surface-page));
+  background-image: var(--yx-auth-page-image, none);
+  color: var(--yx-auth-ink, var(--yx-text-primary));
   font-family: var(--v2-font);
   line-height: 1.6;
 }
-.reset-topline { display: flex; flex-direction: column; align-items: flex-start; max-width: 1080px; margin: 0 auto 40px; }
-.reset-brand { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; color: var(--v2-ink); font-size: 20px; font-weight: 650; white-space: nowrap; }
-.reset-brand :deep(.app-icon) { color: var(--v2-brand); }
-.reset-adult-note { color: var(--v2-mut); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.reset-content { width: 100%; max-width: 420px; margin: 0 auto; }
-.reset-title { display: block; margin: 0 0 8px; color: var(--v2-ink); text-align: center; font-size: 28px; line-height: 1.4; font-weight: 650; letter-spacing: 0; }
-.reset-description { display: block; color: var(--v2-mut); text-align: center; font-size: 14px; line-height: 1.75; }
-.reset-form { display: block; margin-top: 32px; }
-.reset-fields { display: grid; gap: 24px; }
+.reset-fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.reset-fx__mesh { position: absolute; left: -130px; top: -170px; }
+.reset-fx__blob { position: absolute; }
+.reset-fx__blob--a { left: 144px; top: -50px; }
+.reset-fx__blob--b { left: 150px; top: -130px; }
+.reset-fx__blob--c { left: -240px; top: -250px; }
+.reset-fx__particles { position: absolute; left: 194px; top: 40px; opacity: .9; }
+.v2-reset[data-motion="reduced"] .reset-fx,
+.v2-reset[data-motion="off"] .reset-fx,
+.v2-reset[data-theme="dark"] .reset-fx,
+.v2-reset[data-theme="high-contrast"] .reset-fx,
+.v2-reset[data-motion="reduced"] .reset-logo__glow,
+.v2-reset[data-motion="off"] .reset-logo__glow,
+.v2-reset[data-theme="dark"] .reset-logo__glow,
+.v2-reset[data-theme="high-contrast"] .reset-logo__glow { display: none; }
+.reset-column { position: relative; display: flex; width: 100%; max-width: 390px; margin: 0 auto; flex-direction: column; gap: 14px; }
+.reset-hero { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 14px; padding: 8px 24px 0; }
+.reset-brand { display: flex; min-width: 0; min-height: 54px; align-items: center; gap: 10px; color: var(--yx-auth-ink, var(--yx-text-primary)); font-size: 30px; font-weight: 700; line-height: 1.2; }
+.reset-logo { position: relative; width: 54px; height: 54px; flex: 0 0 54px; }
+.reset-logo__glow { position: absolute; left: -17px; top: -17px; }
+.reset-wordmark { display: flex; min-width: 0; flex-direction: column; }
+.reset-wordmark text { overflow-wrap: anywhere; }
+.reset-wordmark__en { color: var(--yx-auth-wordmark, var(--yx-auth-ink)); font-size: 11px; font-weight: 500; line-height: 16px; }
+.reset-title { display: block; margin: 0; color: var(--yx-auth-ink, var(--yx-text-primary)); text-align: left; font-size: 24px; line-height: 40px; font-weight: 700; letter-spacing: .5px; overflow-wrap: anywhere; }
+.reset-description, .reset-adult-note, .reset-panel__hint { display: block; color: var(--yx-auth-muted, var(--yx-text-secondary)); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.reset-panel { display: flex; width: 100%; min-width: 0; flex-direction: column; gap: 14px; padding: 24px; border: 1px solid var(--yx-auth-glass-border, var(--yx-border)); border-radius: 28px 28px 20px 20px; background: var(--yx-auth-glass, var(--yx-surface-card)); box-shadow: var(--yx-auth-shadow-card, none); backdrop-filter: blur(var(--yx-auth-blur, 0px)); -webkit-backdrop-filter: blur(var(--yx-auth-blur, 0px)); }
+.reset-panel__title { display: block; margin: 0; color: var(--yx-auth-ink, var(--yx-text-primary)); font-size: 20px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.reset-form { display: flex; min-width: 0; flex-direction: column; }
+.reset-form__body, .reset-fields { display: flex; width: 100%; min-width: 0; flex-direction: column; gap: 14px; }
 .reset-field { display: grid; gap: 8px; min-width: 0; }
-.reset-label { color: var(--v2-ink); font-size: 14px; line-height: 1.6; font-weight: 500; }
-.v2-reset .reset-input { width: 100%; height: calc(1.5em + 24px); min-height: 48px; padding: 0 14px; border: 1px solid var(--v2-line); border-radius: 10px; color: var(--v2-ink); background: var(--v2-card); font-size: 16px; line-height: 1.5; font-weight: 400; }
+.reset-label { color: var(--yx-auth-ink, var(--yx-text-primary)); font-size: 14px; line-height: 1.6; font-weight: 500; }
+.reset-control { position: relative; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 14px; border: 1px solid var(--yx-auth-field-border, var(--yx-border)); border-radius: 14px; background: var(--yx-auth-field, var(--yx-surface-card)); box-shadow: var(--yx-auth-shadow-field, none); }
+.reset-control--secret { padding-right: 4px; }
+.reset-control.is-invalid { border-color: var(--yx-danger, var(--v2-bad)); }
+.v2-reset .reset-input { width: auto; flex: 1 1 auto; height: 48px; min-width: 0; min-height: 48px; padding: 0; border: 0; border-radius: 0; color: var(--yx-auth-ink, var(--yx-text-primary)); background: transparent; font-size: 16px; line-height: 1.5; font-weight: 400; }
 .reset-input :deep(.uni-input-input), .reset-input :deep(.uni-input-placeholder) { font: inherit; color: inherit; }
-.reset-input :deep(.uni-input-placeholder) { color: var(--v2-mut); }
-.v2-reset .reset-input.is-invalid { border-color: var(--v2-bad); }
-.v2-reset .reset-input.is-focused, .v2-reset .reset-input:focus-within { outline: 2px solid var(--v2-brand); outline-offset: 2px; }
+.reset-input :deep(.uni-input-placeholder) { color: var(--yx-auth-muted, var(--yx-text-secondary)); }
+.v2-reset .reset-input.is-focused, .v2-reset .reset-input:focus-within { outline: 2px solid var(--yx-auth-brand, var(--yx-brand)); outline-offset: 2px; }
 .reset-password { position: relative; min-width: 0; }
-.v2-reset .reset-password .reset-input { padding-right: 58px; }
-.v2-reset .reset-password-toggle { position: absolute; top: 50%; right: 4px; display: flex; width: 44px; height: 44px; min-height: 44px; padding: 0; align-items: center; justify-content: center; transform: translateY(-50%); border: 0; border-radius: 8px; background: transparent; color: var(--v2-mut); }
+.v2-reset .reset-password .reset-input { padding-right: 44px; }
+.v2-reset .reset-password-toggle { position: absolute; top: 50%; right: 0; z-index: 1; display: flex; width: 44px; height: 44px; min-height: 44px; padding: 0; align-items: center; justify-content: center; transform: translateY(-50%); border: 0; border-radius: 8px; background: transparent; }
 .v2-reset .reset-password-toggle:active:not([disabled]) { transform: translateY(-50%); background: var(--v2-soft); }
-.reset-password-hint { color: var(--v2-mut); font-size: 13px; line-height: 1.6; }
-.reset-field-error, .reset-server-error { display: block; color: var(--v2-bad); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.reset-password-hint { color: var(--yx-auth-muted, var(--yx-text-secondary)); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.reset-privacy { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 12px; background: var(--yx-auth-tip, var(--yx-surface-soft)); color: var(--yx-auth-tip-ink, var(--yx-text-primary)); font-size: 12px; line-height: 1.6; }
+.reset-privacy text { min-width: 0; overflow-wrap: anywhere; }
+.reset-field-error, .reset-server-error { display: block; color: var(--yx-danger, var(--v2-bad)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
 .reset-field-error.is-clear, .reset-receipt.is-clear { visibility: hidden; }
-.v2-reset .reset-text-button { display: inline-flex; width: auto; min-width: 44px; min-height: 44px; margin: 0; padding: 8px 0; align-items: center; justify-content: center; border: 0; border-radius: 0; background: transparent; color: var(--v2-brand); font-size: 14px; line-height: 1.6; font-weight: 500; text-align: center; }
-.v2-reset .reset-submit { display: flex; width: 100%; min-height: 48px; margin: 0; padding: 12px 20px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; background: var(--v2-brand); color: var(--v2-inverse); box-shadow: none; font-size: 16px; line-height: 1.5; font-weight: 600; }
-.v2-reset .reset-submit:active:not([disabled]) { transform: none; background: var(--v2-brand2); }
+.v2-reset .reset-text-button { display: inline-flex; width: auto; max-width: 100%; min-width: 44px; min-height: 44px; margin: 0; padding: 12px 8px; align-items: center; justify-content: center; border: 0; border-radius: 0; background: transparent; color: var(--yx-auth-brand, var(--yx-brand)); font-size: 14px; line-height: 1.6; font-weight: 500; text-align: center; overflow-wrap: anywhere; white-space: normal; }
+.v2-reset .reset-submit { display: flex; width: 100%; min-height: 48px; margin: 0; padding: 14px 20px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 14px; background-color: var(--yx-auth-cta-color, var(--yx-brand)); background-image: var(--yx-auth-cta-image, none); color: var(--yx-auth-on-cta, var(--yx-inverse)); box-shadow: var(--yx-auth-shadow-cta, none); font-size: 16px; line-height: 1.5; font-weight: 700; }
+.v2-reset .reset-submit:active:not([disabled]) { transform: none; }
 .v2-reset button[disabled] { cursor: default; }
 .v2-reset .reset-submit[disabled] { opacity: .6; }
-.v2-reset button:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 3px; }
-.reset-exit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--v2-line); color: var(--v2-mut); font-size: 14px; line-height: 1.6; }
-@media (min-width: 521px) {
-  .yx-page.v2-reset { padding: calc(32px + env(safe-area-inset-top)) 32px calc(64px + env(safe-area-inset-bottom)); }
-  .reset-topline { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 80px; }
+.v2-reset button:focus-visible { outline: 2px solid var(--yx-auth-brand, var(--yx-brand)); outline-offset: 3px; }
+.reset-switch, .reset-exit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; min-height: 44px; }
+.reset-success, .reset-receipt { display: block; color: var(--yx-auth-muted, var(--yx-text-secondary)); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+@media (max-width: 359px) {
+  .reset-hero { padding-right: 16px; padding-left: 16px; }
+  .reset-panel { padding-right: 16px; padding-left: 16px; }
+  .reset-brand { font-size: 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .v2-reset .reset-fx, .v2-reset .reset-logo__glow { display: none; }
   .v2-reset * { transition: none; animation: none; }
 }
-.reset-switch { display: flex; justify-content: center; margin-top: 12px; }
-.reset-success { display: block; margin-top: 32px; color: var(--v2-mut); font-size: 14px; line-height: 1.75; }
-.reset-receipt { display: block; color: var(--v2-mut); font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
 </style>

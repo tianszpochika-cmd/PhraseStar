@@ -5,18 +5,47 @@ import path from 'node:path'
 import ts from 'typescript'
 
 const appRoot = path.resolve(import.meta.dirname, '..')
+const repoRoot = path.resolve(appRoot, '../..')
 const read = (relativePath) => fs.readFileSync(path.join(appRoot, relativePath), 'utf8')
+const moduleCache = new Map()
 
-function load(relativePath) {
-  const source = read(relativePath)
-  const compiled = ts.transpileModule(source, {
+function insideCheckout(filePath) {
+  const absolute = path.resolve(filePath)
+  const prefix = repoRoot.endsWith(path.sep) ? repoRoot : repoRoot + path.sep
+  return absolute === repoRoot || absolute.startsWith(prefix)
+}
+
+function resolveRelative(directory, specifier) {
+  const base = path.resolve(directory, specifier)
+  const candidates = [base, `${base}.ts`, `${base}.tsx`, `${base}.mjs`, `${base}.js`, path.join(base, 'index.ts'), path.join(base, 'index.mjs'), path.join(base, 'index.js')]
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate
+  }
+  throw new Error(`missing relative module ${specifier}`)
+}
+
+function execute(filePath) {
+  const absolute = path.resolve(filePath)
+  if (!insideCheckout(absolute)) throw new Error(`unexpected import outside checkout: ${path.relative(repoRoot, absolute)}`)
+  const cached = moduleCache.get(absolute)
+  if (cached) return cached.exports
+  const compiled = ts.transpileModule(fs.readFileSync(absolute, 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   }).outputText
   const module = { exports: {} }
-  new Function('require', 'module', 'exports', compiled)(() => {
-    throw new Error(`unexpected import in ${relativePath}`)
+  moduleCache.set(absolute, module)
+  const directory = path.dirname(absolute)
+  new Function('require', 'module', 'exports', compiled)((specifier) => {
+    if (typeof specifier !== 'string' || !specifier.startsWith('.')) {
+      throw new Error(`unexpected import ${String(specifier)} in ${path.relative(repoRoot, absolute)}`)
+    }
+    return execute(resolveRelative(directory, specifier))
   }, module, module.exports)
   return module.exports
+}
+
+function load(relativePath) {
+  return execute(path.resolve(appRoot, relativePath))
 }
 
 const copy = load('src/domain/onboarding-consent-copy.ts')
