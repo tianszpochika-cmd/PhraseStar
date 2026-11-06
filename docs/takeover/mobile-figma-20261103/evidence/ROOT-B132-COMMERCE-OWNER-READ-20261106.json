@@ -1,0 +1,49 @@
+{
+  "batch": "B132",
+  "root_run": "G319",
+  "source_receipt_sha256": "cd8136effb484f213661a30cfa704b1fb63d5c14cf4dcbf37928e48aa02fcc2d",
+  "integration_head": "c88b9703",
+  "page": "MB-026",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_COMMERCE_READ_PASS",
+  "commerce_jar_sha256": "ced878f9840e0a6e3dc42c10cc58f9ddfeabeea1f0d6417916a02b17965c8346",
+  "real": {
+    "approved_synthetic_actor": true,
+    "catalog": "PUBLIC_PROJECTION_EMPTY",
+    "order": "EMPTY_CALLER",
+    "entitlement": "EMPTY_CALLER",
+    "schema_verified": true,
+    "scoped_grant": true,
+    "db_unchanged": true,
+    "counts": {
+      "skuCount": 0,
+      "orderOwnCount": 0,
+      "entitlementOwnCount": 0,
+      "businessWrites": 0,
+      "closedCalls": 0,
+      "writesPerformed": 0
+    }
+  },
+  "offline": {
+    "passed": 91,
+    "skipped": 2
+  },
+  "release": {
+    "outer_exit": 1,
+    "outer_reported_container_removed": false,
+    "independent_exact_container_absent": true,
+    "ports": {
+      "13306": "free",
+      "18070": "free",
+      "18087": "free",
+      "18096": "free"
+    }
+  },
+  "pending": [
+    "H5_REAL_DISPLAY",
+    "NONEMPTY_OWNER_SAMPLE",
+    "PURCHASE_REDEEM",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

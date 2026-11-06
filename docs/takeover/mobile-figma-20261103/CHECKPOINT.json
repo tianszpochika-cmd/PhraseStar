@@ -2794,7 +2794,8 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B31-COMMERCE.md",
         "source_tests": "Root11/11; mobile type/build0",
-        "candidate_browser": "Root208core+39CTA independent scopes,24+12screenshots; no real API/device/deploy"
+        "candidate_browser": "Root208core+39CTA independent scopes,24+12screenshots; no real API/device/deploy",
+        "commerce_real_read_b132": "evidence/ROOT-B132-COMMERCE-OWNER-READ-20261106.json"
       },
       "current_job": "Frozen commerceB07; Root integrationB31 reviewed",
       "source_operation_trace_b59": {
@@ -3719,7 +3720,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:27:09.789782+00:00",
+  "updated_at": "2026-11-06T07:29:56.442459+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6061,5 +6062,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B131-LEARN-HOME-OWNER-DENIAL.md",
     "evidence": "evidence/ROOT-B131-LEARN-HOME-OWNER-DENIAL-20261106.json"
+  },
+  "integration_batch_132_commerce_owner_read": {
+    "status": "LOCAL_REAL_COMMERCE_READ_PASS",
+    "page": "MB-026",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B132-COMMERCE-OWNER-READ.md",
+    "evidence": "evidence/ROOT-B132-COMMERCE-OWNER-READ-20261106.json"
   }
 }
