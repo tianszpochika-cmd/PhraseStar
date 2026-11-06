@@ -1,0 +1,355 @@
+{
+  "batch": "B110",
+  "status": "ACCEPTED_LOCAL_REAL_H5_OWNER_ATTEMPT_TO_BROKER",
+  "owner": "assessment-service",
+  "parent": "82ce1171c67d35d7b87b4645175882bbe66f8bb9",
+  "source_jobs": [
+    "G133",
+    "G145",
+    "G150",
+    "G152"
+  ],
+  "mobile_h5": {
+    "baseline": "B100",
+    "index_sha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519"
+  },
+  "assessment_candidate": {
+    "baseline": "B108",
+    "jar_sha256": "55df73fdecccad95c1d56d2edfebb08b723fb572748005a0239513e947a30701",
+    "other_owner_jars": "B105 frozen digests"
+  },
+  "bundle": {
+    "frozen_worker_runner_sha": "8645e3b04680b0724ad5655d5dbe5b93b87329b1dafd19c1bd841db5013f0dec",
+    "pins": {
+      "READBACK_SHA": "14bbf6d309f263637fd606c8466cd0bed1b8fca5dad81236922292759eb0e18d",
+      "BRIDGE_SHA": "6002a35da2e07675b7497b1b3af264dedbe27ac8d5d40913affe5c5bda3417f8"
+    },
+    "bundle": {
+      "mb013_kafka_bridge.py": "6002a35da2e07675b7497b1b3af264dedbe27ac8d5d40913affe5c5bda3417f8",
+      "run-grammar-qa.py": "4e3611f66eb8e31432f14704b467c119bc68c17545729c3d1c01e8fa33381551",
+      "ASSESSMENT-READBACK.sql": "14bbf6d309f263637fd606c8466cd0bed1b8fca5dad81236922292759eb0e18d"
+    },
+    "dry_19_shape": true
+  },
+  "raw_sanitized_receipt_sha256": "bf468a6bc2a9f6e436c414bbf6ff2c143bcf12ff639f937999ead5a4f65c69bd",
+  "first_live_attempt": {
+    "status": "FAIL",
+    "failure": "mysql-query",
+    "observer": {
+      "browser": "bound",
+      "counts": {
+        "abortedWrites": 0,
+        "assessmentWrites": 2,
+        "continued": 18,
+        "foreignOrigins": 0,
+        "iamSessionWrites": 1,
+        "retriesAborted": 0,
+        "syntheticFulfills": 0,
+        "unknownContinued": 0
+      },
+      "exit": 0,
+      "reason": "one-question-grammar-receipt",
+      "receipt": {
+        "attemptAssessed": true,
+        "attemptPosts": 1,
+        "attemptStatus": 200,
+        "itemCount": 1,
+        "modePractice": true,
+        "oneQuestion": true,
+        "receiptAuthoritative": true,
+        "sameSession": true,
+        "sessionPosts": 1,
+        "sessionStatus": 200
+      },
+      "status": "OBSERVED",
+      "task": "MB-013",
+      "requestIdsObserved": 2,
+      "requestIdsDistinct": true
+    },
+    "ports_released": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18091:free",
+      "18183:free",
+      "19092:free"
+    ],
+    "receipt_sha256": "fcb10a52f14bd891bf875389fd42689402efb386caa0028dad0a7bbee11bfe9d"
+  },
+  "sql_dry": {
+    "first_checks_exit": 137,
+    "session_option_checks_exit": 137,
+    "standalone_owner_row_exit": 0,
+    "revised": {
+      "flyway_12": true,
+      "checks": {
+        "exit": 0,
+        "rows": 19,
+        "ms": 73,
+        "error": null,
+        "unknown_field": null
+      },
+      "owner_row": {
+        "exit": 0,
+        "rows": 0,
+        "ms": 64,
+        "error": null,
+        "unknown_field": null
+      }
+    },
+    "cleanup": true,
+    "receipt_sha256": "8850881747399f557f2d724ac43463df14ad9e5d528564646d73cfce6a955090"
+  },
+  "runtime": {
+    "assessmentStarted": true,
+    "broker": true,
+    "brokerReady": true,
+    "contentWrites": 0,
+    "databaseReleased": true,
+    "health": {
+      "assessment": true,
+      "content": true,
+      "gateway": true,
+      "iam": true,
+      "learner": true
+    },
+    "kafka": {
+      "ackTimestamp": true,
+      "actorMatch": true,
+      "headers": 7,
+      "headersMatch": true,
+      "itemMatch": true,
+      "keyMatch": true,
+      "leaseClear": true,
+      "offsetAtStart": 0,
+      "offsetBefore": 1,
+      "offsetPartitions": 12,
+      "offsetTotal": 1,
+      "oneRow": true,
+      "publishedAttempt": 1,
+      "records": 1,
+      "reportMatch": true,
+      "secondMessageAbsent": true,
+      "sessionMatch": true,
+      "storedJsonMatch": true,
+      "unexpectedTopics": 0
+    },
+    "kind": "MB013_GRAMMAR_KAFKA_145",
+    "learningStarted": false,
+    "networkReleased": true,
+    "observer": {
+      "attemptRequestIdValid": true,
+      "browser": "bound",
+      "counts": {
+        "abortedWrites": 0,
+        "assessmentWrites": 2,
+        "continued": 18,
+        "foreignOrigins": 0,
+        "iamSessionWrites": 1,
+        "retriesAborted": 0,
+        "syntheticFulfills": 0,
+        "unknownContinued": 0
+      },
+      "exit": 0,
+      "reason": "one-question-grammar-receipt",
+      "receipt": {
+        "attemptAssessed": true,
+        "attemptPosts": 1,
+        "attemptStatus": 200,
+        "itemCount": 1,
+        "modePractice": true,
+        "oneQuestion": true,
+        "receiptAuthoritative": true,
+        "sameSession": true,
+        "sessionPosts": 1,
+        "sessionStatus": 200
+      },
+      "requestIdCount": 2,
+      "requestIdsDistinct": true,
+      "sessionRequestIdValid": true,
+      "status": "OBSERVED",
+      "task": "MB-013"
+    },
+    "portsAfter": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18091:free",
+      "18183:free",
+      "19092:free"
+    ],
+    "profileWrite": false,
+    "readback": {
+      "account": "assessment_service",
+      "checks": [
+        {
+          "code": "flyway_failed_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": "NONE"
+        },
+        {
+          "code": "flyway_sql_1_through_12",
+          "expected": 12,
+          "observed": 12,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "flyway_v12_script",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": "V12"
+        },
+        {
+          "code": "flyway_unexpected_version_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "session_ok_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "session_other_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "attempt_ok_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "attempt_other_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "report_ok_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "report_other_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "owner_principal_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "canonical_bound_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "canonical_name_claim_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "canonical_published_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": "PUBLISHED"
+        },
+        {
+          "code": "canonical_relay_moved_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "canonical_terminal_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "phantom_canonical_count",
+          "expected": 0,
+          "observed": 0,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "envelope_uuid_row_count",
+          "expected": 1,
+          "observed": 1,
+          "pass": 1,
+          "status": null
+        },
+        {
+          "code": "receipt_ready",
+          "expected": 18,
+          "observed": 18,
+          "pass": 1,
+          "status": "READY"
+        }
+      ],
+      "failedMigrations": 0
+    },
+    "status": "PASS",
+    "targetWrite": true
+  },
+  "post_cleanup": {
+    "owned_containers": 0,
+    "owned_networks": 0,
+    "owned_runner_processes": 0,
+    "released_ports": [
+      13306,
+      18070,
+      18087,
+      18088,
+      18089,
+      18091,
+      18183,
+      19092
+    ]
+  },
+  "trace": {
+    "route": "MB-013",
+    "operation_chain": "IAM -> H5 -> Gateway -> Assessment -> MySQL outbox -> Kafka",
+    "business": "INT-P1-006 transport portion",
+    "event": "assessment.item.assessed.v2"
+  },
+  "pending": [
+    "registered broker ACL under service identities",
+    "Learning consumption/state",
+    "workflow recovery and other users/items",
+    "device/accessibility/deployment"
+  ]
+}

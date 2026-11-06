@@ -5826,5 +5826,16 @@
     "cleanup": "PASS",
     "publish_score_binding_reading_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B109-CONTENT-GRADABLE-DRAFT-20261106.json"
+  },
+  "integration_batch_110_grammar_h5_kafka": {
+    "state": "ACCEPTED_LOCAL_REAL_H5_OWNER_ATTEMPT_TO_BROKER",
+    "browser_writes": "1 session + 1 attempt, both 200",
+    "owner_sql": "19/19",
+    "broker_records": 1,
+    "headers": 7,
+    "same_owner_payload": "PASS",
+    "cleanup": "PASS",
+    "acl_learning_compensation_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B110-GRAMMAR-H5-KAFKA-20261106.json"
   }
 }
