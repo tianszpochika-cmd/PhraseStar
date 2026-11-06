@@ -35,7 +35,7 @@ function loadPage({ allowed = true, api = {}, performanceLevel = 'High', liveWat
   const calls = { profile: 0, items: 0, loadouts: 0, resources: 0, navigate: [], restore: 0, quality: [] }
   const session = reactive({ isAuthenticated: true, verifiedSubject: 'A', identityRevision: 1, status: 'authenticated', restore: async () => {}, adultGate: 'PASSED', isLearningReady: true, refreshGateFromServer: async () => {} })
   const b4 = { performanceLevel, setPerformance(level) { this.performanceLevel = level; calls.quality.push(level) }, restore() { calls.restore += 1 } }
-  const shown = []; const hidden = []; const mounted = []; const unmounted = []; const watchers = []
+  const shown = []; const hidden = []; const mounted = []; const unmounted = []; const watchers = []; const backPress = []
   const themeListeners = []
   class MobileApiError extends Error { constructor(status, message = String(status)) { super(message); this.status = status } }
   const apiImpl = {
@@ -55,7 +55,7 @@ function loadPage({ allowed = true, api = {}, performanceLevel = 'High', liveWat
       onMounted: (callback) => mounted.push(callback),
       onUnmounted: (callback) => unmounted.push(callback),
     },
-    '@dcloudio/uni-app': { onShow: (callback) => shown.push(callback), onHide: (callback) => hidden.push(callback) },
+    '@dcloudio/uni-app': { onShow: (callback) => shown.push(callback), onHide: (callback) => hidden.push(callback), onBackPress: (callback) => backPress.push(callback) },
     '@englishflow/i18n': { interpolate: (message, values = {}) => message.replace(/\{(\w+)\}/g, (_m, key) => String(values[key] ?? `{${key}}`)) },
     '../../components/MobilePageHeader.vue': {},
     '../../api/client': { MobileApiError },
@@ -70,8 +70,8 @@ function loadPage({ allowed = true, api = {}, performanceLevel = 'High', liveWat
     '../../stores/session': { useSessionStore: () => session },
     './avatar-page': mapper,
   }
-  const names = ['loadAvatarPage', 'selectPerformance', 'openPreview', 'closePreview', 'retry', 'goWardrobe', 'backToGrowth', 'openLogin']
-  const refs = ['pageState', 'permissionForbidden', 'profile', 'items', 'loadouts', 'resources', 'loadoutsError', 'itemsError', 'previewLoadout', 'currentId', 'currentName', 'previewSlots', 'manifestReady', 'qualityLabels', 'qualityIndex', 'resolvedTheme']
+  const names = ['loadAvatarPage', 'selectPerformance', 'openPreview', 'closePreview', 'retry', 'goWardrobe', 'leaveWardrobe', 'returnAvatarStep', 'backToGrowth', 'openLogin']
+  const refs = ['pageState', 'permissionForbidden', 'profile', 'items', 'loadouts', 'resources', 'loadoutsError', 'itemsError', 'previewLoadout', 'currentId', 'currentName', 'previewSlots', 'manifestReady', 'qualityLabels', 'qualityIndex', 'resolvedTheme', 'surface']
   const exported = `${script}\nexport const __test = { ${names.join(', ')} };\nexport const __refs = { ${refs.join(', ')} };\n`
   const compiled = ts.transpileModule(exported, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
   const execute = () => {
@@ -84,7 +84,7 @@ function loadPage({ allowed = true, api = {}, performanceLevel = 'High', liveWat
   }
   const scope = liveWatch ? vue.effectScope() : null
   const module = scope ? scope.run(execute) : execute()
-  return { source, calls, session, b4, shown, hidden, mounted, unmounted, watchers, themeListeners, scope, mobileApiError: (status) => new MobileApiError(status), test: module.exports.__test ?? {}, refs: module.exports.__refs ?? {} }
+  return { source, calls, session, b4, shown, hidden, mounted, unmounted, watchers, backPress, themeListeners, scope, mobileApiError: (status) => new MobileApiError(status), test: module.exports.__test ?? {}, refs: module.exports.__refs ?? {} }
 }
 
 test('avatar mapper keeps unknown facts unknown and current is explicit only', () => {
@@ -197,10 +197,27 @@ test('avatar page has no write action, local engine or local dictionary', () => 
   const page = loadPage()
   assert.doesNotMatch(page.source, /equipLoadout|saveB4AvatarProfile|createAdaptivePerformanceEngine|<AppIcon|✦/u)
   assert.doesNotMatch(page.source, /avatarText|const labels: Record<string, string> = \{ HEAD:/u)
+  assert.doesNotMatch(page.source, /scrollIntoView/u)
+  assert.doesNotMatch(page.source, /addEventListener\(\s*['"]click['"]/u)
+  assert.doesNotMatch(page.source, /closest\(\s*['"]\.mobile-back['"]\s*\)/u)
+  assert.doesNotMatch(page.source, /rgba\(\s*42\s*,\s*31\s*,\s*92|rgba\(\s*255\s*,\s*255\s*,\s*255/u)
+  assert.match(page.source, /onBackPress\(\(\) => returnAvatarStep\(\)\)/u)
+  assert.match(page.source, /:on-back="returnAvatarStep"/u)
+  assert.match(page.source, /--yx-settings-card-inset/u)
+  assert.match(page.source, /--closed-cta-shadow/u)
+  assert.match(page.source, /--yx-settings-bottom-bar-shadow/u)
+  const header = fs.readFileSync(path.join(appRoot, 'src/components/MobilePageHeader.vue'), 'utf8')
+  assert.match(header, /onBack\?: \(\) => boolean/u)
+  assert.match(header, /if \(props\.onBack\?\.\(\) === true\) return\s+backMobile\(\)/u)
+  assert.match(header, /@click="pressBack"/u)
+  assert.doesNotMatch(header, /addEventListener/u)
   assert.match(page.source, /getB4AvatarProfile|listB4AvatarItems|listB4Loadouts|getB4AvatarResources/u)
   assert.match(page.source, /qualityHint/u); assert.match(page.source, /v2-avatar-muted/u)
   assert.match(page.source, /aria-modal="true"/u)
   assert.match(page.source, /disabled aria-disabled/u)
+  assert.match(page.source, /data-avatar-surface/u)
+  assert.match(page.source, /surface === 'preview'/u)
+  assert.match(page.source, /surface === 'wardrobe'/u)
 })
 
 test('avatar page uses original SVG slots and avatarPage keys only', () => {
@@ -622,4 +639,40 @@ test('avatar watcher held gate drops the read when the route leaves before load'
   } finally {
     route.restore()
   }
+})
+
+test('avatar ready surface opens on preview and the wardrobe control does not read again', async () => {
+  const page = loadPage({ api: {
+    getB4AvatarProfile: async () => { page.calls.profile += 1; return profile({ loadoutId: 'one' }) },
+    listB4AvatarItems: async () => { page.calls.items += 1; return { items: [item('a', { owned: true })] } },
+    listB4Loadouts: async () => { page.calls.loadouts += 1; return { items: [loadout('one', { equipped: true, items: ['a'] }), loadout('two')] } },
+    getB4AvatarResources: async () => { page.calls.resources += 1; return { resourceVersion: 'v1', manifestHash: 'sha', fallbackMode: '2D_FALLBACK', performanceTiers: ['High'] } },
+  } })
+  await page.shown[0]()
+  assert.equal(page.refs.pageState.value, 'ready')
+  assert.equal(page.refs.surface.value, 'preview')
+  assert.equal(page.refs.currentName.value, 'Set one')
+  const reads = page.calls.profile
+  assert.equal(page.backPress.length, 1)
+  assert.equal(page.test.returnAvatarStep(), false)
+  assert.equal(page.backPress[0](), false)
+  page.test.goWardrobe()
+  assert.equal(page.refs.surface.value, 'wardrobe')
+  assert.equal(page.calls.profile, reads)
+  assert.equal(page.calls.items, reads)
+  assert.equal(page.calls.loadouts, reads)
+  assert.equal(page.calls.resources, reads)
+  assert.equal(page.backPress[0](), true)
+  assert.equal(page.refs.surface.value, 'preview')
+  assert.equal(page.calls.profile, reads)
+  page.test.goWardrobe()
+  page.test.returnAvatarStep()
+  assert.equal(page.refs.surface.value, 'preview')
+  assert.equal(page.calls.profile, reads)
+  page.test.leaveWardrobe()
+  assert.equal(page.refs.surface.value, 'preview')
+  assert.equal(page.calls.profile, reads)
+  page.hidden[0]()
+  assert.equal(page.refs.surface.value, 'preview')
+  assert.equal(page.refs.profile.value, null)
 })

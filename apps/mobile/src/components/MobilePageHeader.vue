@@ -13,9 +13,16 @@ const props = withDefaults(defineProps<{
   backIconSrc?: string
   /** Existing pages keep the settings control. Pass false for a 44×44 empty trail. */
   showSettings?: boolean
+  /** Page-owned back step. Return true to stay on the route. Omitted pages use backMobile. */
+  onBack?: () => boolean
 }>(), {
   showSettings: true,
 })
+
+function pressBack(): void {
+  if (props.onBack?.() === true) return
+  backMobile()
+}
 
 const isTab = computed(() => ['home', 'learn', 'b2-practice', 'world', 'profile'].includes(props.page))
 const isAuth = computed(() => ['login', 'register', 'reset-password'].includes(props.page))
@@ -26,7 +33,7 @@ const navTitleMode = computed(() => Boolean(props.compact && props.title && prop
   <view class="mobile-page-header" :class="{ 'mobile-page-header--nav-title': navTitleMode }">
     <view class="mobile-topbar" :class="{ 'mobile-topbar--nav': navTitleMode }">
       <view v-if="isTab || isAuth" class="mobile-wordmark"><view class="mobile-logo" aria-hidden="true">✦</view><text>{{ mobileT('brand') }}</text></view>
-      <button tabindex="0" role="button" v-else class="mobile-back" :class="{ 'mobile-back--icon': Boolean(backIconSrc) || navTitleMode }" :aria-label="mobileT('back')" @click="backMobile"><image v-if="backIconSrc" class="mobile-back-icon" :src="backIconSrc" mode="aspectFit" aria-hidden="true" /><text v-else aria-hidden="true">‹</text><template v-if="!backIconSrc && !navTitleMode">{{ mobileT('back') }}</template></button>
+      <button tabindex="0" role="button" v-else class="mobile-back" :class="{ 'mobile-back--icon': Boolean(backIconSrc) || navTitleMode }" :aria-label="mobileT('back')" @click="pressBack"><image v-if="backIconSrc" class="mobile-back-icon" :src="backIconSrc" mode="aspectFit" aria-hidden="true" /><text v-else aria-hidden="true">‹</text><template v-if="!backIconSrc && !navTitleMode">{{ mobileT('back') }}</template></button>
       <text v-if="navTitleMode" class="mobile-nav-title" role="heading" aria-level="1">{{ title }}</text>
       <text v-if="isAuth" class="mobile-topbar-note">{{ mobileT('authTag') }}</text>
       <button tabindex="0" role="button" v-else-if="showSettings" class="mobile-settings" :aria-label="mobileT('settings')" @click="openUniPage('/pages/settings/settings')"><text aria-hidden="true">☷</text></button>
