@@ -1,0 +1,82 @@
+{
+  "batch": "B143",
+  "at": "2026-11-06T08:50:33.332359+00:00",
+  "classification": "LOCAL_REAL_H5_COMMERCE_EMPTY_OWNER_PASS",
+  "worker": "G364",
+  "outerSha256": "071baa03dd2cc73a09d5892d5d7acd5489c9dc17b43b39563be3a33a76905c01",
+  "observerSha256": "26f039a62bcc27c5d16e9aa511038cb761fd5938be4de397e4a0930c7a584980",
+  "runtime": {
+    "services": [
+      "IAM",
+      "Gateway",
+      "Commerce",
+      "MySQL"
+    ],
+    "loginStatus": 200,
+    "catalogClass": "PUBLIC_PROJECTION_EMPTY",
+    "ownOrderClass": "EMPTY_CALLER",
+    "ownEntitlementClass": "EMPTY_CALLER",
+    "catalogProvesEmptyOwner": false,
+    "unrelatedAborts": {
+      "count": 8,
+      "accounted": 8,
+      "aborted": true,
+      "offScope": true,
+      "methods": [
+        "GET"
+      ],
+      "continuedExtra": 0
+    },
+    "businessWrites": 0,
+    "closedCalls": 0,
+    "tablesBefore": {
+      "commerce_activation_code": 0,
+      "commerce_audit_record": 0,
+      "commerce_entitlement": 0,
+      "commerce_idempotency_record": 0,
+      "commerce_order": 0,
+      "commerce_outbox_event": 0,
+      "commerce_payment_attempt": 0,
+      "commerce_payment_callback": 0,
+      "commerce_price_snapshot": 0,
+      "commerce_reconciliation_record": 0,
+      "commerce_refund": 0,
+      "commerce_refund_callback": 0,
+      "commerce_sku": 0
+    },
+    "tablesAfter": {
+      "commerce_activation_code": 0,
+      "commerce_audit_record": 0,
+      "commerce_entitlement": 0,
+      "commerce_idempotency_record": 0,
+      "commerce_order": 0,
+      "commerce_outbox_event": 0,
+      "commerce_payment_attempt": 0,
+      "commerce_payment_callback": 0,
+      "commerce_price_snapshot": 0,
+      "commerce_reconciliation_record": 0,
+      "commerce_refund": 0,
+      "commerce_refund_callback": 0,
+      "commerce_sku": 0
+    }
+  },
+  "cleanup": {
+    "exactNameVerified": true,
+    "containerReleased": true,
+    "portsReleased": [
+      13306,
+      18070,
+      18087,
+      18096,
+      18183
+    ],
+    "scratchRemoved": true
+  },
+  "pending": [
+    "populated caller and order detail",
+    "purchase and redeem policy",
+    "native device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
