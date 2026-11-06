@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B136-20261106] 客服 H5 经本机真实网关显示本人空列表，工单表和工作台快照表前后一致。
+
 - [MOBILE-FIGMA-B135-20261106] 五条移动 H5 路由通过平板横竖屏、两倍字号和键盘的 53 项受控检查。
 
 - [MOBILE-FIGMA-B134-20261106] Learning Java 候选客户端通过实际 Assessment 归属和版本核对。

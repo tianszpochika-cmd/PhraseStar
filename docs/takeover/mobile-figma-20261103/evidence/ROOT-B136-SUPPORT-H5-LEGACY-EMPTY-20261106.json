@@ -1,0 +1,58 @@
+{
+  "batch": "B136",
+  "at": "2026-11-06T07:50:48.625349+00:00",
+  "classification": "LOCAL_REAL_H5_LEGACY_SUPPORT_EMPTY_OBSERVED",
+  "worker": "G337",
+  "pins": {
+    "adminJarSha256": "0ba874ee8a99121c22b43161040d8d9716a8decd2cd84337198e5436bf171ba5",
+    "b116IndexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+    "fixtureSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+    "gatewayJarSha256": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "iamJarSha256": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "observerSha256": "0709328d838b1f87c210d5bc98f2b0553f8b9b2e8bcde18a882223e01cfa66f3",
+    "seedSqlSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9"
+  },
+  "runtimeSha256": "1e64af1d1478915ff18684983e62731ea6d35bff8949212d44bf3c485060aecd",
+  "browserSha256": "10b7c0a84b27aebb9171c442e570a2e55c6c40fb88af4169a4e4cab72fdcbc5a",
+  "localActual": {
+    "services": [
+      "IAM",
+      "Gateway",
+      "Admin Ops",
+      "MySQL"
+    ],
+    "loginStatus": 200,
+    "listRequests": 1,
+    "listParsed": 1,
+    "shape": "LEGACY_EMPTY_ITEMS",
+    "emptyVisible": true,
+    "supportNumberMatched": true,
+    "closedControls": true,
+    "boardRouteRequests": 0,
+    "writeRequests": 0,
+    "ticketRows": [
+      0,
+      0
+    ],
+    "closureDeskRows": [
+      0,
+      0
+    ],
+    "migrations": 7
+  },
+  "portsReleased": [
+    13306,
+    18070,
+    18087,
+    18097,
+    18183
+  ],
+  "cleanupVerified": true,
+  "pending": [
+    "formal cursor and schema",
+    "nonempty and ticket mutations",
+    "physical device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
