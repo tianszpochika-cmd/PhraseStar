@@ -18,6 +18,7 @@ import com.englishflow.content.domain.ContentVersion;
 import com.englishflow.content.domain.ContentVersionStatus;
 import com.englishflow.content.domain.CopyrightStatus;
 import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -33,13 +34,20 @@ import org.springframework.transaction.support.TransactionTemplate;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -59,32 +67,103 @@ import static org.mockito.Mockito.when;
 /**
  * Opt-in owner readback for one gradable draft. The editor token is synthetic;
  * this test never calls IAM, a publisher, or a broker.
+ * A manual run supplies the three dedicated variables and a pre-created empty schema.
+ * The gated runner leaves those unset; its scan only sees literal admin required() calls.
+ * An auto-run schema is csmobilegq plus 16 lowercase hex, with no '_' or '%'.
  */
 @EnabledIfSystemProperty(named = "content.gradableDraft.integration", matches = "true")
 class B9GradableDraftMySqlTest {
 
     private static final Pattern SCHEMA_NAME = Pattern.compile("cs_mobile_gq_[a-f0-9]+");
+    /** Auto schema allowlist. GRANT treats '_' and '%' as wildcards even inside backticks. */
+    private static final Pattern AUTO_SCHEMA_NAME = Pattern.compile("csmobilegq[a-f0-9]{16}");
+    /** Auto account allowlist. Manual owner names are never created or dropped. */
+    private static final Pattern AUTO_ACCOUNT_NAME = Pattern.compile("gq[a-f0-9]{16}");
     private static final Pattern OWNER_NAME = Pattern.compile("[A-Za-z_][A-Za-z0-9_]{0,31}");
     private static final String SCHEMA_ENV = "CONTENT_GRADABLE_DRAFT_SCHEMA";
     private static final String USER_ENV = "CONTENT_GRADABLE_DRAFT_USERNAME";
     private static final String PASSWORD_ENV = "CONTENT_GRADABLE_DRAFT_PASSWORD";
     private static final String JDBC_URL_PREFIX = "jdbc:mysql://127.0.0.1:13306/";
+    private static final String ACCOUNT_HOST = "%";
+    /** MySQL ER_DB_CREATE_EXISTS. A hit is someone else's schema and is not dropped or granted. */
+    private static final int SCHEMA_EXISTS = 1007;
+    /** MySQL ER_CANNOT_USER. A hit is someone else's account and is not dropped or granted. */
+    private static final int ACCOUNT_EXISTS = 1396;
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private static JdbcTemplate jdbc;
     private static TransactionTemplate transaction;
     private static ObjectMapper mapper;
+    /** Set only after this run's CREATE DATABASE succeeds. */
+    private static String scratchSchema;
+    /** Set only after this run's CREATE USER succeeds. */
+    private static String scratchUser;
+    private static String adminUser;
+    private static String adminPassword;
 
     @BeforeAll
     static void requireEmptyMysqlAndMigrateThroughV34() throws Exception {
-        String schema = requiredEnv(SCHEMA_ENV).trim();
-        String user = requiredEnv(USER_ENV).trim();
-        String password = requiredEnv(PASSWORD_ENV);
-        if (!SCHEMA_NAME.matcher(schema).matches()) {
-            throw new AssertionError(SCHEMA_ENV + " must match cs_mobile_gq_[a-f0-9]+");
+        try {
+            Dedicated dedicated = resolveDedicated();
+            installDedicated(dedicated.schema, dedicated.user, dedicated.password);
+        } catch (Throwable failure) {
+            cleanupThenRethrow(failure);
         }
-        if (!OWNER_NAME.matcher(user).matches()) {
-            throw new AssertionError(USER_ENV + " must be one dedicated owner account name");
+    }
+
+    @AfterAll
+    static void dropResourcesCreatedByThisRun() {
+        enforceCleanup();
+    }
+
+    /**
+     * Dedicated names are read through constants. Literal getenv/required calls would make the
+     * runner provision them and this class would treat root as the manual owner.
+     */
+    private static Dedicated resolveDedicated() throws Exception {
+        String schema = System.getenv(SCHEMA_ENV);
+        String user = System.getenv(USER_ENV);
+        String password = System.getenv(PASSWORD_ENV);
+        boolean schemaSet = present(schema);
+        boolean userSet = present(user);
+        boolean passwordSet = present(password);
+        int presentCount = (schemaSet ? 1 : 0) + (userSet ? 1 : 0) + (passwordSet ? 1 : 0);
+        if (presentCount != 0 && presentCount != 3) {
+            rejectPartial(schemaSet, userSet, passwordSet);
         }
+        if (presentCount == 3) {
+            String schemaName = requiredEnv(SCHEMA_ENV).trim();
+            String userName = requiredEnv(USER_ENV).trim();
+            String dedicatedPassword = requiredEnv(PASSWORD_ENV);
+            if (!SCHEMA_NAME.matcher(schemaName).matches()) {
+                throw new AssertionError(SCHEMA_ENV + " must match cs_mobile_gq_[a-f0-9]+");
+            }
+            if (!OWNER_NAME.matcher(userName).matches()) {
+                throw new AssertionError(USER_ENV + " must be one dedicated owner account name");
+            }
+            return new Dedicated(schemaName, userName, dedicatedPassword);
+        }
+        return provisionRunnerScope();
+    }
+
+    private static Dedicated provisionRunnerScope() throws Exception {
+        // Literal required(...) names are the gated runner's source scan. They run only when every
+        // dedicated variable is absent, and they must stay written exactly like the other Content tests.
+        String adminUrl = required("CONTENT_FLYWAY_TEST_ADMIN_URL");
+        String user = required("CONTENT_FLYWAY_TEST_ADMIN_USER");
+        String password = required("CONTENT_FLYWAY_TEST_ADMIN_PASSWORD");
+        if (!JDBC_URL_PREFIX.equals(adminUrl) || adminUrl.contains("@")) {
+            throw new AssertionError("CONTENT_FLYWAY_TEST_ADMIN_URL must be " + JDBC_URL_PREFIX);
+        }
+        adminUser = user;
+        adminPassword = password;
+        String schema = allocateSchema();
+        String accountPassword = allocateAccount();
+        grantOnlySchema(schema, scratchUser);
+        return new Dedicated(schema, scratchUser, accountPassword);
+    }
+
+    private static void installDedicated(String schema, String user, String password) throws Exception {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(JDBC_URL_PREFIX + schema
@@ -428,5 +507,223 @@ class B9GradableDraftMySqlTest {
             throw new AssertionError(name + " is required");
         }
         return value;
+    }
+
+    /** Same env-then-property lookup as the other Content Flyway tests. */
+    private static String required(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isBlank()) {
+            value = System.getProperty(name);
+        }
+        if (value == null || value.isBlank()) {
+            throw new AssertionError(name + " is required");
+        }
+        return value;
+    }
+
+    private static boolean present(String value) {
+        return value != null && !value.isBlank();
+    }
+
+    private static void rejectPartial(boolean schemaSet, boolean userSet, boolean passwordSet) {
+        List<String> missing = new ArrayList<>();
+        if (!schemaSet) {
+            missing.add(SCHEMA_ENV);
+        }
+        if (!userSet) {
+            missing.add(USER_ENV);
+        }
+        if (!passwordSet) {
+            missing.add(PASSWORD_ENV);
+        }
+        throw new AssertionError(String.join(", ", missing)
+                + " must be set together with the other dedicated credentials, or all three left unset");
+    }
+
+    private static String allocateSchema() throws SQLException {
+        String name = "csmobilegq" + randomHex(8);
+        if (!exactAutoSchema(name)) {
+            throw new AssertionError("could not allocate a unique scratch schema");
+        }
+        try {
+            adminExecute("CREATE DATABASE " + quoteIdent(name)
+                    + " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == SCHEMA_EXISTS) {
+                throw new AssertionError("could not allocate a unique scratch schema");
+            }
+            throw ex;
+        }
+        scratchSchema = name;
+        return name;
+    }
+
+    private static String allocateAccount() throws SQLException {
+        String name = "gq" + randomHex(8);
+        String password = randomHex(16);
+        if (!exactAutoAccount(name)) {
+            throw new AssertionError("could not allocate a unique scratch account");
+        }
+        try {
+            adminExecute("CREATE USER " + accountAtHost(name) + " IDENTIFIED BY " + quoteLiteral(password));
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == ACCOUNT_EXISTS) {
+                throw new AssertionError("could not allocate a unique scratch account");
+            }
+            throw ex;
+        }
+        scratchUser = name;
+        return password;
+    }
+
+    private static void grantOnlySchema(String schema, String account) throws SQLException {
+        if (!exactAutoSchema(schema) || !schema.equals(scratchSchema)
+                || !exactAutoAccount(account) || !account.equals(scratchUser)) {
+            throw new AssertionError("refusing to grant outside the scratch schema");
+        }
+        adminExecute("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX, REFERENCES ON "
+                + quoteIdent(schema) + ".* TO " + accountAtHost(account));
+    }
+
+    /** True only for this run's schema shape. Manual cs_mobile_gq_ names fail it. */
+    private static boolean exactAutoSchema(String name) {
+        return name != null
+                && AUTO_SCHEMA_NAME.matcher(name).matches()
+                && name.indexOf('_') < 0
+                && name.indexOf('%') < 0
+                && !SCHEMA_NAME.matcher(name).matches();
+    }
+
+    private static boolean exactAutoAccount(String name) {
+        return name != null && AUTO_ACCOUNT_NAME.matcher(name).matches() && !reservedAccount(name);
+    }
+
+    private static boolean reservedAccount(String name) {
+        return name.equalsIgnoreCase(adminUser)
+                || name.equalsIgnoreCase("root")
+                || name.equalsIgnoreCase("mysql.sys")
+                || name.equalsIgnoreCase("mysql.session")
+                || name.equalsIgnoreCase("mysql.infoschema");
+    }
+
+    private static void cleanupThenRethrow(Throwable failure) throws Exception {
+        try {
+            enforceCleanup();
+        } catch (Throwable cleanupFailure) {
+            failure.addSuppressed(cleanupFailure);
+        }
+        if (failure instanceof Error error) {
+            throw error;
+        }
+        if (failure instanceof Exception exception) {
+            throw exception;
+        }
+        throw new AssertionError("setup failed");
+    }
+
+    /** Drops only names this run created. Attempts every pending drop, then fails if any drop failed. */
+    private static void enforceCleanup() {
+        List<String> problems = new ArrayList<>();
+        dropSchemaBestEffort(problems);
+        dropAccountBestEffort(problems);
+        if (scratchSchema == null && scratchUser == null) {
+            adminUser = null;
+            adminPassword = null;
+        }
+        if (!problems.isEmpty()) {
+            throw new AssertionError(String.join("; ", problems));
+        }
+    }
+
+    private static void dropSchemaBestEffort(List<String> problems) {
+        if (scratchSchema == null) {
+            return;
+        }
+        if (!exactAutoSchema(scratchSchema)) {
+            problems.add("refusing to drop a schema outside this run");
+            return;
+        }
+        try {
+            adminExecute("DROP DATABASE IF EXISTS " + quoteIdent(scratchSchema));
+            scratchSchema = null;
+        } catch (SQLException ex) {
+            problems.add("scratch schema cleanup failed (mysql " + ex.getErrorCode() + ")");
+        }
+    }
+
+    private static void dropAccountBestEffort(List<String> problems) {
+        if (scratchUser == null) {
+            return;
+        }
+        if (!exactAutoAccount(scratchUser)) {
+            problems.add("refusing to drop an account outside this run");
+            return;
+        }
+        try {
+            adminExecute("DROP USER IF EXISTS " + accountAtHost(scratchUser));
+            scratchUser = null;
+        } catch (SQLException ex) {
+            problems.add("scratch account cleanup failed (mysql " + ex.getErrorCode() + ")");
+        }
+    }
+
+    private static void adminExecute(String sql) throws SQLException {
+        try (Connection connection = openAdmin();
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException ex) {
+            throw redact(ex);
+        }
+    }
+
+    private static Connection openAdmin() throws SQLException {
+        if (adminUser == null || adminPassword == null) {
+            throw new SQLException("mysql error 0", "08001", 0);
+        }
+        Properties properties = new Properties();
+        properties.setProperty("user", adminUser);
+        properties.setProperty("password", adminPassword);
+        properties.setProperty("connectTimeout", "5000");
+        properties.setProperty("allowPublicKeyRetrieval", "true");
+        properties.setProperty("sslMode", "DISABLED");
+        try {
+            return DriverManager.getConnection(JDBC_URL_PREFIX, properties);
+        } catch (SQLException ex) {
+            throw redact(ex);
+        }
+    }
+
+    private static SQLException redact(SQLException failure) {
+        return new SQLException("mysql error " + failure.getErrorCode(), failure.getSQLState(), failure.getErrorCode());
+    }
+
+    private static String accountAtHost(String user) {
+        return quoteLiteral(user) + "@" + quoteLiteral(ACCOUNT_HOST);
+    }
+
+    private static String quoteLiteral(String value) {
+        return "'" + value.replace("'", "''") + "'";
+    }
+
+    private static String quoteIdent(String value) {
+        return "`" + value.replace("`", "``") + "`";
+    }
+
+    private static String randomHex(int bytes) {
+        byte[] buffer = new byte[bytes];
+        RANDOM.nextBytes(buffer);
+        return HexFormat.of().formatHex(buffer);
+    }
+
+    private static final class Dedicated {
+        private final String schema;
+        private final String user;
+        private final String password;
+
+        private Dedicated(String schema, String user, String password) {
+            this.schema = schema;
+            this.user = user;
+            this.password = password;
+        }
     }
 }
