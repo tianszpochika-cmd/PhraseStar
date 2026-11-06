@@ -1,0 +1,45 @@
+{
+  "batch": "B134",
+  "root_run": "G327",
+  "source_receipt_sha256": "b81c0975215a8d10bf0e134186d0b3952c7b6c690047dd9fa09fe52cd7ade3da",
+  "compile_receipt_sha256": "7d1763f2614ea594cd3ebdb9b35bd319c65929318a83b2e6e028c25e49e5779f",
+  "integration_head": "c53e2ff5",
+  "page": "MB-016",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_JAVA_BINDING_READ_PASS",
+  "client_sha256": "7351003087be82f05c772d83b7dfbc95848598e0888fd5464ddf68606c2062dc",
+  "probe_sha256": "1541923ddc7d318c53839d8ba6c8e818fa9d51601e6d75399d9868b643b1dcc6",
+  "real": {
+    "assessment_ready": true,
+    "java_probe_executed": true,
+    "current": true,
+    "wrong_owner_absent": true,
+    "wrong_pin_mismatch": true,
+    "learning_service_started": false,
+    "broker_started": false
+  },
+  "offline": {
+    "passed": 221,
+    "skipped": 8
+  },
+  "release": {
+    "database_released": true,
+    "fixed_ports": {
+      "assessment": 18091,
+      "content": 18089,
+      "gateway": 18070,
+      "h5": 18183,
+      "iam": 18087,
+      "learner": 18088,
+      "mysql": 13306
+    },
+    "prior_reference_unchanged": true
+  },
+  "pending": [
+    "LEARNING_RUNTIME_WIRING",
+    "EVENT_CONSUMPTION",
+    "SRS_MISTAKE_PROJECTION",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

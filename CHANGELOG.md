@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B134-20261106] Learning Java 候选客户端通过实际 Assessment 归属和版本核对。
+
 - [MOBILE-FIGMA-B133-20261106] 移动设置发送偏好版本条件，首次外观保存本机实测通过。
 
 - [MOBILE-FIGMA-B132-20261106] 本机真实读取权益页公开目录和本人订单、权益，独立库无业务写入。

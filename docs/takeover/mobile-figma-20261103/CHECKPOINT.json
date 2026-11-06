@@ -1879,7 +1879,8 @@
           "review": "reviews/INTEGRATION-B71-REPORT-SHARE-ISSUE.md",
           "report_http_requests": 9,
           "independent_http_checks": 184
-        }
+        },
+        "learning_java_binding_b134": "evidence/ROOT-B134-LEARNING-JAVA-OWNER-BINDING-20261106.json"
       },
       "current_job": null,
       "source_operation_trace_b59": {
@@ -3721,7 +3722,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:33:30.544505+00:00",
+  "updated_at": "2026-11-06T07:35:41.165693+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6077,5 +6078,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B133-MOBILE-PREFERENCE-IF-MATCH.md",
     "evidence": "evidence/ROOT-B133-MOBILE-PREFERENCE-IF-MATCH-20261106.json"
+  },
+  "integration_batch_134_learning_java_binding": {
+    "status": "LOCAL_REAL_JAVA_BINDING_READ_PASS",
+    "page": "MB-016",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B134-LEARNING-JAVA-OWNER-BINDING.md",
+    "evidence": "evidence/ROOT-B134-LEARNING-JAVA-OWNER-BINDING-20261106.json"
   }
 }
