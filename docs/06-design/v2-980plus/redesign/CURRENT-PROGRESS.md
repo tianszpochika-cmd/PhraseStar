@@ -25,4 +25,4 @@
 
 截至 2026-11-06，33 条路由已进入本地 UI 候选和来源追溯。定级重测、设置外观、阅读练习会话、客服与权益空态的本机实测，均按所列回执计算。逐页签收、部署与原生验收继续单列。 [项目状态](../../../STATUS.md) · [逐页追溯](../../../takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md)
 
-本轮已按用户要求完成本地收口并暂停。已有证据与可恢复的作业停点见[暂停交接](../../../takeover/mobile-figma-20261103/PAUSE-20261106.md)。
+本轮按用户要求暂停。移动端续作分支为 `origin/codex/mobile-figma-integration-20261103`。61 份待复核工作树快照单独归档，逐页签收继续待验。 [暂停交接](../../../takeover/mobile-figma-20261103/PAUSE-20261106.md) · [跨机快照清单](https://github.com/tianszpochika-cmd/PhraseStar/blob/580c17d1412beb9131ecd0e0899b724b9ec77b67/docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md)

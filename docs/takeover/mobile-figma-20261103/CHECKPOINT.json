@@ -3830,7 +3830,7 @@
     "new_leaf_count": 0
   },
   "integration_commit": "d64bbba63796fc918cfb00d2e3e2e3e570625f23",
-  "remote_push": "NOT_PUSHED_STAGE_IN_PROGRESS",
+  "remote_push": "CROSS_MACHINE_HANDOFF_BRANCHES",
   "trace_audit_B14": {
     "status": "TRACE_PENDING",
     "pages": 7,
@@ -6198,5 +6198,24 @@
     "ownedRuntimeRemaining": 0,
     "review": "PAUSE-20261106.md",
     "evidence": "evidence/PAUSE-20261106.json"
+  },
+  "cross_machine_handoff_20261106": {
+    "executionStatus": "USER_PAUSED",
+    "productStatus": "IN_PROGRESS_NOT_ACCEPTED",
+    "integrationBranch": "origin/codex/mobile-figma-integration-20261103",
+    "archiveBranch": "origin/codex/cloudstudy-handoff-20261106",
+    "archiveCommit": "580c17d1412beb9131ecd0e0899b724b9ec77b67",
+    "archiveIndex": "https://github.com/tianszpochika-cmd/PhraseStar/blob/580c17d1412beb9131ecd0e0899b724b9ec77b67/docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md",
+    "pauseCommit": "9723c4924fb045e9e4ac7024b1b09ab91a289fba",
+    "acceptedEvidenceHead": "230d19ece835018eefdce1bbad52838a40abd912",
+    "registeredWorktrees": 70,
+    "archivedWorktrees": 61,
+    "trackedChanges": 334,
+    "untrackedFiles": 1193,
+    "portableProbeFiles": 18,
+    "localUiCandidates": 33,
+    "tracePending": 33,
+    "deploymentPerformed": false,
+    "resumeRequiresUser": true
   }
 }
