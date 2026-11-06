@@ -1,94 +1,928 @@
 <script setup lang="ts">
-import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
-const { experienceStyle, experienceMotion } = useMobileExperience()
-
-import { computed, onMounted } from 'vue'
-import type { PerformanceLevel } from '@englishflow/performance'
-import B11StatusPanel from '../../components/b11/B11StatusPanel.vue'
-import { b11T, b11ThemeMode } from '../../platform/b11-foundation'
-import { getUniRuntime } from '../../platform/uni-runtime'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
+import { interpolate } from '@englishflow/i18n'
+import type { B10ReadingArticle } from '../../domain/b10'
+import {
+  READING_BODY_BASE_PX,
+  READING_BODY_MAX_PX,
+  READING_FONT_MAX_PERCENT,
+  READING_FONT_MIN_PERCENT,
+  READING_TRANSLATION_BASE_PX,
+  READING_TRANSLATION_MAX_PX,
+  articleViewState,
+  chooseListedArticleId,
+  clampBlockIndex,
+  classifyReadingStatus,
+  denialCanRender,
+  localPositionRecord,
+  localReadPercent,
+  nextWordSelection,
+  paragraphPieces,
+  readableQuestionCount,
+  readStillCurrent,
+  readingFontPx,
+  readingRouteActive,
+  readingShell,
+  readingStorageKey,
+  restoreLocalPosition,
+  selectionMatches,
+  stepReadingFont,
+  visibleBlocks,
+  type LocalWordSelection,
+  type ReadPermit,
+  type ReadingArticleInput,
+  type ReadingViewState,
+} from '../../domain/reading-page'
+import { b10LearningApi } from '../../api/b10'
+import { MobileApiError } from '../../api/client'
+import { currentMobilePagePath, ensureMobilePageAccess } from '../../auth/navigation'
+import { b10ContentLocale, b10ThemeMode, b10UiLocale } from '../../platform/b10-foundation'
+import { backMobile, mobileExperienceEngine, mobileT, useMobileExperience } from '../../platform/experience'
+import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
+import { mobileI18n } from '../../platform/v2-foundation'
 import { useSessionStore } from '../../stores/session'
-import { useB11LearningStore } from '../../stores/b11-learning'
-import type { ReadingQuestion } from '../../domain/b3'
+
+const graded = true
+const ROUTE_ID = 'b11-reading' as const
+const ROUTE_PATH = '/pages/b11-reading/b11-reading'
+const titleKey = 'titleGraded'
+const practiceChev = '/static/figma-reading-core/reading-article-168-1313/imgIconChevL.svg'
+const gradedChev = '/static/figma-reading-core/reading-graded-168-2513/imgIconChevL.svg'
+const chevSrc = graded ? gradedChev : practiceChev
+const chevClass = graded ? 'reading-icon-20' : 'reading-icon-22'
+const trackSrc = '/static/figma-reading-core/reading-article-168-1313/imgTrack.svg'
+const moreSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconMore.svg'
+const checkSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconCheckSq.svg'
+const chevRightSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconChevR.svg'
+const bookSrc = '/static/figma-reading-core/reading-empty-168-1246/imgIconBook.svg'
+const lockSrc = '/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgIconLock.svg'
+const mascotRestrictedSrc = '/static/figma-reading-core/reading-restricted-168-2234/imgMascot.svg'
+const mascotErrorSrc = '/static/figma-reading-core/reading-error-168-3333/imgMascot.svg'
+const glowArticle = '/static/figma-reading-core/reading-article-168-1313/imgGlow.svg'
+const glowEmpty = '/static/figma-reading-core/reading-empty-168-1246/imgGlow.svg'
+const glowGraded = '/static/figma-reading-core/reading-graded-168-2513/imgGlow.svg'
+const glowRestricted = '/static/figma-reading-core/reading-restricted-168-2234/imgGlow.svg'
+const glowWithdrawn = '/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgGlow.svg'
+const glowError = '/static/figma-reading-core/reading-error-168-3333/imgGlow.svg'
 
 const session = useSessionStore()
-const store = useB11LearningStore()
-const themeClass = computed(() => `b10-theme--${b11ThemeMode.value}`)
-const blockText = computed(() => store.currentReadingBlock?.text ?? '')
-const blockTranslation = computed(() => store.currentReadingBlock?.translation ?? '')
+const { experienceStyle, experienceMotion, theme } = useMobileExperience()
+const state = ref<ReadingViewState>('idle')
+const article = ref<ReadingArticleInput | null>(null)
+const blockIndex = ref(0)
+const questionCount = ref(0)
+const fontPercent = ref(READING_FONT_MIN_PERCENT)
+const showTranslation = ref(false)
+const selection = ref<LocalWordSelection | null>(null)
+const selectionGeneration = ref(0)
+const pageVisible = ref(false)
+const quality = ref(mobileExperienceEngine.state.level)
+let pageEpoch = 0
+let loadRequest = 0
+const stopQuality = mobileExperienceEngine.subscribe((next) => { quality.value = next.level })
 
-async function load(): Promise<void> { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return }; await store.loadReading() }
-function setPerformance(level: PerformanceLevel): void { store.setPerformance(level) }
-function setMotion(disabled: boolean): void { store.setMotionDisabled(disabled) }
-function sync(): void { void store.syncOffline() }
-function nextBlock(): void { store.setReadingBlock(store.readingBlockIndex + 1) }
-function setAnswer(question: ReadingQuestion, event: { detail: { value: string } }): void { store.readingAnswers[String(question.questionId)] = event.detail.value }
-onMounted(() => { void load() })
+function t(key: string, values?: Record<string, string | number>): string {
+  b10UiLocale.value
+  const message = mobileT(`readingPage.${key}`)
+  return values ? interpolate(message, values) : message
+}
+function documentHidden(): boolean {
+  return typeof document !== 'undefined' && document.hidden === true
+}
+function routeStillCurrent(): boolean {
+  return readingRouteActive(currentMobilePagePath(), ROUTE_PATH)
+}
+function abandonIfLeft(): boolean {
+  if (routeStillCurrent()) return false
+  hidePage()
+  return true
+}
+function privateReadAllowed(requestEpoch: number, requestId: number, subject: string, revision: number): boolean {
+  if (abandonIfLeft()) return false
+  return readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))
+}
+function livePermit(requestEpoch: number, requestId: number, subject: string, revision: number): ReadPermit {
+  return {
+    visible: pageVisible.value && !documentHidden() && routeStillCurrent(),
+    epoch: pageEpoch,
+    requestEpoch,
+    requestId,
+    activeRequestId: loadRequest,
+    subject,
+    liveSubject: session.verifiedSubject ?? '',
+    revision,
+    liveRevision: session.identityRevision,
+    adultPassed: session.adultGate === 'PASSED' && session.adultLearningAccess === 'ELIGIBLE',
+    consentAllowsLearning: session.learningConsentWithdrawn !== true,
+    learningReady: session.isLearningReady === true,
+  }
+}
+function concealContent(): void {
+  pageEpoch += 1
+  loadRequest += 1
+  state.value = 'idle'
+  article.value = null
+  questionCount.value = 0
+  blockIndex.value = 0
+  selection.value = null
+  selectionGeneration.value += 1
+}
+function hidePage(): void {
+  pageVisible.value = false
+  concealContent()
+}
+function statusOf(error: unknown): number {
+  return error instanceof MobileApiError ? error.status : -1
+}
+function applyFailure(error: unknown, requestEpoch: number, requestId: number, subject: string, revision: number): boolean {
+  const status = statusOf(error)
+  const next = classifyReadingStatus(status)
+  const permit = livePermit(requestEpoch, requestId, subject, revision)
+  const allowed = next === 'auth-401' || next === 'auth-403' ? denialCanRender(permit) : readStillCurrent(permit)
+  if (!allowed) return false
+  article.value = null
+  questionCount.value = 0
+  selection.value = null
+  state.value = next
+  return true
+}
+function readRawPosition(): unknown {
+  const key = readingStorageKey(ROUTE_ID)
+  let stored: unknown
+  try { stored = getUniRuntime().getStorageSync(key) } catch { return null }
+  if (stored == null || stored === '') return null
+  if (typeof stored === 'string') {
+    try { return JSON.parse(stored) as unknown } catch {
+      try { getUniRuntime().removeStorageSync(key) } catch { /* local cache is optional */ }
+      return null
+    }
+  }
+  if (typeof stored === 'object') return stored
+  try { getUniRuntime().removeStorageSync(key) } catch { /* local cache is optional */ }
+  return null
+}
+function clearPosition(): void {
+  try { getUniRuntime().removeStorageSync(readingStorageKey(ROUTE_ID)) } catch { /* local cache is optional */ }
+}
+function toInput(source: B10ReadingArticle): ReadingArticleInput {
+  return {
+    articleId: source.articleId,
+    title: source.title,
+    cefrLevel: source.cefrLevel,
+    wordCount: source.wordCount,
+    estimatedMinutes: source.estimatedMinutes,
+    blocks: source.blocks.map((block) => ({ blockId: block.blockId, blockIndex: block.blockIndex, text: block.text, translation: block.translation })),
+    rightsStatus: source.rightsStatus,
+    availability: null,
+    contentVersionId: source.contentVersionId,
+    contentEpoch: source.contentEpoch,
+  }
+}
+function persistLocal(): void {
+  const current = article.value
+  const subject = session.verifiedSubject ?? ''
+  if (state.value !== 'ready' || !current || !subject) return
+  const record = localPositionRecord({
+    routeId: ROUTE_ID,
+    subject,
+    articleId: current.articleId,
+    contentVersionId: current.contentVersionId,
+    contentEpoch: current.contentEpoch,
+  }, clampBlockIndex(blockIndex.value, visibleBlocks(current, 'ready').length))
+  try { getUniRuntime().setStorageSync(readingStorageKey(ROUTE_ID), JSON.stringify(record)) } catch { /* position stays in memory */ }
+}
+async function load(): Promise<void> {
+  if (documentHidden()) return
+  if (!routeStillCurrent()) {
+    if (pageVisible.value || article.value) hidePage()
+    return
+  }
+  if (!pageVisible.value) return
+  const requestEpoch = pageEpoch
+  const requestId = ++loadRequest
+  state.value = 'loading'
+  article.value = null
+  questionCount.value = 0
+  selection.value = null
+  selectionGeneration.value += 1
+  try { await session.restore() } catch { /* restore closes the session itself */ }
+  if (abandonIfLeft()) return
+  if (!denialCanRender(livePermit(requestEpoch, requestId, session.verifiedSubject ?? '', session.identityRevision))) return
+  const allowed = await ensureMobilePageAccess(ROUTE_PATH)
+  if (abandonIfLeft()) return
+  if (!denialCanRender(livePermit(requestEpoch, requestId, session.verifiedSubject ?? '', session.identityRevision))) return
+  const subject = session.verifiedSubject ?? ''
+  const revision = session.identityRevision
+  if (!allowed || !readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))) {
+    if (!denialCanRender(livePermit(requestEpoch, requestId, subject, revision))) return
+    article.value = null
+    questionCount.value = 0
+    state.value = session.isAuthenticated ? 'auth-403' : 'auth-401'
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const context = { uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }
+  let listed: B10ReadingArticle[]
+  try {
+    listed = await b10LearningApi.listReadingArticles(context)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const articleId = chooseListedArticleId(listed.map((item) => ({ articleId: item.articleId, rightsStatus: item.rightsStatus })))
+  if (articleId == null) {
+    article.value = null
+    questionCount.value = 0
+    state.value = 'empty'
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  let detail: B10ReadingArticle
+  try {
+    detail = await b10LearningApi.getReadingArticle(context, articleId)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const input = toInput(detail)
+  const view = articleViewState(input)
+  if (view !== 'ready') {
+    article.value = null
+    questionCount.value = 0
+    selection.value = null
+    state.value = view
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  let count = 0
+  try {
+    const questions = await b10LearningApi.listReadingQuestions(context, input.articleId)
+    if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+    count = readableQuestionCount(questions)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    const kind = classifyReadingStatus(statusOf(error))
+    if (kind === 'auth-401' || kind === 'auth-403' || kind === 'stale') {
+      applyFailure(error, requestEpoch, requestId, subject, revision)
+      return
+    }
+    if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+    count = 0
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const raw = readRawPosition()
+  const restored = restoreLocalPosition(raw, {
+    routeId: ROUTE_ID,
+    subject,
+    articleId: input.articleId,
+    contentVersionId: input.contentVersionId,
+    contentEpoch: input.contentEpoch,
+  })
+  if (raw && !restored) clearPosition()
+  article.value = input
+  questionCount.value = count
+  blockIndex.value = clampBlockIndex(restored?.blockIndex ?? 0, visibleBlocks(input, 'ready').length)
+  selection.value = null
+  state.value = 'ready'
+  persistLocal()
+}
+function changeFont(direction: -1 | 1): void {
+  fontPercent.value = stepReadingFont(fontPercent.value, direction)
+}
+function moveParagraph(direction: -1 | 1): void {
+  const count = blocks.value.length
+  const next = clampBlockIndex(safeIndex.value + direction, count)
+  if (next === safeIndex.value) return
+  blockIndex.value = next
+  selection.value = null
+  selectionGeneration.value += 1
+  persistLocal()
+}
+function chooseWord(blockId: string, word: string): void {
+  const next = nextWordSelection(selectionGeneration.value, blockId, word)
+  if (!next) return
+  selectionGeneration.value = next.generation
+  selection.value = selectionMatches(next, selectionGeneration.value) ? next : null
+}
+function wordSelected(blockId: string, word: string): boolean {
+  return selectionMatches(selection.value, selectionGeneration.value) && selection.value?.blockId === blockId && selection.value.word === word.trim()
+}
+function backToPractice(): void { openUniPage('/pages/practice/practice') }
+function onVisibility(): void {
+  if (typeof document === 'undefined') return
+  if (documentHidden()) {
+    if (pageVisible.value) hidePage()
+    return
+  }
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
+  }
+  if (!pageVisible.value) {
+    pageVisible.value = true
+    void load()
+  }
+}
+function onRouteChange(): void {
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
+  }
+  if (!pageVisible.value && !documentHidden()) {
+    pageVisible.value = true
+    void load()
+  }
+}
+
+const blocks = computed(() => visibleBlocks(article.value, state.value))
+const safeIndex = computed(() => clampBlockIndex(blockIndex.value, blocks.value.length))
+const current = computed(() => blocks.value[safeIndex.value] ?? null)
+const pieces = computed(() => current.value ? paragraphPieces(current.value.text) : [])
+const percent = computed(() => localReadPercent(safeIndex.value, blocks.value.length))
+const bodyPx = computed(() => readingFontPx(fontPercent.value, READING_BODY_BASE_PX, READING_BODY_MAX_PX))
+const translationPx = computed(() => readingFontPx(fontPercent.value, READING_TRANSLATION_BASE_PX, READING_TRANSLATION_MAX_PX))
+const shell = computed(() => readingShell(state.value))
+const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
+const pageStyle = computed(() => ({ ...experienceStyle.value, '--reading-body-size': `${bodyPx.value}px`, '--reading-translation-size': `${translationPx.value}px` }))
+const glowSrc = computed(() => {
+  if (shell.value === 'withdrawn') return glowWithdrawn
+  if (shell.value === 'error') return glowError
+  if (shell.value === 'restricted') return glowRestricted
+  if (shell.value === 'empty') return graded ? glowGraded : glowEmpty
+  return graded ? glowGraded : glowArticle
+})
+const restrictedBody = computed(() => {
+  if (state.value === 'auth-401') return t('auth401')
+  if (state.value === 'auth-403') return t('auth403')
+  if (state.value === 'stale') return t('stale')
+  if (state.value === 'unpublished') return t('unpublished')
+  if (state.value === 'unauthorized-content') return t('unauthorized')
+  return t('offline')
+})
+const activeSelection = computed(() => selectionMatches(selection.value, selectionGeneration.value) ? selection.value : null)
+
+watch(
+  () => [session.identityRevision, session.verifiedSubject, session.adultGate, session.adultLearningAccess, session.learningConsentWithdrawn, session.isLearningReady] as const,
+  () => {
+    if (!routeStillCurrent()) {
+      hidePage()
+      return
+    }
+    concealContent()
+    if (pageVisible.value && !documentHidden()) void load()
+  },
+  { flush: 'sync' },
+)
+onShow(() => {
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
+  }
+  pageVisible.value = true
+  void load()
+})
+onHide(() => { hidePage() })
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', onVisibility)
+if (typeof window !== 'undefined') window.addEventListener('hashchange', onRouteChange)
+onBeforeUnmount(() => {
+  if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', onVisibility)
+  if (typeof window !== 'undefined') window.removeEventListener('hashchange', onRouteChange)
+  stopQuality()
+})
 </script>
 
 <template>
-  <view class="yx-page b11-page v2-b11read-page" :class="themeClass" :style="experienceStyle" :data-motion="store.motionDisabled || store.performanceLevel === 'Performance' ? 'off' : experienceMotion">
-    <MobilePageHeader page="b11-reading" />
-
-    <view class="v2-b11read-body">
-    <B11StatusPanel :status="store.readingStatus" :message="store.readingMessage" :queue-count="store.queueCount" :performance-level="store.performanceLevel" :motion-disabled="store.motionDisabled" @retry="load" @sync="sync" @performance="setPerformance" @motion="setMotion" />
-
-    <view v-if="store.reading && store.reading.article.rightsStatus !== 'REVOKED'" class="yx-card reader-card card v2-b11read-card">
-      <view class="reader-heading v2-b11read-heading"><view class="v2-b11read-titlewrap"><text class="kicker eyebrow v2-b11read-eyebrow">{{ store.reading.article.cefrLevel }} · {{ store.reading.article.wordCount }} words</text><text class="card-title v2-b11read-h2">{{ store.reading.article.title }}</text></view><text class="subtle d v2-b11read-d">{{ b11T('common.contentVersion') }} {{ store.reading.contentVersion }}</text></view>
-      <view class="progress-track v2-b11read-progress"><view class="progress-value v2-b11read-progress-value" :style="{ width: `${store.readingProgress}%` }"></view></view><text class="subtle d v2-b11read-d">{{ store.readingProgress }}% · 第 {{ store.readingBlockIndex + 1 }} / {{ store.reading.article.blocks.length }} 段</text>
-      <view class="reading-block v2-b11read-block"><text class="v2-b11read-passage">{{ blockText }}</text><text v-if="blockTranslation" class="translation d v2-b11read-d v2-b11read-translation">{{ blockTranslation }}</text></view>
-      <view class="reader-actions actions v2-b11read-actions"><button tabindex="0" role="button" class="small-button btn sm v2-b11read-btn v2-b11read-prev" type="button" @click="store.setReadingBlock(store.readingBlockIndex - 1)"><AppIcon name="back" :size="14" />上一段</button><button tabindex="0" role="button" class="small-button btn sm v2-b11read-btn v2-b11read-next" type="button" @click="nextBlock">{{ b11T('reading.next') }}<AppIcon name="chev" :size="14" /></button><button tabindex="0" role="button" class="yx-button btn v2-b11read-btn v2-b11read-save" type="button" @click="store.saveReadingPosition(true)"><AppIcon name="check" :size="14" />{{ b11T('reading.save') }}</button></view>
-      <view v-if="store.reading.questions.length" class="question-list v2-b11read-list"><text class="kicker eyebrow v2-b11read-eyebrow">{{ b11T('reading.question') }}</text><view v-for="question in store.reading.questions" :key="question.questionId" class="question card v2-b11read-card v2-b11read-question"><text class="question-stem v2-b11read-stem">{{ question.stemText }}</text><radio-group class="v2-b11read-options" @change="setAnswer(question, $event)"><label v-for="option in question.options" :key="option.optionCode" class="option opt v2-b11read-opt"><radio :value="option.optionCode" :checked="store.readingAnswers[String(question.questionId)] === option.optionCode" /><text>{{ option.label }}</text></label></radio-group><button tabindex="0" role="button" class="small-button btn sm v2-b11read-btn v2-b11read-submit" type="button" :disabled="Boolean(store.readingAttempts[String(question.questionId)])" @click="store.submitReadingAnswer(question)">{{ b11T('reading.submit') }}</button><view v-if="store.readingAttempts[String(question.questionId)]" class="feedback v2-b11read-fb"><text>{{ store.readingAttempts[String(question.questionId)].correct ? '回答正确' : '服务端已记录本次练习' }}</text><text>{{ store.readingAttempts[String(question.questionId)].feedbackCode }}</text></view></view></view>
+  <view
+    class="reading-page"
+    :class="themeClass"
+    :style="pageStyle"
+    :data-route="ROUTE_ID"
+    :data-state="state"
+    :data-shell="shell"
+    :data-quality="quality"
+    :data-motion="experienceMotion"
+    :data-theme="theme"
+    :data-content-locale="b10ContentLocale"
+    :data-ui-locale="b10UiLocale"
+    data-write-capability="closed"
+    data-server-receipt="none"
+    :data-access="state === 'auth-401' || state === 'auth-403' ? 'forbidden' : 'allowed'"
+    :data-font-percent="fontPercent"
+    :data-body-px="bodyPx"
+    :data-translation-px="translationPx"
+    :data-translation="showTranslation ? 'on' : 'off'"
+    :data-block-index="safeIndex"
+    :data-block-count="blocks.length"
+    :data-graded="graded ? 'true' : 'false'"
+    data-selection-persisted="false"
+  >
+    <view class="reading-glow" aria-hidden="true">
+      <image class="reading-glow-image" :src="glowSrc" mode="aspectFit" />
     </view>
+    <view class="reading-canvas">
+      <view class="reading-nav">
+        <button type="button" class="reading-hit" data-action="back" :aria-label="t('back')" @click="backMobile">
+          <image :class="['reading-mono', chevClass]" :src="chevSrc" mode="aspectFit" />
+        </button>
+        <text class="reading-nav-title" role="heading" aria-level="1">{{ t(titleKey) }}</text>
+        <view v-if="graded" class="reading-hit" role="img" :aria-label="t('moreClosed')">
+          <image class="reading-mono reading-icon-20" :src="moreSrc" mode="aspectFit" />
+        </view>
+        <view v-else class="reading-hit" aria-hidden="true"></view>
+      </view>
+
+      <view v-if="shell === 'loading'" class="reading-loading" role="status">{{ t('loading') }}</view>
+
+      <view v-else-if="shell === 'empty'" class="reading-state">
+        <view class="reading-card reading-card--center" role="status">
+          <view class="reading-badge reading-badge--book" aria-hidden="true">
+            <image class="reading-icon-44" :src="bookSrc" mode="aspectFit" />
+          </view>
+          <text class="reading-state-title">{{ t('emptyTitle') }}</text>
+          <text class="reading-state-body">{{ t('emptyBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="refresh" @click="load">{{ t('refresh') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'withdrawn'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <view class="reading-badge reading-badge--lock" aria-hidden="true">
+            <image class="reading-icon-44" :src="lockSrc" mode="aspectFit" />
+          </view>
+          <text class="reading-state-title">{{ t('revokedTitle') }}</text>
+          <text class="reading-state-body">{{ t('revokedBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="reread" @click="load">{{ t('reread') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'error'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <image class="reading-mascot" :src="mascotErrorSrc" mode="aspectFit" alt="" />
+          <text class="reading-state-title">{{ t('errorTitle') }}</text>
+          <text class="reading-state-body">{{ t('errorBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'restricted'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <image class="reading-mascot" :src="mascotRestrictedSrc" mode="aspectFit" alt="" />
+          <text class="reading-state-title">{{ t('restrictedTitle') }}</text>
+          <text class="reading-state-body">{{ restrictedBody }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
+        <button type="button" class="reading-link" data-action="back-practice" @click="backToPractice">{{ t('backPractice') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'ready' && current" class="reading-ready">
+        <view class="reading-tools">
+          <button type="button" class="reading-font" data-action="font-down" :aria-label="t('fontDown')" :disabled="fontPercent <= READING_FONT_MIN_PERCENT" @click="changeFont(-1)">A−</button>
+          <text class="reading-font-value">{{ fontPercent }}%</text>
+          <button type="button" class="reading-font" data-action="font-up" :aria-label="t('fontUp')" :disabled="fontPercent >= READING_FONT_MAX_PERCENT" @click="changeFont(1)">A＋</button>
+          <view class="reading-tools-gap" aria-hidden="true"></view>
+          <button v-if="!graded" type="button" class="reading-toggle" data-action="translation" :aria-pressed="showTranslation ? 'true' : 'false'" :aria-label="showTranslation ? t('translationHide') : t('translationShow')" @click="showTranslation = !showTranslation">
+            <text>{{ showTranslation ? t('translationHide') : t('translationShow') }}</text>
+            <image class="reading-track" :src="trackSrc" mode="aspectFit" alt="" />
+          </button>
+        </view>
+
+        <view class="reading-card">
+          <view class="reading-meta">
+            <text class="reading-tag">{{ article?.cefrLevel }}</text>
+            <text class="reading-meta-text">{{ t('words', { count: article?.wordCount ?? 0 }) }} · {{ t('minutes', { count: article?.estimatedMinutes ?? 0 }) }}</text>
+          </view>
+          <text class="reading-article-title" role="heading" aria-level="2">{{ article?.title }}</text>
+          <view class="reading-progress">
+            <view class="reading-bar" role="progressbar" :aria-valuenow="percent" aria-valuemin="0" aria-valuemax="100" :aria-label="t('noServerReceipt')" data-local-only="true">
+              <view class="reading-bar-fill" :style="{ width: percent + '%' }"></view>
+            </view>
+            <text class="reading-meta-text">{{ t('localPercent', { percent }) }}</text>
+          </view>
+          <view v-if="graded" class="reading-segment" role="group" :aria-label="t('translationShow')">
+            <button type="button" class="reading-segment-btn" data-action="original" :aria-pressed="showTranslation ? 'false' : 'true'" @click="showTranslation = false">{{ t('original') }}</button>
+            <button type="button" class="reading-segment-btn" data-action="bilingual" :aria-pressed="showTranslation ? 'true' : 'false'" @click="showTranslation = true">{{ t('bilingual') }}</button>
+          </view>
+          <view class="reading-body" :style="{ fontSize: bodyPx + 'px' }">
+            <template v-for="(piece, index) in pieces" :key="`${current.blockId}-${index}`">
+              <button
+                v-if="piece.kind === 'word'"
+                type="button"
+                class="reading-word"
+                data-action="select-word"
+                :data-selected="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
+                :aria-pressed="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
+                @click="chooseWord(current.blockId, piece.value)"
+              >{{ piece.value }}</button>
+              <text v-else class="reading-space">{{ piece.value }}</text>
+            </template>
+          </view>
+          <text v-if="showTranslation && current.translation" class="reading-translation" :style="{ fontSize: translationPx + 'px' }">{{ current.translation }}</text>
+          <text v-if="activeSelection" class="reading-selection" role="status">{{ t('selectedLocal', { word: activeSelection.word }) }}</text>
+        </view>
+
+        <view class="reading-para">
+          <button type="button" class="reading-link" data-action="prev" :disabled="safeIndex <= 0" @click="moveParagraph(-1)">{{ t('prev') }}</button>
+          <text class="reading-meta-text">{{ t('localPosition', { index: safeIndex + 1, count: blocks.length }) }}</text>
+          <button type="button" class="reading-link" data-action="next" :disabled="safeIndex >= blocks.length - 1" @click="moveParagraph(1)">{{ t('next') }}</button>
+        </view>
+
+        <view v-if="graded" class="reading-check" role="status">
+          <view class="reading-check-tile" aria-hidden="true">
+            <image class="reading-icon-22" :src="checkSrc" mode="aspectFit" />
+          </view>
+          <view class="reading-check-copy">
+            <text class="reading-check-title">{{ t('comprehensionClosed') }}</text>
+            <text class="reading-meta-text">{{ t('comprehensionCount', { count: questionCount }) }}</text>
+          </view>
+          <image class="reading-mono reading-icon-20" :src="chevRightSrc" mode="aspectFit" alt="" />
+        </view>
+
+        <view class="reading-closed" role="status">
+          <text>{{ t('writesClosed') }}</text>
+          <text>{{ t('noServerReceipt') }}</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
-<style scoped lang="scss">
-.b11-page{padding-bottom:64rpx}.reader-card,.question-list,.question,.reading-block{display:grid;gap:18rpx}.reader-heading{display:flex;justify-content:space-between;gap:16rpx}.reader-heading>view{display:grid;gap:6rpx}.kicker{color:var(--yx-brand);font-size:23rpx;font-weight:800;letter-spacing:1rpx}.card-title{font-size:35rpx;font-weight:750}.subtle{color:var(--yx-text-secondary);font-size:22rpx;line-height:1.55}.progress-track{height:12rpx;overflow:hidden;border-radius:8rpx;background:var(--yx-border)}.progress-value{height:100%;border-radius:8rpx;background:var(--yx-brand)}.reading-block{padding:24rpx;border-radius:16rpx;color:var(--yx-text-primary);background:var(--yx-surface-soft);font-size:31rpx;line-height:1.8}.translation{color:var(--yx-text-secondary);font-size:25rpx}.reader-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10rpx}.reader-actions .yx-button{grid-column:1/-1}.small-button{min-height:64rpx;padding:0 18rpx;border:1rpx solid var(--yx-border);border-radius:12rpx;color:var(--yx-brand);background:var(--yx-surface-card);font-size:22rpx;line-height:64rpx}.question{padding:20rpx;border:1rpx solid var(--yx-border);border-radius:14rpx}.question-stem{font-size:28rpx;font-weight:700;line-height:1.5}.option{display:flex;align-items:center;gap:10rpx;padding:12rpx 0;color:var(--yx-text-secondary);font-size:25rpx}.feedback{display:grid;gap:6rpx;padding:16rpx;border-radius:12rpx;color:var(--yx-success-strong);background:var(--yx-success-soft);font-size:23rpx}.empty{display:grid;gap:14rpx}
-/* v2 阅读页换皮：对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 卡片/eyebrow/标题/列表行/按钮同样数值，对齐 mobile/styles.css、refine.css，仅用 var(--v2-*)。 */
-.v2-b11read-page{box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b11read-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b11read-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
-.v2-b11read-card:hover{border-color:var(--v2-brand)}
-.v2-b11read-heading{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-b11read-heading>*{min-width:0;max-width:100%}
-.v2-b11read-titlewrap{display:flex;flex-direction:column;gap:var(--v2-space-2);flex:1 1 auto;box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b11read-titlewrap>*{min-width:0;max-width:100%}
-.v2-b11read-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-b11read-h2{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-b11read-d{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b11read-progress{height:14rpx;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-2) 0 var(--v2-space-4);border-radius:var(--v2-radius-pill);background:var(--v2-surface);overflow:hidden}
-.v2-b11read-progress-value{display:block;height:100%;border-radius:inherit;background:var(--v2-brand)}
-.v2-b11read-block{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-surface);font-family:var(--v2-font)}
-.v2-b11read-block>*{min-width:0;max-width:100%}
-.v2-b11read-passage{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.8;overflow-wrap:anywhere}
-.v2-b11read-translation{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b11read-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b11read-actions>*{min-width:0;max-width:100%}
-.v2-b11read-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b11read-btn:hover{border-color:var(--v2-brand)}
-.v2-b11read-btn:active{transform:scale(.97)}
-.v2-b11read-btn:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b11read-btn:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-b11read-prev{box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font);white-space:nowrap;overflow-wrap:anywhere}
-.v2-b11read-next{box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font);white-space:nowrap;overflow-wrap:anywhere}
-.v2-b11read-save{grid-column:1/-1;box-sizing:border-box;max-width:100%;min-width:0;border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700;overflow-wrap:anywhere}
-.v2-b11read-save:hover{border-color:var(--v2-brand)}
-.v2-b11read-list{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding-top:var(--v2-space-4);border-top:1px solid var(--v2-line);font-family:var(--v2-font)}
-.v2-b11read-question{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);font-family:var(--v2-font)}
-.v2-b11read-question:hover{border-color:var(--v2-brand)}
-.v2-b11read-question>*{min-width:0;max-width:100%}
-.v2-b11read-stem{display:block;box-sizing:border-box;max-width:100%;min-width:0;flex:1 1 100%;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-b11read-options{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;flex:1 1 100%;font-family:var(--v2-font)}
-.v2-b11read-opt{box-sizing:border-box;display:flex;align-items:center;justify-content:flex-start;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:normal;text-align:left;overflow-wrap:anywhere}
-.v2-b11read-opt:hover{border-color:var(--v2-brand)}
-.v2-b11read-opt:active{transform:scale(.97)}
-.v2-b11read-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b11read-submit{box-sizing:border-box;max-width:100%;min-width:0;border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700;overflow-wrap:anywhere}
-.v2-b11read-submit:hover{border-color:var(--v2-brand)}
-.v2-b11read-question .v2-b11read-submit{width:auto;flex:0 0 auto}
-.v2-b11read-fb{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;flex:1 1 100%;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
+<style scoped>
+.reading-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--yx-surface-page);
+  background-image: var(--yx-profile-page-image);
+  color: var(--yx-text-primary);
+}
+.reading-glow {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  width: 540px;
+  height: 480px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.reading-glow-image {
+  width: 540px;
+  height: 480px;
+}
+.reading-canvas {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 24px 32px;
+}
+.reading-nav {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+}
+.reading-nav-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.reading-hit,
+.reading-font,
+.reading-toggle,
+.reading-link,
+.reading-cta,
+.reading-word,
+.reading-segment-btn {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+}
+.reading-hit,
+.reading-font,
+.reading-link,
+.reading-cta,
+.reading-segment-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+.reading-hit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 22px;
+}
+.reading-icon-22 { width: 22px; height: 22px; }
+.reading-icon-20 { width: 20px; height: 20px; }
+.reading-icon-44 { width: 44px; height: 44px; }
+.reading-mascot { width: 120px; height: 120px; }
+.reading-track { width: 52px; height: 32px; }
+.reading-page[data-theme="dark"] .reading-mono,
+.reading-page[data-theme="high-contrast"] .reading-mono { filter: invert(1); }
+.reading-tools,
+.reading-meta,
+.reading-progress,
+.reading-para,
+.reading-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reading-tools { margin-top: 8px; }
+.reading-tools-gap { flex: 1; }
+.reading-font {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--yx-surface-card);
+  border: 1px solid var(--yx-border);
+  border-radius: 14px;
+}
+.reading-font-value {
+  min-width: 44px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--yx-text-secondary);
+  text-align: center;
+}
+.reading-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--yx-text-secondary);
+  background: transparent;
+  border: 0;
+}
+.reading-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 16px;
+  padding: 22px 24px;
+  background: var(--closed-card-bg);
+  border: 1px solid var(--closed-card-border);
+  border-radius: 28px;
+  box-shadow: var(--closed-card-shadow);
+}
+.reading-card--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 18px;
+}
+.reading-state { display: flex; flex-direction: column; gap: 16px; }
+.reading-state-title {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 32px;
+}
+.reading-state-body {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--yx-text-secondary);
+}
+.reading-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 48px;
+}
+.reading-badge--book { background: var(--yx-profile-tile-neutral, #ecedf3); }
+.reading-badge--lock { background: #fff6e8; }
+.reading-loading {
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.reading-tag {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--yx-brand);
+  background: var(--yx-brand-soft);
+  border-radius: 999px;
+}
+.reading-meta-text {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--yx-text-secondary);
+}
+.reading-article-title {
+  display: block;
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  overflow-wrap: anywhere;
+}
+.reading-progress { margin-top: 12px; }
+.reading-bar {
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  background: var(--yx-brand-soft);
+  border-radius: 3px;
+}
+.reading-bar-fill {
+  height: 6px;
+  background: var(--yx-brand);
+  border-radius: 3px;
+}
+.reading-page[data-motion="on"] .reading-bar-fill { transition: width var(--yx-motion-fast, 180ms) linear; }
+.reading-segment {
+  display: flex;
+  width: 100%;
+  margin-top: 12px;
+  padding: 4px;
+  background: var(--yx-brand-soft);
+  border-radius: 16px;
+}
+.reading-segment-btn {
+  flex: 1;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--yx-text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: 12px;
+}
+.reading-segment-btn[aria-pressed="true"] {
+  font-weight: 700;
+  color: var(--yx-brand);
+  background: var(--yx-surface-card);
+}
+.reading-body {
+  display: block;
+  margin-top: 16px;
+  font-size: var(--reading-body-size);
+  line-height: 1.7;
+  color: var(--yx-text-primary);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.reading-space { white-space: pre-wrap; }
+.reading-word {
+  display: inline;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+  vertical-align: baseline;
+  white-space: normal;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-wrap: anywhere;
+}
+.reading-word::after { display: none; border: 0; }
+.reading-word[data-selected="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+  background: var(--yx-brand-soft);
+  border: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.reading-translation {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--reading-translation-size);
+  line-height: 1.5;
+  color: var(--yx-text-secondary);
+  overflow-wrap: anywhere;
+}
+.reading-selection {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.reading-para { justify-content: space-between; margin-top: 8px; }
+.reading-link {
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--yx-text-primary);
+  text-decoration: underline;
+  background: transparent;
+  border: 0;
+}
+.reading-check {
+  margin-top: 16px;
+  padding: 12px 10px 12px 14px;
+  background: var(--closed-card-bg);
+  border: 1px solid var(--closed-card-border);
+  border-radius: 20px;
+}
+.reading-check-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--yx-brand-soft);
+  border-radius: 14px;
+}
+.reading-check-copy { flex: 1; min-width: 0; }
+.reading-check-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+}
+.reading-closed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 12px 0 8px;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--yx-text-secondary);
+}
+.reading-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--closed-cta-on);
+  background: var(--closed-cta-background);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: var(--closed-cta-shadow);
+}
+.reading-hit:focus-visible,
+.reading-font:focus-visible,
+.reading-toggle:focus-visible,
+.reading-link:focus-visible,
+.reading-cta:focus-visible,
+.reading-word:focus-visible,
+.reading-segment-btn:focus-visible {
+  outline: 2px solid var(--yx-focus);
+  outline-offset: 2px;
+}
+.reading-page[data-theme="high-contrast"] .reading-tag,
+.reading-page[data-theme="high-contrast"] .reading-segment-btn[aria-pressed="true"],
+.reading-page[data-theme="high-contrast"] .reading-word[data-selected="true"] {
+  color: var(--yx-surface-page);
+  background: var(--yx-text-primary);
+  border: 1px solid var(--yx-border);
+}
+.reading-page[data-motion="off"] .reading-bar-fill,
+.reading-page[data-motion="reduced"] .reading-bar-fill { transition: none; }
+@media (max-width: 359px) {
+  .reading-canvas { padding-right: 16px; padding-left: 16px; }
+  .reading-card { padding-right: 16px; padding-left: 16px; }
+}
+@media (min-width: 768px) {
+  .reading-canvas { max-width: 720px; padding-right: 32px; padding-left: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-bar-fill { transition: none; }
+}
 </style>

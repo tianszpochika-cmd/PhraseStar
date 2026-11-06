@@ -5,6 +5,7 @@ import { bootstrapMobileAuth, currentMobilePagePath, installMobileNavigationGuar
 import { safeMobileReturnTo } from './auth/gateway-auth'
 import { useSessionStore } from './stores/session'
 import { mobileExperienceVariables } from '@englishflow/design-tokens/mobile'
+import { hydrateMobileExperienceRuntime } from './platform/experience'
 import { mobileI18nAdapter, mobileThemeController } from './platform/v2-foundation'
 import { applyMobilePublicAuthHandoff, mobilePublicAuthQuery, resolveMobilePublicAuthHandoff } from './platform/public-auth-handoff.mjs'
 
@@ -29,6 +30,8 @@ syncTheme()
 const unsubscribeTheme = mobileThemeController.subscribe(syncTheme)
 
 onLaunch((options) => {
+  // Module init runs before H5 installs uni. Read saved quality and motion once storage exists.
+  hydrateMobileExperienceRuntime()
   installMobileNavigationGuard()
   const launchPath = normalizeMobilePagePath(options?.path, '/pages/home/home')
   const initialPath = currentMobilePagePath(launchPath)
@@ -72,8 +75,9 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
   padding: calc(48rpx + env(safe-area-inset-top)) 48rpx calc(48rpx + env(safe-area-inset-bottom));
-  color: var(--yx-text-primary, #202332);
-  background: var(--yx-surface-page, #f7f8fc);
+  color: var(--yx-r4-ink, var(--yx-text-primary, #202332));
+  background-color: var(--yx-r4-page-color, var(--yx-surface-page, #f7f8fc));
+  background-image: var(--yx-r4-page-image, none);
 }
 .yx-app {
   min-height: 100vh;

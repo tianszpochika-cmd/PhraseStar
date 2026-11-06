@@ -10,6 +10,7 @@ import type {
   B10ContentVersionContext,
   B10Exercise,
   B10GrammarPoint,
+  B10ItemType,
   B10Mistake,
   B10ReadingArticle,
   B10ReadingAttempt,
@@ -19,8 +20,15 @@ import type {
   B10RuleFeedback,
   B10SrsBatch,
   B10SrsCard,
+  B10SrsReviewResult,
+  B10SrsState,
+  B10SrsSyncResult,
   B10SyntaxGraph,
   B10Verification,
+  B10VocabAudio,
+  B10VocabDefinition,
+  B10VocabExample,
+  B10VocabularyDetail,
   B10WritingPrompt,
 } from '../domain/b10'
 
@@ -142,58 +150,343 @@ function mapError(error: unknown, fallback: string): B10ErrorInfo {
   return { status, message, retryable: false, kind: 'error' }
 }
 
-function parseSrsCard(value: unknown, position: number, snapshotId: number | null): B10SrsCard | null {
-  if (!isRecord(value)) return null
-  const item = isRecord(value.item) ? value.item : value
-  const itemType = item.itemType === 'PHRASE' || item.itemType === 'EXPRESSION' ? item.itemType : 'VOCAB'
-  const numericItemId = nullableNumber(item.vocabId ?? item.phraseId ?? item.expressionId ?? item.chunkId)
-  const stringItemId = text(item.itemId ?? item.vocabularyId ?? item.vocabCode) || null
-  const itemId = numericItemId ?? stringItemId
-  if (itemId === null) return null
-  const srs = isRecord(value.srsState) ? value.srsState : isRecord(value.srs) ? value.srs : {}
-  const title = text(value.title ?? value.word ?? value.canonicalText ?? value.sentenceText ?? item.word ?? item.canonicalText, `学习项 ${itemId}`)
-  const contentVersion = text(value.contentVersion ?? value.contentVersionId ?? item.contentVersion) || null
+function srsError(): Error {
+  return new Error('复习服务返回的数据不符合接口契约，已停止显示。')
+}
+
+function vocabError(): Error {
+  return new Error('词汇服务返回的数据不符合接口契约，已停止显示。')
+}
+
+function contractRecord(value: unknown, fail: () => Error): RecordValue {
+  if (!isRecord(value)) throw fail()
+  return value
+}
+
+function contractText(value: unknown, fail: () => Error): string {
+  if (typeof value !== 'string' || !value.trim()) throw fail()
+  return value.trim()
+}
+
+function contractOptionalText(value: unknown, fail: () => Error): string | null {
+  if (value === undefined || value === null) return null
+  if (typeof value !== 'string') throw fail()
+  return value.trim() || null
+}
+
+function contractInteger(value: unknown, fail: () => Error, minimum = 0): number {
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < minimum) throw fail()
+  return value
+}
+
+function contractOptionalInteger(value: unknown, fail: () => Error, minimum = 0): number | null {
+  if (value === undefined || value === null) return null
+  return contractInteger(value, fail, minimum)
+}
+
+function contractNumber(value: unknown, fail: () => Error): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) throw fail()
+  return value
+}
+
+function contractEnum<T extends string>(value: unknown, allowed: readonly T[], fail: () => Error): T {
+  if (typeof value !== 'string' || !(allowed as readonly string[]).includes(value)) throw fail()
+  return value as T
+}
+
+function contractOptionalEnum<T extends string>(value: unknown, allowed: readonly T[], fail: () => Error): T | null {
+  if (value === undefined || value === null) return null
+  return contractEnum(value, allowed, fail)
+}
+
+const SRS_ITEM_TYPES = ['VOCAB', 'CHUNK', 'EXPRESSION'] as const
+type SrsRefItemType = (typeof SRS_ITEM_TYPES)[number]
+const SRS_ITEM_ID_FIELDS: Record<SrsRefItemType, keyof RecordValue> = { VOCAB: 'vocabId', CHUNK: 'chunkId', EXPRESSION: 'expressionId' }
+const SRS_SOURCE_REASONS = ['NEW', 'DUE', 'OVERDUE_SMOOTHING', 'D1_VERIFY', 'D7_VERIFY', 'MISTAKE_REPAIR', 'EXPRESSION'] as const
+const SRS_ITEM_STATUSES = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'SKIPPED', 'EXPIRED', 'RISK_FILTERED'] as const
+const MASTERY_STATUSES_FULL = ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED', 'SHORT_TERM', 'CONSOLIDATING', 'AT_RISK', 'SUSPENDED'] as const
+const DELAYED_VERIFY_STAGES = ['NONE', 'D1_PENDING', 'D7_PENDING', 'PASSED', 'FAILED'] as const
+const RISK_BANDS = ['LOW', 'MEDIUM', 'HIGH'] as const
+const REVIEW_EVENT_STATUSES = ['ACCEPTED', 'DUPLICATE', 'RISK_FILTERED', 'CONFLICT', 'REJECTED', 'EXPIRED'] as const
+const REVIEW_RISK_DECISIONS = ['ALLOW', 'ACCEPT_NO_REWARD', 'THROTTLE', 'REJECT', 'REVIEW'] as const
+const REVIEW_REWARD_STATUSES = ['PENDING', 'SETTLED', 'NOT_ELIGIBLE', 'DUPLICATE'] as const
+const REVIEW_ANSWER_OUTCOMES = ['CORRECT', 'INCORRECT', 'UNANSWERED', 'REVEALED_WITHOUT_ANSWER'] as const
+const REVIEW_EVENT_KEYS = ['snapshotId', 'snapshotItemId', 'item', 'rawQuality', 'answerOutcome', 'responseTimeMs', 'revealElapsedMs', 'attemptNo', 'clientEventId', 'clientOccurredAt', 'baseStateVersion'] as const
+
+function parseSrsItemRef(value: unknown, fail: () => Error): { itemType: SrsRefItemType; itemId: number } {
+  const source = contractRecord(value, fail)
+  const itemType = contractEnum(source.itemType, SRS_ITEM_TYPES, fail)
+  for (const type of SRS_ITEM_TYPES) {
+    if (type !== itemType && source[SRS_ITEM_ID_FIELDS[type]] !== undefined) throw fail()
+  }
+  const itemId = contractInteger(source[SRS_ITEM_ID_FIELDS[itemType]], fail, 1)
+  return { itemType, itemId }
+}
+
+function srsItemRef(itemType: B10ItemType, itemId: number): RecordValue {
+  if (itemType === 'VOCAB') return { itemType, vocabId: itemId }
+  if (itemType === 'CHUNK') return { itemType, chunkId: itemId }
+  if (itemType === 'EXPRESSION') return { itemType, expressionId: itemId }
+  // PHRASE has no LearningItemRef id field in the published contract.
+  throw srsError()
+}
+
+function parseSrsState(value: unknown, fail: () => Error): B10SrsState {
+  const source = contractRecord(value, fail)
+  const ref = parseSrsItemRef(source.item, fail)
+  if (source.explanation !== undefined && !Array.isArray(source.explanation)) throw fail()
+  const explanation = Array.isArray(source.explanation) ? source.explanation.map((entry) => contractText(entry, fail)) : []
   return {
-    id: `${snapshotId ?? 'pending'}-${number(value.snapshotItemId, position + 1)}`,
+    srsStateId: contractInteger(source.srsStateId, fail, 1),
+    itemType: ref.itemType,
+    itemId: ref.itemId,
+    repetitionCount: contractInteger(source.repetitionCount, fail, 0),
+    easeFactor: contractNumber(source.easeFactor, fail),
+    intervalDays: contractInteger(source.intervalDays, fail, 0),
+    dueAt: contractText(source.dueAt, fail),
+    dueLocalDate: contractText(source.dueLocalDate, fail),
+    masteryStatus: contractEnum(source.masteryStatus, MASTERY_STATUSES_FULL, fail),
+    delayedVerifyStage: contractOptionalEnum(source.delayedVerifyStage, DELAYED_VERIFY_STAGES, fail),
+    stateVersion: contractInteger(source.stateVersion, fail, 0),
+    riskBand: contractOptionalEnum(source.riskBand, RISK_BANDS, fail),
+    explanation,
+  }
+}
+
+function parseSrsCard(value: unknown, snapshotId: number): B10SrsCard {
+  const fail = srsError
+  const source = contractRecord(value, fail)
+  const snapshotItemId = contractInteger(source.snapshotItemId, fail, 1)
+  const sequenceNo = contractInteger(source.sequenceNo, fail, 1)
+  const ref = parseSrsItemRef(source.item, fail)
+  const sourceReason = contractEnum(source.sourceReason, SRS_SOURCE_REASONS, fail)
+  contractText(source.plannedLocalDate, fail)
+  contractEnum(source.status, SRS_ITEM_STATUSES, fail)
+  const contentVersion = contractOptionalText(source.contentVersion, fail)
+  const srs = source.srsState !== undefined && source.srsState !== null ? parseSrsState(source.srsState, fail) : null
+  const explicitStateVersion = contractOptionalInteger(source.stateVersion ?? source.stateVersionAtSnapshot, fail, 0)
+  // The published SRS batch item carries no state version. Only a NEW item may legitimately start at 0.
+  const stateVersion = srs ? srs.stateVersion : explicitStateVersion ?? (sourceReason === 'NEW' ? 0 : null)
+  return {
+    id: `${snapshotId}-${snapshotItemId}`,
     snapshotId,
-    snapshotItemId: number(value.snapshotItemId, position + 1),
-    sequenceNo: number(value.sequenceNo, position + 1),
-    itemType,
-    itemId,
-    title,
-    sourceReason: text(value.sourceReason, 'REVIEW'),
+    snapshotItemId,
+    sequenceNo,
+    itemType: ref.itemType,
+    itemId: ref.itemId,
+    title: contractOptionalText(source.title ?? source.word ?? source.canonicalText ?? source.sentenceText, fail),
+    sourceReason,
     contentVersion,
-    contentVersionId: nullableNumber(value.contentVersionId),
-    phonetic: text(value.phoneticUs ?? value.phoneticUk) || null,
-    audioUrl: text(value.audioUrl ?? value.pronunciationUrl) || null,
-    hint: text(value.frontHint ?? value.prompt) || null,
+    contentVersionId: contractOptionalInteger(source.contentVersionId, fail, 1),
+    phoneticUs: contractOptionalText(source.phoneticUs, fail),
+    phoneticUk: contractOptionalText(source.phoneticUk, fail),
+    phonetic: contractOptionalText(source.phoneticUs, fail) ?? contractOptionalText(source.phoneticUk, fail),
+    audio: null,
+    audioUrl: contractOptionalText(source.audioUrl ?? source.pronunciationUrl, fail),
+    hint: contractOptionalText(source.frontHint ?? source.prompt, fail),
     meaningCn: null,
     definitionEn: null,
+    definitions: [],
     examples: [],
-    masteryStatus: ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED'].includes(text(srs.masteryStatus)) ? text(srs.masteryStatus) as B10SrsCard['masteryStatus'] : null,
-    dueLocalDate: text(srs.dueLocalDate ?? srs.nextReviewLocalDate) || null,
-    stateVersion: number(srs.stateVersion, 0),
+    exampleItems: [],
+    masteryStatus: srs ? srs.masteryStatus : null,
+    dueLocalDate: srs ? srs.dueLocalDate : contractOptionalText(source.dueLocalDate, fail),
+    stateVersion,
     revealed: false,
     reviewStatus: 'PENDING',
   }
 }
 
 function parseSrsBatch(value: unknown): B10SrsBatch {
-  const source = isRecord(unwrap(value)) ? unwrap(value) as RecordValue : {}
-  const snapshotId = nullableNumber(source.snapshotId)
+  const fail = srsError
+  const source = contractRecord(unwrap(value), fail)
+  const snapshotId = contractInteger(source.snapshotId, fail, 1)
+  if (!Array.isArray(source.items)) throw fail()
   return {
     snapshotId,
-    localDate: text(source.localDate, new Date().toISOString().slice(0, 10)),
-    timezone: text(source.timezone, 'Asia/Shanghai'),
-    status: text(source.status, 'READY'),
-    algorithmVersion: text(source.algorithmVersion) || null,
-    rulesVersion: text(source.rulesVersion) || null,
-    contentEpoch: number(source.contentEpoch, 0),
-    items: listFrom(source).flatMap((item, index) => {
-      const card = parseSrsCard(item, index, snapshotId)
-      return card ? [card] : []
-    }),
+    localDate: contractText(source.localDate, fail),
+    timezone: contractOptionalText(source.timezone, fail) ?? 'Asia/Shanghai',
+    status: contractText(source.status, fail),
+    algorithmVersion: contractOptionalText(source.algorithmVersion, fail),
+    rulesVersion: contractOptionalText(source.rulesVersion, fail),
+    contentVersion: contractOptionalText(source.contentVersion, fail),
+    contentEpoch: contractOptionalInteger(source.contentEpoch, fail, 0) ?? 0,
+    items: source.items.map((item) => parseSrsCard(item, snapshotId)),
   }
+}
+
+function parseVocabDefinition(value: unknown): B10VocabDefinition {
+  const fail = vocabError
+  const source = contractRecord(value, fail)
+  const definition: B10VocabDefinition = {
+    definitionId: contractOptionalInteger(source.definitionId, fail, 1),
+    partOfSpeech: contractOptionalText(source.partOfSpeech, fail),
+    meaningCn: contractOptionalText(source.meaningCn, fail),
+    definitionEn: contractOptionalText(source.definitionEn, fail),
+  }
+  if (!definition.meaningCn && !definition.definitionEn) throw fail()
+  return definition
+}
+
+function parseVocabExample(value: unknown): B10VocabExample {
+  const fail = vocabError
+  const source = contractRecord(value, fail)
+  const example: B10VocabExample = {
+    exampleId: contractOptionalInteger(source.exampleId, fail, 1),
+    // content-service V5 examples_json uses the explicit legacy {sentence, translation} keys.
+    sentenceEn: contractOptionalText(source.sentenceEn, fail) ?? contractOptionalText(source.sentence, fail),
+    sentenceCn: contractOptionalText(source.sentenceCn, fail) ?? contractOptionalText(source.translation, fail),
+  }
+  if (!example.sentenceEn && !example.sentenceCn) throw fail()
+  return example
+}
+
+function parseVocabAudio(value: unknown): B10VocabAudio | null {
+  if (value === undefined || value === null) return null
+  const fail = vocabError
+  const source = contractRecord(value, fail)
+  const us = contractOptionalText(source.us, fail)
+  const uk = contractOptionalText(source.uk, fail)
+  return us || uk ? { us, uk } : null
+}
+
+function parseVocabularyId(value: unknown, fail: () => Error): number | string {
+  if (typeof value !== 'string') return contractInteger(value, fail, 1)
+  // content-service V5 stores vocabulary_id as a VARCHAR slug (b25-item-001).
+  // A numeric string is still rejected: it is neither the int64 contract id nor a live slug.
+  const id = contractText(value, fail)
+  if (!/^[A-Za-z][A-Za-z0-9._:-]*$/.test(id)) throw fail()
+  return id
+}
+
+function parseVocabularyDetail(value: unknown): B10VocabularyDetail {
+  const fail = vocabError
+  const source = contractRecord(unwrap(value), fail)
+  const vocabId = parseVocabularyId(source.vocabId ?? source.vocabularyId ?? source.itemId, fail)
+  const word = contractText(source.word, fail)
+  const topDefinitions = source.definitions
+  if (topDefinitions !== undefined && topDefinitions !== null && !Array.isArray(topDefinitions)) throw fail()
+  const back = source.back === undefined || source.back === null ? null : contractRecord(source.back, fail)
+  let definitions: B10VocabDefinition[]
+  if (Array.isArray(topDefinitions) && topDefinitions.length) definitions = topDefinitions.map(parseVocabDefinition)
+  else if (back) definitions = [parseVocabDefinition(back)]
+  else if (Array.isArray(topDefinitions) || source.answerAvailable === false) definitions = []
+  else throw fail()
+
+  const topExamples = source.examples
+  if (topExamples !== undefined && topExamples !== null && !Array.isArray(topExamples)) throw fail()
+  const backExamples = back ? back.examples : undefined
+  if (backExamples !== undefined && backExamples !== null && !Array.isArray(backExamples)) throw fail()
+  const rawExamples = Array.isArray(topExamples) && topExamples.length ? topExamples : Array.isArray(backExamples) ? backExamples : []
+  const exampleItems = rawExamples.map(parseVocabExample)
+
+  const contentVersion = contractOptionalText(source.contentVersion, fail)
+  const contentVersionId = contractOptionalInteger(source.contentVersionId, fail, 1)
+  if (!contentVersion && contentVersionId === null) throw fail()
+
+  const audio = parseVocabAudio(source.audio)
+  const audioUrl = audio?.us ?? audio?.uk ?? contractOptionalText(source.audioRef, fail) ?? contractOptionalText(source.audioUrl, fail) ?? contractOptionalText(source.pronunciationUrl, fail)
+  const phoneticUs = contractOptionalText(source.phoneticUs, fail)
+  const phoneticUk = contractOptionalText(source.phoneticUk, fail)
+  const srsState = source.srsState === undefined || source.srsState === null ? null : parseSrsState(source.srsState, fail)
+  let meaningCn: string | null = null
+  let definitionEn: string | null = null
+  for (const definition of definitions) {
+    meaningCn ??= definition.meaningCn
+    definitionEn ??= definition.definitionEn
+  }
+  const examples = exampleItems.flatMap((example) => {
+    const sentence = example.sentenceEn ?? example.sentenceCn
+    return sentence ? [sentence] : []
+  })
+  return {
+    vocabId,
+    word,
+    title: word,
+    phoneticUs,
+    phoneticUk,
+    phonetic: phoneticUs ?? phoneticUk,
+    audio,
+    audioUrl,
+    hint: contractOptionalText(source.frontHint ?? source.prompt, fail),
+    meaningCn,
+    definitionEn,
+    definitions,
+    examples,
+    exampleItems,
+    contentVersion,
+    contentVersionId,
+    srsState,
+  }
+}
+
+function parseReviewEvent(value: unknown): RecordValue {
+  const fail = srsError
+  const source = contractRecord(value, fail)
+  for (const key of Object.keys(source)) {
+    // itemId is the historical client-only mirror; it is removed, never forwarded.
+    if (key !== 'itemId' && !(REVIEW_EVENT_KEYS as readonly string[]).includes(key)) throw fail()
+  }
+  const ref = parseSrsItemRef(source.item, fail)
+  const rawQuality = contractInteger(source.rawQuality, fail, 0)
+  if (rawQuality > 3) throw fail()
+  const clientEventId = contractText(source.clientEventId, fail)
+  if (clientEventId.length < 8 || clientEventId.length > 96) throw fail()
+  const event: RecordValue = {
+    item: srsItemRef(ref.itemType, ref.itemId),
+    rawQuality,
+    answerOutcome: contractEnum(source.answerOutcome, REVIEW_ANSWER_OUTCOMES, fail),
+    clientEventId,
+    clientOccurredAt: contractText(source.clientOccurredAt, fail),
+    baseStateVersion: contractInteger(source.baseStateVersion, fail, 0),
+    snapshotItemId: contractInteger(source.snapshotItemId, fail, 1),
+  }
+  const snapshotId = contractOptionalInteger(source.snapshotId, fail, 1)
+  if (snapshotId !== null) event.snapshotId = snapshotId
+  const responseTimeMs = contractOptionalInteger(source.responseTimeMs, fail, 0)
+  if (responseTimeMs !== null) event.responseTimeMs = responseTimeMs
+  const revealElapsedMs = contractOptionalInteger(source.revealElapsedMs, fail, 0)
+  if (revealElapsedMs !== null) event.revealElapsedMs = revealElapsedMs
+  const attemptNo = contractOptionalInteger(source.attemptNo, fail, 1)
+  if (attemptNo !== null) event.attemptNo = attemptNo
+  return event
+}
+
+function parseReviewResult(value: unknown): B10SrsReviewResult {
+  const fail = srsError
+  const source = contractRecord(unwrap(value), fail)
+  const effectiveQuality = contractOptionalInteger(source.effectiveQuality, fail, 0)
+  if (effectiveQuality !== null && effectiveQuality > 3) throw fail()
+  if (source.reconciled !== undefined && typeof source.reconciled !== 'boolean') throw fail()
+  return {
+    reviewEventId: contractInteger(source.reviewEventId, fail, 0),
+    eventStatus: contractEnum(source.eventStatus, REVIEW_EVENT_STATUSES, fail),
+    riskDecision: contractEnum(source.riskDecision, REVIEW_RISK_DECISIONS, fail),
+    effectiveQuality: effectiveQuality as 0 | 1 | 2 | 3 | null,
+    reconciled: source.reconciled === true,
+    stateVersion: contractInteger(source.stateVersion, fail, 0),
+    srsState: source.srsState === undefined || source.srsState === null ? null : parseSrsState(source.srsState, fail),
+    rewardSettlementStatus: contractOptionalEnum(source.rewardSettlementStatus, REVIEW_REWARD_STATUSES, fail),
+    nextSnapshotItemId: contractOptionalInteger(source.nextSnapshotItemId, fail, 1),
+  }
+}
+
+function parseSrsSync(value: unknown): { results: B10SrsSyncResult[] } {
+  const fail = srsError
+  const source = contractRecord(unwrap(value), fail)
+  if (!Array.isArray(source.results)) throw fail()
+  const results = source.results.map((entry): B10SrsSyncResult => {
+    const result = contractRecord(entry, fail)
+    const status = contractEnum(result.status, REVIEW_EVENT_STATUSES, fail)
+    const nested = result.result === undefined || result.result === null ? null : parseReviewResult(result.result)
+    return {
+      clientEventId: contractOptionalText(result.clientEventId, fail),
+      status,
+      result: nested,
+      errorCode: contractOptionalText(result.errorCode, fail),
+    }
+  })
+  return { results }
 }
 
 function parseExercise(value: unknown, sessionId: string): B10Exercise | null {
@@ -441,20 +734,58 @@ function parseWritingPrompt(value: unknown): B10WritingPrompt | null {
   }
 }
 
-function parseMistake(value: unknown): B10Mistake | null {
-  if (!isRecord(value)) return null
-  const mistakeId = nullableNumber(value.mistakeId)
-  const itemId = nullableNumber(value.itemId)
-  if (!mistakeId || !itemId) return null
-  const rawStatus = text(value.mistakeStatus, 'PENDING_RETRY')
-  const rawMastery = text(value.masteryStatus, 'NEW')
+const MISTAKE_STATUSES = ['PENDING_RETRY', 'DELAY_VERIFY_D1', 'DELAY_VERIFY_D7', 'MASTERED', 'REOPENED'] as const
+const MASTERY_STATUSES = ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED'] as const
+
+function protocolError(): Error {
+  return new Error('错题服务返回的数据不符合接口契约，已停止显示。')
+}
+
+function requiredInteger(value: unknown): number {
+  if (typeof value !== 'number' || !Number.isInteger(value)) throw protocolError()
+  return value
+}
+
+function optionalInteger(value: unknown): number | null {
+  if (value === undefined) return null
+  return requiredInteger(value)
+}
+
+function requiredExactString(value: unknown): string {
+  if (typeof value !== 'string') throw protocolError()
+  return value
+}
+
+function requiredString(value: unknown): string {
+  if (typeof value !== 'string') throw protocolError()
+  return value.trim()
+}
+
+function mistakeRows(value: unknown): unknown[] {
+  const source = unwrap(value)
+  if (Array.isArray(source)) return source
+  if (!isRecord(source)) throw protocolError()
+  if (Array.isArray(source.items)) return source.items
+  if (Array.isArray(source.mistakes)) return source.mistakes
+  throw protocolError()
+}
+
+function parseMistake(value: unknown): B10Mistake {
+  if (!isRecord(value)) throw protocolError()
+  const mistakeId = requiredInteger(value.mistakeId)
+  const itemId = requiredInteger(value.itemId)
+  const rawStatus = requiredExactString(value.mistakeStatus)
+  const rawMastery = requiredExactString(value.masteryStatus)
+  if (!(MISTAKE_STATUSES as readonly string[]).includes(rawStatus)) throw protocolError()
+  if (!(MASTERY_STATUSES as readonly string[]).includes(rawMastery)) throw protocolError()
+  if (value.reasonTrace !== undefined && !Array.isArray(value.reasonTrace)) throw protocolError()
   return {
     mistakeId,
     itemId,
-    questionId: nullableNumber(value.questionId),
-    mistakeStatus: ['PENDING_RETRY', 'DELAY_VERIFY_D1', 'DELAY_VERIFY_D7', 'MASTERED', 'REOPENED'].includes(rawStatus) ? rawStatus as B10Mistake['mistakeStatus'] : 'PENDING_RETRY',
-    masteryStatus: ['NEW', 'LEARNING', 'MASTERED', 'CONSOLIDATED'].includes(rawMastery) ? rawMastery as B10Mistake['masteryStatus'] : 'NEW',
-    errorCategory: text(value.errorCategory, '需要复习'),
+    questionId: optionalInteger(value.questionId),
+    mistakeStatus: rawStatus as B10Mistake['mistakeStatus'],
+    masteryStatus: rawMastery as B10Mistake['masteryStatus'],
+    errorCategory: requiredString(value.errorCategory),
     reasonTrace: Array.isArray(value.reasonTrace) ? value.reasonTrace.flatMap((item): Array<{ code: string; label: string; evidence?: string }> => {
       if (!isRecord(item)) return []
       const code = text(item.code)
@@ -563,29 +894,37 @@ export const b10LearningApi = {
     return parseSrsBatch(response)
   },
 
-  async getVocabularyDetail(context: B10RequestContext, itemId: number | string, contentVersion?: string | null): Promise<Partial<B10SrsCard>> {
+  async getVocabularyDetail(context: B10RequestContext, itemId: number | string, contentVersion?: string | null): Promise<B10VocabularyDetail> {
     const response = await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.content.vocabularyDetail}/${encodeURIComponent(String(itemId))}`, { contentLocale: context.contentLocale, contentVersion: contentVersion ?? undefined }))
-    const source = isRecord(unwrap(response)) ? unwrap(response) as RecordValue : {}
-    return {
-      meaningCn: text(source.meaningCn ?? source.definitions) || null,
-      definitionEn: text(source.definitionEn ?? source.definition) || null,
-      phonetic: text(source.phoneticUs ?? source.phoneticUk) || null,
-      examples: Array.isArray(source.examples) ? source.examples.flatMap((entry): string[] => isRecord(entry) && text(entry.sentence) ? [text(entry.sentence)] : typeof entry === 'string' ? [entry] : []) : [],
-      contentVersionId: nullableNumber(source.contentVersionId),
-    }
+    return parseVocabularyDetail(response)
   },
 
-  async submitSrsReview(context: B10RequestContext, card: B10SrsCard, quality: 0 | 1 | 2 | 3, clientEventId: string): Promise<unknown> {
-    const item = card.itemType === 'VOCAB' ? { itemType: 'VOCAB', vocabId: card.itemId } : card.itemType === 'PHRASE' ? { itemType: 'PHRASE', phraseId: card.itemId } : { itemType: 'EXPRESSION', expressionId: card.itemId }
-    return mobileApiClient.request<unknown>(B10_GATEWAY_PATHS.learning.srsReview, {
+  async submitSrsReview(context: B10RequestContext, card: B10SrsCard, quality: 0 | 1 | 2 | 3, clientEventId: string): Promise<B10SrsReviewResult> {
+    if (!card.snapshotId || card.stateVersion === null) throw srsError()
+    const event = parseReviewEvent({
+      snapshotId: card.snapshotId,
+      snapshotItemId: card.snapshotItemId,
+      item: srsItemRef(card.itemType, card.itemId),
+      rawQuality: quality,
+      answerOutcome: 'REVEALED_WITHOUT_ANSWER',
+      responseTimeMs: 0,
+      revealElapsedMs: 0,
+      clientEventId,
+      clientOccurredAt: new Date().toISOString(),
+      baseStateVersion: card.stateVersion,
+    })
+    const response = await mobileApiClient.request<unknown>(B10_GATEWAY_PATHS.learning.srsReview, {
       method: 'POST',
-      data: { itemId: card.itemId, snapshotId: card.snapshotId, snapshotItemId: card.snapshotItemId, item, rawQuality: quality, answerOutcome: 'REVEALED_WITHOUT_ANSWER', responseTimeMs: 0, revealElapsedMs: 0, clientEventId, clientOccurredAt: new Date().toISOString(), baseStateVersion: card.stateVersion },
+      data: event,
       header: { ...headers(context, clientEventId), 'X-Content-Version': card.contentVersion ?? '' },
     })
+    return parseReviewResult(response)
   },
 
-  async syncSrsReviews(context: B10RequestContext, events: readonly Record<string, unknown>[], clientEventId: string): Promise<unknown> {
-    return mobileApiClient.request<unknown>(B10_GATEWAY_PATHS.learning.srsSync, { method: 'POST', data: { events }, header: headers(context, clientEventId) })
+  async syncSrsReviews(context: B10RequestContext, events: readonly Record<string, unknown>[], clientEventId: string): Promise<{ results: B10SrsSyncResult[] }> {
+    const normalized = events.map((event) => parseReviewEvent(event))
+    const response = await mobileApiClient.request<unknown>(B10_GATEWAY_PATHS.learning.srsSync, { method: 'POST', data: { events: normalized }, header: headers(context, clientEventId) })
+    return parseSrsSync(response)
   },
 
   async createAssessmentSession(context: B10RequestContext, input: { sessionType: 'DAILY_STREAM' | 'QUICK_PRACTICE' | 'CHECKPOINT'; targetCount?: number }, clientEventId: string): Promise<B10AssessmentSession> {
@@ -620,10 +959,15 @@ export const b10LearningApi = {
     return (await this.listMistakeBook(context)).items
   },
 
+  async getMistakeDetail(context: B10RequestContext, mistakeId: number): Promise<B10Mistake> {
+    const response = await mobileApiClient.request<unknown>(`${B10_GATEWAY_PATHS.assessment.masteryMistakes}/${encodeURIComponent(String(mistakeId))}`, { header: headers(context) })
+    return parseMistake(unwrap(response))
+  },
+
   async listMistakeBook(context: B10RequestContext): Promise<{ items: B10Mistake[]; attemptCount: number; mistakeCount: number; emptyStatus: string; emptyCopy: string; projectionVersion: string }> {
     const response = await mobileApiClient.request<unknown>(query(B10_GATEWAY_PATHS.assessment.masteryMistakes, { contentLocale: context.contentLocale }))
     const source = isRecord(unwrap(response)) ? unwrap(response) as RecordValue : {}
-    const items = listFrom(response).flatMap((item) => { const mistake = parseMistake(item); return mistake ? [mistake] : [] })
+    const items = mistakeRows(response).map((item) => parseMistake(item))
     return {
       items,
       attemptCount: number(source.attemptCount, 0),

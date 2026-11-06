@@ -1,206 +1,928 @@
 <script setup lang="ts">
-import AppIcon from '../../components/AppIcon.vue'
-import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import { useMobileExperience } from '../../platform/experience'
-const { experienceStyle, experienceMotion } = useMobileExperience()
-
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { createAdaptivePerformanceEngine, type PerformanceLevel } from '@englishflow/performance'
-import B10StatusPanel from '../../components/b10/B10StatusPanel.vue'
-import type { B10ReadingArticle, B10ReadingAttempt, B10ReadingQuestion } from '../../domain/b10'
-import { b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../../api/b10'
-import { packNotice } from '../../domain/grammar-reading-pack'
-import { practiceFeedback } from '../../domain/practice-loop'
-import { b10ContentLocale, b10ThemeMode, b10T, b10UiLocale } from '../../platform/b10-foundation'
-import { getUniRuntime } from '../../platform/uni-runtime'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
+import { interpolate } from '@englishflow/i18n'
+import type { B10ReadingArticle } from '../../domain/b10'
+import {
+  READING_BODY_BASE_PX,
+  READING_BODY_MAX_PX,
+  READING_FONT_MAX_PERCENT,
+  READING_FONT_MIN_PERCENT,
+  READING_TRANSLATION_BASE_PX,
+  READING_TRANSLATION_MAX_PX,
+  articleViewState,
+  chooseListedArticleId,
+  clampBlockIndex,
+  classifyReadingStatus,
+  denialCanRender,
+  localPositionRecord,
+  localReadPercent,
+  nextWordSelection,
+  paragraphPieces,
+  readableQuestionCount,
+  readStillCurrent,
+  readingFontPx,
+  readingRouteActive,
+  readingShell,
+  readingStorageKey,
+  restoreLocalPosition,
+  selectionMatches,
+  stepReadingFont,
+  visibleBlocks,
+  type LocalWordSelection,
+  type ReadPermit,
+  type ReadingArticleInput,
+  type ReadingViewState,
+} from '../../domain/reading-page'
+import { b10LearningApi } from '../../api/b10'
+import { MobileApiError } from '../../api/client'
+import { currentMobilePagePath, ensureMobilePageAccess } from '../../auth/navigation'
+import { b10ContentLocale, b10ThemeMode, b10UiLocale } from '../../platform/b10-foundation'
+import { backMobile, mobileExperienceEngine, mobileT, useMobileExperience } from '../../platform/experience'
+import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
+import { mobileI18n } from '../../platform/v2-foundation'
 import { useSessionStore } from '../../stores/session'
 
+const graded = false
+const ROUTE_ID = 'b3-reading' as const
+const ROUTE_PATH = '/pages/b3-reading/b3-reading'
+const titleKey = 'titlePractice'
+const practiceChev = '/static/figma-reading-core/reading-article-168-1313/imgIconChevL.svg'
+const gradedChev = '/static/figma-reading-core/reading-graded-168-2513/imgIconChevL.svg'
+const chevSrc = graded ? gradedChev : practiceChev
+const chevClass = graded ? 'reading-icon-20' : 'reading-icon-22'
+const trackSrc = '/static/figma-reading-core/reading-article-168-1313/imgTrack.svg'
+const moreSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconMore.svg'
+const checkSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconCheckSq.svg'
+const chevRightSrc = '/static/figma-reading-core/reading-graded-168-2513/imgIconChevR.svg'
+const bookSrc = '/static/figma-reading-core/reading-empty-168-1246/imgIconBook.svg'
+const lockSrc = '/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgIconLock.svg'
+const mascotRestrictedSrc = '/static/figma-reading-core/reading-restricted-168-2234/imgMascot.svg'
+const mascotErrorSrc = '/static/figma-reading-core/reading-error-168-3333/imgMascot.svg'
+const glowArticle = '/static/figma-reading-core/reading-article-168-1313/imgGlow.svg'
+const glowEmpty = '/static/figma-reading-core/reading-empty-168-1246/imgGlow.svg'
+const glowGraded = '/static/figma-reading-core/reading-graded-168-2513/imgGlow.svg'
+const glowRestricted = '/static/figma-reading-core/reading-restricted-168-2234/imgGlow.svg'
+const glowWithdrawn = '/static/figma-reading-core/reading-rights-withdrawn-168-2607/imgGlow.svg'
+const glowError = '/static/figma-reading-core/reading-error-168-3333/imgGlow.svg'
+
 const session = useSessionStore()
-const engine = createAdaptivePerformanceEngine()
-const performanceLevel = ref<PerformanceLevel>(engine.level)
-const status = ref<'idle' | 'loading' | 'ready' | 'empty' | 'offline' | 'forbidden' | 'stale' | 'error'>('idle')
-const message = ref<string | null>(null)
-const article = ref<B10ReadingArticle | null>(null)
-const questions = ref<B10ReadingQuestion[]>([])
-const attempts = ref<Record<string, B10ReadingAttempt>>({})
-const answers = ref<Record<string, string>>({})
-const progress = ref(0)
-const positionVersion = ref(0)
-const saved = ref(false)
-const pendingEventId = ref<string | null>(null)
-const mined = ref<Set<string>>(new Set())
+const { experienceStyle, experienceMotion, theme } = useMobileExperience()
+const state = ref<ReadingViewState>('idle')
+const article = ref<ReadingArticleInput | null>(null)
+const blockIndex = ref(0)
+const questionCount = ref(0)
+const fontPercent = ref(READING_FONT_MIN_PERCENT)
 const showTranslation = ref(false)
-const fontScale = ref(1)
-const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
-const queueCount = computed(() => pendingEventId.value ? 1 : 0)
-const readingPackNotice = computed(() => packNotice('READING', questions.value.length, message.value))
-function readingFeedback(questionId: number) {
-  const attempt = attempts.value[String(questionId)]
-  return attempt ? practiceFeedback({ correct: attempt.correct }) : null
-}
-const context = computed(() => ({ uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }))
-const storageKey = 'yx.b10.mobile.reading.v1'
+const selection = ref<LocalWordSelection | null>(null)
+const selectionGeneration = ref(0)
+const pageVisible = ref(false)
+const quality = ref(mobileExperienceEngine.state.level)
+let pageEpoch = 0
 let loadRequest = 0
-type AccountScope = { subject: string; revision: number }
-function accountScope(): AccountScope | null {
-  return session.isAuthenticated && session.verifiedSubject
-    ? { subject: session.verifiedSubject, revision: session.identityRevision } : null
+const stopQuality = mobileExperienceEngine.subscribe((next) => { quality.value = next.level })
+
+function t(key: string, values?: Record<string, string | number>): string {
+  b10UiLocale.value
+  const message = mobileT(`readingPage.${key}`)
+  return values ? interpolate(message, values) : message
 }
-function isCurrent(scope: AccountScope | null): scope is AccountScope {
-  return Boolean(scope && session.isAuthenticated && session.verifiedSubject === scope.subject && session.identityRevision === scope.revision)
+function documentHidden(): boolean {
+  return typeof document !== 'undefined' && document.hidden === true
 }
-function clearPage(): void {
+function routeStillCurrent(): boolean {
+  return readingRouteActive(currentMobilePagePath(), ROUTE_PATH)
+}
+function abandonIfLeft(): boolean {
+  if (routeStillCurrent()) return false
+  hidePage()
+  return true
+}
+function privateReadAllowed(requestEpoch: number, requestId: number, subject: string, revision: number): boolean {
+  if (abandonIfLeft()) return false
+  return readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))
+}
+function livePermit(requestEpoch: number, requestId: number, subject: string, revision: number): ReadPermit {
+  return {
+    visible: pageVisible.value && !documentHidden() && routeStillCurrent(),
+    epoch: pageEpoch,
+    requestEpoch,
+    requestId,
+    activeRequestId: loadRequest,
+    subject,
+    liveSubject: session.verifiedSubject ?? '',
+    revision,
+    liveRevision: session.identityRevision,
+    adultPassed: session.adultGate === 'PASSED' && session.adultLearningAccess === 'ELIGIBLE',
+    consentAllowsLearning: session.learningConsentWithdrawn !== true,
+    learningReady: session.isLearningReady === true,
+  }
+}
+function concealContent(): void {
+  pageEpoch += 1
   loadRequest += 1
-  article.value = null; questions.value = []; attempts.value = {}; answers.value = {}
-  progress.value = 0; positionVersion.value = 0; saved.value = false
-  pendingEventId.value = null; mined.value = new Set(); showTranslation.value = false
-  status.value = 'idle'; message.value = null
+  state.value = 'idle'
+  article.value = null
+  questionCount.value = 0
+  blockIndex.value = 0
+  selection.value = null
+  selectionGeneration.value += 1
+}
+function hidePage(): void {
+  pageVisible.value = false
+  concealContent()
+}
+function statusOf(error: unknown): number {
+  return error instanceof MobileApiError ? error.status : -1
+}
+function applyFailure(error: unknown, requestEpoch: number, requestId: number, subject: string, revision: number): boolean {
+  const status = statusOf(error)
+  const next = classifyReadingStatus(status)
+  const permit = livePermit(requestEpoch, requestId, subject, revision)
+  const allowed = next === 'auth-401' || next === 'auth-403' ? denialCanRender(permit) : readStillCurrent(permit)
+  if (!allowed) return false
+  article.value = null
+  questionCount.value = 0
+  selection.value = null
+  state.value = next
+  return true
+}
+function readRawPosition(): unknown {
+  const key = readingStorageKey(ROUTE_ID)
+  let stored: unknown
+  try { stored = getUniRuntime().getStorageSync(key) } catch { return null }
+  if (stored == null || stored === '') return null
+  if (typeof stored === 'string') {
+    try { return JSON.parse(stored) as unknown } catch {
+      try { getUniRuntime().removeStorageSync(key) } catch { /* local cache is optional */ }
+      return null
+    }
+  }
+  if (typeof stored === 'object') return stored
+  try { getUniRuntime().removeStorageSync(key) } catch { /* local cache is optional */ }
+  return null
+}
+function clearPosition(): void {
+  try { getUniRuntime().removeStorageSync(readingStorageKey(ROUTE_ID)) } catch { /* local cache is optional */ }
+}
+function toInput(source: B10ReadingArticle): ReadingArticleInput {
+  return {
+    articleId: source.articleId,
+    title: source.title,
+    cefrLevel: source.cefrLevel,
+    wordCount: source.wordCount,
+    estimatedMinutes: source.estimatedMinutes,
+    blocks: source.blocks.map((block) => ({ blockId: block.blockId, blockIndex: block.blockIndex, text: block.text, translation: block.translation })),
+    rightsStatus: source.rightsStatus,
+    availability: null,
+    contentVersionId: source.contentVersionId,
+    contentEpoch: source.contentEpoch,
+  }
+}
+function persistLocal(): void {
+  const current = article.value
+  const subject = session.verifiedSubject ?? ''
+  if (state.value !== 'ready' || !current || !subject) return
+  const record = localPositionRecord({
+    routeId: ROUTE_ID,
+    subject,
+    articleId: current.articleId,
+    contentVersionId: current.contentVersionId,
+    contentEpoch: current.contentEpoch,
+  }, clampBlockIndex(blockIndex.value, visibleBlocks(current, 'ready').length))
+  try { getUniRuntime().setStorageSync(readingStorageKey(ROUTE_ID), JSON.stringify(record)) } catch { /* position stays in memory */ }
+}
+async function load(): Promise<void> {
+  if (documentHidden()) return
+  if (!routeStillCurrent()) {
+    if (pageVisible.value || article.value) hidePage()
+    return
+  }
+  if (!pageVisible.value) return
+  const requestEpoch = pageEpoch
+  const requestId = ++loadRequest
+  state.value = 'loading'
+  article.value = null
+  questionCount.value = 0
+  selection.value = null
+  selectionGeneration.value += 1
+  try { await session.restore() } catch { /* restore closes the session itself */ }
+  if (abandonIfLeft()) return
+  if (!denialCanRender(livePermit(requestEpoch, requestId, session.verifiedSubject ?? '', session.identityRevision))) return
+  const allowed = await ensureMobilePageAccess(ROUTE_PATH)
+  if (abandonIfLeft()) return
+  if (!denialCanRender(livePermit(requestEpoch, requestId, session.verifiedSubject ?? '', session.identityRevision))) return
+  const subject = session.verifiedSubject ?? ''
+  const revision = session.identityRevision
+  if (!allowed || !readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))) {
+    if (!denialCanRender(livePermit(requestEpoch, requestId, subject, revision))) return
+    article.value = null
+    questionCount.value = 0
+    state.value = session.isAuthenticated ? 'auth-403' : 'auth-401'
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const context = { uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }
+  let listed: B10ReadingArticle[]
+  try {
+    listed = await b10LearningApi.listReadingArticles(context)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const articleId = chooseListedArticleId(listed.map((item) => ({ articleId: item.articleId, rightsStatus: item.rightsStatus })))
+  if (articleId == null) {
+    article.value = null
+    questionCount.value = 0
+    state.value = 'empty'
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  let detail: B10ReadingArticle
+  try {
+    detail = await b10LearningApi.getReadingArticle(context, articleId)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const input = toInput(detail)
+  const view = articleViewState(input)
+  if (view !== 'ready') {
+    article.value = null
+    questionCount.value = 0
+    selection.value = null
+    state.value = view
+    return
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  let count = 0
+  try {
+    const questions = await b10LearningApi.listReadingQuestions(context, input.articleId)
+    if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+    count = readableQuestionCount(questions)
+  } catch (error) {
+    if (abandonIfLeft()) return
+    const kind = classifyReadingStatus(statusOf(error))
+    if (kind === 'auth-401' || kind === 'auth-403' || kind === 'stale') {
+      applyFailure(error, requestEpoch, requestId, subject, revision)
+      return
+    }
+    if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+    count = 0
+  }
+  if (!privateReadAllowed(requestEpoch, requestId, subject, revision)) return
+  const raw = readRawPosition()
+  const restored = restoreLocalPosition(raw, {
+    routeId: ROUTE_ID,
+    subject,
+    articleId: input.articleId,
+    contentVersionId: input.contentVersionId,
+    contentEpoch: input.contentEpoch,
+  })
+  if (raw && !restored) clearPosition()
+  article.value = input
+  questionCount.value = count
+  blockIndex.value = clampBlockIndex(restored?.blockIndex ?? 0, visibleBlocks(input, 'ready').length)
+  selection.value = null
+  state.value = 'ready'
+  persistLocal()
+}
+function changeFont(direction: -1 | 1): void {
+  fontPercent.value = stepReadingFont(fontPercent.value, direction)
+}
+function moveParagraph(direction: -1 | 1): void {
+  const count = blocks.value.length
+  const next = clampBlockIndex(safeIndex.value + direction, count)
+  if (next === safeIndex.value) return
+  blockIndex.value = next
+  selection.value = null
+  selectionGeneration.value += 1
+  persistLocal()
+}
+function chooseWord(blockId: string, word: string): void {
+  const next = nextWordSelection(selectionGeneration.value, blockId, word)
+  if (!next) return
+  selectionGeneration.value = next.generation
+  selection.value = selectionMatches(next, selectionGeneration.value) ? next : null
+}
+function wordSelected(blockId: string, word: string): boolean {
+  return selectionMatches(selection.value, selectionGeneration.value) && selection.value?.blockId === blockId && selection.value.word === word.trim()
+}
+function backToPractice(): void { openUniPage('/pages/practice/practice') }
+function onVisibility(): void {
+  if (typeof document === 'undefined') return
+  if (documentHidden()) {
+    if (pageVisible.value) hidePage()
+    return
+  }
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
+  }
+  if (!pageVisible.value) {
+    pageVisible.value = true
+    void load()
+  }
+}
+function onRouteChange(): void {
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
+  }
+  if (!pageVisible.value && !documentHidden()) {
+    pageVisible.value = true
+    void load()
+  }
 }
 
-function discardReadingState(): void { try { getUniRuntime().removeStorageSync(storageKey) } catch { /* storage unavailable */ } }
-function persist(): void { const scope = accountScope(); if (!isCurrent(scope) || !article.value) return; try { getUniRuntime().setStorageSync(storageKey, JSON.stringify({ subject: scope.subject, articleId: article.value.articleId, contentVersionId: article.value.contentVersionId, contentEpoch: article.value.contentEpoch, progress: progress.value, positionVersion: positionVersion.value, saved: saved.value, pendingEventId: pendingEventId.value })) } catch { /* server readback remains authoritative */ } }
-function restore(): void {
-  const scope = accountScope()
-  if (!isCurrent(scope) || !article.value) return
-  try { const raw = getUniRuntime().getStorageSync(storageKey); if (typeof raw !== 'string') return; const value = JSON.parse(raw) as Record<string, unknown>; if (value.subject !== scope.subject || value.articleId !== article.value.articleId || value.contentVersionId !== article.value.contentVersionId || value.contentEpoch !== article.value.contentEpoch) { discardReadingState(); return } progress.value = typeof value.progress === 'number' && Number.isFinite(value.progress) ? Math.max(0, Math.min(100, value.progress)) : 0; positionVersion.value = typeof value.positionVersion === 'number' && Number.isSafeInteger(value.positionVersion) && value.positionVersion >= 0 ? value.positionVersion : 0; saved.value = value.saved === true; pendingEventId.value = typeof value.pendingEventId === 'string' ? value.pendingEventId : null } catch { discardReadingState() }
-}
-function setPerformance(level: PerformanceLevel): void { engine.setLevel(level, 'manual'); performanceLevel.value = level }
-async function load(): Promise<void> {
-  const scope = accountScope()
-  if (!isCurrent(scope)) return
-  const requestId = ++loadRequest
-  status.value = 'loading'; message.value = null
-  try {
-    const articles = await b10LearningApi.listReadingArticles(context.value)
-    if (!isCurrent(scope) || requestId !== loadRequest) return
-    if (!articles.length) { article.value = null; questions.value = []; status.value = 'empty'; return }
-    const nextArticle = await b10LearningApi.getReadingArticle(context.value, articles[0].articleId)
-    if (!isCurrent(scope) || requestId !== loadRequest) return
-    if (article.value?.articleId !== nextArticle.articleId || article.value.contentVersionId !== nextArticle.contentVersionId || article.value.contentEpoch !== nextArticle.contentEpoch) {
-      progress.value = 0; positionVersion.value = 0; saved.value = false
-      pendingEventId.value = null; attempts.value = {}; answers.value = {}; mined.value = new Set()
+const blocks = computed(() => visibleBlocks(article.value, state.value))
+const safeIndex = computed(() => clampBlockIndex(blockIndex.value, blocks.value.length))
+const current = computed(() => blocks.value[safeIndex.value] ?? null)
+const pieces = computed(() => current.value ? paragraphPieces(current.value.text) : [])
+const percent = computed(() => localReadPercent(safeIndex.value, blocks.value.length))
+const bodyPx = computed(() => readingFontPx(fontPercent.value, READING_BODY_BASE_PX, READING_BODY_MAX_PX))
+const translationPx = computed(() => readingFontPx(fontPercent.value, READING_TRANSLATION_BASE_PX, READING_TRANSLATION_MAX_PX))
+const shell = computed(() => readingShell(state.value))
+const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
+const pageStyle = computed(() => ({ ...experienceStyle.value, '--reading-body-size': `${bodyPx.value}px`, '--reading-translation-size': `${translationPx.value}px` }))
+const glowSrc = computed(() => {
+  if (shell.value === 'withdrawn') return glowWithdrawn
+  if (shell.value === 'error') return glowError
+  if (shell.value === 'restricted') return glowRestricted
+  if (shell.value === 'empty') return graded ? glowGraded : glowEmpty
+  return graded ? glowGraded : glowArticle
+})
+const restrictedBody = computed(() => {
+  if (state.value === 'auth-401') return t('auth401')
+  if (state.value === 'auth-403') return t('auth403')
+  if (state.value === 'stale') return t('stale')
+  if (state.value === 'unpublished') return t('unpublished')
+  if (state.value === 'unauthorized-content') return t('unauthorized')
+  return t('offline')
+})
+const activeSelection = computed(() => selectionMatches(selection.value, selectionGeneration.value) ? selection.value : null)
+
+watch(
+  () => [session.identityRevision, session.verifiedSubject, session.adultGate, session.adultLearningAccess, session.learningConsentWithdrawn, session.isLearningReady] as const,
+  () => {
+    if (!routeStillCurrent()) {
+      hidePage()
+      return
     }
-    article.value = nextArticle
-    if (article.value.rightsStatus === 'REVOKED') { status.value = 'forbidden'; message.value = '当前文章版权状态不允许阅读。'; return }
-    const nextQuestions = await b10LearningApi.listReadingQuestions(context.value, article.value.articleId)
-    if (!isCurrent(scope) || requestId !== loadRequest) return
-    questions.value = nextQuestions
-    status.value = article.value.blocks.length ? 'ready' : 'empty'; restore(); persist()
-  } catch (error) { if (!isCurrent(scope) || requestId !== loadRequest) return; const info = b10ErrorInfo(error, '阅读服务暂时不可用。'); status.value = info.kind; message.value = info.message; persist() }
-}
-async function performSave(reusePending: boolean): Promise<void> {
-  const scope = accountScope()
-  const currentArticle = article.value
-  if (!isCurrent(scope) || !currentArticle) return
-  if (!reusePending || !pendingEventId.value) {
-    positionVersion.value += 1
-    pendingEventId.value = createB10ClientEventId(`reading-progress-${currentArticle.articleId}-${positionVersion.value}`)
+    concealContent()
+    if (pageVisible.value && !documentHidden()) void load()
+  },
+  { flush: 'sync' },
+)
+onShow(() => {
+  if (!routeStillCurrent()) {
+    hidePage()
+    return
   }
-  const version = positionVersion.value
-  const eventId = pendingEventId.value
-  const position = progress.value
-  saved.value = false; persist()
-  try {
-    await b10LearningApi.saveReadingProgress(context.value, currentArticle, currentArticle.blocks[Math.max(0, Math.ceil(currentArticle.blocks.length * position / 100) - 1)]?.blockId ?? currentArticle.blocks[0]?.blockId ?? 'root', position, version, eventId)
-    if (!isCurrent(scope) || article.value !== currentArticle || positionVersion.value !== version || pendingEventId.value !== eventId) return
-    saved.value = true; pendingEventId.value = null; status.value = 'ready'; message.value = '阅读进度已保存。'; persist()
-  } catch (error) {
-    if (!isCurrent(scope) || article.value !== currentArticle || positionVersion.value !== version || pendingEventId.value !== eventId) return
-    const info = b10ErrorInfo(error, '阅读进度保存失败，最后位置已保留。'); status.value = info.kind; message.value = info.message; persist()
-  }
-}
-async function save(): Promise<void> { await performSave(false) }
-async function sync(): Promise<void> { if (pendingEventId.value) await performSave(true) }
-async function mine(blockId: string, selectedText: string): Promise<void> {
-  const scope = accountScope()
-  const currentArticle = article.value
-  if (!isCurrent(scope) || !currentArticle || mined.value.has(blockId)) return
-  try { await b10LearningApi.mineReadingExpression(context.value, currentArticle, blockId, selectedText, createB10ClientEventId(`reading-mine-${currentArticle.articleId}-${blockId}`)); if (!isCurrent(scope) || article.value !== currentArticle) return; mined.value = new Set([...mined.value, blockId]); message.value = b10T('reading.mined') }
-  catch (error) { if (!isCurrent(scope) || article.value !== currentArticle) return; const info = b10ErrorInfo(error, '表达挖掘失败，未伪造入库结果。'); status.value = info.kind; message.value = info.message }
-}
-async function submitQuestion(question: B10ReadingQuestion): Promise<void> {
-  const scope = accountScope()
-  const currentArticle = article.value
-  if (!isCurrent(scope) || !currentArticle) return
-  const answer = answers.value[String(question.questionId)]
-  if (!answer) return
-  try { const result = await b10LearningApi.submitReadingAttempt(context.value, question, { selectedOptionKeys: [answer] }, createB10ClientEventId(`reading-question-${question.questionId}`)); if (!isCurrent(scope) || article.value !== currentArticle || answers.value[String(question.questionId)] !== answer) return; attempts.value[String(question.questionId)] = result; status.value = result.contentVersionStale ? 'stale' : 'ready'; message.value = result.contentVersionStale ? b10T('common.stale') : null }
-  catch (error) { if (!isCurrent(scope) || article.value !== currentArticle || answers.value[String(question.questionId)] !== answer) return; const info = b10ErrorInfo(error, '阅读理解提交失败，当前答案仍保留。'); status.value = info.kind; message.value = info.message }
-}
-function increaseFont(): void { fontScale.value = Math.min(1.35, Number((fontScale.value + 0.1).toFixed(2))) }
-function decreaseFont(): void { fontScale.value = Math.max(.85, Number((fontScale.value - 0.1).toFixed(2))) }
-watch(() => session.identityRevision, clearPage, { flush: 'sync' })
-onMounted(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return } void load() })
-onUnmounted(() => engine.dispose())
+  pageVisible.value = true
+  void load()
+})
+onHide(() => { hidePage() })
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', onVisibility)
+if (typeof window !== 'undefined') window.addEventListener('hashchange', onRouteChange)
+onBeforeUnmount(() => {
+  if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', onVisibility)
+  if (typeof window !== 'undefined') window.removeEventListener('hashchange', onRouteChange)
+  stopQuality()
+})
 </script>
 
 <template>
-  <view class="yx-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="b3-reading" />
-
-    <view class="v2-b3read-body">
-      <B10StatusPanel :status="status" :message="message" :queue-count="queueCount" :performance-level="performanceLevel" @retry="load" @sync="sync" @performance="setPerformance" />
-      <view v-if="article" class="yx-card b10-reading-card card v2-b3read-card">
-        <view class="eyebrow v2-b3read-eyebrow"><AppIcon name="book" :size="14" /><text>阅读</text></view>
-        <view class="b10-reading-card__header v2-b3read-head"><view class="v2-b3read-titles"><text class="b10-kicker v2-b3read-kicker">{{ article.cefrLevel }} · {{ article.wordCount }} words</text><text class="b10-reading-card__title v2-b3read-title">{{ article.title }}</text></view><text class="b10-reading-card__saved v2-b3read-saved">{{ saved ? '已保存' : '未保存' }}</text></view>
-        <view class="b10-reading-card__tools v2-b3read-tools"><AppIcon name="type" :size="14" /><button tabindex="0" role="button" class="b10-tool opt v2-b3read-opt v2-b3read-tool btn" type="button" @click="decreaseFont">A−</button><text class="d v2-b3read-d">{{ Math.round(fontScale * 100) }}%</text><button tabindex="0" role="button" class="b10-tool opt v2-b3read-opt v2-b3read-tool btn" type="button" @click="increaseFont">A＋</button><button tabindex="0" role="button" class="b10-tool opt v2-b3read-opt v2-b3read-tool btn" type="button" @click="showTranslation = !showTranslation">{{ showTranslation ? b10T('reading.hideTranslation') : b10T('reading.translation') }}</button></view>
-        <view v-for="block in article.blocks" :key="block.blockId" class="b10-reading-block v2-b3read-row"><text class="b10-reading-block__text v2-b3read-text" :style="{ fontSize: `${28 * fontScale}rpx` }">{{ block.text }}</text><text v-if="showTranslation && block.translation" class="b10-reading-block__translation d v2-b3read-d">{{ block.translation }}</text><button tabindex="0" role="button" class="b10-mine opt v2-b3read-opt v2-b3read-btn btn" type="button" @click="mine(block.blockId, block.text)"><AppIcon name="spark" :size="14" />{{ mined.has(block.blockId) ? b10T('reading.mined') : b10T('reading.mining') }}</button></view>
-        <view class="b10-reading-progress v2-b3read-progress"><AppIcon name="chart" :size="14" /><text class="d v2-b3read-d">{{ Math.round(progress) }}%</text><slider class="b10-reading-progress__slider v2-b3read-slider" :value="progress" min="0" max="100" @change="progress = Number($event.detail.value); saved = false; pendingEventId = null; persist()" /><text v-if="queueCount" class="meta d v2-b3read-meta v2-b3read-d">待同步 {{ queueCount }}</text></view>
-        <button tabindex="0" role="button" class="yx-button btn v2-b3read-btn v2-b3read-submit" type="button" @click="save"><AppIcon name="check" :size="14" />{{ b10T('reading.save') }}</button>
-        <text v-if="readingPackNotice" class="b10-pack-notice fb v2-b3read-fb" data-pack-notice>{{ readingPackNotice }}</text>
-        <view v-if="questions.length" class="b10-reading-questions v2-b3read-questions"><view class="eyebrow v2-b3read-eyebrow"><AppIcon name="list" :size="14" /><text class="b10-kicker v2-b3read-kicker">{{ b10T('reading.question') }}</text></view><view v-for="question in questions" :key="question.questionId" class="b10-reading-question card v2-b3read-row v2-b3read-card"><text class="b10-reading-question__stem v2-b3read-stem">{{ question.stemText }}</text><label v-for="option in question.options" :key="option.optionCode" class="b10-reading-question__option opt v2-b3read-opt"><radio :value="option.optionCode" :checked="answers[String(question.questionId)] === option.optionCode" @click="answers[String(question.questionId)] = option.optionCode" />{{ option.label }}</label><button tabindex="0" role="button" class="b10-mine opt v2-b3read-opt v2-b3read-btn btn" type="button" @click="submitQuestion(question)"><AppIcon name="check" :size="14" />{{ b10T('reading.submit') }}</button><text v-if="readingFeedback(question.questionId)" class="fb d v2-b3read-fb v2-b3read-d" data-save-receipt>{{ readingFeedback(question.questionId)?.savedReceipt }}</text><text v-if="readingFeedback(question.questionId)" class="fb d v2-b3read-fb v2-b3read-d" data-feedback-text>{{ readingFeedback(question.questionId)?.feedbackText }}</text><text v-if="readingFeedback(question.questionId)" class="fb d v2-b3read-fb v2-b3read-d" data-next-question>{{ readingFeedback(question.questionId)?.nextQuestion }}</text></view></view>
+  <view
+    class="reading-page"
+    :class="themeClass"
+    :style="pageStyle"
+    :data-route="ROUTE_ID"
+    :data-state="state"
+    :data-shell="shell"
+    :data-quality="quality"
+    :data-motion="experienceMotion"
+    :data-theme="theme"
+    :data-content-locale="b10ContentLocale"
+    :data-ui-locale="b10UiLocale"
+    data-write-capability="closed"
+    data-server-receipt="none"
+    :data-access="state === 'auth-401' || state === 'auth-403' ? 'forbidden' : 'allowed'"
+    :data-font-percent="fontPercent"
+    :data-body-px="bodyPx"
+    :data-translation-px="translationPx"
+    :data-translation="showTranslation ? 'on' : 'off'"
+    :data-block-index="safeIndex"
+    :data-block-count="blocks.length"
+    :data-graded="graded ? 'true' : 'false'"
+    data-selection-persisted="false"
+  >
+    <view class="reading-glow" aria-hidden="true">
+      <image class="reading-glow-image" :src="glowSrc" mode="aspectFit" />
+    </view>
+    <view class="reading-canvas">
+      <view class="reading-nav">
+        <button type="button" class="reading-hit" data-action="back" :aria-label="t('back')" @click="backMobile">
+          <image :class="['reading-mono', chevClass]" :src="chevSrc" mode="aspectFit" />
+        </button>
+        <text class="reading-nav-title" role="heading" aria-level="1">{{ t(titleKey) }}</text>
+        <view v-if="graded" class="reading-hit" role="img" :aria-label="t('moreClosed')">
+          <image class="reading-mono reading-icon-20" :src="moreSrc" mode="aspectFit" />
+        </view>
+        <view v-else class="reading-hit" aria-hidden="true"></view>
       </view>
-      <view v-else-if="status === 'loading'" class="yx-card b10-empty card v2-b3read-card"><view class="eyebrow v2-b3read-eyebrow"><AppIcon name="refresh" :size="14" /><text>加载中</text></view><text class="d v2-b3read-d">{{ b10T('status.loading') }}</text></view>
-      <view v-else-if="status === 'empty'" class="yx-card b10-empty card v2-b3read-card" role="status"><view class="eyebrow v2-b3read-eyebrow"><AppIcon name="inbox" :size="14" /><text>暂无文章</text></view><text class="b10-empty__title v2-b3read-title">{{ b10T('reading.noArticle') }}</text><text class="d v2-b3read-d">{{ b10T('status.noSample') }}</text><button tabindex="0" role="button" class="yx-button btn v2-b3read-btn v2-b3read-submit" type="button" @click="load">{{ b10T('status.retry') }}</button></view>
-      <view v-else class="yx-card b10-empty card v2-b3read-card" role="alert"><view class="eyebrow v2-b3read-eyebrow"><AppIcon name="alert" :size="14" /><text>阅读状态</text></view><text class="b10-empty__title v2-b3read-title">{{ b10T(`status.${status}`) }}</text><text class="d v2-b3read-d">{{ message ?? b10T('status.retry') }}</text><button tabindex="0" role="button" class="yx-button btn v2-b3read-btn v2-b3read-submit" type="button" @click="load">{{ b10T('status.retry') }}</button></view>
+
+      <view v-if="shell === 'loading'" class="reading-loading" role="status">{{ t('loading') }}</view>
+
+      <view v-else-if="shell === 'empty'" class="reading-state">
+        <view class="reading-card reading-card--center" role="status">
+          <view class="reading-badge reading-badge--book" aria-hidden="true">
+            <image class="reading-icon-44" :src="bookSrc" mode="aspectFit" />
+          </view>
+          <text class="reading-state-title">{{ t('emptyTitle') }}</text>
+          <text class="reading-state-body">{{ t('emptyBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="refresh" @click="load">{{ t('refresh') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'withdrawn'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <view class="reading-badge reading-badge--lock" aria-hidden="true">
+            <image class="reading-icon-44" :src="lockSrc" mode="aspectFit" />
+          </view>
+          <text class="reading-state-title">{{ t('revokedTitle') }}</text>
+          <text class="reading-state-body">{{ t('revokedBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="reread" @click="load">{{ t('reread') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'error'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <image class="reading-mascot" :src="mascotErrorSrc" mode="aspectFit" alt="" />
+          <text class="reading-state-title">{{ t('errorTitle') }}</text>
+          <text class="reading-state-body">{{ t('errorBody') }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'restricted'" class="reading-state">
+        <view class="reading-card reading-card--center" role="alert">
+          <image class="reading-mascot" :src="mascotRestrictedSrc" mode="aspectFit" alt="" />
+          <text class="reading-state-title">{{ t('restrictedTitle') }}</text>
+          <text class="reading-state-body">{{ restrictedBody }}</text>
+        </view>
+        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
+        <button type="button" class="reading-link" data-action="back-practice" @click="backToPractice">{{ t('backPractice') }}</button>
+      </view>
+
+      <view v-else-if="shell === 'ready' && current" class="reading-ready">
+        <view class="reading-tools">
+          <button type="button" class="reading-font" data-action="font-down" :aria-label="t('fontDown')" :disabled="fontPercent <= READING_FONT_MIN_PERCENT" @click="changeFont(-1)">A−</button>
+          <text class="reading-font-value">{{ fontPercent }}%</text>
+          <button type="button" class="reading-font" data-action="font-up" :aria-label="t('fontUp')" :disabled="fontPercent >= READING_FONT_MAX_PERCENT" @click="changeFont(1)">A＋</button>
+          <view class="reading-tools-gap" aria-hidden="true"></view>
+          <button v-if="!graded" type="button" class="reading-toggle" data-action="translation" :aria-pressed="showTranslation ? 'true' : 'false'" :aria-label="showTranslation ? t('translationHide') : t('translationShow')" @click="showTranslation = !showTranslation">
+            <text>{{ showTranslation ? t('translationHide') : t('translationShow') }}</text>
+            <image class="reading-track" :src="trackSrc" mode="aspectFit" alt="" />
+          </button>
+        </view>
+
+        <view class="reading-card">
+          <view class="reading-meta">
+            <text class="reading-tag">{{ article?.cefrLevel }}</text>
+            <text class="reading-meta-text">{{ t('words', { count: article?.wordCount ?? 0 }) }} · {{ t('minutes', { count: article?.estimatedMinutes ?? 0 }) }}</text>
+          </view>
+          <text class="reading-article-title" role="heading" aria-level="2">{{ article?.title }}</text>
+          <view class="reading-progress">
+            <view class="reading-bar" role="progressbar" :aria-valuenow="percent" aria-valuemin="0" aria-valuemax="100" :aria-label="t('noServerReceipt')" data-local-only="true">
+              <view class="reading-bar-fill" :style="{ width: percent + '%' }"></view>
+            </view>
+            <text class="reading-meta-text">{{ t('localPercent', { percent }) }}</text>
+          </view>
+          <view v-if="graded" class="reading-segment" role="group" :aria-label="t('translationShow')">
+            <button type="button" class="reading-segment-btn" data-action="original" :aria-pressed="showTranslation ? 'false' : 'true'" @click="showTranslation = false">{{ t('original') }}</button>
+            <button type="button" class="reading-segment-btn" data-action="bilingual" :aria-pressed="showTranslation ? 'true' : 'false'" @click="showTranslation = true">{{ t('bilingual') }}</button>
+          </view>
+          <view class="reading-body" :style="{ fontSize: bodyPx + 'px' }">
+            <template v-for="(piece, index) in pieces" :key="`${current.blockId}-${index}`">
+              <button
+                v-if="piece.kind === 'word'"
+                type="button"
+                class="reading-word"
+                data-action="select-word"
+                :data-selected="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
+                :aria-pressed="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
+                @click="chooseWord(current.blockId, piece.value)"
+              >{{ piece.value }}</button>
+              <text v-else class="reading-space">{{ piece.value }}</text>
+            </template>
+          </view>
+          <text v-if="showTranslation && current.translation" class="reading-translation" :style="{ fontSize: translationPx + 'px' }">{{ current.translation }}</text>
+          <text v-if="activeSelection" class="reading-selection" role="status">{{ t('selectedLocal', { word: activeSelection.word }) }}</text>
+        </view>
+
+        <view class="reading-para">
+          <button type="button" class="reading-link" data-action="prev" :disabled="safeIndex <= 0" @click="moveParagraph(-1)">{{ t('prev') }}</button>
+          <text class="reading-meta-text">{{ t('localPosition', { index: safeIndex + 1, count: blocks.length }) }}</text>
+          <button type="button" class="reading-link" data-action="next" :disabled="safeIndex >= blocks.length - 1" @click="moveParagraph(1)">{{ t('next') }}</button>
+        </view>
+
+        <view v-if="graded" class="reading-check" role="status">
+          <view class="reading-check-tile" aria-hidden="true">
+            <image class="reading-icon-22" :src="checkSrc" mode="aspectFit" />
+          </view>
+          <view class="reading-check-copy">
+            <text class="reading-check-title">{{ t('comprehensionClosed') }}</text>
+            <text class="reading-meta-text">{{ t('comprehensionCount', { count: questionCount }) }}</text>
+          </view>
+          <image class="reading-mono reading-icon-20" :src="chevRightSrc" mode="aspectFit" alt="" />
+        </view>
+
+        <view class="reading-closed" role="status">
+          <text>{{ t('writesClosed') }}</text>
+          <text>{{ t('noServerReceipt') }}</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
-<style scoped lang="scss">
-.b10-reading-card{display:grid;gap:18rpx}.b10-reading-card__header{display:flex;justify-content:space-between;gap:16rpx}.b10-kicker{color:var(--yx-brand);font-size:22rpx;font-weight:700}.b10-reading-card__title{display:block;margin-top:8rpx;color:var(--yx-text-primary);font-size:36rpx;font-weight:750}.b10-reading-card__saved{color:var(--yx-success-strong);font-size:22rpx}.b10-reading-card__tools{display:flex;align-items:center;gap:12rpx;color:var(--yx-text-secondary);font-size:22rpx}.b10-tool{min-height:58rpx;padding:0 14rpx;border:1rpx solid var(--yx-border);border-radius:10rpx;color:var(--yx-brand);background:var(--yx-surface-card);font-size:22rpx;line-height:58rpx}.b10-reading-block{display:grid;gap:10rpx;padding:18rpx 0;border-bottom:1rpx solid var(--yx-border)}.b10-reading-block__text{color:var(--yx-text-primary);line-height:1.8}.b10-reading-block__translation{color:var(--yx-text-secondary);font-size:25rpx;line-height:1.6}.b10-mine{justify-self:start;min-height:54rpx;padding:0 14rpx;border:1rpx solid var(--yx-border);border-radius:10rpx;color:var(--yx-brand);background:var(--yx-surface-card);font-size:21rpx;line-height:54rpx}.b10-reading-progress{display:flex;align-items:center;gap:12rpx;color:var(--yx-text-secondary);font-size:22rpx}.b10-reading-progress__slider{flex:1}.b10-reading-questions{display:grid;gap:14rpx;padding-top:18rpx;border-top:1rpx solid var(--yx-border)}.b10-reading-question{display:grid;gap:10rpx;padding:16rpx;border-radius:12rpx;background:var(--yx-surface-soft)}.b10-reading-question__stem{font-size:26rpx;font-weight:700}.b10-reading-question__option{display:flex;gap:8rpx;align-items:center;color:var(--yx-text-secondary);font-size:23rpx}.b10-reading-question__feedback{padding:10rpx;border-radius:10rpx;color:var(--yx-success-strong);background:var(--yx-success-soft);font-size:22rpx}.b10-empty{display:grid;gap:16rpx;color:var(--yx-text-secondary);font-size:26rpx}.b10-empty__title{color:var(--yx-text-primary);font-size:32rpx;font-weight:750}
-/* v2 阅读页换皮：对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 卡片/eyebrow/标题/列表行/按钮同样数值，对齐 mobile/styles.css、refine.css，仅用 var(--v2-*)。 */
-.v2-b3read-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3read-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
-.v2-b3read-card:hover{border-color:var(--v2-brand)}
-.v2-b3read-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-b3read-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-b3read-head>*{min-width:0;max-width:100%}
-.v2-b3read-titles{display:flex;flex-direction:column;gap:var(--v2-space-2);flex:1 1 auto;box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-b3read-titles>*{min-width:0;max-width:100%}
-.v2-b3read-kicker{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-b3read-title{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-b3read-saved{flex:0 0 auto;box-sizing:border-box;max-width:100%;color:var(--v2-ok);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b3read-tools{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-b3read-tools>*{min-width:0;max-width:100%}
-.v2-b3read-opt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b3read-tools .v2-b3read-opt{width:auto;flex:0 0 auto}
-label.v2-b3read-opt{justify-content:flex-start;white-space:normal;text-align:left}
-.v2-b3read-opt:hover{border-color:var(--v2-brand)}
-.v2-b3read-opt:active{transform:scale(.97)}
-.v2-b3read-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b3read-opt:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-b3read-tool{width:auto;flex:0 0 auto}
-.v2-b3read-d{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b3read-text{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.8;overflow-wrap:anywhere}
-.v2-b3read-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);font-family:var(--v2-font)}
-.v2-b3read-row:hover{border-color:var(--v2-brand)}
-.v2-b3read-row>*{min-width:0;max-width:100%}
-.v2-b3read-progress{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7}
-.v2-b3read-progress>*{min-width:0;max-width:100%}
-.v2-b3read-slider{flex:1 1 auto;box-sizing:border-box;max-width:100%;min-width:0}
-.v2-b3read-meta{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b3read-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-b3read-row .v2-b3read-btn{width:auto;flex:0 0 auto}
-.v2-b3read-btn:hover{border-color:var(--v2-brand)}
-.v2-b3read-btn:active{transform:scale(.97)}
-.v2-b3read-btn:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-b3read-btn:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-b3read-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700}
-.v2-b3read-submit:hover{border-color:var(--v2-brand)}
-.v2-b3read-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-b3read-fb.ok{background:var(--v2-ok-soft);color:var(--v2-ok)}
-.v2-b3read-fb.no{background:var(--v2-bad-soft);color:var(--v2-bad)}
-.v2-b3read-questions{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding-top:var(--v2-space-4);border-top:1px solid var(--v2-line);font-family:var(--v2-font)}
-.v2-b3read-stem{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
+<style scoped>
+.reading-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--yx-surface-page);
+  background-image: var(--yx-profile-page-image);
+  color: var(--yx-text-primary);
+}
+.reading-glow {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  width: 540px;
+  height: 480px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.reading-glow-image {
+  width: 540px;
+  height: 480px;
+}
+.reading-canvas {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 24px 32px;
+}
+.reading-nav {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+}
+.reading-nav-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.reading-hit,
+.reading-font,
+.reading-toggle,
+.reading-link,
+.reading-cta,
+.reading-word,
+.reading-segment-btn {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+}
+.reading-hit,
+.reading-font,
+.reading-link,
+.reading-cta,
+.reading-segment-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+.reading-hit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 22px;
+}
+.reading-icon-22 { width: 22px; height: 22px; }
+.reading-icon-20 { width: 20px; height: 20px; }
+.reading-icon-44 { width: 44px; height: 44px; }
+.reading-mascot { width: 120px; height: 120px; }
+.reading-track { width: 52px; height: 32px; }
+.reading-page[data-theme="dark"] .reading-mono,
+.reading-page[data-theme="high-contrast"] .reading-mono { filter: invert(1); }
+.reading-tools,
+.reading-meta,
+.reading-progress,
+.reading-para,
+.reading-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reading-tools { margin-top: 8px; }
+.reading-tools-gap { flex: 1; }
+.reading-font {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--yx-surface-card);
+  border: 1px solid var(--yx-border);
+  border-radius: 14px;
+}
+.reading-font-value {
+  min-width: 44px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--yx-text-secondary);
+  text-align: center;
+}
+.reading-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--yx-text-secondary);
+  background: transparent;
+  border: 0;
+}
+.reading-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 16px;
+  padding: 22px 24px;
+  background: var(--closed-card-bg);
+  border: 1px solid var(--closed-card-border);
+  border-radius: 28px;
+  box-shadow: var(--closed-card-shadow);
+}
+.reading-card--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 18px;
+}
+.reading-state { display: flex; flex-direction: column; gap: 16px; }
+.reading-state-title {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 32px;
+}
+.reading-state-body {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--yx-text-secondary);
+}
+.reading-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 48px;
+}
+.reading-badge--book { background: var(--yx-profile-tile-neutral, #ecedf3); }
+.reading-badge--lock { background: #fff6e8; }
+.reading-loading {
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.reading-tag {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--yx-brand);
+  background: var(--yx-brand-soft);
+  border-radius: 999px;
+}
+.reading-meta-text {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--yx-text-secondary);
+}
+.reading-article-title {
+  display: block;
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  overflow-wrap: anywhere;
+}
+.reading-progress { margin-top: 12px; }
+.reading-bar {
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  background: var(--yx-brand-soft);
+  border-radius: 3px;
+}
+.reading-bar-fill {
+  height: 6px;
+  background: var(--yx-brand);
+  border-radius: 3px;
+}
+.reading-page[data-motion="on"] .reading-bar-fill { transition: width var(--yx-motion-fast, 180ms) linear; }
+.reading-segment {
+  display: flex;
+  width: 100%;
+  margin-top: 12px;
+  padding: 4px;
+  background: var(--yx-brand-soft);
+  border-radius: 16px;
+}
+.reading-segment-btn {
+  flex: 1;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--yx-text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: 12px;
+}
+.reading-segment-btn[aria-pressed="true"] {
+  font-weight: 700;
+  color: var(--yx-brand);
+  background: var(--yx-surface-card);
+}
+.reading-body {
+  display: block;
+  margin-top: 16px;
+  font-size: var(--reading-body-size);
+  line-height: 1.7;
+  color: var(--yx-text-primary);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.reading-space { white-space: pre-wrap; }
+.reading-word {
+  display: inline;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+  vertical-align: baseline;
+  white-space: normal;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-wrap: anywhere;
+}
+.reading-word::after { display: none; border: 0; }
+.reading-word[data-selected="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+  background: var(--yx-brand-soft);
+  border: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.reading-translation {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--reading-translation-size);
+  line-height: 1.5;
+  color: var(--yx-text-secondary);
+  overflow-wrap: anywhere;
+}
+.reading-selection {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.reading-para { justify-content: space-between; margin-top: 8px; }
+.reading-link {
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--yx-text-primary);
+  text-decoration: underline;
+  background: transparent;
+  border: 0;
+}
+.reading-check {
+  margin-top: 16px;
+  padding: 12px 10px 12px 14px;
+  background: var(--closed-card-bg);
+  border: 1px solid var(--closed-card-border);
+  border-radius: 20px;
+}
+.reading-check-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--yx-brand-soft);
+  border-radius: 14px;
+}
+.reading-check-copy { flex: 1; min-width: 0; }
+.reading-check-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+}
+.reading-closed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 12px 0 8px;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--yx-text-secondary);
+}
+.reading-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--closed-cta-on);
+  background: var(--closed-cta-background);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: var(--closed-cta-shadow);
+}
+.reading-hit:focus-visible,
+.reading-font:focus-visible,
+.reading-toggle:focus-visible,
+.reading-link:focus-visible,
+.reading-cta:focus-visible,
+.reading-word:focus-visible,
+.reading-segment-btn:focus-visible {
+  outline: 2px solid var(--yx-focus);
+  outline-offset: 2px;
+}
+.reading-page[data-theme="high-contrast"] .reading-tag,
+.reading-page[data-theme="high-contrast"] .reading-segment-btn[aria-pressed="true"],
+.reading-page[data-theme="high-contrast"] .reading-word[data-selected="true"] {
+  color: var(--yx-surface-page);
+  background: var(--yx-text-primary);
+  border: 1px solid var(--yx-border);
+}
+.reading-page[data-motion="off"] .reading-bar-fill,
+.reading-page[data-motion="reduced"] .reading-bar-fill { transition: none; }
+@media (max-width: 359px) {
+  .reading-canvas { padding-right: 16px; padding-left: 16px; }
+  .reading-card { padding-right: 16px; padding-left: 16px; }
+}
+@media (min-width: 768px) {
+  .reading-canvas { max-width: 720px; padding-right: 32px; padding-left: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-bar-fill { transition: none; }
+}
 </style>
