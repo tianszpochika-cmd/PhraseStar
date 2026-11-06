@@ -441,6 +441,192 @@
         }
       }
     },
+    "/internal/v1/assessment/attempts/{attemptId}/binding": {
+      "post": {
+        "tags": [
+          "b10-assessment"
+        ],
+        "summary": "Match one admitted assessment item to the durable owner attempt",
+        "operationId": "matchB10AssessmentAttemptBinding",
+        "security": [
+          {
+            "B8WorkloadIdentity": []
+          }
+        ],
+        "x-contract": {
+          "task": "MB-008/MB-016",
+          "completesTask": false,
+          "owner": "assessment-service",
+          "consumer": "learning-service",
+          "access": "verified learning-service workload only",
+          "gateway": "NOT_PROJECTED",
+          "publicRoute": false,
+          "write": false,
+          "readOnly": true,
+          "runtimeStatus": "NOT_RUNTIME_VERIFIED",
+          "implementation": "CONTRACT_ONLY",
+          "answerProtection": "The caller cannot supply an answer, outcome, score, quality, tenant, or contentCode. The success body does not return answers, progress, quality, outcome, score, mistakes, mastery, or repair.",
+          "learnerClaim": "NOT_AUTHORITATIVE",
+          "ownerMatch": {
+            "schema": "assessment-service only",
+            "eventName": "assessment.item.assessed.v2",
+            "cardinality": "one durable assessment_outbox_event row",
+            "eventId": "request.eventId, assessment_outbox_event.event_id, and the stored envelope eventId are the same canonical UUID",
+            "dedupeKey": "dedupe_key and the stored envelope dedupeKey equal the path attemptId, a colon, and itemAssessmentId",
+            "identity": "aggregate_id, the stored envelope aggregateId, and payload.itemAssessmentId equal request.itemAssessmentId",
+            "attemptSessionTenantSubject": "Load b10_assessment_attempt and its b10_assessment_session for the path attemptId. tenant_id on both rows is platform. principal_id on both rows equals learnerPrincipalId. Payload attemptId, sessionId, tenantId, and principalId equal those rows.",
+            "pinColumns": {
+              "contentVersionId": "b10_assessment_session.content_version_id",
+              "contentEpoch": "b10_assessment_session.content_epoch",
+              "snapshotId": "b10_assessment_session.owner_snapshot_ref",
+              "snapshotHash": "b10_assessment_session.snapshot_hash"
+            },
+            "pinRule": "The outbox payload contentPin four fields, the request four fields, and those session columns are one exact match. Comparison does not trim or fold case. Numeric snapshot_id is not the pin snapshot.",
+            "fallback": "PROHIBITED",
+            "fallbackRule": "Do not call resolveSubstitute or the content recovery route. Do not synthesize snap_assessment_ plus snapshot_id. A null or blank owner_snapshot_ref is FALLBACK_PIN.",
+            "historyRewrite": "PROHIBITED",
+            "pinnedAt": "pinInstant of b10_assessment_session.started_at",
+            "pinSource": "b10_assessment_session.started_at",
+            "reporting": {
+              "CURRENT": "The stored b10_assessment_report.pin_json for this attempt has contentVersionId, contentEpoch, and snapshotHash equal to the session columns, and pinnedAt equal to the canonical started_at instant.",
+              "HISTORICAL": "The report row exists, pin_json is a readable receipt, and any of those four receipt fields differs. An older Instant.now stamp lands here. The receipt is not rewritten. Its snapshotId is not a binding field and is not returned.",
+              "missingOrInvalidReceipt": "No report row, or pin_json is not a readable object with those four fields, is REPORT_PIN_ABSENT."
+            }
+          },
+          "failureEcho": "PROHIBITED",
+          "failClosed": {
+            "malformedClosedRequest": "400 #/components/responses/B10BadRequest",
+            "missingOrInvalidJwt": "401 #/components/responses/B10Unauthorized",
+            "otherTokenOrCaller": "403 #/components/responses/B10Forbidden",
+            "wrongSubjectOrMissingAttempt": "404 #/components/responses/B10AttemptBindingNotOwned code ATTEMPT_NOT_OWNED indistinguishable",
+            "substitute": "409 #/components/responses/B10AttemptBindingConflict code PIN_SUBSTITUTED",
+            "missingExactItem": "409 #/components/responses/B10AttemptBindingConflict code ITEM_IDENTITY_ABSENT",
+            "reusedEvidence": "409 #/components/responses/B10AttemptBindingConflict code EVIDENCE_REUSED",
+            "mismatch": "409 #/components/responses/B10AttemptBindingConflict code PIN_MISMATCH",
+            "fallbackPin": "409 #/components/responses/B10AttemptBindingConflict code FALLBACK_PIN",
+            "missingOrInvalidReport": "409 #/components/responses/B10AttemptBindingConflict code REPORT_PIN_ABSENT",
+            "ownerUnavailable": "503 #/components/responses/ApiServiceUnavailable"
+          },
+          "errorComponents": {
+            "400": "#/components/responses/B10BadRequest",
+            "401": "#/components/responses/B10Unauthorized",
+            "403": "#/components/responses/B10Forbidden",
+            "404": "#/components/responses/B10AttemptBindingNotOwned",
+            "409": "#/components/responses/B10AttemptBindingConflict",
+            "503": "#/components/responses/ApiServiceUnavailable"
+          }
+        },
+        "x-ownership": {
+          "mode": "CONTRACT_ONLY",
+          "owner": "assessment-service",
+          "consumer": "learning-service",
+          "gatewayProjection": "PROHIBITED",
+          "publicRoute": false,
+          "learningGroupOffset": "UNCHANGED",
+          "learningGroup": "cg.learning-from-assessment.v1",
+          "currentReview": "UNCHANGED",
+          "currentReviewOperation": "completeB10LearningReview",
+          "credential": {
+            "status": "PROPOSED",
+            "registeredInIam": false,
+            "serviceClient": "learning-service",
+            "permission": "assessment:attempt-binding:read",
+            "existingServiceClients": [
+              "api-gateway",
+              "assessment-service",
+              "learner-service"
+            ]
+          },
+          "retentionGate": {
+            "status": "UNRESOLVED",
+            "store": "assessment_outbox_event",
+            "decision": "This contract does not set a TTL, compaction, or delete policy. If the one durable row is later absent, the match fails closed as ITEM_IDENTITY_ABSENT and is not rebuilt from answers, items, mistakes, item_count, the content bank, snapshot_id, or a snap_assessment_ prefix."
+          }
+        },
+        "x-authorization": {
+          "defaultDecision": "DENY",
+          "requiredPermission": "assessment:attempt-binding:read",
+          "permissionStatus": "PROPOSED",
+          "credentialRegistration": "NOT_REGISTERED",
+          "workloadClientId": "learning-service",
+          "serviceIdBinding": "The verified JWT sub equals service_id, and both equal learning-service.",
+          "tokenType": "service",
+          "algorithm": "RS256",
+          "typ": "JWT",
+          "issuer": "${IAM_JWT_ISSUER:http://127.0.0.1:18087}",
+          "audience": "${IAM_JWT_AUDIENCE:yuxuexing-api}",
+          "tenantId": "platform",
+          "roles": [],
+          "clientAuthority": "none; the body has no role, permission, tenant, contentCode, answer, outcome, score, or quality",
+          "serviceSidePepRequired": true,
+          "rejectedCallers": [
+            "missing or invalid JWT is 401",
+            "token_type=access is 403",
+            "any service_id other than learning-service, including assessment-service, learner-service, and api-gateway, is 403",
+            "a missing assessment:attempt-binding:read permission is 403",
+            "a tenant_id other than platform is 403",
+            "learner assessment.session.read and assessment.session.write do not pass"
+          ],
+          "trustedFacts": [
+            "service_id",
+            "token_type",
+            "permission",
+            "tenant_id"
+          ]
+        },
+        "x-idempotency": {
+          "required": false,
+          "strategy": "read-only-no-reservation",
+          "reservation": "NONE",
+          "replayBehavior": "No Idempotency-Key and no reservation. Every call revalidates the learning-service workload and reads the current owner rows again. Nothing is written."
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/B10AttemptId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/B10AttemptBindingMatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Closed owner match. data contains the matched identity, the four owner pin fields, canonical pinnedAt, and CURRENT or HISTORICAL reporting. It has no answer, progress, quality, outcome, or score.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B10AttemptBindingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/B10BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/B10Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/B10Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/B10AttemptBindingNotOwned"
+          },
+          "409": {
+            "$ref": "#/components/responses/B10AttemptBindingConflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/ApiServiceUnavailable"
+          }
+        }
+      }
+    },
     "/api/v1/assessment/sessions": {
       "post": {
         "tags": [
@@ -2925,6 +3111,73 @@
       },
       "B10ContentUnavailable": {
         "description": "Pinned content is unavailable and no safe recovery exists"
+      },
+      "B10AttemptBindingNotOwned": {
+        "description": "Closed JSON for a missing attempt and for an attempt that belongs to another subject. Both are ATTEMPT_NOT_OWNED and are not distinguished. code is the stable field. message, when present, is the one generic sentence below. The body is not a servlet error, not the ResponseStatusException reason, and has no raw detail, path, caller, credential, or subject hint.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "code"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "enum": [
+                    "ATTEMPT_NOT_OWNED"
+                  ]
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80,
+                  "enum": [
+                    "attempt is not available"
+                  ],
+                  "description": "Optional generic sentence from the assessment error envelope. It is not branched on, not the exception reason, and not an identifier."
+                }
+              }
+            }
+          }
+        }
+      },
+      "B10AttemptBindingConflict": {
+        "description": "Closed JSON for an owner-match conflict. code is exactly one of the six reviewed reasons. message, when present, is the one generic sentence below and does not name the reason, the caller, or a stored value. Owner unavailable remains 503 and is not one of these codes.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "code"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "enum": [
+                    "PIN_SUBSTITUTED",
+                    "ITEM_IDENTITY_ABSENT",
+                    "EVIDENCE_REUSED",
+                    "PIN_MISMATCH",
+                    "FALLBACK_PIN",
+                    "REPORT_PIN_ABSENT"
+                  ]
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80,
+                  "enum": [
+                    "owner match was rejected"
+                  ],
+                  "description": "Optional generic sentence from the assessment error envelope. It is not branched on, not the exception reason, and not an identifier."
+                }
+              }
+            }
+          }
+        }
       }
     },
     "schemas": {
@@ -7432,6 +7685,145 @@
               "FULL",
               "ZERO"
             ]
+          }
+        }
+      },
+      "B10AttemptBindingMatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Closed match key copied by learning-service from the path attempt, the learner subject, and one admitted assessment.item.assessed.v2 event. eventId is that event's canonical UUID. The four pin fields are the event contentPin. answer, outcome, score, quality, rawQuality, objectiveOutcome, guessSignal, scoreBucket, tenant, tenantId, contentCode, pinnedAt, and snapshotItemId are rejected. None of these fields is an authoritative owner fact.",
+        "required": [
+          "eventId",
+          "learnerPrincipalId",
+          "itemAssessmentId",
+          "logicalItemId",
+          "contentVersionId",
+          "contentEpoch",
+          "snapshotId",
+          "snapshotHash"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "minLength": 36,
+            "maxLength": 36,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "description": "Canonical assessment_outbox_event.event_id. The service compares it exactly to the stored row and envelope eventId. The caller does not mint a replacement id."
+          },
+          "learnerPrincipalId": {
+            "type": "string",
+            "pattern": "^(prn_[A-Za-z0-9._:-]{15,127}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$",
+            "description": "Learner subject. Same token shape as assessment.item.assessed.v2 principalId. It is matched to the stored attempt and session principal_id. It does not grant tenant, ownership, or a score."
+          },
+          "itemAssessmentId": {
+            "type": "string",
+            "pattern": "^aitm_[A-Za-z0-9._:-]{8,127}$"
+          },
+          "logicalItemId": {
+            "type": "string",
+            "pattern": "^li_[A-Za-z0-9._:-]{8,127}$"
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B10Int64Id"
+          },
+          "contentEpoch": {
+            "$ref": "#/components/schemas/B10ContentEpoch"
+          },
+          "snapshotId": {
+            "$ref": "#/components/schemas/B10SnapshotId"
+          },
+          "snapshotHash": {
+            "$ref": "#/components/schemas/B10Sha256"
+          }
+        }
+      },
+      "B10AttemptBinding": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Owner match result. pinnedAt is pinInstant of the stored session started_at. snapshotId is the matched owner_snapshot_ref. reporting classifies the stored report receipt and does not rewrite it. No answer, progress, quality, outcome, score, mistake, mastery, or repair field is present.",
+        "required": [
+          "attemptId",
+          "itemAssessmentId",
+          "logicalItemId",
+          "learnerPrincipalId",
+          "tenantId",
+          "contentVersionId",
+          "contentEpoch",
+          "snapshotId",
+          "snapshotHash",
+          "pinnedAt",
+          "pinSource",
+          "reporting",
+          "owner"
+        ],
+        "properties": {
+          "attemptId": {
+            "$ref": "#/components/schemas/B10AttemptId"
+          },
+          "itemAssessmentId": {
+            "type": "string",
+            "pattern": "^aitm_[A-Za-z0-9._:-]{8,127}$"
+          },
+          "logicalItemId": {
+            "type": "string",
+            "pattern": "^li_[A-Za-z0-9._:-]{8,127}$"
+          },
+          "learnerPrincipalId": {
+            "type": "string",
+            "pattern": "^(prn_[A-Za-z0-9._:-]{15,127}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "tenantId": {
+            "type": "string",
+            "enum": [
+              "platform"
+            ]
+          },
+          "contentVersionId": {
+            "$ref": "#/components/schemas/B10Int64Id"
+          },
+          "contentEpoch": {
+            "$ref": "#/components/schemas/B10ContentEpoch"
+          },
+          "snapshotId": {
+            "$ref": "#/components/schemas/B10SnapshotId"
+          },
+          "snapshotHash": {
+            "$ref": "#/components/schemas/B10Sha256"
+          },
+          "pinnedAt": {
+            "$ref": "#/components/schemas/B10DateTime"
+          },
+          "pinSource": {
+            "type": "string",
+            "enum": [
+              "b10_assessment_session.started_at"
+            ]
+          },
+          "reporting": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "HISTORICAL"
+            ]
+          },
+          "owner": {
+            "type": "string",
+            "enum": [
+              "assessment-service"
+            ]
+          }
+        }
+      },
+      "B10AttemptBindingResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/B10AttemptBinding"
           }
         }
       },

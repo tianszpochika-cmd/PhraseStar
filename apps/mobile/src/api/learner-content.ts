@@ -15,10 +15,13 @@ function text(value: unknown, fallback = ''): string { return typeof value === '
 function number(value: unknown, fallback = 0): number { return typeof value === 'number' && Number.isFinite(value) ? value : fallback }
 function requireStateVersion(value: unknown): number {
   const source = unwrap(value)
-  if (isRecord(source) && typeof source.stateVersion === 'number' && Number.isSafeInteger(source.stateVersion) && source.stateVersion >= 0) {
-    return source.stateVersion
+  const stateVersion = isRecord(source) ? readStateVersion(source.stateVersion) : null
+  if (stateVersion === null) throw new Error('学习设置版本暂时无法读取，请重试。')
+  // Older responses omit preferenceVersion. A present alias must equal stateVersion.
+  if (isRecord(source) && 'preferenceVersion' in source && readStateVersion(source.preferenceVersion) !== stateVersion) {
+    throw new Error('学习设置版本暂时无法读取，请重试。')
   }
-  throw new Error('学习设置版本暂时无法读取，请重试。')
+  return stateVersion
 }
 type QueryParams = string | Record<string, string | null | undefined>
 
@@ -987,7 +990,7 @@ export const mobileLearnerContentApi = {
       data.motionMode = input.motionMode ?? current.motionMode
     }
     if (Object.keys(data).length === 1) throw new Error('没有可保存的学习偏好。')
-    await mobileApiClient.request('/learner/preferences', { method: 'PATCH', data, header: { 'Idempotency-Key': input.clientEventId } })
+    await mobileApiClient.request('/learner/preferences', { method: 'PATCH', data, header: { 'Idempotency-Key': input.clientEventId, 'If-Match': String(current.stateVersion) } })
     requireSameIdentity(isCurrent)
     const result = await mobileLearnerContentApi.readAccount()
     requireSameIdentity(isCurrent)

@@ -90,7 +90,7 @@ test('account save changes only display preferences while retaining server local
   const response = (path, options) => {
     if (path === '/learner/profile') return { data: { profile: { stateVersion: 99 } } }
     if (path === '/learner/targets') return { data: { goalCode: 'ZERO_BASIS', dailyQuotaMinutes: 15 } }
-    if (path === '/learner/preferences') return { data: { stateVersion: 4, uiLocale: 'zh-CN', contentLocale: 'en-US', timezone: 'Asia/Shanghai', themeMode: 'SYSTEM', highContrast: false, motionMode: 'FULL' } }
+    if (path === '/learner/preferences') return { data: { preferenceVersion: 4, stateVersion: 4, uiLocale: 'zh-CN', contentLocale: 'en-US', timezone: 'Asia/Shanghai', themeMode: 'SYSTEM', highContrast: false, motionMode: 'FULL' } }
     return undefined
   }
   const api = load('src/api/learner-content.ts', {
@@ -115,6 +115,7 @@ test('account save changes only display preferences while retaining server local
     motionMode: 'OFF',
   })
   assert.equal(Object.hasOwn(patch.options.data, 'performanceLevel'), false)
+  assert.deepEqual(patch.options.header, { 'Idempotency-Key': 'settings-save-1', 'If-Match': '4' })
 })
 
 test('onboarding options use the canonical content locale read from persisted preferences', async () => {
@@ -164,6 +165,7 @@ test('content locale PATCH uses preference aggregate version and confirms the pe
   const result = await api.savePreferences({ contentLocale: 'zh-CN', clientEventId: 'content-locale-save' })
   const patch = calls.find(({ options }) => options.method === 'PATCH')
   assert.equal(patch.options.data.expectedStateVersion, 6)
+  assert.deepEqual(patch.options.header, { 'Idempotency-Key': 'content-locale-save', 'If-Match': '6' })
   assert.equal(patch.options.data.contentLocale, 'zh-CN')
   assert.equal(result.contentLocale, 'zh-CN')
   assert.ok(calls.filter(({ path }) => path === '/learner/preferences').length >= 3)
