@@ -1,0 +1,46 @@
+{
+  "batch": "MOBILE-FIGMA-B119-20261106",
+  "route": "MB-015",
+  "scope": "LOCAL_H5_SYNTHETIC_KEYBOARD_AND_APP_BUILD",
+  "baseCommit": "fe7093f9",
+  "source": [
+    {
+      "path": "apps/mobile/src/pages/b11-reading/b11-reading.vue",
+      "sha256": "282a1e0eb763021e0751d2b109b1d85fa8008b53d8f5b8af9413ad5dbb776e43",
+      "bytes": 42127
+    },
+    {
+      "path": "apps/mobile/tests/reading-page.test.mjs",
+      "sha256": "558a465b16c9a129a4f99a2e5f57b0ec4a6b42d2d7e0d3e0ec1894da0df6ca0f",
+      "bytes": 39738
+    }
+  ],
+  "h5": {
+    "indexSha256": "8663a64e068c0b89b891f56055c9f46ababc3486f30765fd4431ddb4a757254d",
+    "specializedKeyboardAssertions": 86,
+    "tabSequences": 4,
+    "legacyReadingBrowserAssertions": 108,
+    "localizedGeometryCases": 24,
+    "sourceTestsPassed": 677,
+    "typecheck": true,
+    "outsideNetwork": 0,
+    "businessWrites": 0
+  },
+  "app": {
+    "sourceAndSharedFilesCompared": 1000,
+    "buildFiles": 748,
+    "dedicatedUTSToolchain": true,
+    "ordinaryWorktreeBuild": "UNRESOLVED_NATIVE_PLUGIN"
+  },
+  "priorSpecializedHarness": {
+    "status": "FAIL",
+    "reason": "Tab continued from the first word",
+    "resolvedIn": "G254 real reverse navigation"
+  },
+  "remaining": [
+    "native host install",
+    "physical device and screen reader",
+    "business and deployment",
+    "route trace signoff"
+  ]
+}

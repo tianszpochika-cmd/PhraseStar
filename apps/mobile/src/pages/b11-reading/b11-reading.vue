@@ -378,6 +378,20 @@ function activatePractice(): void {
   backToPractice()
   // #endif
 }
+function activateFont(direction: -1 | 1): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  const enabled = direction < 0 ? fontPercent.value > READING_FONT_MIN_PERCENT : fontPercent.value < READING_FONT_MAX_PERCENT
+  if (!enabled) return
+  changeFont(direction)
+  // #endif
+}
+function activateSegment(translated: boolean): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  showTranslation.value = translated
+  // #endif
+}
 function focusParagraphNav(event: { preventDefault?: () => void }): void {
   // #ifdef H5
   // Hidden uni pages stay mounted. Move focus only inside this visible page root.
@@ -556,9 +570,9 @@ onBeforeUnmount(() => {
 
       <view v-else-if="shell === 'ready' && current" class="reading-ready">
         <view class="reading-tools">
-          <button type="button" class="reading-font" data-action="font-down" :aria-label="t('fontDown')" :disabled="fontPercent <= READING_FONT_MIN_PERCENT" @click="changeFont(-1)">A−</button>
+          <button type="button" class="reading-font" data-action="font-down" :aria-label="t('fontDown')" :tabindex="h5TabIndex(fontPercent > READING_FONT_MIN_PERCENT)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(fontPercent > READING_FONT_MIN_PERCENT)" :disabled="fontPercent <= READING_FONT_MIN_PERCENT" @click="changeFont(-1)" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateFont(-1)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateFont(-1)">A−</button>
           <text class="reading-font-value">{{ fontPercent }}%</text>
-          <button type="button" class="reading-font" data-action="font-up" :aria-label="t('fontUp')" :disabled="fontPercent >= READING_FONT_MAX_PERCENT" @click="changeFont(1)">A＋</button>
+          <button type="button" class="reading-font" data-action="font-up" :aria-label="t('fontUp')" :tabindex="h5TabIndex(fontPercent < READING_FONT_MAX_PERCENT)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(fontPercent < READING_FONT_MAX_PERCENT)" :disabled="fontPercent >= READING_FONT_MAX_PERCENT" @click="changeFont(1)" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateFont(1)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateFont(1)">A＋</button>
           <view class="reading-tools-gap" aria-hidden="true"></view>
           <button v-if="!graded" type="button" class="reading-toggle" data-action="translation" :aria-pressed="showTranslation ? 'true' : 'false'" :aria-label="showTranslation ? t('translationHide') : t('translationShow')" @click="showTranslation = !showTranslation">
             <text>{{ showTranslation ? t('translationHide') : t('translationShow') }}</text>
@@ -579,8 +593,8 @@ onBeforeUnmount(() => {
             <text class="reading-meta-text">{{ t('localPercent', { percent }) }}</text>
           </view>
           <view v-if="graded" class="reading-segment" role="group" :aria-label="t('translationShow')">
-            <button type="button" class="reading-segment-btn" data-action="original" :aria-pressed="showTranslation ? 'false' : 'true'" @click="showTranslation = false">{{ t('original') }}</button>
-            <button type="button" class="reading-segment-btn" data-action="bilingual" :aria-pressed="showTranslation ? 'true' : 'false'" @click="showTranslation = true">{{ t('bilingual') }}</button>
+            <button type="button" class="reading-segment-btn" data-action="original" :aria-pressed="showTranslation ? 'false' : 'true'" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="showTranslation = false" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateSegment(false)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateSegment(false)">{{ t('original') }}</button>
+            <button type="button" class="reading-segment-btn" data-action="bilingual" :aria-pressed="showTranslation ? 'true' : 'false'" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="showTranslation = true" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateSegment(true)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateSegment(true)">{{ t('bilingual') }}</button>
           </view>
           <!-- #ifdef H5 -->
           <button type="button" class="reading-word-bypass" tabindex="0" role="button" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="focusParagraphNav" @keydown.space.stop.prevent @keyup.space.stop.prevent="focusParagraphNav">{{ t('skipWords') }}</button>

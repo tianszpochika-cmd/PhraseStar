@@ -5928,5 +5928,16 @@
     ],
     "review": "reviews/INTEGRATION-B118-READING-ARTICLE-BINDING.md",
     "evidence": "evidence/ROOT-B118-READING-ARTICLE-BINDING-20261106.json"
+  },
+  "integration_b119_graded_reading_tools": {
+    "status": "LOCAL_H5_KEYBOARD_VERIFIED",
+    "scope": [
+      "MB-015"
+    ],
+    "h5_keyboard_assertions": 86,
+    "mobile_tests_passed": 677,
+    "app_build_files": 748,
+    "review": "reviews/INTEGRATION-B119-GRADED-READING-TOOLS.md",
+    "evidence": "evidence/ROOT-B119-GRADED-READING-TOOLS-20261106.json"
   }
 }
