@@ -1275,7 +1275,7 @@ export type B9ContentItemDefinition = { itemCode: string; itemType: B9ContentIte
 /**
  * Generated from the contract source.
  */
-export type B9ContentDraftInput = { contentType: B9ContentType; title: string; summary?: string; contentLocale: B9Locale; targetLevel: "A1" | "A2" | "B1" | "B2" | "C1" | "C2"; sourceCode: string; licenseCode: string; permittedChannels?: readonly [string] | readonly [string, string] | readonly [string, string, string] | readonly [string, string, string, string] | readonly [string, string, string, string, string] | readonly [string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string]; authorizationEvidenceRef?: string; allowsLearning?: boolean; contentHash: string; items: readonly [B9ContentItemDefinition, ...Array<B9ContentItemDefinition>]; gradableQuestions?: readonly [B9GradableQuestionInput, ...Array<B9GradableQuestionInput>]; };
+export type B9ContentDraftInput = { contentType: B9ContentType; title: string; summary?: string; contentLocale: B9Locale; targetLevel: "A1" | "A2" | "B1" | "B2" | "C1" | "C2"; sourceCode: string; licenseCode: string; permittedChannels?: readonly [string] | readonly [string, string] | readonly [string, string, string] | readonly [string, string, string, string] | readonly [string, string, string, string, string] | readonly [string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] | readonly [string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string]; authorizationEvidenceRef?: string; allowsLearning?: boolean; contentHash: string; items: readonly [B9ContentItemDefinition, ...Array<B9ContentItemDefinition>]; gradableQuestions?: readonly [B9GradableQuestionInput, ...Array<B9GradableQuestionInput>]; readingArticle?: B9ReadingArticleAuthoring; };
 
 /**
  * 命令只表达意图和资源版本；actor、tenant、owner、role、permission、reviewer 和版权事实均由服务端从已验证上下文与内容记录派生。
@@ -4127,6 +4127,46 @@ export type B10AssessmentContentScoreRequest = { contentCode: B10ContentCode; it
  */
 export type B10AssessmentContentScore = { itemId: B10SafePositiveItemId; snapshotId: B10SnapshotId; ruleDigest: B10Sha256; outcome: "FULL" | "ZERO"; };
 
+/**
+ * 阅读文章的一块作者输入。只含 contentLocale 下的纯文本，以及可选的单条对照译文。blockId、blockIndex、token 和分支由服务端派生或不接收。
+ */
+export type B9ReadingArticleBlockInput = { text: string; translation?: string; };
+
+/**
+ * 可选的管理端输入，只随既有 submitB9ContentCommand 的 CREATE_DRAFT 或 SAVE_DRAFT 中的 content 提交。省略表示新版本没有阅读文章；必填 items 与可选 gradableQuestions 保持原语义，不得从 items、title 或散落的 articleId/blocks 推断本文。版本 payload 只应白名单 summary、contentLocale、targetLevel、items、gradableQuestions 和本对象，因此未命名的 articleId 或 blocks 不会留下。出现时成为该 contentVersionId 的不可变 payload 字节；SAVE_DRAFT 只追加新版本。批量导入不接收本字段。客户端只提交 articleId 与 blocks。title 复制必填草稿 title，cefrLevel 复制必填 targetLevel，wordCount 由块文本按单个空格连接再按单个空格拆分得到，与既有阅读种子的 wordCount 算法相同。blockId 为 block- 加从 1 起的序号，blockIndex 为从 0 起的数组下标。contentVersionId 由所分配版本写入体验行，并写入投影 payload 以便既有版本一致性检查。不接收 estimatedMinutes、rightsStatus、practiceRef、token、分支、答案、规则、演员或租户；学习者解析对缺省 estimatedMinutes 使用 5，对缺省 rightsStatus 使用 AUTHORIZED。articleId 必须是与同内容 gradableQuestions.itemId 都不同的安全整数，且不得为保留旧键 3501 或 3950，也不得落入 266001 至 266010。同内容的 itemId 也不得取这些保留值。命令 contentCode 精确等于 p1.placement.v1，或内容标识精确等于 p1-placement-bank-v1 时必须拒绝。本对象不规定可判分题的道数，也不进入学习者、公开、评估快照或管理端响应。
+ */
+export type B9ReadingArticleAuthoring = { articleId: number; blocks: readonly [B9ReadingArticleBlockInput, ...Array<B9ReadingArticleBlockInput>]; };
+
+/**
+ * 发布绑定只提交当前所有者版本的身份和 CAS。不接收文章、题目、答案、演员、租户、角色或权限。服务端只读取该版本已经冻结的 payload。
+ */
+export type B9ReadingBindingRequest = { contentCode: B9ContentCode; contentVersionId: B9ContentVersionId; expectedHash: string; expectedStateVersion: number; };
+
+/**
+ * 内容所有者回执里的答题坐标。字段与既有 B3 阅读读取写入的 practiceRef 相同，但不引用其他所有者的 schema。questionItemId 是文章绑定行的 question_item_id，为冻结 gradableQuestions 第一个 itemId 的十进制文本，绝不是 articleId。不含题干、选项或答案。
+ */
+export type B9ReadingBindingPracticeRef = { contentCode: B9ContentCode; contentVersionId: B9ContentVersionId; questionItemId: string; };
+
+/**
+ * 一次内容所有者事务的回执。标识来自冻结版本，不回显文章正文、题干、选项或答案。首次提交返回 replayed false，存储回执也保持 false。同一已授权发布者、同一幂等键和同一请求摘要的重放不改存储回执、体验行、绑定行或 payload 摘要；返回体只有 replayed 从存储的 false 变为 true，其余字段与存储回执相同。
+ */
+export type B9ReadingBindingReceipt = { contentCode: B9ContentCode; contentVersionId: B9ContentVersionId; payloadHash: string; stateVersion: B9StateVersion; articleId: number; articleQuestionItemId: string; questionItemIds: readonly [string, ...Array<string>]; practiceRef: B9ReadingBindingPracticeRef; articleExperienceId: string; questionExperienceIds: readonly [string, ...Array<string>]; bindingStatus: "ACTIVE"; replayed: boolean; };
+
+/**
+ * Generated from the contract source.
+ */
+export type B9ReadingBindingResponse = ApiSuccessEnvelope & { data: B9ReadingBindingReceipt; };
+
+/**
+ * 本操作专用的封闭错误。不复用或扩展 ErrorCode。message 不得回显文章正文、题干、选项、答案、演员或租户。
+ */
+export type B9ReadingBindingError = { errorCode: "READING_BINDING_VALIDATION" | "READING_BINDING_AUTH_REQUIRED" | "READING_BINDING_PUBLISH_PERMISSION_REQUIRED" | "READING_BINDING_PUBLISHER_MISMATCH" | "READING_BINDING_ACTORS_INVALID" | "READING_BINDING_RIGHTS_DENIED" | "READING_BINDING_CAS_CONFLICT" | "READING_BINDING_IDENTITY_MISMATCH" | "READING_BINDING_IDEMPOTENCY_CONFLICT" | "READING_BINDING_ARTICLE_REQUIRED" | "READING_BINDING_QUESTIONS_REQUIRED" | "READING_BINDING_RESERVED_KEY" | "READING_BINDING_CROSS_OWNER_KEY" | "READING_BINDING_NOT_PUBLISHED"; message: string; retryable: boolean; };
+
+/**
+ * Generated from the contract source.
+ */
+export type B9ReadingBindingErrorEnvelope = { error: B9ReadingBindingError; meta: ApiResponseMeta; };
+
 export interface CanonicalIdRegistry {
   userId: CanonicalInt64Id;
   contentVersionId: CanonicalInt64Id;
@@ -4618,6 +4658,7 @@ export interface ApiOperationRegistry {
   retestB10PlacementSession: { method: "POST"; path: "/api/v1/assessment/placement/sessions/{sessionId}/retest"; request: never; response: ApiSuccessEnvelope & { data: B10PlacementSession; }; idempotent: true };
   replanB10LearningPlan: { method: "POST"; path: "/api/v1/learning/plans:replan"; request: B10PlanReplanRequest; response: ApiSuccessEnvelope & { data: B10PlanReplanResult; }; idempotent: true };
   scoreB10AssessmentContentSnapshot: { method: "POST"; path: "/internal/v1/content/assessment-snapshots/{contentVersionId}/score"; request: B10AssessmentContentScoreRequest; response: B10AssessmentContentScore; idempotent: true };
+  bindB9PublishedReading: { method: "POST"; path: "/internal/v1/content/admin/reading-bindings"; request: B9ReadingBindingRequest; response: B9ReadingBindingResponse; idempotent: true };
 }
 
 export type ApiOperationId = keyof ApiOperationRegistry;

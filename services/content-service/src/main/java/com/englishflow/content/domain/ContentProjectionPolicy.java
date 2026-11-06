@@ -42,7 +42,7 @@ public final class ContentProjectionPolicy {
             return new PublicContentProjection(
                     content.contentId(), version.versionId(), content.kind(), content.title(), content.locale(),
                     content.targetLevel(), content.goalCode(), audience,
-                    GradableQuestions.omitPrivateField(version.payload().raw()),
+                    ReadingArticleAuthoring.omitPrivateField(version.payload().raw()),
                     version.contentHash(), now);
         }
         if (version.status() != ContentVersionStatus.PUBLISHED
@@ -86,7 +86,7 @@ public final class ContentProjectionPolicy {
             throw ContentOperationException.forbidden(
                     "CONTENT_RIGHTS_NOT_READY", "content copyright rights do not allow assessment");
         }
-        Map<String, Object> stored = GradableQuestions.omitPrivateField(version.payload().raw());
+        Map<String, Object> stored = ReadingArticleAuthoring.omitPrivateField(version.payload().raw());
         Map<String, Object> answerRules = findAnswerRules(stored);
         if (answerRules.isEmpty()) {
             throw ContentOperationException.badRequest(
@@ -113,7 +113,10 @@ public final class ContentProjectionPolicy {
     private static Map<String, Object> sanitize(Map<String, Object> source, ContentAudience audience) {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         source.forEach((key, value) -> {
-            if (isAnswerRuleKey(key) || GradableQuestions.isWithheld(key)) {
+            // The owner article stays out of public and learner views until binding.
+            // Nested values under declared keys stay, including legacy readingArticle data.
+            if (isAnswerRuleKey(key) || GradableQuestions.isWithheld(key)
+                    || ReadingArticleAuthoring.isWithheld(key)) {
                 return;
             }
             if (!PUBLIC_KEYS.contains(key) && !(audience == ContentAudience.LEARNER && LEARNER_ONLY_KEYS.contains(key))) {
