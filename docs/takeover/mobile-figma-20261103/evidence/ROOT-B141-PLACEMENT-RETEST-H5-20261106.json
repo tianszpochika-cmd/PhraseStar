@@ -1,0 +1,48 @@
+{
+  "batch": "B141",
+  "at": "2026-11-06T08:44:27.212091+00:00",
+  "classification": "LOCAL_REAL_H5_PLACEMENT_RETEST_PASS",
+  "worker": "G372",
+  "h5IndexSha256": "6416f7f58a19b9cf7821288e5ada237f236009ec04f9b19b8e0bdc02d9433519",
+  "runtimeReceiptSha256": "f2c78aae6d1749fbebe5172122ab5def207131a15809627358bf4e8140b6fdd1",
+  "ownerDbFactsSha256": "62b34dfe7c44641ca3b36143867bf454b9bdecf3b23e6767a658d901444d8d36",
+  "cleanupReceiptSha256": "eb49e4a68513b2ad726656d1cf6c4988e25f65d56311d604215a82260098e919",
+  "iamPassed": 184,
+  "local": {
+    "responseCount": 10,
+    "reportVisible": true,
+    "planEnsureCount": 1,
+    "planEnsureStatus": 200,
+    "retestWrites": 1,
+    "retestStatus": 201,
+    "retestSessionNew": true,
+    "retestFirstItem": true,
+    "retestQuestionVisible": true,
+    "retestSubmitStillDisabled": true,
+    "retestNoChoice": true,
+    "skipWrites": 0,
+    "extraContinuedWrites": 0,
+    "syntheticResponses": 0
+  },
+  "db": {
+    "completedSessions": 1,
+    "newSessions": 1,
+    "oldResponses": 10,
+    "newResponses": 0,
+    "oldCheckpoints": 10,
+    "newCheckpoints": 0,
+    "oldReports": 1,
+    "newReports": 0,
+    "retestIdempotencyRows": 1
+  },
+  "dec04": "NOT_ASSERTED",
+  "cleanup": true,
+  "pending": [
+    "placement retest same-key replay",
+    "skip decision",
+    "DEC-04",
+    "native device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
