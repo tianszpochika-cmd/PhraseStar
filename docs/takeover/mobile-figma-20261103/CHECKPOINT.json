@@ -3722,7 +3722,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T09:20:05.308581+00:00",
+  "updated_at": "2026-11-06T09:21:46.116652+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6178,5 +6178,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B145-IAM-REJECTED-ELIGIBILITY-WIRE.md",
     "evidence": "evidence/ROOT-B145-IAM-REJECTED-ELIGIBILITY-WIRE-20261106.json"
+  },
+  "integration_batch_146_world_default_owner_wire": {
+    "status": "LOCAL_REAL_GAMIFICATION_DEFAULT_OWNER_WIRE_PASS",
+    "page": "MB-018",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B146-WORLD-DEFAULT-OWNER-WIRE.md",
+    "evidence": "evidence/ROOT-B146-WORLD-DEFAULT-OWNER-WIRE-20261106.json"
   }
 }

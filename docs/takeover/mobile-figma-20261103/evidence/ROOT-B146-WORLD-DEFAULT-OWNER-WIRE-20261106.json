@@ -1,0 +1,60 @@
+{
+  "batch": "B146",
+  "at": "2026-11-06T09:21:46.116652+00:00",
+  "classification": "LOCAL_REAL_GAMIFICATION_DEFAULT_OWNER_WIRE_PASS",
+  "worker": "G382",
+  "runtimeSha256": "491b97250fdb1e8232e926c7f872c040c635dcf13291152faca9c67c4840db36",
+  "candidateJarSha256": "42c97423e9ea1d2dbe917530730637b251953325368fa0cc53bd59e89261aaca",
+  "actorSetup": {
+    "adultGate": 1,
+    "consent": 3,
+    "login": 1,
+    "principal": 1,
+    "register": 1
+  },
+  "reads": 5,
+  "classes": {
+    "quests": "IMPLEMENTED_EMPTY_LIST",
+    "rewards": "EMPTY_GRANT_LIST",
+    "season": "DEFAULT_CALENDAR_SHELL",
+    "streak": "DEFAULT_ZERO",
+    "summary": "DEFAULT_PROJECTION"
+  },
+  "businessWrites": 0,
+  "tableCountsBefore": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "tableCountsAfter": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "h5": false,
+  "cleanup": true,
+  "pending": [
+    "H5 default render",
+    "nonempty owner display",
+    "reward actions",
+    "device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}

@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [成长世界接口 B146](reviews/INTEGRATION-B146-WORLD-DEFAULT-OWNER-WIRE.md) 五项本机真实默认读取与零业务写入。
 - [成人资格 B145](reviews/INTEGRATION-B145-IAM-REJECTED-ELIGIBILITY-WIRE.md) 真实 IAM 拒绝、本人身份与权限读回。
 - [阅读评分 B144](reviews/INTEGRATION-B144-READING-PROTECTED-SCORE-REPLAY.md) 本机真实受保护评分、重试和单条作答读回。
 - [权益 H5 B143](reviews/INTEGRATION-B143-COMMERCE-H5-EMPTY.md) 真实三项读取、关闭入口和零业务写入。
