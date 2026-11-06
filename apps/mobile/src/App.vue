@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onLaunch } from '@dcloudio/uni-app'
+import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { bootstrapMobileAuth, currentMobilePagePath, installMobileNavigationGuard, normalizeMobilePagePath } from './auth/navigation'
 import { safeMobileReturnTo } from './auth/gateway-auth'
 import { useSessionStore } from './stores/session'
 import { mobileExperienceVariables } from '@englishflow/design-tokens/mobile'
-import { hydrateMobileExperienceRuntime } from './platform/experience'
+import { disposeMobilePerformanceRuntime, hydrateMobileExperienceRuntime, startMobilePerformanceRuntime, stopMobilePerformanceRuntime } from './platform/experience'
 import { mobileI18nAdapter, mobileThemeController } from './platform/v2-foundation'
 import { applyMobilePublicAuthHandoff, mobilePublicAuthQuery, resolveMobilePublicAuthHandoff } from './platform/public-auth-handoff.mjs'
 
@@ -53,9 +53,14 @@ onLaunch((options) => {
 })
 
 onBeforeUnmount(() => {
+  disposeMobilePerformanceRuntime()
   unsubscribeTheme()
   unsubscribeDocumentLocale()
 })
+
+// App foreground is onShow after the one-time onLaunch. onHide leaves that foreground.
+onShow(() => { startMobilePerformanceRuntime() })
+onHide(() => { stopMobilePerformanceRuntime() })
 </script>
 
 <template>
