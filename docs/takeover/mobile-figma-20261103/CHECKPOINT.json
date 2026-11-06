@@ -5939,5 +5939,14 @@
     "app_build_files": 748,
     "review": "reviews/INTEGRATION-B119-GRADED-READING-TOOLS.md",
     "evidence": "evidence/ROOT-B119-GRADED-READING-TOOLS-20261106.json"
+  },
+  "integration_b120_assessment_owner_binding": {
+    "status": "LOCAL_OWNER_HTTP_VERIFIED",
+    "scope": [
+      "MB-013",
+      "MB-016"
+    ],
+    "review": "reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md",
+    "evidence": "evidence/ROOT-B120-ASSESSMENT-OWNER-BINDING-20261106.json"
   }
 }

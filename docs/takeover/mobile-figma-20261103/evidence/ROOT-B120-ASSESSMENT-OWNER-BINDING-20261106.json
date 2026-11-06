@@ -1,0 +1,133 @@
+{
+  "batch": "MOBILE-FIGMA-B120-20261106",
+  "source": [
+    {
+      "path": "packages/api-client/src/generated/index.ts",
+      "sha256": "f02471ae59a93380646edc32557d6cd853fce6bd036c0f53a2dd23dedae5a6a6",
+      "bytes": 106050
+    },
+    {
+      "path": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+      "sha256": "9597a6d027806faabc1f0e14aa1a6724ebb5680d06e4dd50a5ee9fe0bfaad59f",
+      "bytes": 239687
+    },
+    {
+      "path": "packages/contracts/generated/openapi.ts",
+      "sha256": "39a3bebbca48c4e6e2d524a15a2145beb9dbaa84385a92fafb44996e54e3ee58",
+      "bytes": 379558
+    },
+    {
+      "path": "packages/contracts/openapi/v1/openapi.json",
+      "sha256": "986dcafee3614bb0ba2c70f181797d55df628949ad937bc72b5fb1fde64ec0ee",
+      "bytes": 2645300
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/security/AssessmentSecurityConfiguration.java",
+      "sha256": "7a1ed9cafcf248d9e81ec12150b47ad43635cd55bfff87b16c4f375a6d8380a0",
+      "bytes": 15930
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentAttemptBindingController.java",
+      "sha256": "d8bb1c6195a7589c38d052a8bcdd094201892fade1b8aead294725adfa7f5284",
+      "bytes": 32226
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/security/AttemptBindingWorkloadPepTest.java",
+      "sha256": "46b8cd21d7089c601828fc6cc6bea183e3b62972f2edc3daa7b5b3880cf16b07",
+      "bytes": 16803
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10AssessmentAttemptBindingControllerTest.java",
+      "sha256": "469e75e9aa0c8bbcb69887481d4f244c3bad8b37fc73a03034ff370366e398c5",
+      "bytes": 40260
+    },
+    {
+      "path": "services/iam-service/src/main/resources/application.yaml",
+      "sha256": "e84ad7de91f6c3c4a7fdfd849820dd4e8c5ffa188324a0a4b038a88cd4ea002b",
+      "bytes": 6333
+    },
+    {
+      "path": "services/iam-service/src/test/java/com/englishflow/iam/auth/ServiceTokenServiceTest.java",
+      "sha256": "dc63c8fa47a2e9acbeab53388b853c4ec61eb603cbba82067020e3186426b6e8",
+      "bytes": 19338
+    },
+    {
+      "path": "tests/b10/b10-contract-boundaries.test.mjs",
+      "sha256": "cd6c28924877dbf6ce77ffc6355790d5c3be07b5cc3cf7e38e9f67d496278b36",
+      "bytes": 29138
+    }
+  ],
+  "integratedJarSha256": {
+    "iam": "4a3e3e5869558dc075d9b8a898a3bba23cc7b7935ea490e019e8d5d8e0790edf",
+    "assessment": "9fb764af0373dc4faee8fa61a1ab78eb202d20102d04b0b1503b3a316a2a2984"
+  },
+  "packages": {
+    "iamPassed": 136,
+    "iamSkipped": 23,
+    "assessmentPassed": 186,
+    "assessmentSkipped": 7
+  },
+  "openapi": {
+    "operations": 474,
+    "schemas": 836,
+    "breakingChanges": 0
+  },
+  "readbackChecks": 17,
+  "ownerHook": {
+    "countsStable": true,
+    "fingerprintStable": true,
+    "gateway": false,
+    "match": {
+      "pinMatch": true,
+      "reporting": "CURRENT",
+      "status": 200,
+      "timeMatch": true
+    },
+    "noToken": {
+      "code": "UNAUTHENTICATED",
+      "status": 401
+    },
+    "ok": true,
+    "reason": "owner-read-closed",
+    "user": {
+      "code": "FORBIDDEN",
+      "status": 403
+    },
+    "writes": 0,
+    "wrongPin": {
+      "code": "PIN_MISMATCH",
+      "status": 409
+    },
+    "wrongService": {
+      "code": "FORBIDDEN",
+      "status": 403
+    },
+    "wrongSubject": {
+      "code": "ATTEMPT_NOT_OWNED",
+      "status": 404
+    }
+  },
+  "cleanup": {
+    "databaseReleased": true,
+    "portsAfter": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18091:free",
+      "18183:free"
+    ]
+  },
+  "remaining": [
+    "Learning consumer",
+    "progress and repair",
+    "devices and deployment"
+  ],
+  "baseCommit": "ba75ca0e",
+  "status": "LOCAL_OWNER_HTTP_VERIFIED",
+  "routes": [
+    "MB-013",
+    "MB-016"
+  ]
+}
