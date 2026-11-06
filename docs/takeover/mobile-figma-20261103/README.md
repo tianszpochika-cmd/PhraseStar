@@ -1,6 +1,6 @@
 # Mobile Figma 改造监督入口（2026-11-03）
 
-2026-11-05 用户明确恢复。六棵源码与暂停快照逐文件吻合，Root 原有 103 个待验路径按卡处理。现用本机 Grok CLI 优先与 DSH CLI 并行。DSH 新任务已成功运行，2026-11-04 的额度停止记录与[暂停收口](PAUSE-20261104.md)保留为历史。当前以 [CHECKPOINT](CHECKPOINT.json) 为准。
+2026-11-06 已按用户要求暂停分发。已核验进度和资源回执见[本次安全收口](PAUSE-20261106.md)及 [CHECKPOINT](CHECKPOINT.json)。2026-11-04 的[暂停记录](PAUSE-20261104.md)保留为历史。
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。
 

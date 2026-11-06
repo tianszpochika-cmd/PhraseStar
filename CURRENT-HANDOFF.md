@@ -13,8 +13,8 @@ App 构建使用同版 App-Plus 与 UTS 工具链。B92 已核对 33 条路由�
 
 过期交接记录已从当前工作树清理；需要追溯时可查阅 Git 历史。签收账和验收证据保留在原位置。
 
-## 移动端集成工作点（2026-11-06）
+## 移动端安全收口（2026-11-06）
 
-移动端在独立本地分支 `codex/mobile-figma-integration-20261103` 继续。工作点 `5d772b11` 包含 B135–B143 及合并后 H5 的回归。33 条进入本地 UI 候选，逐页状态均为 `TRACE_PENDING`。已实测定级重测、设置外观保存与恢复、发布阅读练习创建与读回、客服及权益空态。课程书架已通过真实接口，成长世界已通过 MySQL 只读凭据。 [监督账](docs/takeover/mobile-figma-20261103/README.md) · [逐页追溯](docs/takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md)
+已按用户要求暂停。独立本地分支 `codex/mobile-figma-integration-20261103` 的已审核证据停在 `230d19ec`，覆盖 B146。33 条路由进入本地 UI 候选，逐页均为 `TRACE_PENDING`。分发、资源和六个作业的精确停点见[暂停交接](docs/takeover/mobile-figma-20261103/PAUSE-20261106.md)。 [状态](docs/STATUS.md) · [逐页追溯](docs/takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md)
 
-Grok 承接新任务，DSH 已返回本周额度耗尽。阅读评分与同键重试、批量设备退出、书架和成长世界的页面读回继续验证。Figma 正式冻结、三份正式协议、DEC-04、部署与实机读屏各有独立门槛。
+恢复须由用户明确提出。优先核对已准备的书架 H5、设备批量退出、定级同键重试、阅读反馈和成长世界 H5。Figma 正式冻结、正式协议、DEC-04、部署与原生验收分开跟踪。

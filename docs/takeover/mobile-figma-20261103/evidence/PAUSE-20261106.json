@@ -1,0 +1,212 @@
+{
+  "status": "USER_PAUSE_NOT_QUOTA_STOP",
+  "at": "2026-11-06T09:29:08.897713+00:00",
+  "branch": "codex/mobile-figma-integration-20261103",
+  "acceptedEvidenceHead": "230d19ece835018eefdce1bbad52838a40abd912",
+  "productStatus": "IN_PROGRESS_NOT_ACCEPTED",
+  "localUiCandidates": 33,
+  "routeTracePending": 33,
+  "formalRouteSignoffs": 0,
+  "sourceFixture": "SYNTHETIC_TEST_ONLY",
+  "pauseCounts": {
+    "terminatedOwnedGrok": 4,
+    "naturalGrokExitsDuringClose": 2,
+    "activeJobsAfter": 0
+  },
+  "quota": {
+    "DSH": "CODING_PLAN_EXHAUSTED_402",
+    "GROK": "NO_WEEKLY_STOP_OBSERVED"
+  },
+  "resources": {
+    "portsReleased": [
+      13306,
+      18070,
+      18087,
+      18088,
+      18089,
+      18090,
+      18091,
+      18094,
+      18096,
+      18097,
+      18183,
+      19092
+    ],
+    "ownedProcessesRemaining": 0,
+    "ownedContainersRemaining": 0,
+    "ownedNetworksRemaining": 0,
+    "otherRunningDockerContainersObserved": 50,
+    "volumesDeleted": 0
+  },
+  "localProofs": [
+    "B139",
+    "B140",
+    "B141",
+    "B142",
+    "B143",
+    "B144",
+    "B145",
+    "B146"
+  ],
+  "workerCheckpoints": [
+    {
+      "id": "391",
+      "state": "exited",
+      "exitCode": 143,
+      "stopKind": "USER_TERM",
+      "session": null,
+      "files": [
+        {
+          "file": "full-browser-owner.mjs",
+          "bytes": 15582,
+          "sha256": "4a11b91f8df9f8d2e2afdd4661a8eb12927d0302109eb1c3cf11cc1d4be8e233"
+        },
+        {
+          "file": "placement-retest-same-key-replay.cjs",
+          "bytes": 11004,
+          "sha256": "7e85d2061300f265fd906f2819564849ef9f7bc84535e3569be5df7d83a9c56f"
+        }
+      ],
+      "accepted": false,
+      "remaining": "Partial retest replay adapter, inspect before reuse"
+    },
+    {
+      "id": "392",
+      "state": "exited",
+      "exitCode": 0,
+      "stopKind": "NATURAL_EXIT",
+      "session": null,
+      "files": [
+        {
+          "file": "REPORT.md",
+          "bytes": 3962,
+          "sha256": "ade7231ade13bf06ed246458d36f3e920d6c4b3f1f3ee5dda8c0ecec9733fb6f"
+        },
+        {
+          "file": "composition-receipt.json",
+          "bytes": 2090,
+          "sha256": "c757c6dab1c4c37dc9de7338c0362d255358449067a2a1ff3b48e34bd9768d8f"
+        },
+        {
+          "file": "learn-catalog-runtime.sh",
+          "bytes": 43206,
+          "sha256": "f511438536d1c7a3c2d2e90abec692a0ebcd533dafcc38489165487c7ab498c5"
+        },
+        {
+          "file": "lease-tail.mjs",
+          "bytes": 13096,
+          "sha256": "3d68ccbdaf6b006b9ff7af94d03556dadf8e8bd1774900a0bd9f600116b4f8dd"
+        },
+        {
+          "file": "pinned-static-nonce.mjs",
+          "bytes": 10484,
+          "sha256": "194792ec979744f9e34f2cf6d9f6c3f85a34dbd24bc997f4ee730c5af6565215"
+        },
+        {
+          "file": "shelf-empty-observer.mjs",
+          "bytes": 36081,
+          "sha256": "545d37b610c11018540b7b9fc09181a49a6e02ea71c27c727a8df4764349e7bf"
+        }
+      ],
+      "accepted": false,
+      "remaining": "Shelf H5 lease composed, preflight and browser not run"
+    },
+    {
+      "id": "394",
+      "state": "exited",
+      "exitCode": 143,
+      "stopKind": "USER_TERM",
+      "session": null,
+      "files": [
+        {
+          "file": "REPORT.md",
+          "bytes": 5597,
+          "sha256": "2694dc402723ef4c75b196b5de0797e2dd06e34423247c5a2591138f61a88bc7"
+        },
+        {
+          "file": "device-others-owner.cjs",
+          "bytes": 43416,
+          "sha256": "704943be048fda4933327ca91e6870b08eb8fa70557ff3d0908c0591aa4ba6af"
+        },
+        {
+          "file": "device-others-runtime.sh",
+          "bytes": 52504,
+          "sha256": "1b8e747a0ee3b86276c6c96a2d94c9498bc8ab3ef03f3e3473ca567caa4bd595"
+        },
+        {
+          "file": "output.json",
+          "bytes": 3684,
+          "sha256": "1e98c68d2ab3bc8beb62c8c3a836f4af5d31e10bf650be42829051a7f17a71ea"
+        },
+        {
+          "file": "pin.json",
+          "bytes": 667,
+          "sha256": "3fa9bbfdb9c98a91c3581d7ef722cc7d40081915ec37991fa4c894c67ded5a5a"
+        },
+        {
+          "file": "runner-394.cjs",
+          "bytes": 11557,
+          "sha256": "f26ec0c39f61381623fdfb021e14f606ead68d2f7a0b02bf5e1dc6587b860002"
+        }
+      ],
+      "accepted": false,
+      "remaining": "Partial uni-app bulk device observer, live repeat not run"
+    },
+    {
+      "id": "397",
+      "state": "exited",
+      "exitCode": 0,
+      "stopKind": "NATURAL_EXIT",
+      "session": null,
+      "files": [
+        {
+          "file": "REPORT.md",
+          "bytes": 7657,
+          "sha256": "55c6df9bf41a92c78354f0f6cea134d2ade97f95276e53ac05c36ff30e11448b"
+        }
+      ],
+      "accepted": false,
+      "remaining": "Home-return dependency report, H5 not run"
+    },
+    {
+      "id": "398",
+      "state": "exited",
+      "exitCode": 143,
+      "stopKind": "USER_TERM",
+      "session": null,
+      "files": [],
+      "accepted": false,
+      "remaining": "World H5 default render authoring stopped, no runnable artifact"
+    },
+    {
+      "id": "399",
+      "state": "exited",
+      "exitCode": 143,
+      "stopKind": "USER_TERM",
+      "session": null,
+      "files": [
+        {
+          "file": "reading-live-hook.mjs",
+          "bytes": 13926,
+          "sha256": "b2260bb649fd8d6ab0c3cdf7e82ccdec10edf27453670c205612bf5b9ee8b5e8"
+        },
+        {
+          "file": "reading-practice-h5.cjs",
+          "bytes": 14158,
+          "sha256": "fa504d284cbcd8fe9a56c9f32cf0c1d5c871b53dc288a2f60a858c557b3ac0a1"
+        },
+        {
+          "file": "run-reading-owner.py",
+          "bytes": 11773,
+          "sha256": "70d2cb1c92afc5b64fd913949f6fc6eea6ad3ab4dbe5c3387b54190558f7e55c"
+        }
+      ],
+      "accepted": false,
+      "remaining": "Partial real H5 reading feedback observer, not executed"
+    }
+  ],
+  "supervisorCheckpointSha256": "cd0c91e30854337630f914c546368b0ce11a8f9f3fcf25548cdefac61a37c829",
+  "remotePushPerformed": false,
+  "deploymentPerformed": false,
+  "resumeRequiresUser": true
+}
