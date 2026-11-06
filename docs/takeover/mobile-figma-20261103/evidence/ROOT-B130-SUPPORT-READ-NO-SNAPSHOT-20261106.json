@@ -1,0 +1,104 @@
+{
+  "batch": "B130",
+  "root_run": "G324",
+  "source_receipt_sha256": "fafb67a78792030db64b3218939b7b1465ea71351f8bb389c82e3938bff7c179",
+  "integration_head": "e00854d8",
+  "pages": [
+    "MB-024",
+    "MB-028"
+  ],
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_SUPPORT_READ_NO_SNAPSHOT_PASS",
+  "jar_sha256": "0ba874ee8a99121c22b43161040d8d9716a8decd2cd84337198e5436bf171ba5",
+  "cases": {
+    "catalogued": 20,
+    "observed": [
+      {
+        "id": "gateway-health",
+        "httpStatus": 200,
+        "boundary": "READY"
+      },
+      {
+        "id": "noauth-learner-list",
+        "httpStatus": 401,
+        "boundary": "DENIED"
+      },
+      {
+        "id": "noauth-unknown-detail",
+        "httpStatus": 401,
+        "boundary": "DENIED"
+      },
+      {
+        "id": "noauth-settings-it7",
+        "httpStatus": 401,
+        "boundary": "DENIED"
+      },
+      {
+        "id": "noauth-staff-queue",
+        "httpStatus": 401,
+        "boundary": "DENIED"
+      },
+      {
+        "id": "learner-own-list",
+        "httpStatus": 200,
+        "boundary": "EMPTY"
+      },
+      {
+        "id": "learner-unknown-detail",
+        "httpStatus": 404,
+        "boundary": "NOT_VISIBLE"
+      },
+      {
+        "id": "learner-settings-it7",
+        "httpStatus": 200,
+        "boundary": "WORKBENCH_NO_TRACES"
+      },
+      {
+        "id": "learner-admin-own-scope",
+        "httpStatus": 200,
+        "boundary": "EMPTY"
+      },
+      {
+        "id": "learner-denied-staff-queue",
+        "httpStatus": 403,
+        "boundary": "DENIED"
+      }
+    ]
+  },
+  "durable": {
+    "ticketCountBefore": 0,
+    "ticketCountAfter": 0,
+    "boardDeskBefore": 0,
+    "boardDeskAfter": 0
+  },
+  "migration": [
+    "1:1",
+    "2:1",
+    "3:1",
+    "4:1",
+    "5:1",
+    "6:1",
+    "7:1"
+  ],
+  "offline": {
+    "passed": 118,
+    "skipped": 2
+  },
+  "release": {
+    "container_released": true,
+    "scratch_removed": true,
+    "ports": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18097": true
+    }
+  },
+  "pending": [
+    "H5_LEGACY_EMPTY_DISPLAY",
+    "CANONICAL_CURSOR_PAGE",
+    "EXISTING_TICKET",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

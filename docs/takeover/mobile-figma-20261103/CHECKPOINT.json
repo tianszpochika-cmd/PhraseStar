@@ -2617,7 +2617,8 @@
           "receipt": "evidence/ROOT-B61-SUPPORT-IT7-CONTRACT-20261105.json",
           "real_api": "NOT_RUN"
         },
-        "preference_wire_b128": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json"
+        "preference_wire_b128": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json",
+        "support_no_snapshot_b130": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json"
       },
       "current_job": "dsh/profile-batch-09-settings-visual",
       "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json",
@@ -2965,7 +2966,8 @@
         "api_read_adapter": "Root API11+page5 pass;formal/legacy/cursor repeated query fixed;page still needs LoadMore",
         "source_tests": "Root49/49 support/API/settings+types/H5build0",
         "candidate_browser": "Root198/24;authorB26samepage220/13;tabletvisualsignoffpending",
-        "support_owner_read_b124": "evidence/ROOT-B124-SUPPORT-OWNER-READ-20261106.json"
+        "support_owner_read_b124": "evidence/ROOT-B124-SUPPORT-OWNER-READ-20261106.json",
+        "support_no_snapshot_b130": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json"
       },
       "current_job": "dsh/batch-26-support-matrix",
       "source_operation_trace_b59": {
@@ -3714,7 +3716,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:09:46.079396+00:00",
+  "updated_at": "2026-11-06T07:20:37.701040+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6035,5 +6037,15 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md",
     "evidence": "evidence/ROOT-B129-AUTH-NEGATIVE-H5-20261106.json"
+  },
+  "integration_batch_130_support_board_read_no_snapshot": {
+    "status": "LOCAL_REAL_SUPPORT_READ_NO_SNAPSHOT_PASS",
+    "pages": [
+      "MB-024",
+      "MB-028"
+    ],
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B130-SUPPORT-READ-NO-SNAPSHOT.md",
+    "evidence": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json"
   }
 }

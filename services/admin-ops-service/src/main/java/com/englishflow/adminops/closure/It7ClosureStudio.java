@@ -110,7 +110,11 @@ public class It7ClosureStudio {
                 idempotency.put(key, result);
                 idempotencyFingerprint.put(key, fingerprint);
             }
-            persist();
+            // Unkeyed BOARD is the support-list and IT7 projection read. Do not write a snapshot.
+            // The first keyed call still persists; a matching key already returned above.
+            if (!"BOARD".equals(name) || !key.isBlank()) {
+                persist();
+            }
             return result;
         }
     }

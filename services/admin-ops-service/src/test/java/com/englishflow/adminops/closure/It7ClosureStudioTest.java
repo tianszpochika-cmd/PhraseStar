@@ -184,6 +184,87 @@ class It7ClosureStudioTest {
         assertThat(privacy.get("longTermCapture")).isEqualTo(false);
     }
 
+    @Test
+    void unkeyedBoardReadKeepsScopeAndSkipsSnapshotWhileFileStillHydrates() {
+        CountingStore store = new CountingStore();
+        It7ClosureStudio live = new It7ClosureStudio(store);
+
+        It7ClosureStudio.Result learnerBoard = live.handle(learner(), "BOARD", Map.of());
+        It7ClosureStudio.Result staffBoard = live.handle(staff(), "BOARD", Map.of());
+        assertThat(learnerBoard.status()).isEqualTo(200);
+        assertThat(staffBoard.status()).isEqualTo(200);
+        assertSafeBoard(learnerBoard, false);
+        assertSafeBoard(staffBoard, true);
+        assertThat(staffBoard.data()).containsEntry("casesState", "NO_CASES");
+        assertThat(staffBoard.data().get("cases")).asList().isEmpty();
+        assertThat(learnerBoard.data().get("ticketCopy")).isEqualTo(staffBoard.data().get("ticketCopy"));
+        assertThat(store.saves()).isZero();
+
+        It7ClosureStudio.Result filed = live.handle(staff(), "FILE", Map.of(
+                "sourceRef", "report-source-board", "title", "档案", "idempotencyKey", "file-board"));
+        assertThat(filed.status()).isEqualTo(200);
+        assertThat(store.saves()).isEqualTo(1);
+        assertThat(live.handle(staff(), "FILE", Map.of(
+                "sourceRef", "report-source-board", "title", "档案", "idempotencyKey", "file-board"))
+                .data().get("caseId")).isEqualTo(filed.data().get("caseId"));
+        assertThat(live.caseCount()).isEqualTo(1);
+        assertThat(store.saves()).isEqualTo(1);
+
+        assertThat(live.handle(learner(), "BOARD", Map.of()).data()).doesNotContainKey("cases");
+        assertThat(live.handle(staff(), "BOARD", Map.of()).data()).containsEntry("casesState", "HAS_CASES");
+        assertThat(store.saves()).isEqualTo(1);
+
+        It7ClosureStudio.Result keyed = live.handle(learner(), "BOARD", Map.of("idempotencyKey", "board-replay"));
+        assertThat(keyed.status()).isEqualTo(200);
+        assertThat(keyed.data()).doesNotContainKey("cases");
+        assertThat(store.saves()).isEqualTo(2);
+        assertThat(live.handle(learner(), "BOARD", Map.of("idempotencyKey", "board-replay")).data())
+                .isEqualTo(keyed.data());
+        assertThat(store.saves()).isEqualTo(2);
+
+        It7ClosureStudio restarted = new It7ClosureStudio(store);
+        assertThat(restarted.caseCount()).isEqualTo(1);
+        It7ClosureStudio.Result restored = restarted.handle(staff(), "BOARD", Map.of());
+        assertThat(restored.data()).containsEntry("casesState", "HAS_CASES").doesNotContainKey("auditItems");
+        assertThat(restored.data().get("cases")).asList().hasSize(1);
+        Map<?, ?> restoredCase = (Map<?, ?>) ((java.util.List<?>) restored.data().get("cases")).get(0);
+        assertThat(restoredCase.get("caseId")).isEqualTo(filed.data().get("caseId"));
+        assertThat(restoredCase.get("status")).isEqualTo("FILED");
+        assertThat(restarted.handle(learner(), "BOARD", Map.of()).data()).doesNotContainKey("cases");
+        assertThat(restarted.handle(staff(), "FILE", Map.of(
+                "sourceRef", "report-source-board", "title", "档案", "idempotencyKey", "file-board"))
+                .data().get("caseId")).isEqualTo(filed.data().get("caseId"));
+        assertThat(restarted.handle(learner(), "BOARD", Map.of("idempotencyKey", "board-replay")).data())
+                .isEqualTo(keyed.data());
+        assertThat(restarted.caseCount()).isEqualTo(1);
+        assertThat(store.saves()).isEqualTo(2);
+    }
+
+    private static void assertSafeBoard(It7ClosureStudio.Result board, boolean governance) {
+        assertThat(board.data()).containsEntry("surface", "IT7")
+                .containsEntry("writeSwitch", "FROZEN")
+                .containsEntry("dispositionOpen", false)
+                .containsEntry("closedLoop", false)
+                .containsEntry("understandable", false)
+                .containsEntry("auditVisible", false)
+                .containsEntry("auditSharedWithLearner", false)
+                .containsKey("supportNumber")
+                .containsKey("ticketCopy")
+                .containsKey("privacy")
+                .doesNotContainKey("auditItems");
+        Map<?, ?> privacy = (Map<?, ?>) board.data().get("privacy");
+        assertThat(privacy.get("allComplete")).isEqualTo(false);
+        assertThat(privacy.get("longTermCapture")).isEqualTo(false);
+        assertThat(privacy.get("dataDeleted")).isEqualTo(false);
+        if (governance) {
+            assertThat(board.data()).containsEntry("reportsReadOnly", true)
+                    .containsEntry("dispositionButtons", false)
+                    .containsKey("cases");
+        } else {
+            assertThat(board.data()).doesNotContainKey("cases").doesNotContainKey("casesState");
+        }
+    }
+
     private String fileOne() {
         return String.valueOf(studio.handle(staff(), "FILE", Map.of("sourceRef", "report-source-9", "title", "档案")).data().get("caseId"));
     }
@@ -206,5 +287,26 @@ class It7ClosureStudioTest {
 
     private static It7ClosureStudio.Actor exporter() {
         return new It7ClosureStudio.Actor("audit-2", true, Set.of("admin.audit.read", "audit.export"));
+    }
+
+    /** Counts {@link ClosureDeskStore#save} while keeping real hydrate/read-back. */
+    private static final class CountingStore implements ClosureDeskStore {
+        private final MemoryClosureDeskStore delegate = new MemoryClosureDeskStore();
+        private int saves;
+
+        int saves() {
+            return saves;
+        }
+
+        @Override
+        public ClosureDeskState load() {
+            return delegate.load();
+        }
+
+        @Override
+        public void save(ClosureDeskState state) {
+            saves++;
+            delegate.save(state);
+        }
     }
 }
