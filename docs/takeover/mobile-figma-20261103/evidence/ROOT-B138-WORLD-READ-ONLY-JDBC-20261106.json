@@ -1,0 +1,71 @@
+{
+  "batch": "B138",
+  "at": "2026-11-06T08:28:22.884285+00:00",
+  "status": "LOCAL_GAMIFICATION_SELECT_ONLY_JDBC_PASS",
+  "sourcePins": [
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/adapter/failclosed/FailClosedGamificationFactStore.java",
+      "sha256": "893f45e2259629b8fbc00934220dd45eabe22bfca5130aec00221d64f1eb62ff"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/adapter/jdbc/JdbcGamificationFactStore.java",
+      "sha256": "9ee6c33f6409521a71ef7dc7c0574364080c299de0eae2c4f26311b820083b6c"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/adapter/memory/InMemoryGamificationFactStore.java",
+      "sha256": "41597e5abcd6bfe31203c289f6e1787930c0cb252109d4927550c3b347d2b8f0"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/application/GamificationApplicationService.java",
+      "sha256": "601e8017efa533d575608636b714b289d065c307c5adc248825a68542887668a"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/domain/RewardGrant.java",
+      "sha256": "60c8b8d37a1c3f0c2b78440f638e6062793e4bbea75f6d8a27009964967e9aaf"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/domain/UserFacts.java",
+      "sha256": "1ec39b7283fda01c4c375471b6daa87cb09cf6c4db8e86a6e1578d6f695af9bd"
+    },
+    {
+      "path": "services/gamification-service/src/main/java/com/englishflow/gamification/port/GamificationFactStore.java",
+      "sha256": "015e43a59fb52554ea29e9bb7608b8f8e6afb39c362bd35e6863bc5604a946e9"
+    }
+  ],
+  "actual": {
+    "worker": "G357",
+    "testSha256": "e576f1af36bff2b0e3219830a331b249376593118d2f61c846d30dd55ba7dc32",
+    "logSha256": "1ad14194287b366ac0500a25789123af8fcb876b9e9c5a1a3327c97fe79ebf80",
+    "mysqlPort": 13306,
+    "flyway": 4,
+    "passed": 1,
+    "populatedOwnerReadMethods": [
+      "summary",
+      "streak",
+      "season",
+      "rewards",
+      "ledger"
+    ],
+    "otherOwnerEmpty": true,
+    "oldWriteTransactionRejected": true,
+    "unchangedFacts": true
+  },
+  "offline": {
+    "passed": 67,
+    "skipped": 2
+  },
+  "cleanup": {
+    "exactNameAbsent": true,
+    "exactLabelAbsent": true,
+    "portReleased": true,
+    "sourceOverlayRemoved": true,
+    "immediateWrapperSample": false
+  },
+  "pending": [
+    "Gateway and H5 world",
+    "reward probability real request",
+    "physical device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}

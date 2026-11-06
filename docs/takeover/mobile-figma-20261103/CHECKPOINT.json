@@ -3722,7 +3722,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T08:03:37.846521+00:00",
+  "updated_at": "2026-11-06T08:28:22.884285+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6116,5 +6116,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B137-READING-PINNED-PRACTICE-H5.md",
     "evidence": "evidence/ROOT-B137-READING-PINNED-PRACTICE-H5-20261106.json"
+  },
+  "integration_batch_138_world_read_only_jdbc": {
+    "status": "LOCAL_GAMIFICATION_SELECT_ONLY_JDBC_PASS",
+    "page": "MB-018",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B138-WORLD-READ-ONLY-JDBC.md",
+    "evidence": "evidence/ROOT-B138-WORLD-READ-ONLY-JDBC-20261106.json"
   }
 }

@@ -21,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
@@ -30,12 +32,14 @@ import tools.jackson.databind.ObjectMapper;
  *
  * <p>The application service remains responsible for the domain state machine. This adapter only
  * rehydrates and appends facts in {@code gamification_service}; it never reaches into learner,
- * IAM, content or assessment schemas.</p>
+ * IAM, content or assessment schemas. Owner reads use the same load and transaction manager and
+ * must not append.</p>
  */
 public final class JdbcGamificationFactStore implements GamificationFactStore {
 
     private final JdbcTemplate jdbc;
     private final TransactionTemplate transactions;
+    private final TransactionTemplate readTransactions;
     private final ObjectMapper mapper;
     private final Map<String, Object> subjectLocks = new ConcurrentHashMap<>();
 
@@ -43,6 +47,7 @@ public final class JdbcGamificationFactStore implements GamificationFactStore {
             ObjectMapper mapper) {
         this.jdbc = Objects.requireNonNull(jdbc, "jdbc");
         this.transactions = Objects.requireNonNull(transactions, "transactions");
+        this.readTransactions = readOnlyTransactions(transactions);
         this.mapper = Objects.requireNonNull(mapper, "mapper");
     }
 
@@ -61,6 +66,41 @@ public final class JdbcGamificationFactStore implements GamificationFactStore {
                 return result;
             });
         }
+    }
+
+    @Override
+    public <T> T inUserReadTransaction(String subjectId, Function<UserFacts, T> work) {
+        if (subjectId == null || subjectId.isBlank()) {
+            throw GamificationPersistenceException.localRealUnavailable("subject id");
+        }
+        Objects.requireNonNull(work, "work");
+        Object lock = subjectLocks.computeIfAbsent(subjectId, ignored -> new Object());
+        synchronized (lock) {
+            return readTransactions.execute(status -> {
+                UserFacts facts = load(subjectId);
+                return work.apply(facts);
+            });
+        }
+    }
+
+    /** Copies the write transaction definition onto a new template. Does not mutate {@code writes}. */
+    private static TransactionTemplate readOnlyTransactions(TransactionTemplate writes) {
+        PlatformTransactionManager manager = writes.getTransactionManager();
+        if (manager == null) {
+            throw GamificationPersistenceException.localRealUnavailable("transaction manager");
+        }
+        TransactionTemplate reads = new TransactionTemplate(manager);
+        reads.setPropagationBehavior(writes.getPropagationBehavior());
+        int isolation = writes.getIsolationLevel();
+        if (isolation != TransactionDefinition.ISOLATION_DEFAULT) {
+            reads.setIsolationLevel(isolation);
+        }
+        int timeout = writes.getTimeout();
+        if (timeout != TransactionDefinition.TIMEOUT_DEFAULT) {
+            reads.setTimeout(timeout);
+        }
+        reads.setReadOnly(true);
+        return reads;
     }
 
     private UserFacts load(String subjectId) {
