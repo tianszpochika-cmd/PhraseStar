@@ -5966,5 +5966,13 @@
     ],
     "review": "reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md",
     "evidence": "evidence/ROOT-B122-ASSESSMENT-KAFKA-ACL-20261106.json"
+  },
+  "integration_b123_learner_preference_fingerprint": {
+    "status": "LOCAL_LEARNER_JDBC_VERIFIED",
+    "scope": [
+      "MB-024"
+    ],
+    "review": "reviews/INTEGRATION-B123-LEARNER-PREFERENCE-FINGERPRINT.md",
+    "evidence": "evidence/ROOT-B123-LEARNER-PREFERENCE-FINGERPRINT-20261106.json"
   }
 }

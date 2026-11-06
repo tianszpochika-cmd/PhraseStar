@@ -1,0 +1,36 @@
+{
+  "batch": "MOBILE-FIGMA-B123-20261106",
+  "baseCommit": "ee588130",
+  "route": "MB-024",
+  "scope": "local learner owner JDBC",
+  "files": [
+    {
+      "path": "services/learner-service/src/main/java/com/englishflow/learner/application/UpdateLearnerPreferencesCommand.java",
+      "sha256": "636737d234bf526745066131a4b81e2ee0abe0516a278ead00f339089dfd8c6c"
+    },
+    {
+      "path": "services/learner-service/src/test/java/com/englishflow/learner/application/UpdateLearnerPreferencesCommandTest.java",
+      "sha256": "c534516e4e6927da4a108e7a23a5c1c678c5b45ad1fbe3eddb06192f565baafd"
+    }
+  ],
+  "offlinePassed": 93,
+  "offlineSkipped": 1,
+  "mysql": {
+    "scope": "disposable strict V12 learner preference fingerprints",
+    "status": "PASS",
+    "cleanup": true,
+    "mavenExit": 0,
+    "allThreeTestsPassed": true,
+    "scopedGrant": true,
+    "fixtureSha256": "e216cd5e25d061c1746bdb9a36feb05c7b098302611fee3ad05f80673172997e"
+  },
+  "cases": [
+    "long supported preference save and same-key replay",
+    "same-key changed version conflict 409 without write",
+    "historical short fingerprint exact replay"
+  ],
+  "remaining": [
+    "mobile preferences wire and H5 owner readback",
+    "deployment and device signoff"
+  ]
+}
