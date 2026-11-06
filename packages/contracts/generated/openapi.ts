@@ -4127,6 +4127,21 @@ export type B10AssessmentContentScoreRequest = { contentCode: B10ContentCode; it
  */
 export type B10AssessmentContentScore = { itemId: B10SafePositiveItemId; snapshotId: B10SnapshotId; ruleDigest: B10Sha256; outcome: "FULL" | "ZERO"; };
 
+/**
+ * Closed match key copied by learning-service from the path attempt, the learner subject, and one admitted assessment.item.assessed.v2 event. eventId is that event's canonical UUID. The four pin fields are the event contentPin. answer, outcome, score, quality, rawQuality, objectiveOutcome, guessSignal, scoreBucket, tenant, tenantId, contentCode, pinnedAt, and snapshotItemId are rejected. None of these fields is an authoritative owner fact.
+ */
+export type B10AttemptBindingMatch = { eventId: string; learnerPrincipalId: string; itemAssessmentId: string; logicalItemId: string; contentVersionId: B10Int64Id; contentEpoch: B10ContentEpoch; snapshotId: B10SnapshotId; snapshotHash: B10Sha256; };
+
+/**
+ * Owner match result. pinnedAt is pinInstant of the stored session started_at. snapshotId is the matched owner_snapshot_ref. reporting classifies the stored report receipt and does not rewrite it. No answer, progress, quality, outcome, score, mistake, mastery, or repair field is present.
+ */
+export type B10AttemptBinding = { attemptId: B10AttemptId; itemAssessmentId: string; logicalItemId: string; learnerPrincipalId: string; tenantId: "platform"; contentVersionId: B10Int64Id; contentEpoch: B10ContentEpoch; snapshotId: B10SnapshotId; snapshotHash: B10Sha256; pinnedAt: B10DateTime; pinSource: "b10_assessment_session.started_at"; reporting: "CURRENT" | "HISTORICAL"; owner: "assessment-service"; };
+
+/**
+ * Generated from the contract source.
+ */
+export type B10AttemptBindingResponse = { data: B10AttemptBinding; };
+
 export interface CanonicalIdRegistry {
   userId: CanonicalInt64Id;
   contentVersionId: CanonicalInt64Id;
@@ -4618,6 +4633,7 @@ export interface ApiOperationRegistry {
   retestB10PlacementSession: { method: "POST"; path: "/api/v1/assessment/placement/sessions/{sessionId}/retest"; request: never; response: ApiSuccessEnvelope & { data: B10PlacementSession; }; idempotent: true };
   replanB10LearningPlan: { method: "POST"; path: "/api/v1/learning/plans:replan"; request: B10PlanReplanRequest; response: ApiSuccessEnvelope & { data: B10PlanReplanResult; }; idempotent: true };
   scoreB10AssessmentContentSnapshot: { method: "POST"; path: "/internal/v1/content/assessment-snapshots/{contentVersionId}/score"; request: B10AssessmentContentScoreRequest; response: B10AssessmentContentScore; idempotent: true };
+  matchB10AssessmentAttemptBinding: { method: "POST"; path: "/internal/v1/assessment/attempts/{attemptId}/binding"; request: B10AttemptBindingMatch; response: B10AttemptBindingResponse; idempotent: true };
 }
 
 export type ApiOperationId = keyof ApiOperationRegistry;
