@@ -9,6 +9,7 @@ import com.englishflow.content.release.ContentReleaseStudio;
 import com.englishflow.content.domain.ContentAutoValidation;
 import com.englishflow.content.domain.ContentDefinition;
 import com.englishflow.content.domain.GradableQuestions;
+import com.englishflow.content.domain.ReadingArticleAuthoring;
 import com.englishflow.content.domain.ContentId;
 import com.englishflow.content.domain.ContentItem;
 import com.englishflow.content.domain.ContentIdempotencyKey;
@@ -192,6 +193,12 @@ public final class B9ContentAdminController {
         String contentCode = text(input.get("contentCode"));
         if (command.isBlank() || contentCode.isBlank()) {
             throw ContentOperationException.badRequest("CONTENT_COMMAND_INVALID", "command and contentCode are required");
+        }
+        if (!"CREATE_DRAFT".equals(command) && !"SAVE_DRAFT".equals(command)
+                && ReadingArticleAuthoring.mentioned(input)) {
+            throw ContentOperationException.badRequest(
+                    "READING_ARTICLE_UNSUPPORTED",
+                    "readingArticle is only accepted on a single CREATE_DRAFT or SAVE_DRAFT");
         }
         if (command.startsWith("RELEASE_")) {
             Map<String, Object> releaseInput = new LinkedHashMap<>(input);
@@ -488,6 +495,7 @@ public final class B9ContentAdminController {
                     "CONTENT_COMMAND_INVALID", "content command is invalid");
         }
         List<Map<String, Object>> gradableQuestions = validatedGradableQuestions(supplied);
+        Map<String, Object> readingArticle = validatedReadingArticle(supplied, gradableQuestions);
         Map<String, Object> result = idempotency.executeMap(
                 scope, key(requestKey), ContentPayloadHash.sha256(input), () -> {
                     Map<String, Object> draft = record(input.get("content"));
@@ -501,6 +509,9 @@ public final class B9ContentAdminController {
                         contentId = ContentId.of(contentCode);
                         if (gradableQuestions != null) {
                             GradableQuestions.rejectSealedOwner(contentCode, contentId.value());
+                        }
+                        if (readingArticle != null) {
+                            ReadingArticleAuthoring.rejectSealedOwner(contentCode, contentId.value());
                         }
                         commands.createContent(new ContentCommandService.CreateContent(
                                 contentId, contentCode, kind(draft.get("contentType")),
@@ -529,10 +540,14 @@ public final class B9ContentAdminController {
                         if (gradableQuestions != null) {
                             GradableQuestions.rejectSealedOwner(contentCode, contentId.value());
                         }
+                        if (readingArticle != null) {
+                            ReadingArticleAuthoring.rejectSealedOwner(contentCode, contentId.value());
+                        }
                     }
                     ContentVersionSnapshot created = commands.createVersion(
                             new ContentCommandService.CreateVersion(
-                                    contentId, repository.nextVersionId(), payload(draft, gradableQuestions), draftRights,
+                                    contentId, repository.nextVersionId(),
+                                    payload(draft, gradableQuestions, readingArticle), draftRights,
                                     proposal(draft).validated(),
                                     textOr(draft.get("releaseNote"), "draft revision")),
                             actor, key(requestKey + ":version"), context);
@@ -692,6 +707,12 @@ public final class B9ContentAdminController {
             String subKey = "batch-" + ContentPayloadHash.sha256(Map.of(
                     "batchKey", batchKey, "index", index, "contentCode", contentCode));
             try {
+                if (draft.containsKey(ReadingArticleAuthoring.FIELD)
+                        || item.containsKey(ReadingArticleAuthoring.FIELD)) {
+                    throw ContentOperationException.badRequest(
+                            "READING_ARTICLE_UNSUPPORTED",
+                            "batch draft import does not accept readingArticle");
+                }
                 String entryScope = actor.tenantId() + ":" + actor.subjectId() + ":content.b9.batch.entry";
                 if (item.containsKey("lexeme")) {
                     Map<String, Object> lexemeFields = record(item.get("lexeme"));
@@ -1336,12 +1357,31 @@ public final class B9ContentAdminController {
         return GradableQuestions.copy(draft.get(GradableQuestions.FIELD));
     }
 
+    private static Map<String, Object> validatedReadingArticle(
+            Map<String, Object> draft, List<Map<String, Object>> gradableQuestions) {
+        if (!draft.containsKey(ReadingArticleAuthoring.FIELD)) {
+            return null;
+        }
+        return ReadingArticleAuthoring.copy(
+                draft.get(ReadingArticleAuthoring.FIELD),
+                draft.get("title"),
+                textOr(draft.get("targetLevel"), "A1"),
+                gradableQuestions);
+    }
+
     private static Map<String, Object> payload(Map<String, Object> draft) {
-        return payload(draft, null);
+        return payload(draft, null, null);
     }
 
     private static Map<String, Object> payload(
             Map<String, Object> draft, List<Map<String, Object>> gradableQuestions) {
+        return payload(draft, gradableQuestions, null);
+    }
+
+    private static Map<String, Object> payload(
+            Map<String, Object> draft,
+            List<Map<String, Object>> gradableQuestions,
+            Map<String, Object> readingArticle) {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("summary", textOr(draft.get("summary"), ""));
         result.put("contentLocale", textOr(draft.get("contentLocale"), "en-US"));
@@ -1352,6 +1392,9 @@ public final class B9ContentAdminController {
             result.put(GradableQuestions.FIELD, gradableQuestions);
             // Mint inside this idempotent draft write. Replay keeps the stored version.
             result.put(GradableQuestions.SEAL_FIELD, GradableQuestions.mintSeal());
+        }
+        if (readingArticle != null) {
+            result.put(ReadingArticleAuthoring.FIELD, readingArticle);
         }
         return result;
     }
@@ -1587,7 +1630,7 @@ public final class B9ContentAdminController {
         draft.put("permittedChannels", proposal == null ? List.of() : proposal.channelList());
         draft.put("authorizationEvidenceRef", proposal == null ? null : proposal.proposedEvidenceRef());
         draft.put("allowsLearning", proposal != null && proposal.proposedAllowsLearning());
-        draft.put("payload", GradableQuestions.omitPrivateField(version.payload().raw()));
+        draft.put("payload", ReadingArticleAuthoring.omitPrivateField(version.payload().raw()));
         draft.put("publishedVersionNumber", content.currentPublishedVersion()
                 .map(ContentVersion::versionNumber).orElse(null));
         return draft;

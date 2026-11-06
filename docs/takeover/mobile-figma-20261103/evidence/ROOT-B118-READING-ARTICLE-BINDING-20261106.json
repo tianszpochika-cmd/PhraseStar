@@ -1,0 +1,140 @@
+{
+  "batch": "MOBILE-FIGMA-B118-20261106",
+  "baseCommit": "52af22b2",
+  "route": "MB-014",
+  "status": "LOCAL_CONTENT_OWNER_JDBC_VERIFIED",
+  "source": {
+    "authors": [
+      "G209",
+      "G237",
+      "G249",
+      "G256"
+    ],
+    "verifiedFiles": [
+      {
+        "path": "packages/api-client/src/generated/index.ts",
+        "sha256": "d355292e8ba265e6231af4649d1b2136868dbdc02a8973bf056edb472cbb3a84"
+      },
+      {
+        "path": "packages/contracts/fragments/b9/b9-content.openapi.json",
+        "sha256": "b6495a2b51aea1a7fbd92b2867cdefa7485091f1e27b89c03857a927e971c6f6"
+      },
+      {
+        "path": "packages/contracts/generated/openapi.ts",
+        "sha256": "c5d31fdea6df3f20c31b9db6348c8aa71e99077aafdba21a91ff921628c07aac"
+      },
+      {
+        "path": "packages/contracts/openapi/v1/openapi.json",
+        "sha256": "736218d800fbf9699f9f0ee02cc49ab38ef393b06f05005c8244ee5abfcb9efd"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/adapter/jdbc/JdbcPublishedReadingBindings.java",
+        "sha256": "8db0ebb8675db3e3f33ad83b9121deb673da84b7059156009fd8d19b48ec7bb1"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/domain/ContentProjectionPolicy.java",
+        "sha256": "66565a16e8ee69d7635e4abae03b47e49ca94fa986a47c5e054a39a0864a8a08"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/domain/GradableQuestions.java",
+        "sha256": "b3fb9c531a01d5dbe14a1246e0c019aa5fa553af0e0cc2fb7367f53d8b478c43"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/domain/ReadingArticleAuthoring.java",
+        "sha256": "e1eefa10f56917534e75b5d9a524b49c0ba4c31d582c669133a5fbe9761e5de7"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/web/B9ContentAdminController.java",
+        "sha256": "a1019c170e6b8b2c367602dd68c5f1fbb3d8830e0f3aaa329ae8f5fdccbd02f1"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/web/B9PublishedReadingBindingController.java",
+        "sha256": "b85f22c77fc15209b178050e3ae5d60ce0aebfe32720e6a61707cb6b98c34b22"
+      },
+      {
+        "path": "services/content-service/src/main/java/com/englishflow/content/web/GradableAssessmentSnapshotController.java",
+        "sha256": "ab016cbef0f2153cd3f8a60a673eddd8a32cc10470128f23db7f1bac516c3972"
+      },
+      {
+        "path": "services/content-service/src/test/java/com/englishflow/content/domain/ContentProjectionPolicyTest.java",
+        "sha256": "1d74cc52bab6cdaa0ddf41f332fb6d44b60fc31f88595b34dfaa0b99990287ed"
+      },
+      {
+        "path": "services/content-service/src/test/java/com/englishflow/content/web/B9ContentAdminRightsBoundaryTest.java",
+        "sha256": "4719620716c53892b11d398f1d9aa255c00bf08dbdf4a98a004580f3a58f4e61"
+      },
+      {
+        "path": "services/content-service/src/test/java/com/englishflow/content/web/B9PublishedReadingBindingControllerTest.java",
+        "sha256": "66ed02c2c865b953d48db6563f93c784e125e77a992daa8bf225f5633d04064e"
+      }
+    ]
+  },
+  "contract": {
+    "operations": 473,
+    "schemas": 833,
+    "compatibilityBreaks": 0,
+    "baselineAuthor": "G209"
+  },
+  "contentTests": {
+    "passed": 327,
+    "failed": 0,
+    "skipped": 6
+  },
+  "localMysql": {
+    "version": "8.0",
+    "flywayVersion": 34,
+    "synthetic": true,
+    "httpUsed": false,
+    "authoring": {
+      "receipt": {
+        "cleanup": true,
+        "probe_sha256": "3238402ba2b85d29073fa3ecf06741442a2009ddd9e11dda35cc802d3c2aa62e",
+        "maven": {
+          "exit": 0,
+          "migrations_v34": true,
+          "one_test_pass": true
+        },
+        "runtime_cleanup": true,
+        "overlay_cleanup": true
+      },
+      "checks": [
+        "closed owner article",
+        "immutable prior payload and digest",
+        "omitted next version",
+        "malformed and batch rejection without reservation",
+        "four independent publication actors",
+        "private fields absent from normal read projections",
+        "no implicit B3 binding"
+      ]
+    },
+    "binding": {
+      "receipt": {
+        "cleanup": true,
+        "probe_sha256": "591ed6e403e2bc2a7ba84029435f8907737fdc095b47bf45f7625b449500ca06",
+        "maven": {
+          "exit": 0,
+          "migrations_v34": true,
+          "one_test_pass": true
+        },
+        "runtime_cleanup": true,
+        "overlay_cleanup": true
+      },
+      "checks": [
+        "current published version and signed-off owner facts",
+        "exact article and question binding",
+        "same-key and exact new-key replay",
+        "changed-key conflict and denied actor",
+        "learner B3 detail and exact practiceRef",
+        "consent revoked 403",
+        "legacy and other code digests preserved"
+      ]
+    }
+  },
+  "remaining": [
+    "GATEWAY_IAM_FOR_PUBLISHED_READING",
+    "H5_PRACTICE_AND_SCORING",
+    "NATIVE_DEVICE_AND_SCREEN_READER",
+    "DEPLOYMENT",
+    "ROUTE_TRACE_SIGNOFF"
+  ]
+}

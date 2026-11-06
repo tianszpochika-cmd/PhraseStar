@@ -5911,5 +5911,22 @@
     "release": "PASS",
     "expired_service_failure_native_deploy_trace": "NOT_RUN",
     "evidence": "evidence/ROOT-B117-REPORT-SHARE-REAL-H5-20261106.json"
+  },
+  "integration_b118_reading_article_binding": {
+    "status": "LOCAL_CONTENT_OWNER_JDBC_VERIFIED",
+    "scope": [
+      "MB-014"
+    ],
+    "content_tests_passed": 327,
+    "content_tests_skipped": 6,
+    "mysql_v34_probes_passed": 2,
+    "separate": [
+      "Gateway/IAM",
+      "H5 practice and scoring",
+      "device and deployment",
+      "trace signoff"
+    ],
+    "review": "reviews/INTEGRATION-B118-READING-ARTICLE-BINDING.md",
+    "evidence": "evidence/ROOT-B118-READING-ARTICLE-BINDING-20261106.json"
   }
 }

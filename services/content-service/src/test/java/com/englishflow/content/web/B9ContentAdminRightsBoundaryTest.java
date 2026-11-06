@@ -15,6 +15,7 @@ import com.englishflow.content.domain.ContentId;
 import com.englishflow.content.domain.ContentKind;
 import com.englishflow.content.domain.ContentOperationException;
 import com.englishflow.content.domain.GradableQuestions;
+import com.englishflow.content.domain.ReadingArticleAuthoring;
 import com.englishflow.content.domain.ContentPayloadHash;
 import com.englishflow.content.domain.ContentRights;
 import com.englishflow.content.domain.ContentVersion;
@@ -28,6 +29,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import static org.mockito.Mockito.mock;
 class B9ContentAdminRightsBoundaryTest {
 
     private static final String CODE = "rights-boundary-pack";
+    private static final String ARTICLE_SECRET = "article-secret-block";
     private static final HttpHeaders HEADERS = new HttpHeaders();
 
     private InMemoryContentRepository repository;
@@ -753,6 +756,549 @@ class B9ContentAdminRightsBoundaryTest {
         assertTrue(repository.findByCode("batch-opt-in").isEmpty());
     }
 
+    @Test
+    void closedArticleStoresDerivedOwnerAndKeepsHash() {
+        String firstText = "Small routines make difficult goals easier to reach.";
+        String secondText = "Reviewing regularly keeps progress visible.";
+        String translation = "  小习惯能让困难目标更容易实现。  ";
+        Map<String, Object> created = articleDraft(article(8, List.of(
+                block(firstText, translation), block(secondText))));
+        created.put("title", "  Rights boundary lesson  ");
+        created.put("contentLocale", " fr-FR ");
+        created.put("targetLevel", " B1 ");
+        created.put("items", List.of(Map.of("displayText", "Kept item")));
+        command("CREATE_DRAFT", "article-owner", created, editor(), "article-owner-create");
+
+        ContentVersion first = version("article-owner", 0);
+        assertEquals("Rights boundary lesson", repository.findByCode("article-owner").orElseThrow().title());
+        assertEquals(List.of("summary", "contentLocale", "targetLevel", "items", ReadingArticleAuthoring.FIELD),
+                new ArrayList<>(first.payload().raw().keySet()));
+        assertEquals("fr-FR", first.payload().raw().get("contentLocale"));
+        assertEquals("B1", first.payload().raw().get("targetLevel"));
+        assertEquals("Kept item",
+                ((Map<?, ?>) ((List<?>) first.payload().raw().get("items")).getFirst()).get("displayText"));
+        assertFalse(first.payload().raw().containsKey(GradableQuestions.SEAL_FIELD));
+        assertArticleShape(first, 8L, "  Rights boundary lesson  ", "B1", 13);
+        assertEquals(firstText, storedBlock(first, 0).get("text"));
+        assertEquals(translation, storedBlock(first, 0).get("translation"));
+        assertEquals(secondText, storedBlock(first, 1).get("text"));
+        assertFalse(storedBlock(first, 1).containsKey("translation"));
+        assertEquals(List.of("blockId", "blockIndex", "text", "translation"), keys(storedBlock(first, 0)));
+        assertEquals(List.of("blockId", "blockIndex", "text"), keys(storedBlock(first, 1)));
+        assertEquals("block-1", storedBlock(first, 0).get("blockId"));
+        assertEquals(0, ((Number) storedBlock(first, 0).get("blockIndex")).intValue());
+        assertEquals("block-2", storedBlock(first, 1).get("blockId"));
+        assertEquals(1, ((Number) storedBlock(first, 1).get("blockIndex")).intValue());
+        for (String key : List.of("contentLocale", "contentVersionId", "estimatedMinutes", "rightsStatus",
+                "tokens", "token", "answerRule", "correctOption", "practiceRef", "actor", "tenant",
+                GradableQuestions.SEAL_FIELD, "branchChoices")) {
+            assertFalse(hasKey(storedArticle(first), key), key);
+        }
+        assertEquals(ContentPayloadHash.sha256(first.payload().raw()), first.contentHash());
+        Map<String, Object> firstPayload = first.payload().raw();
+        String firstHash = first.contentHash();
+
+        Map<String, Object> spaced = articleDraft(article(9, List.of(block("a  b"), block("c "))));
+        command("SAVE_DRAFT", "article-owner", spaced, editor(), "article-owner-spaces");
+        ContentVersion second = version("article-owner", 1);
+        assertSame(firstPayload, version("article-owner", 0).payload().raw());
+        assertEquals(firstHash, version("article-owner", 0).contentHash());
+        assertEquals(13, ((Number) storedArticle(version("article-owner", 0)).get("wordCount")).intValue());
+        assertArticleShape(second, 9L, "Rights boundary lesson", "A1", 5);
+        assertEquals("a  b", storedBlock(second, 0).get("text"));
+        assertEquals("c ", storedBlock(second, 1).get("text"));
+        assertFalse(storedBlock(second, 0).containsKey("translation"));
+        assertEquals(ContentPayloadHash.sha256(second.payload().raw()), second.contentHash());
+        assertNotEquals(firstHash, second.contentHash());
+
+        Map<String, Object> defaults = articleDraft(article(10, List.of(block("Hello world"))));
+        defaults.remove("contentLocale");
+        defaults.remove("targetLevel");
+        command("CREATE_DRAFT", "article-defaults", defaults, editor(), "article-defaults-create");
+        ContentVersion fallback = version("article-defaults", 0);
+        assertEquals("en-US", fallback.payload().raw().get("contentLocale"));
+        assertEquals("A1", fallback.payload().raw().get("targetLevel"));
+        assertEquals("A1", storedArticle(fallback).get("cefrLevel"));
+        assertFalse(storedArticle(fallback).containsKey("contentLocale"));
+    }
+
+    @Test
+    void articleSaveReplacesTheWholeVersionAndDoesNotInferScatteredFields() {
+        String code = "article-replace";
+        Map<String, Object> both = articleDraft(article(80, List.of(block("Only block"))));
+        both.put("gradableQuestions", List.of(question(4, "Stem", twoOptions(), "alpha")));
+        command("CREATE_DRAFT", code, both, editor(), "article-replace-both");
+        ContentVersion first = version(code, 0);
+        assertEquals(List.of("summary", "contentLocale", "targetLevel", "items",
+                        "gradableQuestions", GradableQuestions.SEAL_FIELD, ReadingArticleAuthoring.FIELD),
+                new ArrayList<>(first.payload().raw().keySet()));
+        assertEquals(80L, ((Number) storedArticle(first).get("articleId")).longValue());
+        assertEquals(4L, ((Number) question(first, 0).get("itemId")).longValue());
+        String firstSeal = seal(first);
+        Map<String, Object> firstPayload = first.payload().raw();
+
+        command("SAVE_DRAFT", code, questionsDraft(List.of(question(4, "Stem", twoOptions(), "alpha"))),
+                editor(), "article-replace-questions");
+        ContentVersion questionsOnly = version(code, 1);
+        assertSame(firstPayload, version(code, 0).payload().raw());
+        assertFalse(questionsOnly.payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+        assertTrue(questionsOnly.payload().raw().containsKey("gradableQuestions"));
+        assertNotEquals(firstSeal, seal(questionsOnly));
+        Map<String, Object> questionsPayload = questionsOnly.payload().raw();
+
+        command("SAVE_DRAFT", code, articleDraft(article(81, List.of(block("Replacement")))),
+                editor(), "article-replace-article");
+        ContentVersion articleOnly = version(code, 2);
+        assertSame(questionsPayload, version(code, 1).payload().raw());
+        assertFalse(articleOnly.payload().raw().containsKey("gradableQuestions"));
+        assertFalse(articleOnly.payload().raw().containsKey(GradableQuestions.SEAL_FIELD));
+        assertEquals(81L, ((Number) storedArticle(articleOnly).get("articleId")).longValue());
+        assertEquals("Replacement", storedBlock(articleOnly, 0).get("text"));
+
+        command("SAVE_DRAFT", code, draft(), editor(), "article-replace-clear");
+        assertLegacyPayload(version(code, 3));
+        assertSame(firstPayload, version(code, 0).payload().raw());
+        assertEquals(firstSeal, seal(version(code, 0)));
+
+        Map<String, Object> scattered = draft();
+        scattered.put("articleId", 42);
+        scattered.put("blocks", List.of(block("not an article")));
+        Map<String, Object> item = new LinkedHashMap<>();
+        item.put("displayText", "Read this sentence.");
+        item.put("articleId", 42);
+        item.put("blocks", List.of(block("nested only")));
+        item.put(ReadingArticleAuthoring.FIELD, article(42, List.of(block("nested legacy"))));
+        scattered.put("items", List.of(item));
+        command("CREATE_DRAFT", "article-scattered", scattered, editor(), "article-scattered-create");
+        ContentVersion nested = version("article-scattered", 0);
+        assertEquals(List.of("summary", "contentLocale", "targetLevel", "items"),
+                new ArrayList<>(nested.payload().raw().keySet()));
+        assertFalse(nested.payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+        assertEquals("nested legacy", nestedArticleText(nested.payload().raw()));
+        command("SAVE_DRAFT", "article-scattered", draft(), editor(), "article-scattered-clear");
+        assertLegacyPayload(version("article-scattered", 1));
+        assertFalse(hasKey(version("article-scattered", 1).payload().raw(), ReadingArticleAuthoring.FIELD));
+        assertSame(nested.payload().raw(), version("article-scattered", 0).payload().raw());
+    }
+
+    @Test
+    void articleIdempotencyReplaysAndMalformedDoesNotClaim() {
+        String code = "article-idem";
+        Map<String, Object> bad = new LinkedHashMap<>();
+        bad.put("command", "CREATE_DRAFT");
+        bad.put("contentCode", code);
+        bad.put("expectedStateVersion", 0);
+        bad.put("content", articleDraft(article("nope", List.of(block(ARTICLE_SECRET)))));
+        ContentOperationException invalid = assertThrows(ContentOperationException.class,
+                () -> controller.command(bad, editor(), "article-idem-key-1", HEADERS));
+        assertEquals(400, invalid.status());
+        assertEquals("READING_ARTICLE_INVALID", invalid.code());
+        assertFalse(invalid.getMessage().contains(ARTICLE_SECRET));
+        assertTrue(repository.findByCode(code).isEmpty());
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("command", "CREATE_DRAFT");
+        body.put("contentCode", code);
+        body.put("expectedStateVersion", 0);
+        body.put("content", articleDraft(article(8, List.of(block("First sentence stays.")))));
+        Map<String, Object> created = data(controller.command(body, editor(), "article-idem-key-1", HEADERS).getBody());
+        ContentVersion createdVersion = version(code, 0);
+        Map<String, Object> createdPayload = createdVersion.payload().raw();
+        String createdHash = createdVersion.contentHash();
+        Map<String, Object> replay = data(controller.command(body, editor(), "article-idem-key-1", HEADERS).getBody());
+        assertEquals(created, replay);
+        assertEquals(1, repository.findByCode(code).orElseThrow().versions().size());
+        assertSame(createdPayload, version(code, 0).payload().raw());
+        assertEquals(createdHash, version(code, 0).contentHash());
+        assertFalse(String.valueOf(created).contains("First sentence stays."));
+        assertFalse(String.valueOf(created).contains(ARTICLE_SECRET));
+
+        Map<String, Object> changed = new LinkedHashMap<>(body);
+        changed.put("content", articleDraft(article(8, List.of(block("Second sentence")))));
+        ContentOperationException conflict = assertThrows(ContentOperationException.class,
+                () -> controller.command(changed, editor(), "article-idem-key-1", HEADERS));
+        assertEquals(409, conflict.status());
+        assertEquals("IDEMPOTENCY_KEY_REUSE", conflict.code());
+        assertEquals(1, repository.findByCode(code).orElseThrow().versions().size());
+        assertEquals("First sentence stays.", storedBlock(version(code, 0), 0).get("text"));
+        assertSame(createdPayload, version(code, 0).payload().raw());
+        assertEquals(createdHash, version(code, 0).contentHash());
+    }
+
+    @Test
+    void malformedArticlesAreNotWritten() {
+        assertArticleRejected("null", null);
+        assertArticleRejected("string", "article");
+        assertArticleRejected("empty", Map.of());
+        assertArticleRejected("missing-blocks", Map.of("articleId", 8));
+        assertArticleRejected("empty-blocks", article(8, List.of()));
+        assertArticleRejected("null-block", article(8, null));
+        List<Object> nullRow = new ArrayList<>();
+        nullRow.add(null);
+        assertArticleRejected("null-row", article(8, nullRow));
+        assertArticleRejected("string-row", article(8, List.of("block")));
+        assertArticleRejected("string-id", article("12", List.of(block("Stem"))));
+        assertArticleRejected("leading-zero", article("01", List.of(block("Stem"))));
+        assertArticleRejected("float-id", article(1.0d, List.of(block("Stem"))));
+        assertArticleRejected("fraction", article(1.5d, List.of(block("Stem"))));
+        assertArticleRejected("decimal", article(new BigDecimal("1.0"), List.of(block("Stem"))));
+        assertArticleRejected("integral-decimal", article(new BigDecimal("1"), List.of(block("Stem"))));
+        assertArticleRejected("bool-id", article(true, List.of(block("Stem"))));
+        assertArticleRejected("zero", article(0, List.of(block("Stem"))));
+        assertArticleRejected("negative", article(-1, List.of(block("Stem"))));
+        assertArticleRejected("too-big", article(9007199254740992L, List.of(block("Stem"))));
+        for (long reserved : List.of(3501L, 3950L, 266001L, 266010L)) {
+            assertArticleRejected("reserved-" + reserved, article(reserved, List.of(block(ARTICLE_SECRET))));
+        }
+        assertSiblingRejected("reserved-item-3501", 3501L, 8L);
+        assertSiblingRejected("reserved-item-3950", 3950L, 8L);
+        assertSiblingRejected("reserved-item-266001", 266001L, 8L);
+        assertSiblingRejected("reserved-item-266010", 266010L, 8L);
+        assertSiblingRejected("collision", 42L, 42L);
+        List<Map<String, Object>> tooMany = new ArrayList<>();
+        for (int index = 0; index < 10001; index++) {
+            tooMany.add(block("w"));
+        }
+        assertArticleRejected("too-many-blocks", article(8, tooMany));
+        assertArticleRejected("blank", article(8, List.of(block(" \n"))));
+        assertArticleRejected("nbsp", article(8, List.of(block("\u00A0"))));
+        assertArticleRejected("ideographic", article(8, List.of(block("\u3000\u3000"))));
+        assertArticleRejected("bom", article(8, List.of(block("\uFEFF"))));
+        assertArticleRejected("line-separator", article(8, List.of(block("\u2028"))));
+        assertArticleRejected("em-space", article(8, List.of(block("\u2003"))));
+        assertArticleRejected("blank-translation", article(8, List.of(block("Hello", "\u00A0"))));
+        assertArticleRejected("long-text", article(8, List.of(block("q".repeat(4097)))));
+        assertArticleRejected("long-codepoints", article(8, List.of(block(Character.toString(0x1F600).repeat(4097)))));
+        assertArticleRejected("long-translation", article(8, List.of(block("Hello", "t".repeat(4097)))));
+        Map<String, Object> missingText = new LinkedHashMap<>();
+        missingText.put("translation", "only");
+        assertArticleRejected("missing-text", article(8, List.of(missingText)));
+        Map<String, Object> html = new LinkedHashMap<>();
+        html.put("text", Map.of("html", ARTICLE_SECRET));
+        assertArticleRejected("html-text", article(8, List.of(html)));
+        for (String key : List.of("title", "cefrLevel", "wordCount", "contentVersionId", "estimatedMinutes",
+                "rightsStatus", "practiceRef", "tokens", "token", "answerRule", "correctOption",
+                "actor", "tenant", "branchChoices")) {
+            Map<String, Object> open = article(8, List.of(block(ARTICLE_SECRET)));
+            open.put(key, ARTICLE_SECRET);
+            assertArticleRejected("open-" + key, open);
+        }
+        for (String key : List.of("blockId", "blockIndex", "tokens", "token", "answerRule", "correctOption")) {
+            Map<String, Object> openBlock = block(ARTICLE_SECRET);
+            openBlock.put(key, Map.of("html", ARTICLE_SECRET));
+            assertArticleRejected("open-block-" + key, article(8, List.of(openBlock)));
+        }
+
+        Map<String, Object> invalidBeforeTitle = articleDraft(article("bad", List.of(block(ARTICLE_SECRET))));
+        invalidBeforeTitle.put("title", " ");
+        ContentOperationException masked = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "bad-article-before-title", invalidBeforeTitle, editor(),
+                        "bad-article-before-title"));
+        assertEquals("READING_ARTICLE_INVALID", masked.code());
+        assertFalse(masked.getMessage().contains(ARTICLE_SECRET));
+        assertTrue(repository.findByCode("bad-article-before-title").isEmpty());
+
+        Map<String, Object> blankTitle = articleDraft(article(8, List.of(block(ARTICLE_SECRET))));
+        blankTitle.put("title", " \u00A0");
+        ContentOperationException missingTitle = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "bad-article-title", blankTitle, editor(), "bad-article-title"));
+        assertEquals(400, missingTitle.status());
+        assertEquals("CONTENT_FIELD_REQUIRED", missingTitle.code());
+        assertFalse(missingTitle.getMessage().contains(ARTICLE_SECRET));
+        assertTrue(repository.findByCode("bad-article-title").isEmpty());
+
+        String emoji = Character.toString(0x1F600);
+        String text = emoji.repeat(4096);
+        String translation = " \u00A0hello\u3000 ";
+        command("CREATE_DRAFT", "article-bounds", articleDraft(article(
+                new BigInteger("9007199254740991"), List.of(block(text, translation)))),
+                editor(), "article-bounds-create");
+        ContentVersion bounded = version("article-bounds", 0);
+        assertEquals(9007199254740991L, ((Number) storedArticle(bounded).get("articleId")).longValue());
+        assertEquals(text, storedBlock(bounded, 0).get("text"));
+        assertEquals(8192, storedBlock(bounded, 0).get("text").toString().length());
+        assertEquals(4096, storedBlock(bounded, 0).get("text").toString()
+                .codePointCount(0, storedBlock(bounded, 0).get("text").toString().length()));
+        assertEquals(translation, storedBlock(bounded, 0).get("translation"));
+
+        command("CREATE_DRAFT", "article-id-min", articleDraft(article(1, List.of(block("one")))),
+                editor(), "article-id-min-create");
+        assertEquals(1L, ((Number) storedArticle(version("article-id-min", 0)).get("articleId")).longValue());
+        command("CREATE_DRAFT", "article-id-low", articleDraft(article(266000L, List.of(block("low")))),
+                editor(), "article-id-low-create");
+        command("CREATE_DRAFT", "article-id-high", articleDraft(article(266011L, List.of(block("high")))),
+                editor(), "article-id-high-create");
+        assertEquals(266000L, ((Number) storedArticle(version("article-id-low", 0)).get("articleId")).longValue());
+        assertEquals(266011L, ((Number) storedArticle(version("article-id-high", 0)).get("articleId")).longValue());
+
+        Map<String, Object> sibling = articleDraft(article(42, List.of(block("Owned"))));
+        sibling.put("gradableQuestions", List.of(question(266000, "Stem", twoOptions(), "alpha")));
+        command("CREATE_DRAFT", "article-sibling-edge", sibling, editor(), "article-sibling-edge-create");
+        assertEquals(42L, ((Number) storedArticle(version("article-sibling-edge", 0)).get("articleId")).longValue());
+        assertEquals(266000L, ((Number) question(version("article-sibling-edge", 0), 0).get("itemId")).longValue());
+        command("CREATE_DRAFT", "gradable-reserved-item",
+                questionsDraft(List.of(question(3501, "Stem", twoOptions(), "alpha"))),
+                editor(), "gradable-reserved-item-create");
+        ContentVersion reservedQuestion = version("gradable-reserved-item", 0);
+        assertEquals(3501L, ((Number) question(reservedQuestion, 0).get("itemId")).longValue());
+        assertFalse(reservedQuestion.payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+    }
+
+    @Test
+    void sealedArticleOwnerRejectsBeforeWrite() {
+        Map<String, Object> sealedDraft = articleDraft(article(8, List.of(block(ARTICLE_SECRET))));
+        for (String code : List.of("p1.placement.v1", "p1-placement-bank-v1")) {
+            ContentOperationException error = assertThrows(ContentOperationException.class,
+                    () -> command("CREATE_DRAFT", code, sealedDraft, editor(), "sealed-article-" + code));
+            assertEquals(400, error.status(), code);
+            assertEquals("READING_ARTICLE_SEALED_BANK", error.code(), code);
+            assertFalse(error.getMessage().contains(ARTICLE_SECRET), code);
+            assertTrue(repository.findByCode(code).isEmpty(), code);
+        }
+        ContentOperationException again = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "p1.placement.v1", sealedDraft, editor(), "sealed-article-p1.placement.v1"));
+        assertEquals("READING_ARTICLE_SEALED_BANK", again.code());
+        assertTrue(repository.findByCode("p1.placement.v1").isEmpty());
+        command("CREATE_DRAFT", "p1.placement.v2", sealedDraft, editor(), "sealed-article-near-miss");
+        command("CREATE_DRAFT", "P1.PLACEMENT.V1", sealedDraft, editor(), "sealed-article-case");
+        assertTrue(version("p1.placement.v2", 0).payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+        assertTrue(version("P1.PLACEMENT.V1", 0).payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+
+        String alias = "placement-article-alias";
+        ContentDefinition seeded = ContentDefinition.create(
+                ContentId.of("p1-placement-bank-v1"), "platform", alias, ContentKind.COURSE_UNIT,
+                "Rights boundary lesson", "en-US", "A1", "PHASE1", "editor-1", Instant.now());
+        seeded.addDraft(ContentVersionId.of(1L), draft(), new ContentRights(
+                        "SOURCE-ONE", "LICENSE-ONE", CopyrightStatus.PENDING,
+                        false, Set.of(), null, null, null),
+                "editor-1", "draft", Instant.now());
+        repository.create(seeded);
+        Map<String, Object> before = seeded.versions().getFirst().payload().raw();
+        String hash = seeded.versions().getFirst().contentHash();
+        long revision = seeded.stateVersion();
+        ContentOperationException save = assertThrows(ContentOperationException.class,
+                () -> command("SAVE_DRAFT", alias, sealedDraft, editor(), "sealed-article-alias-save"));
+        assertEquals(400, save.status());
+        assertEquals("READING_ARTICLE_SEALED_BANK", save.code());
+        assertFalse(save.getMessage().contains(ARTICLE_SECRET));
+        ContentDefinition stored = repository.findByCode(alias).orElseThrow();
+        assertEquals("p1-placement-bank-v1", stored.contentId().value());
+        assertEquals(1, stored.versions().size());
+        assertEquals(revision, stored.stateVersion());
+        assertSame(before, stored.versions().getFirst().payload().raw());
+        assertEquals(hash, stored.versions().getFirst().contentHash());
+        assertFalse(stored.versions().getFirst().payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+    }
+
+    @Test
+    void articleResponsesOmitTheOwnerObject() {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("command", "CREATE_DRAFT");
+        body.put("contentCode", "article-redact");
+        body.put("expectedStateVersion", 0);
+        Map<String, Object> content = articleDraft(article(8, List.of(block(ARTICLE_SECRET, "secret-translation"))));
+        content.put("title", "  Rights boundary lesson  ");
+        body.put("content", content);
+        Map<String, Object> receipt = controller.command(body, editor(), "article-redact-create", HEADERS).getBody();
+        assertFalse(hasKey(receipt, ReadingArticleAuthoring.FIELD));
+        assertFalse(String.valueOf(receipt).contains(ARTICLE_SECRET));
+        assertFalse(String.valueOf(receipt).contains("secret-translation"));
+        assertFalse(String.valueOf(receipt).contains("  Rights boundary lesson  "));
+        Map<String, Object> detail = data(controller.get("article-redact", editor(), HEADERS).getBody());
+        assertFalse(hasKey(detail, ReadingArticleAuthoring.FIELD));
+        assertFalse(String.valueOf(detail).contains(ARTICLE_SECRET));
+        assertFalse(String.valueOf(detail).contains("secret-translation"));
+        assertFalse(String.valueOf(detail).contains("  Rights boundary lesson  "));
+        Map<String, Object> shown = editorDraft("article-redact");
+        Map<String, Object> stored = version("article-redact", 0).payload().raw();
+        Map<String, Object> visible = new LinkedHashMap<>(stored);
+        visible.remove(ReadingArticleAuthoring.FIELD);
+        assertEquals(visible, shown.get("payload"));
+        assertFalse(((Map<?, ?>) shown.get("payload")).containsKey(ReadingArticleAuthoring.FIELD));
+        assertSame(stored.get("items"), ((Map<?, ?>) shown.get("payload")).get("items"));
+        assertEquals(ARTICLE_SECRET, storedBlock(version("article-redact", 0), 0).get("text"));
+        assertEquals("Rights boundary lesson", shown.get("title"));
+
+        Map<String, Object> auto = data(controller.validateAuto(
+                Map.of("contentCode", "article-redact"), editor(), "article-redact-auto", HEADERS).getBody());
+        assertFalse(String.valueOf(auto).contains(ARTICLE_SECRET));
+        assertNoFinding(auto, "READING_ARTICLE_INVALID");
+        assertNoFinding(auto, "ANSWER_LEAK_DETECTED");
+
+        command("SAVE_DRAFT", "article-redact", draft(), editor(), "article-redact-clear");
+        assertLegacyPayload(version("article-redact", 1));
+        assertSame(version("article-redact", 1).payload().raw(), editorDraft("article-redact").get("payload"));
+        assertEquals(ARTICLE_SECRET, storedBlock(version("article-redact", 0), 0).get("text"));
+    }
+
+    @Test
+    void otherVerbsRejectArticleBeforeStateChanges() {
+        command("CREATE_DRAFT", CODE, draft(), editor(), "article-verb-base");
+        String hash = latest().contentHash();
+        long revision = content().stateVersion();
+        for (String operation : List.of("SUBMIT_REVIEW", "PUBLISH", "VALIDATE_DRAFT", "ITEM_UPSERT",
+                "LEXEME_UPSERT", "ROLLBACK", "SCHEDULE_PUBLISH")) {
+            JwtAuthenticationToken actor = "PUBLISH".equals(operation) || "ROLLBACK".equals(operation)
+                    ? publisher() : editor();
+            Map<String, Object> body = new LinkedHashMap<>();
+            body.put("command", operation);
+            body.put("contentCode", CODE);
+            body.put("expectedStateVersion", revision);
+            body.put(ReadingArticleAuthoring.FIELD, article(8, List.of(block(ARTICLE_SECRET))));
+            ContentOperationException error = assertThrows(ContentOperationException.class,
+                    () -> controller.command(body, actor, "article-verb-" + operation, HEADERS), operation);
+            assertEquals(400, error.status(), operation);
+            assertEquals("READING_ARTICLE_UNSUPPORTED", error.code(), operation);
+            assertFalse(error.getMessage().contains(ARTICLE_SECRET), operation);
+        }
+        assertEquals(1, content().versions().size());
+        assertEquals(hash, latest().contentHash());
+        assertEquals(revision, content().stateVersion());
+        assertEquals(ContentVersionStatus.DRAFT, latest().status());
+
+        Map<String, Object> prose = new LinkedHashMap<>();
+        prose.put("command", "SUBMIT_REVIEW");
+        prose.put("contentCode", CODE);
+        prose.put("expectedStateVersion", revision);
+        prose.put("reviewNote", "the word readingArticle is prose " + ARTICLE_SECRET);
+        ContentOperationException rights = assertThrows(ContentOperationException.class,
+                () -> controller.command(prose, editor(), "article-verb-prose", HEADERS));
+        assertEquals(409, rights.status());
+        assertEquals("CONTENT_RIGHTS_NOT_READY", rights.code());
+        assertFalse(rights.getMessage().contains(ARTICLE_SECRET));
+        assertEquals(hash, latest().contentHash());
+        assertEquals(revision, content().stateVersion());
+    }
+
+    @Test
+    void storedArticlePassesNormalValidateDraft() {
+        command("CREATE_DRAFT", "article-legacy-validate", attested(draft()), editor(), "article-legacy-validate-create");
+        Map<String, Object> legacy = validateDraft("article-legacy-validate", "article-legacy-validate-run");
+        assertEquals(true, ((Map<?, ?>) legacy.get("validationReport")).get("passed"));
+
+        Map<String, Object> attestedArticle = attested(articleDraft(article(8, List.of(
+                block("Small routines make difficult goals easier to reach.", "对照"),
+                block("Reviewing regularly keeps progress visible.")))));
+        command("CREATE_DRAFT", "article-validate", attestedArticle, editor(), "article-validate-create");
+        String hash = version("article-validate", 0).contentHash();
+        long revision = repository.findByCode("article-validate").orElseThrow().stateVersion();
+        Map<String, Object> rejected = new LinkedHashMap<>();
+        rejected.put("command", "VALIDATE_DRAFT");
+        rejected.put("contentCode", "article-validate");
+        rejected.put("expectedStateVersion", revision);
+        rejected.put("content", attestedArticle);
+        ContentOperationException unsupported = assertThrows(ContentOperationException.class,
+                () -> controller.command(rejected, editor(), "article-validate-rejected", HEADERS));
+        assertEquals("READING_ARTICLE_UNSUPPORTED", unsupported.code());
+        assertEquals(1, repository.findByCode("article-validate").orElseThrow().versions().size());
+        assertEquals(hash, version("article-validate", 0).contentHash());
+        assertEquals(revision, repository.findByCode("article-validate").orElseThrow().stateVersion());
+
+        Map<String, Object> accepted = validateDraft("article-validate", "article-validate-run");
+        assertEquals("ACCEPTED", accepted.get("status"));
+        assertEquals(true, ((Map<?, ?>) accepted.get("validationReport")).get("passed"));
+        assertEquals(0L, ((Number) ((Map<?, ?>) accepted.get("validationReport")).get("blockers")).longValue());
+        assertEquals(((Map<?, ?>) legacy.get("validationReport")).get("findingCount"),
+                ((Map<?, ?>) accepted.get("validationReport")).get("findingCount"));
+        assertEquals(1, repository.findByCode("article-validate").orElseThrow().versions().size());
+        assertEquals(hash, version("article-validate", 0).contentHash());
+        assertEquals(revision, repository.findByCode("article-validate").orElseThrow().stateVersion());
+        assertEquals(ContentPayloadHash.sha256(version("article-validate", 0).payload().raw()), hash);
+
+        Map<String, Object> stored = data(controller.validateAuto(
+                Map.of("contentCode", "article-validate"), editor(), "article-validate-stored", HEADERS).getBody());
+        assertNoFinding(stored, "READING_ARTICLE_INVALID");
+        assertNoFinding(stored, "ANSWER_LEAK_DETECTED");
+        Map<String, Object> client = data(controller.validateAuto(
+                Map.of("content", attestedArticle), editor(), "article-validate-client", HEADERS).getBody());
+        assertNoFinding(client, "READING_ARTICLE_INVALID");
+        assertNoFinding(client, "ANSWER_LEAK_DETECTED");
+        Map<String, Object> leaked = article(8, List.of(block(ARTICLE_SECRET)));
+        leaked.put("answerRule", Map.of("correctOption", ARTICLE_SECRET));
+        Map<String, Object> leakReport = data(controller.validateAuto(
+                Map.of("content", articleDraft(leaked)), editor(), "article-validate-leak", HEADERS).getBody());
+        assertFinding(leakReport, "ANSWER_LEAK_DETECTED");
+        assertFalse(String.valueOf(leakReport).contains(ARTICLE_SECRET));
+        ContentOperationException write = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "article-leak-write", articleDraft(leaked), editor(),
+                        "article-leak-write"));
+        assertEquals("READING_ARTICLE_INVALID", write.code());
+        assertFalse(write.getMessage().contains(ARTICLE_SECRET));
+        assertTrue(repository.findByCode("article-leak-write").isEmpty());
+    }
+
+    @Test
+    void batchDraftRejectsArticleBeforeWriteAndKeepsOrdinaryRows() {
+        Map<String, Object> ordinaryDraft = draft();
+        Map<String, Object> ordinary = Map.of("contentCode", CODE, "content", ordinaryDraft);
+        Map<String, Object> nestedDraft = draft();
+        Map<String, Object> nestedItem = new LinkedHashMap<>();
+        nestedItem.put("displayText", "Read this sentence.");
+        nestedItem.put(ReadingArticleAuthoring.FIELD, article(42, List.of(block("nested legacy"))));
+        nestedDraft.put("items", List.of(nestedItem));
+        Map<String, Object> nested = Map.of("contentCode", "batch-nested-article", "content", nestedDraft);
+        Map<String, Object> reading = new LinkedHashMap<>();
+        reading.put("contentCode", "batch-article");
+        reading.put("content", articleDraft(article(8, List.of(block(ARTICLE_SECRET)))));
+        Map<String, Object> both = new LinkedHashMap<>();
+        both.put("contentCode", "batch-both");
+        both.put("gradableQuestions", List.of(question(4, "Stem", twoOptions(), "alpha")));
+        both.put(ReadingArticleAuthoring.FIELD, article(9, List.of(block(ARTICLE_SECRET))));
+        both.put("content", articleDraft(article(9, List.of(block(ARTICLE_SECRET)))));
+        Map<String, Object> result = data(controller.importBatch(
+                Map.of("items", List.of(ordinary, nested, reading, both)),
+                editor(), "batch-article-guard-1", HEADERS).getBody());
+        assertEquals(2L, result.get("accepted"));
+        assertEquals(0L, result.get("skipped"));
+        assertEquals(2L, result.get("failed"));
+        List<?> items = (List<?>) result.get("items");
+        assertEquals("ACCEPTED", ((Map<?, ?>) items.get(0)).get("status"));
+        assertEquals("ACCEPTED", ((Map<?, ?>) items.get(1)).get("status"));
+        for (int index = 2; index <= 3; index++) {
+            Map<?, ?> rejected = (Map<?, ?>) items.get(index);
+            assertEquals("FAILED", rejected.get("status"));
+            assertEquals("READING_ARTICLE_UNSUPPORTED", rejected.get("errorCode"));
+            assertNull(rejected.get("contentVersionId"));
+            assertFalse(String.valueOf(rejected.get("message")).contains(ARTICLE_SECRET));
+        }
+        assertLegacyPayload(version(CODE, 0));
+        assertFalse(version("batch-nested-article", 0).payload().raw().containsKey(ReadingArticleAuthoring.FIELD));
+        assertEquals("nested legacy", nestedArticleText(version("batch-nested-article", 0).payload().raw()));
+        assertTrue(repository.findByCode("batch-article").isEmpty());
+        assertTrue(repository.findByCode("batch-both").isEmpty());
+
+        Map<String, Object> envelope = new LinkedHashMap<>();
+        envelope.put("contentCode", "batch-envelope");
+        envelope.put(ReadingArticleAuthoring.FIELD, article(8, List.of(block(ARTICLE_SECRET))));
+        envelope.put("content", draft());
+        Map<String, Object> dry = data(controller.importBatch(
+                Map.of("dryRun", true, "items", List.of(envelope)),
+                editor(), "batch-article-dry-1", HEADERS).getBody());
+        assertEquals(0L, dry.get("ready"));
+        assertEquals(1L, dry.get("invalid"));
+        assertEquals("INVALID", ((Map<?, ?>) ((List<?>) dry.get("items")).getFirst()).get("status"));
+        assertEquals("READING_ARTICLE_UNSUPPORTED",
+                ((Map<?, ?>) ((List<?>) dry.get("items")).getFirst()).get("errorCode"));
+        assertTrue(repository.findByCode("batch-envelope").isEmpty());
+
+        Map<String, Object> retry = data(controller.importBatch(
+                Map.of("items", List.of(ordinary, nested,
+                        Map.of("contentCode", "batch-article", "content", draft()),
+                        Map.of("contentCode", "batch-both", "content", draft()))),
+                editor(), "batch-article-guard-1", HEADERS).getBody());
+        assertEquals(4L, retry.get("accepted"));
+        assertEquals(0L, retry.get("failed"));
+        assertEquals(1, repository.findByCode(CODE).orElseThrow().versions().size());
+        assertEquals(1, repository.findByCode("batch-nested-article").orElseThrow().versions().size());
+        assertLegacyPayload(version("batch-article", 0));
+        assertLegacyPayload(version("batch-both", 0));
+        Map<String, Object> dryApply = data(controller.importBatch(
+                Map.of("items", List.of(Map.of("contentCode", "batch-envelope", "content", draft()))),
+                editor(), "batch-article-dry-1", HEADERS).getBody());
+        assertEquals(1L, dryApply.get("accepted"));
+        assertLegacyPayload(version("batch-envelope", 0));
+    }
+
     private void assertMissingDecision(String operation, JwtAuthenticationToken actor, String key) {
         ContentOperationException missing = assertThrows(ContentOperationException.class,
                 () -> command(operation, CODE, null, actor, key));
@@ -956,6 +1502,104 @@ class B9ContentAdminRightsBoundaryTest {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("optionId", optionId);
         result.put("label", label);
+        return result;
+    }
+
+    private Map<String, Object> validateDraft(String code, String key) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("command", "VALIDATE_DRAFT");
+        body.put("contentCode", code);
+        body.put("expectedStateVersion", repository.findByCode(code).orElseThrow().stateVersion());
+        var response = controller.command(body, editor(), key, HEADERS);
+        assertEquals(202, response.getStatusCode().value());
+        return data(response.getBody());
+    }
+
+    private static Map<String, Object> attested(Map<String, Object> draft) {
+        draft.put("permittedChannels", List.of("LEARNER", "PUBLIC"));
+        draft.put("authorizationEvidenceRef", "evidence-article-1");
+        draft.put("allowsLearning", true);
+        return draft;
+    }
+
+    private void assertArticleRejected(String name, Object article) {
+        String code = "bad-article-" + name;
+        ContentOperationException error = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", code, articleDraft(article), editor(), "bad-article-" + name),
+                name);
+        assertEquals(400, error.status(), name);
+        assertEquals("READING_ARTICLE_INVALID", error.code(), name);
+        assertFalse(error.getMessage().contains(ARTICLE_SECRET), name);
+        assertTrue(repository.findByCode(code).isEmpty(), name);
+    }
+
+    private void assertSiblingRejected(String name, long itemId, long articleId) {
+        Map<String, Object> body = articleDraft(article(articleId, List.of(block(ARTICLE_SECRET))));
+        body.put("gradableQuestions", List.of(question(itemId, "Stem", twoOptions(), "alpha")));
+        ContentOperationException error = assertThrows(ContentOperationException.class,
+                () -> command("CREATE_DRAFT", "bad-article-" + name, body, editor(), "bad-article-" + name),
+                name);
+        assertEquals(400, error.status(), name);
+        assertEquals("READING_ARTICLE_INVALID", error.code(), name);
+        assertFalse(error.getMessage().contains(ARTICLE_SECRET), name);
+        assertTrue(repository.findByCode("bad-article-" + name).isEmpty(), name);
+    }
+
+    private static void assertArticleShape(
+            ContentVersion version, long articleId, String title, String level, int words) {
+        Map<?, ?> article = storedArticle(version);
+        assertEquals(List.of("articleId", "title", "cefrLevel", "wordCount", "blocks"), keys(article));
+        assertEquals(articleId, ((Number) article.get("articleId")).longValue());
+        assertEquals(title, article.get("title"));
+        assertEquals(level, article.get("cefrLevel"));
+        assertEquals(words, ((Number) article.get("wordCount")).intValue());
+    }
+
+    private static List<String> keys(Map<?, ?> map) {
+        List<String> names = new ArrayList<>();
+        for (Object key : map.keySet()) {
+            names.add(String.valueOf(key));
+        }
+        return names;
+    }
+
+    private static String nestedArticleText(Map<String, Object> payload) {
+        Map<?, ?> item = (Map<?, ?>) ((List<?>) payload.get("items")).getFirst();
+        Map<?, ?> nested = (Map<?, ?>) item.get(ReadingArticleAuthoring.FIELD);
+        Map<?, ?> nestedBlock = (Map<?, ?>) ((List<?>) nested.get("blocks")).getFirst();
+        return String.valueOf(nestedBlock.get("text"));
+    }
+
+    private static Map<?, ?> storedArticle(ContentVersion version) {
+        return (Map<?, ?>) version.payload().raw().get(ReadingArticleAuthoring.FIELD);
+    }
+
+    private static Map<?, ?> storedBlock(ContentVersion version, int index) {
+        return (Map<?, ?>) ((List<?>) storedArticle(version).get("blocks")).get(index);
+    }
+
+    private static Map<String, Object> articleDraft(Object article) {
+        Map<String, Object> result = draft();
+        result.put(ReadingArticleAuthoring.FIELD, article);
+        return result;
+    }
+
+    private static Map<String, Object> article(Object articleId, Object blocks) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("articleId", articleId);
+        result.put("blocks", blocks);
+        return result;
+    }
+
+    private static Map<String, Object> block(String text) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("text", text);
+        return result;
+    }
+
+    private static Map<String, Object> block(String text, String translation) {
+        Map<String, Object> result = block(text);
+        result.put("translation", translation);
         return result;
     }
 }

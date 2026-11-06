@@ -28,6 +28,11 @@ public final class GradableQuestions {
     private static final SecureRandom SEAL_RANDOM = new SecureRandom();
     private static final HexFormat SEAL_HEX = HexFormat.of();
     private static final int SEAL_BYTES = 32;
+    /**
+     * Same predicate the assessment snapshot uses before any protected snapshot.
+     * {@link #mintSeal()} writes this length in lowercase; either hex case matches.
+     */
+    private static final Pattern STORED_SEAL = Pattern.compile("^[0-9a-fA-F]{64}$");
 
     private static final BigInteger MAX_ITEM_ID = BigInteger.valueOf(9007199254740991L);
     private static final int MAX_QUESTIONS = 100;
@@ -72,6 +77,15 @@ public final class GradableQuestions {
         byte[] bytes = new byte[SEAL_BYTES];
         SEAL_RANDOM.nextBytes(bytes);
         return SEAL_HEX.formatHex(bytes);
+    }
+
+    /**
+     * Private per-version seal required before a protected assessment snapshot.
+     * Length is the 64-character hex form of the 256-bit key. A missing value,
+     * a non-string, or any other length or alphabet does not match.
+     */
+    public static boolean isStoredSeal(Object raw) {
+        return raw instanceof String text && STORED_SEAL.matcher(text).matches();
     }
 
     /** Closed copy. Array order and option order are the stored order. */

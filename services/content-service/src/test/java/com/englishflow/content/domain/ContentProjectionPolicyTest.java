@@ -319,6 +319,136 @@ class ContentProjectionPolicyTest {
         assertFalse(missing.getMessage().contains(STORED_SEAL));
     }
 
+    @Test
+    @DisplayName("public, learner, admin preview, and assessment omit the owner article")
+    void publicLearnerAdminAndAssessmentOmitTheOwnerArticle() {
+        Map<String, Object> plain = new LinkedHashMap<>();
+        plain.put("title", "Visible title");
+        plain.put("blocks", List.of(Map.of("text", "visible block")));
+        ContentVersion plainVersion = publishedVersion(
+                publishableRights(Set.of("PUBLIC")), plain, ContentVersionStatus.PUBLISHED);
+        PublicContentProjection unchanged = ContentProjectionPolicy.project(
+                definitionWith(plainVersion), plainVersion, ContentAudience.ADMIN_PREVIEW,
+                ContentChannel.ADMIN, NOW, false);
+        assertEquals(plainVersion.payload().raw(), unchanged.fields());
+
+        Map<String, Object> nestedBlock = new LinkedHashMap<>();
+        nestedBlock.put("text", "nested-article-legacy");
+        Map<String, Object> nestedArticle = new LinkedHashMap<>();
+        nestedArticle.put("articleId", 42);
+        nestedArticle.put("blocks", List.of(nestedBlock));
+        nestedArticle.put("rightsStatus", "NESTED_RIGHTS");
+        Map<String, Object> item = new LinkedHashMap<>();
+        item.put("displayText", "Visible");
+        item.put("readingArticle", nestedArticle);
+        item.put("gradableQuestions", List.of(closedQuestion()));
+        Map<String, Object> ownerBlock = new LinkedHashMap<>();
+        ownerBlock.put("blockId", "block-1");
+        ownerBlock.put("blockIndex", 0);
+        ownerBlock.put("text", "top-article-secret");
+        ownerBlock.put("translation", "top-article-translation");
+        Map<String, Object> owner = new LinkedHashMap<>();
+        owner.put("articleId", 8L);
+        owner.put("title", "Exact article title");
+        owner.put("cefrLevel", "B1");
+        owner.put("wordCount", 2);
+        owner.put("rightsStatus", "SECRET_RIGHTS_FLAG");
+        owner.put("estimatedMinutes", 9);
+        owner.put("blocks", List.of(ownerBlock));
+        owner.put("answerRule", Map.of("correctOption", "top-article-secret"));
+        Map<String, Object> fields = new LinkedHashMap<>();
+        fields.put("title", "Visible title");
+        fields.put("blocks", List.of(Map.of("text", "visible block")));
+        fields.put("prompt", "choose");
+        fields.put("items", List.of(item));
+        fields.put("answerRule", Map.of("correctOption", "legacy-option"));
+        fields.put("gradableQuestions", List.of(closedQuestion()));
+        fields.put(GradableQuestions.SEAL_FIELD, STORED_SEAL);
+        fields.put("readingArticle", owner);
+        ContentVersion version = publishedVersion(
+                publishableRights(Set.of("PUBLIC", "LEARNER", "ASSESSMENT")),
+                fields, ContentVersionStatus.PUBLISHED);
+        ContentDefinition content = definitionWith(version);
+
+        for (ContentAudience audience : List.of(ContentAudience.PUBLIC, ContentAudience.LEARNER)) {
+            ContentChannel channel = audience == ContentAudience.PUBLIC
+                    ? ContentChannel.PUBLIC : ContentChannel.LEARNER;
+            PublicContentProjection projection = ContentProjectionPolicy.project(
+                    content, version, audience, channel, NOW, false);
+            assertFalse(projection.fields().containsKey("readingArticle"), audience.name());
+            assertFalse(projection.fields().containsKey("gradableQuestions"), audience.name());
+            assertFalse(projection.fields().containsKey(GradableQuestions.SEAL_FIELD), audience.name());
+            assertFalse(hasKey(projection.fields(), "answerRule"), audience.name());
+            assertFalse(hasKey(projection.fields(), "correctOption"), audience.name());
+            assertFalse(String.valueOf(projection.fields()).contains("top-article-secret"), audience.name());
+            assertFalse(String.valueOf(projection.fields()).contains("SECRET_RIGHTS_FLAG"), audience.name());
+            assertFalse(String.valueOf(projection.fields()).contains(STORED_SEAL), audience.name());
+            assertEquals("Visible title", projection.fields().get("title"), audience.name());
+            assertEquals("visible block",
+                    ((Map<?, ?>) ((List<?>) projection.fields().get("blocks")).getFirst()).get("text"),
+                    audience.name());
+            Map<?, ?> shown = (Map<?, ?>) ((List<?>) projection.fields().get("items")).getFirst();
+            assertEquals("Visible", shown.get("displayText"), audience.name());
+            assertTrue(shown.containsKey("readingArticle"), audience.name());
+            Map<?, ?> shownArticle = (Map<?, ?>) shown.get("readingArticle");
+            assertEquals("nested-article-legacy",
+                    ((Map<?, ?>) ((List<?>) shownArticle.get("blocks")).getFirst()).get("text"), audience.name());
+            assertEquals("NESTED_RIGHTS", shownArticle.get("rightsStatus"), audience.name());
+            assertTrue(shown.containsKey("gradableQuestions"), audience.name());
+            assertFalse(((Map<?, ?>) ((List<?>) shown.get("gradableQuestions")).getFirst()).containsKey("answerRule"),
+                    audience.name());
+        }
+
+        PublicContentProjection preview = ContentProjectionPolicy.project(
+                content, version, ContentAudience.ADMIN_PREVIEW, ContentChannel.ADMIN, NOW, false);
+        Map<String, Object> expected = new LinkedHashMap<>(version.payload().raw());
+        expected.remove("readingArticle");
+        expected.remove("gradableQuestions");
+        expected.remove(GradableQuestions.SEAL_FIELD);
+        assertEquals(expected, preview.fields());
+        assertFalse(preview.fields().containsKey("readingArticle"));
+        assertFalse(String.valueOf(preview.fields()).contains("top-article-secret"));
+        assertFalse(String.valueOf(preview.fields()).contains("SECRET_RIGHTS_FLAG"));
+        assertFalse(String.valueOf(preview.fields()).contains(STORED_SEAL));
+        assertEquals("legacy-option", ((Map<?, ?>) preview.fields().get("answerRule")).get("correctOption"));
+        assertEquals("Visible title", preview.fields().get("title"));
+        assertEquals("visible block",
+                ((Map<?, ?>) ((List<?>) preview.fields().get("blocks")).getFirst()).get("text"));
+        Map<?, ?> adminItem = (Map<?, ?>) ((List<?>) preview.fields().get("items")).getFirst();
+        assertTrue(adminItem.containsKey("readingArticle"));
+        assertEquals("nested-article-legacy", ((Map<?, ?>) ((List<?>) ((Map<?, ?>) adminItem.get("readingArticle"))
+                .get("blocks")).getFirst()).get("text"));
+        assertEquals(version.payload().raw().get("items"), preview.fields().get("items"));
+
+        AssessmentContentSnapshot snapshot = ContentProjectionPolicy.assessmentSnapshot(
+                content, version, ContentChannel.ASSESSMENT, NOW);
+        assertEquals("legacy-option", snapshot.answerRules().get("correctOption"));
+        assertFalse(snapshot.learnerFields().containsKey("readingArticle"));
+        assertFalse(snapshot.learnerFields().containsKey("gradableQuestions"));
+        assertFalse(snapshot.learnerFields().containsKey(GradableQuestions.SEAL_FIELD));
+        assertFalse(hasKey(snapshot.learnerFields(), "correctOption"));
+        assertFalse(String.valueOf(snapshot.learnerFields()).contains("top-article-secret"));
+        assertFalse(String.valueOf(snapshot.answerRules()).contains("top-article-secret"));
+        assertFalse(String.valueOf(snapshot.learnerFields()).contains("SECRET_RIGHTS_FLAG"));
+        assertEquals("visible block",
+                ((Map<?, ?>) ((List<?>) snapshot.learnerFields().get("blocks")).getFirst()).get("text"));
+        Map<?, ?> learnerItem = (Map<?, ?>) ((List<?>) snapshot.learnerFields().get("items")).getFirst();
+        assertTrue(learnerItem.containsKey("readingArticle"));
+        assertEquals("nested-article-legacy", ((Map<?, ?>) ((List<?>) ((Map<?, ?>) learnerItem.get("readingArticle"))
+                .get("blocks")).getFirst()).get("text"));
+
+        Map<String, Object> articleOnly = new LinkedHashMap<>();
+        articleOnly.put("prompt", "choose");
+        articleOnly.put("readingArticle", owner);
+        ContentVersion hidden = publishedVersion(
+                publishableRights(Set.of("ASSESSMENT")), articleOnly, ContentVersionStatus.PUBLISHED);
+        ContentOperationException missing = assertThrows(ContentOperationException.class,
+                () -> ContentProjectionPolicy.assessmentSnapshot(
+                        definitionWith(hidden), hidden, ContentChannel.ASSESSMENT, NOW));
+        assertEquals("QUESTION_ANSWER_RULE_REQUIRED", missing.code());
+        assertFalse(missing.getMessage().contains("top-article-secret"));
+    }
+
     private static Map<String, Object> optInPayload() {
         Map<String, Object> item = new LinkedHashMap<>();
         item.put("displayText", "Visible");
