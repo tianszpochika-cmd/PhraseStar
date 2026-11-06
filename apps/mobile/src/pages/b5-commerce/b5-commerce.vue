@@ -1,156 +1,1009 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
 import MobilePageHeader from '../../components/MobilePageHeader.vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { useMobileExperience } from '../../platform/experience'
-const { experienceStyle, experienceMotion } = useMobileExperience()
-
-import { onShow } from '@dcloudio/uni-app'
-import { computed, ref } from 'vue'
-import { createMobileB5Order, getMobileB5PublicCatalog, listMobileB5Entitlements, listMobileB5Orders, prepareMobileB5Payment } from '../../api/b5'
-import { listRecords, money, text, toEntitlement, toOrder, toPublicPlan, type MobileB5Entitlement, type MobileB5Order, type MobileB5PublicPlan } from '../../domain/b5'
-import { openUniPage, getUniRuntime } from '../../platform/uni-runtime'
-import { b10ThemeMode } from '../../platform/b10-foundation'
+import { ensureMobilePageAccess } from '../../auth/navigation'
+import { getMobileB5PublicCatalog, listMobileB5Entitlements, listMobileB5Orders } from '../../api/b5'
+import { b10ThemeMode, b10UiLocale } from '../../platform/b10-foundation'
+import { mobileT, useMobileExperience } from '../../platform/experience'
+import { openUniPage } from '../../platform/uni-runtime'
 import { useSessionStore } from '../../stores/session'
+import {
+  availabilityKey,
+  billingPeriodKey,
+  entitlementStatusKey,
+  formatCommerceDate,
+  isActiveEntitlement,
+  isAuthFailure,
+  isSameCommerceIdentity,
+  orderStatusKey,
+  resolveCommercePlanPrice,
+  toCommerceCatalog,
+  toCommerceEntitlements,
+  toCommerceFailure,
+  toCommerceOrders,
+  type CommerceEntitlement,
+  type CommerceOrder,
+  type CommercePlan,
+} from './commerce-page'
 
+const PAGE_PATH = '/pages/b5-commerce/b5-commerce'
+const { experienceStyle, experienceMotion } = useMobileExperience()
 const session = useSessionStore()
-const plans = ref<MobileB5PublicPlan[]>([])
-const orders = ref<MobileB5Order[]>([])
-const entitlements = ref<MobileB5Entitlement[]>([])
-const status = ref<'idle' | 'loading' | 'ready' | 'error'>('idle')
-const message = ref('')
-const active = computed(() => entitlements.value.filter((item) => item.status === 'ACTIVE'))
 const themeClass = computed(() => `b10-theme--${b10ThemeMode.value}`)
+const uiLocale = computed(() => b10UiLocale.value)
 
-const statusLabels: Record<string, string> = { ACTIVE: '生效中', EXPIRED: '已过期', REVOKED: '已撤销', CREATED: '待支付', PENDING_PAYMENT: '待支付', PAID: '已支付', CANCELLED: '已取消', REFUNDED: '已退款', FAILED: '支付失败' }
-function statusText(value: string): string { return statusLabels[value] ?? value }
-const entitlementLabels: Record<string, string> = { PREMIUM_MONTHLY: '月度会员权益', PREMIUM_YEARLY: '年度会员权益' }
-function entitlementName(value: string): string { return entitlementLabels[value] ?? '学习权益' }
+type SectionState = 'idle' | 'loading' | 'ready' | 'error'
+type Tip = { title: string; body: string; dot: string; showExit: boolean }
 
-async function load(): Promise<void> {
-  status.value = 'loading'
-  message.value = ''
-  try {
-    const [catalogResponse, orderResponse, entitlementResponse] = await Promise.all([getMobileB5PublicCatalog(), listMobileB5Orders(), listMobileB5Entitlements()])
-    plans.value = listRecords(catalogResponse, 'plans').map(toPublicPlan).filter((item) => item.skuId && item.availability === 'PUBLISHED')
-    orders.value = listRecords(orderResponse).map(toOrder)
-    entitlements.value = listRecords(entitlementResponse).map(toEntitlement)
-    status.value = 'ready'
-  } catch (error) { status.value = 'error'; message.value = error instanceof Error ? error.message : '商业化服务暂时不可用。' }
+const catalogState = ref<SectionState>('idle')
+const entitlementsState = ref<SectionState>('idle')
+const ordersState = ref<SectionState>('idle')
+const plans = ref<CommercePlan[]>([])
+const entitlements = ref<CommerceEntitlement[]>([])
+const orders = ref<CommerceOrder[]>([])
+const invalidPlans = ref(0)
+const invalidEntitlements = ref(0)
+const invalidOrders = ref(0)
+const catalogErrorKey = ref('')
+const entitlementsErrorKey = ref('')
+const ordersErrorKey = ref('')
+const ordersRefreshErrorKey = ref('')
+const accessBlocked = ref(false)
+const ordersRefreshing = ref(false)
+
+let visible = false
+let pageEpoch = 0
+let ordersEpoch = 0
+let showEpoch = 0
+
+const activeEntitlements = computed(() => entitlements.value.filter((item) => isActiveEntitlement(item.status)))
+const planTitleBySku = computed(() => {
+  const titles = new Map<string, string>()
+  for (const plan of plans.value) titles.set(plan.skuId, plan.title)
+  return titles
+})
+const hasAnyError = computed(() => catalogState.value === 'error' || entitlementsState.value === 'error' || ordersState.value === 'error')
+const isLoading = computed(() => catalogState.value === 'loading' || entitlementsState.value === 'loading' || ordersState.value === 'loading')
+const showInitialSkeleton = computed(() => catalogState.value === 'loading' && entitlementsState.value === 'loading' && ordersState.value === 'loading')
+const globalError = computed(() => catalogState.value === 'error' && entitlementsState.value === 'error' && ordersState.value === 'error')
+const tip = computed<Tip | null>(() => {
+  if (accessBlocked.value) return null
+  if (hasAnyError.value) {
+    return { title: 'retryTipTitle', body: 'retryTipBody', dot: '/static/figma-commerce-core/dot-info-8.svg', showExit: true }
+  }
+  if (isLoading.value) {
+    return { title: 'tipLoadingTitle', body: 'tipLoadingBody', dot: '/static/figma-commerce-core/dot-brand-8.svg', showExit: false }
+  }
+  if (!activeEntitlements.value.length) {
+    return { title: 'tipFreeTitle', body: 'tipFreeBody', dot: '/static/figma-commerce-core/dot-brand-8.svg', showExit: true }
+  }
+  return null
+})
+
+function ct(key: string, values: Record<string, string | number> = {}): string {
+  return mobileT(`commercePage.${key}`).replace(/\{(\w+)\}/g, (_, name: string) => (
+    values[name] === undefined ? `{${name}}` : String(values[name])
+  ))
 }
 
-async function createOrder(plan: MobileB5PublicPlan): Promise<void> { try { await createMobileB5Order(plan.skuId); await load(); message.value = '订单已创建，请在订单中查看后续状态。' } catch (error) { message.value = error instanceof Error ? error.message : '订单创建失败。' } }
-async function recover(order: MobileB5Order): Promise<void> { try { const response = await prepareMobileB5Payment(order.orderId); const data = response && typeof response === 'object' && 'data' in response ? response.data : response; message.value = data && typeof data === 'object' && 'status' in data ? `支付恢复状态：${text(data.status)}` : '支付恢复请求已提交。' } catch (error) { message.value = error instanceof Error ? error.message : '支付恢复失败。' } }
-function goBack(): void { openUniPage('/pages/world/world') }
+function resetData(): void {
+  catalogState.value = 'idle'
+  entitlementsState.value = 'idle'
+  ordersState.value = 'idle'
+  plans.value = []
+  entitlements.value = []
+  orders.value = []
+  invalidPlans.value = 0
+  invalidEntitlements.value = 0
+  invalidOrders.value = 0
+  catalogErrorKey.value = ''
+  entitlementsErrorKey.value = ''
+  ordersErrorKey.value = ''
+  ordersRefreshErrorKey.value = ''
+  ordersRefreshing.value = false
+  accessBlocked.value = false
+}
 
-onShow(async () => { await session.restore(); if (!session.isAuthenticated) { getUniRuntime().navigateTo({ url: '/pages/login/login' }); return }; void load() })
+function currentIdentity(): { subject: string; revision: number } | null {
+  return session.getMobileApiIdentity()
+}
+
+function isCurrentPage(run: number, identity: { subject: string; revision: number } | null): boolean {
+  return visible
+    && pageEpoch === run
+    && session.isAuthenticated
+    && session.isLearningReady
+    && isSameCommerceIdentity(identity, session.getMobileApiIdentity())
+}
+
+function isCurrentOrders(run: number, identity: { subject: string; revision: number } | null): boolean {
+  return visible
+    && ordersEpoch === run
+    && session.isAuthenticated
+    && session.isLearningReady
+    && isSameCommerceIdentity(identity, session.getMobileApiIdentity())
+}
+
+function sectionErrorKey(error: unknown, fallbackKey: string): string {
+  const failure = toCommerceFailure(error)
+  if (isAuthFailure(failure)) {
+    accessBlocked.value = true
+    return 'noPermission'
+  }
+  return fallbackKey
+}
+
+function applyCatalog(result: PromiseSettledResult<unknown>): void {
+  if (result.status === 'rejected') {
+    catalogState.value = 'error'
+    catalogErrorKey.value = sectionErrorKey(result.reason, 'plansError')
+    return
+  }
+  const parsed = toCommerceCatalog(result.value)
+  if (!parsed.ok) {
+    catalogState.value = 'error'
+    catalogErrorKey.value = 'plansError'
+    return
+  }
+  plans.value = parsed.data.plans
+  invalidPlans.value = parsed.data.invalidPlans
+  catalogState.value = parsed.data.plans.length === 0 && parsed.data.invalidPlans > 0 ? 'error' : 'ready'
+  catalogErrorKey.value = catalogState.value === 'error' ? 'plansError' : ''
+}
+
+function applyEntitlements(result: PromiseSettledResult<unknown>): void {
+  if (result.status === 'rejected') {
+    entitlementsState.value = 'error'
+    entitlementsErrorKey.value = sectionErrorKey(result.reason, 'entitlementsError')
+    return
+  }
+  const parsed = toCommerceEntitlements(result.value)
+  if (!parsed.ok) {
+    entitlementsState.value = 'error'
+    entitlementsErrorKey.value = 'entitlementsError'
+    return
+  }
+  entitlements.value = parsed.data.entitlements
+  invalidEntitlements.value = parsed.data.invalidEntitlements
+  entitlementsState.value = parsed.data.entitlements.length === 0 && parsed.data.invalidEntitlements > 0 ? 'error' : 'ready'
+  entitlementsErrorKey.value = entitlementsState.value === 'error' ? 'entitlementsError' : ''
+}
+
+function applyOrders(result: PromiseSettledResult<unknown>, refresh: boolean): void {
+  if (result.status === 'rejected') {
+    if (refresh && orders.value.length) {
+      ordersRefreshErrorKey.value = sectionErrorKey(result.reason, 'ordersError')
+      return
+    }
+    ordersState.value = 'error'
+    ordersErrorKey.value = sectionErrorKey(result.reason, 'ordersError')
+    return
+  }
+  const parsed = toCommerceOrders(result.value)
+  if (!parsed.ok) {
+    if (refresh && orders.value.length) {
+      ordersRefreshErrorKey.value = 'ordersError'
+      return
+    }
+    ordersState.value = 'error'
+    ordersErrorKey.value = 'ordersError'
+    return
+  }
+  if (refresh && orders.value.length && parsed.data.orders.length === 0 && parsed.data.invalidOrders > 0) {
+    ordersRefreshErrorKey.value = 'ordersError'
+    return
+  }
+  orders.value = parsed.data.orders
+  invalidOrders.value = parsed.data.invalidOrders
+  ordersState.value = parsed.data.orders.length === 0 && parsed.data.invalidOrders > 0 ? 'error' : 'ready'
+  ordersErrorKey.value = ordersState.value === 'error' ? 'ordersError' : ''
+}
+
+async function loadAll(): Promise<void> {
+  if (!visible) return
+  const identity = currentIdentity()
+  if (!session.isAuthenticated || !session.isLearningReady || !identity) {
+    accessBlocked.value = true
+    return
+  }
+  const run = ++pageEpoch
+  ordersEpoch += 1
+  accessBlocked.value = false
+  ordersRefreshing.value = false
+  ordersRefreshErrorKey.value = ''
+  catalogState.value = 'loading'
+  entitlementsState.value = 'loading'
+  ordersState.value = 'loading'
+  plans.value = []
+  entitlements.value = []
+  orders.value = []
+  invalidPlans.value = 0
+  invalidEntitlements.value = 0
+  invalidOrders.value = 0
+  catalogErrorKey.value = ''
+  entitlementsErrorKey.value = ''
+  ordersErrorKey.value = ''
+  const [catalogResult, entitlementsResult, ordersResult] = await Promise.allSettled([
+    getMobileB5PublicCatalog(),
+    listMobileB5Entitlements(),
+    listMobileB5Orders(),
+  ])
+  if (!isCurrentPage(run, identity)) return
+  applyCatalog(catalogResult)
+  applyEntitlements(entitlementsResult)
+  applyOrders(ordersResult, false)
+}
+
+async function refreshOrders(): Promise<void> {
+  if (!visible || ordersRefreshing.value) return
+  const identity = currentIdentity()
+  if (!session.isAuthenticated || !session.isLearningReady || !identity) {
+    accessBlocked.value = true
+    return
+  }
+  const run = ++ordersEpoch
+  ordersRefreshing.value = true
+  ordersRefreshErrorKey.value = ''
+  try {
+    const value = await listMobileB5Orders()
+    if (!isCurrentOrders(run, identity)) return
+    applyOrders({ status: 'fulfilled', value }, true)
+  } catch (error) {
+    if (!isCurrentOrders(run, identity)) return
+    ordersRefreshErrorKey.value = sectionErrorKey(error, 'ordersError')
+    if (!orders.value.length) ordersState.value = 'error'
+  } finally {
+    if (isCurrentOrders(run, identity)) ordersRefreshing.value = false
+  }
+}
+
+async function initialise(token: number): Promise<void> {
+  const allowed = await ensureMobilePageAccess(PAGE_PATH)
+  if (token !== showEpoch || !visible) return
+  if (!allowed) {
+    accessBlocked.value = true
+    return
+  }
+  if (!session.isAuthenticated || !session.isLearningReady || !currentIdentity()) {
+    accessBlocked.value = true
+    return
+  }
+  await loadAll()
+}
+
+onShow(() => {
+  visible = true
+  const token = ++showEpoch
+  void initialise(token)
+})
+
+onHide(() => {
+  visible = false
+  showEpoch += 1
+  pageEpoch += 1
+  ordersEpoch += 1
+  ordersRefreshing.value = false
+})
+
+watch(() => session.identityRevision, () => {
+  if (!visible) return
+  pageEpoch += 1
+  ordersEpoch += 1
+  resetData()
+  if (!session.isAuthenticated) {
+    accessBlocked.value = true
+    return
+  }
+  void initialise(++showEpoch)
+})
+
+function planTitle(plan: CommercePlan): string {
+  return plan.title
+}
+
+function planBilling(plan: CommercePlan): string {
+  return ct(billingPeriodKey(plan.billingPeriod))
+}
+
+function planPrice(plan: CommercePlan): string {
+  const resolved = resolveCommercePlanPrice(plan, uiLocale.value)
+  if (resolved.kind === 'amount') return resolved.value
+  return ct(resolved.kind === 'unavailable' ? 'planPriceUnavailable' : 'planPricePending')
+}
+
+function planAvailabilityLabel(plan: CommercePlan): string {
+  return ct(availabilityKey(plan.availability))
+}
+
+function entitlementTitle(item: CommerceEntitlement): string {
+  const code = item.entitlementCode.toUpperCase()
+  if (code === 'PREMIUM_MONTHLY') return ct('entitlementPremiumMonthly')
+  if (code === 'PREMIUM_YEARLY') return ct('entitlementPremiumYearly')
+  if (item.skuId) {
+    const title = planTitleBySku.value.get(item.skuId)
+    if (title) return title
+  }
+  return ct('entitlementFallback')
+}
+
+function entitlementDate(item: CommerceEntitlement): string {
+  const date = formatCommerceDate(item.expiresAt, uiLocale.value)
+  return date ? ct('entitlementUntil', { date }) : ct('entitlementNoExpiry')
+}
+
+function entitlementStatusLabel(item: CommerceEntitlement): string {
+  return ct(entitlementStatusKey(item.status))
+}
+
+function entitlementTagClass(item: CommerceEntitlement): string {
+  if (item.status === 'ACTIVE') return 'commerce-tag--ok'
+  if (item.status === 'GRACE' || item.status === 'PENDING') return 'commerce-tag--warn'
+  return 'commerce-tag--mute'
+}
+
+function orderTitle(order: CommerceOrder): string {
+  if (order.skuId) {
+    const title = planTitleBySku.value.get(order.skuId)
+    if (title) return title
+  }
+  return ct('orderSkuFallback')
+}
+
+function orderDate(order: CommerceOrder): string {
+  const date = formatCommerceDate(order.createdAt, uiLocale.value)
+  return date ? ct('orderCreatedAt', { date }) : ct('orderDateUnavailable')
+}
+
+function orderStatusLabel(order: CommerceOrder): string {
+  return ct(orderStatusKey(order.status))
+}
+
+function orderTagClass(order: CommerceOrder): string {
+  if (order.status === 'PAID') return 'commerce-tag--ok'
+  if (order.status === 'PAYMENT_FAILED' || order.status === 'REFUND_FAILED') return 'commerce-tag--err'
+  if (order.status === 'CANCELLED' || order.status === 'REFUNDED' || order.status === 'EXPIRED') return 'commerce-tag--mute'
+  return 'commerce-tag--warn'
+}
+
+function returnToLearning(): void {
+  openUniPage('/pages/home/home')
+}
 </script>
 
 <template>
-  <view class="yx-page b5-page v2-shop-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
-    <MobilePageHeader page="b5-commerce" />
-    <view class="v2-shop-body">
-      <view v-if="message" class="b5-message fb d v2-shop-fb v2-shop-d" role="status"><AppIcon name="alert" :size="14" /><text>{{ message }}</text></view>
-      <view class="b5-section card v2-shop-card">
-        <view class="b5-section__heading v2-shop-head">
-          <view class="v2-shop-titles">
-            <text class="v2-shop-eyebrow eyebrow"><AppIcon name="ticket" :size="14" /><text>当前权益</text></text>
-            <text class="v2-shop-title v2-shop-h2 h2">当前权益</text>
-            <text class="b5-muted v2-shop-d d">{{ active.length }} 项</text>
-          </view>
+  <view class="commerce-page yx-page" :class="themeClass" :style="experienceStyle" :data-motion="experienceMotion">
+    <view v-if="b10ThemeMode !== 'high-contrast'" class="commerce-glow" aria-hidden="true">
+      <image class="commerce-glow-image" src="/static/figma-commerce-core/glow-540.svg" mode="scaleToFill" />
+    </view>
+    <view class="commerce-header">
+      <MobilePageHeader
+        page="b5-commerce"
+        compact
+        :title="ct('navTitle')"
+        back-icon-src="/static/figma-commerce-core/chevron-22.svg"
+        :show-settings="false"
+      />
+    </view>
+
+    <view v-if="accessBlocked" class="commerce-body">
+      <view class="commerce-alert" role="alert">
+        <view class="commerce-alert-icon">
+          <image class="commerce-error-icon" src="/static/figma-commerce-core/error-17.svg" mode="aspectFit" aria-hidden="true" />
         </view>
-        <view v-if="active.length" class="b5-list v2-shop-list">
-          <view v-for="item in active" :key="item.sourceRef" class="b5-row list-row row v2-shop-row">
-            <view class="v2-shop-copy">
-              <text class="v2-shop-name v2-shop-h2">{{ entitlementName(item.entitlementCode) }}</text>
-              <text class="b5-muted v2-shop-d d">有效至 {{ item.expiresAt.slice(0, 10) }}</text>
-            </view>
-            <text class="b5-status v2-shop-state v2-shop-tag">{{ statusText(item.status) }}</text>
-          </view>
+        <view class="commerce-alert-copy">
+          <text class="commerce-alert-title">{{ ct('accessErrorTitle') }}</text>
+          <text class="commerce-alert-body">{{ ct('accessErrorBody') }}</text>
         </view>
-        <text v-else class="b5-empty fb d v2-shop-fb v2-shop-d v2-shop-empty">暂无生效权益</text>
-      </view>
-      <view class="b5-section card v2-shop-card">
-        <view class="b5-section__heading v2-shop-head">
-          <view class="v2-shop-titles">
-            <text class="v2-shop-eyebrow eyebrow"><AppIcon name="store" :size="14" /><text>学习方案</text></text>
-            <text class="v2-shop-title v2-shop-h2 h2">学习方案</text>
-          </view>
-        </view>
-        <view v-if="status === 'loading'" class="b5-empty fb d v2-shop-fb v2-shop-d" role="status"><AppIcon name="refresh" :size="14" /><text>正在加载学习方案…</text></view>
-        <view v-else-if="!plans.length" class="b5-empty fb d v2-shop-fb v2-shop-d"><AppIcon name="inbox" :size="14" /><text>当前没有可购买的方案。</text></view>
-        <view v-else class="b5-plan-list v2-shop-list">
-          <view v-for="plan in plans" :key="plan.skuId" class="b5-plan list-row row v2-shop-row">
-            <view class="v2-shop-copy">
-              <text class="b5-plan__title v2-shop-name v2-shop-h2">{{ plan.title }}</text>
-            </view>
-            <view class="b5-plan__action v2-shop-actions row">
-              <text class="b5-price v2-shop-price">{{ money(plan.amountMinor, plan.currency) }}</text>
-              <button tabindex="0" role="button" class="b5-primary btn v2-shop-btn v2-shop-opt v2-shop-submit" type="button" @click="createOrder(plan)">选择方案<AppIcon name="chev" :size="14" /></button>
-            </view>
-          </view>
+        <view class="commerce-alert-actions">
+          <button class="commerce-link" type="button" @click="returnToLearning">{{ ct('secureExit') }}</button>
         </view>
       </view>
-      <view class="b5-section card v2-shop-card">
-        <view class="b5-section__heading v2-shop-head">
-          <view class="v2-shop-titles">
-            <text class="v2-shop-eyebrow eyebrow"><AppIcon name="swap" :size="14" /><text>订单</text></text>
-            <text class="v2-shop-title v2-shop-h2 h2">订单恢复</text>
-            <text class="b5-muted v2-shop-d d">服务端状态</text>
-          </view>
+    </view>
+
+    <view v-else class="commerce-body">
+      <view class="commerce-hero">
+        <text class="commerce-hero-title" role="heading" aria-level="1">{{ ct('heroTitle') }}</text>
+        <text class="commerce-hero-subtitle">{{ ct('heroSubtitle') }}</text>
+      </view>
+
+      <view v-if="globalError" class="commerce-alert" role="alert">
+        <view class="commerce-alert-icon">
+          <image class="commerce-error-icon" src="/static/figma-commerce-core/error-17.svg" mode="aspectFit" aria-hidden="true" />
         </view>
-        <view v-if="orders.length" class="b5-list v2-shop-list">
-          <view v-for="order in orders" :key="order.orderId" class="b5-row list-row row v2-shop-row">
-            <view class="v2-shop-copy">
-              <text class="v2-shop-name v2-shop-h2">{{ order.orderId }}</text>
-              <text class="b5-muted v2-shop-d d">{{ order.skuId }} · {{ money(order.amountMinor, order.currency) }}</text>
-            </view>
-            <view class="b5-row__right v2-shop-actions row">
-              <text class="b5-status v2-shop-state v2-shop-tag">{{ statusText(order.status) }}</text>
-              <button tabindex="0" role="button" v-if="order.status === 'CREATED'" class="b5-secondary btn v2-shop-btn v2-shop-opt" type="button" @click="recover(order)">恢复<AppIcon name="refresh" :size="14" /></button>
-            </view>
-          </view>
+        <view class="commerce-alert-copy">
+          <text class="commerce-alert-title">{{ ct('loadErrorTitle') }}</text>
+          <text class="commerce-alert-body">{{ ct('loadErrorBody') }}</text>
         </view>
-        <text v-else class="b5-empty fb d v2-shop-fb v2-shop-d v2-shop-empty">还没有订单</text>
+        <view class="commerce-alert-actions">
+          <button class="commerce-link" type="button" @click="loadAll">{{ ct('retry') }}</button>
+          <button class="commerce-link" type="button" @click="returnToLearning">{{ ct('secureExit') }}</button>
+        </view>
+      </view>
+
+      <template v-if="showInitialSkeleton">
+        <text class="commerce-loading-text" role="status">{{ ct('loading') }}</text>
+        <view class="commerce-skeleton commerce-skeleton--90" aria-hidden="true" />
+        <view class="commerce-skeleton commerce-skeleton--190" aria-hidden="true" />
+        <view class="commerce-skeleton commerce-skeleton--110" aria-hidden="true" />
+      </template>
+
+      <template v-else>
+        <view class="commerce-card">
+          <view class="commerce-card-head">
+            <text class="commerce-card-title" role="heading" aria-level="2">{{ ct('entitlementsTitle') }}</text>
+            <text v-if="entitlementsState === 'ready'" class="commerce-card-meta">{{ ct('entitlementCount', { count: activeEntitlements.length }) }}</text>
+          </view>
+          <view v-if="entitlementsState === 'loading'" class="commerce-loading-text" role="status">{{ ct('loading') }}</view>
+          <view v-else-if="entitlementsState === 'error' && !globalError" class="commerce-section-error" role="alert">
+            <text class="commerce-section-error-text">{{ ct(entitlementsErrorKey || 'entitlementsError') }}</text>
+            <button class="commerce-link" type="button" @click="loadAll">{{ ct('retry') }}</button>
+          </view>
+          <text v-else-if="entitlementsState === 'error'" class="commerce-empty">{{ ct('statusUnavailable') }}</text>
+          <template v-else>
+            <view v-if="invalidEntitlements" class="commerce-partial" role="status">{{ ct('partialNotice', { count: invalidEntitlements }) }}</view>
+            <view v-if="activeEntitlements.length" class="commerce-list">
+              <view v-for="item in activeEntitlements" :key="item.key" class="commerce-row">
+                <view class="commerce-tile">
+                  <image class="commerce-icon" src="/static/figma-commerce-core/crown-22.svg" mode="aspectFit" aria-hidden="true" />
+                </view>
+                <view class="commerce-copy">
+                  <text class="commerce-name">{{ entitlementTitle(item) }}</text>
+                  <text class="commerce-meta">{{ entitlementDate(item) }}</text>
+                </view>
+                <text class="commerce-tag" :class="entitlementTagClass(item)">{{ entitlementStatusLabel(item) }}</text>
+              </view>
+            </view>
+            <text v-else class="commerce-empty">{{ ct('entitlementEmpty') }}</text>
+          </template>
+        </view>
+
+        <view class="commerce-card">
+          <view class="commerce-card-head">
+            <text class="commerce-card-title" role="heading" aria-level="2">{{ ct('plansTitle') }}</text>
+          </view>
+          <view v-if="catalogState === 'loading'" class="commerce-loading-text" role="status">{{ ct('loading') }}</view>
+          <view v-else-if="catalogState === 'error' && !globalError" class="commerce-section-error" role="alert">
+            <text class="commerce-section-error-text">{{ ct(catalogErrorKey || 'plansError') }}</text>
+            <button class="commerce-link" type="button" @click="loadAll">{{ ct('retry') }}</button>
+          </view>
+          <text v-else-if="catalogState === 'error'" class="commerce-empty">{{ ct('statusUnavailable') }}</text>
+          <template v-else>
+            <view v-if="invalidPlans" class="commerce-partial" role="status">{{ ct('partialNotice', { count: invalidPlans }) }}</view>
+            <view v-if="plans.length" class="commerce-plan-list">
+              <view v-for="plan in plans" :key="plan.key" class="commerce-plan">
+                <view class="commerce-plan-tile">
+                  <image class="commerce-icon commerce-icon--20" src="/static/figma-commerce-core/ticket-20.svg" mode="aspectFit" aria-hidden="true" />
+                </view>
+                <view class="commerce-plan-copy">
+                  <text class="commerce-name">{{ planTitle(plan) }}</text>
+                  <text class="commerce-plan-meta">{{ planBilling(plan) }}</text>
+                </view>
+                <view class="commerce-plan-price-wrap">
+                  <text class="commerce-plan-price">{{ planPrice(plan) }}</text>
+                  <text class="commerce-plan-state">{{ planAvailabilityLabel(plan) }}</text>
+                </view>
+              </view>
+              <text class="commerce-note">{{ ct('purchaseClosedHint') }}</text>
+            </view>
+            <template v-else>
+              <text class="commerce-empty">{{ ct('plansEmpty') }}</text>
+              <text class="commerce-note">{{ ct('plansEmptyHint') }}</text>
+            </template>
+          </template>
+        </view>
+
+        <view class="commerce-card">
+          <view class="commerce-card-head">
+            <text class="commerce-card-title" role="heading" aria-level="2">{{ ct('ordersTitle') }}</text>
+            <button
+              v-if="ordersState === 'ready'"
+              class="commerce-refresh"
+              type="button"
+              :disabled="ordersRefreshing"
+              :aria-busy="ordersRefreshing ? 'true' : 'false'"
+              @click="refreshOrders"
+            >{{ ordersRefreshing ? ct('refreshing') : ct('refreshOrders') }}</button>
+            <text v-else class="commerce-card-meta">{{ ct('ordersProgress') }}</text>
+          </view>
+          <view v-if="ordersState === 'loading'" class="commerce-loading-text" role="status">{{ ct('loading') }}</view>
+          <view v-else-if="ordersState === 'error' && !globalError" class="commerce-section-error" role="alert">
+            <text class="commerce-section-error-text">{{ ct(ordersErrorKey || 'ordersError') }}</text>
+            <button class="commerce-link" type="button" @click="refreshOrders">{{ ct('retry') }}</button>
+          </view>
+          <text v-else-if="ordersState === 'error'" class="commerce-empty">{{ ct('statusUnavailable') }}</text>
+          <template v-else>
+            <view v-if="ordersRefreshErrorKey" class="commerce-partial" role="alert">{{ ct('refreshFailed') }}</view>
+            <view v-if="invalidOrders" class="commerce-partial" role="status">{{ ct('partialNotice', { count: invalidOrders }) }}</view>
+            <view v-if="orders.length" class="commerce-list">
+              <view v-for="order in orders" :key="order.key" class="commerce-row commerce-order-row">
+                <view class="commerce-tile commerce-tile--neutral">
+                  <image class="commerce-icon" src="/static/figma-commerce-core/receipt-22.svg" mode="aspectFit" aria-hidden="true" />
+                </view>
+                <view class="commerce-copy">
+                  <text class="commerce-name">{{ orderTitle(order) }}</text>
+                  <text class="commerce-meta">{{ orderDate(order) }}</text>
+                </view>
+                <text class="commerce-tag" :class="orderTagClass(order)">{{ orderStatusLabel(order) }}</text>
+              </view>
+            </view>
+            <text v-else class="commerce-empty">{{ ct('ordersEmpty') }}</text>
+          </template>
+        </view>
+
+        <view class="commerce-card commerce-redeem-card">
+          <view class="commerce-card-head">
+            <text class="commerce-card-title" role="heading" aria-level="2">{{ ct('redeemTitle') }}</text>
+          </view>
+          <text class="commerce-redeem-title">{{ ct('redeemClosedTitle') }}</text>
+          <text class="commerce-note">{{ ct('redeemClosedBody') }}</text>
+          <button class="commerce-link commerce-link--start" type="button" @click="returnToLearning">{{ ct('secureExit') }}</button>
+        </view>
+
+      </template>
+
+      <view v-if="tip" class="commerce-tip">
+        <view class="commerce-tip-row">
+          <image class="commerce-dot" :src="tip.dot" mode="aspectFit" aria-hidden="true" />
+          <text class="commerce-tip-title">{{ ct(tip.title) }}</text>
+        </view>
+        <text class="commerce-tip-body">{{ ct(tip.body) }}</text>
+        <button v-if="tip.showExit" class="commerce-link commerce-link--start" type="button" @click="returnToLearning">{{ ct('secureExit') }}</button>
+      </view>
+    </view>
+
+    <view class="commerce-bottom-bar">
+      <view class="commerce-bottom-inner">
+        <button
+          v-if="activeEntitlements.length && !accessBlocked"
+          class="commerce-cta"
+          type="button"
+          @click="returnToLearning"
+        >{{ ct('continueLearning') }}</button>
+        <button
+          v-else
+          class="commerce-cta commerce-cta--disabled"
+          type="button"
+          disabled
+          aria-disabled="true"
+        >{{ ct('purchaseUnavailable') }}</button>
       </view>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.b5-page{min-height:100vh;padding:30rpx;background:var(--yx-surface-page);color:var(--yx-text-primary)}.b5-topbar{display:flex;align-items:center;gap:16rpx}.b5-back{width:62rpx;height:62rpx;margin:0;padding:0;border:0;border-radius:18rpx;color:var(--yx-brand);background:var(--yx-surface-card);font-size:48rpx;line-height:58rpx}.b5-kicker{display:block;color:var(--yx-brand);font-size:20rpx;font-weight:800;letter-spacing:3rpx}.b5-title{display:block;margin-top:6rpx;font-size:36rpx;font-weight:800}.b5-gate{display:flex;align-items:center;gap:8rpx;margin-left:auto;padding:10rpx 14rpx;border:1rpx solid var(--yx-border);border-radius:999rpx;color:var(--yx-text-secondary);background:var(--yx-surface-card);font-size:20rpx}.b5-dot{width:12rpx;height:12rpx;border-radius:50%;background:var(--yx-warning)}.b5-card,.b5-section{margin-top:24rpx;padding:24rpx;border:1rpx solid var(--yx-border);border-radius:22rpx;background:var(--yx-surface-card)}.b5-hero{display:grid;gap:12rpx;background:linear-gradient(135deg,var(--yx-text-primary),var(--yx-action));color:var(--yx-on-brand)}.b5-hero__title{font-size:38rpx;font-weight:800;line-height:1.35}.b5-muted{display:block;color:var(--yx-text-secondary);font-size:22rpx;line-height:1.55}.b5-hero .b5-muted{color:var(--yx-brand-soft)}.b5-message{margin-top:18rpx;padding:16rpx;border-radius:14rpx;color:var(--yx-success);background:var(--yx-border);font-size:23rpx;line-height:1.55}.b5-section__heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:16rpx;font-size:28rpx;font-weight:750}.b5-list{display:grid;gap:10rpx}.b5-row{display:flex;align-items:center;justify-content:space-between;gap:16rpx;padding:16rpx;border-radius:14rpx;background:var(--yx-surface-page)}.b5-row>view:first-child{display:grid;gap:6rpx}.b5-status{color:var(--yx-success);font-size:21rpx;font-weight:700}.b5-row__right{display:flex;align-items:center;gap:12rpx}.b5-empty{display:block;padding:18rpx;border:1rpx dashed var(--yx-border);border-radius:14rpx;color:var(--yx-text-secondary);font-size:23rpx}.b5-plan-list{display:grid;gap:10rpx}.b5-plan{display:flex;align-items:center;justify-content:space-between;gap:16rpx;padding:18rpx;border-radius:14rpx;background:var(--yx-surface-page)}.b5-plan__title{display:block;font-size:27rpx;font-weight:700}.b5-plan__action{display:flex;align-items:center;gap:14rpx}.b5-price{color:var(--yx-success);font-size:27rpx;font-weight:800}.b5-primary,.b5-secondary{margin:0;padding:12rpx 16rpx;border:0;border-radius:12rpx;font-size:22rpx}.b5-primary{color:var(--yx-on-brand);background:var(--yx-action)}.b5-secondary{color:var(--yx-brand);background:var(--yx-brand-soft)}@media(max-width:520px){.b5-plan{align-items:flex-start;flex-direction:column}.b5-plan__action{width:100%;justify-content:space-between}.b5-hero__title{font-size:32rpx}}
-/* v2 商城页换皮：对齐 mobile/styles.css 与 refine.css 中 .card/.eyebrow/.tag/.opt/.btn/.fb/.list-row，对齐 practice.vue v2-practice-* 与 today.vue v2-today-* 同样数值，仅用 var(--v2-*)。 */
-.v2-shop-page{box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-shop-body{display:flex;flex-direction:column;gap:var(--v2-space-4);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-shop-body>*{min-width:0;max-width:100%}
-.v2-shop-card{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-5);border:1px solid var(--v2-line);border-radius:var(--v2-radius-lg);background:var(--v2-card);box-shadow:var(--v2-shadow);font-family:var(--v2-font)}
-.v2-shop-card:hover{border-color:var(--v2-brand)}
-.v2-shop-head{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-shop-head>*{min-width:0;max-width:100%}
-.v2-shop-titles{display:grid;gap:var(--v2-space-1);box-sizing:border-box;max-width:100%;min-width:0;flex:1 1 auto;font-family:var(--v2-font)}
-.v2-shop-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;margin:0 0 var(--v2-space-2);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
-.v2-shop-title{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:var(--v2-space-1) 0 0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-shop-h2{box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font);overflow-wrap:anywhere}
-.v2-shop-name{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:700;line-height:1.45;overflow-wrap:anywhere}
-.v2-shop-d{display:block;box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-shop-list{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-shop-list>*{min-width:0;max-width:100%}
-.v2-shop-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);font-family:var(--v2-font)}
-.v2-shop-row:hover{border-color:var(--v2-brand)}
-.v2-shop-row>*{min-width:0;max-width:100%}
-.v2-shop-copy{display:grid;gap:var(--v2-space-1);box-sizing:border-box;max-width:100%;min-width:0;flex:1 1 auto;font-family:var(--v2-font)}
-.v2-shop-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;font-family:var(--v2-font)}
-.v2-shop-actions>*{min-width:0;max-width:100%}
-.v2-shop-btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-shop-opt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;min-width:0;min-height:var(--v2-space-12);padding:var(--v2-space-3) var(--v2-space-4);border:1px solid var(--v2-line);border-radius:var(--v2-radius-md);background:var(--v2-card);color:var(--v2-ink);font-family:var(--v2-font);font-size:var(--v2-text-sm);font-weight:600;line-height:1.5;white-space:nowrap;overflow-wrap:anywhere}
-.v2-shop-btn:hover,.v2-shop-opt:hover{border-color:var(--v2-brand)}
-.v2-shop-btn:active,.v2-shop-opt:active{transform:scale(.97)}
-.v2-shop-btn:focus-visible,.v2-shop-opt:focus-visible{box-shadow:var(--v2-focus);outline:none}
-.v2-shop-btn:disabled,.v2-shop-opt:disabled{background:var(--v2-surface);color:var(--v2-mut);border:1px dashed var(--v2-line);box-shadow:none}
-.v2-shop-submit{border-color:transparent;background:var(--v2-brand);color:var(--v2-inverse);font-family:var(--v2-font);font-weight:700;white-space:nowrap}
-.v2-shop-submit:hover{border-color:var(--v2-brand)}
-.v2-shop-tag{display:inline-flex;align-items:center;justify-self:start;box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-1) var(--v2-space-2);border-radius:var(--v2-radius-pill);background:var(--v2-soft);color:var(--v2-brand);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;line-height:1.5;overflow-wrap:anywhere}
-.v2-shop-state{display:inline-flex;align-items:center;box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-1) var(--v2-space-2);border-radius:var(--v2-radius-pill);background:var(--v2-ok-soft);color:var(--v2-ok);font-family:var(--v2-font);font-size:var(--v2-text-xs);font-weight:700;line-height:1.5;overflow-wrap:anywhere}
-.v2-shop-price{box-sizing:border-box;max-width:100%;min-width:0;color:var(--v2-ok);font-family:var(--v2-font);font-size:var(--v2-text-lg);font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.v2-shop-fb{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin-top:var(--v2-space-4);padding:var(--v2-space-3) var(--v2-space-4);border-radius:var(--v2-radius-md);background:var(--v2-surface);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
-.v2-shop-empty{display:grid;gap:var(--v2-space-2);box-sizing:border-box;max-width:100%;min-width:0;padding:var(--v2-space-4);border:1px dashed var(--v2-line);border-radius:var(--v2-radius-md);color:var(--v2-mut);font-family:var(--v2-font);font-size:var(--v2-text-sm);line-height:1.7;overflow-wrap:anywhere}
+.commerce-page.yx-page.yx-page {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 860px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 0 calc(112px + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  background-color: var(--yx-surface-page);
+  background-image: var(--yx-r4-home-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: var(--v2-font);
+}
+.commerce-glow {
+  position: absolute;
+  top: -140px;
+  right: -120px;
+  width: min(360px, 92vw);
+  height: 300px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.commerce-glow-image { display: block; width: 100%; height: 100%; }
+.commerce-header {
+  position: relative;
+  z-index: 2;
+  padding: calc(18px + env(safe-area-inset-top)) 16px 0 8px;
+}
+.commerce-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 24px 0;
+}
+.commerce-hero { display: grid; gap: 4px; padding-top: 8px; }
+.commerce-hero-title {
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  overflow-wrap: anywhere;
+}
+.commerce-hero-subtitle {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 14px;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+.commerce-card {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid var(--yx-r4-glass-border, var(--yx-border));
+  border-radius: 24px;
+  background: var(--yx-r4-glass, var(--v2-card));
+  box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+  backdrop-filter: blur(var(--yx-r4-blur, 10px));
+  -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  .commerce-card {
+    background: color-mix(in srgb, var(--v2-card) 62%, transparent);
+    border-color: color-mix(in srgb, var(--v2-card) 90%, transparent);
+  }
+}
+.commerce-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 30px;
+}
+.commerce-card-title {
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  overflow-wrap: anywhere;
+}
+.commerce-card-meta {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 12px;
+  line-height: 18px;
+}
+.commerce-list { display: grid; gap: 0; }
+.commerce-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 56px;
+  padding: 10px 0;
+}
+.commerce-order-row + .commerce-order-row { border-top: 1px solid var(--v2-line); }
+.commerce-tile {
+  display: flex;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--v2-warn-soft);
+}
+.commerce-tile--neutral { background: var(--v2-surface); }
+.commerce-icon { display: block; width: 22px; height: 22px; }
+.commerce-icon--20 { width: 20px; height: 20px; }
+.commerce-copy { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; }
+.commerce-name {
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+.commerce-meta {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.commerce-tag {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.commerce-tag--ok { color: var(--v2-ok); background: var(--v2-ok-soft); }
+.commerce-tag--warn { color: var(--v2-warn); background: var(--v2-warn-soft); }
+.commerce-tag--err { color: var(--v2-bad); background: var(--v2-bad-soft); }
+.commerce-tag--mute { color: var(--v2-mut); background: var(--v2-surface); }
+.commerce-plan-list { display: grid; gap: 10px; }
+.commerce-plan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--yx-r4-field, var(--v2-card));
+}
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  .commerce-plan { background: color-mix(in srgb, var(--v2-card) 50%, transparent); }
+}
+.commerce-plan-tile {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: var(--v2-soft);
+}
+.commerce-plan-copy { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; }
+.commerce-plan-meta {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.commerce-plan-price-wrap { display: grid; flex: 0 0 auto; gap: 2px; justify-items: end; max-width: 42%; }
+.commerce-plan-price {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.commerce-plan-state {
+  color: var(--v2-mut);
+  font-size: 11px;
+  line-height: 17px;
+  text-align: right;
+  white-space: nowrap;
+}
+.commerce-note {
+  display: block;
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.commerce-empty {
+  display: block;
+  padding: 6px 0;
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 14px;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+.commerce-loading-text {
+  display: block;
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 12px;
+  line-height: 18px;
+}
+.commerce-skeleton {
+  width: 100%;
+  border-radius: 24px;
+  background: var(--v2-surface);
+}
+.commerce-skeleton--90 { height: 90px; }
+.commerce-skeleton--190 { height: 190px; }
+.commerce-skeleton--110 { height: 110px; }
+.commerce-section-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.commerce-section-error-text {
+  flex: 1 1 160px;
+  color: var(--v2-bad);
+  font-size: 13px;
+  line-height: 20px;
+}
+.commerce-partial {
+  color: var(--v2-warn);
+  background: var(--v2-warn-soft);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.commerce-alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 12px 8px 12px 14px;
+  border: 1px solid var(--yx-r4-glass-border, var(--yx-border));
+  border-radius: 18px;
+  background: var(--yx-r4-glass, var(--v2-card));
+  box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+  backdrop-filter: blur(var(--yx-r4-blur, 10px));
+  -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+.commerce-alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: var(--v2-bad);
+}
+.commerce-error-icon { display: block; width: 17px; height: 17px; }
+.commerce-alert-copy { display: grid; gap: 2px; min-width: 0; }
+.commerce-alert-title {
+  color: var(--v2-bad);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.commerce-alert-body {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.commerce-alert-actions { display: flex; grid-column: 1 / -1; gap: 8px; flex-wrap: wrap; }
+.commerce-page .commerce-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--v2-brand);
+  background: transparent;
+  font-family: var(--v2-font);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.commerce-page .commerce-link::after { border: 0; }
+.commerce-page .commerce-link:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 2px; }
+.commerce-page .commerce-link--start { justify-self: start; padding-left: 0; }
+.commerce-page .commerce-refresh {
+  min-height: 44px;
+  margin: 0 0 0 auto;
+  padding: 6px 0 6px 8px;
+  border: 0;
+  color: var(--v2-brand);
+  background: transparent;
+  font-family: var(--v2-font);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.commerce-page .commerce-refresh::after { border: 0; }
+.commerce-page .commerce-refresh[disabled] { color: var(--v2-mut); opacity: .7; }
+.commerce-redeem-card { gap: 6px; }
+.commerce-redeem-title {
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+.commerce-tip {
+  display: grid;
+  gap: 6px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid var(--yx-r4-glass-border, var(--yx-border));
+  border-radius: 18px;
+  background: var(--yx-r4-glass, var(--v2-card));
+  box-shadow: var(--yx-r4-shadow-card, var(--v2-shadow));
+  backdrop-filter: blur(var(--yx-r4-blur, 10px));
+  -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+.commerce-tip-row { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.commerce-dot { display: block; flex: 0 0 8px; width: 8px; height: 8px; }
+.commerce-tip-title {
+  color: var(--yx-r4-ink, var(--yx-text-primary));
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.commerce-tip-body {
+  color: var(--yx-r4-muted, var(--yx-text-secondary));
+  font-size: 13px;
+  line-height: 19px;
+  overflow-wrap: anywhere;
+}
+.commerce-bottom-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  background: var(--v2-card);
+  border-top: 1px solid var(--v2-line);
+  box-shadow: 0 -4px 16px color-mix(in srgb, var(--v2-ink) 8%, transparent);
+  backdrop-filter: blur(var(--yx-r4-blur, 10px));
+  -webkit-backdrop-filter: blur(var(--yx-r4-blur, 10px));
+}
+.commerce-bottom-inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 860px;
+  padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
+}
+.commerce-page .commerce-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 14px 20px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: var(--yx-r4-on-cta, var(--v2-inverse));
+  background-color: var(--v2-brand);
+  background-image: var(--yx-r4-cta-image);
+  box-shadow: var(--yx-r4-shadow-cta, var(--v2-shadow));
+  font-family: var(--v2-font);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+.commerce-page .commerce-cta::after { border: 0; }
+.commerce-page .commerce-cta:focus-visible { outline: 2px solid var(--v2-brand); outline-offset: 3px; }
+.commerce-page .commerce-cta--disabled,
+.commerce-page .commerce-cta[disabled] {
+  opacity: .55;
+  cursor: default;
+  box-shadow: var(--yx-r4-shadow-cta, var(--v2-shadow));
+}
+.commerce-page .commerce-cta--disabled:active,
+.commerce-page .commerce-cta[disabled]:active { transform: none; }
+@media (max-width: 360px) {
+  .commerce-body { padding-right: 16px; padding-left: 16px; }
+  .commerce-header { padding-right: 12px; padding-left: 8px; }
+  .commerce-bottom-inner { padding-right: 16px; padding-left: 16px; }
+  .commerce-hero-title { font-size: 26px; line-height: 34px; }
+}
+:global(.b10-theme--high-contrast) .commerce-card,
+:global(.b10-theme--high-contrast) .commerce-alert,
+:global(.b10-theme--high-contrast) .commerce-tip {
+  background: var(--v2-card);
+  border-color: var(--v2-line);
+  box-shadow: none;
+}
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  :global(.b10-theme--high-contrast) .commerce-card,
+  :global(.b10-theme--high-contrast) .commerce-alert,
+  :global(.b10-theme--high-contrast) .commerce-tip {
+    background: var(--v2-card);
+  }
+}
+@media (prefers-contrast: more) {
+  .commerce-card,
+  .commerce-alert,
+  .commerce-tip,
+  .commerce-bottom-bar { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .commerce-tag { outline: 1px solid currentColor; }
+}
+.commerce-page.b10-theme--high-contrast .commerce-cta {
+  color: var(--v2-inverse);
+}
 </style>
