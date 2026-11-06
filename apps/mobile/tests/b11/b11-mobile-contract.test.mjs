@@ -65,12 +65,19 @@ test('B11 speaking keeps microphone, hash lifecycle, local recovery and Phase 1 
   assert.doesNotMatch(page + recording, /audioBytes|recordingBytes|audioBase64/)
 })
 
-test('speaking pages expose demo-media fallback and no-microphone learning path', () => {
+test('closed speaking pages do not expose demo audio', () => {
   const b11 = read('src/pages/b11-speaking/b11-speaking.vue')
   const b3 = read('src/pages/b3-speaking/b3-speaking.vue')
-  for (const marker of ['loadB11ListeningMaterials', 'DEMO AUDIO', 'demoAudioMessage', '2D 口型', '示范音频当前没有可播放授权地址']) assert.match(b11 + b3, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  assert.match(b3, /<MobileClosedPracticeNotice/)
+  assert.match(b3, /variant="speaking"/)
+  assert.match(b3, /title-key="closed\.b3Speaking\.title"/)
+  assert.match(b3, /@back="backToLearning"/)
+  assert.match(b3, /@select="openRelated"/)
+  assert.match(b3, /:alternatives="alternatives"/)
+  assert.doesNotMatch(b3, /DEMO AUDIO|playDemoAudio|startRecording|openRoleplay|saveRecording|B2StatusPanel|@click="load"/)
+  assert.match(b11, /<MobileClosedPracticeNotice/)
   assert.match(b11, /recordingCopy|permissionStatus/)
-  assert.match(b3, /录音权限需用户操作|没有可用录音管理器/)
+  assert.doesNotMatch(b11, /DEMO AUDIO/)
 })
 
 test('B11 performance and interaction downgrade supports four levels and manual motion disable', () => {
@@ -91,14 +98,44 @@ test('B11 performance and interaction downgrade supports four levels and manual 
   assert.match(speaking, /selectedPhoneme\?\.mouthProfile/)
 })
 
-test('B11 reading and listening share a single retry state panel', () => {
+test('B11 reading retries a failed initial read on the current shell while listening keeps B11StatusPanel', () => {
   const panel = read('src/components/b11/B11StatusPanel.vue')
   const reading = read('src/pages/b11-reading/b11-reading.vue')
   const listening = read('src/pages/b11-listening/b11-listening.vue')
   assert.match(panel, /'empty', 'offline', 'error', 'expired', 'forbidden'/)
-  for (const page of [reading, listening]) {
-    assert.match(page, /<B11StatusPanel/)
-    assert.doesNotMatch(page, /class="yx-card empty"/)
-    assert.doesNotMatch(page, /v-else-if="store\.(?:reading|listening)Status/)
-  }
+  assert.match(listening, /<B11StatusPanel\b/)
+  assert.match(listening, /:status="store\.listeningStatus"/)
+  assert.match(listening, /:message="statusMessage"/)
+  assert.match(listening, /:queue-count="store\.queueCount"/)
+  assert.match(listening, /:performance-level="store\.performanceLevel"/)
+  assert.match(listening, /:motion-disabled="store\.motionDisabled"/)
+  assert.match(listening, /@retry="load"/)
+  assert.match(listening, /@sync="sync"/)
+  assert.match(listening, /@performance="setPerformance"/)
+  assert.match(listening, /@motion="toggleMotion"/)
+  assert.doesNotMatch(listening, /class="yx-card empty"/)
+  assert.doesNotMatch(listening, /v-else-if="store\.(?:reading|listening)Status/)
+
+  assert.doesNotMatch(reading, /import B11StatusPanel/)
+  assert.equal((reading.match(/<B11StatusPanel\b/g) ?? []).length, 0)
+  assert.doesNotMatch(reading, /class="yx-card empty"/)
+  assert.doesNotMatch(reading, /v-else-if="store\.(?:reading|listening)Status/)
+  assert.match(reading, /const shell = computed\(\(\) => readingShell\(state\.value\)\)/)
+  assert.match(reading, /onShow\(\(\) => \{[\s\S]*?pageVisible\.value = true\s*void load\(\)/)
+  const listRead = reading.slice(reading.indexOf('listed = await b10LearningApi.listReadingArticles(context)'), reading.indexOf('const articleId = chooseListedArticleId'))
+  assert.ok(listRead.includes('applyFailure(error, requestEpoch, requestId, subject, revision)'))
+  const detailRead = reading.slice(reading.indexOf('detail = await b10LearningApi.getReadingArticle(context, articleId)'), reading.indexOf('const input = toInput(detail)'))
+  assert.ok(detailRead.includes('applyFailure(error, requestEpoch, requestId, subject, revision)'))
+  assert.match(reading, /function applyFailure\(error: unknown, requestEpoch: number, requestId: number, subject: string, revision: number\): boolean \{[\s\S]*?const next = classifyReadingStatus\(status\)[\s\S]*?article\.value = null[\s\S]*?state\.value = next/)
+  const errorAt = reading.indexOf('v-else-if="shell === \'error\'"')
+  const restrictedAt = reading.indexOf('v-else-if="shell === \'restricted\'"')
+  const readyAt = reading.indexOf('v-else-if="shell === \'ready\' && current"')
+  assert.ok(errorAt > 0 && restrictedAt > errorAt && readyAt > restrictedAt)
+  const errorShell = reading.slice(errorAt, restrictedAt)
+  const restrictedShell = reading.slice(restrictedAt, readyAt)
+  const retryButton = /<button type="button" class="reading-cta" data-action="retry" @click="load">\{\{ t\('retry'\) \}\}<\/button>/
+  assert.match(errorShell, /role="alert"/)
+  assert.match(errorShell, retryButton)
+  assert.match(restrictedShell, /role="alert"/)
+  assert.match(restrictedShell, retryButton)
 })

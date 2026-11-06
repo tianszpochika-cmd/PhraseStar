@@ -933,6 +933,7 @@ const M1012_CANONICAL_ROUTE_OPERATIONS = Object.freeze([
   { path: '/api/v1/assessment/placement/sessions', method: 'POST', operationId: 'createB10PlacementSession' },
   { path: '/api/v1/assessment/placement/sessions/{sessionId}', method: 'GET', operationId: 'getB10PlacementSession' },
   { path: '/api/v1/assessment/placement/sessions/{sessionId}/responses', method: 'POST', operationId: 'submitB10PlacementResponse' },
+  { path: '/api/v1/assessment/placement/sessions/{sessionId}/retest', method: 'POST', operationId: 'retestB10PlacementSession' },
   { path: '/api/v1/assessment/placement/baselines/skip', method: 'POST', operationId: 'createB10PlacementSkipBaseline' },
   { path: '/api/v1/assessment/placement/reports/{reportId}', method: 'GET', operationId: 'getB10PlacementReport' },
 ]);
