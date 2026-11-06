@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [阅读练习合入 B139](reviews/INTEGRATION-B139-READING-PRACTICE-INTEGRATED-H5.md) 新 H5 本机真实通过键盘进入、会话创建及同题读回。
 - [成长世界 B138](reviews/INTEGRATION-B138-WORLD-READ-ONLY-JDBC.md) 真实数据库验证有数据的学员只读查询、归属和前后事实一致。
 - [阅读练习 B137](reviews/INTEGRATION-B137-READING-PINNED-PRACTICE-H5.md) 本机真实 H5 候选通过发布文章进入固定版本题目。
 - [客服 H5 B136](reviews/INTEGRATION-B136-SUPPORT-H5-LEGACY-EMPTY.md) 本机真实本人空列表与零写入复验。

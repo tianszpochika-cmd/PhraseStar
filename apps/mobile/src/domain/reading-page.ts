@@ -36,6 +36,13 @@ export interface ReadingArticleInput {
   availability?: string | null
   contentVersionId: number | null
   contentEpoch: number
+  practiceRef?: unknown
+}
+
+export interface ReadingPracticePin {
+  contentCode: string
+  contentVersionId: number
+  questionItemId: number
 }
 
 export interface ReadPermit {
@@ -240,4 +247,116 @@ export function readingRouteActive(currentPath: string, routePath: string): bool
   const current = normalize(currentPath)
   const route = normalize(routePath)
   return current !== '' && current === route
+}
+
+/** Sealed P1 placement bank. It is not a published reading practice pin. */
+const SEALED_PLACEMENT_CONTENT_CODE = 'p1.placement.v1'
+const READING_CONTENT_CODE = /^[a-z][a-z0-9._:-]{1,127}$/u
+
+function readingRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function exactSafePositive(value: unknown): number | null {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0 ? value : null
+}
+
+/** Same acceptance as grammarQuestionItemId: a safe integer, or a decimal string. */
+function publishedQuestionItemId(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isSafeInteger(value) && value > 0) return value
+  if (typeof value === 'string' && /^[1-9]\d*$/u.test(value.trim())) {
+    const parsed = Number(value.trim())
+    return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : null
+  }
+  return null
+}
+
+function publishedContentCode(value: unknown): string | null {
+  if (typeof value !== 'string' || !READING_CONTENT_CODE.test(value) || value === SEALED_PLACEMENT_CONTENT_CODE) return null
+  return value
+}
+
+/** Detail practiceRef only. A string version, the sealed placement code, or the article id is dropped. */
+export function coherentReadingPracticeRef(articleId: number, articleVersion: unknown, raw: unknown): ReadingPracticePin | null {
+  const version = exactSafePositive(articleVersion)
+  const article = exactSafePositive(articleId)
+  if (version == null || article == null || !readingRecord(raw)) return null
+  const contentCode = publishedContentCode(raw.contentCode)
+  const refVersion = exactSafePositive(raw.contentVersionId)
+  const questionItemId = publishedQuestionItemId(raw.questionItemId)
+  if (!contentCode || refVersion !== version || questionItemId == null || questionItemId === article) return null
+  return { contentCode, contentVersionId: version, questionItemId }
+}
+
+export function readingPracticePin(article: ReadingArticleInput | null): ReadingPracticePin | null {
+  if (!article || articleViewState(article) !== 'ready') return null
+  return coherentReadingPracticeRef(article.articleId, article.contentVersionId, article.practiceRef)
+}
+
+export function readingPracticeReady(article: ReadingArticleInput | null, permit: ReadPermit): boolean {
+  return readingPracticePin(article) !== null && readStillCurrent(permit)
+}
+
+export function readingPracticeSessionBody(pin: ReadingPracticePin): {
+  contentCode: string
+  contentVersionId: number
+  mode: 'PRACTICE'
+  itemIds: [number]
+  clientSessionRef: string
+} | null {
+  const contentCode = publishedContentCode(pin.contentCode)
+  const contentVersionId = exactSafePositive(pin.contentVersionId)
+  const questionItemId = exactSafePositive(pin.questionItemId)
+  if (!contentCode || contentVersionId == null || questionItemId == null) return null
+  if (contentCode !== pin.contentCode || contentVersionId !== pin.contentVersionId || questionItemId !== pin.questionItemId) return null
+  return {
+    contentCode,
+    contentVersionId,
+    mode: 'PRACTICE',
+    itemIds: [questionItemId],
+    clientSessionRef: `h5-reading-${contentVersionId}-${questionItemId}`,
+  }
+}
+
+export function readingPracticeParsedAccepted(session: { sessionId?: unknown; sessionType?: unknown; status?: unknown; exercises?: unknown } | null, pin: ReadingPracticePin): boolean {
+  if (!session || !readingRecord(session) || !readingPracticeSessionBody(pin)) return false
+  if (typeof session.sessionId !== 'string' || !session.sessionId.startsWith('asess_') || session.sessionId.length <= 'asess_'.length) return false
+  if (session.sessionType !== 'PRACTICE' || session.status !== 'IN_PROGRESS') return false
+  if ('score' in session || 'scoreBucket' in session || 'savedReceipt' in session) return false
+  if (!Array.isArray(session.exercises) || session.exercises.length !== 1 || !readingRecord(session.exercises[0])) return false
+  const exercise = session.exercises[0]
+  if (exercise.exerciseId !== pin.questionItemId) return false
+  if (exercise.itemId != null && exercise.itemId !== pin.questionItemId) return false
+  if (exercise.contentVersionId != null && exercise.contentVersionId !== pin.contentVersionId) return false
+  return true
+}
+
+/** Non-sensitive tab marker. The session id never travels in the query. */
+export const READING_PRACTICE_ENTRY_MARKER = 'reading'
+export const READING_PRACTICE_ENTRY_PATH = '/pages/b2-practice/b2-practice?entry=reading'
+export const READING_PRACTICE_ENTRY_MS = 120_000
+
+export interface ReadingPracticeEntry {
+  sessionId: string
+  contentCode: string
+  contentVersionId: number
+  questionItemId: number
+}
+
+export function readingPracticeEntry(sessionId: unknown, pin: ReadingPracticePin | null): ReadingPracticeEntry | null {
+  if (!pin || !readingPracticeSessionBody(pin)) return null
+  if (typeof sessionId !== 'string' || !sessionId.startsWith('asess_') || sessionId.length <= 'asess_'.length) return null
+  return { sessionId, contentCode: pin.contentCode, contentVersionId: pin.contentVersionId, questionItemId: pin.questionItemId }
+}
+
+/** Marker only. A session id or any other query field is not authority. */
+export function readingPracticeEntryMarked(query: unknown): boolean {
+  if (!query || typeof query !== 'object' || Array.isArray(query)) return false
+  return (query as Record<string, unknown>).entry === READING_PRACTICE_ENTRY_MARKER
+}
+
+export function readingPracticeEntryFresh(issuedAt: unknown, now: unknown): boolean {
+  if (typeof issuedAt !== 'number' || typeof now !== 'number') return false
+  if (!Number.isSafeInteger(issuedAt) || !Number.isFinite(now) || now < issuedAt) return false
+  return now - issuedAt < READING_PRACTICE_ENTRY_MS
 }

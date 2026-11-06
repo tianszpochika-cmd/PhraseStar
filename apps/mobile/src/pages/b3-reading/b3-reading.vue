@@ -20,6 +20,10 @@ import {
   nextWordSelection,
   paragraphPieces,
   readableQuestionCount,
+  READING_PRACTICE_ENTRY_PATH,
+  readingPracticeParsedAccepted,
+  readingPracticePin,
+  readingPracticeReady,
   readStillCurrent,
   readingFontPx,
   readingRouteActive,
@@ -32,6 +36,7 @@ import {
   type LocalWordSelection,
   type ReadPermit,
   type ReadingArticleInput,
+  type ReadingPracticePin,
   type ReadingViewState,
 } from '../../domain/reading-page'
 import { b10LearningApi } from '../../api/b10'
@@ -41,6 +46,7 @@ import { b10ContentLocale, b10ThemeMode, b10UiLocale } from '../../platform/b10-
 import { backMobile, mobileExperienceEngine, mobileT, useMobileExperience } from '../../platform/experience'
 import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
 import { mobileI18n } from '../../platform/v2-foundation'
+import { useB10LearningStore } from '../../stores/b10-learning'
 import { useSessionStore } from '../../stores/session'
 
 const graded = false
@@ -82,6 +88,8 @@ const paragraphNavId = ROUTE_ID + '-paragraph-nav'
 const quality = ref(mobileExperienceEngine.state.level)
 let pageEpoch = 0
 let loadRequest = 0
+let practiceGeneration = 0
+let practiceFlight: number | null = null
 const stopQuality = mobileExperienceEngine.subscribe((next) => { quality.value = next.level })
 
 function t(key: string, values?: Record<string, string | number>): string {
@@ -123,6 +131,8 @@ function livePermit(requestEpoch: number, requestId: number, subject: string, re
 function concealContent(): void {
   pageEpoch += 1
   loadRequest += 1
+  practiceGeneration += 1
+  practiceFlight = null
   state.value = 'idle'
   article.value = null
   questionCount.value = 0
@@ -179,6 +189,7 @@ function toInput(source: B10ReadingArticle): ReadingArticleInput {
     availability: null,
     contentVersionId: source.contentVersionId,
     contentEpoch: source.contentEpoch,
+    practiceRef: source.practiceRef,
   }
 }
 function persistLocal(): void {
@@ -195,6 +206,8 @@ function persistLocal(): void {
   try { getUniRuntime().setStorageSync(readingStorageKey(ROUTE_ID), JSON.stringify(record)) } catch { /* position stays in memory */ }
 }
 async function load(): Promise<void> {
+  practiceGeneration += 1
+  practiceFlight = null
   if (documentHidden()) return
   if (!routeStillCurrent()) {
     if (pageVisible.value || article.value) hidePage()
@@ -378,6 +391,14 @@ function activatePractice(): void {
   backToPractice()
   // #endif
 }
+const practiceReady = computed(() => readingPracticeReady(article.value, livePermit(pageEpoch, loadRequest, session.verifiedSubject ?? '', session.identityRevision)))
+const practiceLabel = computed(() => practiceReady.value ? t('continuePublished') : t('writesClosed'))
+function activatePublishedPractice(): void {
+  // #ifdef H5
+  if (!readingKeysReady() || !practiceReady.value) return
+  void continuePublishedPractice()
+  // #endif
+}
 function focusParagraphNav(event: { preventDefault?: () => void }): void {
   // #ifdef H5
   // Hidden uni pages stay mounted. Move focus only inside this visible page root.
@@ -387,6 +408,53 @@ function focusParagraphNav(event: { preventDefault?: () => void }): void {
   // #endif
 }
 function backToPractice(): void { openUniPage('/pages/practice/practice') }
+function practiceHandoffCurrent(generation: number, requestEpoch: number, requestId: number, subject: string, revision: number, articleId: number, pin: ReadingPracticePin): boolean {
+  if (practiceGeneration !== generation || practiceFlight !== generation) return false
+  if (documentHidden() || !pageVisible.value || !routeStillCurrent()) return false
+  if ((session.verifiedSubject ?? '') !== subject || session.identityRevision !== revision) return false
+  if (!readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))) return false
+  const current = article.value
+  if (!current || current.articleId !== articleId) return false
+  const live = readingPracticePin(current)
+  if (!live) return false
+  return live.contentCode === pin.contentCode && live.contentVersionId === pin.contentVersionId && live.questionItemId === pin.questionItemId
+}
+async function continuePublishedPractice(): Promise<void> {
+  if (practiceFlight !== null) return
+  if (documentHidden() || !pageVisible.value || !routeStillCurrent()) return
+  const subject = session.verifiedSubject ?? ''
+  const revision = session.identityRevision
+  const requestEpoch = pageEpoch
+  const requestId = loadRequest
+  const current = article.value
+  const pin = readingPracticePin(current)
+  if (!current || !pin || !readingPracticeReady(current, livePermit(requestEpoch, requestId, subject, revision))) return
+  const generation = ++practiceGeneration
+  const articleId = current.articleId
+  practiceFlight = generation
+  const context = { uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }
+  try {
+    const opened = await b10LearningApi.openReadingPracticeSession(context, pin.contentCode, pin.contentVersionId, pin.questionItemId)
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) return
+    if (!readingPracticeParsedAccepted(opened, pin)) {
+      applyFailure(new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' }), requestEpoch, requestId, subject, revision)
+      return
+    }
+    persistLocal()
+    const learning = useB10LearningStore()
+    if (!learning.rememberReadingPractice(opened, pin)) return
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) {
+      learning.forgetReadingPractice()
+      return
+    }
+    openUniPage(READING_PRACTICE_ENTRY_PATH)
+  } catch (error) {
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+  } finally {
+    if (practiceFlight === generation) practiceFlight = null
+  }
+}
 function onVisibility(): void {
   if (typeof document === 'undefined') return
   if (documentHidden()) {
@@ -630,8 +698,8 @@ onBeforeUnmount(() => {
         </view>
 
         <view class="reading-closed" role="status">
-          <text>{{ t('writesClosed') }}</text>
-          <text>{{ t('noServerReceipt') }}</text>
+          <button type="button" class="reading-cta" data-action="published-practice" :tabindex="h5TabIndex(practiceReady)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(practiceReady)" :disabled="!practiceReady" @click="continuePublishedPractice" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activatePublishedPractice" @keydown.space.stop.prevent @keyup.space.stop.prevent="activatePublishedPractice">{{ practiceLabel }}</button>
+          <text v-if="!practiceReady">{{ t('noServerReceipt') }}</text>
         </view>
       </view>
     </view>

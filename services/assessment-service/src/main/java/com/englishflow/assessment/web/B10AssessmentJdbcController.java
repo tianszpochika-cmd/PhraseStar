@@ -7,6 +7,7 @@ import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 
 import com.englishflow.assessment.adapter.content.BankPracticeRuleProvider;
+import com.englishflow.assessment.adapter.content.HttpProtectedContentSnapshotTransport;
 import com.englishflow.assessment.domain.AssessmentMistake;
 import com.englishflow.assessment.port.PlacementRuleScorePort;
 import com.englishflow.assessment.domain.AssessmentPrincipal;
@@ -71,20 +72,34 @@ public class B10AssessmentJdbcController {
     private final String contentBaseUrl;
     private final BankPracticeRuleProvider bankRules;
     private final PlacementRuleScorePort placementScores;
+    private final HttpProtectedContentSnapshotTransport protectedContent;
 
     public B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper, String contentBaseUrl) {
-        this(jdbc, mapper, contentBaseUrl, null);
+        this(jdbc, mapper, contentBaseUrl, null, (HttpProtectedContentSnapshotTransport) null);
+    }
+
+    public B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper, String contentBaseUrl,
+            PlacementRuleScorePort placementScores) {
+        this(jdbc, mapper, contentBaseUrl, placementScores, (HttpProtectedContentSnapshotTransport) null);
     }
 
     @org.springframework.beans.factory.annotation.Autowired
     public B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper,
             @org.springframework.beans.factory.annotation.Value("${assessment.content.base-url:http://127.0.0.1:18089}") String contentBaseUrl,
-            PlacementRuleScorePort placementScores) {
+            PlacementRuleScorePort placementScores,
+            org.springframework.beans.factory.ObjectProvider<HttpProtectedContentSnapshotTransport> protectedContent) {
+        this(jdbc, mapper, contentBaseUrl, placementScores,
+                protectedContent == null ? null : protectedContent.getIfAvailable());
+    }
+
+    private B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper, String contentBaseUrl,
+            PlacementRuleScorePort placementScores, HttpProtectedContentSnapshotTransport protectedContent) {
         this.jdbc = jdbc;
         this.mapper = mapper;
         this.contentBaseUrl = contentBaseUrl;
         this.bankRules = new BankPracticeRuleProvider(mapper, contentBaseUrl);
         this.placementScores = placementScores;
+        this.protectedContent = protectedContent;
     }
 
     @PostMapping("/sessions")
@@ -151,6 +166,32 @@ public class B10AssessmentJdbcController {
             // whole bank.
             if (bank != null) rules = filterByItemIds(bank.rows(), body.get("itemIds"));
         }
+        // Local b25 rows and the placement bank stay on their own paths. A bank
+        // miss must not fall through to the reading owner. Any other empty list
+        // may fetch. Owner denial, conflict, unavailability, and transport
+        // failure throw before the idempotency claim and before substitute.
+        // NOT_FOUND alone keeps today's substitute-or-410 path. The protected
+        // mark is snap_reading_ plus this stored version, not any canonical ref.
+        long protectedEpoch = 0L;
+        String protectedHash = null;
+        String protectedRef = null;
+        if (rules.isEmpty() && bank == null && !BankPracticeRuleProvider.BANK_CONTENT_CODE.equals(requestedCode)) {
+            OwnerReading reading = openProtectedReading(requestedCode, contentVersionId);
+            if (reading != null) {
+                String mark = protectedReadingRef(contentVersionId);
+                if (mark == null || !mark.equals(reading.snapshotId)
+                        || reading.contentVersionId != contentVersionId
+                        || !requestedCode.equals(reading.contentCode)
+                        || reading.snapshotHash == null || reading.snapshotHash.isBlank()
+                        || reading.contentEpoch < 0) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+                }
+                rules = protectedRuleRows(reading, body.get("itemIds"));
+                protectedEpoch = reading.contentEpoch;
+                protectedHash = reading.snapshotHash;
+                protectedRef = mark;
+            }
+        }
         // Grammar is three items and reading is two. A short pack closes here,
         // before any idempotency claim and before the 7B substitute, so a
         // missing pack does not borrow another skill or stick a key.
@@ -192,10 +233,11 @@ public class B10AssessmentJdbcController {
         // goes in owner_snapshot_ref when it validates. It is never derived
         // from the numeric id. Default sessions keep the frozen B25 constants
         // and a null owner ref.
-        long pinEpoch = bank == null ? CONTENT_EPOCH : bank.contentEpoch();
-        long pinSnapshotId = bank == null ? SNAPSHOT_ID : bank.contentVersionId();
-        String pinSnapshotHash = bank == null ? SNAPSHOT_HASH : bank.snapshotHash();
-        String ownerSnapshotRef = bank == null ? null
+        long pinEpoch = protectedRef != null ? protectedEpoch : bank == null ? CONTENT_EPOCH : bank.contentEpoch();
+        long pinSnapshotId = protectedRef != null ? contentVersionId : bank == null ? SNAPSHOT_ID : bank.contentVersionId();
+        String pinSnapshotHash = protectedRef != null ? protectedHash : bank == null ? SNAPSHOT_HASH : bank.snapshotHash();
+        String ownerSnapshotRef = protectedRef != null ? protectedRef
+                : bank == null ? null
                 : BankPracticeRuleProvider.canonicalOwnerSnapshotRef(bank.ownerSnapshotRef());
         jdbc.update("""
                 INSERT INTO b10_assessment_session
@@ -342,26 +384,72 @@ public class B10AssessmentJdbcController {
         if (expectedStateVersion != stateVersion) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "assessment state version is stale");
         }
-        // Grading follows the fulfilled substitute when the requested pin was
-        // unavailable (P1R decision 7B); otherwise the requested pin itself.
-        Object altVersion = session.get("alternative_content_version_id");
-        Object altCode = session.get("alternative_content_code");
-        String gradingCode = altVersion == null ? text(session.get("content_code"), CONTENT_CODE) : text(altCode, CONTENT_CODE);
-        long gradingVersion = altVersion == null
-                ? longValue(session.get("content_version_id"), DEFAULT_CONTENT_VERSION)
-                : ((Number) altVersion).longValue();
-        List<Map<String, Object>> rules = rules(gradingCode, gradingVersion, null);
-        if (rules.isEmpty() && BankPracticeRuleProvider.BANK_CONTENT_CODE.equals(gradingCode)) {
-            BankPracticeRuleProvider.BankRules bank = bankRules(gradingCode, gradingVersion, contextBearer());
-            if (bank != null) rules = bank.rows();
+        boolean protectedSession = protectedReadingSession(session);
+        String gradingCode;
+        long gradingVersion;
+        List<Map<String, Object>> sessionRules;
+        ObjectNode answers;
+        List<SubmittedGrade> graded;
+        List<String> allMistakes;
+        if (protectedSession) {
+            // Lock the owned row before the owner read and the conditional version
+            // write. A later score or version failure throws, so this transaction
+            // rolls the claim, attempt, answers, and receipt back together.
+            session = lockOwnerSession(sessionId, principal.subject());
+            if (!protectedReadingSession(session)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+            long lockedVersion = longValue(session.get("state_version"), 1L);
+            if (expectedStateVersion != lockedVersion) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "assessment state version is stale");
+            }
+            gradingCode = text(session.get("content_code"), CONTENT_CODE);
+            gradingVersion = longValue(session.get("content_version_id"), DEFAULT_CONTENT_VERSION);
+            sessionRules = storedProtectedRules(session);
+            answers = objectAnswers(session.get("answers_json"));
+            Map<String, String> priorAnswers = readAnswers(answers);
+            OwnerReading reading = loadProtectedForSubmit(gradingVersion, gradingCode);
+            verifyProtectedPin(session, reading, sessionRules);
+            List<ResolvedItem> resolved = resolveProtectedSubmissions(submissions, sessionRules);
+            Set<String> currentIds = new LinkedHashSet<>();
+            for (ResolvedItem item : resolved) currentIds.add(item.ruleItemId());
+            Set<String> priorMistakes = priorProtectedMistakes(session, sessionRules, priorAnswers, currentIds);
+            graded = scoreProtectedSubmissions(reading, protectedReadingRef(gradingVersion), resolved, priorAnswers, answers);
+            allMistakes = protectedMistakes(sessionRules, graded, priorAnswers, priorMistakes);
+        } else {
+            // Grading follows the fulfilled substitute when the requested pin was
+            // unavailable (P1R decision 7B); otherwise the requested pin itself.
+            Object altVersion = session.get("alternative_content_version_id");
+            Object altCode = session.get("alternative_content_code");
+            gradingCode = altVersion == null ? text(session.get("content_code"), CONTENT_CODE) : text(altCode, CONTENT_CODE);
+            gradingVersion = altVersion == null
+                    ? longValue(session.get("content_version_id"), DEFAULT_CONTENT_VERSION)
+                    : ((Number) altVersion).longValue();
+            List<Map<String, Object>> rules = rules(gradingCode, gradingVersion, null);
+            if (rules.isEmpty() && BankPracticeRuleProvider.BANK_CONTENT_CODE.equals(gradingCode)) {
+                BankPracticeRuleProvider.BankRules bank = bankRules(gradingCode, gradingVersion, contextBearer());
+                if (bank != null) rules = bank.rows();
+            }
+            // Grade only this session pin. Numeric ids and stable itemCode aliases
+            // both resolve here. The same canonical rule twice, or an item outside
+            // the pin, fails before any grade, attempt row, or outbox event.
+            sessionRules = sessionRules(session, rules);
+            List<ResolvedItem> resolved = resolveSubmissions(submissions, sessionRules);
+            answers = objectAnswers(session.get("answers_json"));
+            graded = gradeSubmissions(resolved, answers);
+            Map<String, String> legacyAnswers = readAnswers(answers);
+            Map<String, SubmittedGrade> gradedByRule = new LinkedHashMap<>();
+            for (SubmittedGrade grade : graded) gradedByRule.put(grade.ruleItemId(), grade);
+            allMistakes = new ArrayList<>();
+            for (Map<String, Object> rule : sessionRules) {
+                String ruleItemId = text(rule.get("item_id"));
+                SubmittedGrade current = gradedByRule.get(ruleItemId);
+                boolean itemCorrect = current != null
+                        ? current.objectiveCorrect()
+                        : gradeRule(rule, legacyAnswers.get(String.valueOf(numericItemId(ruleItemId))));
+                if (!itemCorrect) allMistakes.add(ruleItemId);
+            }
         }
-        // Grade only this session pin. Numeric ids and stable itemCode aliases
-        // both resolve here. The same canonical rule twice, or an item outside
-        // the pin, fails before any grade, attempt row, or outbox event.
-        List<Map<String, Object>> sessionRules = sessionRules(session, rules);
-        List<ResolvedItem> resolved = resolveSubmissions(submissions, sessionRules);
-        ObjectNode answers = objectAnswers(session.get("answers_json"));
-        List<SubmittedGrade> graded = gradeSubmissions(resolved, answers);
         int scored = graded.size();
         int correct = 0;
         for (SubmittedGrade grade : graded) {
@@ -376,20 +464,6 @@ public class B10AssessmentJdbcController {
                 : correct == scored ? "FULL" : correct == 0 ? "ZERO" : "PARTIAL";
         String reportId = "rpt_" + compactUuid();
         Map<String, String> answerMap = readAnswers(answers);
-        // Current submissions reuse the stored grade, so a sealed scorer is not
-        // called again. Earlier answers keep report grading. Untouched session
-        // items stay mistakes. Rules outside this session never count.
-        Map<String, SubmittedGrade> gradedByRule = new LinkedHashMap<>();
-        for (SubmittedGrade grade : graded) gradedByRule.put(grade.ruleItemId(), grade);
-        List<String> allMistakes = new ArrayList<>();
-        for (Map<String, Object> rule : sessionRules) {
-            String ruleItemId = text(rule.get("item_id"));
-            SubmittedGrade current = gradedByRule.get(ruleItemId);
-            boolean itemCorrect = current != null
-                    ? current.objectiveCorrect()
-                    : gradeRule(rule, answerMap.get(String.valueOf(numericItemId(ruleItemId))));
-            if (!itemCorrect) allMistakes.add(ruleItemId);
-        }
         int total = sessionRules.size();
         int totalCorrect = total - allMistakes.size();
         String totalScoreBucket = exactPack
@@ -434,13 +508,28 @@ public class B10AssessmentJdbcController {
                     eventRequestId, eventTraceId);
         }
         String nextStatus = allMistakes.isEmpty() || answerMap.size() >= total ? "ASSESSED" : "IN_PROGRESS";
-        jdbc.update("""
-                UPDATE b10_assessment_session
-                   SET answers_json = ?, state_version = state_version + 1,
-                       attempt_count = attempt_count + 1, last_attempt_id = ?, last_report_id = ?, status = ?,
-                       updated_at = CURRENT_TIMESTAMP(6)
-                 WHERE session_id = ? AND principal_id = ? AND tenant_id = ?
-                """, json(answers), attemptId, reportId, nextStatus, sessionId, principal.subject(), TENANT);
+        if (protectedSession) {
+            int locked = jdbc.update("""
+                    UPDATE b10_assessment_session
+                       SET answers_json = ?, state_version = state_version + 1,
+                           attempt_count = attempt_count + 1, last_attempt_id = ?, last_report_id = ?, status = ?,
+                           updated_at = CURRENT_TIMESTAMP(6)
+                     WHERE session_id = ? AND principal_id = ? AND tenant_id = ?
+                       AND state_version = ?
+                    """, json(answers), attemptId, reportId, nextStatus, sessionId, principal.subject(), TENANT,
+                    expectedStateVersion);
+            if (locked != 1) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "assessment state version is stale");
+            }
+        } else {
+            jdbc.update("""
+                    UPDATE b10_assessment_session
+                       SET answers_json = ?, state_version = state_version + 1,
+                           attempt_count = attempt_count + 1, last_attempt_id = ?, last_report_id = ?, status = ?,
+                           updated_at = CURRENT_TIMESTAMP(6)
+                     WHERE session_id = ? AND principal_id = ? AND tenant_id = ?
+                    """, json(answers), attemptId, reportId, nextStatus, sessionId, principal.subject(), TENANT);
+        }
         if ("ASSESSED".equals(nextStatus)) {
             Map<String, Object> completed = new LinkedHashMap<>();
             completed.put("sessionId", sessionId);
@@ -745,7 +834,7 @@ public class B10AssessmentJdbcController {
         data.put("pin", pin(row));
         boolean contentOffline = "CONTENT_OFFLINE".equals(text(row.get("alternative_reason_code")));
         PracticeCheckpoint.Resume resume = PracticeCheckpoint.resume(jsonSize(row.get("answers_json"), false), !contentOffline);
-        data.put("items", resume.stopped() ? List.of() : parseJson(row.get("items_json"), List.of()));
+        data.put("items", resume.stopped() ? List.of() : learnerVisibleItems(row.get("items_json")));
         data.put("resumeIndex", resume.index());
         data.put("resumeCopy", resume.copy());
         data.put("contentOffline", resume.stopped());
@@ -876,8 +965,29 @@ public class B10AssessmentJdbcController {
         item.put("itemType", itemType(row.get("dimension")));
         item.put("stem", text(row.get("prompt")));
         item.put("options", learnerOptions(row.get("options_json")));
-        item.put("displayOrder", 0);
+        Object order = row.get("display_order");
+        item.put("displayOrder", order instanceof Number number ? number.intValue() : 0);
+        // Exact owner token. Trimming would store a different digest than the pin.
+        if (row.get("rule_digest") instanceof String digest) item.put("ruleDigest", digest);
         return item;
+    }
+
+    /** Learner items never carry the owner digest. The stored session row keeps it. */
+    private Object learnerVisibleItems(Object raw) {
+        Object parsed = parseJson(raw, List.of());
+        if (!(parsed instanceof List<?> list)) return List.of();
+        List<Map<String, Object>> visible = new ArrayList<>();
+        for (Object entry : list) {
+            if (!(entry instanceof Map<?, ?> source)) continue;
+            Map<String, Object> item = new LinkedHashMap<>();
+            for (Map.Entry<?, ?> field : source.entrySet()) {
+                if (!"ruleDigest".equals(String.valueOf(field.getKey()))) {
+                    item.put(String.valueOf(field.getKey()), field.getValue());
+                }
+            }
+            visible.add(item);
+        }
+        return visible;
     }
 
     private List<Map<String, Object>> learnerOptions(Object raw) {
@@ -1079,7 +1189,15 @@ public class B10AssessmentJdbcController {
             Map<String, Object> rulePin = new LinkedHashMap<>();
             rulePin.put("answerRuleSetVersion", "B10_RULES_2026_08_26");
             rulePin.put("answerRuleVersion", "v1");
-            rulePin.put("ruleDigest", sha256(json(rule.get("answer_rule_json"))));
+            if (protectedReadingSession(session)) {
+                Object rawDigest = rule.get("rule_digest");
+                if (!(rawDigest instanceof String storedDigest) || storedDigest.isBlank()) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+                }
+                rulePin.put("ruleDigest", storedDigest);
+            } else {
+                rulePin.put("ruleDigest", sha256(json(rule.get("answer_rule_json"))));
+            }
             rulePin.put("completionRuleVersion", "v1");
             rulePin.put("assessmentVersion", "B10_RULES_2026_08_26");
             Map<String, Object> reportPin = new LinkedHashMap<>();
@@ -1292,6 +1410,309 @@ public class B10AssessmentJdbcController {
         return text(raw);
     }
 
+    static String protectedReadingRef(long contentVersionId) {
+        if (contentVersionId < 1) return null;
+        String ref = "snap_reading_" + contentVersionId;
+        if (ref.length() > 132 || !ref.matches("snap_[A-Za-z0-9._:-]{8,127}")) return null;
+        return ref;
+    }
+
+    static boolean protectedReadingSession(Map<String, Object> session) {
+        if (session == null) return false;
+        String ref = protectedReadingRef(number(session.get("content_version_id"), -1L));
+        Object stored = session.get("owner_snapshot_ref");
+        return ref != null && stored instanceof String text && ref.equals(text);
+    }
+
+    /**
+     * Owner reading seam, same shape as {@link #bankRules}. Null means the owner
+     * dependency is absent and this route stays inactive. Tests override it.
+     */
+    OwnerReading protectedReading(long contentVersionId, String contentCode) {
+        if (protectedContent == null) return null;
+        HttpProtectedContentSnapshotTransport.Snapshot snapshot = protectedContent.fetch(contentVersionId, contentCode);
+        List<OwnerItem> items = new ArrayList<>();
+        for (HttpProtectedContentSnapshotTransport.Item item : snapshot.items()) {
+            List<OwnerOption> options = new ArrayList<>();
+            for (HttpProtectedContentSnapshotTransport.Option option : item.options()) {
+                options.add(new OwnerOption(option.optionId(), option.label()));
+            }
+            items.add(new OwnerItem(item.itemId(), item.displayOrder(), item.stem(), options, item.ruleDigest()));
+        }
+        HttpProtectedContentSnapshotTransport.Pin pin = snapshot.pin();
+        return new OwnerReading(pin.contentVersionId(), pin.contentCode(), pin.contentEpoch(),
+                pin.snapshotId(), pin.snapshotHash(), items, snapshot);
+    }
+
+    /** One owner score. A null transport or snapshot fails closed and does not invent FULL or ZERO. */
+    OwnerDecision scoreProtected(OwnerReading reading, long itemId, String selected) {
+        if (protectedContent == null || reading == null || reading.snapshot == null) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
+                    "protected content snapshot transport is unavailable");
+        }
+        HttpProtectedContentSnapshotTransport.Decision decision = protectedContent.score(reading.snapshot, itemId, selected);
+        String outcome = decision.outcome() == null ? "" : decision.outcome().name();
+        return new OwnerDecision(decision.itemId(), decision.snapshotId(), decision.ruleDigest(), outcome);
+    }
+
+    private OwnerReading openProtectedReading(String contentCode, long contentVersionId) {
+        try {
+            return protectedReading(contentVersionId, contentCode);
+        } catch (HttpProtectedContentSnapshotTransport.Refusal refusal) {
+            if (refusal.kind() == HttpProtectedContentSnapshotTransport.Kind.NOT_FOUND) return null;
+            throw protectedFailure(refusal);
+        }
+    }
+
+    private OwnerReading loadProtectedForSubmit(long contentVersionId, String contentCode) {
+        try {
+            OwnerReading reading = protectedReading(contentVersionId, contentCode);
+            if (reading == null) {
+                throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
+                        "protected content snapshot transport is unavailable");
+            }
+            return reading;
+        } catch (HttpProtectedContentSnapshotTransport.Refusal refusal) {
+            throw protectedFailure(refusal);
+        }
+    }
+
+    private static ResponseStatusException protectedFailure(HttpProtectedContentSnapshotTransport.Refusal refusal) {
+        HttpStatus status = switch (refusal.kind()) {
+            case DENIED -> HttpStatus.FORBIDDEN;
+            case UNAVAILABLE, NOT_FOUND -> HttpStatus.GONE;
+            case CONFLICT -> HttpStatus.CONFLICT;
+            case TRANSIENT, INVALID -> HttpStatus.SERVICE_UNAVAILABLE;
+        };
+        return new ResponseStatusException(status, refusal.getMessage());
+    }
+
+    private List<Map<String, Object>> protectedRuleRows(OwnerReading reading, Object requestedItemIds) {
+        Map<String, OwnerItem> byId = new LinkedHashMap<>();
+        for (OwnerItem item : reading.items) {
+            String key = Long.toString(item.itemId);
+            if (item.itemId < 1 || item.ruleDigest == null || item.ruleDigest.isBlank() || byId.put(key, item) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+        }
+        List<OwnerItem> chosen = new ArrayList<>();
+        List<Object> requested = valueList(requestedItemIds);
+        if (requested.isEmpty()) {
+            chosen.addAll(byId.values());
+        } else {
+            Set<String> seen = new LinkedHashSet<>();
+            for (Object value : requested) {
+                String key = String.valueOf(value).trim();
+                OwnerItem item = byId.get(key);
+                if (item == null || !seen.add(key)) {
+                    throw new ResponseStatusException(HttpStatus.GONE, "assessment content is unavailable");
+                }
+                chosen.add(item);
+            }
+        }
+        List<Map<String, Object>> rows = new ArrayList<>();
+        for (OwnerItem item : chosen) {
+            Map<String, Object> row = new LinkedHashMap<>();
+            row.put("item_id", Long.toString(item.itemId));
+            row.put("prompt", item.stem);
+            row.put("dimension", "READING");
+            row.put("display_order", item.displayOrder);
+            row.put("rule_digest", item.ruleDigest);
+            List<Map<String, Object>> options = new ArrayList<>();
+            for (OwnerOption option : item.options) {
+                Map<String, Object> view = new LinkedHashMap<>();
+                view.put("optionId", option.optionId);
+                view.put("label", option.label);
+                options.add(view);
+            }
+            row.put("options_json", json(options));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    private Map<String, Object> lockOwnerSession(String sessionId, String subject) {
+        Map<String, Object> row = one("""
+                SELECT * FROM b10_assessment_session
+                 WHERE session_id = ? AND principal_id = ? AND tenant_id = ?
+                 FOR UPDATE
+                """, sessionId, subject, TENANT);
+        if (row == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "assessment session not found");
+        return row;
+    }
+
+    private List<Map<String, Object>> storedProtectedRules(Map<String, Object> session) {
+        Object raw = parseJson(session.get("items_json"), null);
+        if (!(raw instanceof List<?> items) || items.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+        }
+        List<Map<String, Object>> rules = new ArrayList<>();
+        Set<String> seen = new LinkedHashSet<>();
+        for (Object entry : items) {
+            if (!(entry instanceof Map<?, ?> item)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+            Object idValue = item.get("itemId");
+            long itemId = idValue instanceof Number number ? number.longValue() : longValue(idValue, -1L);
+            String digest = item.get("ruleDigest") instanceof String text ? text : "";
+            String key = Long.toString(itemId);
+            if (itemId < 1 || digest.isBlank() || !seen.add(key)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+            Map<String, Object> rule = new LinkedHashMap<>();
+            rule.put("item_id", key);
+            rule.put("rule_digest", digest);
+            rule.put("dimension", item.get("itemType"));
+            rule.put("prompt", item.get("stem"));
+            rules.add(rule);
+        }
+        return rules;
+    }
+
+    private void verifyProtectedPin(Map<String, Object> session, OwnerReading reading, List<Map<String, Object>> rules) {
+        long version = longValue(session.get("content_version_id"), -1L);
+        String mark = protectedReadingRef(version);
+        Object storedRef = session.get("owner_snapshot_ref");
+        Object storedHash = session.get("snapshot_hash");
+        if (reading == null || mark == null || !(storedRef instanceof String ref) || !mark.equals(ref)
+                || !mark.equals(reading.snapshotId)
+                || reading.contentVersionId != version
+                || !text(session.get("content_code")).equals(reading.contentCode)
+                || reading.contentEpoch != number(session.get("content_epoch"), -1L)
+                || !(storedHash instanceof String hash) || !hash.equals(reading.snapshotHash)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+        }
+        Map<Long, String> digests = new LinkedHashMap<>();
+        for (OwnerItem item : reading.items) {
+            if (item.ruleDigest == null || digests.put(item.itemId, item.ruleDigest) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+        }
+        for (Map<String, Object> rule : rules) {
+            long itemId = numericItemId(text(rule.get("item_id")));
+            String stored = rule.get("rule_digest") instanceof String text ? text : "";
+            String authoritative = digests.get(itemId);
+            if (authoritative == null || !authoritative.equals(stored)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+            }
+        }
+    }
+
+    private List<ResolvedItem> resolveProtectedSubmissions(List<Map<String, Object>> submissions,
+            List<Map<String, Object>> sessionRules) {
+        try {
+            return resolveSubmissions(submissions, sessionRules);
+        } catch (ResponseStatusException ex) {
+            if (ex.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+                throw new ResponseStatusException(HttpStatus.GONE, "assessment content is unavailable");
+            }
+            throw ex;
+        }
+    }
+
+    private Set<String> priorProtectedMistakes(Map<String, Object> session, List<Map<String, Object>> rules,
+            Map<String, String> priorAnswers, Set<String> currentItemIds) {
+        long attemptCount = number(session.get("attempt_count"));
+        if (attemptCount <= 0 && priorAnswers.isEmpty()) return Set.of();
+        if (attemptCount <= 0 || priorAnswers.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+        }
+        Map<String, Object> attempt = one("""
+                SELECT mistake_codes_json FROM b10_assessment_attempt
+                 WHERE session_id = ? AND principal_id = ? AND tenant_id = ?
+                 ORDER BY attempt_version DESC
+                 LIMIT 1
+                """, text(session.get("session_id")), text(session.get("principal_id")), TENANT);
+        if (attempt == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+        }
+        Object parsed = parseJson(attempt.get("mistake_codes_json"), null);
+        if (!(parsed instanceof List<?> list)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+        }
+        Set<String> sessionIds = new LinkedHashSet<>();
+        for (Map<String, Object> rule : rules) sessionIds.add(text(rule.get("item_id")));
+        Set<String> mistakes = new LinkedHashSet<>();
+        for (Object value : list) {
+            String code = text(value);
+            if (code.isBlank() || !sessionIds.contains(code) || !mistakes.add(code)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+            }
+        }
+        for (String itemId : sessionIds) {
+            boolean answered = priorAnswers.containsKey(itemId);
+            if (!answered && !mistakes.contains(itemId)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+            }
+            if (answered && currentItemIds.contains(itemId)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected assessment answer is already sealed");
+            }
+        }
+        for (String answered : priorAnswers.keySet()) {
+            if (!sessionIds.contains(answered)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+            }
+        }
+        return mistakes;
+    }
+
+    private List<SubmittedGrade> scoreProtectedSubmissions(OwnerReading reading, String mark, List<ResolvedItem> resolved,
+            Map<String, String> priorAnswers, ObjectNode answers) {
+        if (mark == null || reading == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content pin does not match");
+        }
+        List<SubmittedGrade> graded = new ArrayList<>();
+        for (ResolvedItem item : resolved) {
+            String key = String.valueOf(item.itemId());
+            if (priorAnswers.containsKey(key) || priorAnswers.containsKey(item.ruleItemId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected assessment answer is already sealed");
+            }
+            String selected = answerValue(item.submission().get("response"));
+            if (selected == null || selected.isBlank()) {
+                answers.put(key, "");
+                graded.add(SubmittedGrade.of(item.rule(), selected, false));
+                continue;
+            }
+            OwnerDecision decision;
+            try {
+                decision = scoreProtected(reading, item.itemId(), selected);
+            } catch (HttpProtectedContentSnapshotTransport.Refusal refusal) {
+                throw protectedFailure(refusal);
+            }
+            String storedDigest = item.rule().get("rule_digest") instanceof String text ? text : "";
+            if (decision == null || decision.itemId != item.itemId()
+                    || !storedDigest.equals(decision.ruleDigest)
+                    || !mark.equals(decision.snapshotId)
+                    || (!"FULL".equals(decision.outcome) && !"ZERO".equals(decision.outcome))) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "protected content outcome is inconsistent");
+            }
+            answers.put(key, selected);
+            graded.add(SubmittedGrade.of(item.rule(), selected, "FULL".equals(decision.outcome)));
+        }
+        return graded;
+    }
+
+    private static List<String> protectedMistakes(List<Map<String, Object>> rules, List<SubmittedGrade> graded,
+            Map<String, String> priorAnswers, Set<String> priorMistakes) {
+        Map<String, SubmittedGrade> byId = new LinkedHashMap<>();
+        for (SubmittedGrade grade : graded) byId.put(grade.ruleItemId(), grade);
+        List<String> mistakes = new ArrayList<>();
+        for (Map<String, Object> rule : rules) {
+            String itemId = text(rule.get("item_id"));
+            SubmittedGrade current = byId.get(itemId);
+            if (current != null) {
+                if (!current.objectiveCorrect()) mistakes.add(itemId);
+                continue;
+            }
+            if (priorAnswers.containsKey(itemId)) {
+                if (priorMistakes.contains(itemId)) mistakes.add(itemId);
+                continue;
+            }
+            mistakes.add(itemId);
+        }
+        return mistakes;
+    }
+
     /**
      * Local rules still match {@code answer}/{@code correctKey}. Bank rows
      * carry only {@code grader=PLACEMENT_SCORE}; the correct option stays in
@@ -1424,4 +1845,71 @@ public class B10AssessmentJdbcController {
     }
 
     private record Principal(String subject) {}
+
+    static final class OwnerOption {
+        final String optionId;
+        final String label;
+
+        OwnerOption(String optionId, String label) {
+            this.optionId = optionId;
+            this.label = label;
+        }
+    }
+
+    static final class OwnerItem {
+        final long itemId;
+        final int displayOrder;
+        final String stem;
+        final List<OwnerOption> options;
+        final String ruleDigest;
+
+        OwnerItem(long itemId, int displayOrder, String stem, List<OwnerOption> options, String ruleDigest) {
+            this.itemId = itemId;
+            this.displayOrder = displayOrder;
+            this.stem = stem;
+            this.options = List.copyOf(options);
+            this.ruleDigest = ruleDigest;
+        }
+    }
+
+    /** Server pin for one protected reading fetch. {@code snapshot} is present only for the live transport. */
+    static final class OwnerReading {
+        final long contentVersionId;
+        final String contentCode;
+        final long contentEpoch;
+        final String snapshotId;
+        final String snapshotHash;
+        final List<OwnerItem> items;
+        final HttpProtectedContentSnapshotTransport.Snapshot snapshot;
+
+        OwnerReading(long contentVersionId, String contentCode, long contentEpoch, String snapshotId,
+                String snapshotHash, List<OwnerItem> items) {
+            this(contentVersionId, contentCode, contentEpoch, snapshotId, snapshotHash, items, null);
+        }
+
+        OwnerReading(long contentVersionId, String contentCode, long contentEpoch, String snapshotId,
+                String snapshotHash, List<OwnerItem> items, HttpProtectedContentSnapshotTransport.Snapshot snapshot) {
+            this.contentVersionId = contentVersionId;
+            this.contentCode = contentCode;
+            this.contentEpoch = contentEpoch;
+            this.snapshotId = snapshotId;
+            this.snapshotHash = snapshotHash;
+            this.items = List.copyOf(items);
+            this.snapshot = snapshot;
+        }
+    }
+
+    static final class OwnerDecision {
+        final long itemId;
+        final String snapshotId;
+        final String ruleDigest;
+        final String outcome;
+
+        OwnerDecision(long itemId, String snapshotId, String ruleDigest, String outcome) {
+            this.itemId = itemId;
+            this.snapshotId = snapshotId;
+            this.ruleDigest = ruleDigest;
+            this.outcome = outcome;
+        }
+    }
 }

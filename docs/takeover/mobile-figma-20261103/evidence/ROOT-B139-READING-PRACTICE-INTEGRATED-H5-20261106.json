@@ -1,0 +1,128 @@
+{
+  "batch": "B139",
+  "at": "2026-11-06T08:35:16.145963+00:00",
+  "classification": "LOCAL_REAL_INTEGRATED_READING_PRACTICE_HANDOFF_PASS",
+  "sourcePins": [
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/adapter/content/HttpProtectedContentSnapshotTransport.java",
+      "bytes": 43201,
+      "sha256": "1cb580072293ec169357a11527e68a72ad77a32414dc910ff42fc1f541b49e71"
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/config/AssessmentPersistenceConfiguration.java",
+      "bytes": 11912,
+      "sha256": "92187103e1335adf513869b35400f6d4a32510555a69bfc2bdba96a323d7514a"
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "bytes": 107887,
+      "sha256": "65c88c028468966bacd063fdb65decdfd2fc4e581034b8445e3c09e58c9b1c1a"
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/adapter/content/HttpProtectedContentSnapshotTransportTest.java",
+      "bytes": 43258,
+      "sha256": "24c22db38ea448c7991d1dfbb8727cc312120c8741e29f5d3962caf0e4ea1aad"
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10ProtectedReadingSessionTest.java",
+      "bytes": 68620,
+      "sha256": "7a8b3b3bf0a3dd532594402602c00f39350ddfbd5c2333a90ebaddd7924c2861"
+    },
+    {
+      "path": "apps/mobile/src/api/b10.ts",
+      "bytes": 73558,
+      "sha256": "1d45c815882dffc33881244c02429d8793b4ffb15afa1d7d7abf593083a6a381"
+    },
+    {
+      "path": "apps/mobile/src/domain/b10.ts",
+      "bytes": 11376,
+      "sha256": "8de849b5bdc998644f59aadcd7801e155fce080c50a4f80310908f860b387472"
+    },
+    {
+      "path": "apps/mobile/src/domain/reading-page.ts",
+      "bytes": 14782,
+      "sha256": "d9d9b611de19bd651c10e9652aabd9a47212808c9ace003afc80e21056396fd7"
+    },
+    {
+      "path": "apps/mobile/src/pages/b2-practice/b2-practice.vue",
+      "bytes": 22460,
+      "sha256": "6e6ea10869c2cc9cd6ab10e974a9ea18b44a20210c7ce04ddee2e4885db93d07"
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-reading/b3-reading.vue",
+      "bytes": 44646,
+      "sha256": "9eb9da2dbce766908a317d4b359f75754957bf056f920c1b63d23cb60bd2b8ee"
+    },
+    {
+      "path": "apps/mobile/src/stores/b10-learning.ts",
+      "bytes": 46792,
+      "sha256": "3e7b95a822937e2f3bba68a9f95055660c7e4e113c63c0c6fe01785f064e5b6d"
+    },
+    {
+      "path": "apps/mobile/tests/reading-page.test.mjs",
+      "bytes": 111056,
+      "sha256": "256929d45da21eabd278ae328e13d607315fe574127d1f913cf716e9bd98c14b"
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/reading-page.ts",
+      "bytes": 4766,
+      "sha256": "9e280be1d22091c8105726999b1796f856c3fceb65a384627271fd3c917493fd"
+    }
+  ],
+  "h5IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "actualReceiptSha256": "4edb34c445b8d463e2a984f3954a4779727c155d68c76651301e061acc9634f4",
+  "worker": "G360",
+  "local": {
+    "services": [
+      "assessment",
+      "content",
+      "gateway",
+      "iam",
+      "learner"
+    ],
+    "practice": {
+      "entryMarker": "reading",
+      "gesture": "keyboard",
+      "gestureCount": 1,
+      "getStatus": 200,
+      "postShape": "expected",
+      "postStatus": 200,
+      "postVersion": 266101,
+      "questionSame": true,
+      "sameSession": true,
+      "sessionInUrl": false
+    },
+    "assessmentReadback": {
+      "attempts": 0,
+      "checkpoints": 0,
+      "outbox": 0,
+      "session_all": 1,
+      "session_ok": 1
+    },
+    "scoreWrites": 0,
+    "learningWrites": 0,
+    "browserSyntheticFulfills": 0
+  },
+  "offline": {
+    "mobilePassed": 680,
+    "mobileTypecheck": true,
+    "h5Build": true,
+    "assessmentPassed": 202,
+    "assessmentSkipped": 7
+  },
+  "cleanup": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "pending": [
+    "direct score and replay runtime",
+    "visible mobile score and feedback",
+    "Learning consumption",
+    "feature admission in deployment",
+    "native device",
+    "TRACE_PENDING"
+  ]
+}
