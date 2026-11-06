@@ -1,0 +1,68 @@
+{
+  "batch": "B137",
+  "at": "2026-11-06T08:03:37.846521+00:00",
+  "classification": "LOCAL_REAL_H5_READING_PRACTICE_HANDOFF_CANDIDATE_PASS",
+  "worker": "G338",
+  "candidate": "G271 H5 + G258 Assessment + B118 Content",
+  "sourceIntegrated": false,
+  "browserInputIndexSha256": "6774df66f2ac6521640295859b0f419b710565863ec5908c82c6ef13917ea546",
+  "assessmentJarSha256": "467fb91b9299c0569f48d52b482be580a18b6a9b90bd74aa523659e16fed6912",
+  "fullReceiptSha256": "d3361c2a97426fe2fc677c269fa8edc30fb235097460608c29de274350d64d10",
+  "runtime": {
+    "services": [
+      "assessment",
+      "content",
+      "gateway",
+      "iam",
+      "learner"
+    ],
+    "contentMigration": "V34",
+    "publishedArticles": 1,
+    "activeBindingRows": 2,
+    "practice": {
+      "entryMarker": "reading",
+      "gesture": "keyboard",
+      "gestureCount": 1,
+      "getStatus": 200,
+      "postShape": "expected",
+      "postStatus": 200,
+      "postVersion": 266101,
+      "questionSame": true,
+      "sameSession": true,
+      "sessionInUrl": false
+    },
+    "assessmentReadback": {
+      "attempts": 0,
+      "checkpoints": 0,
+      "outbox": 0,
+      "session_all": 1,
+      "session_ok": 1
+    },
+    "syntheticNetworkFulfills": 0,
+    "learningStarted": false,
+    "kafkaStarted": false
+  },
+  "cleanup": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "ports": [
+    "mysql:13306",
+    "gateway:18070",
+    "iam-tls:18087",
+    "learner:18088",
+    "content:18089",
+    "assessment:18091",
+    "h5:18183"
+  ],
+  "pending": [
+    "merge and rerun product candidate",
+    "protected score and replay",
+    "physical device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}

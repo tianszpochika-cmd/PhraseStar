@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B137 在本机真实服务通过阅读练习候选的键盘进入、会话创建与同题读回。源码合入与评分继续验收。 [阅读练习 B137](takeover/mobile-figma-20261103/reviews/INTEGRATION-B137-READING-PINNED-PRACTICE-H5.md)
+
 移动端 B136 已在真实本机网关验证客服 H5 的本人空列表。正式分页契约与工单写入待验。 [客服浏览器 B136](takeover/mobile-figma-20261103/reviews/INTEGRATION-B136-SUPPORT-H5-LEGACY-EMPTY.md)
 
 移动端 B135 在平板大小的 H5 浏览器中通过五条路由的 53 项受控检查。原生 iPad 与读屏继续待验。 [平板检查 B135](takeover/mobile-figma-20261103/reviews/INTEGRATION-B135-TABLET-H5-A11Y.md)
