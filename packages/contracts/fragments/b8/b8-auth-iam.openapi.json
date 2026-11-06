@@ -1197,6 +1197,9 @@
               },
               "X-API-Version": {
                 "$ref": "#/components/headers/XApiVersion"
+              },
+              "Cache-Control": {
+                "$ref": "#/components/headers/B8AuthNoStore"
               }
             }
           },
@@ -3907,6 +3910,16 @@
           "consentState": {
             "$ref": "#/components/schemas/B8ConsentState"
           },
+          "publishedConsentDocuments": {
+            "type": "array",
+            "readOnly": true,
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Optional read-only IAM authoritative projection of the published first-consent documents. Returned only through the existing authenticated no-store GET /api/v1/iam/principal/me as B8PrincipalResponse.publishedConsentDocuments, a sibling of consentState and scoped to getB8Principal alone. This response-only root projection is additive and is never part of B8ConsentState, B8PdpConsentContext, any request including PUT /api/v1/iam/consents, or the consent list response. Omit this property when the exact plain-text body or the server-owned digest is unavailable for any member of the canonical set; do not send null, an empty array, or a partial list. When present, the array length is exactly 3. The client validates type-purpose uniqueness and the canonical set: exactly one TERMS paired with ACCOUNT_TERMS, exactly one PRIVACY paired with PRIVACY_NOTICE, and exactly one ADULT_LEARNING paired with ADULT_LEARNING_ELIGIBILITY. No other type or purpose is valid here, and a duplicate type or purpose is invalid.",
+            "items": {
+              "$ref": "#/components/schemas/B8PublishedConsentDocument"
+            }
+          },
           "deviceTrust": {
             "$ref": "#/components/schemas/B8DeviceTrustContext"
           },
@@ -4441,6 +4454,73 @@
           },
           "provenance": {
             "$ref": "#/components/schemas/B8ConsentProvenance"
+          }
+        }
+      },
+      "B8PublishedConsentDocument": {
+        "type": "object",
+        "additionalProperties": false,
+        "readOnly": true,
+        "description": "Server-published first-consent document. iam-service owns the exact UTF-8 body bytes and documentDigest. The client validates the type-purpose pair against the canonical set on B8PrincipalResponse.publishedConsentDocuments: TERMS with ACCOUNT_TERMS, PRIVACY with PRIVACY_NOTICE, and ADULT_LEARNING with ADULT_LEARNING_ELIGIBILITY. Each type and each purpose appears once in that array.",
+        "required": [
+          "type",
+          "purpose",
+          "documentVersion",
+          "documentDigest",
+          "bodyText",
+          "publishedAt",
+          "policyVersion",
+          "policyRef"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "TERMS",
+              "PRIVACY",
+              "ADULT_LEARNING"
+            ],
+            "description": "Published document type. Uniquely paired with purpose inside the canonical three-document set."
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "ACCOUNT_TERMS",
+              "PRIVACY_NOTICE",
+              "ADULT_LEARNING_ELIGIBILITY"
+            ],
+            "description": "Published processing purpose. Canonical pairs are TERMS/ACCOUNT_TERMS, PRIVACY/PRIVACY_NOTICE, and ADULT_LEARNING/ADULT_LEARNING_ELIGIBILITY."
+          },
+          "documentVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "Published document version. Bounds match B8ConsentUpdateRequest.version (string, maxLength 64)."
+          },
+          "documentDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Lowercase hex SHA-256 of the exact UTF-8 bytes of bodyText. iam-service owns this digest."
+          },
+          "bodyText": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536,
+            "description": "Nonempty plain UTF-8 text, at most 65536 characters. documentDigest is the server-owned SHA-256 of these exact UTF-8 bytes, without client normalization or substitution."
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policyVersion": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Nonempty server policy version that published this document."
+          },
+          "policyRef": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Nonempty server policy reference that published this document."
           }
         }
       },
