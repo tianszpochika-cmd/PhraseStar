@@ -65,7 +65,6 @@ public final class GradableAssessmentSnapshotController {
     private static final Pattern OPTION_ID = Pattern.compile("^[a-z][a-z0-9._:-]{0,63}$");
     private static final Pattern SNAPSHOT_ID = Pattern.compile("^snap_[A-Za-z0-9._:-]{8,127}$");
     private static final Pattern SHA256 = Pattern.compile("^[A-Fa-f0-9]{64}$");
-    private static final Pattern SEAL = Pattern.compile("^[0-9a-fA-F]{64}$");
     private static final Pattern PATH_VERSION = Pattern.compile("[1-9][0-9]{0,18}");
 
     /**
@@ -183,7 +182,7 @@ public final class GradableAssessmentSnapshotController {
         String snapshotId = snapshotId(versionId);
         Map<String, Object> payload = jsonMap(text(row.get("payload_json")));
         String seal = text(payload.get(GradableQuestions.SEAL_FIELD));
-        if (seal == null || !SEAL.matcher(seal).matches()) {
+        if (!GradableQuestions.isStoredSeal(seal)) {
             throw gone();
         }
         List<Map<String, Object>> questions;
