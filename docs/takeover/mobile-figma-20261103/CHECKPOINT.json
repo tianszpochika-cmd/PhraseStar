@@ -6235,6 +6235,17 @@
     "executionStatus": "USER_PAUSED",
     "productStatus": "IN_PROGRESS_NOT_ACCEPTED",
     "tracePending": 33,
-    "retirementManifest": "cross-machine-20261106/BRANCH-RETIREMENT.json"
+    "retirementManifest": "cross-machine-20261106/BRANCH-RETIREMENT.json",
+    "ciGate": {
+      "status": "FAILED_STATIC_TOOLCHAIN",
+      "check": "fixed-port canonical hash",
+      "reproducedAt": "c91b0f7ff3f1d39bd17380f37a3a678dc8a90e67",
+      "candidateRun": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42225338421",
+      "previousDevHead": "f01cddc6be0fe6f190a6f47525ebbd91a5047900",
+      "previousRunSameFailedStep": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/41658504242",
+      "expectedSha256": "28d84de5a93c65dd3e13b5d5dd99d455f8516975a2257bcb0462024f458c21da",
+      "observedSha256": "7021074c9ab24113c91be87ec153fd91388b71004638d39023ca220d8459da8f",
+      "dependentJobs": "SKIPPED"
+    }
   }
 }
