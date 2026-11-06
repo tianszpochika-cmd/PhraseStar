@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B145 在真实 IAM 读回成人学习资格拒绝与受限权限。禁止访问页继续验收。 [成人资格 B145](takeover/mobile-figma-20261103/reviews/INTEGRATION-B145-IAM-REJECTED-ELIGIBILITY-WIRE.md)
+
 移动端 B144 已通过阅读受保护评分和同键重试。浏览器提交反馈与事件消费待验。 [评分 B144](takeover/mobile-figma-20261103/reviews/INTEGRATION-B144-READING-PROTECTED-SCORE-REPLAY.md)
 
 移动端 B143 已通过权益页真实 H5 的公开目录、本人订单和权益空态。非空订单与支付继续待验。 [权益浏览器 B143](takeover/mobile-figma-20261103/reviews/INTEGRATION-B143-COMMERCE-H5-EMPTY.md)
