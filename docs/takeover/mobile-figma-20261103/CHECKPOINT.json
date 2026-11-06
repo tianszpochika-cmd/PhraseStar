@@ -5837,5 +5837,15 @@
     "cleanup": "PASS",
     "acl_learning_compensation_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B110-GRAMMAR-H5-KAFKA-20261106.json"
+  },
+  "integration_batch_111_assessment_pin_time": {
+    "state": "ACCEPTED_ASSESSMENT_PIN_SOURCE_AND_LOCAL_MYSQL",
+    "offline_maven": "179 pass, 7 opt-in skip",
+    "mysql_v12_baseline": "one reproduced pin mismatch",
+    "mysql_v12_candidate": "1/1, create/read/replay/attempt/report",
+    "historic_receipts": "preserved by source regression tests",
+    "cleanup": "PASS",
+    "learning_consumer_reader_and_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B111-ASSESSMENT-PIN-TIME-20261106.json"
   }
 }

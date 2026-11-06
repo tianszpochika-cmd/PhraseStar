@@ -2,6 +2,7 @@ package com.englishflow.assessment.web;
 
 import com.englishflow.assessment.port.PlacementRuleScorePort;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -34,6 +35,7 @@ class B10AssessmentEventCorrelationTest {
 
     private static final String SUBJECT = "prn_learner0000000001";
     private static final String OWNER_PIN = "snap_owner_b95_pin";
+    private static final String PINNED_AT = "2026-09-23T00:00:00Z";
     private static final String CANONICAL_REQUEST = "req-b10-corr-01";
     private static final String CANONICAL_TRACE = "0123456789abcdef0123456789abcdef";
     private static final Pattern REQUEST_ID = Pattern.compile("^[A-Za-z][A-Za-z0-9._-]{7,127}$");
@@ -60,11 +62,25 @@ class B10AssessmentEventCorrelationTest {
         assertFalse(data(response).containsKey("traceId"));
         assertPair(events, CANONICAL_REQUEST, CANONICAL_TRACE, sessionId, submissionId);
         assertEquals(OWNER_PIN, events.get(0).path("payload").path("contentPin").path("snapshotId").asText());
+        Map<?, ?> attemptPin = (Map<?, ?>) data(response).get("pin");
+        assertEquals(PINNED_AT, attemptPin.get("pinnedAt"));
+        assertEquals(25001L, ((Number) attemptPin.get("contentVersionId")).longValue());
+        assertEquals("PINNED", attemptPin.get("pinStatus"));
+        assertFalse(attemptPin.containsKey("alternativeContentVersionId"));
+        JsonNode storedPin = harness.mapper.readTree(harness.jdbc.reportPinJson);
+        assertEquals(PINNED_AT, storedPin.path("pinnedAt").asText());
+        assertTrue(storedPin.path("contentVersionId").isNumber());
+        assertEquals(25001L, storedPin.path("contentVersionId").asLong());
+        assertEquals("PINNED", storedPin.path("pinStatus").asText());
+        assertFalse(storedPin.has("alternativeContentVersionId"));
 
         Map<String, Object> replay = harness.submit(sessionId, submissionId, "idem-propagate",
                 "req-replay-ignored", CANONICAL_TRACE);
         assertEquals(data(response).get("attemptId"), data(replay).get("attemptId"));
+        assertEquals(PINNED_AT, ((Map<?, ?>) data(replay).get("pin")).get("pinnedAt"));
         assertEquals(4, harness.jdbc.events.size());
+        assertEquals(1, harness.jdbc.reportWrites);
+        assertEquals(PINNED_AT, harness.mapper.readTree(harness.jdbc.reportPinJson).path("pinnedAt").asText());
     }
 
     @Test
@@ -473,6 +489,8 @@ class B10AssessmentEventCorrelationTest {
         private final Map<String, Map<String, Object>> attempts = new LinkedHashMap<>();
         private final Map<String, Map<String, Object>> idempotency = new LinkedHashMap<>();
         private final List<Captured> events = new ArrayList<>();
+        private int reportWrites;
+        private String reportPinJson;
         private final List<Map<String, Object>> rules;
         private final String itemsJson;
         private final String answersJson;
@@ -519,8 +537,12 @@ class B10AssessmentEventCorrelationTest {
                         String.valueOf(args[9]), String.valueOf(args[10])));
                 return 1;
             }
-            if (sql.contains("INSERT INTO b10_assessment_report")
-                    || sql.contains("INSERT INTO assessment_mistake")
+            if (sql.contains("INSERT INTO b10_assessment_report")) {
+                reportWrites++;
+                reportPinJson = String.valueOf(args[8]);
+                return 1;
+            }
+            if (sql.contains("INSERT INTO assessment_mistake")
                     || sql.contains("UPDATE b10_assessment_session")) {
                 return 1;
             }
@@ -564,6 +586,7 @@ class B10AssessmentEventCorrelationTest {
             row.put("answers_json", answersJson);
             row.put("state_version", 1L);
             row.put("owner_snapshot_ref", OWNER_PIN);
+            row.put("started_at", Timestamp.from(Instant.parse(PINNED_AT)));
             return row;
         }
     }

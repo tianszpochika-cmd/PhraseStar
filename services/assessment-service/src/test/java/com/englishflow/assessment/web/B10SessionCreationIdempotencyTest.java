@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class B10SessionCreationIdempotencyTest {
     private static final String SUBJECT = "prn_learner0000000001";
+    private static final String PINNED_AT = "2026-09-23T00:00:00Z";
 
     @Test
     void existingSessionCanReplayButCannotReuseKeyForDifferentMode() {
@@ -33,6 +34,8 @@ class B10SessionCreationIdempotencyTest {
 
         Map<String, Object> replay = controller.createSession(learner(), original, "existing-session-key", null);
         assertEquals("asess_existing", ((Map<?, ?>) replay.get("data")).get("sessionId"));
+        assertEquals(PINNED_AT, responsePin(replay).get("pinnedAt"));
+        assertEquals(25001L, ((Number) responsePin(replay).get("contentVersionId")).longValue());
 
         ResponseStatusException conflict = assertThrows(ResponseStatusException.class,
                 () -> controller.createSession(learner(),
@@ -65,6 +68,10 @@ class B10SessionCreationIdempotencyTest {
         request.put("mode", "PRACTICE");
         request.put("clientSessionRef", "new-session-key");
         Map<String, Object> first = controller.createSession(learner(), request, "new-session-key", null);
+        assertEquals(PINNED_AT, responsePin(first).get("pinnedAt"));
+        assertEquals(PINNED_AT, ((Map<?, ?>) first.get("data")).get("startedAt"));
+        assertEquals(25001L, ((Number) responsePin(first).get("contentVersionId")).longValue());
+        assertEquals("PINNED", responsePin(first).get("pinStatus"));
 
         Map<String, Object> reordered = new LinkedHashMap<>();
         reordered.put("clientSessionRef", "new-session-key");
@@ -72,10 +79,16 @@ class B10SessionCreationIdempotencyTest {
         reordered.put("contentVersionId", 25001);
         Map<String, Object> replay = controller.createSession(learner(), reordered, "new-session-key", null);
         assertEquals(mapper.writeValueAsString(first), mapper.writeValueAsString(replay));
+        assertEquals(PINNED_AT, responsePin(replay).get("pinnedAt"));
+        String sessionId = String.valueOf(((Map<?, ?>) first.get("data")).get("sessionId"));
+        Map<String, Object> current = controller.readSession(learner(SUBJECT, "assessment.session.read"), sessionId);
+        assertEquals(PINNED_AT, responsePin(current).get("pinnedAt"));
+        assertEquals(mapper.writeValueAsString(responsePin(first)), mapper.writeValueAsString(responsePin(current)));
         jdbc.hideNextSessionLookup = true;
         Map<String, Object> concurrentReplay = controller.createSession(learner(), reordered,
                 "new-session-key", null);
         assertEquals(mapper.writeValueAsString(first), mapper.writeValueAsString(concurrentReplay));
+        assertEquals(PINNED_AT, responsePin(concurrentReplay).get("pinnedAt"));
         assertEquals(1, jdbc.sessionWrites);
         assertEquals(1, jdbc.ruleReads);
 
@@ -118,6 +131,8 @@ class B10SessionCreationIdempotencyTest {
         Map<String, Object> second = controller.createSession(learner(), again, "open-key-b", null);
         assertEquals(((Map<?, ?>) first.get("data")).get("sessionId"),
                 ((Map<?, ?>) second.get("data")).get("sessionId"));
+        assertEquals(PINNED_AT, responsePin(first).get("pinnedAt"));
+        assertEquals(PINNED_AT, responsePin(second).get("pinnedAt"));
         assertEquals(1, jdbc.sessionWrites);
 
         Map<String, Object> otherMode = new LinkedHashMap<>();
@@ -135,16 +150,25 @@ class B10SessionCreationIdempotencyTest {
     }
 
     private static JwtAuthenticationToken learner(String subject) {
+        return learner(subject, "assessment.session.write");
+    }
+
+    private static JwtAuthenticationToken learner(String subject, String permission) {
         Jwt jwt = Jwt.withTokenValue("verified").header("alg", "RS256").subject(subject)
                 .issuedAt(Instant.parse("2026-09-23T00:00:00Z"))
                 .expiresAt(Instant.parse("2026-09-23T01:00:00Z"))
                 .claim("tenant_id", "platform")
                 .claim("roles", List.of("learner"))
-                .claim("permissions", List.of("assessment.session.write"))
+                .claim("permissions", List.of(permission))
                 .claim("adult_gate", "PASSED")
                 .claim("consent_state", "GRANTED")
                 .build();
         return new JwtAuthenticationToken(jwt, List.of(), subject);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> responsePin(Map<String, Object> response) {
+        return (Map<String, Object>) ((Map<?, ?>) response.get("data")).get("pin");
     }
 
     private static final class ExistingSessionJdbc extends JdbcTemplate {
@@ -165,7 +189,7 @@ class B10SessionCreationIdempotencyTest {
             session.put("items_json", "[]");
             session.put("attempt_count", 0);
             session.put("state_version", 1L);
-            session.put("started_at", Timestamp.from(Instant.parse("2026-09-23T00:00:00Z")));
+            session.put("started_at", Timestamp.from(Instant.parse(PINNED_AT)));
         }
 
         @Override
@@ -214,7 +238,7 @@ class B10SessionCreationIdempotencyTest {
                 row.put("idempotency_key", args[13]);
                 row.put("attempt_count", 0);
                 row.put("state_version", 1L);
-                row.put("started_at", Timestamp.from(Instant.parse("2026-09-23T00:00:00Z")));
+                row.put("started_at", Timestamp.from(Instant.parse(PINNED_AT)));
                 sessions.put(args[1] + "|" + args[13], row);
                 return 1;
             }

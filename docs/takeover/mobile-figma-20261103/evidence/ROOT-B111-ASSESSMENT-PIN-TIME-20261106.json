@@ -1,0 +1,63 @@
+{
+  "batch": "B111",
+  "date": "2026-11-06",
+  "baseline_integration": "bc4f0d00f13f90fc19f149518cfd8953a1ed15a7",
+  "candidate": {
+    "job": "G156",
+    "base": "82ce1171c67d35d7b87b4645175882bbe66f8bb9",
+    "files": [
+      {
+        "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+        "sha256": "0bc70f4fd00f65303ee1c6f88aea0679a6dc42f459e51914a8c29f3c53920a17",
+        "bytes": 82328
+      },
+      {
+        "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10AssessmentEventCorrelationTest.java",
+        "sha256": "3ed63f9ca7d509822b4cfb09be5b9e1d6ac12df2e64d4a86068c6df1af8541ae",
+        "bytes": 31704
+      },
+      {
+        "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10SessionCreationIdempotencyTest.java",
+        "sha256": "7a570c90c493ed8f90aa73185d3dbdd3e4b779d123ef8aa6497604e2bc8a6332",
+        "bytes": 15998
+      }
+    ],
+    "maven": {
+      "pass": 179,
+      "opt_in_skipped": 7
+    }
+  },
+  "independent_test": {
+    "job": "G157",
+    "sha256": "62688399e1f32a76a5213ff953b040035c04652b32e7c5704ad30b05ba39addd",
+    "result_sha256": "4c8dfbbb06906032e1791dad310a0c876d5b8fe9d9260b4f70b193b231f5fcf5",
+    "result": {
+      "runs": {
+        "baseline": {
+          "exit": 1,
+          "migrations_v12": true,
+          "one_test_pass": false,
+          "old_pin_mismatch": true,
+          "recovered_from_surefire": true
+        },
+        "candidate": {
+          "exit": 0,
+          "migrations_v12": true,
+          "one_test_pass": true,
+          "old_pin_mismatch": false
+        }
+      },
+      "cleanup": true
+    },
+    "scope": "real Connector/J and isolated MySQL V12, synthetic in-process principal and one legacy local rule",
+    "repository_disposition": "external evidence only, generic gated runner provisions a different schema name",
+    "observer_note": "Initial result classifier stopped after the baseline Maven result. The baseline assertion and migrations were recovered from its same Surefire reports, then only the candidate was run."
+  },
+  "unchanged_evidence": "Existing report pin JSON and existing idempotent response bytes are preserved by the G156 tests.",
+  "not_run": [
+    "Gateway or IAM",
+    "browser retest",
+    "Learning consumer and projection",
+    "production deployment"
+  ]
+}
