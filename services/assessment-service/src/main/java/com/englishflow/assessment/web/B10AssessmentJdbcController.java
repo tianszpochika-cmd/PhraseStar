@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -354,34 +355,17 @@ public class B10AssessmentJdbcController {
             BankPracticeRuleProvider.BankRules bank = bankRules(gradingCode, gradingVersion, contextBearer());
             if (bank != null) rules = bank.rows();
         }
-        Map<Long, Map<String, Object>> ruleById = new LinkedHashMap<>();
-        for (Map<String, Object> rule : rules) ruleById.put(numericItemId(text(rule.get("item_id"))), rule);
+        // Grade only this session pin. Numeric ids and stable itemCode aliases
+        // both resolve here. The same canonical rule twice, or an item outside
+        // the pin, fails before any grade, attempt row, or outbox event.
+        List<Map<String, Object>> sessionRules = sessionRules(session, rules);
+        List<ResolvedItem> resolved = resolveSubmissions(submissions, sessionRules);
         ObjectNode answers = objectAnswers(session.get("answers_json"));
+        List<SubmittedGrade> graded = gradeSubmissions(resolved, answers);
+        int scored = graded.size();
         int correct = 0;
-        int scored = 0;
-        List<String> mistakes = new ArrayList<>();
-        for (Map<String, Object> submission : submissions) {
-            // P1-LIVE-010: FNV-64 itemIds exceed the JS safe-integer range, so web
-            // clients cannot echo them back exactly. Accept the stable string
-            // itemCode as well (same dual-matching idiom as the rules filter).
-            long itemId = positiveLong(submission.get("itemId"), 0L);
-            Map<String, Object> rule = ruleById.get(itemId);
-            String itemCode = text(submission.get("itemCode"), "");
-            if (rule == null && !itemCode.isBlank()) {
-                for (Map<String, Object> candidate : rules) {
-                    if (text(candidate.get("item_id")).equals(itemCode)) {
-                        rule = candidate;
-                        itemId = numericItemId(itemCode);
-                        break;
-                    }
-                }
-            }
-            if (rule == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "assessment item is unavailable");
-            String selected = answerValue(submission.get("response"));
-            answers.put(String.valueOf(itemId), selected);
-            scored++;
-            if (gradeRule(rule, selected)) correct++;
-            else mistakes.add(text(rule.get("item_id")));
+        for (SubmittedGrade grade : graded) {
+            if (grade.objectiveCorrect()) correct++;
         }
         String submissionDigest = sha256(json(submissions));
         int attemptVersion = (int) number(oneValue("SELECT COALESCE(MAX(attempt_version), 0) + 1 FROM b10_assessment_attempt WHERE session_id = ?", sessionId));
@@ -395,7 +379,6 @@ public class B10AssessmentJdbcController {
         // Mistake and score totals cover the session's own items: unanswered
         // session items count as mistakes, but rules outside this session
         // (e.g. the rest of the bank for a subset practice) never do.
-        List<Map<String, Object>> sessionRules = sessionRules(session, rules);
         List<String> allMistakes = sessionRules.stream()
                 .filter(rule -> !gradeRule(rule, answerMap.get(String.valueOf(numericItemId(text(rule.get("item_id")))))))
                 .map(rule -> text(rule.get("item_id"))).toList();
@@ -423,14 +406,15 @@ public class B10AssessmentJdbcController {
                 totalScoreBucket, json(allMistakes), allMistakes.isEmpty() ? "MASTERED" : "RETRY",
                 json(pin(sessionForPin)));
         // P1R decision 5A: emit canonical learning facts atomically with grading.
-        // Per-item assessed events plus one report-ready event go to the durable
-        // outbox in the same transaction; no raw answers, keys or rule text leave.
-        // Request and trace ids are observability only: one canonical pair for this
-        // write, never an owner, privilege, or dedupe fact.
+        // One assessment.item.assessed.v2 per item graded on this attempt, plus
+        // one report-ready event, go to the durable outbox in the same transaction.
+        // No raw answers, keys or rule text leave. Request and trace ids are
+        // observability only: one canonical pair for this write, never an owner,
+        // privilege, or dedupe fact.
         String eventRequestId = canonicalRequestId(requestId);
         String eventTraceId = canonicalTraceId(traceId);
         emitAssessedEvents(principal.subject(), session, gradingCode, gradingVersion,
-                attemptId, reportId, eventRequestId, eventTraceId, sessionRules, mistakes, totalScoreBucket,
+                attemptId, reportId, eventRequestId, eventTraceId, graded, totalScoreBucket,
                 total, totalCorrect, allMistakes.size());
         // M5-009: persist wrong-answer mistake facts so the D0/D1/D7 delay
         // machine and variant repair have durable state to drive. B10 items
@@ -953,9 +937,96 @@ public class B10AssessmentJdbcController {
         return "snap_assessment_" + text(session.get("snapshot_id"), String.valueOf(SNAPSHOT_ID));
     }
 
+    /**
+     * One current submission, resolved to the session pin's canonical rule.
+     * Numeric itemId and stable itemCode are aliases of {@code ruleItemId}.
+     */
+    private record ResolvedItem(Map<String, Object> rule, long itemId, String ruleItemId,
+            Map<String, Object> submission) {
+    }
+
+    /**
+     * The one grade for a submitted item. Assessed events copy this result so an
+     * item that was not submitted on this attempt cannot become CORRECT_VERIFIED.
+     * An explicit blank stays a miss in the score and emits UNANSWERED (0/1, false, false).
+     */
+    private record SubmittedGrade(Map<String, Object> rule, long itemId, String ruleItemId,
+            String objectiveOutcome, int objectiveNumerator, boolean objectiveCorrect, String reasonCode) {
+
+        private static SubmittedGrade of(Map<String, Object> rule, long itemId, String selected, boolean matches) {
+            String ruleItemId = text(rule.get("item_id"));
+            if (selected == null || selected.isBlank()) {
+                return new SubmittedGrade(rule, itemId, ruleItemId, "UNANSWERED", 0, false, "UNANSWERED");
+            }
+            if (matches) {
+                return new SubmittedGrade(rule, itemId, ruleItemId, "CORRECT_VERIFIED", 1, true, "FULL_MATCH");
+            }
+            return new SubmittedGrade(rule, itemId, ruleItemId, "INCORRECT", 0, false, "NO_MATCH");
+        }
+    }
+
+    private static List<ResolvedItem> resolveSubmissions(List<Map<String, Object>> submissions,
+            List<Map<String, Object>> sessionRules) {
+        Map<Long, Map<String, Object>> byNumeric = new LinkedHashMap<>();
+        for (Map<String, Object> rule : sessionRules) {
+            byNumeric.put(numericItemId(text(rule.get("item_id"))), rule);
+        }
+        Set<String> seen = new LinkedHashSet<>();
+        List<ResolvedItem> resolved = new ArrayList<>();
+        for (Map<String, Object> submission : submissions) {
+            ResolvedItem item = resolveSubmission(submission, sessionRules, byNumeric);
+            if (!seen.add(item.ruleItemId())) bad("assessment item was submitted more than once");
+            resolved.add(item);
+        }
+        return resolved;
+    }
+
+    /**
+     * P1-LIVE-010: FNV-64 item ids exceed the JS safe-integer range, so a positive
+     * itemId that misses the pin can still match the stable itemCode. Lookup stays
+     * inside session rules. An item outside this pin is unavailable.
+     */
+    private static ResolvedItem resolveSubmission(Map<String, Object> submission,
+            List<Map<String, Object>> sessionRules, Map<Long, Map<String, Object>> byNumeric) {
+        boolean itemIdPresent = submission.containsKey("itemId") && submission.get("itemId") != null
+                && !String.valueOf(submission.get("itemId")).trim().isBlank();
+        String itemCode = text(submission.get("itemCode"), "");
+        if (!itemIdPresent && itemCode.isBlank()) bad("positive numeric value is required");
+        Map<String, Object> rule = null;
+        long itemId = 0L;
+        if (itemIdPresent) {
+            itemId = positiveLong(submission.get("itemId"), 0L);
+            rule = byNumeric.get(itemId);
+        }
+        if (rule == null && !itemCode.isBlank()) {
+            for (Map<String, Object> candidate : sessionRules) {
+                if (text(candidate.get("item_id")).equals(itemCode)) {
+                    rule = candidate;
+                    itemId = numericItemId(itemCode);
+                    break;
+                }
+            }
+        }
+        if (rule == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "assessment item is unavailable");
+        }
+        return new ResolvedItem(rule, itemId, text(rule.get("item_id")), submission);
+    }
+
+    private List<SubmittedGrade> gradeSubmissions(List<ResolvedItem> resolved, ObjectNode answers) {
+        List<SubmittedGrade> graded = new ArrayList<>();
+        for (ResolvedItem item : resolved) {
+            String selected = answerValue(item.submission().get("response"));
+            answers.put(String.valueOf(item.itemId()), selected);
+            boolean matches = selected != null && !selected.isBlank() && gradeRule(item.rule(), selected);
+            graded.add(SubmittedGrade.of(item.rule(), item.itemId(), selected, matches));
+        }
+        return graded;
+    }
+
     private void emitAssessedEvents(String subject, Map<String, Object> session, String gradingCode,
             long gradingVersion, String attemptId, String reportId, String requestId, String traceId,
-            List<Map<String, Object>> rules, List<String> mistakes, String totalScoreBucket,
+            List<SubmittedGrade> graded, String totalScoreBucket,
             int total, int totalCorrect, int totalMistakes) {
         Instant now = Instant.now();
         String policyDigest = sha256("objective-assessment-v1");
@@ -964,9 +1035,9 @@ public class B10AssessmentJdbcController {
         contentPin.put("contentEpoch", number(session.get("content_epoch"), CONTENT_EPOCH));
         contentPin.put("snapshotId", assessedContentSnapshotId(session));
         contentPin.put("snapshotHash", text(session.get("snapshot_hash"), SNAPSHOT_HASH));
-        for (Map<String, Object> rule : rules) {
-            String ruleItemId = text(rule.get("item_id"));
-            boolean itemCorrect = !mistakes.contains(ruleItemId);
+        for (SubmittedGrade grade : graded) {
+            Map<String, Object> rule = grade.rule();
+            String ruleItemId = grade.ruleItemId();
             String itemAssessmentId = "aitm_" + compactUuid();
             String logical = "li_" + ruleItemId.replaceAll("[^A-Za-z0-9._:-]", "_");
             while (logical.length() < 11) logical = logical + "0";
@@ -995,18 +1066,18 @@ public class B10AssessmentJdbcController {
             payload.put("reportPin", reportPin);
             payload.put("objectivePolicyPin", Map.of("practiceType", "OBJECTIVE_ASSESSMENT",
                     "objectiveExpected", true, "policyVersion", "v1", "policyDigest", policyDigest));
-            payload.put("objectiveOutcome", itemCorrect ? "CORRECT_VERIFIED" : "INCORRECT");
-            payload.put("objectiveNumerator", itemCorrect ? 1 : 0);
+            payload.put("objectiveOutcome", grade.objectiveOutcome());
+            payload.put("objectiveNumerator", grade.objectiveNumerator());
             payload.put("objectiveDenominator", 1);
-            payload.put("objectiveCorrect", itemCorrect);
+            payload.put("objectiveCorrect", grade.objectiveCorrect());
             payload.put("guessSignal", false);
             payload.put("semanticErrorCategory", "UNCLASSIFIED");
             payload.put("mappingVersion", "v1");
             payload.put("verificationStage", "NONE");
             payload.put("reasonTrace", List.of(Map.of("ruleCode", "B10_SCORE", "ruleVersion", "v1",
-                    "category", "UNCLASSIFIED", "reasonCode", itemCorrect ? "FULL_MATCH" : "NO_MATCH",
+                    "category", "UNCLASSIFIED", "reasonCode", grade.reasonCode(),
                     "evidenceRef", "attempt:" + attemptId)));
-            payload.put("outcomeDigest", sha256(itemAssessmentId + itemCorrect));
+            payload.put("outcomeDigest", sha256(itemAssessmentId + grade.objectiveCorrect()));
             payload.put("assessmentFactWatermark", "b10." + text(session.get("session_id"), ""));
             payload.put("assessedAt", now.toString());
             appendOutbox("assessment.item.assessed.v2", "assessment.event.v2", 2,
