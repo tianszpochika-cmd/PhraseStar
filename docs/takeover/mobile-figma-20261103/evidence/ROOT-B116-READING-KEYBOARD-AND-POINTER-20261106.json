@@ -1,0 +1,67 @@
+{
+  "batch": "B116",
+  "workers": [
+    "G167",
+    "G181",
+    "G194",
+    "G196",
+    "G212",
+    "G219",
+    "G222"
+  ],
+  "candidate": [
+    {
+      "path": "apps/mobile/src/pages/b11-reading/b11-reading.vue",
+      "sha256": "8810af12ed7da0f8db0a6fb576f8b3bac13092395d575d788ab46b720c6d5833",
+      "bytes": 40664
+    },
+    {
+      "path": "apps/mobile/src/pages/b3-reading/b3-reading.vue",
+      "sha256": "6e820795109ce3661cac11a153dda60615e94defb6d6dfd0c1e451bd3e35a235",
+      "bytes": 40664
+    },
+    {
+      "path": "apps/mobile/tests/b11/b11-mobile-contract.test.mjs",
+      "sha256": "704ae33a7725b55d54b297daeb4e69c09eaa5e78ed59fd5df6dbeed8dd7e23b9",
+      "bytes": 8316
+    },
+    {
+      "path": "apps/mobile/tests/reading-page.test.mjs",
+      "sha256": "670a72d184dae322c34f71989096130003db18cd2f52da49e9317d4c1d82e802",
+      "bytes": 35046
+    },
+    {
+      "path": "packages/i18n/src/mobile-resources/reading-page.ts",
+      "sha256": "55353f40895334b604af37815623590d661e9c183fa189c655b181dac7beec1b",
+      "bytes": 4645
+    }
+  ],
+  "browser": {
+    "assertions": 108,
+    "screenshots": 8,
+    "report_sha256": "9d6670c6c45842e88c0b3eca0c677eaf09728275ec2824be93702c85dda7b20a",
+    "synthetic": true,
+    "artifacts": {
+      "h5_files": 797,
+      "h5_index_sha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+      "app_source_files": 748,
+      "app_service_sha256": "a96d0a598ec25ebc0e57bb19cfa482333e62f933dfcee90244b5e4c67edcd847"
+    }
+  },
+  "focus_geometry": {
+    "scope": "two routes; zh-CN and en-US; 320, 390 and 768 CSS-pixel viewports; normal and 200% text only",
+    "pass": 24,
+    "report_sha256": "12f09f158f383cac9e4a004966456d6476d0d36c3b0888dfdc904cadbf7e65cd",
+    "baseline_pass": 12,
+    "baseline_report_sha256": "1b8af6244600beee785fe4658cc23286b0baa27649b041994fcaaf2b34148b2c",
+    "intermediate_pass": 18,
+    "intermediate_report_sha256": "abefd2c6a9ae909ccab26f3f665a12e71414ca2bd16132df1eeb77fdf55aec2e",
+    "older_mixed_pointer_y_delta_css_px": [
+      -44,
+      -44
+    ]
+  },
+  "mobile_source_pass": 677,
+  "types": "PASS",
+  "real_article_native_install_reader_deploy": "NOT_RUN"
+}

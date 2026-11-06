@@ -131,7 +131,7 @@ test('B11 reading retries a failed initial read on the current shell while close
   assert.ok(errorAt > 0 && restrictedAt > errorAt && readyAt > restrictedAt)
   const errorShell = reading.slice(errorAt, restrictedAt)
   const restrictedShell = reading.slice(restrictedAt, readyAt)
-  const retryButton = /<button type="button" class="reading-cta" data-action="retry" @click="load">\{\{ t\('retry'\) \}\}<\/button>/
+  const retryButton = /<button\s+type="button"\s+class="reading-cta"\s+data-action="retry"(?=[^>]*:tabindex="h5TabIndex\(true\)")(?=[^>]*:role="h5ButtonRole\(\)")(?=[^>]*@click="load")(?=[^>]*@keydown\.enter\.stop\.prevent)(?=[^>]*@keyup\.enter\.stop\.prevent="activateLoad")(?=[^>]*@keydown\.space\.stop\.prevent)(?=[^>]*@keyup\.space\.stop\.prevent="activateLoad")[^>]*>\s*\{\{ t\('retry'\) \}\}\s*<\/button>/
   assert.match(errorShell, /role="alert"/)
   assert.match(errorShell, retryButton)
   assert.match(restrictedShell, /role="alert"/)

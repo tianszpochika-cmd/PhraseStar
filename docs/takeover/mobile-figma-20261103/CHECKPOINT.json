@@ -5886,5 +5886,19 @@
     "dec04": "OPEN",
     "review": "reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md",
     "evidence": "evidence/ROOT-B115-FIGMA-RC1-ROUTE-TRACE-20261106.json"
+  },
+  "integration_batch_116_reading_keyboard_pointer": {
+    "state": "ACCEPTED_LOCAL_SYNTHETIC_H5_AND_APP_SOURCE_ONLY",
+    "routes": [
+      "MB-014",
+      "MB-015"
+    ],
+    "mobile_source_pass": 677,
+    "h5_browser_pass": 108,
+    "bilingual_text_geometry_pass": 24,
+    "h5_index_sha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+    "native_install_reader_business_deploy": "NOT_RUN",
+    "review": "reviews/INTEGRATION-B116-READING-KEYBOARD-AND-POINTER.md",
+    "evidence": "evidence/ROOT-B116-READING-KEYBOARD-AND-POINTER-20261106.json"
   }
 }
