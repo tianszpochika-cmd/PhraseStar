@@ -1,0 +1,59 @@
+{
+  "batch": "B117",
+  "owner_fixture": "B77 local IAM/Gateway/Learning/MySQL with synthetic account",
+  "h5_candidate": "B73",
+  "browser": {
+    "enabled": true,
+    "opened": true,
+    "indexSha256": "1a76e5ba2f09234e58704512785628251a386b3e66e9b9de5cb48635965e23fc",
+    "directoryExact": true,
+    "authorizationPresent": false,
+    "credentialPresent": false,
+    "nonLoopback": 0,
+    "businessFulfillments": 0,
+    "persistentProfile": false,
+    "screenshot": false,
+    "shareGets": 4,
+    "shareOptions": 0,
+    "activeReloaded": true,
+    "revokedReloaded": true,
+    "closed": {
+      "context": true,
+      "browser": true,
+      "staticServer": true
+    }
+  },
+  "independent_http_counters": {
+    "requests": 9,
+    "issue": 5,
+    "concurrentIssues": 2,
+    "anonymousDenied": 1,
+    "mismatch": 1,
+    "headerless": 1,
+    "publicReads": 2,
+    "revokes": 2
+  },
+  "iam_check_count": 184,
+  "harness_candidate_sha256": "6e40cb8803ae8d57cfe838393b8f6c5e9f7267635b5a3a2cc1821e7f8ccd0abb",
+  "raw_redacted_report_sha256": "a9aa10313809236906c6a6efdc0e2043475ab4e973dc4d0ae9cf6bb94d075e7e",
+  "first_attempt": "G230 blocked by exact old artifact path before report setup; all resources released",
+  "resource_release": {
+    "ports": [
+      13306,
+      18070,
+      18087,
+      18090,
+      18183
+    ],
+    "containers": true,
+    "tls": true
+  },
+  "not_run": [
+    "real expired view",
+    "real server failure",
+    "physical devices",
+    "screen readers",
+    "deployment",
+    "trace signoff"
+  ]
+}

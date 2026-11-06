@@ -12,6 +12,8 @@
 
 移动端 B102 的逐题测评事件领取通过 4 项真实 MySQL 检查，含两个连接跳锁和过期凭据确认保护。B104 增加消息确认核心并通过 13 项受控发布测试和 5 项真实 MySQL 测试。默认本机启动检查通过，真实 Kafka、学习侧消费和错题详情分别验收。[测评事件领取 B102](takeover/mobile-figma-20261103/reviews/INTEGRATION-B102-ASSESSMENT-OUTBOX-LEASE.md)
 
+移动端 B117 通过本机报告分享匿名浏览器验证。同一链接撤销前显示实际报告空态，撤销后仅显示撤销状态。 [报告分享 B117](takeover/mobile-figma-20261103/reviews/INTEGRATION-B117-REPORT-SHARE-REAL-H5.md)
+
 移动端 B116 通过两条阅读路由的键盘、鼠标、高对比和中英文 200% 字号复验。原生安装和读屏继续待验。 [阅读交互 B116](takeover/mobile-figma-20261103/reviews/INTEGRATION-B116-READING-KEYBOARD-AND-POINTER.md)
 
 移动端 B115 核对 33 条路由和 71 处 Figma RC1 节点引用，各页继续追溯和签收。 [逐页追溯](takeover/mobile-figma-20261103/reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md)

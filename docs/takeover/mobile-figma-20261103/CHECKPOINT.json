@@ -5900,5 +5900,16 @@
     "native_install_reader_business_deploy": "NOT_RUN",
     "review": "reviews/INTEGRATION-B116-READING-KEYBOARD-AND-POINTER.md",
     "evidence": "evidence/ROOT-B116-READING-KEYBOARD-AND-POINTER-20261106.json"
+  },
+  "integration_batch_117_report_share_real_h5": {
+    "state": "ACCEPTED_LOCAL_REAL_H5_PUBLIC_ACTIVE_REVOKED_ONLY",
+    "route": "MB-017",
+    "h5_candidate": "B73",
+    "browser_public_gets": 4,
+    "iam_checks": 184,
+    "standalone_http_requests": 9,
+    "release": "PASS",
+    "expired_service_failure_native_deploy_trace": "NOT_RUN",
+    "evidence": "evidence/ROOT-B117-REPORT-SHARE-REAL-H5-20261106.json"
   }
 }
