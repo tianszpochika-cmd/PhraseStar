@@ -333,6 +333,12 @@ export interface B10RuleFeedback {
   scoreBucket?: string | null
 }
 
+export interface B10ReadingPracticeRef {
+  contentCode: string
+  contentVersionId: number
+  questionItemId: number
+}
+
 export interface B10ReadingArticle {
   articleId: number
   title: string
@@ -343,6 +349,7 @@ export interface B10ReadingArticle {
   rightsStatus: 'AUTHORIZED' | 'REVOKED'
   contentVersionId: number | null
   contentEpoch: number
+  practiceRef?: B10ReadingPracticeRef
 }
 
 export interface B10ReadingQuestion {

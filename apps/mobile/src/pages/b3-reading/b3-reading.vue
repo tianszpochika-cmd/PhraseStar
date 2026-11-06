@@ -20,6 +20,10 @@ import {
   nextWordSelection,
   paragraphPieces,
   readableQuestionCount,
+  READING_PRACTICE_ENTRY_PATH,
+  readingPracticeParsedAccepted,
+  readingPracticePin,
+  readingPracticeReady,
   readStillCurrent,
   readingFontPx,
   readingRouteActive,
@@ -32,6 +36,7 @@ import {
   type LocalWordSelection,
   type ReadPermit,
   type ReadingArticleInput,
+  type ReadingPracticePin,
   type ReadingViewState,
 } from '../../domain/reading-page'
 import { b10LearningApi } from '../../api/b10'
@@ -41,6 +46,7 @@ import { b10ContentLocale, b10ThemeMode, b10UiLocale } from '../../platform/b10-
 import { backMobile, mobileExperienceEngine, mobileT, useMobileExperience } from '../../platform/experience'
 import { getUniRuntime, openUniPage } from '../../platform/uni-runtime'
 import { mobileI18n } from '../../platform/v2-foundation'
+import { useB10LearningStore } from '../../stores/b10-learning'
 import { useSessionStore } from '../../stores/session'
 
 const graded = false
@@ -77,9 +83,13 @@ const showTranslation = ref(false)
 const selection = ref<LocalWordSelection | null>(null)
 const selectionGeneration = ref(0)
 const pageVisible = ref(false)
+const pageRoot = ref<{ $el?: HTMLElement } | null>(null)
+const paragraphNavId = ROUTE_ID + '-paragraph-nav'
 const quality = ref(mobileExperienceEngine.state.level)
 let pageEpoch = 0
 let loadRequest = 0
+let practiceGeneration = 0
+let practiceFlight: number | null = null
 const stopQuality = mobileExperienceEngine.subscribe((next) => { quality.value = next.level })
 
 function t(key: string, values?: Record<string, string | number>): string {
@@ -121,6 +131,8 @@ function livePermit(requestEpoch: number, requestId: number, subject: string, re
 function concealContent(): void {
   pageEpoch += 1
   loadRequest += 1
+  practiceGeneration += 1
+  practiceFlight = null
   state.value = 'idle'
   article.value = null
   questionCount.value = 0
@@ -177,6 +189,7 @@ function toInput(source: B10ReadingArticle): ReadingArticleInput {
     availability: null,
     contentVersionId: source.contentVersionId,
     contentEpoch: source.contentEpoch,
+    practiceRef: source.practiceRef,
   }
 }
 function persistLocal(): void {
@@ -193,6 +206,8 @@ function persistLocal(): void {
   try { getUniRuntime().setStorageSync(readingStorageKey(ROUTE_ID), JSON.stringify(record)) } catch { /* position stays in memory */ }
 }
 async function load(): Promise<void> {
+  practiceGeneration += 1
+  practiceFlight = null
   if (documentHidden()) return
   if (!routeStillCurrent()) {
     if (pageVisible.value || article.value) hidePage()
@@ -312,7 +327,134 @@ function chooseWord(blockId: string, word: string): void {
 function wordSelected(blockId: string, word: string): boolean {
   return selectionMatches(selection.value, selectionGeneration.value) && selection.value?.blockId === blockId && selection.value.word === word.trim()
 }
+function h5TabIndex(enabled: boolean): '0' | '-1' | undefined {
+  // #ifdef H5
+  return enabled ? '0' : '-1'
+  // #endif
+  // #ifndef H5
+  return enabled ? undefined : undefined
+  // #endif
+}
+function h5ButtonRole(): 'button' | undefined {
+  // #ifdef H5
+  return 'button'
+  // #endif
+  // #ifndef H5
+  return undefined
+  // #endif
+}
+function h5AriaDisabled(enabled: boolean): 'true' | undefined {
+  // #ifdef H5
+  return enabled ? undefined : 'true'
+  // #endif
+  // #ifndef H5
+  return enabled ? undefined : undefined
+  // #endif
+}
+function readingKeysReady(): boolean {
+  // #ifdef H5
+  return pageVisible.value && !documentHidden() && routeStillCurrent()
+  // #endif
+  // #ifndef H5
+  return false
+  // #endif
+}
+function activateWord(blockId: string, word: string): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  chooseWord(blockId, word)
+  // #endif
+}
+function activateParagraph(direction: -1 | 1): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  const enabled = direction < 0 ? safeIndex.value > 0 : safeIndex.value < blocks.value.length - 1
+  if (!enabled) return
+  moveParagraph(direction)
+  // #endif
+}
+function activateBack(): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  backMobile()
+  // #endif
+}
+function activateLoad(): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  void load()
+  // #endif
+}
+function activatePractice(): void {
+  // #ifdef H5
+  if (!readingKeysReady()) return
+  backToPractice()
+  // #endif
+}
+const practiceReady = computed(() => readingPracticeReady(article.value, livePermit(pageEpoch, loadRequest, session.verifiedSubject ?? '', session.identityRevision)))
+const practiceLabel = computed(() => practiceReady.value ? t('continuePublished') : t('writesClosed'))
+function activatePublishedPractice(): void {
+  // #ifdef H5
+  if (!readingKeysReady() || !practiceReady.value) return
+  void continuePublishedPractice()
+  // #endif
+}
+function focusParagraphNav(event: { preventDefault?: () => void }): void {
+  // #ifdef H5
+  // Hidden uni pages stay mounted. Move focus only inside this visible page root.
+  event.preventDefault?.()
+  if (!pageVisible.value || documentHidden() || !routeStillCurrent()) return
+  pageRoot.value?.$el?.querySelector<HTMLElement>('#' + paragraphNavId)?.focus()
+  // #endif
+}
 function backToPractice(): void { openUniPage('/pages/practice/practice') }
+function practiceHandoffCurrent(generation: number, requestEpoch: number, requestId: number, subject: string, revision: number, articleId: number, pin: ReadingPracticePin): boolean {
+  if (practiceGeneration !== generation || practiceFlight !== generation) return false
+  if (documentHidden() || !pageVisible.value || !routeStillCurrent()) return false
+  if ((session.verifiedSubject ?? '') !== subject || session.identityRevision !== revision) return false
+  if (!readStillCurrent(livePermit(requestEpoch, requestId, subject, revision))) return false
+  const current = article.value
+  if (!current || current.articleId !== articleId) return false
+  const live = readingPracticePin(current)
+  if (!live) return false
+  return live.contentCode === pin.contentCode && live.contentVersionId === pin.contentVersionId && live.questionItemId === pin.questionItemId
+}
+async function continuePublishedPractice(): Promise<void> {
+  if (practiceFlight !== null) return
+  if (documentHidden() || !pageVisible.value || !routeStillCurrent()) return
+  const subject = session.verifiedSubject ?? ''
+  const revision = session.identityRevision
+  const requestEpoch = pageEpoch
+  const requestId = loadRequest
+  const current = article.value
+  const pin = readingPracticePin(current)
+  if (!current || !pin || !readingPracticeReady(current, livePermit(requestEpoch, requestId, subject, revision))) return
+  const generation = ++practiceGeneration
+  const articleId = current.articleId
+  practiceFlight = generation
+  const context = { uiLocale: b10UiLocale.value, contentLocale: b10ContentLocale.value }
+  try {
+    const opened = await b10LearningApi.openReadingPracticeSession(context, pin.contentCode, pin.contentVersionId, pin.questionItemId)
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) return
+    if (!readingPracticeParsedAccepted(opened, pin)) {
+      applyFailure(new MobileApiError('练习会话没有对上当前文章版本。', 422, { code: 'READING_PRACTICE_SESSION_MISMATCH' }), requestEpoch, requestId, subject, revision)
+      return
+    }
+    persistLocal()
+    const learning = useB10LearningStore()
+    if (!learning.rememberReadingPractice(opened, pin)) return
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) {
+      learning.forgetReadingPractice()
+      return
+    }
+    openUniPage(READING_PRACTICE_ENTRY_PATH)
+  } catch (error) {
+    if (!practiceHandoffCurrent(generation, requestEpoch, requestId, subject, revision, articleId, pin)) return
+    applyFailure(error, requestEpoch, requestId, subject, revision)
+  } finally {
+    if (practiceFlight === generation) practiceFlight = null
+  }
+}
 function onVisibility(): void {
   if (typeof document === 'undefined') return
   if (documentHidden()) {
@@ -398,6 +540,7 @@ onBeforeUnmount(() => {
 
 <template>
   <view
+    ref="pageRoot"
     class="reading-page"
     :class="themeClass"
     :style="pageStyle"
@@ -426,7 +569,7 @@ onBeforeUnmount(() => {
     </view>
     <view class="reading-canvas">
       <view class="reading-nav">
-        <button type="button" class="reading-hit" data-action="back" :aria-label="t('back')" @click="backMobile">
+        <button type="button" class="reading-hit" data-action="back" :aria-label="t('back')" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="backMobile" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateBack" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateBack">
           <image :class="['reading-mono', chevClass]" :src="chevSrc" mode="aspectFit" />
         </button>
         <text class="reading-nav-title" role="heading" aria-level="1">{{ t(titleKey) }}</text>
@@ -446,7 +589,7 @@ onBeforeUnmount(() => {
           <text class="reading-state-title">{{ t('emptyTitle') }}</text>
           <text class="reading-state-body">{{ t('emptyBody') }}</text>
         </view>
-        <button type="button" class="reading-cta" data-action="refresh" @click="load">{{ t('refresh') }}</button>
+        <button type="button" class="reading-cta" data-action="refresh" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="load" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateLoad" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateLoad">{{ t('refresh') }}</button>
       </view>
 
       <view v-else-if="shell === 'withdrawn'" class="reading-state">
@@ -457,7 +600,7 @@ onBeforeUnmount(() => {
           <text class="reading-state-title">{{ t('revokedTitle') }}</text>
           <text class="reading-state-body">{{ t('revokedBody') }}</text>
         </view>
-        <button type="button" class="reading-cta" data-action="reread" @click="load">{{ t('reread') }}</button>
+        <button type="button" class="reading-cta" data-action="reread" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="load" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateLoad" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateLoad">{{ t('reread') }}</button>
       </view>
 
       <view v-else-if="shell === 'error'" class="reading-state">
@@ -466,7 +609,7 @@ onBeforeUnmount(() => {
           <text class="reading-state-title">{{ t('errorTitle') }}</text>
           <text class="reading-state-body">{{ t('errorBody') }}</text>
         </view>
-        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
+        <button type="button" class="reading-cta" data-action="retry" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="load" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateLoad" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateLoad">{{ t('retry') }}</button>
       </view>
 
       <view v-else-if="shell === 'restricted'" class="reading-state">
@@ -475,8 +618,8 @@ onBeforeUnmount(() => {
           <text class="reading-state-title">{{ t('restrictedTitle') }}</text>
           <text class="reading-state-body">{{ restrictedBody }}</text>
         </view>
-        <button type="button" class="reading-cta" data-action="retry" @click="load">{{ t('retry') }}</button>
-        <button type="button" class="reading-link" data-action="back-practice" @click="backToPractice">{{ t('backPractice') }}</button>
+        <button type="button" class="reading-cta" data-action="retry" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="load" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateLoad" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateLoad">{{ t('retry') }}</button>
+        <button type="button" class="reading-link" data-action="back-practice" :tabindex="h5TabIndex(true)" :role="h5ButtonRole()" @click="backToPractice" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activatePractice" @keydown.space.stop.prevent @keyup.space.stop.prevent="activatePractice">{{ t('backPractice') }}</button>
       </view>
 
       <view v-else-if="shell === 'ready' && current" class="reading-ready">
@@ -507,6 +650,9 @@ onBeforeUnmount(() => {
             <button type="button" class="reading-segment-btn" data-action="original" :aria-pressed="showTranslation ? 'false' : 'true'" @click="showTranslation = false">{{ t('original') }}</button>
             <button type="button" class="reading-segment-btn" data-action="bilingual" :aria-pressed="showTranslation ? 'true' : 'false'" @click="showTranslation = true">{{ t('bilingual') }}</button>
           </view>
+          <!-- #ifdef H5 -->
+          <button type="button" class="reading-word-bypass" tabindex="0" role="button" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="focusParagraphNav" @keydown.space.stop.prevent @keyup.space.stop.prevent="focusParagraphNav">{{ t('skipWords') }}</button>
+          <!-- #endif -->
           <view class="reading-body" :style="{ fontSize: bodyPx + 'px' }">
             <template v-for="(piece, index) in pieces" :key="`${current.blockId}-${index}`">
               <button
@@ -516,7 +662,13 @@ onBeforeUnmount(() => {
                 data-action="select-word"
                 :data-selected="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
                 :aria-pressed="wordSelected(current.blockId, piece.value) ? 'true' : 'false'"
+                :tabindex="h5TabIndex(true)"
+                :role="h5ButtonRole()"
                 @click="chooseWord(current.blockId, piece.value)"
+                @keydown.enter.stop.prevent
+                @keyup.enter.stop.prevent="activateWord(current.blockId, piece.value)"
+                @keydown.space.stop.prevent
+                @keyup.space.stop.prevent="activateWord(current.blockId, piece.value)"
               >{{ piece.value }}</button>
               <text v-else class="reading-space">{{ piece.value }}</text>
             </template>
@@ -526,9 +678,12 @@ onBeforeUnmount(() => {
         </view>
 
         <view class="reading-para">
-          <button type="button" class="reading-link" data-action="prev" :disabled="safeIndex <= 0" @click="moveParagraph(-1)">{{ t('prev') }}</button>
+          <!-- #ifdef H5 -->
+          <view :id="paragraphNavId" class="reading-paragraph-target" data-reading-paragraph-target="" tabindex="-1" role="navigation" :aria-label="t('paragraphNav')"></view>
+          <!-- #endif -->
+          <button type="button" class="reading-link" data-action="prev" :tabindex="h5TabIndex(safeIndex > 0)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(safeIndex > 0)" :disabled="safeIndex <= 0" @click="moveParagraph(-1)" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateParagraph(-1)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateParagraph(-1)">{{ t('prev') }}</button>
           <text class="reading-meta-text">{{ t('localPosition', { index: safeIndex + 1, count: blocks.length }) }}</text>
-          <button type="button" class="reading-link" data-action="next" :disabled="safeIndex >= blocks.length - 1" @click="moveParagraph(1)">{{ t('next') }}</button>
+          <button type="button" class="reading-link" data-action="next" :tabindex="h5TabIndex(safeIndex < blocks.length - 1)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(safeIndex < blocks.length - 1)" :disabled="safeIndex >= blocks.length - 1" @click="moveParagraph(1)" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activateParagraph(1)" @keydown.space.stop.prevent @keyup.space.stop.prevent="activateParagraph(1)">{{ t('next') }}</button>
         </view>
 
         <view v-if="graded" class="reading-check" role="status">
@@ -543,8 +698,8 @@ onBeforeUnmount(() => {
         </view>
 
         <view class="reading-closed" role="status">
-          <text>{{ t('writesClosed') }}</text>
-          <text>{{ t('noServerReceipt') }}</text>
+          <button type="button" class="reading-cta" data-action="published-practice" :tabindex="h5TabIndex(practiceReady)" :role="h5ButtonRole()" :aria-disabled="h5AriaDisabled(practiceReady)" :disabled="!practiceReady" @click="continuePublishedPractice" @keydown.enter.stop.prevent @keyup.enter.stop.prevent="activatePublishedPractice" @keydown.space.stop.prevent @keyup.space.stop.prevent="activatePublishedPractice">{{ practiceLabel }}</button>
+          <text v-if="!practiceReady">{{ t('noServerReceipt') }}</text>
         </view>
       </view>
     </view>
@@ -906,6 +1061,115 @@ onBeforeUnmount(() => {
   outline: 2px solid var(--yx-focus);
   outline-offset: 2px;
 }
+/* #ifdef H5 */
+.reading-word-bypass {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.reading-word-bypass::after,
+.reading-word-bypass :deep(button)::after { display: none; border: 0; }
+.reading-word-bypass :deep(button) {
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.reading-word-bypass:focus,
+.reading-word-bypass:focus-visible,
+.reading-word-bypass:focus-within {
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  right: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 3px 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  color: var(--yx-text-primary);
+  background: var(--yx-surface-card);
+  border: 2px solid var(--yx-text-primary);
+  border-radius: 12px;
+  outline: 3px solid var(--yx-focus);
+  outline-offset: 2px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  overflow-wrap: anywhere;
+  box-shadow: none;
+}
+.reading-word-bypass:focus :deep(button),
+.reading-word-bypass:focus-visible :deep(button),
+.reading-word-bypass:focus-within :deep(button) {
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 12px;
+  margin: 0;
+  overflow: visible;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.reading-page[data-theme="high-contrast"] .reading-word-bypass:focus,
+.reading-page[data-theme="high-contrast"] .reading-word-bypass:focus-visible,
+.reading-page[data-theme="high-contrast"] .reading-word-bypass:focus-within {
+  color: var(--yx-text-primary);
+  background: var(--yx-surface-page);
+  border-color: var(--yx-text-primary);
+  outline: 3px solid var(--yx-text-primary);
+}
+.reading-paragraph-target {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.reading-paragraph-target:focus { outline: none; }
+/* #endif */
 .reading-page[data-theme="high-contrast"] .reading-tag,
 .reading-page[data-theme="high-contrast"] .reading-segment-btn[aria-pressed="true"],
 .reading-page[data-theme="high-contrast"] .reading-word[data-selected="true"] {

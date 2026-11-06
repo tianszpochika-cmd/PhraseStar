@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { B10AnswerInput, B10AnswerResult, B10AssessmentSession, B10Mistake, B10Report, B10RequestContext, B10SrsBatch, B10SrsCard, B10SrsMasteryStatus } from '../domain/b10'
-import { b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../api/b10'
+import { acceptPinnedReadingSession, b10LearningApi, b10ErrorInfo, createB10ClientEventId } from '../api/b10'
 import { b10ContentLocale, b10UiLocale } from '../platform/b10-foundation'
 import { getUniRuntime } from '../platform/uni-runtime'
 import { useSessionStore } from './session'
@@ -226,9 +226,29 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     batch.value = null; currentIndex.value = 0; queuedReviews.value = []
     practice.value = null; answers.value = {}; answerResults.value = {}; mistakes.value = []; attemptCount.value = 0; emptyCopy.value = ''; projectionVersion.value = 'IT4-MISTAKE-1'; remediationId.value = null; report.value = null
     reportStatus.value = 'idle'; practiceStatus.value = 'idle'; practiceMessage.value = null
+    clearReadingMemory()
   }
   let boundOwner: Scope | null = scope()
   let coldSameOwner = false
+  const READING_PRACTICE_ENTRY_MS = 120_000
+  interface ReadingPracticeMemory {
+    subject: string
+    revision: number
+    authSessionId: string | null
+    sessionId: string
+    contentCode: string
+    contentVersionId: number
+    questionItemId: number
+    issuedAt: number
+  }
+  let readingEntry: ReadingPracticeMemory | null = null
+  let readingVerifiedId: string | null = null
+  let readingReadSeq = 0
+  function clearReadingMemory(): void {
+    readingEntry = null
+    readingVerifiedId = null
+    readingReadSeq += 1
+  }
   function releaseOwner(): void {
     srsLoadSeq += 1
     syncToken += 1
@@ -587,6 +607,104 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     }
   }
 
+  function readingEntryCurrent(now = Date.now()): ReadingPracticeMemory | null {
+    const owner = scope()
+    const entry = readingEntry
+    if (!owner || !entry) return null
+    if (entry.subject !== owner.subject || entry.revision !== owner.revision || entry.authSessionId !== owner.sessionId) return null
+    if (!Number.isSafeInteger(entry.issuedAt) || !Number.isFinite(now) || now < entry.issuedAt || now - entry.issuedAt >= READING_PRACTICE_ENTRY_MS) return null
+    return entry
+  }
+
+  function readingPinOf(entry: ReadingPracticeMemory): { contentCode: string; contentVersionId: number; questionItemId: number } {
+    return { contentCode: entry.contentCode, contentVersionId: entry.contentVersionId, questionItemId: entry.questionItemId }
+  }
+
+  function hideReadingSurface(): void {
+    practice.value = null
+    answers.value = {}
+    answerResults.value = {}
+    readingVerifiedId = null
+  }
+
+  function rememberReadingPractice(session: B10AssessmentSession, pin: { contentCode: string; contentVersionId: number; questionItemId: number }): boolean {
+    const owner = scope()
+    if (!owner || !session || typeof acceptPinnedReadingSession !== 'function' || !acceptPinnedReadingSession(session, session.sessionId, pin)) return false
+    readingReadSeq += 1
+    readingVerifiedId = null
+    readingEntry = {
+      subject: owner.subject,
+      revision: owner.revision,
+      authSessionId: owner.sessionId,
+      sessionId: session.sessionId,
+      contentCode: pin.contentCode,
+      contentVersionId: pin.contentVersionId,
+      questionItemId: pin.questionItemId,
+      issuedAt: Date.now(),
+    }
+    return true
+  }
+
+  function forgetReadingPractice(): void {
+    clearReadingMemory()
+  }
+
+  function abandonReadingPracticeRead(): void {
+    readingReadSeq += 1
+  }
+
+  function readingPracticeEntryOpen(): boolean {
+    return readingEntryCurrent() !== null
+  }
+
+  function readingPracticeVisible(): boolean {
+    const entry = readingEntryCurrent()
+    const current = practice.value
+    if (!entry || !current || readingVerifiedId !== entry.sessionId || current.sessionId !== entry.sessionId || practiceStatus.value !== 'ready') return false
+    return typeof acceptPinnedReadingSession === 'function' && acceptPinnedReadingSession(current, entry.sessionId, readingPinOf(entry))
+  }
+
+  async function loadReadingPractice(): Promise<void> {
+    const owner = scope()
+    const seq = ++readingReadSeq
+    if (!owner) { reset(); practiceStatus.value = 'forbidden'; return }
+    const entry = readingEntryCurrent()
+    hideReadingSurface()
+    practiceStatus.value = 'loading'
+    practiceMessage.value = null
+    if (!entry) {
+      if (seq !== readingReadSeq || !stillCurrent(owner)) return
+      practiceStatus.value = 'error'
+      practiceMessage.value = '这次阅读练习入口无法核对，请从文章重新打开。'
+      return
+    }
+    const pin = readingPinOf(entry)
+    try {
+      const remote = await b10LearningApi.readPinnedReadingSession(context(), entry.sessionId, pin)
+      if (seq !== readingReadSeq || !stillCurrent(owner)) return
+      const live = readingEntryCurrent()
+      if (!live || live.sessionId !== entry.sessionId || live.contentCode !== pin.contentCode || live.contentVersionId !== pin.contentVersionId || live.questionItemId !== pin.questionItemId) return
+      if (typeof acceptPinnedReadingSession !== 'function' || remote.sessionId !== entry.sessionId || !acceptPinnedReadingSession(remote, entry.sessionId, pin)) {
+        hideReadingSurface()
+        practiceStatus.value = 'error'
+        practiceMessage.value = '练习会话没有对上当前文章版本。'
+        return
+      }
+      practice.value = remote
+      answers.value = {}
+      answerResults.value = {}
+      readingVerifiedId = entry.sessionId
+      practiceStatus.value = 'ready'
+      practiceMessage.value = null
+    } catch (error) {
+      if (seq !== readingReadSeq || !stillCurrent(owner)) return
+      hideReadingSurface()
+      const info = b10ErrorInfo(error, '这次阅读练习暂时没有读取成功。')
+      practiceStatus.value = info.kind
+      practiceMessage.value = info.message
+    }
+  }
+
   async function loadPractice(): Promise<void> {
     const owner = scope()
     if (!owner) { reset(); practiceStatus.value = 'forbidden'; return }
@@ -676,5 +794,5 @@ export const useB10LearningStore = defineStore('mobile-b10-learning', () => {
     catch (error) { if (!stillCurrent(owner)) return; const info = b10ErrorInfo(error, '报告暂时不可用。'); reportStatus.value = info.kind; message.value = info.message; persist() }
   }
 
-  return { restored, status, message, batch, currentIndex, queuedReviews, practice, answers, answerResults, mistakes, attemptCount, emptyCopy, projectionVersion, remediationId, report, reportStatus, practiceStatus, practiceMessage, srsQueueCount, currentCard, currentExercise, restore, persist, loadSrs, loadCurrentFront, revealCard, rateCard, syncSrs, loadPractice, submitAnswer, saveCheckpoint, completePractice, loadMistakes, startMistakeRetry, loadReport }
+  return { restored, status, message, batch, currentIndex, queuedReviews, practice, answers, answerResults, mistakes, attemptCount, emptyCopy, projectionVersion, remediationId, report, reportStatus, practiceStatus, practiceMessage, srsQueueCount, currentCard, currentExercise, restore, persist, loadSrs, loadCurrentFront, revealCard, rateCard, syncSrs, loadPractice, rememberReadingPractice, forgetReadingPractice, abandonReadingPracticeRead, readingPracticeEntryOpen, readingPracticeVisible, loadReadingPractice, submitAnswer, saveCheckpoint, completePractice, loadMistakes, startMistakeRetry, loadReport }
 })
