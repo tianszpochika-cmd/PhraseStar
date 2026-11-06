@@ -3708,7 +3708,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T06:08:54.255140+00:00",
+  "updated_at": "2026-11-06T06:33:02.629769+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5984,5 +5984,14 @@
     "evidence": "evidence/ROOT-B124-SUPPORT-OWNER-READ-20261106.json",
     "h5": "NOT_RUN",
     "deployed": "NOT_RUN"
+  },
+  "integration_batch_125_current_route_trace": {
+    "source": "b3f0e7cd",
+    "routes": 33,
+    "design_node_refs_from_b115": 71,
+    "anchors_found": 126,
+    "all_trace_pending": true,
+    "review": "ROUTE-TRACE-CURRENT.md",
+    "evidence": "evidence/ROOT-B125-CURRENT-ROUTE-TRACE-20261106.json"
   }
 }
