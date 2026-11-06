@@ -175,6 +175,58 @@ export function getUniRuntime(): UniRuntime {
   return adapter
 }
 
+const LOCAL_PUBLIC_ORIGIN = 'http://127.0.0.1:18182'
+
+interface PublicOpenEnv {
+  readonly DEV?: boolean
+}
+
+/**
+ * Open a public document URL.
+ * Development may use the local official origin. Every other http URL is rejected.
+ * `noopener,noreferrer` stays. Chromium returns null after that secure popup actually opens,
+ * so a null return is not treated as failure and the flags are not removed.
+ */
+export function openExternalUrl(url: string, env?: PublicOpenEnv): void {
+  let parsed: URL
+  try {
+    parsed = new URL(url)
+  } catch {
+    throw new Error('公开文档地址无效。')
+  }
+  if (parsed.username || parsed.password) throw new Error('公开文档地址不能携带凭据。')
+  const localDevelopment = env?.DEV === true && parsed.origin === LOCAL_PUBLIC_ORIGIN && parsed.protocol === 'http:'
+  if (parsed.protocol !== 'https:' && !localDevelopment) throw new Error('公开文档地址必须是显式 HTTPS。')
+  parsed.username = ''
+  parsed.password = ''
+  parsed.search = ''
+  parsed.hash = ''
+  const target = parsed.toString()
+  if (isNativeAppRuntime()) {
+    let runtime: UniRuntime | undefined
+    try {
+      runtime = getUniRuntime()
+    } catch {
+      runtime = undefined
+    }
+    if (typeof runtime?.openURL === 'function') {
+      runtime.openURL(target)
+      return
+    }
+    const plus = (globalThis as typeof globalThis & { plus?: { runtime?: { openURL?: (value: string) => void } } }).plus
+    if (typeof plus?.runtime?.openURL === 'function') {
+      plus.runtime.openURL(target)
+      return
+    }
+    throw new Error('当前环境不能打开公开文档。')
+  }
+  if (typeof window !== 'undefined' && typeof window.open === 'function') {
+    window.open(target, '_blank', 'noopener,noreferrer')
+    return
+  }
+  throw new Error('当前环境不能打开公开文档。')
+}
+
 /** Use switchTab for tab-bar pages; navigateTo is rejected by uni-h5 for them. */
 export function openUniPage(url: string): void | Promise<unknown> {
   const runtime = getUniRuntime()

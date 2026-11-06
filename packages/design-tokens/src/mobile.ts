@@ -36,5 +36,443 @@ export function mobileExperienceVariables(theme: ResolvedTheme): Record<string, 
     '--yx-radius-card': '24px', '--yx-radius-button': '14px',
     '--yx-font-serif': 'Georgia, "Times New Roman", serif',
     '--yx-motion-fast': '180ms', '--yx-motion-enter': '420ms',
+    ...mobileR4Variables(theme),
+    ...mobileDecorationVariables(theme),
+    ...mobileProfileVariables(theme),
+    ...mobileClosedSkinVariables(theme),
+    ...mobileAuthLoginVariables(theme),
+    ...mobileSettingsVariables(theme),
+    ...mobileSocialRoomVariables(theme),
   }
+}
+
+export type MobileHomeTabletLayout = 'rail' | 'sidebar'
+
+/**
+ * MB-007 tablet Home semantic roles. The confirmed 251:215 / 251:2 / 251:362
+ * tones live here instead of the page so business CSS consumes only roles.
+ * High contrast maps every role to an existing --yx token and removes
+ * gradients, shadows and decorative effects. Phone Home does not bind this
+ * helper. `layout` is the resolved tablet shell, not a user metric.
+ */
+export function mobileHomeTabletVariables(theme: ResolvedTheme, layout: MobileHomeTabletLayout): Record<string, string> {
+  const high = theme === 'high-contrast'
+  const dark = theme === 'dark'
+  const rail = layout === 'rail'
+  const taskTones = {
+    '--home-tablet-task-completed': '#d8f2e6',
+    '--home-tablet-task-progress': '#e9e1fa',
+    '--home-tablet-task-available': '#e0f0fc',
+  }
+
+  if (high) {
+    return {
+      '--home-tablet-page-bg': 'var(--yx-surface-page)',
+      '--home-tablet-page-image': 'none',
+      '--home-tablet-glow': 'transparent',
+      '--home-tablet-panel': 'var(--yx-surface-card)',
+      '--home-tablet-panel-border': 'var(--yx-border)',
+      '--home-tablet-panel-shadow': 'none',
+      '--home-tablet-ink': 'var(--yx-text-primary)',
+      '--home-tablet-muted': 'var(--yx-text-secondary)',
+      '--home-tablet-brand': 'var(--yx-brand)',
+      '--home-tablet-soft': 'var(--yx-surface-soft)',
+      '--home-tablet-track': 'var(--yx-border)',
+      '--home-tablet-fill': 'var(--yx-brand)',
+      '--home-tablet-hero-color': 'var(--yx-action)',
+      '--home-tablet-hero-image': 'none',
+      '--home-tablet-hero-ink': 'var(--yx-on-brand)',
+      '--home-tablet-hero-muted': '#f8edff',
+      '--home-tablet-hero-fx-display': 'none',
+      '--home-tablet-ring-bg': 'var(--yx-surface-card)',
+      '--home-tablet-ring-border': 'var(--yx-border)',
+      '--home-tablet-ring-ink': 'var(--yx-text-primary)',
+      '--home-tablet-ring-label': '#f5ebff',
+      '--home-tablet-hero-cta-bg': 'var(--yx-surface-card)',
+      '--home-tablet-hero-cta-ink': 'var(--yx-brand)',
+      '--home-tablet-hero-cta-border': '1px solid var(--yx-border)',
+      '--home-tablet-hero-focus': '#fff',
+      '--home-tablet-course-art': 'var(--yx-surface-card)',
+      '--home-tablet-course-art-border': '1px solid var(--yx-border)',
+      '--home-tablet-course-art-ink': 'var(--yx-text-primary)',
+      '--home-tablet-course-art-kicker': 'var(--yx-text-primary)',
+      '--home-tablet-course-art-muted': 'var(--yx-text-secondary)',
+      '--home-tablet-course-spark-display': 'none',
+      '--home-tablet-course-cta-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-course-cta-color': 'var(--yx-brand)',
+      ...taskTones,
+      '--home-tablet-nav-bg': 'var(--yx-surface-card)',
+      '--home-tablet-nav-image': 'none',
+      '--home-tablet-nav-ink': 'var(--yx-text-primary)',
+      '--home-tablet-nav-latin': 'var(--yx-text-primary)',
+      '--home-tablet-nav-tagline': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item-active': 'var(--yx-text-primary)',
+      '--home-tablet-nav-item-active-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-nav-icon-bg': 'var(--yx-text-primary)',
+      '--home-tablet-nav-icon-active-bg': 'var(--yx-text-primary)',
+      '--home-tablet-nav-icon-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-indicator': '#d6bdff',
+      '--home-tablet-nav-profile-bg': 'var(--yx-surface-soft)',
+      '--home-tablet-nav-profile-sub': 'var(--yx-text-primary)',
+      '--home-tablet-nav-avatar-bg': 'var(--yx-action)',
+      '--home-tablet-nav-avatar-image': 'none',
+      '--home-tablet-nav-avatar-ink': 'var(--yx-on-brand)',
+      '--home-tablet-nav-focus': '#f0e8ff',
+      '--home-tablet-nav-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-active-border': '1px solid var(--yx-border)',
+      '--home-tablet-nav-profile-border': '1px solid var(--yx-border)',
+    }
+  }
+
+  return {
+    '--home-tablet-page-bg': dark ? '#171527' : '#faf7ff',
+    '--home-tablet-page-image': dark
+      ? 'linear-gradient(90deg, #171527, #262039)'
+      : rail
+        ? 'linear-gradient(90deg, #faf7ff, #f4effc)'
+        : 'linear-gradient(90deg, #faf7ff, #f3eefa)',
+    '--home-tablet-glow': 'rgba(213, 189, 255, .28)',
+    '--home-tablet-panel': dark ? '#2e2743' : '#fff',
+    '--home-tablet-panel-border': dark ? 'rgba(107, 88, 138, .52)' : '#e5dbf3',
+    '--home-tablet-panel-shadow': '0 7px 22px rgba(41, 26, 82, .12)',
+    '--home-tablet-ink': dark ? '#f4efff' : '#272138',
+    '--home-tablet-muted': dark ? '#c4b8d6' : '#77718a',
+    '--home-tablet-brand': dark ? '#d4b6ff' : '#6638be',
+    '--home-tablet-soft': dark ? '#30283f' : '#f8f4fd',
+    '--home-tablet-track': dark ? '#504765' : '#eee6f8',
+    '--home-tablet-fill': dark ? '#c8a9fb' : '#9163d8',
+    '--home-tablet-hero-color': dark ? '#5c35b6' : '#5d35b6',
+    '--home-tablet-hero-image': dark
+      ? 'linear-gradient(90deg, #5c35b6, #9b62d7)'
+      : 'linear-gradient(90deg, #5d35b6, #a26bdd)',
+    '--home-tablet-hero-ink': '#fff',
+    '--home-tablet-hero-muted': '#f8edff',
+    '--home-tablet-hero-fx-display': 'block',
+    '--home-tablet-ring-bg': dark ? 'rgba(255, 255, 255, .15)' : '#986ccd',
+    '--home-tablet-ring-border': dark ? 'rgba(232, 213, 255, .5)' : '#d4c3f0',
+    '--home-tablet-ring-ink': '#fff',
+    '--home-tablet-ring-label': '#f5ebff',
+    '--home-tablet-hero-cta-bg': '#fff',
+    '--home-tablet-hero-cta-ink': rail ? '#6238bc' : '#5935b8',
+    '--home-tablet-hero-cta-border': '0',
+    '--home-tablet-hero-focus': '#fff',
+    '--home-tablet-course-art': 'linear-gradient(90deg, #c6abfb, #efcfea)',
+    '--home-tablet-course-art-border': '0',
+    '--home-tablet-course-art-ink': '#4c3290',
+    '--home-tablet-course-art-kicker': rail ? '#7654b2' : '#7655bb',
+    '--home-tablet-course-art-muted': '#745f9e',
+    '--home-tablet-course-spark-display': 'block',
+    '--home-tablet-course-cta-bg': dark ? '#2e2743' : rail ? '#f0e8fb' : '#f1eafb',
+    '--home-tablet-course-cta-color': dark ? '#d4b6ff' : rail ? '#6940b8' : '#6737c1',
+    ...taskTones,
+    '--home-tablet-nav-bg': '#241b43',
+    '--home-tablet-nav-image': rail
+      ? 'linear-gradient(90deg, #322254, #241b43)'
+      : 'linear-gradient(90deg, #352261, #241b43)',
+    '--home-tablet-nav-ink': '#fff',
+    '--home-tablet-nav-latin': rail ? '#c9bce3' : '#d6c4ff',
+    '--home-tablet-nav-tagline': '#c9bce3',
+    '--home-tablet-nav-item': rail ? '#f0e8ff' : 'rgba(255, 255, 255, .82)',
+    '--home-tablet-nav-item-active': '#fff',
+    '--home-tablet-nav-item-active-bg': rail ? '#5a3c91' : 'rgba(90, 60, 145, .93)',
+    '--home-tablet-nav-icon-bg': rail ? '#635080' : 'rgba(100, 80, 129, .72)',
+    '--home-tablet-nav-icon-active-bg': '#fff',
+    '--home-tablet-nav-icon-border': '0',
+    '--home-tablet-nav-indicator': '#d6bdff',
+    '--home-tablet-nav-profile-bg': rail ? '#6b49af' : 'rgba(72, 49, 110, .85)',
+    '--home-tablet-nav-profile-sub': '#d6c8e9',
+    '--home-tablet-nav-avatar-bg': '#6b49af',
+    '--home-tablet-nav-avatar-image': rail ? 'none' : 'linear-gradient(90deg, #9877e4, #6b44b6)',
+    '--home-tablet-nav-avatar-ink': '#fff',
+    '--home-tablet-nav-focus': '#f0e8ff',
+    '--home-tablet-nav-border': '0',
+    '--home-tablet-nav-active-border': '0',
+    '--home-tablet-nav-profile-border': '0',
+  }
+}
+
+/**
+ * Decorative stops only. Light and dark use the requested hex; dark does not
+ * invent a second palette. High contrast uses each stop's existing semantic
+ * fallback so the gradient is not the information channel. Reduced motion is
+ * a page motion flag, not a recolor. These stops do not mean a feature is open.
+ * Closed-card consumers compose 128.66deg with stops at 7.4% and 81.5%.
+ */
+function mobileDecorationVariables(theme: ResolvedTheme): Record<string, string> {
+  const high = theme === 'high-contrast'
+  const stop = (hex: string, fallback: string) => (high ? fallback : hex)
+  return {
+    '--closed-art-offline-from': stop('#38BDF8', 'var(--v2-info)'),
+    '--closed-art-offline-to': stop('#6366F1', 'var(--v2-brand)'),
+    '--closed-art-writing-from': stop('#34D399', 'var(--v2-ok)'),
+    '--closed-art-writing-to': stop('#38BDF8', 'var(--v2-info)'),
+    '--closed-art-listening-from': stop('#38BDF8', 'var(--v2-info)'),
+    '--closed-art-listening-to': stop('#818CF8', 'var(--v2-brand2)'),
+    '--closed-art-speaking-from': stop('#F472B6', 'var(--v2-brand2)'),
+    '--closed-art-speaking-to': stop('#A78BFA', 'var(--v2-brand)'),
+    '--games-tile-sentence-from': stop('#A78BFA', 'var(--v2-brand2)'),
+    '--games-tile-sentence-to': stop('#6D4AE0', 'var(--v2-brand)'),
+    '--games-tile-match-from': stop('#F472B6', 'var(--v2-brand2)'),
+    '--games-tile-match-to': stop('#FB7185', 'var(--v2-bad)'),
+    '--games-tile-defense-from': stop('#34D399', 'var(--v2-ok)'),
+    '--games-tile-defense-to': stop('#10B981', 'var(--v2-info)'),
+    '--games-tile-puzzle-from': stop('#FBBF24', 'var(--v2-warn)'),
+    '--games-tile-puzzle-to': stop('#F97316', 'var(--v2-bad)'),
+    '--games-tile-grammar-from': stop('#38BDF8', 'var(--v2-info)'),
+    '--games-tile-grammar-to': stop('#6366F1', 'var(--v2-brand)'),
+    '--games-tile-meaning-from': stop('#FB923C', 'var(--v2-warn)'),
+    '--games-tile-meaning-to': stop('#F472B6', 'var(--v2-brand2)'),
+    '--games-result-from': stop('#FBBF24', 'var(--v2-warn)'),
+    '--games-result-to': stop('#F97316', 'var(--v2-bad)'),
+  }
+}
+
+/**
+ * R4 frame tokens for the login (98:1182) and home (166:7348) samples.
+ * Existing `--yx-*` roles stay on the official-site palette. High contrast
+ * drops blur, gradient and shadow. These keys do not change Web or official exports.
+ */
+function mobileR4Variables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-r4-page-color': 'var(--yx-surface-page)',
+      '--yx-r4-page-image': 'none',
+      '--yx-r4-home-image': 'none',
+      '--yx-r4-ink': 'var(--yx-text-primary)',
+      '--yx-r4-muted': 'var(--yx-text-secondary)',
+      '--yx-r4-brand': 'var(--yx-brand)',
+      '--yx-r4-glass': 'var(--yx-surface-card)',
+      '--yx-r4-glass-border': 'var(--yx-border)',
+      '--yx-r4-field': 'var(--yx-surface-page)',
+      '--yx-r4-field-border': 'var(--yx-border)',
+      '--yx-r4-tip': 'var(--yx-surface-soft)',
+      '--yx-r4-cta-color': 'var(--yx-brand)',
+      '--yx-r4-cta-image': 'none',
+      '--yx-r4-on-cta': 'var(--yx-on-brand)',
+      '--yx-r4-shadow-card': 'none',
+      '--yx-r4-shadow-cta': 'none',
+      '--yx-r4-shadow-field': 'none',
+      '--yx-r4-blur': '0px',
+      '--yx-r4-icon': 'var(--yx-text-primary)',
+      '--yx-r4-wordmark': 'var(--yx-text-primary)',
+      '--yx-r4-mascot-border': 'var(--yx-border)',
+      '--yx-r4-mascot-image': 'none',
+      '--yx-r4-mascot-color': 'var(--yx-surface-card)',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-r4-page-color': dark ? '#15151f' : '#fcfaff',
+    '--yx-r4-page-image': dark
+      ? 'linear-gradient(160deg, #1b1630 0%, #15151f 46%, #241826 100%)'
+      : 'linear-gradient(112deg, #f0e5ff 10.7%, #fcfaff 42.9%, #fff0f7 82.1%)',
+    '--yx-r4-home-image': dark
+      ? 'linear-gradient(180deg, #221b38 0%, #171526 45%, #15151f 100%)'
+      : 'linear-gradient(180deg, #ede6ff 0%, #f4eeff 45%, #fbf8ff 100%)',
+    '--yx-r4-ink': dark ? '#f1eff9' : '#222337',
+    '--yx-r4-muted': dark ? '#bab8cf' : '#606277',
+    '--yx-r4-brand': dark ? '#bcabff' : '#5935b8',
+    '--yx-r4-glass': dark ? 'rgba(32, 32, 45, 0.92)' : 'rgba(250, 247, 255, 0.74)',
+    '--yx-r4-glass-border': dark ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.72)',
+    '--yx-r4-field': dark ? 'rgba(21, 21, 31, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+    '--yx-r4-field-border': dark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.95)',
+    '--yx-r4-tip': dark ? '#2a2440' : '#f6f2ff',
+    '--yx-r4-cta-color': dark ? '#bcabff' : '#4f2dae',
+    '--yx-r4-cta-image': dark ? 'none' : 'linear-gradient(172deg, #4f2dae 14.3%, #6a45c6 53.6%, #8a55cc 85.7%)',
+    '--yx-r4-on-cta': dark ? '#211b35' : '#ffffff',
+    '--yx-r4-shadow-card': dark ? 'none' : '0 6px 16px rgba(89, 53, 184, 0.08)',
+    '--yx-r4-shadow-cta': dark ? 'none' : '0 5px 16px rgba(89, 53, 184, 0.2)',
+    '--yx-r4-shadow-field': dark ? 'none' : '0 2px 8px -1px rgba(42, 22, 96, 0.07)',
+    '--yx-r4-blur': dark ? '0px' : '10px',
+    '--yx-r4-icon': dark ? '#f1eff9' : '#222337',
+    '--yx-r4-wordmark': dark ? '#d5d0ea' : '#4f3382',
+    '--yx-r4-mascot-border': dark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.95)',
+    '--yx-r4-mascot-image': dark ? 'none' : 'linear-gradient(135deg, #e6dcff 0%, #fbe3f3 71%)',
+    '--yx-r4-mascot-color': dark ? '#2a2440' : '#f4eeff',
+  }
+}
+
+/**
+ * Profile decoration only (dsh-profile-batch-01). Light and dark use the
+ * requested stops; high contrast drops gradient, blur and shadow. A page
+ * uses these only when its stylesheet reads `--yx-profile-*`. Reduced motion
+ * stays a page data-motion flag. These keys do not mean a feature is open.
+ */
+function mobileProfileVariables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-profile-page-image': 'none',
+      '--yx-profile-glass': 'var(--yx-surface-card)',
+      '--yx-profile-glass-border': 'var(--yx-border)',
+      '--yx-profile-avatar-image': 'var(--yx-brand)',
+      '--yx-profile-tile-neutral': '#FFFFFF',
+      '--yx-profile-card-shadow': 'none',
+      '--yx-profile-cta-shadow': 'none',
+      '--yx-profile-danger-shadow': 'none',
+      '--yx-profile-blur': '0px',
+      '--yx-profile-scrim': '#000000',
+      '--yx-profile-scrim-opacity': '0.65',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-profile-page-image': dark
+      ? 'linear-gradient(180deg, #1B152F 0%, #1F1933 47%, #121423 100%)'
+      : 'linear-gradient(180deg, #EDE6FF 0%, #F4EEFF 45%, #FBF8FF 100%)',
+    '--yx-profile-glass': dark ? 'rgba(43, 37, 67, 0.88)' : 'rgba(255, 255, 255, 0.62)',
+    '--yx-profile-glass-border': dark ? 'rgba(143, 121, 192, 0.3)' : 'rgba(255, 255, 255, 0.9)',
+    '--yx-profile-avatar-image': 'linear-gradient(128.6598deg, #A78BFA 7.4074%, #6D4AE0 81.4815%)',
+    '--yx-profile-tile-neutral': '#ECEDF3',
+    '--yx-profile-card-shadow': '0 6px 16px -2px rgba(42, 22, 96, 0.09)',
+    '--yx-profile-cta-shadow': '0 5px 8px rgba(89, 54, 184, 0.19)',
+    '--yx-profile-danger-shadow': '0 4px 6px rgba(153, 36, 46, 0.15)',
+    '--yx-profile-blur': '10px',
+    '--yx-profile-scrim': dark ? '#080314' : '#1A1435',
+    '--yx-profile-scrim-opacity': dark ? '0.55' : '0.4',
+  }
+}
+
+/**
+ * Closed-page skin from the 11 batch-07 token requests, already resolved
+ * for the active theme. Light and dark use those request strings. High
+ * contrast is not in the request: card and border use the existing
+ * high-contrast surface pair, the CTA is the existing solid brand, and
+ * shadows drop. Reduced motion stays a page data-motion flag.
+ */
+function mobileClosedSkinVariables(theme: ResolvedTheme): Record<string, string> {
+  const ctaBackground = 'linear-gradient(172.0107deg, rgb(79,45,174) 14.286%, rgb(106,69,198) 53.571%, rgb(138,85,204) 85.714%)'
+  const ctaShadow = '0 5px 8px rgba(89,54,184,0.19), inset 0 1px 0 rgba(255,255,255,0.19)'
+  if (theme === 'high-contrast') {
+    return {
+      '--closed-card-bg': 'var(--yx-surface-card)',
+      '--closed-card-border': 'var(--yx-border)',
+      '--closed-card-shadow': 'none',
+      '--closed-cta-background': 'var(--yx-brand)',
+      '--closed-cta-on': 'var(--yx-surface-card)',
+      '--closed-cta-shadow': 'none',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--closed-card-bg': dark ? 'rgba(48,40,63,0.97)' : 'rgba(255,255,255,0.62)',
+    '--closed-card-border': dark ? 'rgba(141,115,195,0.4)' : 'rgba(255,255,255,0.9)',
+    '--closed-card-shadow': dark ? '0 7px 8.5px rgba(8,3,20,0.35)' : '0 6px 16px -2px rgba(42,22,96,0.09)',
+    '--closed-cta-background': ctaBackground,
+    '--closed-cta-on': '#F5F0FF',
+    '--closed-cta-shadow': ctaShadow,
+  }
+}
+
+/**
+ * Login screen 98:1182 / 248:1391. Light and dark use those frames.
+ * High contrast is not in either frame: it reuses the existing surface,
+ * border and solid brand roles, and drops blur, gradient and shadow.
+ * Older `--yx-r4-*`, profile and closed keys stay on their published values.
+ */
+function mobileAuthLoginVariables(theme: ResolvedTheme): Record<string, string> {
+  const ctaImage = 'linear-gradient(171.96428928946523deg, rgb(79, 45, 174) 14.286%, rgb(106, 69, 198) 53.571%, rgb(138, 85, 204) 85.714%)'
+  const ctaShadow = '0 5px 16px rgba(89,53,184,0.2), inset 0 1px 0 rgba(255,255,255,0.18)'
+  const cardShadow = '0 6px 16px rgba(89,53,184,0.08), 0 -12px 16px -2px rgba(42,22,96,0.14), inset 0 -1px 0 rgba(217,199,255,0.35), inset 0 1px 0 rgba(255,255,255,0.78)'
+  const fieldShadow = '0 2px 8px -1px rgba(42,22,96,0.07), inset 0 1px 0 rgba(255,255,255,0.8)'
+  const mascotImage = 'linear-gradient(135deg, rgb(230, 220, 255) 0%, rgb(251, 227, 243) 71.429%)'
+  const mascotShadow = '0 5px 13.333px -1.667px rgba(42,22,96,0.1), inset 0 0.833px 0 rgba(255,255,255,0.8)'
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-auth-page-color': 'var(--yx-surface-page)',
+      '--yx-auth-page-image': 'none',
+      '--yx-auth-ink': 'var(--yx-text-primary)',
+      '--yx-auth-muted': 'var(--yx-text-secondary)',
+      '--yx-auth-subtitle': 'var(--yx-text-primary)',
+      '--yx-auth-brand': 'var(--yx-brand)',
+      '--yx-auth-wordmark': 'var(--yx-text-primary)',
+      '--yx-auth-glass': 'var(--yx-surface-card)',
+      '--yx-auth-glass-border': 'var(--yx-border)',
+      '--yx-auth-field': 'var(--yx-surface-page)',
+      '--yx-auth-field-border': 'var(--yx-border)',
+      '--yx-auth-tip': 'var(--yx-surface-soft)',
+      '--yx-auth-tip-ink': 'var(--yx-text-primary)',
+      '--yx-auth-cta-color': 'var(--yx-brand)',
+      '--yx-auth-cta-image': 'none',
+      '--yx-auth-on-cta': 'var(--yx-surface-card)',
+      '--yx-auth-shadow-card': 'none',
+      '--yx-auth-shadow-cta': 'none',
+      '--yx-auth-shadow-field': 'none',
+      '--yx-auth-shadow-mascot': 'none',
+      '--yx-auth-blur': '0px',
+      '--yx-auth-mascot-border': 'var(--yx-border)',
+      '--yx-auth-mascot-image': 'none',
+      '--yx-auth-mascot-color': 'var(--yx-surface-card)',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-auth-page-color': dark ? '#121423' : '#fcfaff',
+    '--yx-auth-page-image': dark
+      ? 'linear-gradient(to bottom, #1b152f 0%, #1f1933 47%, #121423 100%)'
+      : 'linear-gradient(111.82481389843deg, rgb(240, 229, 255) 10.714%, rgb(252, 250, 255) 42.857%, rgb(255, 240, 247) 82.143%)',
+    '--yx-auth-ink': dark ? '#ffffff' : '#222337',
+    '--yx-auth-muted': dark ? '#bab8cf' : '#606277',
+    '--yx-auth-subtitle': dark ? '#bab8cf' : '#242637',
+    '--yx-auth-brand': dark ? '#bcabff' : '#5935b8',
+    '--yx-auth-wordmark': dark ? '#ddccff' : '#4f3382',
+    '--yx-auth-glass': dark ? 'rgba(43,37,67,0.88)' : 'rgba(250,247,255,0.74)',
+    '--yx-auth-glass-border': dark ? 'rgba(143,121,192,0.3)' : 'rgba(255,255,255,0.72)',
+    '--yx-auth-field': dark ? 'rgba(43,37,67,0.92)' : 'rgba(255,255,255,0.92)',
+    '--yx-auth-field-border': dark ? 'rgba(143,121,192,0.3)' : 'rgba(255,255,255,0.95)',
+    '--yx-auth-tip': dark ? '#2b2543' : '#f6f2ff',
+    '--yx-auth-tip-ink': dark ? '#ece7f9' : '#3e4154',
+    '--yx-auth-cta-color': '#4f2dae',
+    '--yx-auth-cta-image': ctaImage,
+    '--yx-auth-on-cta': dark ? '#f5f0ff' : '#ffffff',
+    '--yx-auth-shadow-card': cardShadow,
+    '--yx-auth-shadow-cta': ctaShadow,
+    '--yx-auth-shadow-field': fieldShadow,
+    '--yx-auth-shadow-mascot': mascotShadow,
+    '--yx-auth-blur': '10px',
+    '--yx-auth-mascot-border': 'rgba(255,255,255,0.95)',
+    '--yx-auth-mascot-image': mascotImage,
+    '--yx-auth-mascot-color': '#f4eeff',
+  }
+}
+
+/**
+ * Settings opt-in roles from the seven requested slots.
+ * The accessible keys are only the 320 / high-contrast / 200% appearance variant.
+ * They do not replace the normal page, profile, closed, or auth variables.
+ * High contrast drops shadow and does not add blur.
+ */
+function mobileSettingsVariables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'high-contrast') {
+    return {
+      '--yx-settings-segment-shadow': 'none',
+      '--yx-settings-bottom-bar-shadow': 'none',
+      '--yx-settings-card-inset': 'none',
+      '--yx-settings-accessible-page': '#000000',
+      '--yx-settings-accessible-surface': 'var(--yx-surface-card)',
+      '--yx-settings-accessible-border': 'var(--yx-border)',
+      '--yx-settings-accessible-muted': 'var(--yx-text-secondary)',
+    }
+  }
+  const dark = theme === 'dark'
+  return {
+    '--yx-settings-segment-shadow': dark ? 'none' : '0 2px 6px 0 rgba(42, 31, 92, 0.10)',
+    '--yx-settings-bottom-bar-shadow': dark ? '0 -4px 16px 0 rgba(8, 3, 20, 0.35)' : '0 -4px 16px 0 rgba(42, 31, 92, 0.08)',
+    '--yx-settings-card-inset': dark ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.7)',
+    '--yx-settings-accessible-page': dark ? '#12111B' : 'var(--yx-surface-page)',
+    '--yx-settings-accessible-surface': dark ? '#252333' : 'var(--v2-card)',
+    '--yx-settings-accessible-border': dark ? '#AFACC0' : 'var(--v2-line)',
+    '--yx-settings-accessible-muted': dark ? '#E6E4EF' : 'var(--v2-mut)',
+  }
+}
+
+/**
+ * Social room tile. Light is the Figma 169:6882 solid.
+ * Dark and high contrast have no dedicated frame, so they reference the
+ * existing semantic success-soft. Night success-soft stays visible behind a
+ * white icon. The reference is not a 1:1 copy of a design frame.
+ */
+function mobileSocialRoomVariables(theme: ResolvedTheme): Record<string, string> {
+  if (theme === 'light') return { '--yx-social-room-tile': '#13C88E' }
+  return { '--yx-social-room-tile': 'var(--yx-success-soft)' }
 }

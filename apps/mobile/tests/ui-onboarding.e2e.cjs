@@ -3,22 +3,51 @@
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const ROOT = path.resolve(__dirname, '../../..'), BASE = 'http://127.0.0.1:18183';
-const OUT = path.resolve(ROOT, process.env.UI_AUDIT_OUTPUT || '.git/codex-local-backups/onboarding-' + Date.now());
+const ROOT = path.resolve(__dirname, '../../..');
+const ARTIFACT = path.resolve(process.env.ONBOARDING_H5_ARTIFACT || path.join(ROOT, 'apps/mobile/dist/build/h5'));
+const PAGE_ORIGIN = 'http://synthetic.invalid';
+const IAM_ORIGIN = 'https://127.0.0.1:18087';
+const GATEWAY_ORIGIN = 'http://127.0.0.1:18070';
+const BASE = PAGE_ORIGIN;
+const IAM_CREDENTIAL_PATHS = new Set(['/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/token/refresh', '/api/v1/auth/password-reset/request', '/api/v1/auth/password-reset/confirm']);
+function auditOutput() {
+  const requested = process.env.UI_AUDIT_OUTPUT;
+  if (typeof requested === 'string' && requested.length > 0) {
+    if (!path.isAbsolute(requested)) throw new Error('UI_AUDIT_OUTPUT must be an absolute path');
+    fs.mkdirSync(requested, { recursive: true });
+    return requested;
+  }
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'onboarding-ui-'));
+}
+const OUT = auditOutput();
 const GROUP = process.env.UI_AUDIT_GROUP || 'all';
 const DIAGNOSTIC = GROUP === 'restoring-diagnostic';
-fs.mkdirSync(OUT, { recursive: true });
 const sources = ['apps/mobile/src/pages/onboarding/onboarding.vue', 'packages/i18n/src/mobile-experience.ts', 'apps/mobile/src/api/learner-content.ts', 'apps/mobile/src/stores/session.ts', 'apps/mobile/src/auth/gateway-auth.ts', 'apps/mobile/src/domain/onboarding-resume.ts', 'apps/mobile/src/stores/learner-content.ts', 'apps/mobile/src/platform/pointer-feedback.ts', 'apps/mobile/tests/ui-onboarding.e2e.cjs'];
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, file))).digest('hex');
-const report = { at: new Date().toISOString(), scope: 'MB004_FORMAL_H5_SYNTHETIC_UI_ONLY', group: GROUP, browserPlugin: 'Browser plugin not available; Playwright Chromium', sourceHashes: Object.fromEntries(sources.map(file => [file, hash(file)])), checks: [], matrix: [], pageErrors: [], consoleErrors: [], fixtureRequests: [] };
+const report = { at: new Date().toISOString(), scope: 'MB004_FORMAL_H5_SYNTHETIC_UI_ONLY', group: GROUP, transport: 'playwright route.fulfill', origin: BASE, origins: { page: PAGE_ORIGIN, iam: IAM_ORIGIN, gateway: GATEWAY_ORIGIN }, artifact: ARTIFACT, realHttp: 'NOT_RUN', browserPlugin: 'Browser plugin not available; Playwright Chromium', sourceHashes: Object.fromEntries(sources.map(file => [file, hash(file)])), checks: [], matrix: [], pageErrors: [], consoleErrors: [], fixtureRequests: [], externalAborts: [] };
+function corsHeaders(request) {
+  const requested = typeof request.headerValue === 'function' ? request.headerValue('access-control-request-headers') : undefined;
+  return { 'access-control-allow-origin': PAGE_ORIGIN, 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': requested || 'authorization,content-type,idempotency-key,if-match', vary: 'origin' };
+}
 const save = () => fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(report, null, 2));
 function responseShape(value, depth = 0) { if (value === null) return 'null'; if (Array.isArray(value)) return value.length ? `array<${typeof value[0]}>` : 'array'; if (typeof value !== 'object') return typeof value; if (depth >= 3) return 'object'; return Object.fromEntries(Object.entries(value).map(([key, nested]) => [key, responseShape(nested, depth + 1)])); }
 function diagnostic(event, details = {}) { if (DIAGNOSTIC) { (report.diagnosticNetwork ||= []).push({ at: Date.now(), event, ...details }); save(); } }
 let browser;
 const releases = new Set();
-const titles = { 'zh-CN': { gate: '确认成人身份', consent: '查看同意事项', goal: '选择学习目标', assessment: '设置已完成' }, 'en-US': { gate: 'Confirm adult eligibility', consent: 'Review consent status', goal: 'Choose your learning goal', assessment: 'Your setup is saved' } };
+const titles = { 'zh-CN': { gate: '先确认你的年龄', consent: '开始学习前，先看这几条', goal: '你想先达成什么？', assessment: '设置完成，来做个定级测评' }, 'en-US': { gate: 'Confirm your age first', consent: 'Review these items before learning', goal: 'What do you want to reach first?', assessment: 'Setup is complete. Start placement.' } };
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.json': 'application/json', '.map': 'application/json', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8' };
+function serveArtifact(route, url) {
+  const relative = decodeURIComponent(url.pathname) === '/' ? 'index.html' : decodeURIComponent(url.pathname).replace(/^\/+/, '');
+  const root = path.resolve(ARTIFACT);
+  const direct = path.resolve(root, relative);
+  if (direct !== root && !direct.startsWith(root + path.sep)) return route.abort();
+  const file = fs.existsSync(direct) && fs.statSync(direct).isFile() ? direct : (!path.extname(relative) && fs.existsSync(path.join(root, 'index.html')) ? path.join(root, 'index.html') : '');
+  if (!file) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'missing artifact' });
+  return route.fulfill({ status: 200, contentType: MIME[path.extname(file)] || 'application/octet-stream', body: fs.readFileSync(file) });
+}
 const purposes = ['ACCOUNT_TERMS', 'PRIVACY_NOTICE', 'ADULT_LEARNING_ELIGIBILITY'];
 const record = (type, purpose, required = true) => ({ type, purpose, required, document: { version: 'recorded-fixture-v1', digest: 'synthetic-document-digest', publishedAt: '2026-10-01T00:00:00Z' }, state: 'GRANTED', provenance: { authority: 'IAM_SERVER_RECORDED_CONSENT', recordedAt: '2026-10-02T00:00:00Z', documentSource: 'PUBLISHED_DOCUMENT_VERSION_AND_DIGEST', policySource: 'IAM_ACTIVE_POLICY_CONTROL_PLANE' }, policyRef: 'synthetic-policy-reference', policyVersion: 'fixture-policy-v1', decisionRef: 'synthetic-decision-reference' });
 async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light', height = 844) {
@@ -28,22 +57,40 @@ async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light
     const permissions = state.accepted && state.adult === 'PASSED' && state.access === 'ELIGIBLE' ? ['learning.plan.read', 'learner.target.read', 'learner.profile.read', 'learner.preference.read'] : [];
     return { principal: { subject: 'ui-onboarding-synthetic', permissions, roles: [], adultGate: state.adult }, adultGate: { status: state.adult, learningAccess: state.access }, learningAccess: state.access, permissions, consentState: { accepted: state.accepted, unsatisfiedPurposes: state.accepted ? [] : purposes, requiredPurposes: purposes, version: 'summary-not-a-published-catalog', learningAccess: state.accepted ? 'ELIGIBLE' : 'RESTRICTED' } };
   }
-  await context.route('**/*', route => { const url = new URL(route.request().url()); return url.hostname === '127.0.0.1' && url.port === '18183' ? route.continue() : route.abort(); });
-  await context.route('**/api/v1/**', async route => {
-    const request = route.request(), url = new URL(request.url()), p = url.pathname, method = request.method();
-    diagnostic('request', { method, path: p });
+  await context.route('**/*', async route => {
+    const request = route.request(), url = new URL(request.url());
+    const method = request.method();
+    if (url.origin === PAGE_ORIGIN) {
+      if (url.pathname.startsWith('/api/v1/')) {
+        report.fixtureRequests.push({ mode, method, origin: url.origin, path: url.pathname, result: 'page-origin-api-rejected' });
+        return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'NOT_FOUND' }) });
+      }
+      return serveArtifact(route, url);
+    }
+    if (url.origin !== IAM_ORIGIN && url.origin !== GATEWAY_ORIGIN) {
+      report.externalAborts.push({ mode, method, origin: url.origin, path: url.pathname });
+      diagnostic('external-abort', { method, origin: url.origin, path: url.pathname });
+      return route.abort();
+    }
+    const p = url.pathname;
+    const headers = { ...corsHeaders(request), 'content-type': 'application/json' };
+    diagnostic('request', { method, origin: url.origin, path: p });
     report.fixtureRequests.push({ mode, method, origin: url.origin, path: p });
-    const headers = { 'content-type': 'application/json', 'access-control-allow-origin': BASE, 'access-control-allow-credentials': 'true' };
-    if (method === 'OPTIONS') { await route.fulfill({ status: 204, headers, body: '' }); return; }
-    if (p === '/api/v1/iam/adult-gate') state.counts.adult++;
-    if (p === '/api/v1/auth/token/refresh') state.counts.refresh = (state.counts.refresh || 0) + 1;
-    if (p === '/api/v1/learner/targets' && method === 'GET') state.counts.targetGet = (state.counts.targetGet || 0) + 1;
-    if (p === '/api/v1/learner/targets' && method === 'PUT') state.counts.targetPut++;
-    if (p === '/api/v1/iam/consents' && method === 'PUT') state.counts.consentPut++;
+    if (method === 'OPTIONS') { await route.fulfill({ status: 204, headers: corsHeaders(request), body: '' }); return; }
+    const credentialPost = method === 'POST' && IAM_CREDENTIAL_PATHS.has(p);
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/iam/adult-gate') state.counts.adult++;
+    if (url.origin === IAM_ORIGIN && p === '/api/v1/auth/token/refresh') state.counts.refresh = (state.counts.refresh || 0) + 1;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/learner/targets' && method === 'GET') state.counts.targetGet = (state.counts.targetGet || 0) + 1;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/learner/targets' && method === 'PUT') state.counts.targetPut++;
+    if (url.origin === GATEWAY_ORIGIN && p === '/api/v1/iam/consents' && method === 'PUT') state.counts.consentPut++;
     if (state.hold === p) await new Promise(resolve => { state.release = resolve; releases.add(resolve); diagnostic('fixture-held', { method, path: p }); state.onHeld?.(); state.onHeld = null; });
     let status = 200, data = {};
-    if (p === '/api/v1/auth/token/refresh' && state.refreshFailure) { status = 401; data = { code: 'INVALID_REFRESH_TOKEN' }; }
-    else if (p === '/api/v1/auth/login' || p === '/api/v1/auth/token/refresh') data = { accessToken: 'ui-synthetic-not-a-valid-credential', adultGate: { status: state.adult, learningAccess: state.access } };
+    if (url.origin === IAM_ORIGIN) {
+      if (!credentialPost) { status = 404; data = { code: 'NOT_FOUND' }; }
+      else if (p === '/api/v1/auth/token/refresh' && state.refreshFailure) { status = 401; data = { code: 'INVALID_REFRESH_TOKEN' }; }
+      else if (p === '/api/v1/auth/login' || p === '/api/v1/auth/token/refresh') data = { accessToken: 'ui-synthetic-not-a-valid-credential', adultGate: { status: state.adult, learningAccess: state.access } };
+      else { status = 404; data = { code: 'NOT_FOUND' }; }
+    } else if (credentialPost) { status = 404; data = { code: 'NOT_FOUND' }; }
     else if (p === '/api/v1/iam/permissions' || p === '/api/v1/iam/principal/me') data = principal();
     else if (p === '/api/v1/iam/adult-gate') {
       status = state.adultStatus;
@@ -64,7 +111,10 @@ async function open(mode = 'gate', width = 390, locale = 'zh-CN', theme = 'light
       data = { uiLocale: locale, contentLocale: 'es-ES', timezone: 'Asia/Shanghai', themeMode: theme === 'dark' ? 'DARK' : 'LIGHT', highContrast: theme === 'high-contrast', motionMode: 'REDUCED', stateVersion: 0 };
     } else if (p === '/api/v1/learner/profile') data = { stateVersion: 0 };
     else if (p === '/api/v1/auth/logout') data = { success: true };
-    else if (p.includes('/plan')) data = { items: [], planVersion: 0 };
+    else if (p === '/api/v1/learning/today' || p.includes('/plan')) data = { items: [], planVersion: 0 };
+    else { status = 404; data = { code: 'NOT_FOUND' }; }
+    const recorded = report.fixtureRequests.at(-1);
+    if (recorded && recorded.origin === url.origin && recorded.path === p && recorded.method === method) recorded.result = status === 404 ? 'not-found' : 'fulfilled';
     diagnostic('response', { method, path: p, status, shape: responseShape(data) });
     await route.fulfill({ status, headers, body: JSON.stringify(data) });
   });
@@ -112,8 +162,8 @@ async function matrix() {
   for (const mode of process.env.UI_MATRIX_MODES ? process.env.UI_MATRIX_MODES.split(',') : ['gate', 'consent', 'goal', 'assessment']) for (const width of [320, 390, 768, 1280]) for (const locale of ['zh-CN', 'en-US']) for (const theme of ['light', 'dark', 'high-contrast', 'system']) {
     const current = await open(mode, width, locale, theme), { page } = current;
     const facts = await snapshot(page); assert.equal(facts.title, titles[locale][mode]); assert.equal(facts.rawKeys, false); assert.equal(facts.overlay, 0); assert.equal(facts.overflow, false);
-    assert.equal(facts.titleFont, '28px'); assert.equal(facts.titleWeight, '650'); assert.equal(facts.descriptionFont, '14px'); assert.equal(facts.brandIcon, 25); assert.ok(facts.targets.every(target => target.width >= 44 && target.height >= 44));
-    assert.ok(facts.bodyWidth <= (mode === 'consent' || mode === 'goal' ? 560.1 : 420.1)); assert.ok(facts.titleContrast >= 4.5 && facts.descriptionContrast >= 4.5); assert.equal(facts.bodyGap, '24px'); if (facts.primaryFont) assert.equal(facts.primaryFont, '16px');
+    assert.equal(facts.titleFont, '24px'); assert.equal(facts.titleWeight, '700'); assert.equal(facts.descriptionFont, '14px'); assert.equal(facts.brandIcon, 40); assert.ok(facts.targets.every(target => target.width >= 44 && target.height >= 44));
+    assert.ok(facts.bodyWidth <= (mode === 'consent' || mode === 'goal' ? 560.1 : 420.1)); assert.ok(facts.titleContrast >= 4.5 && facts.descriptionContrast >= 4.5); assert.equal(facts.bodyGap, '16px'); if (facts.primaryFont) assert.equal(facts.primaryFont, '16px');
     assert.ok(facts.boundaries.every(edge => edge.againstFill >= 3 && edge.againstPage >= 3), 'Unselected control boundaries need 3:1 against fill and page');
     if (mode === 'gate') {
       assert.equal(facts.inputFont, '16px');
@@ -299,7 +349,7 @@ async function restoring() {
     await p.getByRole('button', { name: '账号设置', exact: true }).click(); await p.waitForURL(url => url.hash.startsWith('#/pages/settings/settings'));
     owner.state.accepted = true; owner.state.targetClaimsStale = 'transient'; owner.state.refreshFailure = failed;
     const held = owner.hold('/api/v1/auth/token/refresh');
-    await p.evaluate(async () => { const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); await getUniRuntime().navigateTo({ url: '/pages/onboarding/onboarding' }); });
+    await p.evaluate(async () => { const runtime = globalThis.uni; if (runtime && typeof runtime.navigateTo === 'function') await runtime.navigateTo({ url: '/pages/onboarding/onboarding' }); else window.location.hash = '#/pages/onboarding/onboarding'; });
     await p.waitForFunction(() => { let c = document.querySelector('.yx-onboarding')?.__vueParentComponent; while(c&&!('restoring' in c.setupState))c=c.parent; return c && c.setupState.restoring && c.setupState.reading && c.setupState.busy; });
     await held;
     assert.equal(owner.state.counts.refresh, 1); diagnostic('fixture-release-requested', { refreshFailure: failed }); owner.release();
@@ -356,7 +406,7 @@ async function checkboxMark(page) {
 async function race() {
   const hidden = await open(), h = hidden.page;
   await h.locator('#mobile-onboarding-year').fill('1990'); await h.locator('.onboarding-check-row').click(); hidden.hold('/api/v1/iam/adult-gate'); await h.locator('.onboarding-primary').click(); await h.locator('.yx-onboarding[aria-busy=true]').waitFor();
-  await h.evaluate(async () => { let c = document.querySelector('.yx-onboarding').__vueParentComponent; while(c&&!('birthYear' in c.setupState))c=c.parent; const s=c.setupState; window.__hiddenDraft=()=>s.birthYear===''&&!s.ageConfirmed&&!s.busy; const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); await getUniRuntime().navigateTo({ url: '/pages/settings/settings' }); });
+  await h.evaluate(async () => { let c = document.querySelector('.yx-onboarding').__vueParentComponent; while(c&&!('birthYear' in c.setupState))c=c.parent; const s=c.setupState; window.__hiddenDraft=()=>s.birthYear===''&&!s.ageConfirmed&&!s.busy; const runtime = globalThis.uni; if (runtime && typeof runtime.navigateTo === 'function') await runtime.navigateTo({ url: '/pages/settings/settings' }); else window.location.hash = '#/pages/settings/settings'; });
   await h.waitForURL(url => url.hash.startsWith('#/pages/settings/settings')); hidden.release();
   await h.waitForFunction(() => window.__hiddenDraft()); await h.waitForLoadState('networkidle');
   assert.ok(h.url().includes('/pages/settings/settings')); assert.equal(hidden.state.counts.consentPut, 0); assert.equal(hidden.state.counts.targetPut, 0);
@@ -367,7 +417,7 @@ async function race() {
   await i.waitForURL(url => url.hash.startsWith('#/pages/login/login')); identity.release(); await i.waitForLoadState('networkidle'); assert.equal(identity.state.counts.targetPut, 0); assert.equal(identity.state.counts.consentPut, 0);
   report.checks.push({ name: 'identity-revocation-late-adult-stays-public-no-write', result: 'PASS' }); save(); await identity.context.close();
   const navigation = await open('assessment'), n = navigation.page;
-  await n.evaluate(async () => { const { getUniRuntime } = await import('/src/platform/uni-runtime.ts'); const original = getUniRuntime().navigateTo.bind(getUniRuntime()); window.__navigationRejects = 0; globalThis.uni = { ...globalThis.uni, navigateTo: options => { if (options.url.startsWith('/pages/assessment/')) { window.__navigationRejects++; throw new Error('Synthetic navigation failure'); } return original(options); } }; });
+  await n.evaluate(async () => { const original = globalThis.uni.navigateTo.bind(globalThis.uni); window.__navigationRejects = 0; globalThis.uni = { ...globalThis.uni, navigateTo: options => { if (options.url.startsWith('/pages/assessment/')) { window.__navigationRejects++; throw new Error('Synthetic navigation failure'); } return original(options); } }; });
   await n.locator('.onboarding-primary').click(); await n.getByText('页面未能打开，请重试。', { exact: true }).waitFor({ timeout: 3000 });
   assert.equal(await n.locator('.yx-onboarding').getAttribute('aria-busy'), 'false'); assert.equal(await n.locator('.onboarding-primary').isDisabled(), false); assert.ok(n.url().includes('/pages/onboarding/onboarding'));
   assert.equal(await n.evaluate(() => window.__navigationRejects), 1);
