@@ -3722,7 +3722,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T08:35:16.145963+00:00",
+  "updated_at": "2026-11-06T08:37:45.680708+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6133,5 +6133,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B139-READING-PRACTICE-INTEGRATED-H5.md",
     "evidence": "evidence/ROOT-B139-READING-PRACTICE-INTEGRATED-H5-20261106.json"
+  },
+  "integration_batch_140_learn_catalog_owner_wire": {
+    "status": "LOCAL_REAL_OWNER_HOME_AND_EMPTY_CATALOG_WIRE_PASS",
+    "page": "MB-009",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B140-LEARN-CATALOG-OWNER-WIRE.md",
+    "evidence": "evidence/ROOT-B140-LEARN-CATALOG-OWNER-WIRE-20261106.json"
   }
 }

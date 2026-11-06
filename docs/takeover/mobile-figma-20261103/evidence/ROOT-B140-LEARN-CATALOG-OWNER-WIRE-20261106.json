@@ -1,0 +1,52 @@
+{
+  "batch": "B140",
+  "at": "2026-11-06T08:37:45.680708+00:00",
+  "classification": "LOCAL_REAL_OWNER_HOME_AND_EMPTY_CATALOG_WIRE_PASS",
+  "worker": "G361",
+  "runnerReceiptSha256": "e6dc4df5edf8745ed7190215e294f5bd4636ef9d8c8f6b695a4f32dea0472585",
+  "probeReceiptSha256": "499d6920f8fed1245add57e7c74ad52818b480536c1604794e05efdf87df5aab",
+  "learnerPreferenceJarSha256": "0a9c41599ad3759ba37259308ffa36df35b65a52ee252c620ffe659b797687b1",
+  "local": {
+    "gatewayLogin": true,
+    "contentLocale": "en-US",
+    "preferenceVersion": 1,
+    "home": {
+      "projectionVersion": 1,
+      "contentEpoch": 1,
+      "taskCount": 0,
+      "firstDayState": "NOT_READY",
+      "blocker": "PLACEMENT_REQUIRED",
+      "stale": false,
+      "contentStatus": "EMPTY"
+    },
+    "catalog": {
+      "itemCount": 0,
+      "contentEpoch": 1,
+      "projectionVersion": 1,
+      "stale": false,
+      "cards": []
+    },
+    "learnerVisiblePublished": 0,
+    "sealedPublished": 1,
+    "runnerBusinessInserts": 0,
+    "planReads": 0,
+    "unrelatedWrites": 0,
+    "h5Started": false
+  },
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18088,
+    18089
+  ],
+  "cleanup": true,
+  "pending": [
+    "H5 shelf render",
+    "populated course and no-hit",
+    "real denial UI",
+    "native device",
+    "deployment",
+    "TRACE_PENDING"
+  ]
+}
