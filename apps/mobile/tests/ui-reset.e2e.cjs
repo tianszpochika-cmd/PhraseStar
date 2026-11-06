@@ -72,6 +72,12 @@ const labels = {
 let browser;
 const pending = new Set();
 const syntheticCode = () => 'ui-fixture-'.padEnd(32, 'x');
+function resetBodyIsExactFinal(kind, data, expected) {
+  if (!data || typeof data !== 'object' || Array.isArray(data) || !expected) return false;
+  const keys = Object.keys(data);
+  if (kind === 'request') return keys.length === 1 && keys[0] === 'identifier' && data.identifier === expected.identifier;
+  return keys.length === 3 && keys.includes('identifier') && keys.includes('resetToken') && keys.includes('newPassword') && data.identifier === expected.identifier && data.resetToken === expected.resetToken && data.newPassword === expected.newPassword;
+}
 function mime(file) { switch (path.extname(file).toLowerCase()) { case '.html': return 'text/html; charset=utf-8'; case '.js': return 'text/javascript; charset=utf-8'; case '.css': return 'text/css; charset=utf-8'; case '.svg': return 'image/svg+xml'; case '.png': return 'image/png'; case '.json': return 'application/json; charset=utf-8'; case '.woff2': return 'font/woff2'; default: return 'application/octet-stream' } }
 async function serveStatic(route) {
   const url = new URL(route.request().url());
@@ -87,7 +93,7 @@ async function serveStatic(route) {
 }
 async function newPage(width = 390, theme = 'light', locale = 'zh-CN', step = 'request', height = 844, query = '', motion = 'reduce') {
   const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: motion === 'reduce' ? 'reduce' : 'no-preference', ignoreHTTPSErrors: true });
-  let scenario = 'unavailable', hold = false, release, counts = { request: 0, confirm: 0 };
+  let scenario = 'unavailable', hold = false, release, counts = { request: 0, confirm: 0 }, expectedPost = null, postMatch = { request: false, confirm: false };
   await context.route('**/*', async route => {
     const request = route.request(), url = new URL(request.url());
     if (![BASE, IAM, GATEWAY].includes(url.origin)) { report.externalAborts = (report.externalAborts || []).concat([{ method: request.method(), origin: url.origin, path: url.pathname }]); return route.abort(); }
@@ -99,6 +105,12 @@ async function newPage(width = 390, theme = 'light', locale = 'zh-CN', step = 'r
       assert.equal(url.origin, IAM, 'Password/reset code request stays on IAM origin');
       assert.equal(url.protocol, 'https:', 'Password/reset code request stays on IAM TLS');
       const kind = url.pathname.endsWith('/request') ? 'request' : 'confirm'; counts[kind]++;
+      if (expectedPost && expectedPost.kind === kind) {
+        try {
+          // Exact client fields in memory: request {identifier}; confirm {identifier, resetToken, newPassword}. Boolean only.
+          postMatch[kind] = resetBodyIsExactFinal(kind, request.postDataJSON(), expectedPost);
+        } catch { postMatch[kind] = false; }
+      }
       if (scenario === 'offline') { await route.abort('failed'); return; }
       if (hold) await new Promise(resolve => { release = resolve; pending.add(resolve); });
       const fixture = scenario === 'accepted' ? { status: 202, code: 'ACCEPTED' } : scenario === 'success' ? { status: 204, code: '' } : scenario === 'rate-limit' ? { status: 429, code: 'RATE_LIMITED' } : scenario === 'invalid' ? { status: 401, code: 'iam.password_reset.invalid' } : scenario === 'unknown401' ? { status: 401, code: 'UNKNOWN_AUTH_ERROR' } : { status: 503, code: 'SERVICE_UNAVAILABLE' };
@@ -113,7 +125,7 @@ async function newPage(width = 390, theme = 'light', locale = 'zh-CN', step = 'r
   await page.goto(`${BASE}/#/pages/reset-password/reset-password?theme=${theme}&uiLocale=${locale}${query}`, { waitUntil: 'networkidle' });
   await page.locator('#mobile-reset-title').waitFor(); await page.getByRole('textbox', { name: labels[locale].account, exact: true }).waitFor();
   if (step === 'confirm' && !query.includes('&token=')) { await page.locator('.reset-step-button').click(); await page.getByRole('heading', { name: labels[locale].confirm, exact: true }).waitFor(); }
-  return { context, page, scenario: value => { scenario = value; }, hold: () => { hold = true; }, release: () => { hold = false; if (release) { pending.delete(release); release(); } }, counts: () => ({ ...counts }) };
+  return { context, page, scenario: value => { scenario = value; }, expectPost: value => { expectedPost = value; }, postMatch: () => ({ request: postMatch.request === true, confirm: postMatch.confirm === true }), hold: () => { hold = true; }, release: () => { hold = false; if (release) { pending.delete(release); release(); } }, counts: () => ({ ...counts }) };
 }
 async function facts(page) {
   return page.evaluate(() => {
@@ -323,6 +335,133 @@ async function waitModelLength(page, key, expected, timeout) {
     const text = typeof value === 'string' ? value : value && typeof value.value === 'string' ? value.value : '';
     return text.length === expected;
   }, { key, expected }, { timeout });
+}
+const IMMEDIATE_WINDOW_MS = 100;
+const IMMEDIATE_ATTEMPTS = 5;
+const IMMEDIATE_PASSWORD = 'SyntheticOnly123';
+function namedProbeError(name, detail) {
+  const error = new Error(`${name} ${JSON.stringify(detail)}`);
+  error.name = name;
+  error.detail = detail;
+  return error;
+}
+async function armImmediateProbe(page, finalValue) {
+  await page.evaluate(({ windowMs, finalValue }) => {
+    const probe = { inputAt: 0, actionAt: 0, inputTrusted: false, actionTrusted: false, inputNativeFinal: false, clickNativeFinal: false, windowMs };
+    window.__immediateProbe = probe;
+    const nativeFinal = (node) => !!node && node.value === finalValue;
+    document.addEventListener('input', (event) => {
+      if (!event.isTrusted || event.target?.id !== 'mobile-reset-identifier' || probe.inputTrusted) return;
+      probe.inputAt = performance.now();
+      probe.inputTrusted = true;
+      probe.inputNativeFinal = nativeFinal(event.target);
+    }, true);
+    document.addEventListener('click', (event) => {
+      if (!event.isTrusted || !event.target?.closest?.('.reset-submit') || probe.actionTrusted) return;
+      probe.actionAt = performance.now();
+      probe.actionTrusted = true;
+      probe.clickNativeFinal = nativeFinal(document.getElementById('mobile-reset-identifier'));
+    }, true);
+  }, { windowMs: IMMEDIATE_WINDOW_MS, finalValue });
+}
+async function dispatchFinalAndActivate(page, key, finalValue) {
+  await page.locator('.reset-submit').scrollIntoViewIfNeeded();
+  const box = await page.locator('.reset-submit').boundingBox();
+  if (!box) throw namedProbeError('MB003_IMMEDIATE_ACTION_UNAVAILABLE', { hasPrimaryBox: false });
+  const x = box.x + box.width / 2, y = box.y + box.height / 2;
+  await page.mouse.move(x, y);
+  await page.locator('#mobile-reset-identifier').evaluate((node) => {
+    node.focus({ preventScroll: true });
+    const end = node.value.length;
+    node.setSelectionRange(end, end);
+  });
+  await armImmediateProbe(page, finalValue);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    if (key === 'Backspace') {
+      await cdp.send('Input.dispatchKeyEvent', { type: 'rawKeyDown', key: 'Backspace', code: 'Backspace', windowsVirtualKeyCode: 8, nativeVirtualKeyCode: 8 });
+      const press = cdp.send('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', buttons: 1, clickCount: 1 });
+      const release = cdp.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', buttons: 0, clickCount: 1 });
+      await press; await release;
+      await cdp.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Backspace', code: 'Backspace', windowsVirtualKeyCode: 8, nativeVirtualKeyCode: 8 });
+    } else {
+      await cdp.send('Input.insertText', { text: key });
+      const press = cdp.send('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', buttons: 1, clickCount: 1 });
+      const release = cdp.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', buttons: 0, clickCount: 1 });
+      await press; await release;
+    }
+  } finally { await cdp.detach(); }
+  return page.evaluate(() => {
+    const probe = window.__immediateProbe;
+    const deltaMs = probe && probe.inputTrusted && probe.actionTrusted ? probe.actionAt - probe.inputAt : null;
+    return { deltaMs, inputTrusted: probe?.inputTrusted === true, actionTrusted: probe?.actionTrusted === true, underWindow: typeof deltaMs === 'number' && deltaMs >= 0 && deltaMs < probe.windowMs, nativeIsFinal: probe?.inputNativeFinal === true && probe?.clickNativeFinal === true };
+  });
+}
+async function waitResetCount(host) {
+  const started = Date.now();
+  let counts = host.counts();
+  while (counts.request + counts.confirm === 0 && Date.now() - started < 500) { await host.page.waitForTimeout(20); counts = host.counts(); }
+  return counts;
+}
+async function proveImmediate(spec) {
+  let last = null;
+  for (let attempt = 1; attempt <= IMMEDIATE_ATTEMPTS; attempt += 1) {
+    const host = await newPage(390, 'light', 'zh-CN', spec.step);
+    try {
+      if (spec.confirmFields) {
+        await host.page.locator('#mobile-reset-token').fill(syntheticCode());
+        await host.page.locator('#mobile-reset-newPassword').fill(IMMEDIATE_PASSWORD);
+      }
+      await host.page.locator('#mobile-reset-identifier').fill(spec.stableIdentifier);
+      await host.page.waitForTimeout(200); // Stable prefix only. The final key has no blur or wait before the primary click.
+      if (spec.scenario) host.scenario(spec.scenario);
+      if (spec.expectPost) host.expectPost(spec.expectPost());
+      const measured = await dispatchFinalAndActivate(host.page, spec.key, spec.finalIdentifier);
+      const counts = await waitResetCount(host);
+      const match = host.postMatch();
+      const primaryCount = spec.endpoint === 'request' ? counts.request : counts.confirm;
+      const otherCount = spec.endpoint === 'request' ? counts.confirm : counts.request;
+      last = { attempt, ...measured, requestCount: counts.request, confirmCount: counts.confirm, requestCountIsOne: counts.request === 1, confirmCountIsOne: counts.confirm === 1, requestCountIsZero: counts.request === 0, confirmCountIsZero: counts.confirm === 0, requestMatchedFinal: match.request, confirmMatchedFinal: match.confirm, primaryCountIsOne: primaryCount === 1, primaryCountIsZero: primaryCount === 0, primaryMatchedFinal: spec.endpoint === 'request' ? match.request : match.confirm, otherCountIsZero: otherCount === 0 };
+      const windowReached = last.inputTrusted && last.actionTrusted && last.underWindow;
+      if (windowReached && !last.nativeIsFinal) throw namedProbeError('MB003_IMMEDIATE_INVALID_SAMPLE', { step: spec.step, mode: spec.mode, endpoint: spec.endpoint, attempts: attempt, last });
+      if (windowReached) return last;
+    } finally { await host.context.close(); }
+  }
+  throw namedProbeError('MB003_IMMEDIATE_WINDOW_NOT_REACHED', { step: spec.step, mode: spec.mode, endpoint: spec.endpoint, attempts: IMMEDIATE_ATTEMPTS, last });
+}
+function assertImmediate(spec, facts) {
+  const primary = spec.endpoint === 'request' ? facts.requestCount : facts.confirmCount;
+  const other = spec.endpoint === 'request' ? facts.confirmCount : facts.requestCount;
+  const matched = spec.endpoint === 'request' ? facts.requestMatchedFinal : facts.confirmMatchedFinal;
+  const tag = spec.endpoint === 'request' ? 'REQUEST' : 'CONFIRM';
+  if (!spec.expectRequest) { if (primary !== 0 || other !== 0) throw namedProbeError(`MB003_IMMEDIATE_INVALID_${tag}_SENT`, facts); return; }
+  if (other !== 0) throw namedProbeError(`MB003_IMMEDIATE_${tag}_WRONG_ENDPOINT`, facts);
+  if (primary === 0) throw namedProbeError(`MB003_IMMEDIATE_${tag}_NOT_SENT`, facts);
+  if (primary > 1) throw namedProbeError(`MB003_IMMEDIATE_${tag}_REPEATED`, facts);
+  if (primary !== 1 || matched !== true) throw namedProbeError(`MB003_IMMEDIATE_${tag}_NOT_FINAL`, facts);
+}
+async function runImmediateCases() {
+  const cases = [
+    { step: 'request', mode: 'valid', endpoint: 'request', expectRequest: true, stableIdentifier: 'ab', finalIdentifier: 'abc', key: 'c', scenario: 'accepted', expectPost: () => ({ kind: 'request', identifier: 'abc' }) },
+    { step: 'request', mode: 'cleared', endpoint: 'request', expectRequest: false, stableIdentifier: 'abc', finalIdentifier: 'ab', key: 'Backspace' },
+    { step: 'confirm', mode: 'valid', endpoint: 'confirm', expectRequest: true, confirmFields: true, stableIdentifier: 'ab', finalIdentifier: 'abc', key: 'c', scenario: 'success', expectPost: () => ({ kind: 'confirm', identifier: 'abc', resetToken: syntheticCode(), newPassword: IMMEDIATE_PASSWORD }) },
+    { step: 'confirm', mode: 'cleared', endpoint: 'confirm', expectRequest: false, confirmFields: true, stableIdentifier: 'abc', finalIdentifier: 'ab', key: 'Backspace' },
+  ];
+  const results = [], failures = [];
+  for (const spec of cases) {
+    try {
+      const facts = await proveImmediate(spec);
+      let failure = null;
+      try { assertImmediate(spec, facts); } catch (error) { failure = error; }
+      results.push({ step: spec.step, mode: spec.mode, endpoint: spec.endpoint, failure: failure ? failure.name : null, ...facts });
+      if (failure) failures.push(failure);
+    } catch (error) {
+      if (!String(error.name || '').startsWith('MB003_IMMEDIATE_')) throw error;
+      results.push({ step: spec.step, mode: spec.mode, endpoint: spec.endpoint, failure: error.name, detail: error.detail || null });
+      failures.push(error);
+    }
+  }
+  return { results, failures };
 }
 async function switchLocale(page, locale) {
   const hash = new URL(page.url()).hash;
@@ -541,34 +680,17 @@ async function switchLocale(page, locale) {
   assert.equal(systemLight.theme, 'light');
   assert.notEqual(systemLight.fxDisplay, 'none');
   await system.context.close();
-  const zero = await newPage(390, 'light', 'zh-CN', 'confirm'), zeroPage = zero.page;
-  await zeroPage.locator('#mobile-reset-identifier').click();
-  const zeroAt = Date.now();
-  await zeroPage.keyboard.type('abcd');
-  const zeroNative = await zeroPage.locator('#mobile-reset-identifier').inputValue();
-  const zeroSubmitAt = Date.now() - zeroAt;
-  await zeroPage.locator('.reset-submit').click();
-  await zeroPage.waitForTimeout(160);
-  const zeroError = await zeroPage.locator('#mobile-reset-identifier-error').count();
+  const immediate = await runImmediateCases();
   report.immediateInput = {
-    zeroDelay: {
-      nativeLength: zeroNative.length,
-      submitAtMs: zeroSubmitAt,
-      observationElapsedMs: Date.now() - zeroAt,
-      submitRequests: zero.counts().request,
-      identifierError: zeroError > 0,
-      originalZeroDelayExpectedModel: 4,
-      zeroDelayWouldFail: zero.counts().request === 0 || zeroError > 0,
-      note: 'Preserved 0ms observation: native DOM has 4 characters; production build exposes no Vue setupState, so native length + submit/error is the observable model evidence.',
-    },
     documentedBoundMs: 200,
-    boundReason: 'installed uni-h5 useValueSync throttle/debounce 100ms + bounded 100ms event/paint flush',
+    boundReason: 'Prefix settle is the existing 200ms bound before the measured key. The final key and primary click have no blur or wait. The fast window is 100ms.',
     internalModelObservable: false,
+    fast: immediate.results,
+    fastFailureNames: immediate.failures.map((error) => error.name),
   };
   save();
-  assert.equal(zeroNative.length, 4);
-  assert.equal(zero.counts().request, 0);
-  await zero.context.close();
+  if (immediate.failures.length) throw namedProbeError(immediate.failures[0].name, { failures: immediate.failures.map((error) => ({ name: error.name, detail: error.detail })) });
+  report.checks.push('Immediate request and confirm: one trusted final key, primary click inside 100ms, one matching endpoint post and final-value equality; cleared identifier sends none');
   const typed = await newPage(390, 'light', 'zh-CN', 'request');
   await typed.page.locator('#mobile-reset-identifier').click();
   const typedAt = Date.now();
@@ -669,7 +791,7 @@ async function switchLocale(page, locale) {
   report.screenshots = fs.readdirSync(OUT).filter(name => name.endsWith('.png'));
   report.candidateSha256 = shaFile(__filename);
   report.status = 'PASS_UI_SCOPED_NOT_BUSINESS_ACCEPTANCE';
-  fs.writeFileSync(path.join(OUT, 'firstfailures.json'), JSON.stringify({ at: new Date().toISOString(), candidateZeroDelay: report.immediateInput.zeroDelay, internalStateGap: report.qaInternalStateGap, rootHistoricalEvidence: 'Root supervision evidence supplied separately; no absolute path dependency in candidate' }, null, 2) + '\n');
+  fs.writeFileSync(path.join(OUT, 'firstfailures.json'), JSON.stringify({ at: new Date().toISOString(), candidateImmediate: report.immediateInput.fast, internalStateGap: report.qaInternalStateGap, rootHistoricalEvidence: 'Root supervision evidence supplied separately; no absolute path dependency in candidate' }, null, 2) + '\n');
   save();
   console.log(JSON.stringify({ status: report.status, matrix: report.matrix.length, checks: report.checks, pageErrors: report.pageErrors.length, consoleErrors: report.consoleErrors.length, output: OUT }, null, 2));
 })().catch(error => { report.status = 'FAIL'; report.failure = error.stack; fs.writeFileSync(path.join(OUT, 'firstfailure.json'), JSON.stringify({ at: new Date().toISOString(), failure: error.stack, matrix: report.matrix, immediateInput: report.immediateInput, artifact: report.artifact }, null, 2) + '\n'); save(); fs.copyFileSync(path.join(OUT, 'results.json'), path.join(OUT, `results-failed-${Date.now()}.json`)); console.error(error.stack); process.exitCode = 1; }).finally(async () => { for (const resolve of pending) resolve(); await browser?.close(); });

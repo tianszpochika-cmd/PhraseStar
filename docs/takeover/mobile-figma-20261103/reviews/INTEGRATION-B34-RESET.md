@@ -10,6 +10,10 @@ Root 从独立集成工作树运行默认 H5 路径：68布局样本、8组交�
 
 详见[来源](../evidence/B34-RESET-SOURCE-MANIFEST.json)与[审核](../evidence/B34-RESET-REVIEW.json)。
 
+## B114 即时输入探针复验
+
+B34 的近零延迟探针只填写确认步账号，并检查了申请计数。后续 B114 完整填写各步并分别核对目标请求，四种操作通过。 [复验](./INTEGRATION-B114-RESET-IMMEDIATE-INPUT.md)
+
 ## B79 本机找回密码隐私
 
 直接访问本机 IAM TLS 的找回密码入口。已注册和未知的合成账号都返回 202，公开数据及结构一致，无账号标识或令牌泄露。同键同请求重试返回相同受理数据。无效验证码确认返回 401，无新令牌，原会话通过 Gateway 仍能访问自己的资料。确认入口的 CORS 预检返回 200。独立的 29 项找回密码检查及 184 项首次签署接口检查全部通过。临时进程、MySQL、端口和证书均已释放。 [B79 证据](../evidence/ROOT-B79-LOCAL-IAM-RESET-PRIVACY-20261105.json)

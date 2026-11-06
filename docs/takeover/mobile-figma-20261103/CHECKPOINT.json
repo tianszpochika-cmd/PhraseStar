@@ -5864,5 +5864,14 @@
     "cleanup": "PASS",
     "article_assessment_client_gateway_h5_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B113-READING-PROTECTED-SCORE-20261106.json"
+  },
+  "integration_batch_114_reset_immediate_input": {
+    "state": "ACCEPTED_LOCAL_SYNTHETIC_H5_PROBE_ONLY",
+    "matrix_records": 68,
+    "screenshots": 37,
+    "check_groups": 9,
+    "trusted_immediate_cases": 4,
+    "password_delivery_native_device_deploy": "NOT_RUN",
+    "evidence": "evidence/ROOT-B114-RESET-IMMEDIATE-INPUT-20261106.json"
   }
 }

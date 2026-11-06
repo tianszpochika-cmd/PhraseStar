@@ -10,6 +10,7 @@
 - [Android 模拟器 B101](reviews/INTEGRATION-B101-ANDROID-SIMULATOR-KEYSTORE.md) 独立测试宿主的 Keystore 密文替换、跨启动读回和删除通过。
 - [iOS 模拟器 B98](reviews/INTEGRATION-B98-IOS-SIMULATOR-KEYCHAIN.md) 独立测试宿主的 Keychain 三次启动和系统属性检查通过。
 - [原生安全存储 B92](reviews/INTEGRATION-B92-NATIVE-SECURE-STORAGE.md) 33 条 App 路由、双平台桥接源码、675 项源码测试和 43 个离线 H5 场景通过。两端独立模拟器的系统存储读写已另行验证，正式安装宿主继续验收。
+- [找回密码即时输入 B114](reviews/INTEGRATION-B114-RESET-IMMEDIATE-INPUT.md) 合成 H5 两步均观察到提交采用最后输入，删短时均无请求。
 - [阅读题受保护评分 B113](reviews/INTEGRATION-B113-READING-PROTECTED-SCORE.md) 隔离 MySQL V34 四角色发布、答题结果、拒绝及撤回复验通过。
 - [阅读草稿数据库测试 B112](reviews/INTEGRATION-B112-CONTENT-DRAFT-DB-GATE.md) 通用和手动方式各 2 项实际 MySQL 通过。
 - [测评固定时间 B111](reviews/INTEGRATION-B111-ASSESSMENT-PIN-TIME.md) 独立 MySQL V12 复核会话创建、读回、同键重试、作答与报告采用同一数据库时间。
