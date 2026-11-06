@@ -209,7 +209,8 @@
           "group": "B60_FROZEN_KEYBOARD_TEXT",
           "review": "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md",
           "receipt": "evidence/ROOT-B62-BOUNDARIES-AND-KEYBOARD-20261105.json"
-        }
+        },
+        "auth_negatives_h5_b129": "evidence/ROOT-B129-AUTH-NEGATIVE-H5-20261106.json"
       },
       "current_job": "grok/batch-11-legal-observer",
       "candidate_manifest": "evidence/integration-batch-21-login-source-manifest.json",
@@ -289,7 +290,8 @@
         "device": "NOT_RUN",
         "independent_review": "reviews/INTEGRATION-B26-REGISTER.md",
         "candidate_browser": "Rootcombined51matrix14groups43shots;dark/HC/systemicon contrast+allauthscoped behaviors pass",
-        "source_tests": "Root12/12 auth/publicdocs+types/H5build0;globalb23 1pass5fail retained"
+        "source_tests": "Root12/12 auth/publicdocs+types/H5build0;globalb23 1pass5fail retained",
+        "auth_negatives_h5_b129": "evidence/ROOT-B129-AUTH-NEGATIVE-H5-20261106.json"
       },
       "source_operation_trace_b59": {
         "group": "auth",
@@ -369,7 +371,8 @@
           "reset_http_checks": 29,
           "independent_http_checks": 184,
           "focused_iam_tests": 41
-        }
+        },
+        "auth_negatives_h5_b129": "evidence/ROOT-B129-AUTH-NEGATIVE-H5-20261106.json"
       },
       "current_job": null,
       "source_operation_trace_b59": {
@@ -3711,7 +3714,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:02:37.913268+00:00",
+  "updated_at": "2026-11-06T07:09:46.079396+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6021,5 +6024,16 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B128-LEARNER-PREFERENCE-VERSION.md",
     "evidence": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json"
+  },
+  "integration_batch_129_auth_negative_h5": {
+    "status": "LOCAL_REAL_AUTH_H5_NEGATIVES_PASS",
+    "pages": [
+      "MB-001",
+      "MB-002",
+      "MB-003"
+    ],
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md",
+    "evidence": "evidence/ROOT-B129-AUTH-NEGATIVE-H5-20261106.json"
   }
 }

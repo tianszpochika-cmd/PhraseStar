@@ -1,0 +1,85 @@
+{
+  "batch": "B129",
+  "root_run": "G318",
+  "lease_receipt_sha256": "9089fa58c8784da43357d28b3c7ce574f556a12f5137a0fa8713e3fa55a77dfd",
+  "observer_receipt_sha256": "4caf30f2eb5765e33c5ae4e851a43adf081124811cb7b3acc7ca451991c74918",
+  "integration_head": "19d4271e",
+  "pages": [
+    "MB-001",
+    "MB-002",
+    "MB-003"
+  ],
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_AUTH_H5_NEGATIVES_PASS",
+  "h5_index_sha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+  "iam_checks": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "cases": {
+    "wrong_password": {
+      "status": 401,
+      "code": "iam.credentials.invalid",
+      "visible_class": "invalid-credentials",
+      "cookie_created": false,
+      "stayed_on_login": true
+    },
+    "unknown_reset": {
+      "status": 202,
+      "neutral_receipt": true,
+      "delivery_attempt": false,
+      "repeated_requests": 0
+    },
+    "duplicate_registration": {
+      "status": 409,
+      "code": "iam.account.already_exists",
+      "created_account": false
+    }
+  },
+  "durable_counts": {
+    "before": {
+      "status": "RECORDED",
+      "account": 1,
+      "session": 2,
+      "resetChallenge": 0
+    },
+    "afterWrongPassword": {
+      "status": "RECORDED",
+      "account": 1,
+      "session": 2,
+      "resetChallenge": 0
+    },
+    "afterReset": {
+      "status": "RECORDED",
+      "account": 1,
+      "session": 2,
+      "resetChallenge": 0
+    },
+    "afterDuplicate": {
+      "status": "RECORDED",
+      "account": 1,
+      "session": 2,
+      "resetChallenge": 0
+    }
+  },
+  "release": {
+    "containers_and_network": true,
+    "processes_remaining": 0,
+    "ports": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18183": true
+    }
+  },
+  "pending": [
+    "WRONG_PASSWORD_RECOVERY_LOGIN",
+    "RESET_DELIVERY",
+    "NATIVE_DEVICE",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}
