@@ -46,6 +46,7 @@ test('registration and password reset messages cover Chinese and English labels,
       const messages = mobile[locale].mobile.auth[group]
       assert.ok(messages && Object.values(messages).every((value) => typeof value === 'string' && value.length > 0), `${locale} mobile ${group} messages should be complete`)
     }
+    assert.doesNotMatch(mobile[locale].mobile.auth.register.accountConflict, /已注册|账号已存在|already be registered|already exists|account exists/i)
   }
 
   assert.equal(learner['zh-CN'].auth.register.identifier, '账号')
@@ -63,18 +64,15 @@ test('registration and password reset messages cover Chinese and English labels,
   assert.match(learner['en-US'].auth.register.validationTitle, /Check your details/)
   assert.match(learner['en-US'].auth.passwordReset.validationTitle, /Check your details/)
   assert.match(learner['en-US'].auth.passwordReset.invalidCode, /invalid or expired/)
-  assert.match(mobile['en-US'].mobile.auth.register.accountConflict, /already be registered/)
 })
 
 test('auth pages keep concise guidance while retaining password and account recovery requirements', () => {
   const learner = learnerI18n.learnerBaseMessages
   const mobile = mobileI18n.mobileExperienceMessages
   const registerPage = read('apps/learner-web/src/pages/RegisterPage.vue')
-  const registerStyles = read('apps/learner-web/src/assets/styles/experience.css')
   const mobileRegisterPage = read('apps/mobile/src/pages/register/register.vue')
 
-  assert.match(registerPage, /class="micro-copy__action"/)
-  assert.match(registerStyles, /\.micro-copy__action\s*\{\s*margin-inline-start:/)
+  assert.match(registerPage, /<nav\b[^>]*aria-label="authT\('register\.existingAccount'\)"/)
   assert.match(mobileRegisterPage, /mobileT\('auth\.register\.passwordHint'\)/)
 
   for (const locale of ['zh-CN', 'en-US']) {
@@ -88,6 +86,8 @@ test('auth pages keep concise guidance while retaining password and account reco
     assert.notEqual(mobileMessages.pages['reset-password'].description, mobileReset.requestHint)
     assert.match(webReset.requestSent, /可接收重置通知|can receive a reset notice/)
     assert.doesNotMatch(webReset.requestSent, /账号存在|account exists|if the account exists/i)
+    assert.equal(mobileMessages.resetSent, webReset.requestSent)
+    for (const copy of [webReset.requestFailed, mobileReset.failedRequest]) assert.notEqual(copy, webReset.requestSent)
   }
 })
 
@@ -95,13 +95,17 @@ test('auth failure copy localizes known conflicts and rate limits and hides unkn
   const web = learnerFailureCopy.learnerAuthFailureCopy
   const mobile = mobileFailureCopy.mobileAuthFailureCopy
   const t = (key) => key
+  const leaked = '数据库连接池异常：secret-token'
 
   assert.equal(web('register', '该账号已存在，请直接登录或走密码重置。（iam.account.already_exists）', t), 'register.failed')
   assert.equal(web('register', '请求过于频繁，请稍后再试。', t), 'register.rateLimited')
   assert.equal(web('resetConfirm', 'iam.password_reset.invalid', t), 'passwordReset.invalidCode')
   assert.equal(web('resetRequest', '请求过于频繁，请稍后再试。', t), 'passwordReset.rateLimited')
-  assert.equal(web('resetRequest', '数据库连接池异常：secret-token', t), 'passwordReset.requestSent')
-  assert.equal(web('resetRequest', 'iam.account.already_exists', t), 'passwordReset.requestSent')
+  for (const [copy, failureKey] of [[web, 'passwordReset.requestFailed'], [mobile, 'auth.resetPassword.failedRequest']]) {
+    assert.equal(copy('resetRequest', leaked, t), failureKey)
+    assert.equal(copy('resetRequest', 'iam.account.already_exists', t), failureKey)
+    assert.doesNotMatch(copy('resetRequest', leaked, t), /secret-token|数据库连接池/)
+  }
   assert.equal(web('login', 'CONSENT_WITHDRAWN', t), 'login.consentWithdrawn')
   assert.equal(web('login', '资格不足', t), 'login.eligibilityInsufficient')
   assert.equal(web('login', 'iam.credentials.invalid', t), 'login.invalidCredentials')
@@ -131,21 +135,23 @@ test('all four auth page templates render their user copy through the locale ada
 test('registration keeps local validation before registration and preserves return-to navigation', () => {
   const web = read('apps/learner-web/src/pages/RegisterPage.vue')
   const mobile = read('apps/mobile/src/pages/register/register.vue')
-  for (const [source, adapter] of [[web, 'authT'], [mobile, 'mobileT']]) {
+  for (const [source, prefix] of [[web, 'register.'], [mobile, 'auth.register.']]) {
     const script = source.match(/<script setup[^>]*>([\s\S]*?)<\/script>/)?.[1]
     assert.ok(script)
-    assert.match(script, /identifier\.value\.trim\(\)\s*\|\|\s*!password\.value/)
-    assert.match(script, /password\.value\.length\s*<\s*12/)
-    assert.match(script, /password\.value\s*!==\s*confirm\.value/)
-    assert.ok(script.indexOf(`${adapter}('register.required')`) < script.indexOf('session.register('))
-    assert.ok(script.indexOf(`${adapter}('register.shortPassword')`) < script.indexOf('session.register('))
-    assert.ok(script.indexOf(`${adapter}('register.mismatch')`) < script.indexOf('session.register('))
+    const registerAt = script.indexOf('session.register(')
+    for (const pattern of [/identifier\.value\.trim\(\)/, /password\.value\.length\s*<\s*12/, /password\.value\s*!==\s*confirm\.value/]) {
+      const at = script.search(pattern)
+      assert.ok(at >= 0 && at < registerAt)
+    }
+    for (const key of ['shortPassword', 'mismatch']) assert.ok((script.indexOf(prefix + key) >= 0) && script.indexOf(prefix + key) < registerAt)
+    const guardAt = script.search(/if \(firstValidationError\.value\)|if \(firstError\)/)
+    assert.ok(guardAt >= 0 && guardAt < registerAt && /\breturn\b/.test(script.slice(guardAt, registerAt)))
   }
 
   assert.match(web, /safeReturnTo\(route\.query\.redirect \?\? session\.peekReturnTo\(\)\)/)
   assert.match(web, /query: \{ redirect: redirectTarget \}/)
   assert.match(web, /session\.consumeReturnTo\(\)/)
-  assert.match(mobile, /safeMobileReturnTo\(options\?\.returnTo \?\? options\?\.redirect \?\? session\.peekReturnTo\(\)\)/)
+  assert.match(mobile, /safeMobileRouteReturnTo\(options\?\.returnTo \?\? options\?\.redirect, ''\)[\s\S]*safeMobileRouteReturnTo\(session\.peekReturnTo\(\)\)/)
   assert.match(mobile, /session\.setReturnTo\(returnTo\.value\)/)
   assert.match(mobile, /continueAfterLogin\(session\.consumeReturnTo\(\)\)/)
   assert.match(web, /errorKind === 'validation' \? 'register\.validationTitle' : 'register\.errorTitle'/)
@@ -154,26 +160,27 @@ test('registration keeps local validation before registration and preserves retu
 test('password reset keeps request and confirmation route behavior with localized local validation', () => {
   const web = read('apps/learner-web/src/pages/PasswordResetPage.vue')
   const mobile = read('apps/mobile/src/pages/reset-password/reset-password.vue')
-  for (const [source, adapter] of [[web, 'authT'], [mobile, 'mobileT']]) {
+  for (const source of [web, mobile]) {
     const script = source.match(/<script setup[^>]*>([\s\S]*?)<\/script>/)?.[1]
     assert.ok(script)
-    assert.match(script, /if \(!identifier\.value\.trim\(\)[\s\S]{0,90}!token\.value\.trim\(\)/)
-    assert.match(script, /!token\.value\.trim\(\)/)
-    assert.match(script, /newPassword\.value\.length\s*<\s*12/)
-    assert.ok([
-      `${adapter}('passwordReset.requiredFields')`,
-      `${adapter}('resetPassword.requiredFields')`,
-      `${adapter}('auth.resetPassword.requiredFields')`,
-    ].some((key) => script.includes(key)))
-    assert.ok(script.indexOf('session.confirmPasswordReset(identifier.value, token.value, newPassword.value)') > script.indexOf('newPassword.value.length < 12'))
+    const confirmAt = script.indexOf('session.confirmPasswordReset(identifier.value, token.value, newPassword.value)')
+    const requestAt = script.indexOf('session.requestPasswordReset(identifier.value)')
+    const guardAt = script.search(/if \(!await validate\(\)|if \(firstError\)/)
+    assert.ok(guardAt >= 0 && guardAt < requestAt && requestAt < confirmAt && /\breturn\b/.test(script.slice(guardAt, requestAt)))
+    for (const token of ['identifier.value.trim()', 'token.value.trim()', 'newPassword.value.length < 12', 'requiredToken', 'shortPassword']) {
+      const at = script.indexOf(token)
+      assert.ok(at >= 0 && at < requestAt)
+    }
   }
 
   assert.match(web, /safeReturnTo\(route\.query\.redirect \?\? session\.peekReturnTo\(\)\)/)
   assert.match(web, /router\.replace\(\{ name: 'login', query: \{ redirect: redirectTarget\.value \} \}\)/)
   assert.match(web, /session\.requestPasswordReset\(identifier\.value\)/)
-  assert.match(mobile, /function initialize\(options\?: \{ token\?: string \}\)/)
-  assert.match(mobile, /token\.value = options\.token\s+step\.value = 'confirm'/)
+  assert.match(web, /if \(!ok\) \{\s*requestSent\.value = false/)
+  assert.match(web, /errorKind === 'server' \? 'alert' : 'status'/)
+  assert.match(mobile, /safeMobileRouteReturnTo\(options\?\.returnTo \?\? options\?\.redirect, ''\)/)
+  assert.match(mobile, /options\.token\.trim\(\)[\s\S]{0,160}token\.value = options\.token\s+step\.value = 'confirm'/)
   assert.match(mobile, /session\.requestPasswordReset\(identifier\.value\)/)
-  assert.match(web, /errorKind === 'validation' \? 'passwordReset\.validationTitle' : 'passwordReset\.errorTitle'/)
-  assert.match(mobile, /!resetCompleted && !\(done && step === 'request'\)/)
+  assert.match(mobile, /if \(!success\) \{[^}]*return \}[\s\S]*requestSent\.value = true/)
+  assert.match(mobile, /v-if="resetCompleted"[^>]*role="status"[\s\S]*<form v-else[\s\S]*requestSent \? 'status'[\s\S]*mobileT\('resetSent'\)/)
 })
