@@ -5873,5 +5873,18 @@
     "trusted_immediate_cases": 4,
     "password_delivery_native_device_deploy": "NOT_RUN",
     "evidence": "evidence/ROOT-B114-RESET-IMMEDIATE-INPUT-20261106.json"
+  },
+  "integration_batch_115_figma_rc1_route_trace": {
+    "state": "TRACE_INVENTORY_VERIFIED_LOCAL_ALL_PENDING",
+    "routes": 33,
+    "page_files": 33,
+    "cached_figma_reference_occurrences": 71,
+    "figma": "UpcXTamTjwrb5OQg9WJiFu",
+    "qa12": "393:2",
+    "trace_pending": 33,
+    "design_freeze": "CANDIDATE_NOT_FROZEN",
+    "dec04": "OPEN",
+    "review": "reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md",
+    "evidence": "evidence/ROOT-B115-FIGMA-RC1-ROUTE-TRACE-20261106.json"
   }
 }

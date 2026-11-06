@@ -1,0 +1,26 @@
+{
+  "batch": "B115",
+  "figma": "UpcXTamTjwrb5OQg9WJiFu",
+  "route_count": 33,
+  "page_count": 33,
+  "node_reference_occurrences": 71,
+  "all_trace_pending": true,
+  "candidate_worker_sha256": "b4b8b4c482b8ace9bd327a10721d4f768bc3336430e09accd16eed7aae88218d",
+  "review_document_sha256": "731cc1c7b3e6c50935ea7ce5bb63fd9d8e3c3b237ae9de642c0ae692745dc868",
+  "source_trace_sha256": [
+    "fb8927aaece1ba622600486c2fd927dd7a81ae66bd934a066fc2c7736b457a3e",
+    "7e799be5923a0190b570a16436d62a5cfa71dcfa5afc0337f6499ebd9826f3a5"
+  ],
+  "audit_corrections": [
+    "B96 real local IAM browser happy path is placement setup, dedicated login acceptance pending",
+    "B114 synthetic immediate-input probe corrects B34 initial request-count observation",
+    "removed local filesystem-only references"
+  ],
+  "design_freeze": "CANDIDATE_NOT_FROZEN",
+  "dec04": "OPEN",
+  "not_run": [
+    "complete per-route acceptance",
+    "physical devices and screen readers",
+    "deployment"
+  ]
+}

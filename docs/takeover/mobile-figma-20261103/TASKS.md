@@ -54,6 +54,7 @@
 
 ## 追溯与交付门
 
+- [B115 Figma RC1 逐页追溯](reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md) 核对 33 条路由及 71 处节点引用，逐页保留验收缺项。
 - 33 条路由已登记当前源码调用或关闭边界。实际网关执行、真实 owner 数据和未齐需求标识继续单列。 [B59 调用追溯](reviews/INTEGRATION-B59-OPERATION-TRACE.md)
 - 每行的 ACT/JNY/RULE/INT/E2E、ARCH、FEAT/PRD 与 V2 对应锚点保存在 [CHECKPOINT.json](CHECKPOINT.json) 的 `pages[].trace`。`design-source-traceability.md` 的 RT 是查表引用，机器账展开为 canonical ID；其范围只是所引设计规则，不是整页或服务已完成。FEAT 与 PRD 列缺项都继续 `TRACE_PENDING`；标注的 ID 也需按具体功能确认适用，不可用邻近功能冒充。
 - 首先对照 [980 登记](../../06-design/v2-980plus/08-980plus-功能点设计登记册.md)、[角色/旅程/页面/规则/联调](../../06-design/v2-980plus/phase1-business-operation/README.md)、[业务与交互链](../../06-design/v2-980plus/redesign/README.md)、[契约](../../../packages/contracts/README.md)、[架构](../../02-architecture/v2-microservices-architecture.md)，逐页补 operation、当前 Gateway/owner、状态和证据定位。无相应规则时说明 `N/A` 及原因，不伪造编号。
