@@ -2621,7 +2621,8 @@
           "real_api": "NOT_RUN"
         },
         "preference_wire_b128": "evidence/ROOT-B128-LEARNER-PREFERENCE-VERSION-20261106.json",
-        "support_no_snapshot_b130": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json"
+        "support_no_snapshot_b130": "evidence/ROOT-B130-SUPPORT-READ-NO-SNAPSHOT-20261106.json",
+        "mobile_preference_if_match_b133": "evidence/ROOT-B133-MOBILE-PREFERENCE-IF-MATCH-20261106.json"
       },
       "current_job": "dsh/profile-batch-09-settings-visual",
       "candidate_manifest": "evidence/integration-batch-22-settings-source-manifest.json",
@@ -3720,7 +3721,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T07:29:56.442459+00:00",
+  "updated_at": "2026-11-06T07:33:30.544505+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -6069,5 +6070,12 @@
     "trace": "TRACE_PENDING",
     "review": "reviews/INTEGRATION-B132-COMMERCE-OWNER-READ.md",
     "evidence": "evidence/ROOT-B132-COMMERCE-OWNER-READ-20261106.json"
+  },
+  "integration_batch_133_mobile_preference_if_match": {
+    "status": "LOCAL_H5_FIRST_APPEARANCE_SAVE_PASS_RELOAD_OPEN",
+    "page": "MB-024",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B133-MOBILE-PREFERENCE-IF-MATCH.md",
+    "evidence": "evidence/ROOT-B133-MOBILE-PREFERENCE-IF-MATCH-20261106.json"
   }
 }

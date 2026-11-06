@@ -1,0 +1,52 @@
+{
+  "batch": "B133",
+  "root_run": "G323_SCOPED_FIRST_SAVE",
+  "source_receipt_sha256": "7457d0c54139ae1b9d95b220fdf248e286acd9e12cde62bd20a4379ba61ef4fa",
+  "integration_head": "39b924c8",
+  "page": "MB-024",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_H5_FIRST_APPEARANCE_SAVE_PASS_RELOAD_OPEN",
+  "source_sha256": "caea0e5a8bbe8069ac0acd321480665295347a53727e3bb05b03abad4ee43f77",
+  "test_sha256": "dd0ab84bda76c9919f7fee6c883b822edc135ab5355ec69dcef59725974f390c",
+  "mobile_tests": {
+    "pass": 678
+  },
+  "types": "PASS",
+  "integrated_h5": {
+    "index": "5e43c2a5b226976d3cca96f955923385d8f69bcfeb506abbdfa7084e528ed56a",
+    "files": 797,
+    "tree": "81555f476278cc03c11869162aea62a032b158a442217ff6d73f0140ca153a56"
+  },
+  "browser_h5_index_sha256": "9c9afe1523f35d96659e92571f81049e7e4230e447fb899df416022164c22a2d",
+  "scoped_browser": {
+    "login_status": 200,
+    "preferences_patches": 1,
+    "if_match_gate_for_first_save": "PASS_BEFORE_RELOAD",
+    "version_alias_equal": true,
+    "version_delta": 1,
+    "weekly_study_days": "NULL",
+    "theme": "LIGHT",
+    "targets_unchanged": true,
+    "content_locale_unchanged": true,
+    "full_run_status": "FAILED",
+    "full_run_reason": "reload-mismatch"
+  },
+  "release": {
+    "container_removed": true,
+    "ports": {
+      "13306": "free",
+      "18070": "free",
+      "18087": "free",
+      "18088": "free",
+      "18183": "free"
+    }
+  },
+  "pending": [
+    "HARD_RELOAD_READBACK",
+    "RESTORE_APPEARANCE",
+    "DEVICE_ONLY_QUALITY",
+    "LIVE_CONTENT_LOCALE_SAVE",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}
