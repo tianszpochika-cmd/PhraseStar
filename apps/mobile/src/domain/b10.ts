@@ -15,8 +15,29 @@ export interface B10ContentVersionContext {
   contentLocale: string
 }
 
-export type B10ItemType = 'VOCAB' | 'PHRASE' | 'EXPRESSION'
+/** SRS refs carry vocabId/chunkId/expressionId; PHRASE stays only for legacy store typing and is rejected by the parser. */
+export type B10ItemType = 'VOCAB' | 'PHRASE' | 'CHUNK' | 'EXPRESSION'
 export type B10MasteryStatus = 'NEW' | 'LEARNING' | 'MASTERED' | 'CONSOLIDATED'
+/** SrsState is wider than the mistake mastery projection; keep the mistake model at its four values. */
+export type B10SrsMasteryStatus = B10MasteryStatus | 'SHORT_TERM' | 'CONSOLIDATING' | 'AT_RISK' | 'SUSPENDED'
+
+export interface B10VocabAudio {
+  us: string | null
+  uk: string | null
+}
+
+export interface B10VocabDefinition {
+  definitionId: number | null
+  partOfSpeech: string | null
+  meaningCn: string | null
+  definitionEn: string | null
+}
+
+export interface B10VocabExample {
+  exampleId: number | null
+  sentenceEn: string | null
+  sentenceCn: string | null
+}
 
 export interface B10SrsCard {
   id: string
@@ -24,20 +45,25 @@ export interface B10SrsCard {
   snapshotItemId: number
   sequenceNo: number
   itemType: B10ItemType
-  itemId: number | string
-  title: string
+  itemId: number
+  title: string | null
   sourceReason: string
   contentVersion: string | null
   contentVersionId: number | null
+  phoneticUs: string | null
+  phoneticUk: string | null
   phonetic: string | null
+  audio: B10VocabAudio | null
   audioUrl?: string | null
   hint: string | null
   meaningCn: string | null
   definitionEn: string | null
+  definitions: B10VocabDefinition[]
   examples: string[]
-  masteryStatus: B10MasteryStatus | null
+  exampleItems: B10VocabExample[]
+  masteryStatus: B10SrsMasteryStatus | null
   dueLocalDate: string | null
-  stateVersion: number
+  stateVersion: number | null
   revealed: boolean
   reviewStatus: 'PENDING' | 'SUBMITTING' | 'ACCEPTED' | 'QUEUED' | 'STALE' | 'FAILED'
 }
@@ -49,8 +75,76 @@ export interface B10SrsBatch {
   status: string
   algorithmVersion: string | null
   rulesVersion: string | null
+  contentVersion: string | null
   contentEpoch: number
   items: B10SrsCard[]
+  /** Server batch gate. RECOVERY_REQUIRED stays blocked even when items is empty. */
+  reasonCode: string | null
+}
+
+export interface B10SrsState {
+  srsStateId: number
+  itemType: B10ItemType
+  itemId: number
+  repetitionCount: number
+  easeFactor: number
+  intervalDays: number
+  dueAt: string
+  dueLocalDate: string
+  masteryStatus: B10SrsMasteryStatus
+  delayedVerifyStage: 'NONE' | 'D1_PENDING' | 'D7_PENDING' | 'PASSED' | 'FAILED' | null
+  stateVersion: number
+  riskBand: 'LOW' | 'MEDIUM' | 'HIGH' | null
+  explanation: string[]
+}
+
+export type B10SrsReviewStatus = 'ACCEPTED' | 'DUPLICATE' | 'RISK_FILTERED' | 'CONFLICT' | 'REJECTED' | 'EXPIRED'
+
+export interface B10SrsReviewResult {
+  reviewEventId: number
+  eventStatus: B10SrsReviewStatus
+  riskDecision: 'ALLOW' | 'ACCEPT_NO_REWARD' | 'THROTTLE' | 'REJECT' | 'REVIEW'
+  effectiveQuality: 0 | 1 | 2 | 3 | null
+  reconciled: boolean
+  stateVersion: number
+  srsState: B10SrsState | null
+  rewardSettlementStatus: 'PENDING' | 'SETTLED' | 'NOT_ELIGIBLE' | 'DUPLICATE' | null
+  nextSnapshotItemId: number | null
+}
+
+export interface B10SrsSyncResult {
+  clientEventId: string | null
+  status: B10SrsReviewStatus
+  result: B10SrsReviewResult | null
+  errorCode: string | null
+}
+
+/** Learner-visible vocabulary front. Answer fields are never part of this model. */
+export interface B10VocabularyFront {
+  vocabId: number | string
+  word: string
+  phoneticUs: string | null
+  phoneticUk: string | null
+  phonetic: string | null
+  audio: B10VocabAudio | null
+  audioUrl: string | null
+  contentVersion: string | null
+  contentVersionId: number | null
+  availability: 'PUBLISHED' | null
+}
+
+export interface B10VocabularyDetail extends Partial<B10SrsCard> {
+  vocabId: number | string
+  word: string
+  phoneticUs: string | null
+  phoneticUk: string | null
+  audio: B10VocabAudio | null
+  definitions: B10VocabDefinition[]
+  examples: string[]
+  exampleItems: B10VocabExample[]
+  contentVersion: string | null
+  contentVersionId: number | null
+  srsState: B10SrsState | null
 }
 
 export type B10QuestionType = 'CHOICE' | 'CONNECT_LINE' | 'DRAG_SORTER' | 'FILL_BLANK' | 'SPELL_INPUT' | 'LISTEN_CHOICE' | 'ERROR_CORRECTION' | 'TRANSLATION_INPUT'
