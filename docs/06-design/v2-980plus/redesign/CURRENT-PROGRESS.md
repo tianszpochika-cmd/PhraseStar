@@ -20,3 +20,7 @@
 - [P1R 编号台账](../../../../requirements/backlog/v2-phase1-rebaseline/02-编号任务台账.md)、旧 B/DEV/G 和 56 PAGE-P1 台账仅供历史验收与复用审计，不作为新开发队列。
 - 准备检查、类型/构建、健康探针、Git 推送和原型演示通过，都不能单独把卡晋升为 ACCEPTED；需要当前提交、干净库、API/数据/事件、前端读回及独立验收证据。
 - 架构、安全、DoD、固定端口及 contract-first 规则以 [AGENTS](../../../../AGENTS.md) 及有效 ADR 为准。
+
+## 移动端 Figma 集成候选
+
+截至 2026-11-06，33 条路由已进入本地 UI 候选和来源追溯。定级重测、设置外观、阅读练习会话、客服与权益空态的本机实测，均按所列回执计算。逐页签收、部署与原生验收继续单列。 [项目状态](../../../STATUS.md) · [逐页追溯](../../../takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md)
