@@ -61,6 +61,17 @@ assessment:
     password: ${ASSESSMENT_DB_PASSWORD:}
     driver-class-name: ${ASSESSMENT_DB_DRIVER:com.mysql.cj.jdbc.Driver}
     tolerate-corrupt-legacy-rows: ${ASSESSMENT_TOLERATE_CORRUPT_LEGACY_ROWS:false}
+  events:
+    relay:
+      # Off by default: an unconfigured broker must not silently change delivery semantics, and the
+      # deterministic suites keep running without a Kafka container. Scheduling starts only when
+      # this flag and assessment.persistence.enabled are both true.
+      enabled: ${ASSESSMENT_EVENT_RELAY_ENABLED:false}
+      # Registered loopback broker. Read only when the relay configuration is enabled.
+      # The publisher does not create a topic, start a consumer, or override its topic constant.
+      bootstrap-servers: ${ASSESSMENT_KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:19092}
+      poll-interval: ${ASSESSMENT_EVENT_RELAY_POLL_INTERVAL:5s}
+      initial-delay: ${ASSESSMENT_EVENT_RELAY_INITIAL_DELAY:10s}
   scoring:
     client-visible: false
   placement:

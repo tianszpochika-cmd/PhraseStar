@@ -28,14 +28,15 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Dormant at-least-once publisher for canonical assessment outbox rows.
  *
- * <p>Nothing in the application context constructs or schedules this type. A later wiring task owns
- * the broker client, and that client must set synchronous {@code max.block.ms} and
- * {@code delivery.timeout.ms} below {@link #LEASE}. This class does not publish to a workflow DLQ
- * topic: terminal failure is the owner row's {@code DLQ} status.
+ * <p>{@link com.englishflow.assessment.config.AssessmentEventRelayConfiguration} is the only bean
+ * source. It schedules {@link #poll()} only when the relay and persistence flags are both on, and that client must set
+ * synchronous {@code max.block.ms} and {@code delivery.timeout.ms} below {@link #LEASE}. This class
+ * does not publish to a workflow DLQ topic: terminal failure is the owner row's {@code DLQ} status.
  *
  * <p>One claim is leased at a time. {@code PUBLISHED} is written only after the send future returns
  * normally with non-null metadata on {@link #TOPIC} and an acknowledged offset, using that claim's
@@ -68,7 +69,7 @@ public final class AssessmentOutboxKafkaRelay {
     /** Reserved after the wait so the post-ack mark can still match {@code locked_until > now}. */
     public static final Duration MARK_GUARD = Duration.ofSeconds(1);
 
-    /** Future bounded producer {@code max.block.ms}. Reserved with {@link #MARK_GUARD} before send. */
+    /** Bounded producer {@code max.block.ms}. Reserved with {@link #MARK_GUARD} before send. */
     public static final Duration MAX_BLOCK = Duration.ofSeconds(3);
 
     public static final Duration BASE_DELAY = Duration.ofSeconds(1);
@@ -103,6 +104,8 @@ public final class AssessmentOutboxKafkaRelay {
      * Any exception from sending or waiting, an interrupt, an unresolved lease, or a budget that
      * cannot cover the block and the mark ends this tick. A malformed row rejected before send does not.
      */
+    @Scheduled(fixedDelayString = "${assessment.events.relay.poll-interval:5s}",
+            initialDelayString = "${assessment.events.relay.initial-delay:10s}")
     public void poll() {
         int reclaimed = relay.reclaimExpiredLeases(clock.instant());
         if (reclaimed > 0) {
