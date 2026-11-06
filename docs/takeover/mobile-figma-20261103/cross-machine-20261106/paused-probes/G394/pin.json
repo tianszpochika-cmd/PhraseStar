@@ -1,0 +1,15 @@
+{
+  "status": "REVIEWED_NOT_DERIVED",
+  "recomputed": false,
+  "source": "g383-preflight-and-report",
+  "g331ObserverBytes": 43416,
+  "g331ObserverSha256": "704943be048fda4933327ca91e6870b08eb8fa70557ff3d0908c0591aa4ba6af",
+  "g331ReportSha256": "527843fef5fa89868d1ac4e8d99f7c4a9f77e1654dfa0aa3a214eb389186d795",
+  "b116IndexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+  "locator": ".dev-cta[role=\"button\"]",
+  "enabledCountLabel": "退出其他设备（2）",
+  "disabledLabel": "退出其他设备",
+  "derivedObserver": "device-others-owner-394.cjs",
+  "derivedPin": "derived-pin.json",
+  "oracleResult": "oracle-result.json"
+}

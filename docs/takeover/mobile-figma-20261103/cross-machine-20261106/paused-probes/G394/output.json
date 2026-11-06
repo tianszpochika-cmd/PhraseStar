@@ -1,0 +1,147 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "executed": false,
+  "locator": ".dev-cta[role=\"button\"]",
+  "priorMatch": {
+    "count": 1,
+    "disabled": false,
+    "text": "退出其他设备（2）"
+  },
+  "afterMatch": {
+    "count": 1,
+    "disabledPropertyOrAttribute": true,
+    "text": "退出其他设备"
+  },
+  "bulk": {
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "cancelClicks": 0
+  },
+  "sequentialFallback": {
+    "mode": "sequential",
+    "predicate": "ctaCount === 1 && genuineDisabled && otherExit === 2",
+    "bulkClicks": 0,
+    "confirmClicks": 2,
+    "rowExitClicks": 2,
+    "cancelClicks": 0
+  },
+  "independent": {
+    "oldRefreshStatuses": [401, 401],
+    "oldRefreshDenied": 2,
+    "oldRefreshAccepted": 0,
+    "currentStays": true,
+    "foreignUnchanged": true
+  },
+  "originalInstrument": {
+    "status": "FAILED",
+    "reason": "readback-mismatch",
+    "executed": true,
+    "bulkClosedInSource": false,
+    "operation": "sequential",
+    "lease": {
+      "iam": "127.0.0.1:18087",
+      "gateway": "127.0.0.1:18070",
+      "page": "127.0.0.1:18183"
+    },
+    "fixture": {
+      "birthYear": 1995,
+      "adultPolicy": "b30-adult-v1",
+      "actorOtherType": "WEB",
+      "ownerType": "H5",
+      "browserType": "H5",
+      "expectedRows": 3
+    },
+    "ownerBefore": {
+      "status": 200,
+      "noStore": true,
+      "total": 1,
+      "active": 1,
+      "revoked": 0,
+      "current": 1,
+      "ownerActive": true,
+      "ownerCurrent": true,
+      "ownerTypeH5": true
+    },
+    "ownerAfter": {
+      "status": 200,
+      "noStore": true,
+      "total": 1,
+      "active": 1,
+      "revoked": 0,
+      "current": 1,
+      "ownerActive": true,
+      "ownerCurrent": true,
+      "ownerTypeH5": true
+    },
+    "ownerUnchanged": true,
+    "actorStillAccepted": true,
+    "actorDistinctFromOwner": true,
+    "oldRefreshDenied": 0,
+    "oldRefreshAccepted": 0,
+    "oldRefreshStatuses": [],
+    "browser": {
+      "reason": "readback-mismatch",
+      "ui": {
+        "mode": "sequential",
+        "reachedDevices": true,
+        "exactBeforeClick": true,
+        "currentExitBefore": 0,
+        "otherExitBefore": 2,
+        "bulkClicks": 0,
+        "confirmClicks": 2,
+        "rowExitClicks": 2,
+        "cancelClicks": 0,
+        "successAfterReadback": true,
+        "successBeforeReadback": false,
+        "currentTaggedAfter": true,
+        "revokedTagsAfter": 2,
+        "ctaDisabledAfter": false,
+        "dialogMatched": true
+      },
+      "api": {
+        "loginPosts": 1,
+        "deviceGets": 3,
+        "deviceGetsBefore": 1,
+        "deviceGetsAfterKicks": 1,
+        "kickoutPosts": 2,
+        "kickoutStatuses": [200, 200],
+        "kickoutPathsExact": true,
+        "idempotencyKeysNonempty": true,
+        "refreshPostsInBrowser": 0,
+        "logoutAborts": 0,
+        "currentKickoutAborts": 0,
+        "ownerKickoutAborts": 0,
+        "unexpectedAborts": 0,
+        "syntheticTargetGets": 0,
+        "staticFulfills": 52
+      }
+    }
+  },
+  "originalReceipt": {
+    "status": "FAIL",
+    "reason": "wire-outcome",
+    "timedOut": false,
+    "nodeStatus": 0,
+    "priorLeak": false,
+    "wire": {
+      "instrumentStatus": "FAILED",
+      "mode": "sequential",
+      "bulkClicks": 0,
+      "confirmClicks": 2,
+      "rowExitClicks": 2,
+      "kickoutPosts": 2,
+      "kickoutStatuses": [200, 200],
+      "kickoutPathsExact": true,
+      "refreshStatuses": [],
+      "currentStays": true,
+      "foreignUnchanged": true,
+      "expectedRows": 3
+    },
+    "priorDirectory": "historical-two-file",
+    "priorResult": "absent",
+    "priorUnchanged": true,
+    "priorCleanup": "not-deleted"
+  }
+}
