@@ -1,0 +1,68 @@
+{
+  "batch": "B126",
+  "root_run": "G303",
+  "source_receipt_sha256": "d516db991867d2061d9e9ebc976958704fdbb8e26672fd2e2c41d33afa494f76",
+  "integration_head": "8ed5e66f",
+  "page": "MB-014",
+  "route": "#/pages/b3-reading/b3-reading",
+  "trace": "TRACE_PENDING",
+  "status": "LOCAL_REAL_PUBLISHED_READ_PASS",
+  "artifact": {
+    "h5_index_sha256": "8663a64e068c0b89b891f56055c9f46ababc3486f30765fd4431ddb4a757254d",
+    "content_jar_sha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2"
+  },
+  "runtime": {
+    "approved_synthetic_actor": true,
+    "owner_fixture": "G251",
+    "owner_migration": "V34",
+    "published_articles": 1,
+    "active_bindings": 2,
+    "target_initialized_by_owner_api": true,
+    "profile_write": false,
+    "database_manual_business_inserts": 0,
+    "services_ready": {
+      "content": true,
+      "gateway": true,
+      "iam": true,
+      "learner": true
+    },
+    "assessment_started": false,
+    "learning_started": false,
+    "broker": false
+  },
+  "h5": {
+    "index_pin": "pinned",
+    "visible_article": "synthetic-fixture-88061",
+    "list_status": 200,
+    "detail_status": 200,
+    "same_owner_content_version": true,
+    "practice_ref_exact": true,
+    "closed_question_requests": 1,
+    "synthetic_fulfills": 0,
+    "foreign_origins": 0
+  },
+  "release": {
+    "checks": {
+      "container": true,
+      "groups": true,
+      "overlay": true,
+      "ports": true,
+      "scratch": true
+    },
+    "ports": [
+      "13306:free",
+      "18070:free",
+      "18087:free",
+      "18088:free",
+      "18089:free",
+      "18183:free"
+    ]
+  },
+  "pending": [
+    "PRACTICE_SESSION_H5",
+    "ANSWER_SCORE",
+    "LEARNING_EFFECTS",
+    "DEPLOYMENT",
+    "FULL_DOD"
+  ]
+}

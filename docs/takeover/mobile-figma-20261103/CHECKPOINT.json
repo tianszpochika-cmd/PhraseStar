@@ -1594,7 +1594,8 @@
         "accessibility": "NOT_RUN",
         "real_api": "NOT_RUN",
         "device": "NOT_RUN",
-        "independent_review": "reviews/INTEGRATION-B45-READING.md"
+        "independent_review": "reviews/INTEGRATION-B45-READING.md",
+        "published_read_b126": "evidence/ROOT-B126-READING-PUBLISHED-H5-20261106.json"
       },
       "pause_handoff": "PAUSE-20261104.md",
       "verified_operation_trace_20261105": {
@@ -3708,7 +3709,7 @@
       "limits": "full trace, canonical profile page mapping, actual profile data, device/real service and detailed pixel comparison"
     }
   ],
-  "updated_at": "2026-11-06T06:33:02.629769+00:00",
+  "updated_at": "2026-11-06T06:44:20.330204+00:00",
   "dedicated_games_asset_ownership": {
     "owner": "DSH",
     "directories": [
@@ -5993,5 +5994,14 @@
     "all_trace_pending": true,
     "review": "ROUTE-TRACE-CURRENT.md",
     "evidence": "evidence/ROOT-B125-CURRENT-ROUTE-TRACE-20261106.json"
+  },
+  "integration_batch_126_published_reading_h5": {
+    "status": "LOCAL_REAL_PUBLISHED_READ_PASS",
+    "page": "MB-014",
+    "h5": "B119",
+    "trace": "TRACE_PENDING",
+    "review": "reviews/INTEGRATION-B126-READING-PUBLISHED-H5.md",
+    "evidence": "evidence/ROOT-B126-READING-PUBLISHED-H5-20261106.json",
+    "practice": "NOT_RUN"
   }
 }
