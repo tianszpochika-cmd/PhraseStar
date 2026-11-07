@@ -6249,7 +6249,7 @@
     }
   },
   "current_execution_resume_20261107": {
-    "status": "ACTIVE_USER_RESUMED",
+    "status": "SAFE_CLOSE_CODEX_RESERVE20",
     "base": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
     "branch": "dev",
     "worker": "Grok CLI",
@@ -6353,5 +6353,24 @@
     "automatic_lease": "FAIL_CLEANUP",
     "independent_release": "CONFIRMED",
     "route_trace": "TRACE_PENDING"
+  },
+  "current_codex_reserve_close": {
+    "status": "SAFE_CLOSE_CODEX_RESERVE20",
+    "at": "2026-11-07T16:00:59.720127+00:00",
+    "reserve_percent": 20,
+    "source": "USER_CONFIRMED_CODEX",
+    "grok_weekly": "NO_EXHAUSTION_OBSERVED",
+    "active_owned_jobs": 0,
+    "runtime_holder": null,
+    "dependency_candidate": "UNMERGED_37_TO1_BUILD_NOT_RUN",
+    "ci_plan": {
+      "failures": 26,
+      "root_causes": 10,
+      "implementation": "NOT_RUN"
+    },
+    "forbidden435": "PREPARED_NOT_RUN",
+    "archive_tag": "archive/cloudstudy-20261107-reserve",
+    "archive_url": "https://github.com/tianszpochika-cmd/PhraseStar/tree/archive/cloudstudy-20261107-reserve/docs/takeover/mobile-figma-20261103/resume-archive-20261107",
+    "other_project_port18091": "qida-b03-mock-identity"
   }
 }

@@ -1,5 +1,7 @@
 # Mobile Figma 改造监督入口（2026-11-03）
 
+本轮已按用户 Codex 20% 额度预留收口，成果与待办见[收口记录](RESERVE-CLOSE-20261107.md)。
+
 2026-11-07 已按用户要求恢复，首轮 Grok 任务见[恢复记录](RESUME-20261107.md)。从 `origin/dev` 取回当前已审核成果。跨电脑接手顺序、资源回执及 61 份待复核工作树快照分别记录。 [本次安全收口](PAUSE-20261106.md) · [CHECKPOINT](CHECKPOINT.json) · [跨机快照清单](https://github.com/tianszpochika-cmd/PhraseStar/blob/580c17d1412beb9131ecd0e0899b724b9ec77b67/docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md) · [历史暂停记录](PAUSE-20261104.md)
 
 状态：`IN_PROGRESS / NOT_ACCEPTED`。这是本轮工作入口，不覆盖 [状态总览](../../STATUS.md) 中的历史签收与其他工作。工作对象为 `apps/mobile` 的 Vue 3 + uni-app 正式学习端，33 条路由以 `apps/mobile/src/pages.json` 为事实源；15 个 Vue 组件与 50 个测试文件只是本次建账时的清点，不是完成率。

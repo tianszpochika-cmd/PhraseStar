@@ -20,3 +20,7 @@ App 构建使用同版 App-Plus 与 UTS 工具链。B92 已核对 33 条路由�
 待复核的 61 份工作树快照与冻结探针通过标签 `archive/cloudstudy-20261106` 保存。清单按候选列出原基线、快照提交和文件指纹。 [跨机快照清单](docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md)
 
 本次已收到用户恢复指令，首轮任务与接续停点见[恢复记录](docs/takeover/mobile-figma-20261103/RESUME-20261107.md)。优先核对书架 H5、设备批量退出、定级同键重试、阅读反馈和成长世界 H5。产品决策、真实服务、原生和部署待办在暂停交接中按验收范围分列。
+
+## Codex 额度预留收口（2026-11-07）
+
+用户确认预留 Codex 五小时额度 20%。本轮已保存作业停点并释放临时服务。已审核成果、未验候选及恢复顺序见[本次收口](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261107.md)。开发继续优先使用 Grok CLI，Root 负责分发与审核。
