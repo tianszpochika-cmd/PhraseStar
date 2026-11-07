@@ -1,9 +1,8 @@
-// Rebind the manifests whose recorded digests no longer match the tree.
+// Rebind the manifests whose recorded digests no longer match the blob at sourceCommit.
 //
-// Changing any script that a manifest records invalidates that manifest, and with seventy-eight tasks ahead the ad-hoc
-// rebinding done by hand so far would be repeated hundreds of times. This does it in one place: recompute the digests,
-// point sourceCommit at the revision that now holds them, append the provenance entry that says why, and report every
-// manifest it touched.
+// A manifest whose every digest is still the SHA-256 of `git show <sourceCommit>:<path>` is historically bound.
+// Leave it untouched when HEAD or the worktree has moved on. A Git object id is not that digest, and comparing
+// the two rewrites intact history. Digests that do not match the recorded source blob can still move onto HEAD.
 //
 // Usage: node scripts/audit/rebind-manifests.mjs [--write]
 import fs from 'node:fs';
@@ -17,7 +16,60 @@ const write = process.argv.includes('--write');
 const reason = process.argv.find((argument) => argument.startsWith('--reason='))?.slice('--reason='.length)
   ?? 'Digest rebind after a recorded artifact changed.';
 
-const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+function gitEnv() {
+  const env = { ...process.env };
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  delete env.GIT_PREFIX;
+  return env;
+}
+
+function git(args, options = {}) {
+  return execFileSync('git', args, {
+    cwd: root,
+    windowsHide: true,
+    maxBuffer: 64 * 1024 * 1024,
+    ...options,
+    env: gitEnv(),
+  });
+}
+
+const head = git(['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+
+function sourceCommitResolves(sourceCommit) {
+  if (typeof sourceCommit !== 'string' || sourceCommit.length === 0) return false;
+  try {
+    git(['rev-parse', '--verify', '--quiet', `${sourceCommit}^{commit}`], { encoding: 'utf8' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function recordedSourceBlobsMatch(manifest) {
+  const entries = Array.isArray(manifest.artifactDigests) ? manifest.artifactDigests : [];
+  if (!sourceCommitResolves(manifest.sourceCommit)) return false;
+  return entries.every((entry) => {
+    if (!entry || typeof entry.path !== 'string' || typeof entry.digest !== 'string') return false;
+    try {
+      const bytes = git(['show', `${manifest.sourceCommit}:${entry.path}`]);
+      const digest = crypto.createHash('sha256').update(bytes).digest('hex');
+      return digest === entry.digest.toLowerCase();
+    } catch {
+      return false;
+    }
+  });
+}
+
+function sourceCommitIsHead(sourceCommit) {
+  try {
+    const stamped = git(['rev-parse', sourceCommit], { encoding: 'utf8' }).trim();
+    return stamped === head;
+  } catch {
+    return false;
+  }
+}
 
 const manifests = [];
 const collect = (directory) => {
@@ -39,6 +91,9 @@ for (const file of manifests) {
     console.error(`unreadable: ${path.relative(root, file)}`);
     continue;
   }
+  // Hash the recorded source blob. Skip before any digest write when that blob is still intact.
+  if (recordedSourceBlobsMatch(manifest)) continue;
+
   const stale = [];
   for (const entry of manifest.artifactDigests ?? []) {
     const absolute = path.join(root, entry.path);
@@ -49,25 +104,9 @@ for (const file of manifests) {
       if (write) entry.digest = digest;
     }
   }
-  // The revision matters even when every digest already matches the tree: the gate checks each digest against the
-  // blob at sourceCommit as well, so a manifest whose artifacts changed inside a recorded revision needs the revision
-  // moved even though nothing is stale. Without this the tool reported nothing to do while the gate stayed red.
-  const revisionDescribes = (() => {
-    try {
-      const stamped = execFileSync('git', ['rev-parse', manifest.sourceCommit], { cwd: root, encoding: 'utf8' }).trim();
-      const current = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
-      if (stamped === current) return true;
-      for (const entry of manifest.artifactDigests ?? []) {
-        const blob = execFileSync('git', ['rev-parse', `${manifest.sourceCommit}:${entry.path}`],
-          { cwd: root, encoding: 'utf8' }).trim();
-        if (blob !== entry.digest) return false;
-      }
-      return true;
-    } catch (missing) {
-      return false;
-    }
-  })();
-  if (stale.length === 0 && revisionDescribes) continue;
+  // A digest can match the worktree while sourceCommit still names an older blob. That manifest is unbound and
+  // can move onto HEAD. A manifest already stamped with HEAD, whose worktree matches, has nothing to rebind.
+  if (stale.length === 0 && sourceCommitIsHead(manifest.sourceCommit)) continue;
 
   if (write) {
     const previous = manifest.sourceCommit;

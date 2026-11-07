@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 import {
   parseDependencyCell,
@@ -52,10 +53,83 @@ function acceptedManifest(root, overrides = {}) {
   };
 }
 
+function gitCommandEnv() {
+  const env = { ...process.env };
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  delete env.GIT_PREFIX;
+  return env;
+}
+
 function git(root, args, encoding = 'utf8') {
-  const result = spawnSync('git', args, { cwd: root, encoding, windowsHide: true });
+  const result = spawnSync('git', args, {
+    cwd: root,
+    encoding,
+    windowsHide: true,
+    env: gitCommandEnv(),
+  });
   assert.equal(result.status, 0, String(result.stderr || result.stdout));
   return result.stdout;
+}
+
+function initGit(root) {
+  git(root, ['init']);
+  git(root, ['config', 'user.email', 'p1r-test@example.invalid']);
+  git(root, ['config', 'user.name', 'P1R Test']);
+  git(root, ['config', 'core.autocrlf', 'false']);
+  git(root, ['config', 'commit.gpgsign', 'false']);
+}
+
+function commitPaths(root, paths, message) {
+  git(root, ['add', '--', ...paths]);
+  git(root, ['commit', '-m', message]);
+  return git(root, ['rev-parse', 'HEAD']).trim();
+}
+
+function blobDigest(root, revision, relativePath) {
+  const bytes = git(root, ['show', `${revision}:${relativePath}`], null);
+  return crypto.createHash('sha256').update(bytes).digest('hex');
+}
+
+function boundManifest(root, sourceCommit, digest, overrides = {}) {
+  return acceptedManifest(root, {
+    sourceCommit,
+    artifactDigests: [{ path: 'artifact.txt', algorithm: 'sha256', digest }],
+    ...overrides,
+  });
+}
+
+function manifestErrors(root, manifest) {
+  const task = { id: 'P1R-M0-001', status: manifest.canonicalTaskStatus };
+  const manifestPath = path.join(root, 'evidence', 'p1r', 'm0', task.id, 'manifest.json');
+  return validateManifest({ root, task, manifest, manifestPath, checkGit: true });
+}
+
+function historyWithMovedHead(root) {
+  initGit(root);
+  fs.writeFileSync(path.join(root, 'artifact.txt'), 'version A\n');
+  const ancestor = commitPaths(root, ['artifact.txt'], 'record A');
+  const digest = blobDigest(root, ancestor, 'artifact.txt');
+  fs.writeFileSync(path.join(root, 'artifact.txt'), 'version B\n');
+  const head = commitPaths(root, ['artifact.txt'], 'record B');
+  return { ancestor, head, digest };
+}
+
+function runRebind(root, args) {
+  const scriptDir = path.join(root, 'scripts', 'audit');
+  fs.mkdirSync(scriptDir, { recursive: true });
+  const scriptPath = path.join(scriptDir, 'rebind-manifests.mjs');
+  fs.copyFileSync(
+    fileURLToPath(new URL('../../scripts/audit/rebind-manifests.mjs', import.meta.url)),
+    scriptPath,
+  );
+  return spawnSync(process.execPath, [scriptPath, ...args], {
+    cwd: root,
+    encoding: 'utf8',
+    windowsHide: true,
+    env: gitCommandEnv(),
+  });
 }
 
 const milestoneCounts = { M0: 8, M1: 18, M2: 10, M3: 10, M4: 10, M5: 14, M6: 11, M7: 11, M8: 16 };
@@ -295,5 +369,202 @@ test('full gate rejects uncommitted ledger and canonical manifest', () => {
     assert.equal(report.result, 'FAIL');
     assert(report.errors.some((error) => error.includes('canonical ledger must be tracked')));
     assert(report.errors.some((error) => error.includes('canonical manifest must be tracked')));
+  });
+});
+
+test('historical ancestor digest matches the source blob while HEAD bytes differ', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    assert.notEqual(ancestor, head);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest));
+    assert.equal(errors.some((error) => error.includes('stale at HEAD')), false);
+    assert.equal(errors.some((error) => error.includes('does not match sourceCommit')), false);
+    assert.deepEqual(errors, []);
+  });
+});
+
+test('digest mismatch against sourceCommit fails and does not rewrite the manifest', () => {
+  withTempRepo((root) => {
+    const { ancestor } = historyWithMovedHead(root);
+    const manifest = boundManifest(root, ancestor, '0'.repeat(64));
+    const manifestPath = path.join(root, 'evidence', 'p1r', 'm0', 'P1R-M0-001', 'manifest.json');
+    const body = Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`);
+    fs.writeFileSync(manifestPath, body);
+    const errors = manifestErrors(root, manifest);
+    assert(errors.some((error) => error.includes('does not match sourceCommit')));
+    assert.deepEqual(fs.readFileSync(manifestPath), body);
+  });
+});
+
+test('sourceCommit equal to HEAD with a parent digest is stale at HEAD', () => {
+  withTempRepo((root) => {
+    const { head, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, head, digest));
+    assert(errors.some((error) => error.includes('stale at HEAD')));
+  });
+});
+
+test('audited implementation source equal to HEAD is stale at HEAD', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, {
+      provenance: { currentSourceRevalidationAuditedImplementationSource: head },
+    }));
+    assert(errors.some((error) => error.includes('stale at HEAD')));
+  });
+});
+
+test('integration checkpoint equal to HEAD is stale at HEAD', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, {
+      provenance: { currentSourceRevalidationIntegrationCheckpoint: head },
+    }));
+    assert(errors.some((error) => error.includes('stale at HEAD')));
+  });
+});
+
+test('environment.currentSourceCommit equal to HEAD is stale at HEAD', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, {
+      environment: { currentSourceCommit: head },
+    }));
+    assert(errors.some((error) => error.includes('stale at HEAD')));
+  });
+});
+
+test('environment string test is not a HEAD claim', () => {
+  withTempRepo((root) => {
+    const { ancestor, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, { environment: 'test' }));
+    assert.equal(errors.some((error) => error.includes('stale at HEAD')), false);
+    assert.deepEqual(errors, []);
+  });
+});
+
+test('historical current-source SHAs equal to the ancestor do not require HEAD bytes', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    assert.notEqual(ancestor, head);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, {
+      environment: { currentSourceCommit: ancestor },
+      provenance: {
+        currentSourceRevalidationAuditedImplementationSource: ancestor,
+        currentSourceRevalidationIntegrationCheckpoint: ancestor,
+      },
+    }));
+    assert.equal(errors.some((error) => error.includes('stale at HEAD')), false);
+    assert.deepEqual(errors, []);
+  });
+});
+
+test('history rows are not live HEAD claims', () => {
+  withTempRepo((root) => {
+    const { ancestor, head, digest } = historyWithMovedHead(root);
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest, {
+      provenance: {
+        currentSourceRevalidationAuditedImplementationSource: ancestor,
+        currentSourceRevalidationIntegrationCheckpoint: ancestor,
+        currentSourceRevalidationHistory: [{ sourceCommit: head, auditedImplementationSource: head }],
+      },
+    }));
+    assert.equal(errors.some((error) => error.includes('stale at HEAD')), false);
+    assert.deepEqual(errors, []);
+  });
+});
+
+test('path absent from sourceCommit fails', () => {
+  withTempRepo((root) => {
+    initGit(root);
+    fs.writeFileSync(path.join(root, 'other.txt'), 'other\n');
+    const ancestor = commitPaths(root, ['other.txt'], 'without artifact');
+    const head = commitPaths(root, ['artifact.txt'], 'add artifact');
+    assert.notEqual(ancestor, head);
+    const digest = blobDigest(root, head, 'artifact.txt');
+    const errors = manifestErrors(root, boundManifest(root, ancestor, digest));
+    assert(errors.some((error) => error.includes('absent from sourceCommit')));
+  });
+});
+
+test('path absent from HEAD fails when the path is deleted at HEAD', () => {
+  withTempRepo((root) => {
+    initGit(root);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'version A\n');
+    const ancestor = commitPaths(root, ['artifact.txt'], 'record A');
+    const digest = blobDigest(root, ancestor, 'artifact.txt');
+    const manifest = boundManifest(root, ancestor, digest);
+    git(root, ['rm', 'artifact.txt']);
+    git(root, ['commit', '-m', 'delete artifact']);
+    const errors = manifestErrors(root, manifest);
+    assert(errors.some((error) => error.includes('absent from HEAD')));
+  });
+});
+
+test('sourceCommit that is not an ancestor of HEAD fails', () => {
+  withTempRepo((root) => {
+    initGit(root);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'main line\n');
+    const main = commitPaths(root, ['artifact.txt'], 'main');
+    git(root, ['checkout', '-b', 'side']);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'side line\n');
+    const side = commitPaths(root, ['artifact.txt'], 'side');
+    git(root, ['checkout', '-']);
+    assert.equal(git(root, ['rev-parse', 'HEAD']).trim(), main);
+    const digest = blobDigest(root, side, 'artifact.txt');
+    const errors = manifestErrors(root, boundManifest(root, side, digest));
+    assert(errors.some((error) => error.includes('not an ancestor of HEAD')));
+  });
+});
+
+test('unstaged and staged changes still fail for a historical digest', () => {
+  withTempRepo((root) => {
+    const { ancestor, digest } = historyWithMovedHead(root);
+    const manifest = boundManifest(root, ancestor, digest);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'dirty worktree\n');
+    const unstaged = manifestErrors(root, manifest);
+    assert(unstaged.some((error) => error.includes('unstaged changes')));
+    assert.equal(unstaged.some((error) => error.includes('does not match sourceCommit')), false);
+    git(root, ['add', '--', 'artifact.txt']);
+    const staged = manifestErrors(root, manifest);
+    assert(staged.some((error) => error.includes('staged changes')));
+    assert.equal(staged.some((error) => error.includes('does not match sourceCommit')), false);
+  });
+});
+
+test('ACCEPTED self-review still fails the independent reviewer check on a git manifest', () => {
+  withTempRepo((root) => {
+    initGit(root);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'version A\n');
+    const head = commitPaths(root, ['artifact.txt'], 'record A');
+    const digest = blobDigest(root, head, 'artifact.txt');
+    const errors = manifestErrors(root, boundManifest(root, head, digest, { reviewer: 'executor' }));
+    assert(errors.some((error) => error.includes('terminal reviewer must be independent')));
+  });
+});
+
+test('rebind skips and does not write a manifest whose source blob already matches', () => {
+  withTempRepo((root) => {
+    const { ancestor, digest } = historyWithMovedHead(root);
+    const manifestPath = path.join(root, 'evidence', 'p1r', 'm0', 'P1R-M0-001', 'manifest.json');
+    const manifest = {
+      taskId: 'P1R-M0-001',
+      sourceCommit: ancestor,
+      artifactDigests: [{ path: 'artifact.txt', algorithm: 'sha256', digest }],
+    };
+    const body = Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`);
+    fs.writeFileSync(manifestPath, body);
+    fs.writeFileSync(path.join(root, 'artifact.txt'), 'worktree differs\n');
+
+    const dry = runRebind(root, []);
+    assert.equal(dry.status, 0, `${dry.stdout}\n${dry.stderr}`);
+    assert.equal(dry.stdout.includes('P1R-M0-001'), false, dry.stdout);
+    assert.match(dry.stdout, /would rebind 0 manifest/);
+
+    const wrote = runRebind(root, ['--write']);
+    assert.equal(wrote.status, 0, `${wrote.stdout}\n${wrote.stderr}`);
+    assert.equal(wrote.stdout.includes('P1R-M0-001'), false, wrote.stdout);
+    assert.match(wrote.stdout, /rebound 0 manifest/);
+    assert.deepEqual(fs.readFileSync(manifestPath), body);
   });
 });

@@ -1,0 +1,38 @@
+{
+  "batch": "B149",
+  "at": "2026-11-07T15:15:11.890496+00:00",
+  "classification": "HISTORICAL_EVIDENCE_SOURCE_BINDING_LOCAL_CHECKED",
+  "workers": [
+    "G410",
+    "G420",
+    "G426"
+  ],
+  "sourceBase": "821fa44e8eb831a0e7409d906ac7c60fd25fe8ac",
+  "artifacts": [
+    {
+      "path": "scripts/audit/p1r-evidence-gate.mjs",
+      "bytes": 35394,
+      "sha256": "137f2530241e9ce1cfa660fe7f2f07dd8942f950493a9b41a387e60d68e2ae21"
+    },
+    {
+      "path": "scripts/audit/rebind-manifests.mjs",
+      "bytes": 5943,
+      "sha256": "e224640b9e7e60a3475dd844046a899508fb27d34a98404af5e7f340aa3aa96f"
+    },
+    {
+      "path": "tests/p1r/p1r-evidence-gate.test.mjs",
+      "bytes": 24063,
+      "sha256": "cb72caafd7d42e499901f4c78d7c161e42d0fdca3b117370b46381af8914d507"
+    }
+  ],
+  "independentReview": true,
+  "focusedTests": {
+    "passed": 29,
+    "failed": 0,
+    "newCases": 15
+  },
+  "fullGate": "PENDING_CLEAN_COMMIT_RUN",
+  "manifestsEdited": false,
+  "historyPromoted": false,
+  "routeTrace": "TRACE_PENDING"
+}

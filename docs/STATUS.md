@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-07，B149 修正历史证据摘要与原提交的绑定，29 项回归独立复跑通过，完整证据门及远程 CI 继续核对。 [B149](takeover/mobile-figma-20261103/reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md)
+
 2026-11-07，B148 修复 CI 的临时对象存储缺失与 Kafka 参数分隔符，3 项回归和 80 项规则独立复跑通过，候选远程运行待验。 [B148](takeover/mobile-figma-20261103/reviews/INTEGRATION-B148-CI-RUNTIME-BOUNDARIES.md)
 
 2026-11-07，用户恢复移动端工作，首轮已由 Grok CLI 接续工具链修复、真实 H5 复验和逐页验收队列。路由签收状态继续按实际回执维护。 [本次恢复记录](takeover/mobile-figma-20261103/RESUME-20261107.md)

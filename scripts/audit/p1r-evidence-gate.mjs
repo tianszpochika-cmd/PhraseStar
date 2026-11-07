@@ -202,13 +202,53 @@ function readGitBlob(root, revision, relativePath) {
     cwd: root,
     encoding: null,
     windowsHide: true,
+    env: gitEnv(),
     maxBuffer: 64 * 1024 * 1024,
   });
   return result.status === 0 ? result.stdout : null;
 }
 
+function readHeadSha(root) {
+  const result = spawnSync('git', ['rev-parse', 'HEAD'], {
+    cwd: root,
+    encoding: 'utf8',
+    windowsHide: true,
+    env: gitEnv(),
+  });
+  if (result.status !== 0) return null;
+  const sha = result.stdout.trim();
+  return SHA40.test(sha) ? sha : null;
+}
+
+function fullSha(value) {
+  return typeof value === 'string' && SHA40.test(value) ? value.toLowerCase() : null;
+}
+
+// HEAD byte equality is only a claim about the candidate under test. A historical SHA, an environment string,
+// and provenance history rows stay records of an older candidate.
+function manifestClaimsHead(manifest, headSha) {
+  const head = fullSha(headSha);
+  if (!head) return false;
+  if (fullSha(manifest.sourceCommit) === head) return true;
+  if (isRecord(manifest.environment) && fullSha(manifest.environment.currentSourceCommit) === head) return true;
+  const provenance = manifest.provenance;
+  if (!isRecord(provenance)) return false;
+  return fullSha(provenance.currentSourceRevalidationAuditedImplementationSource) === head
+    || fullSha(provenance.currentSourceRevalidationIntegrationCheckpoint) === head;
+}
+
 function validTimestamp(value) {
   return nonEmptyString(value) && Number.isFinite(Date.parse(value));
+}
+
+function gitEnv() {
+  const env = { ...process.env };
+  // The repository under inspection is `cwd`. An inherited GIT_DIR would redirect these checks at another checkout.
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  delete env.GIT_PREFIX;
+  return env;
 }
 
 function commandSucceeded(root, command, args) {
@@ -216,6 +256,7 @@ function commandSucceeded(root, command, args) {
     cwd: root,
     encoding: 'utf8',
     windowsHide: true,
+    env: gitEnv(),
   });
   return result.status === 0;
 }
@@ -272,6 +313,8 @@ export function validateManifest({ root, task, manifest, manifestPath, checkGit 
   add(errors, Array.isArray(manifest.knownGaps), `${task.id}: knownGaps must be an array`);
 
   add(errors, Array.isArray(manifest.artifactDigests) && manifest.artifactDigests.length > 0, `${task.id}: artifactDigests are required`);
+  const headSha = checkGit ? readHeadSha(root) : null;
+  const claimsHead = manifestClaimsHead(manifest, headSha);
   for (const [index, artifact] of (manifest.artifactDigests ?? []).entries()) {
     const label = `${task.id}: artifactDigests[${index}]`;
     add(errors, isRecord(artifact), `${label} must be an object`);
@@ -280,24 +323,26 @@ export function validateManifest({ root, task, manifest, manifestPath, checkGit 
     add(errors, SHA256.test(artifact.digest ?? ''), `${label}.digest must be a SHA-256 digest`);
     const fullPath = resolveInside(root, artifact.path, `${label}.path`, errors);
     if (!fullPath) continue;
-    add(errors, fs.existsSync(fullPath) && fs.statSync(fullPath).isFile(), `${label}.path does not name a file: ${artifact.path}`);
-    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile() && SHA256.test(artifact.digest ?? '')) {
-      if (checkGit && SHA40.test(manifest.sourceCommit ?? '')) {
-        const sourceBlob = readGitBlob(root, manifest.sourceCommit, artifact.path);
-        const headBlob = readGitBlob(root, 'HEAD', artifact.path);
-        add(errors, sourceBlob !== null, `${label}.path is absent from sourceCommit: ${artifact.path}`);
-        add(errors, headBlob !== null, `${label}.path is absent from HEAD: ${artifact.path}`);
-        if (sourceBlob !== null) {
-          add(errors, sha256Bytes(sourceBlob) === artifact.digest.toLowerCase(), `${label}.digest does not match sourceCommit blob ${artifact.path}`);
-        }
-        if (headBlob !== null) {
-          add(errors, sha256Bytes(headBlob) === artifact.digest.toLowerCase(), `${label}.digest is stale at HEAD for ${artifact.path}`);
-        }
+    const worktreeFile = fs.existsSync(fullPath) && fs.statSync(fullPath).isFile();
+    add(errors, worktreeFile, `${label}.path does not name a file: ${artifact.path}`);
+    if (!SHA256.test(artifact.digest ?? '')) continue;
+    if (checkGit && SHA40.test(manifest.sourceCommit ?? '')) {
+      const sourceBlob = readGitBlob(root, manifest.sourceCommit, artifact.path);
+      const headBlob = readGitBlob(root, 'HEAD', artifact.path);
+      add(errors, sourceBlob !== null, `${label}.path is absent from sourceCommit: ${artifact.path}`);
+      add(errors, headBlob !== null, `${label}.path is absent from HEAD: ${artifact.path}`);
+      if (sourceBlob !== null) {
+        add(errors, sha256Bytes(sourceBlob) === artifact.digest.toLowerCase(), `${label}.digest does not match sourceCommit blob ${artifact.path}`);
+      }
+      if (headBlob !== null && claimsHead) {
+        add(errors, sha256Bytes(headBlob) === artifact.digest.toLowerCase(), `${label}.digest is stale at HEAD for ${artifact.path}`);
+      }
+      if (worktreeFile) {
         add(errors, commandSucceeded(root, 'git', ['diff', '--quiet', '--', artifact.path]), `${label}.path has unstaged changes: ${artifact.path}`);
         add(errors, commandSucceeded(root, 'git', ['diff', '--cached', '--quiet', '--', artifact.path]), `${label}.path has staged changes: ${artifact.path}`);
-      } else {
-        add(errors, sha256Bytes(fs.readFileSync(fullPath)) === artifact.digest.toLowerCase(), `${label}.digest does not match ${artifact.path}`);
       }
+    } else if (worktreeFile) {
+      add(errors, sha256Bytes(fs.readFileSync(fullPath)) === artifact.digest.toLowerCase(), `${label}.digest does not match ${artifact.path}`);
     }
   }
 

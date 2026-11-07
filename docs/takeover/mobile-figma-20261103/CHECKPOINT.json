@@ -6295,5 +6295,17 @@
     "stop_new_dispatch_remaining_percent": 30,
     "safe_close_remaining_percent": 25,
     "source": "user instruction 2026-11-07"
+  },
+  "integration_B149_evidence_source_binding": {
+    "classification": "HISTORICAL_EVIDENCE_SOURCE_BINDING_LOCAL_CHECKED",
+    "workers": [
+      "G410",
+      "G420",
+      "G426"
+    ],
+    "focused_tests": 29,
+    "manifests_edited": false,
+    "review": "reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md",
+    "evidence": "evidence/ROOT-B149-EVIDENCE-SOURCE-BINDING-20261107.json"
   }
 }
