@@ -6247,5 +6247,23 @@
       "observedSha256": "7021074c9ab24113c91be87ec153fd91388b71004638d39023ca220d8459da8f",
       "dependentJobs": "SKIPPED"
     }
+  },
+  "current_execution_resume_20261107": {
+    "status": "ACTIVE_USER_RESUMED",
+    "base": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+    "branch": "dev",
+    "worker": "Grok CLI",
+    "firstWave": [
+      "G400",
+      "G401",
+      "G402",
+      "G403",
+      "G404",
+      "G405",
+      "G406"
+    ],
+    "tracePending": 33,
+    "runtimePolicy": "exclusive fixed-port lease",
+    "review": "RESUME-20261107.md"
   }
 }

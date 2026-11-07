@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-07，用户恢复移动端工作，首轮已由 Grok CLI 接续工具链修复、真实 H5 复验和逐页验收队列。路由签收状态继续按实际回执维护。 [本次恢复记录](takeover/mobile-figma-20261103/RESUME-20261107.md)
+
 `dev` 工具链 CI 待修。归并提交 `c91b0f7f` 与归并前 `f01cddc6` 都在 Ubuntu 和 Windows 的静态工具链检查失败。归并提交的本机静态复现定位到固定端口清单摘要与基线不一致，后续 CI 作业被跳过。 [归并后 CI](https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42225338421) · [归并前 CI](https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/41658504242)
 
 2026-11-06，移动端按用户要求安全收口并暂停。已审核源码和证据从 `origin/dev` 接手，待复核工作树另存为 61 份快照。33 条路由保留本地 UI 候选，逐页签收、Learning 事件消费、实机与部署继续单列。 [本次暂停交接](takeover/mobile-figma-20261103/PAUSE-20261106.md) · [跨机快照清单](takeover/mobile-figma-20261103/cross-machine-20261106/README.md)
