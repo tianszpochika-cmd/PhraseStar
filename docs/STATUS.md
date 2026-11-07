@@ -4,9 +4,11 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-07，B148 修复 CI 的临时对象存储缺失与 Kafka 参数分隔符，3 项回归和 80 项规则独立复跑通过，候选远程运行待验。 [B148](takeover/mobile-figma-20261103/reviews/INTEGRATION-B148-CI-RUNTIME-BOUNDARIES.md)
+
 2026-11-07，用户恢复移动端工作，首轮已由 Grok CLI 接续工具链修复、真实 H5 复验和逐页验收队列。路由签收状态继续按实际回执维护。 [本次恢复记录](takeover/mobile-figma-20261103/RESUME-20261107.md)
 
-2026-11-07，B147 已同步固定端口清单的工具链摘要，本机独立复跑静态检查 52 项及 CI 规则 80 项均通过。远程完整 CI 等新提交回执。 [B147 修复与复验](takeover/mobile-figma-20261103/reviews/INTEGRATION-B147-TOOLCHAIN-PORTS-PIN.md)
+2026-11-07，B147 已同步固定端口清单的工具链摘要，本机独立复跑静态检查 52 项及 CI 规则 80 项均通过。对应远程 CI 的 Linux／Windows 治理、Linux／macOS 前端及 Java 17 已通过；四项后续作业失败，按实际日志继续修复。 [B147 修复与复验](takeover/mobile-figma-20261103/reviews/INTEGRATION-B147-TOOLCHAIN-PORTS-PIN.md)
 
 2026-11-06，移动端按用户要求安全收口并暂停。已审核源码和证据从 `origin/dev` 接手，待复核工作树另存为 61 份快照。33 条路由保留本地 UI 候选，逐页签收、Learning 事件消费、实机与部署继续单列。 [本次暂停交接](takeover/mobile-figma-20261103/PAUSE-20261106.md) · [跨机快照清单](takeover/mobile-figma-20261103/cross-machine-20261106/README.md)
 

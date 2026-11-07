@@ -150,7 +150,52 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+      - name: Generate ephemeral MinIO credentials
+        run: |
+          set -euo pipefail
+          access="ci$(openssl rand -hex 6)"
+          secret="$(openssl rand -hex 24)"
+          if [ "${#access}" -lt 3 ] || [ "${#secret}" -lt 8 ] || [ "$access" = "$secret" ]; then
+            echo "ephemeral MinIO credentials were not generated" >&2
+            exit 1
+          fi
+          echo "::add-mask::${access}"
+          echo "::add-mask::${secret}"
+          {
+            printf 'MINIO_ROOT_USER=%s\n' "$access"
+            printf 'MINIO_ROOT_PASSWORD=%s\n' "$secret"
+            printf 'MEDIA_TEST_MINIO_ACCESS_KEY=%s\n' "$access"
+            printf 'MEDIA_TEST_MINIO_SECRET_KEY=%s\n' "$secret"
+          } >> "$GITHUB_ENV"
+      - name: Start owned ephemeral MinIO
+        run: |
+          set -euo pipefail
+          if [ -z "${MINIO_ROOT_USER:-}" ] || [ -z "${MINIO_ROOT_PASSWORD:-}" ]; then
+            echo "ephemeral MinIO credentials are required before startup" >&2
+            exit 1
+          fi
+          if [ -z "${MEDIA_TEST_MINIO_ACCESS_KEY:-}" ] || [ -z "${MEDIA_TEST_MINIO_SECRET_KEY:-}" ]; then
+            echo "media test MinIO credentials are required before startup" >&2
+            exit 1
+          fi
+          if [ "$MINIO_ROOT_USER" = "change-me" ] || [ "$MINIO_ROOT_PASSWORD" = "change-me-local" ]; then
+            echo "refusing default MinIO credentials for the CI object store" >&2
+            exit 1
+          fi
+          if [ "$MEDIA_TEST_MINIO_ACCESS_KEY" != "$MINIO_ROOT_USER" ] || [ "$MEDIA_TEST_MINIO_SECRET_KEY" != "$MINIO_ROOT_PASSWORD" ]; then
+            echo "media test MinIO credentials must match the ephemeral server credentials" >&2
+            exit 1
+          fi
+          export MINIO_API_HOST_PORT=19000
+          export COMPOSE_PROJECT_NAME=ci-backend-v2-minio
+          docker compose -p ci-backend-v2-minio -f infra/docker/docker-compose.dev.yml up -d --build --wait --wait-timeout 180 minio
       - run: mvn --batch-mode --no-transfer-progress -f pom.xml test
+      - name: Remove owned ephemeral MinIO
+        if: always()
+        run: |
+          if [ -f infra/docker/docker-compose.dev.yml ]; then
+            COMPOSE_PROJECT_NAME=ci-backend-v2-minio docker compose -p ci-backend-v2-minio -f infra/docker/docker-compose.dev.yml down -v --remove-orphans
+          fi
 
   legacy-core-api:
     name: Java 17 compatibility tests

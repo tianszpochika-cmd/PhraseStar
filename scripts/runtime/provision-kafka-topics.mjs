@@ -9,6 +9,7 @@
 //
 //   node scripts/runtime/provision-kafka-topics.mjs            plan only (default)
 //   node scripts/runtime/provision-kafka-topics.mjs --apply    create what is missing
+//   pnpm p1r:kafka:topics -- --apply                           same apply; pnpm forwards the separator
 //
 // It only ever talks to the registered loopback broker from config/local-ports.json.
 import fs from 'node:fs';
@@ -20,8 +21,11 @@ const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'ut
 const contract = readJson('config/b26-event-runtime.json');
 const localPorts = readJson('config/local-ports.json');
 
-const apply = process.argv.includes('--apply');
-const unknown = process.argv.slice(2).filter((arg) => arg !== '--apply');
+// pnpm forwards its leading separator to package scripts; preserve all real flags.
+let args = process.argv.slice(2);
+if (args[0] === '--') args = args.slice(1);
+const apply = args.includes('--apply');
+const unknown = args.filter((arg) => arg !== '--apply');
 if (unknown.length > 0) {
   console.error(`unsupported argument(s): ${unknown.join(', ')}`);
   process.exit(2);

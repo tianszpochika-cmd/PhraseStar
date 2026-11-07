@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B148-20261107] 补齐 CI 后端专属 MinIO 与凭据清理，Kafka 主题命令兼容 pnpm 参数分隔符，3 项回归和 80 项 CI 规则独立复跑通过。
+
 - [MOBILE-FIGMA-B147-20261107] 同步已登记固定端口的工具链摘要，独立复跑 52 项静态检查和 80 项 CI 规则通过，远程完整 CI 继续核对。
 
 - [MOBILE-FIGMA-RESUME-20261107] 按用户要求恢复 Grok CLI 分发，从 dev 接续工具链修复和移动端真实 H5 复验。

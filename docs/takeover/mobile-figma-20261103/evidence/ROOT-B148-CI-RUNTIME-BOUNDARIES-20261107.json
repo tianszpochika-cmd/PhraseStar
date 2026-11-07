@@ -1,0 +1,59 @@
+{
+  "batch": "B148",
+  "at": "2026-11-07T15:14:34.644483+00:00",
+  "classification": "CI_RUNTIME_FIXES_LOCAL_CHECKED",
+  "workers": [
+    "G409",
+    "G418",
+    "G425"
+  ],
+  "sourceBase": "5d921ed002207440cb0063cc118644ebf94bfbd4",
+  "artifacts": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 8035,
+      "sha256": "a133f77a7636333d58d3f1d5eac0f4bafe589cb4de95e331f4e7ae995dc7c89e"
+    },
+    {
+      "path": "scripts/runtime/provision-kafka-topics.mjs",
+      "bytes": 8873,
+      "sha256": "068eeddab523223722d964c47328c66c6f380eec5128fc78840cbc29c17a29ac"
+    },
+    {
+      "path": "tests/p1r/p1r-kafka-topic-provision-parser.test.mjs",
+      "bytes": 4910,
+      "sha256": "ae7545ae22338ac08df4f8e3adb07d6719f84684d733d77859fbe73ebc7a79e1"
+    }
+  ],
+  "independentReview": true,
+  "checks": {
+    "kafkaParserTests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "ciPolicyAssertions": 80
+  },
+  "notRun": [
+    "GitHub Actions on this candidate",
+    "MinIO live runtime on this candidate",
+    "real Kafka broker on this candidate"
+  ],
+  "remotePrevious": {
+    "commit": "5d921ed002207440cb0063cc118644ebf94bfbd4",
+    "run": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42380800144",
+    "passed": [
+      "governance Ubuntu",
+      "governance Windows",
+      "frontend Ubuntu",
+      "frontend macOS",
+      "Java17"
+    ],
+    "failed": [
+      "Java25 MinIO missing",
+      "infrastructure Kafka separator",
+      "contracts evidence historical digest",
+      "supply-chain 37 high/critical findings"
+    ]
+  },
+  "routeTrace": "TRACE_PENDING"
+}

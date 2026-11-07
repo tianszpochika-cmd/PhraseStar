@@ -6277,5 +6277,23 @@
     "review": "reviews/INTEGRATION-B147-TOOLCHAIN-PORTS-PIN.md",
     "evidence": "evidence/ROOT-B147-TOOLCHAIN-PORTS-PIN-20261107.json",
     "tracePending": 33
+  },
+  "integration_B148_ci_runtime_boundaries": {
+    "classification": "CI_RUNTIME_FIXES_LOCAL_CHECKED",
+    "workers": [
+      "G409",
+      "G418",
+      "G425"
+    ],
+    "review": "reviews/INTEGRATION-B148-CI-RUNTIME-BOUNDARIES.md",
+    "evidence": "evidence/ROOT-B148-CI-RUNTIME-BOUNDARIES-20261107.json",
+    "route_trace": "TRACE_PENDING"
+  },
+  "current_codex_budget_reserve": {
+    "window_minutes": 300,
+    "reserve_percent": 20,
+    "stop_new_dispatch_remaining_percent": 30,
+    "safe_close_remaining_percent": 25,
+    "source": "user instruction 2026-11-07"
   }
 }
