@@ -1,0 +1,82 @@
+[
+  {
+    "path": "PINS.json",
+    "bytes": 4769,
+    "sha256": "120b1e2b0cdadb3e007154340b88116b708341719a651d1afaf708a70a81bf28"
+  },
+  {
+    "path": "REPORT.md",
+    "bytes": 6881,
+    "sha256": "66d5b36261da6bbb397d26581c4711b66efe61249e55c0d2dce63636552b6894"
+  },
+  {
+    "path": "b140-wire/ROOT-B140-LEARN-CATALOG-OWNER-WIRE-20261106.json",
+    "bytes": 1324,
+    "sha256": "287cf6386005e90e89231ddef52575583d27571a25c6518fe1856a876d1118aa"
+  },
+  {
+    "path": "b140-wire/actual-receipt.json",
+    "bytes": 981,
+    "sha256": "499d6920f8fed1245add57e7c74ad52818b480536c1604794e05efdf87df5aab"
+  },
+  {
+    "path": "b140-wire/runtime-receipt.json",
+    "bytes": 575,
+    "sha256": "e6dc4df5edf8745ed7190215e294f5bd4636ef9d8c8f6b695a4f32dea0472585"
+  },
+  {
+    "path": "composition-receipt.json",
+    "bytes": 2082,
+    "sha256": "53ea940fbbd869254fb0eeb18f73becb4e978fda8fa0a22710c288196aba65f8"
+  },
+  {
+    "path": "frozen/learn-catalog-owner.mjs",
+    "bytes": 27647,
+    "sha256": "8267b3cd791ff1c4e2538df78987edf34b47f18fc4760ec7815c8aa50d33b410"
+  },
+  {
+    "path": "frozen/reading-live-hook.mjs",
+    "bytes": 13799,
+    "sha256": "d5d1cfb8f083dd72fd4386dff5ae0e1a12f7ab5890fba64652bc9d8da7779ace"
+  },
+  {
+    "path": "learn-catalog-owner.mjs",
+    "bytes": 27637,
+    "sha256": "0425d164585262a4a770fa68bc2ba284d754c83e36619470f167b8b70975e94d"
+  },
+  {
+    "path": "learn-catalog-runtime.sh",
+    "bytes": 58226,
+    "sha256": "8c5dc75b75e9339f541b86ba92b72c6e984048db145751dc7c0beabbbfa2aa4f"
+  },
+  {
+    "path": "lease-tail.mjs",
+    "bytes": 13147,
+    "sha256": "653ad94e99b42b21eb0be83c85a3927bb956636209849c448fd6cadb47b61a6b"
+  },
+  {
+    "path": "network-create-diagnostic.json",
+    "bytes": 243,
+    "sha256": "c13c9ff5925b4ceaaae21d333992e3ff09895f7329323c7089edb95e974b355b"
+  },
+  {
+    "path": "owned-bridge-subnet.py",
+    "bytes": 18244,
+    "sha256": "c3a144b2cda0b63464957e47cdf31f293c707789e831a2c8a017c516322ba2b0"
+  },
+  {
+    "path": "pinned-static-nonce.mjs",
+    "bytes": 10514,
+    "sha256": "7efe98b36d708fa0666b42b12bad4ca5763cd615effa27b42579b547e1ceb88e"
+  },
+  {
+    "path": "runtime-receipt.json",
+    "bytes": 827,
+    "sha256": "d08c0b76781f0c2794d2372215fbb0e530c78220389ec5790cb9874a12cd494f"
+  },
+  {
+    "path": "shelf-empty-observer.mjs",
+    "bytes": 36989,
+    "sha256": "6705ac193eef2ed4480bd88a1fe90a16bf24f85c074c19ebcf2a40cc45c9b735"
+  }
+]

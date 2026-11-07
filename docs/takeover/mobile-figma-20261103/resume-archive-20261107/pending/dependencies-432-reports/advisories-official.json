@@ -1,0 +1,520 @@
+{
+  "GHSA-86w9-cpqp-85rv:gh": {
+    "status": 200,
+    "url": "https://api.github.com/advisories/GHSA-86w9-cpqp-85rv",
+    "summary": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+    "severity": "high",
+    "withdrawn": null,
+    "vulnerabilities": [
+      {
+        "package": {
+          "ecosystem": "npm",
+          "name": "node-forge"
+        },
+        "vulnerable_version_range": "<= 1.4.0",
+        "first_patched_version": null,
+        "vulnerable_functions": []
+      }
+    ],
+    "affected": null,
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-85393",
+      "https://github.com/digitalbazaar/forge/issues/1149",
+      "https://github.com/advisories/GHSA-ppp5-5v6c-4jwp",
+      "https://github.com/digitalbazaar/forge/blob/v1.4.0/lib/asn1.js",
+      "https://github.com/digitalbazaar/forge/blob/v1.4.0/lib/rsa.js",
+      "https://www.vulncheck.com/advisories/node-forge-through-1.4.0-rsa-pkcs-1-1.5-signature-forgery-via-nested-digestalgorithm-padding",
+      "https://github.com/digitalbazaar/forge/pull/1152",
+      "https://github.com/advisories/GHSA-86w9-cpqp-85rv"
+    ]
+  },
+  "GHSA-86w9-cpqp-85rv:osv": {
+    "status": 200,
+    "url": "https://api.osv.dev/v1/vulns/GHSA-86w9-cpqp-85rv",
+    "summary": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N"
+      }
+    ],
+    "withdrawn": null,
+    "vulnerabilities": null,
+    "affected": [
+      {
+        "package": {
+          "name": "node-forge",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/node-forge"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "last_affected": "1.4.0"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-85393"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/digitalbazaar/forge/issues/1149"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/digitalbazaar/forge/pull/1152"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://github.com/advisories/GHSA-ppp5-5v6c-4jwp"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/digitalbazaar/forge"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/digitalbazaar/forge/blob/v1.4.0/lib/asn1.js"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/digitalbazaar/forge/blob/v1.4.0/lib/rsa.js"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.vulncheck.com/advisories/node-forge-through-1.4.0-rsa-pkcs-1-1.5-signature-forgery-via-nested-digestalgorithm-padding"
+      }
+    ]
+  },
+  "GHSA-g2v6-rqmx-r4w6:gh": {
+    "status": 200,
+    "url": "https://api.github.com/advisories/GHSA-g2v6-rqmx-r4w6",
+    "summary": "@vue/server-renderer: XSS via missing CR in attribute-name blacklist",
+    "severity": "high",
+    "withdrawn": null,
+    "vulnerabilities": [
+      {
+        "package": {
+          "ecosystem": "npm",
+          "name": "@vue/server-renderer"
+        },
+        "vulnerable_version_range": "< 3.5.42",
+        "first_patched_version": "3.5.42",
+        "vulnerable_functions": []
+      },
+      {
+        "package": {
+          "ecosystem": "npm",
+          "name": "@vue/server-renderer"
+        },
+        "vulnerable_version_range": ">= 3.6.0-rc.0, < 3.6.0-rc.6",
+        "first_patched_version": "3.6.0-rc.6",
+        "vulnerable_functions": []
+      }
+    ],
+    "affected": null,
+    "references": [
+      "https://github.com/vuejs/core/security/advisories/GHSA-g2v6-rqmx-r4w6",
+      "https://github.com/vuejs/core/pull/15266",
+      "https://github.com/vuejs/core/commit/a2b40db9a83b36ed9da3a16403cf8f040262d73f",
+      "https://github.com/vuejs/core/releases/tag/v3.5.42",
+      "https://github.com/vuejs/core/releases/tag/v3.6.0-rc.6",
+      "https://github.com/advisories/GHSA-g2v6-rqmx-r4w6"
+    ]
+  },
+  "GHSA-g2v6-rqmx-r4w6:osv": {
+    "status": 200,
+    "url": "https://api.osv.dev/v1/vulns/GHSA-g2v6-rqmx-r4w6",
+    "summary": "@vue/server-renderer: XSS via missing CR in attribute-name blacklist",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N"
+      }
+    ],
+    "withdrawn": null,
+    "vulnerabilities": null,
+    "affected": [
+      {
+        "package": {
+          "name": "@vue/server-renderer",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/%40vue/server-renderer"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.5.42"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "@vue/server-renderer",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/%40vue/server-renderer"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "3.6.0-rc.0"
+              },
+              {
+                "fixed": "3.6.0-rc.6"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/vuejs/core/security/advisories/GHSA-g2v6-rqmx-r4w6"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vuejs/core/pull/15266"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vuejs/core/commit/a2b40db9a83b36ed9da3a16403cf8f040262d73f"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/vuejs/core"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vuejs/core/releases/tag/v3.5.42"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vuejs/core/releases/tag/v3.6.0-rc.6"
+      }
+    ]
+  },
+  "GHSA-x6jw-m9v5-85vh:osv": {
+    "status": 200,
+    "url": "https://api.osv.dev/v1/vulns/GHSA-x6jw-m9v5-85vh",
+    "summary": "simple-git unsafe-operation guard does not block trailer command configuration",
+    "severity": [
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+      }
+    ],
+    "withdrawn": null,
+    "vulnerabilities": null,
+    "affected": [
+      {
+        "package": {
+          "name": "simple-git",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/simple-git"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "3.15.0"
+              },
+              {
+                "fixed": "4.0.1"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/security/advisories/GHSA-x6jw-m9v5-85vh"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-102828"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/pull/1198"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/commit/d762810c13b331ff1e5eb24c0b434646d2a8d1b3"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/steveukx/git-js"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/releases/tag/simple-git@4.0.1"
+      }
+    ]
+  },
+  "GHSA-v5rq-49vh-5v5c:osv": {
+    "status": 200,
+    "url": "https://api.osv.dev/v1/vulns/GHSA-v5rq-49vh-5v5c",
+    "summary": "simple-git: `VISUAL` editor environment variable is omitted from unsafe editor detection",
+    "severity": [
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+      }
+    ],
+    "withdrawn": null,
+    "vulnerabilities": null,
+    "affected": [
+      {
+        "package": {
+          "name": "@simple-git/argv-parser",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/%40simple-git/argv-parser"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.0.1"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/security/advisories/GHSA-v5rq-49vh-5v5c"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-102829"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/pull/1201"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/commit/68874c239f0c7a87f4a68c3d2c4a0d7c75bb27f4"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/steveukx/git-js"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/steveukx/git-js/releases/tag/@simple-git/argv-parser@2.0.1"
+      }
+    ]
+  },
+  "GHSA-587h-7wmj-h5pm:osv": {
+    "status": 200,
+    "url": "https://api.osv.dev/v1/vulns/GHSA-587h-7wmj-h5pm",
+    "summary": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+    "severity": [
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+      }
+    ],
+    "withdrawn": null,
+    "vulnerabilities": null,
+    "affected": [
+      {
+        "package": {
+          "name": "launch-editor",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/launch-editor"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.14.2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "8.3.0"
+              },
+              {
+                "fixed": "8.3.3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "8.2.0"
+              },
+              {
+                "fixed": "8.2.4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "8.0.0"
+              },
+              {
+                "fixed": "8.1.6"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "7.0.0"
+              },
+              {
+                "fixed": "7.3.7"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "6.4.4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "package": {
+          "name": "vite-plus",
+          "ecosystem": "npm",
+          "purl": "pkg:npm/vite-plus"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.1.0"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/vitejs/launch-editor/security/advisories/GHSA-587h-7wmj-h5pm"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-112942"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vitejs/launch-editor/commit/f13cd835d4b8e860b1d4d080ad8a490cc2463679"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/vitejs/launch-editor"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vitejs/launch-editor/releases/tag/v2.14.2"
+      }
+    ]
+  }
+}

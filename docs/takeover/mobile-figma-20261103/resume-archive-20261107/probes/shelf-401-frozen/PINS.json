@@ -1,0 +1,72 @@
+{
+  "kind": "MB009_LEARN_SHELF_H5_LEASE_401",
+  "scope": "MB009 /pages/learn/learn",
+  "copied": {
+    "g329Probe": {
+      "path": "frozen/learn-catalog-owner.mjs",
+      "sha256": "8267b3cd791ff1c4e2538df78987edf34b47f18fc4760ec7815c8aa50d33b410",
+      "bytes": 27647,
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/learn-catalog-real-owner-probe-329-frozen/learn-catalog-owner.mjs"
+    },
+    "g303Hook": {
+      "path": "frozen/reading-live-hook.mjs",
+      "sha256": "d5d1cfb8f083dd72fd4386dff5ae0e1a12f7ab5890fba64652bc9d8da7779ace",
+      "bytes": 13799,
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-runtime-grant-quoting-303-frozen/reading-live-hook.mjs"
+    },
+    "g388Helper": {
+      "path": "pinned-static-nonce.mjs",
+      "source": "/tmp/grok-mobile-learn-shelf-derived-current-h5-lease-388/pinned-static-nonce.mjs",
+      "header": "x-mb004-static-qa",
+      "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32"
+    },
+    "b140RuntimeReceipt": {
+      "path": "b140-wire/runtime-receipt.json",
+      "sha256": "e6dc4df5edf8745ed7190215e294f5bd4636ef9d8c8f6b695a4f32dea0472585",
+      "source": "/tmp/grok-mobile-learn-catalog-preference-jar-rebind-361/runtime-receipt.json"
+    },
+    "b140ProbeReceipt": {
+      "path": "b140-wire/actual-receipt.json",
+      "sha256": "499d6920f8fed1245add57e7c74ad52818b480536c1604794e05efdf87df5aab",
+      "source": "/tmp/grok-mobile-learn-catalog-preference-jar-rebind-361/actual-receipt.json"
+    }
+  },
+  "pinnedNotCopied": {
+    "iamJar": {
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/services/iam-service/target/iam-service-0.1.0-SNAPSHOT.jar",
+      "sha256": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+      "note": "current worktree services/*/target jars are absent; this archived worktree still holds the G361 pin"
+    },
+    "gatewayJar": {
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/services/api-gateway/target/api-gateway-0.1.0-SNAPSHOT.jar",
+      "sha256": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1"
+    },
+    "learnerJar": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/learner-preference-jackson3-test-278-root/learner-preference-owner-combined.jar",
+      "sha256": "0a9c41599ad3759ba37259308ffa36df35b65a52ee252c620ffe659b797687b1"
+    },
+    "contentJar": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-content-owner-b118-package/content-service-b118.jar",
+      "sha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2"
+    },
+    "seedJava": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/mb006-placement-full-browser-96-root/harness/seed/Seed.java",
+      "sha256": "fde6075e353fec4e12385e6e66bc1a74cece280289210adea9906c99cfa3cb9a"
+    },
+    "seedSql": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/mb006-placement-full-browser-96-root/harness/sql/seed-full.sql",
+      "sha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9"
+    },
+    "b139H5Index": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5/index.html",
+      "sha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "rejectedB116": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520"
+    },
+    "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b",
+    "playwrightRoot": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/package.json",
+    "currentWorktree": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+    "currentHeadNote": "dev@61b9ede7 holds reviewed code; IAM/Gateway target jars are not built in this worktree"
+  },
+  "ports": ["13306", "18070", "18087", "18088", "18089", "18183"],
+  "untouched": ["18090", "18091"]
+}

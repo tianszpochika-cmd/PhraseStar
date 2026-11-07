@@ -1,0 +1,17 @@
+{
+  "holder": "G401_ROOT_REAL_H5",
+  "at": "2026-11-07T14:38:17.072235+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18088,
+    18089,
+    18183
+  ],
+  "status": "RUNNING",
+  "runnerPid": 95969,
+  "preflight": "PASS",
+  "source": "shelf-401-frozen/MANIFEST.json",
+  "pid": 95982
+}

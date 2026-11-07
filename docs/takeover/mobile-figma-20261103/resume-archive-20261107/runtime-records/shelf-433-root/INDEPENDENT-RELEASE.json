@@ -1,0 +1,22 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:30:23.728916+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18088,
+    18089,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/shelf-433-frozen/MANIFEST.json",
+  "subnet": "10.254.254.0/28",
+  "preflight": "PASS",
+  "runnerPid": 64620,
+  "releasedAt": "2026-11-07T15:33:17.941847+00:00",
+  "result": "PASS_LOCAL_PINNED_H5_EMPTY_SHELF",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true,
+  "ownedNetworkReleased": true
+}

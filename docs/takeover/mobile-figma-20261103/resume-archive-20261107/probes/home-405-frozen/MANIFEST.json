@@ -1,0 +1,42 @@
+[
+  {
+    "file": "pin-rebind.cjs",
+    "bytes": 6949,
+    "sha256": "04c53deb0a6ba4493fcbfbc76f28a208b0fe87f0753313827c569ad07c72f499"
+  },
+  {
+    "file": "REPORT.md",
+    "bytes": 9925,
+    "sha256": "5752689b09ed6b9ef3cce6fc84df3ef9eb35b06b28c4cffb954bf82dc76eb219"
+  },
+  {
+    "file": "preflight.cjs",
+    "bytes": 4950,
+    "sha256": "526856b51d15d55816fdab28a9c9c229282a38205e843eae33224d7bf39682d1"
+  },
+  {
+    "file": "composition-receipt.json",
+    "bytes": 778,
+    "sha256": "ab2e7656b342f9e04a9772e2fd3f36d973dfb28357ce09e41d4adebd1e36e09d"
+  },
+  {
+    "file": "home-return-hook.cjs",
+    "bytes": 1605,
+    "sha256": "4ca1b1c532d1d86754e3a7821c10a6e2bdb8f5e868432c7ebc51758091007b31"
+  },
+  {
+    "file": "wrapper.sh",
+    "bytes": 21215,
+    "sha256": "5f5f8dd2370772ff9ab315e456a315ce38aa19394a9f60bb8932487375367760"
+  },
+  {
+    "file": "home-return-observer.cjs",
+    "bytes": 26874,
+    "sha256": "c41b66935c5da97f95f82ca4e7479f13a5efdd4053b35672924e819aa4cc165e"
+  },
+  {
+    "file": "pins.json",
+    "bytes": 3642,
+    "sha256": "da2ac4b13553b844f1e7e07f72220e5bb7c19415c152af35e2a6d363c60b957b"
+  }
+]

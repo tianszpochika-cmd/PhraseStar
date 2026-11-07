@@ -1,0 +1,277 @@
+{
+  "auditId": "G436",
+  "commit": "f69fd71f2adc683441face4d4d7d79dd0c2c3a89",
+  "commitShort": "f69fd71f",
+  "historicalCheckout": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "ci": {
+    "jobs": 9,
+    "passed": 7,
+    "failed": 2,
+    "contractsDataJob": "128442811764",
+    "contractsDataRun": "42385657308",
+    "evidenceGate": "PASS",
+    "p1r": { "tests": 1481, "pass": 1455, "fail": 26 },
+    "subsequentSteps": "NOT_RUN",
+    "secondFailedJob": "not opened in this closeout"
+  },
+  "phase": "iteration-2-R1",
+  "p1rGuardReuse": true,
+  "newR1Queue": false,
+  "observationCount": 26,
+  "rootCauseCount": 10,
+  "publicAdultRegistration": "keep POST /api/v1/auth/register; AGENTS.md authorizes adults 18+",
+  "observations": [
+    { "test": 67, "name": "canonical external API fixture passes the P1R governance gate", "rootCauses": ["RC-A", "RC-B"] },
+    { "test": 70, "name": "canonical oneOf success/page envelope extensions remain valid", "rootCauses": ["RC-A", "RC-B"], "note": "oneOf is not the defect; the canonical fixture is already dirty. Tests 71 and 72 passed." },
+    { "test": 73, "name": "a second otherwise valid idempotency exception fails closed", "rootCauses": ["RC-A"], "note": "line 202 passed; line 203 expected found 2 and the live document already has 2, so the mutation is found 3" },
+    { "test": 182, "name": "P1R-M1-008 content lifecycle governance", "rootCauses": ["RC-C"] },
+    { "test": 209, "name": "Git compatibility adds the fixed governance freeze", "rootCauses": ["RC-E"], "note": "kind events only" },
+    { "test": 217, "name": "M1-009 policy remains frozen inside the latest fixed-baseline chain", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 221, "name": "M1-010 policy remains frozen inside the latest fixed-baseline chain", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 225, "name": "M1-011 policy and latest fixed-baseline chain", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 228, "name": "M1-012 policy and latest fixed-baseline chain", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 231, "name": "M1-013 allowance and source binding", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 234, "name": "M1-014 policy digest and default compatibility", "rootCauses": ["RC-D", "RC-E"] },
+    { "test": 235, "name": "M1-015 exact commerce promotion", "rootCauses": ["RC-D", "RC-E"], "note": "failure is the trailing kind all compatible flag" },
+    { "test": 238, "name": "M1-008 source baseline reaches the current M1-018 event projection", "rootCauses": ["RC-E"] },
+    { "test": 244, "name": "M1-016 exact notification/sync/support promotion", "rootCauses": ["RC-D", "RC-E"], "note": "failure is the trailing kind all compatible flag" },
+    { "test": 248, "name": "M2-001 Gateway root-and-health projection is source-derived", "rootCauses": ["RC-D"] },
+    { "test": 249, "name": "M2-001 Gateway execution-target promotion rejects drift", "rootCauses": ["RC-D"] },
+    { "test": 252, "name": "canonical data ownership policy passes static audit", "rootCauses": ["RC-F"] },
+    { "test": 419, "name": "Gateway contract audit passes the dedicated fragment", "rootCauses": ["RC-G"] },
+    { "test": 421, "name": "M2-001 health identity projection", "rootCauses": ["RC-D"], "note": "actual is undefined because the projection is not constructible" },
+    { "test": 428, "name": "Gateway execution plan shape cannot bypass validation", "rootCauses": ["RC-G"], "note": "stale regex must be 56; checker says must be 75. Register appears only because the mutation dirties the whole document." },
+    { "test": 442, "name": "M1-017 summary counts", "rootCauses": ["RC-G"] },
+    { "test": 457, "name": "no frontend calls a route the Gateway withholds", "rootCauses": ["RC-H"] },
+    { "test": 632, "name": "repository learning-loop policy remains a frozen static D2 boundary", "rootCauses": ["RC-I"] },
+    { "test": 633, "name": "checker CLI emits machine-readable frozen-policy result", "rootCauses": ["RC-I"] },
+    { "test": 731, "name": "M1-018 IAM compatibility allowance", "rootCauses": ["RC-E"] },
+    { "test": 738, "name": "the adult gate validates the derived age before the domain type rejects it", "rootCauses": ["RC-J"] }
+  ],
+  "rootCauses": [
+    {
+      "id": "RC-A",
+      "classification": "true-contract-gap",
+      "also": "settled-conflicting-gate-upload-url",
+      "failureIds": [67, 70, 73],
+      "owner": "learning-service for share and revoke; contracts governance for the checker; media-service owns the upload route but its runtime stays fail-closed",
+      "source": [
+        "packages/contracts/openapi/v1/openapi.json#issueLearningReportShare",
+        "packages/contracts/openapi/v1/openapi.json#revokeLearningReportShare",
+        "packages/contracts/openapi/v1/openapi.json#mintMediaUploadUrl",
+        "scripts/audit/p1r-api-contract-check.mjs",
+        "scripts/contracts/validate-contracts.mjs",
+        "apps/learner-web/src/api/b10.ts",
+        "apps/mobile/src/api/b10.ts"
+      ],
+      "proposedFix": "Keep signed-access singleton signContentMediaAccess and count === 1. Add a reviewed second exception class whose only member is issueLearningReportShare, with x-p1r-idempotency-exception. Exclude mintMediaUploadUrl from the x-idempotency requirement only via the existing x-fail-closed predicate (NO_SUCCESS_PATH, sideEffects false, 503, MEDIA_UPLOAD_PUT_GRANT_UNAVAILABLE, FAIL_CLOSED_UPLOAD_NOT_CONFIGURED, no 2xx). Do not add x-idempotency to that route. Revoke stays required true: add the canonical Idempotency-Key header and send it from learning-service, learner-web, and mobile.",
+      "meaningfulChecks": [
+        "tests/p1r/p1r-api-contract.test.mjs tests 67, 70, 71, 72, 73",
+        "scripts/contracts/validate-fail-closed-write.test.mjs still rejects x-idempotency on upload-url",
+        "negative: second signed-access exception fails; a third optional write fails; revoke without the header fails"
+      ],
+      "unknowns": []
+    },
+    {
+      "id": "RC-B",
+      "classification": "true-implementation-gap",
+      "failureIds": [67, 70],
+      "owner": "workflow-service and admin-web for unfinished sagas; assessment-service and mistake callers for listAssessmentMistakes",
+      "source": [
+        "packages/contracts/openapi/v1/openapi.json#listUnfinishedSagas",
+        "packages/contracts/openapi/v1/openapi.json#listAssessmentMistakes",
+        "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+        "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+        "apps/admin-web/src/api/recovery.ts"
+      ],
+      "proposedFix": "Add canonical cursor x-pagination, one Cursor, one PageSize, and ApiCursorPageEnvelope on both list operations. Honor cursor and page size in SagaController.unfinished and listMistakes. Update clients off the raw string array and the full {items,count} dump. Do not annotate pagination while still returning the unpaged body.",
+      "meaningfulChecks": [
+        "test 67 loses the six pagination errors",
+        "test 72 still fails a list that drops x-pagination or puts cursor state in data",
+        "one service test per list for first page, next cursor, and page size"
+      ],
+      "unknowns": []
+    },
+    {
+      "id": "RC-C",
+      "classification": "true-contract-gap-and-reviewed-policy-update",
+      "failureIds": [182],
+      "owner": "content-service",
+      "trace": "P1R-M1-008 CI guard, not a new R1 card",
+      "source": [
+        "packages/contracts/fragments/b9/b9-content.openapi.json",
+        "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+        "scripts/audit/p1r-content-lifecycle-check.mjs"
+      ],
+      "proposedFix": "Replace B9ReadingBindingReceipt.bindingStatus const ACTIVE and B10PlanReplanRequest.confirmImpact const true with singleton enums. Keep the const ban. Either restore the frozen 11-command 9-branch oneOf, or review COMMANDS, field policy, actor classes, and B9_COMMAND_ONE_OF together, including the SCHEDULE_PUBLISH forbidden-field delta and the 16 LEXEME and ITEM commands. Do not bump a count.",
+      "meaningfulChecks": [
+        "tests/p1r/p1r-content-lifecycle.test.mjs",
+        "negative: an unlisted command fails; a const schema fails"
+      ],
+      "unknowns": ["lexeme/item oneOf required and forbidden sets after UNPUBLISH were not fully dumped"]
+    },
+    {
+      "id": "RC-D",
+      "classification": "source-baseline-governance",
+      "failureIds": [217, 221, 225, 228, 231, 234, 235, 244, 248, 249, 421],
+      "owner": "packages/contracts promotion; api-gateway boundary owner",
+      "trace": "P1R-M2-001 CI guard. Scope OPENAPI_GATEWAY_ROOT_AND_HEALTH_IDENTITY_ONLY must not be widened in place.",
+      "source": [
+        "scripts/contracts/compatibility-diff.mjs#buildM2001OpenApiExpectedProjection",
+        "tests/p1r/p1r-contract-tooling.test.mjs",
+        "tests/p1r/p1r-gateway-contract.test.mjs"
+      ],
+      "proposedFix": "Successor promotion from frozen source 66246d5. Do not retarget source semantic a154f2004f06e5da096abea630855152fac9e87224ad48565a38e6010ab9416b and do not overwrite the historical expected digest. Before the successor can apply, review two nodes: the whole B10EnsurePlanResult schema (parent is absent, so explanation alone cannot be added) and authorizationClaims append of media_consent and content_rights only. Then generate and review the residual path diff. Constructible is not equal to HEAD.",
+      "meaningfulChecks": [
+        "projection helper returns an object",
+        "successor compare against HEAD is empty",
+        "one unapproved node still breaks",
+        "source pin a154f200 still matches",
+        "kind all tests also require RC-E"
+      ],
+      "unknowns": ["full residual path list past the 160-path diagnose cap; do not hand-copy it"]
+    },
+    {
+      "id": "RC-E",
+      "classification": "source-baseline-governance",
+      "failureIds": [209, 217, 221, 225, 228, 231, 234, 235, 238, 244, 731],
+      "owner": "iam-service for the three iam v2 names; learning-service for learning.report.ready.v1; packages/contracts for the successor",
+      "trace": "P1R-M1-018 CI guard, not a new R1 card",
+      "source": [
+        "packages/contracts/events/v1/catalog.json",
+        "tests/p1r/p1r-m1-018-iam-compatibility.test.mjs#buildExpectedCatalog",
+        "scripts/contracts/compatibility-git-baseline.mjs"
+      ],
+      "proposedFix": "Successor event promotion with a new expected digest. Leave M1018 expected semantic 5dd1edfae663dd4fcc2975e6ec44e4272efae19ac049c4098bb1be8033ce1548 and descriptor c3fa4291254d7c83ec0b690c648fb86437fa72dac84f65744284caac7dd51767. Source pin 4a1357e308271533e66e25bceba4ccb164ee5c2d58652b642b252895028a8ac2 already matches. Added names, none removed: iam.account.bootstrap.created.v2, iam.learning_eligibility.changed.v2, iam.policy.security_state_changed.v2, learning.report.ready.v1. Do not put the learning event into the frozen IAM v2 projection.",
+      "meaningfulChecks": [
+        "tests 209, 238, 731",
+        "kind all tests once RC-D is also fixed",
+        "a descriptor mutation still fails"
+      ],
+      "unknowns": ["buildExpectedCatalog versus the fragment at the digest-freeze commit was not hashed"]
+    },
+    {
+      "id": "RC-F",
+      "classification": "reviewed-inventory-update-and-stale-scanner-exemption",
+      "failureIds": [252],
+      "owner": "platform/contracts for fileCount; checker change for the scanner; controller owner content-service",
+      "trace": "P1R-M2-004 candidate inventory, NOT_RUNTIME_VERIFIED. P1-LIVE-008 exemption stays fail-closed.",
+      "source": [
+        "config/p1r-data-ownership.v1.json",
+        "scripts/audit/p1r-data-ownership-check.mjs#foreignSchemaReferences",
+        "services/content-service/src/main/java/com/englishflow/content/web/GradableAssessmentSnapshotController.java"
+      ],
+      "proposedFix": "Set fileCount iam 18, content 33, learning 14, assessment 12, admin-ops 7 and record the new V*.sql names from diagnose.txt. Leave the other services. Extend the scanner exemption to a bare identifier whose next token is .equals( or .equalsIgnoreCase(. Do not treat ASSESSMENT_SERVICE.equals as SQL. Keep failures for assessment_service.attempt and ASSESSMENT_SERVICE.attempt.",
+      "meaningfulChecks": [
+        "tests/p1r/p1r-data-ownership.test.mjs",
+        "negative SQL-shaped schema reference still fails"
+      ],
+      "unknowns": ["exact extra filenames versus the commit that last set each fileCount were not git-diffed; do not assume iam is only V19"]
+    },
+    {
+      "id": "RC-G",
+      "classification": "stale-test-and-reviewed-count-lock",
+      "failureIds": [419, 428, 442],
+      "owner": "api-gateway and packages/contracts; iam-service keeps POST account-deletion create at 503",
+      "trace": "P1R-M2-001 execution freeze stays. R1-019 is only an existing comment on placement start. Not a new R1 card.",
+      "source": [
+        "scripts/audit/p1r-gateway-contract-check.mjs",
+        "tests/p1r/p1r-gateway-contract.test.mjs",
+        "packages/contracts/fragments/p1r-gateway-boundary.openapi.json#iam-account-deletions",
+        "services/iam-service/src/main/java/com/englishflow/iam/web/IamAccountDeletionController.java"
+      ],
+      "proposedFix": "Lock public 365 to 404 only with the 39 operationIds in PLAN.md, removed empty. Lock internal 66 to 70 only after proving HEAD minus getIamLearningConsentFact, matchB10AssessmentAttemptBinding, bindB9PublishedReading, and scoreB10AssessmentContentSnapshot is still 66. Update tests 419 and 442 off stale 56/62 to routes 75, plans 75, projections 209, available 226, digest f6e9cb48732fd64abd8a89f5f7d9c1dd6892981c13722a0def638343ea5fb80d. Test 428 expects must be 75 and the empty routeExecutions mutation must still fail. Remove iam-account-deletions from EXPECTED_UNAVAILABLE_EXECUTION_REASONS only. Do not add Gateway nodes. Do not change the digest unless a projection field changes. Re-read unavailableExecutionOperationCount after the reason edit.",
+      "meaningfulChecks": [
+        "tests 419, 420, 428, 442",
+        "one extra public operationId fails the lock",
+        "restoring the old deletion reason fails",
+        "create still throws 503"
+      ],
+      "unknowns": ["unavailableExecutionOperationCount after the reason removal may stay 178; re-read it, do not assume"]
+    },
+    {
+      "id": "RC-H",
+      "classification": "true-implementation-gap",
+      "failureIds": [457],
+      "owner": "learner-web and mobile; owner change only with the service that serves the path",
+      "source": [
+        "apps/learner-web/src/api/b11.ts",
+        "apps/learner-web/src/api/b10.ts",
+        "apps/mobile/src/api/b10.ts",
+        "tests/p1r/p1r-gateway-withheld-routes.test.mjs"
+      ],
+      "proposedFix": "Stop calling the five withheld paths or give each an exact projection whose owner matches the controller. Paths: speaking/recordings, sync, reading (learner-web and mobile), speaking. Do not drop withheld reasons. Do not add these to the RC-G public list unless they are new operationIds.",
+      "meaningfulChecks": [
+        "test 457 offender list empty",
+        "tests 458, 459, 460, 461 still pass"
+      ],
+      "unknowns": []
+    },
+    {
+      "id": "RC-I",
+      "classification": "reviewed-policy-inventory",
+      "failureIds": [632, 633],
+      "owner": "learning-service",
+      "trace": "P1R-M1-013 CI guard, not a new R1 card",
+      "source": [
+        "config/p1r-learning-loop-contract.v1.json#compatibilityPromotion.canonicalRoutes",
+        "scripts/audit/p1r-learning-loop-contract-check.mjs#checkCanonicalRoutes",
+        "packages/contracts/openapi/v1/openapi.json#ensureB10LearningPlan",
+        "packages/contracts/openapi/v1/openapi.json#replanB10LearningPlan"
+      ],
+      "proposedFix": "Add exactly two canonical rows: POST /api/v1/learning/plans:ensure operationId ensureB10LearningPlan request B10EnsurePlanRequest response B10EnsurePlanResult, and POST /api/v1/learning/plans:replan operationId replanB10LearningPlan request B10PlanReplanRequest response B10PlanReplanResult. Owner learning-service, permission learning.plan.write, security bearerAuth, idempotency REQUIRED. Keep the exact-match check. confirmImpact const is RC-C.",
+      "meaningfulChecks": [
+        "tests/p1r/p1r-learning-loop-contract.test.mjs tests 632 and 633",
+        "a third canonical /api/v1/learning route still fails"
+      ],
+      "unknowns": []
+    },
+    {
+      "id": "RC-J",
+      "classification": "stale-frozen-test",
+      "failureIds": [738],
+      "owner": "iam-service test only",
+      "trace": "P1R-M2-002 CI guard. Production order is already correct.",
+      "source": [
+        "tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs",
+        "services/iam-service/src/main/java/com/englishflow/iam/web/IamProviderBoundaryController.java#adultGate",
+        "services/iam-service/src/main/java/com/englishflow/iam/domain/TrustedAgeEvidence.java"
+      ],
+      "proposedFix": "Point the assertion at if (age < 0 || age > 150) after int age = currentYear - request.birthYear() and before TrustedAgeEvidence.fromServerAttestation, and keep iam.adult_gate.birth_year_invalid on that branch. Do not move the null check. Do not delete the range guard. Do not close registration.",
+      "meaningfulChecks": [
+        "tests 738 and 739"
+      ],
+      "unknowns": []
+    }
+  ],
+  "implementationOrder": ["RC-J", "RC-F", "RC-A", "RC-B", "RC-C", "RC-I", "RC-G", "RC-H", "RC-D", "RC-E"],
+  "doNot": [
+    "change signed-access count === 1 to >= 1",
+    "add x-idempotency to mintMediaUploadUrl",
+    "drop revoke x-idempotency.required true to match keyless clients",
+    "annotate cursor pagination without honoring it",
+    "delete the OAS const ban",
+    "retarget M2-001 source sha a154f200 or overwrite historical OpenAPI or event expected digests",
+    "keep scope OPENAPI_GATEWAY_ROOT_AND_HEALTH_IDENTITY_ONLY while allowlisting the whole HEAD residual",
+    "silent-bump Gateway public or internal integers",
+    "add Gateway execution nodes beyond the locked 39 public and 4 internal residuals",
+    "change execution-target digest f6e9cb48 unless a projection field changes",
+    "delete withheld-route, cross-service schema, or adult-gate range checks",
+    "close POST /api/v1/auth/register",
+    "make account-deletion POST create succeed",
+    "treat fileCount updates as runtime proof",
+    "rewrite historical manifests or evidence digests",
+    "open new R1 cards from these P1R CI guards",
+    "re-run the full 1481 as the edit loop"
+  ],
+  "notRun": [
+    "full pnpm test:p1r 1481",
+    "Docker, JVM, browser, listeners, dependency installs, Git writes, source edits",
+    "this closeout did not re-run diagnose or re-read modules",
+    "GitHub was not re-queried; the second red job was not opened",
+    "subsequent CI steps after the p1r failure",
+    "hash of buildExpectedCatalog versus the M1-018 freeze commit",
+    "git diff of extra Flyway filenames versus the fileCount commit",
+    "full B9 lexeme/item oneOf branch dump after UNPUBLISH"
+  ]
+}

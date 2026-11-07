@@ -1,0 +1,16 @@
+{
+  "holder": "G404_ROOT_REAL_H5",
+  "at": "2026-11-07T14:45:26.417784+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18094,
+    18183
+  ],
+  "status": "RUNNING",
+  "runnerPid": 97876,
+  "preflight": "PASS_PYTHON312",
+  "source": "world-404-frozen/MANIFEST.json",
+  "pid": 97887
+}

@@ -1,0 +1,25 @@
+{
+  "job": "MB405_SAME_ACTOR_HOME_RETURN",
+  "status": "COMPOSED",
+  "runtime": "NOT_RUN",
+  "processesStarted": false,
+  "retestContinuation": false,
+  "routeFulfill": false,
+  "storageInjection": false,
+  "domainTableSeed": false,
+  "files": [
+    "pins.json",
+    "pin-rebind.cjs",
+    "preflight.cjs",
+    "home-return-observer.cjs",
+    "home-return-hook.cjs",
+    "wrapper.sh",
+    "REPORT.md",
+    "composition-receipt.json"
+  ],
+  "harnessBase": "placement-retest-canonical-macos-run-372-root/harness-source",
+  "h5": "reading-practice-integrated-g351-root/h5",
+  "h5IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "runDir": "/private/tmp/grok-mobile-resume-home-405/run"
+}

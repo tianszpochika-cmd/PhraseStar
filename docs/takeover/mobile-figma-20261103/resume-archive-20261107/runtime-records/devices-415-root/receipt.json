@@ -1,0 +1,79 @@
+{
+  "status": "FAIL",
+  "reason": "wire-outcome",
+  "timedOut": false,
+  "nodeStatus": 0,
+  "priorLeak": false,
+  "supervisor": {
+    "process": "device-others-runtime",
+    "user": "Admin",
+    "uid": 502,
+    "unixRoot": false,
+    "sudo": false
+  },
+  "label": "cloudstudy.qa.mobile-resume-devices-415-3755ca7a",
+  "containerName": "cloudstudy-owner-415-3755ca7a",
+  "prefix": "/tmp/grok-mobile-resume-devices-repair-415",
+  "parentErrorCategory": "unknown",
+  "childErrorCategory": "probe-exit",
+  "stage": "validate-repo",
+  "hookStage": "probe-exit",
+  "probeStatus": 2,
+  "acceptanceStatus": "PARTIAL",
+  "acceptancePreflightStatus": "PASS",
+  "firstFailedCheck": "repo.branch",
+  "instrumentPresent": true,
+  "logsOmitted": true,
+  "dockerUserConfig": "not-consulted",
+  "registryAuth": false,
+  "imagePull": "never",
+  "credentialGuard": "admin-socket-and-ephemeral-mysql-env",
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "locator": ".dev-cta[role=\"button\"]",
+  "sequentialCountedAsProof": false,
+  "ledger": {
+    "status": "PARTIAL",
+    "passed": 183,
+    "requiredFailed": 0,
+    "runtimeStatus": "NOT_RUNTIME_VERIFIED"
+  },
+  "wire": {
+    "instrumentStatus": "FAILED",
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "kickoutPosts": 2,
+    "kickoutStatuses": [
+      200,
+      200
+    ],
+    "kickoutPathsExact": true,
+    "refreshStatuses": [
+      403,
+      403
+    ],
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "expectedRows": 3
+  },
+  "counts": {
+    "accounts": 3,
+    "sessions": 6,
+    "devices": 6,
+    "consentRows": 3,
+    "notRuntimeVerified": 3
+  },
+  "ports": [
+    "127.0.0.1:13306",
+    "127.0.0.1:18070",
+    "127.0.0.1:18087",
+    "127.0.0.1:18183"
+  ],
+  "priorDirectory": "historical-two-file",
+  "priorResult": "absent",
+  "priorResultSha256": null,
+  "priorUnchanged": true,
+  "priorCleanup": "not-deleted"
+}

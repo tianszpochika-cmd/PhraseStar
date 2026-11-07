@@ -1,0 +1,12 @@
+[
+  {
+    "check": "stem_needle",
+    "literal": "\\'\"gradableQuestions\"\\', \\'readingRuleSeal\\', \\'Owner stem\\',",
+    "count": 1
+  },
+  {
+    "check": "stem_kept",
+    "literal": "\\'\"gradableQuestions\"\\', \\'readingRuleSeal\\',",
+    "count": 2
+  }
+]

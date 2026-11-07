@@ -1,0 +1,35 @@
+{
+  "job": "resume-20261107-mobile-trace-406",
+  "authoredAt": "2026-11-07",
+  "runtime": "NOT_RUN",
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "branch": "dev",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+  "acceptedEvidenceHead": "230d19ece835018eefdce1bbad52838a40abd912",
+  "b125Head": "b3f0e7cd",
+  "pauseCommitNoted": "9723c492",
+  "pagesJson": "apps/mobile/src/pages.json",
+  "routeCount": 33,
+  "trace": "TRACE_PENDING",
+  "signoff": "PENDING",
+  "dod": "not_run",
+  "figma": {
+    "fileKey": "UpcXTamTjwrb5OQg9WJiFu",
+    "design": "UIUX2.0RC1",
+    "node": "393:2",
+    "freeze": "CANDIDATE_NOT_FROZEN",
+    "cachedNodeRefs": 71
+  },
+  "b139IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "lastLocalPortsInPause": [13306, 18070, 18087, 18088, 18089, 18090, 18091, 18094, 18096, 18097, 18183, 19092],
+  "documents": {
+    "handoff": "CURRENT-HANDOFF.md",
+    "status": "docs/STATUS.md",
+    "progress": "docs/06-design/v2-980plus/redesign/CURRENT-PROGRESS.md",
+    "pause": "docs/takeover/mobile-figma-20261103/PAUSE-20261106.md",
+    "routeTrace": "docs/takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md",
+    "b125": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B125-CURRENT-ROUTE-TRACE-20261106.json",
+    "b115": "docs/takeover/mobile-figma-20261103/reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md",
+    "tasks": "docs/takeover/mobile-figma-20261103/TASKS.md"
+  }
+}

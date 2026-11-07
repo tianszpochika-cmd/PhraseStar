@@ -1,0 +1,1145 @@
+{
+  "job": "resume-20261107-mobile-trace-406",
+  "schema": "mobile-route-next-queue-v1",
+  "authoredAt": "2026-11-07",
+  "runtime": "NOT_RUN",
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "acceptedEvidenceHead": "230d19ece835018eefdce1bbad52838a40abd912",
+  "b125Head": "b3f0e7cd",
+  "trace": "TRACE_PENDING",
+  "signoff": "PENDING",
+  "dod": "not_run",
+  "figmaFreeze": "CANDIDATE_NOT_FROZEN",
+  "formalRouteSignoffs": 0,
+  "routeCount": 33,
+  "policy": {
+    "noInventedRequirementIds": true,
+    "noRouteOrDodSignoffFromThisAudit": true,
+    "reuseStoppedArtifacts": true,
+    "preferDistinctTasksOverExploratoryRewrites": true,
+    "currentCodeFirst": true
+  },
+  "lastLocalServiceStack": {
+    "ports": [13306, 18070, 18087, 18088, 18089, 18090, 18091, 18094, 18096, 18097, 18183, 19092],
+    "owners": ["mysql", "api-gateway", "iam-service", "learner-service", "content-service", "learning-service", "assessment-service", "gamification-service", "commerce-service", "admin-ops-service", "mobile-h5", "kafka"],
+    "notInLastLease": ["social-service:18095", "media-service:18092", "notification-service:18093"]
+  },
+  "siblingWaveDoNotDuplicate": [
+    { "job": "401", "scope": "MB-009 empty placement-required shelf H5", "reuse": "G392" },
+    { "job": "402", "scope": "MB-025 one bulk device CTA plus two refresh denials", "reuse": "G394 plus G383" },
+    { "job": "403", "scope": "MB-014 to MB-011 one CHOICE click score and same-key H5", "reuse": "G399 plus G360/G387" },
+    { "job": "404", "scope": "MB-018 world default H5", "reuse": "G368/G382; G398 had no artifact" },
+    { "job": "405", "scope": "MB-001 returnTo home plus MB-007 READY plan read", "reuse": "G397 dependency report" }
+  ],
+  "distinctPriorityQueue": [
+    {
+      "rank": 1,
+      "id": "WAVE-401",
+      "routes": ["MB-009"],
+      "task": "Real H5 of the B140 empty placement-required shelf through loadHome content, no catalog seed.",
+      "closeableNow": true,
+      "assigned": "401",
+      "reuse": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/392"
+    },
+    {
+      "rank": 2,
+      "id": "WAVE-403",
+      "routes": ["MB-014", "MB-011"],
+      "task": "One published-reading CHOICE click on MB-011 after MB-014 openReadingPracticeSession; visible score; same-key keeps one answer.",
+      "closeableNow": true,
+      "assigned": "403",
+      "reuse": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/399"
+    },
+    {
+      "rank": 3,
+      "id": "WAVE-404",
+      "routes": ["MB-018"],
+      "task": "Real H5 of the B146 five default gamification GETs; no reward writes.",
+      "closeableNow": true,
+      "assigned": "404",
+      "reuse": "G368 classifier and G382 receipt; G398 produced no files"
+    },
+    {
+      "rank": 4,
+      "id": "WAVE-402",
+      "routes": ["MB-025"],
+      "task": "One compiled bulk CTA plus confirmation, then two old refresh denials; sequential revoke is not this proof.",
+      "closeableNow": true,
+      "assigned": "402",
+      "reuse": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/394"
+    },
+    {
+      "rank": 5,
+      "id": "WAVE-405",
+      "routes": ["MB-001", "MB-007"],
+      "task": "Fresh adult, mock consents, G303 target, ten placement answers, plans:ensure, then login returnTo=/pages/home/home with live home state READY.",
+      "closeableNow": true,
+      "assigned": "405",
+      "reuse": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/397/REPORT.md"
+    },
+    {
+      "rank": 6,
+      "id": "NEXT-MB006-RETEST-REPLAY",
+      "routes": ["MB-006"],
+      "task": "Same-key retest replay after a B141-class 201. Skip write stays off this page. DEC-04 stays open.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/391"
+    },
+    {
+      "rank": 7,
+      "id": "NEXT-MB005-FORBIDDEN-H5",
+      "routes": ["MB-005"],
+      "task": "B145 REJECTED actor on real H5: visible adult reason, then current-session logout.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B145 wire receipt; G378 classifier"
+    },
+    {
+      "rank": 8,
+      "id": "NEXT-MB019-GAMES-CATALOG",
+      "routes": ["MB-019"],
+      "task": "One Gateway /games/catalog owner read from the existing loadWorld path. Session creates stay 0.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B146 gamification stack"
+    },
+    {
+      "rank": 9,
+      "id": "NEXT-MB021-AVATAR-READ",
+      "routes": ["MB-021"],
+      "task": "One Gateway avatar profile, items, loadouts, resources read. Equip and save stay 0.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B146 gamification stack"
+    },
+    {
+      "rank": 10,
+      "id": "NEXT-MB002-SAME-KEY-409",
+      "routes": ["MB-002"],
+      "task": "Replay the B129 duplicate register with the same idempotency key. Duplicate 409 itself is already proved.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B129 negative H5"
+    },
+    {
+      "rank": 11,
+      "id": "NEXT-MB015-GRADED-READ",
+      "routes": ["MB-015"],
+      "task": "Same published article on this route; node 168:2513 stays closed.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B126/B139 published article"
+    },
+    {
+      "rank": 12,
+      "id": "NEXT-MB017-EXPIRED-SHARE",
+      "routes": ["MB-017"],
+      "task": "Anonymous expired-link read after B117 valid and revoke. Server-failure path stays separate.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B117"
+    },
+    {
+      "rank": 13,
+      "id": "NEXT-MB027-QUALITY-FAIL",
+      "routes": ["MB-027"],
+      "task": "One local quality failure with zero learner preference PATCH.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B40/B142 quality path"
+    },
+    {
+      "rank": 14,
+      "id": "NEXT-MB013-LEARNING-CONSUME",
+      "routes": ["MB-013"],
+      "task": "learning-service consumes the existing B110 assessment.item.assessed.v2 once. Not a grammar page rewrite.",
+      "closeableNow": true,
+      "assigned": null,
+      "reuse": "B110/B122"
+    },
+    {
+      "rank": 15,
+      "id": "NEXT-MB016-MISTAKE-DETAIL",
+      "routes": ["MB-016"],
+      "task": "Owner-backed mistake detail after the consume. Empty, not-ready, failed, partial distinguished.",
+      "closeableNow": false,
+      "dependsOn": "NEXT-MB013-LEARNING-CONSUME",
+      "assigned": null,
+      "reuse": "B134 Java bind"
+    }
+  ],
+  "closeableLocalGates": [
+    "MB-009 empty shelf H5 via current loadHome",
+    "MB-014/MB-011 published-reading CHOICE H5 via current openReadingPracticeSession and B10ExerciseCard.choose",
+    "MB-018 world default H5 via current getB4Profile/getB4Streak/listB4Quests/getB4Season",
+    "MB-025 bulk device CTA via current revokeOtherDevices",
+    "MB-001/MB-007 READY home return via current continueAfterLogin plus loadHome",
+    "MB-006 same-key retest via current retestPlacement",
+    "MB-005 forbidden H5 plus logout via current refreshGateFromServer",
+    "MB-019 games catalog via current b4.loadWorld listB4Games",
+    "MB-021 avatar reads via current getB4AvatarProfile/listB4AvatarItems/listB4Loadouts/getB4AvatarResources",
+    "MB-002 register same-key 409 via current register page",
+    "MB-015 graded article read via current listReadingArticles/getReadingArticle",
+    "MB-017 expired share via current report-share route",
+    "MB-027 local quality failure via current setMobileQuality",
+    "MB-013 Learning consume of the existing Kafka item"
+  ],
+  "notCurrentNormalEntry": [
+    "MB-010 learning-service hub load: practice.vue is a static hub and makes no hub API call",
+    "MB-006 skip write: assessment.vue has no skip CTA and no skipPlacement client",
+    "MB-008 due-row completion: due rows are not buttons; completeTask is unused by the page",
+    "MB-014 submitReadingAttempt on this file: READING_SERVER_WRITES.submitReadingAttempt is closed; submit is MB-011",
+    "MB-022 package owner read: listB4OfflinePackages is unavailableOperation()",
+    "MB-029/030/031/032/033 capability opens: closed notices already proved"
+  ],
+  "blockedBuckets": {
+    "productDecision": ["DEC-04 MB-006 feedback timing", "G183 MB-010 tab stays on MB-011", "DEC-12 reward/join/equip/session creates", "DEC-01/DEC-10 purchase", "DEC-09 export/deletion worker", "DEC-07/DEC-08 vocab duration and rights", "DEC-11 speaking when opened", "DEC-05 comprehensive resume and offline draft"],
+    "formalPublication": ["MB-004 server-published consent versions", "MB-003 actual verification-code delivery"],
+    "nativeHardware": ["DCloud installable host", "real iOS/Android/iPad", "screen reader", "hardware keystore beyond B98/B101 simulators", "true-device frame/memory"],
+    "deployment": ["all 33 routes", "CI toolchain port-digest mismatch"]
+  },
+  "doNotRepeat": [
+    "B129 wrong-password 401, unknown-reset 202, duplicate-register 409",
+    "B121 login 200 and register 201 landings",
+    "B96 ten placement answers and three due-row reads",
+    "B141 first confirmed retest 201",
+    "B139 reading create/read 200",
+    "B144 protected score and same-key by wire",
+    "B140 shelf owner wire",
+    "B146 world five default GETs",
+    "B142 settings LIGHT/SYSTEM reload",
+    "B127 profile ready H5",
+    "B136 support empty legacy H5",
+    "B143 commerce three empty H5 reads",
+    "B117 valid then revoked anonymous share",
+    "B65 closed workspaces",
+    "B135 synthetic tablet on B116 bundle",
+    "Synthetic H5 rewrites of already-wired pages"
+  ],
+  "staleWording": {
+    "alreadyStaleCorrectInRootDocsAfterThisAudit": [
+      {
+        "where": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B125-CURRENT-ROUTE-TRACE-20261106.json",
+        "issue": "Many next fields predate B126-B146. Treat B125 as dated structured snapshot at b3f0e7cd, not current next-test ledger."
+      },
+      {
+        "where": "B125 MB-001 next",
+        "issue": "Wrong-password login is done by B129. Current next is READY home return."
+      },
+      {
+        "where": "B125 MB-002 next",
+        "issue": "Duplicate registration is done by B129. Current next is same-key 409 replay."
+      },
+      {
+        "where": "B125 MB-003 next",
+        "issue": "Unknown-account 202 is done by B129. Current next is authorized delivery."
+      },
+      {
+        "where": "B125 MB-005 next",
+        "issue": "IAM REJECTED wire is done by B145. Current next is visible H5 reason plus logout."
+      },
+      {
+        "where": "B125 MB-006 next and runtime",
+        "issue": "First retest is done by B141. Skip write was never on this page. Current next is same-key retest replay."
+      },
+      {
+        "where": "B125 MB-009 next",
+        "issue": "Catalog owner wire is done by B140. Current next is H5 empty shelf."
+      },
+      {
+        "where": "B125 MB-014 next",
+        "issue": "Learner published read and H5 create/read are done by B126/B139. Current next is H5 CHOICE score."
+      },
+      {
+        "where": "B125 MB-018 next",
+        "issue": "Gateway default reads are done by B146. Current next is H5 default render."
+      },
+      {
+        "where": "B125 MB-023 next",
+        "issue": "Profile ready H5 is done by B127. Current next is native-device read."
+      },
+      {
+        "where": "B125 MB-024 next",
+        "issue": "H5 preference save/reload/restore is done by B142."
+      },
+      {
+        "where": "B125 MB-026 next",
+        "issue": "Gateway and empty H5 reads are done by B132/B143."
+      },
+      {
+        "where": "B125 MB-028 next",
+        "issue": "Empty H5 list is done by B136. Current next is formal cursor then nonempty."
+      },
+      {
+        "where": "docs/takeover/mobile-figma-20261103/ROUTE-TRACE-CURRENT.md MB-002 gap",
+        "issue": "Duplicate account remains open is stale. B129 closed duplicate 409. Same-key replay remains open."
+      },
+      {
+        "where": "docs/takeover/mobile-figma-20261103/reviews/FIGMA-RC1-ROUTE-TRACE-20261106.md",
+        "issue": "Register-not-run, IAM 403 unrun, retest unrun, catalog unrun, gamification unrun, profile nickname unrun, settings unrun, commerce synthetic-only, report-share H5 pending, and support H5 pending are all stale against B121/B129/B141/B140/B145/B146/B127/B142/B143/B117/B136."
+      },
+      {
+        "where": "docs/takeover/mobile-figma-20261103/TASKS.md execution-batch cells",
+        "issue": "MB-005/009/018/023/024/026/028 still read as H5 or TRACE_PENDING without B145/B140/B146/B127/B142/B143/B136."
+      },
+      {
+        "where": "CHECKPOINT.json pages[].evidence.real_api for auth/profile",
+        "issue": "Several real_api NOT_RUN flags predate B121/B127/B129."
+      },
+      {
+        "where": "registry prose that mobile has no devices page",
+        "issue": "Stale against pages.json pages/devices/devices."
+      }
+    ],
+    "correctOnlyAfterAssignedJobsActuallyRun": [
+      "PAUSE-20261106 remaining G392/G394/G399/G398/G397 lines after 401-405 execute",
+      "ROUTE-TRACE-CURRENT next cells for MB-001, MB-007, MB-009, MB-011, MB-014, MB-018, MB-025",
+      "H5 remains separate sentences for shelf and world after 401 and 404",
+      "G397 STOPPED home-return sentence after 405",
+      "Do not pre-edit those sentences from this audit"
+    ]
+  },
+  "b125NextDelta": [
+    { "id": "MB-001", "b125Next": "One wrong-password login remaining on login.", "currentNext": "READY home return after completed onboarding and placement." },
+    { "id": "MB-002", "b125Next": "One duplicate registration.", "currentNext": "Same-key replay of the proved 409." },
+    { "id": "MB-003", "b125Next": "One unknown-account request.", "currentNext": "Authorized delivery for a known disposable actor." },
+    { "id": "MB-005", "b125Next": "One local IAM REJECTED gate then logout.", "currentNext": "Visible forbidden reason on real H5 then logout." },
+    { "id": "MB-006", "b125Next": "One retestPlacement of the B96 session.", "currentNext": "Same-key retest replay. Skip write is not on this page." },
+    { "id": "MB-009", "b125Next": "One adult Gateway catalog list on this route.", "currentNext": "H5 display of the B140 empty placement-required shelf." },
+    { "id": "MB-011", "b125Next": "Create session, checkpoint, submit, open report.", "currentNext": "Visible reading CHOICE score on this route. Comprehensive flow stays separate." },
+    { "id": "MB-014", "b125Next": "One learner read of the bound article.", "currentNext": "H5 CHOICE submit and feedback after B139/B144." },
+    { "id": "MB-018", "b125Next": "One Gateway summary and season read.", "currentNext": "H5 default-state display of the B146 reads." },
+    { "id": "MB-023", "b125Next": "Continue H5 until profile/targets/preferences load.", "currentNext": "Native-device read of the ready profile." },
+    { "id": "MB-024", "b125Next": "One H5 patchB9LearnerPreferences.", "currentNext": "Notification, consent, and privacy remain separate after B142." },
+    { "id": "MB-026", "b125Next": "One Gateway catalog/entitlements/orders H5 read.", "currentNext": "Populated caller and authorized order detail in a separate scope." },
+    { "id": "MB-028", "b125Next": "Open this H5 route against Gateway reads.", "currentNext": "Formal cursor response, then one nonempty ticket. Create stays closed." }
+  ],
+  "routes": [
+    {
+      "id": "MB-001",
+      "name": "登录",
+      "route": "#/pages/login/login",
+      "file": "apps/mobile/src/pages/login/login.vue",
+      "figmaNodes": ["98:1182", "248:1391"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "IAM TLS login from this page. Default returnTo is /pages/home/home. continueAfterLogin keeps home only when the session is learning-ready and resume is not gate, consent, or unsaved goal.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B121-AUTH-H5-RETURN.md", "reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md"],
+        "wire": [],
+        "stopped": ["/tmp/grok-mobile-auth-recovery-owner-runtime-344 G344 same-actor 401 then 200 landed onboarding"]
+      },
+      "nextTest": "One login at returnTo=/pages/home/home after a same-actor target, ten placement answers, and plans:ensure, with live GET /api/v1/learner/home state READY.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "405",
+      "reuseArtifact": "user-pause-20261106/worker-snapshots/397/REPORT.md",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "G344 onboarding landing is not this proof. Native and deploy stay open for all routes." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-AUTH-LOGIN", "FEAT-USR-001", "V2-980-0359", "PRD-ATOM-1044", "V2-980-0366", "BC-004", "IC-053", "R1-004"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-002",
+      "name": "注册",
+      "route": "#/pages/register/register",
+      "file": "apps/mobile/src/pages/register/register.vue",
+      "figmaNodes": ["98:2169"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "One register 201 into onboarding with learning eligibility restricted. Duplicate from this page returns 409 iam.account.already_exists and creates no account.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B121-AUTH-H5-RETURN.md", "reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Same-key replay of the proved 409. Do not re-run a second exploratory duplicate.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B129",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "B115 register-not-run is stale." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-AUTH-REGISTER-RESET", "FEAT-USR-001", "V2-980-0359", "PRD-ATOM-1044", "V2-980-0366", "BC-002", "IC-052", "R1-002"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-003",
+      "name": "找回密码",
+      "route": "#/pages/reset-password/reset-password",
+      "file": "apps/mobile/src/pages/reset-password/reset-password.vue",
+      "figmaNodes": ["98:3187", "98:3496"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Request and confirm UI. Unknown-account request returns 202, shows a neutral receipt, records delivery_attempt false, and creates no challenge.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B114-RESET-IMMEDIATE-INPUT.md", "reviews/INTEGRATION-B129-AUTH-NEGATIVE-H5.md"],
+        "wire": ["reviews/INTEGRATION-B34-RESET.md", "evidence/ROOT-B79-LOCAL-IAM-RESET-PRIVACY-20261105.json"],
+        "stopped": []
+      },
+      "nextTest": "One authorized delivery for a known disposable actor. Unknown-account 202 is done.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B129 plus B79",
+      "blockers": { "productDecision": false, "formalPublication": true, "native": true, "hardware": true, "deployment": true, "notes": "Actual code delivery remains open. Local mailpit is optional and was not the last proved path." },
+      "requirementIds": {
+        "exactAnchors": ["FEAT-USR-002", "V2-980-0360", "BC-012", "IC-054", "R1-012"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-004",
+      "name": "成人门、同意与目标",
+      "route": "#/pages/onboarding/onboarding",
+      "file": "apps/mobile/src/pages/onboarding/onboarding.vue",
+      "figmaNodes": ["164:5455", "164:5944", "164:6595", "164:6762", "164:7399"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Required consents use apps/mobile/tests/fixtures/mock-consent-publication.json. B85 saved one CET_4_6 / B1 / 30-minute target and reached placement.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B57-ONBOARDING-CONSENT.md", "reviews/INTEGRATION-B135-TABLET-H5-A11Y.md"],
+        "wire": ["evidence/ROOT-B84-CURRENT-H5-IAM-20261106.json", "evidence/ROOT-B85-LOCAL-H5-LEARNER-TARGET-20261106.json"],
+        "stopped": []
+      },
+      "nextTest": "Sign one server-published consent version on this page, leaving the mock fixture unused.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "mock-consent-publication.json remains the authorized fixture until publication exists",
+      "blockers": { "productDecision": true, "formalPublication": true, "native": true, "hardware": true, "deployment": true, "notes": "DEC-02 remains open. PRD-ATOM-1044 is the login atom." },
+      "requirementIds": {
+        "exactAnchors": ["FEAT-ONB-001", "V2-980-0001", "PAGE-P1-ADULT-CONSENT", "PAGE-P1-ONB-GOAL", "BC-008", "R1-008"],
+        "withheldUnadopted": ["PRD-ATOM-1044"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-005",
+      "name": "访问受限",
+      "route": "#/pages/forbidden/forbidden",
+      "file": "apps/mobile/src/pages/forbidden/forbidden.vue",
+      "figmaNodes": ["270:3110"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Page reads adultGate from session.refreshGateFromServer and shows adult, paused, generic, or unknown copy. Logout is a page action.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B53-FORBIDDEN.md"],
+        "wire": ["reviews/INTEGRATION-B145-IAM-REJECTED-ELIGIBILITY-WIRE.md"],
+        "stopped": []
+      },
+      "nextTest": "Visible adult forbidden reason on real H5 for the B145 REJECTED actor, then current-session logout.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B145",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No own PAGE, FEAT, or PRD. Leave them unnumbered." },
+      "requirementIds": {
+        "exactAnchors": ["BC-007", "BC-201", "R1-007", "R1-013", "IC-055"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-006",
+      "name": "定级",
+      "route": "#/pages/assessment/assessment",
+      "file": "apps/mobile/src/pages/assessment/assessment.vue",
+      "figmaNodes": ["166:1209", "166:1396", "166:1467", "166:1552", "166:1918", "166:2015"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Ten-question placement, report, and confirmed retestPlacement 201 with a new empty session. Skip is display-only. The page has no skip CTA and no skipPlacement client. Gateway skip is /api/v1/assessment/placement/baselines/skip on learner-web.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md", "reviews/INTEGRATION-B141-PLACEMENT-RETEST-H5.md", "reviews/INTEGRATION-B135-TABLET-H5-A11Y.md"],
+        "wire": [],
+        "stopped": ["user-pause-20261106/worker-snapshots/391"]
+      },
+      "nextTest": "Same-key retest replay of a B141-class 201. Do not add a skip button. DEC-04 stays open.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "worker-snapshots/391/placement-retest-same-key-replay.cjs",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-04 feedback timing. Skip write is product/design, not a current mobile entry." },
+      "requirementIds": {
+        "exactAnchors": ["FEAT-ONB-003", "V2-980-0003", "FEAT-ONB-004", "V2-980-0004", "PAGE-P1-ASSESSMENT", "PAGE-P1-ASSESSMENT-RESULT"],
+        "withheldUnadopted": ["PRD-ATOM-0087", "PRD-ATOM-0088", "PRD-ATOM-0089", "PRD-ATOM-0090", "PRD-ATOM-0091", "PRD-ATOM-0092"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-007",
+      "name": "首页",
+      "route": "#/pages/home/home",
+      "file": "apps/mobile/src/pages/home/home.vue",
+      "figmaNodes": ["166:7348", "247:1980", "251:215", "251:2", "251:362"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Renders targetMinutes, task minutes, and task status from loadHome. Unfinished placement keeps the assessment guide. READY needs an ACTIVE plan with at least one task.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B50-HOME.md"],
+        "wire": ["reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md"],
+        "stopped": ["user-pause-20261106/worker-snapshots/397/REPORT.md"]
+      },
+      "nextTest": "Show that plan's minutes, status, and version on this route after a same-actor login return. Assigned 405.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "405",
+      "reuseArtifact": "G397 dependency report",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "B91 plan read did not drive this screen. Do not seed a pin or plan outside plans:ensure." },
+      "requirementIds": {
+        "exactAnchors": ["FEAT-ONB-010", "V2-980-0010", "PAGE-P1-LEARN-HOME", "JNY-P1-05"],
+        "withheldUnadopted": ["PRD-ATOM-0114"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-008",
+      "name": "今日任务",
+      "route": "#/pages/today/today",
+      "file": "apps/mobile/src/pages/today/today.vue",
+      "figmaNodes": ["166:11121", "166:11635", "355:5246", "355:5315", "355:5384", "355:5453"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Read-only due rows when home.tasks is empty. Home tasks are clickable only when canLaunchTask. completeTask exists in the store and is unused by this page.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B96-H5-PLACEMENT-LEARNING.md", "reviews/INTEGRATION-B135-TABLET-H5-A11Y.md"],
+        "wire": ["reviews/INTEGRATION-B91-LOCAL-LEARNING-PLAN.md"],
+        "stopped": []
+      },
+      "nextTest": "After a READY home, launch one home.task with a real contentCode. Do not invent a due-row click or practiceRef.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B96 due-row display",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "Depends on 405 READY facts. Persistent Learning consumer stays separate. Current read is getB10LearningToday." },
+      "requirementIds": {
+        "exactAnchors": ["FEAT-ONB-012", "V2-980-0012", "PAGE-P1-TODAY"],
+        "withheldUnadopted": ["PRD-ATOM-0494", "V2-980-0255"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-009",
+      "name": "学习与课程",
+      "route": "#/pages/learn/learn",
+      "file": "apps/mobile/src/pages/learn/learn.vue",
+      "figmaNodes": ["167:1933", "167:2065"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Shelf is store.home.content after loadHome, with denial/error/unavailable/empty copy. Detail uses readContent. Empty catalogEmpty copy exists.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B47-LEARN.md"],
+        "wire": ["reviews/INTEGRATION-B131-LEARN-HOME-OWNER-DENIAL.md", "reviews/INTEGRATION-B140-LEARN-CATALOG-OWNER-WIRE.md"],
+        "stopped": ["user-pause-20261106/worker-snapshots/392"]
+      },
+      "nextTest": "H5 display of the B140 empty, placement-required shelf. Populated course, no-hit, and real denial UI stay apart.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "401",
+      "reuseArtifact": "worker-snapshots/392",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "B125 catalog-list next is stale. Current page uses loadHome content." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-COURSE-SHELF", "PAGE-P1-PLAN-MAP", "FEAT-ONB-014", "V2-980-0014", "BC-199", "IC-029", "IC-039"],
+        "withheldUnadopted": ["PRD-ATOM-0141"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-010",
+      "name": "练习入口",
+      "route": "#/pages/practice/practice",
+      "file": "apps/mobile/src/pages/practice/practice.vue",
+      "figmaNodes": ["167:4008"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Static hub. Listening and speaking rows are closed. No learning-service hub load. TabBar practice path is pages/b2-practice/b2-practice.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B52-PRACTICE.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep G183. Do not rewrite a hub load the page does not call. Closed listening/speaking reasons stay as static copy.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "G183/B52",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "Tab stays on MB-011 until a design choice changes G183." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-PRACTICE-HUB"],
+        "withheldUnadopted": ["FEAT-ASM-012", "PRD-ATOM-0474"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-011",
+      "name": "旧综合练习入口",
+      "route": "#/pages/b2-practice/b2-practice",
+      "file": "apps/mobile/src/pages/b2-practice/b2-practice.vue",
+      "figmaNodes": ["167:5317"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Practice tab. Reading handoff from MB-014 uses loadReadingPractice. CHOICE click on B10ExerciseCard emits answer immediately and store.submitAnswer runs. Comprehensive flow is separate.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B52-PRACTICE.md", "reviews/INTEGRATION-B139-READING-PRACTICE-INTEGRATED-H5.md"],
+        "wire": ["reviews/INTEGRATION-B144-READING-PROTECTED-SCORE-REPLAY.md"],
+        "stopped": ["user-pause-20261106/worker-snapshots/399"]
+      },
+      "nextTest": "Visible reading score and feedback after one CHOICE click. Older comprehensive flow stays a later distinct task.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "403",
+      "reuseArtifact": "worker-snapshots/399",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-05 remains open for comprehensive resume." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-PRACTICE-SESSION"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-012",
+      "name": "词汇与复习",
+      "route": "#/pages/b2-vocabulary/b2-vocabulary",
+      "file": "apps/mobile/src/pages/b2-vocabulary/b2-vocabulary.vue",
+      "figmaNodes": ["167:6151"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Simulated cards. vocabPlayable is true only when audioUrl is a non-empty string. No real clip or SRS write evidence.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B54-VOCAB-GRAMMAR.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One published item with missing audio and no fake playback, plus one learning-owner due row the client does not write.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B54",
+      "blockers": { "productDecision": true, "formalPublication": true, "native": true, "hardware": true, "deployment": true, "notes": "Needs a published vocab item. DEC-07 and DEC-08 limit duration and rights. Do not fake playback." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-VOCAB", "PAGE-P1-SRS", "FEAT-VOC-005", "V2-980-0027"],
+        "withheldUnadopted": ["PRD-ATOM-0176"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-013",
+      "name": "语法与长难句",
+      "route": "#/pages/b3-grammar/b3-grammar",
+      "file": "apps/mobile/src/pages/b3-grammar/b3-grammar.vue",
+      "figmaNodes": ["167:7689", "167:7790", "167:8072", "167:8406", "167:8665"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "H5 one-item create and submitGrammarAnswer 200, Kafka produce of assessment.item.assessed.v2, and cross-service owner read.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B110-GRAMMAR-H5-KAFKA.md"],
+        "wire": ["reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md", "reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md"],
+        "stopped": []
+      },
+      "nextTest": "learning-service consumes that one assessment.item.assessed.v2 once and writes only that item. Not a grammar UI rewrite.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B110",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "One item does not cover five frames. PRD-ATOM-0474 stays unadopted." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-GRAMMAR", "FEAT-GRM-001", "V2-980-0071", "BC-034", "BC-036", "IC-022"],
+        "withheldUnadopted": ["PRD-ATOM-0474"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-014",
+      "name": "阅读精练",
+      "route": "#/pages/b3-reading/b3-reading",
+      "file": "apps/mobile/src/pages/b3-reading/b3-reading.vue",
+      "figmaNodes": ["168:1313", "168:1246", "168:3333", "168:2234", "168:2607"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Lists and reads published articles, then openReadingPracticeSession and hands off to /pages/b2-practice/b2-practice. submitReadingAttempt on this file is closed.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B126-READING-PUBLISHED-H5.md", "reviews/INTEGRATION-B139-READING-PRACTICE-INTEGRATED-H5.md"],
+        "wire": ["reviews/INTEGRATION-B118-READING-ARTICLE-BINDING.md", "reviews/INTEGRATION-B144-READING-PROTECTED-SCORE-REPLAY.md"],
+        "stopped": ["user-pause-20261106/worker-snapshots/399"]
+      },
+      "nextTest": "One visible CHOICE click after the B139 session, rendering saved score/feedback, same-key one DB answer. Learning consume stays out.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "403",
+      "reuseArtifact": "worker-snapshots/399",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-08 remains open. PAGE-P1-READING is shared with MB-015. PRD-ATOM-0392 is a slice." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-READING", "FEAT-RDG-002", "V2-980-0136", "BC-035", "BC-038", "IC-022", "IC-023"],
+        "withheldUnadopted": ["PRD-ATOM-0392"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-015",
+      "name": "分级阅读",
+      "route": "#/pages/b11-reading/b11-reading",
+      "file": "apps/mobile/src/pages/b11-reading/b11-reading.vue",
+      "figmaNodes": ["168:2513", "168:1313", "168:1246", "168:3333", "168:2234", "168:2607"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Reader keyboard and font 100-200%. listReadingArticles and getReadingArticle are live. Node 168:2513 comprehension stays closed.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B119-GRADED-READING-TOOLS.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One published graded-article read on this route for the same learner and content version, with 168:2513 still closed.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B126 published article if listed here",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No separate graded-reader FEAT or PRD-ATOM. Comprehension-check atom stays unnumbered." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-READING", "FEAT-RDG-002", "V2-980-0136", "BC-038", "BC-200"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-016",
+      "name": "错题与报告",
+      "route": "#/pages/b10-report/b10-report",
+      "file": "apps/mobile/src/pages/b10-report/b10-report.vue",
+      "figmaNodes": ["169:667", "169:1058", "169:1392", "169:991", "169:921"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Page can request getMistakeDetail and issue/revoke share. Owner-backed mistake rows need Learning projection. B117 stays on MB-017.",
+      "evidence": {
+        "h5": [],
+        "wire": ["reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md", "reviews/INTEGRATION-B134-LEARNING-JAVA-OWNER-BINDING.md"],
+        "stopped": []
+      },
+      "nextTest": "Owner-backed mistake detail here after Learning consume, with empty, not-ready, failed, and partial rows distinguished.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B134",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "Depends on MB-013 consume. SRS and mistake projection stay open." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-MISTAKES-MASTERY", "PAGE-P1-REPORT", "FEAT-ASM-011", "V2-980-0225", "FEAT-ASM-019", "V2-980-0233", "IC-030", "IC-031"],
+        "withheldUnadopted": ["PRD-ATOM-0596"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-017",
+      "name": "报告分享",
+      "route": "#/pages/report-share/report-share",
+      "file": "apps/mobile/src/pages/report-share/report-share.vue",
+      "figmaNodes": ["169:1714"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Anonymous browser read of a weekly share, then revoked reload. Four public GETs, no credentials.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B117-REPORT-SHARE-REAL-H5.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Anonymous expired-link read on this route. Learning-service failure stays a later distinct path.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B117",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "Missing FEAT, PRD-ATOM, report-share PAGE, anonymous-reader journey, and current R1 row. PAGE-P1-REPORT is /b10-report." },
+      "requirementIds": {
+        "exactAnchors": ["BC-068", "IC-033"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-018",
+      "name": "成长世界",
+      "route": "#/pages/world/world",
+      "file": "apps/mobile/src/pages/world/world.vue",
+      "figmaNodes": ["169:3034"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Page reads getB4Profile, getB4Streak, listB4Quests, getB4Season. Default empty projections already proved by wire. Reward writes exist in the API and must stay unused.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B46-WORLD-TODAY.md"],
+        "wire": ["reviews/INTEGRATION-B138-WORLD-READ-ONLY-JDBC.md", "reviews/INTEGRATION-B146-WORLD-DEFAULT-OWNER-WIRE.md"],
+        "stopped": []
+      },
+      "nextTest": "Default-state display in the real H5. Populated owner stays a separate later scope.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "404",
+      "reuseArtifact": "G368 and G382; G398 had no artifact",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-12 open. R1-049 and BC-044 are the practice outbox, not a world-hub FEAT." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-WORLD", "FEAT-GAM-022", "V2-980-0288", "BC-126", "IC-073"],
+        "withheldUnadopted": ["R1-049", "BC-044"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-019",
+      "name": "游戏目录边界",
+      "route": "#/pages/b4-games/b4-games",
+      "file": "apps/mobile/src/pages/b4-games/b4-games.vue",
+      "figmaNodes": ["169:5353"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "onShow calls b4.loadWorld, which includes listB4Games /games/catalog. createB4GameSession exists and must stay at zero.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B20.md", "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One Gateway catalog read for SENTENCE_TRAIN releasePhase and enabled, or an explicit closed reason. Session creates stay 0.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B146 gamification stack",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-12. PRD-ATOM-0729 is a play-one-game atom." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-GAME", "BC-109", "IC-064", "FEAT-GAM-009", "V2-980-0275"],
+        "withheldUnadopted": ["PRD-ATOM-0729"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-020",
+      "name": "自习室和社交边界",
+      "route": "#/pages/b4-social/b4-social",
+      "file": "apps/mobile/src/pages/b4-social/b4-social.vue",
+      "figmaNodes": ["169:6882"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "onShow uses b4.loadWorld including listB4Rooms /social/rooms. Join and seat writes exist and must stay at zero.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B20.md", "reviews/INTEGRATION-B62-BOUNDARIES-AND-KEYBOARD.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One Gateway room projection from social-service, rendered as the allowed or closed range. Join and seat writes stay 0.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B20/B62",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "social-service 18095 was not in the last local lease. DEC-12 remains open over the static public-room sentence. PRD-ATOM-1097 is an INF sync atom." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-SOCIAL", "BC-110", "BC-109", "JNY-P1-11", "FEAT-SOC-001", "V2-980-0335"],
+        "withheldUnadopted": ["PRD-ATOM-1097"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-021",
+      "name": "头像与衣柜",
+      "route": "#/pages/b4-avatar/b4-avatar",
+      "file": "apps/mobile/src/pages/b4-avatar/b4-avatar.vue",
+      "figmaNodes": ["169:8026"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Page already calls getB4AvatarProfile, listB4AvatarItems, listB4Loadouts, getB4AvatarResources. Equip and save exist and must stay at zero.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B44-AVATAR.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One Gateway avatar profile, items, and loadouts read from gamification-service. Equip and save stay 0.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B146 gamification stack",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "DEC-12. PRD-ATOM-0718 is 头像框 only." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-AVATAR-REWARD", "BC-121", "BC-108", "IC-070", "FEAT-GAM-013", "V2-980-0279"],
+        "withheldUnadopted": ["PRD-ATOM-0718"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-022",
+      "name": "离线服务边界",
+      "route": "#/pages/b4-offline/b4-offline",
+      "file": "apps/mobile/src/pages/b4-offline/b4-offline.vue",
+      "figmaNodes": ["169:8610"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed download notice. listB4OfflinePackages is unavailableOperation(). The page also calls loadWorld. Download controls are absent from the notice.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B01.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep the closed notice. Do not add a Gateway package read the client does not call.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B01/B65 closed pattern",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-INF-004 is the closed download design. DEC-01 and DEC-05 stay open. No closed-boundary PRD-ATOM." },
+      "requirementIds": {
+        "exactAnchors": ["IC-062", "BC-101", "BC-102", "PAGE-P1-SYNC-OFFLINE"],
+        "withheldUnadopted": ["FEAT-INF-004"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-023",
+      "name": "我的",
+      "route": "#/pages/profile/profile",
+      "file": "apps/mobile/src/pages/profile/profile.vue",
+      "figmaNodes": ["169:9544"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Ready H5 with one profile read, one target read, and one preference read. Visible summary matched the saved goal. Preference patches stayed 0.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B127-PROFILE-OWNER-H5.md", "reviews/INTEGRATION-B135-TABLET-H5-A11Y.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One native-device read of this ready profile. Do not repeat the H5 ready proof.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B127",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No profile PAGE id. PAGE-P1-ONB-GOAL is /onboarding. PAGE-P1-SETTINGS is /settings. FEAT-USR-006 is profile edit. PRD-ATOM-1052 is system avatar." },
+      "requirementIds": {
+        "exactAnchors": ["ACT-P1-VISITOR", "ACT-P1-LEARNER"],
+        "withheldUnadopted": ["FEAT-USR-006", "PRD-ATOM-1052", "PAGE-P1-ONB-GOAL", "PAGE-P1-SETTINGS"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-024",
+      "name": "设置与隐私",
+      "route": "#/pages/settings/settings",
+      "file": "apps/mobile/src/pages/settings/settings.vue",
+      "figmaNodes": ["169:10755"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "LIGHT save, hard reload with IAM TLS refresh, LIGHT readback, then SYSTEM restore. Medium quality persisted locally with no extra PATCH.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B142-SETTINGS-H5-RELOAD-RESTORE.md"],
+        "wire": ["reviews/INTEGRATION-B128-LEARNER-PREFERENCE-VERSION.md", "reviews/INTEGRATION-B133-MOBILE-PREFERENCE-IF-MATCH.md"],
+        "stopped": []
+      },
+      "nextTest": "Notification, consent, and privacy remain separate. Do not repeat appearance save.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B142",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-INF-003 is notification granularity. PRD-ATOM-1631 is a different unsubscribe atom. DEC-09 remains the export and deletion worker gap. notification-service was not in the last lease." },
+      "requirementIds": {
+        "exactAnchors": ["PAGE-P1-SETTINGS", "IC-034"],
+        "withheldUnadopted": ["FEAT-INF-003", "PRD-ATOM-1631"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-025",
+      "name": "设备与会话",
+      "route": "#/pages/devices/devices",
+      "file": "apps/mobile/src/pages/devices/devices.vue",
+      "figmaNodes": ["358:6788"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Other-device revoke exists. Current-device revoke stays blocked by canRevokeMobileDevice. Bulk path is revokeOtherDevices after confirmBulk.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B23-DEVICES.md"],
+        "wire": ["evidence/ROOT-B84-CURRENT-H5-IAM-20261106.json"],
+        "stopped": ["user-pause-20261106/worker-snapshots/394", "G383 two independent 200 kickouts"]
+      },
+      "nextTest": "One bulk interaction with the compiled control, two old refresh denials, and current plus unrelated owner readbacks. Sequential revoke is not this proof.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": "402",
+      "reuseArtifact": "worker-snapshots/394",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "Registry prose that mobile has no devices page is stale against pages.json." },
+      "requirementIds": {
+        "exactAnchors": ["R1-005", "BC-005", "IC-035", "PAGE-P1-DEVICES", "FEAT-USR-005", "V2-980-0363", "PRD-ATOM-1050", "V2-980-0371"],
+        "withheldUnadopted": [],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-026",
+      "name": "权益与兑换",
+      "route": "#/pages/b5-commerce/b5-commerce",
+      "file": "apps/mobile/src/pages/b5-commerce/b5-commerce.vue",
+      "figmaNodes": ["169:14408"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Public catalog, caller orders, and caller entitlements empty H5. Purchase stays closed. Thirteen Commerce tables stayed zero.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B143-COMMERCE-H5-EMPTY.md"],
+        "wire": ["reviews/INTEGRATION-B132-COMMERCE-OWNER-READ.md"],
+        "stopped": []
+      },
+      "nextTest": "Populated caller and authorized order detail in a separate approved scope. Payment stays gated.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B143",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-COM-009 and PRD-ATOM-1104 describe orders. DEC-01 and DEC-10 apply when purchase opens. BC-111 is absent from the TASKS chain cell." },
+      "requirementIds": {
+        "exactAnchors": ["IC-038", "BC-111", "PAGE-P1-COMMERCE"],
+        "withheldUnadopted": ["FEAT-COM-009", "PRD-ATOM-1104"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-027",
+      "name": "语言主题与性能",
+      "route": "#/pages/b6-platform/b6-platform",
+      "file": "apps/mobile/src/pages/b6-platform/b6-platform.vue",
+      "figmaNodes": ["169:11915"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "chooseQuality calls setMobileQuality locally and sets qualityError on throw. No learner preference PATCH from this page.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B40-PLATFORM.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "One local quality failure with zero learner preference PATCH. Leave FEAT empty.",
+      "closeableViaCurrentServiceNormalEntry": true,
+      "assignedJob": null,
+      "reuseArtifact": "B40/B142 quality path",
+      "blockers": { "productDecision": false, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No FEAT. PRD-ATOM-1738 to V2-980-0397 is 无障碍增强. PAGE-P1-SETTINGS is another surface." },
+      "requirementIds": {
+        "exactAnchors": ["IC-034"],
+        "withheldUnadopted": ["PRD-ATOM-1738", "V2-980-0397", "PAGE-P1-SETTINGS"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-028",
+      "name": "帮助与客服",
+      "route": "#/pages/support/support",
+      "file": "apps/mobile/src/pages/support/support.vue",
+      "figmaNodes": ["169:13903"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Own-list empty 200 via legacy items. Create, reply, detail, attachment, and workbench stayed 0. Page has nextCursor more-state.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B136-SUPPORT-H5-LEGACY-EMPTY.md"],
+        "wire": ["reviews/INTEGRATION-B124-SUPPORT-OWNER-READ.md", "reviews/INTEGRATION-B130-SUPPORT-READ-NO-SNAPSHOT.md"],
+        "stopped": []
+      },
+      "nextTest": "One formal cursor response on this route. Nonempty ticket needs an approved existing ticket because create stays closed.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B136",
+      "blockers": { "productDecision": false, "formalPublication": true, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-INF-008 includes upload. PRD-ATOM-1545 is the admin ticket atom. Formal pagination contract remains open." },
+      "requirementIds": {
+        "exactAnchors": ["BC-185", "BC-186", "IC-037", "PAGE-P1-SUPPORT"],
+        "withheldUnadopted": ["FEAT-INF-008", "PRD-ATOM-1545"],
+        "leaveUnnumbered": false
+      }
+    },
+    {
+      "id": "MB-029",
+      "name": "听力旧入口",
+      "route": "#/pages/b3-listening/b3-listening",
+      "file": "apps/mobile/src/pages/b3-listening/b3-listening.vue",
+      "figmaNodes": ["168:3746"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed notice. Audio stays closed.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B01.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep R1-048, BC-043, and IC-026 exact. Withhold FEAT-LST-001 and PRD-ATOM-0476. Do not rewrite.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B01/B65",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No closed-notice FEAT or PRD. Those two ids are withheld listening capabilities." },
+      "requirementIds": {
+        "exactAnchors": ["R1-048", "BC-043", "IC-026"],
+        "withheldUnadopted": ["FEAT-LST-001", "PRD-ATOM-0476"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-030",
+      "name": "听力与 Clips",
+      "route": "#/pages/b11-listening/b11-listening",
+      "file": "apps/mobile/src/pages/b11-listening/b11-listening.vue",
+      "figmaNodes": ["168:4327"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed notice. Clips stay closed. Old workspace is out of the DOM.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep the same boundary trio. Leave clips closed.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B65",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "No Clips id. FEAT-LST-001 and PRD-ATOM-0476 are not the closed notice. B59 hidden-workspace prose is superseded for this file." },
+      "requirementIds": {
+        "exactAnchors": ["R1-048", "BC-043", "IC-026"],
+        "withheldUnadopted": ["FEAT-LST-001", "PRD-ATOM-0476"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-031",
+      "name": "口语旧入口",
+      "route": "#/pages/b3-speaking/b3-speaking",
+      "file": "apps/mobile/src/pages/b3-speaking/b3-speaking.vue",
+      "figmaNodes": ["168:5501"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed notice. Microphone and score stay closed.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B01.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep PRD-ATOM-0170 out of the exact column. Add no speaking PRD number. Do not rewrite.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B01/B65",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-SPK-004 is the withheld recording feature. PRD-ATOM-0170 to V2-980-0063 is vocabulary phonetics. DEC-11 applies when speaking opens." },
+      "requirementIds": {
+        "exactAnchors": ["R1-048", "BC-043", "IC-027"],
+        "withheldUnadopted": ["FEAT-SPK-004", "PRD-ATOM-0170", "V2-980-0063"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-032",
+      "name": "音标与跟读",
+      "route": "#/pages/b11-speaking/b11-speaking",
+      "file": "apps/mobile/src/pages/b11-speaking/b11-speaking.vue",
+      "figmaNodes": ["168:6160"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed notice. Microphone stays closed.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep PRD-ATOM-0170 out of the exact column.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B65",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "The route title 音标 does not make PRD-ATOM-0170 exact." },
+      "requirementIds": {
+        "exactAnchors": ["R1-048", "BC-043", "IC-027"],
+        "withheldUnadopted": ["FEAT-SPK-004", "PRD-ATOM-0170"],
+        "leaveUnnumbered": true
+      }
+    },
+    {
+      "id": "MB-033",
+      "name": "写作",
+      "route": "#/pages/b3-writing/b3-writing",
+      "file": "apps/mobile/src/pages/b3-writing/b3-writing.vue",
+      "figmaNodes": ["168:6945"],
+      "trace": "TRACE_PENDING",
+      "dod": "not_run",
+      "currentCapability": "Closed notice. Editor stays closed. Current page does not call listWritingPrompts.",
+      "evidence": {
+        "h5": ["reviews/INTEGRATION-B65-CLOSED-WORKSPACES.md"],
+        "wire": [],
+        "stopped": []
+      },
+      "nextTest": "Keep the B65 closed result.",
+      "closeableViaCurrentServiceNormalEntry": false,
+      "assignedJob": null,
+      "reuseArtifact": "B65",
+      "blockers": { "productDecision": true, "formalPublication": false, "native": true, "hardware": true, "deployment": true, "notes": "FEAT-WRT-002 and PRD-ATOM-0454 describe the unopened writing task. DEC-05 applies to an open draft, which this screen does not have." },
+      "requirementIds": {
+        "exactAnchors": ["R1-048", "BC-043", "IC-028"],
+        "withheldUnadopted": ["FEAT-WRT-002", "PRD-ATOM-0454"],
+        "leaveUnnumbered": false
+      }
+    }
+  ]
+}

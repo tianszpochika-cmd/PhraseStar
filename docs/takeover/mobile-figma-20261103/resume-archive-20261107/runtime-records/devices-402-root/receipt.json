@@ -1,0 +1,30 @@
+{
+  "status": "FAIL",
+  "reason": "instrument-result-absent",
+  "timedOut": false,
+  "nodeStatus": 1,
+  "priorLeak": false,
+  "supervisor": {
+    "process": "device-others-runtime",
+    "user": "Admin",
+    "uid": 502,
+    "unixRoot": false,
+    "sudo": false
+  },
+  "label": "cloudstudy.qa.mobile-resume-devices-402-c35ca0da",
+  "containerName": "cloudstudy-owner-402-c35ca0da",
+  "prefix": "/tmp/grok-mobile-resume-devices-402",
+  "dockerUserConfig": "not-consulted",
+  "registryAuth": false,
+  "imagePull": "never",
+  "credentialGuard": "admin-socket-and-ephemeral-mysql-env",
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "locator": ".dev-cta[role=\"button\"]",
+  "sequentialCountedAsProof": false,
+  "priorDirectory": "historical-two-file",
+  "priorResult": "absent",
+  "priorResultSha256": null,
+  "priorUnchanged": true,
+  "priorCleanup": "not-deleted"
+}

@@ -1,0 +1,66 @@
+{
+  "job": "MB018-H5-DEFAULT-424",
+  "writable": "/tmp/grok-mobile-resume-world-repair-424",
+  "authoredAt": "2026-11-07",
+  "executed": false,
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "g398": {
+    "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261105-mobile-world-h5-default-render-398-task.md",
+    "output": "/tmp/grok-mobile-world-h5-default-render-398",
+    "artifact": "absent",
+    "exitCode": 143
+  },
+  "historicalWire": {
+    "review": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B146-WORLD-DEFAULT-OWNER-WIRE.md",
+    "g382Root": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/world-gateway-default-owned-runtime-382-root/gateway-default-receipt.json",
+    "g382Frozen": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/world-gateway-default-owned-runtime-382-frozen/root-lease.py",
+    "g382FrozenSha256": "3a2e78d7cfdd79f31c47b1be83d0315ce3fa656454258217e8963ec417ef164a",
+    "status": "PASS",
+    "h5Claimed": false,
+    "usedAsH5Proof": false
+  },
+  "classifier": {
+    "path": "/tmp/grok-mobile-world-real-owner-read-h5-probe-368/world-empty-owner.cjs",
+    "reuse": "read-only classifyRead/bundleReady/guardRequest",
+    "observeWorldOwner": "unused-for-live-b139"
+  },
+  "nonce": {
+    "path": "/tmp/grok-mobile-learn-shelf-derived-current-h5-lease-388/pinned-static-nonce.mjs",
+    "header": "x-mb004-static-qa",
+    "reuse": "read-only openPinnedNonceStatic"
+  },
+  "h5": {
+    "root": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+    "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "b116Rejected": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+    "worldChunk": "pages-world-world.12rRwasU.js",
+    "route": "#/pages/world/world"
+  },
+  "jars": {
+    "iam": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "gamification": "42c97423e9ea1d2dbe917530730637b251953325368fa0cc53bd59e89261aaca",
+    "fixture": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+    "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b"
+  },
+  "ports": {
+    "mysql": 13306,
+    "gateway": 18070,
+    "iam": 18087,
+    "gamification": 18094,
+    "h5": 18183
+  },
+  "factTables": [
+    "xp_ledger",
+    "coin_ledger",
+    "reward_grant",
+    "gamification_event_record",
+    "gamification_idempotency_record",
+    "gamification_active_date",
+    "gamification_season_fact",
+    "gamification_user_timezone",
+    "gamification_outbox_event",
+    "gamification_feature_state",
+    "gamification_game_session"
+  ]
+}

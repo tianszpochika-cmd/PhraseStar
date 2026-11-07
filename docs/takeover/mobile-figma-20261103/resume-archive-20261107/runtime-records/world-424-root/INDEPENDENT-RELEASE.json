@@ -1,0 +1,20 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:25:14.276911+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18094,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "preflight": "PASS_PYTHON312",
+  "offlineObserver": "OBSERVER_PREPARED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/world-424-frozen/MANIFEST.json",
+  "runnerPid": 62811,
+  "result": "FAIL_WRAPPER_INVERTED_FALSE_BOOLS",
+  "releasedAt": "2026-11-07T15:28:58.008673+00:00",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true
+}

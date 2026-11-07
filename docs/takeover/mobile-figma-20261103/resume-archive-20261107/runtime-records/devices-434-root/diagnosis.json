@@ -1,0 +1,18 @@
+{
+  "status": "DIAGNOSIS",
+  "executed": true,
+  "timedOut": false,
+  "nodeStatus": 0,
+  "parentErrorCategory": "repo-branch-optional",
+  "childErrorCategory": "probe-exit-zero",
+  "stage": "probe-exit",
+  "hookStage": "probe-exit",
+  "probeStatus": 0,
+  "acceptanceStatus": "PARTIAL",
+  "acceptancePreflightStatus": "PASS",
+  "firstFailedCheck": "repo.branch",
+  "instrumentPresent": true,
+  "nonceValueOmitted": true,
+  "credentialOmitted": true,
+  "logsOmitted": true
+}

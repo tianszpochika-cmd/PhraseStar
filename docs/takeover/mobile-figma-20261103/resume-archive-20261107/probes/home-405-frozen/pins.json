@@ -1,0 +1,64 @@
+{
+  "job": "MB405_SAME_ACTOR_HOME_RETURN",
+  "authoredAt": "2026-11-07",
+  "status": "PREPARED_NOT_RUN",
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "repo": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+  "runDir": "/private/tmp/grok-mobile-resume-home-405/run",
+  "authorDir": "/tmp/grok-mobile-resume-home-405",
+  "container": "cloudstudy-mobile-home-return-405-20261107",
+  "label": "cloudstudy.qa.mobile-home-return-405-20261107",
+  "retestContinuation": false,
+  "h5": {
+    "root": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+    "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "header": "x-mb004-static-qa",
+    "rejectIndexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520"
+  },
+  "harnessSource": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/placement-retest-canonical-macos-run-372-root/harness-source",
+  "b96HistoricalRoot": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/mb006-placement-full-browser-96-root",
+  "g372Frozen": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/placement-retest-canonical-macos-run-372-frozen",
+  "prior397": "/tmp/grok-mobile-login-ready-owner-home-return-397/REPORT.md",
+  "fixture": {
+    "path": "apps/mobile/tests/fixtures/mock-consent-publication.json",
+    "fileSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846"
+  },
+  "jars": {
+    "learner": {
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/services/learner-service/target/learner-service-0.1.0-SNAPSHOT.jar",
+      "sha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733"
+    },
+    "learning": {
+      "path": "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/services/learning-service/target/learning-service-0.1.0-SNAPSHOT.jar",
+      "sha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f"
+    },
+    "content": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-content-owner-b118-package/content-service-b118.jar",
+      "sha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2"
+    },
+    "assessment": {
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-assessment-combined-b122-root/assessment-protected-reading-combined.jar",
+      "sha256": "467fb91b9299c0569f48d52b482be580a18b6a9b90bd74aa523659e16fed6912"
+    }
+  },
+  "playwrightRoots": [
+    "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/package.json",
+    "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy/package.json"
+  ],
+  "ports": [18070, 18087, 18088, 18089, 18090, 18091, 18183, 13306],
+  "loginReturnTo": "/pages/home/home",
+  "loginHash": "/pages/login/login?returnTo=%2Fpages%2Fhome%2Fhome",
+  "pass": {
+    "finalHash": "/pages/home/home",
+    "origin": "http://127.0.0.1:18183",
+    "loginHttp": 200,
+    "principalHttp": 200,
+    "learningAccess": "ELIGIBLE",
+    "serverAdultStatus": "PASSED",
+    "homeHttp": 200,
+    "firstDayState": "READY",
+    "targetReady": true,
+    "blocker": null,
+    "taskCountMin": 1
+  }
+}

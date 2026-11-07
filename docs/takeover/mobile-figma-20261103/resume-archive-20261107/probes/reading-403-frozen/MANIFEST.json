@@ -1,0 +1,27 @@
+[
+  {
+    "file": "reading-live-hook.mjs",
+    "bytes": 13926,
+    "sha256": "04c7dc81f34633c4839f7fb3ece0b503512f9406c969ba95980ff305b12c8206"
+  },
+  {
+    "file": "REPORT.md",
+    "bytes": 7648,
+    "sha256": "5e44e0cc256756c2ae2be8dd1d92873b88d76ea0e8b87f32b90593c5862e30ea"
+  },
+  {
+    "file": "run-reading-owner.py",
+    "bytes": 27450,
+    "sha256": "9500b7e232432b10cbb59e2cda42d0c0e9fd149cd7932fb3b943fd5bc9c0ee7e"
+  },
+  {
+    "file": "reading-practice-h5.cjs",
+    "bytes": 41018,
+    "sha256": "711a0560edb2aa6661e3368e6a2bcbce7f2551e326ea57015a0fe04510a5bd67"
+  },
+  {
+    "file": "pins.json",
+    "bytes": 3783,
+    "sha256": "a47e5cc48a9793ca2bda80e8a0204dfb4ed3f6263dac62eaec176f9d9f7f8029"
+  }
+]

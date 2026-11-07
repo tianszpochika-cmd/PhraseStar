@@ -1,0 +1,18 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:19:14.208105+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/devices-415-frozen/MANIFEST.json",
+  "preflight": "PASS",
+  "runnerPid": 44789,
+  "result": "FAIL_OLD_REFRESH_403_NOT_REVOCATION_PROOF",
+  "releasedAt": "2026-11-07T15:21:12.524075+00:00",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true
+}

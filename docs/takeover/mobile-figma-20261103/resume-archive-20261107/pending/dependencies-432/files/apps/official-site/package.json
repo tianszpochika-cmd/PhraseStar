@@ -1,0 +1,25 @@
+{
+  "name": "@englishflow/official-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "语学星官方网站与SEO落地页 (Nuxt 3 / Vue 3 SSR)",
+  "scripts": {
+    "dev": "node ../../scripts/run-fixed-port.mjs official-site-dev -- nuxt dev --host 127.0.0.1 --port 18182 --strictPort",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "node ../../scripts/run-fixed-port.mjs official-site-preview -- nuxt preview --host 127.0.0.1 --port 18192",
+    "test:b13": "node --test tests/b13-official-site.test.mjs",
+    "test:website": "node --test tests/b13-official-site.test.mjs tests/b14-fe-005.test.mjs tests/website-entry.test.mjs tests/public-projection-bff.test.mjs tests/site-motion.test.mjs tests/seo-runtime.test.mjs tests/scoped-contrast.test.mjs"
+  },
+  "dependencies": {
+    "vue": "3.5.45",
+    "nuxt": "^3.11.0",
+    "@englishflow/design-tokens": "workspace:*",
+    "@englishflow/i18n": "workspace:*",
+    "@englishflow/performance": "workspace:*"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.4.0"
+  }
+}

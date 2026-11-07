@@ -1,0 +1,47 @@
+[
+  {
+    "file": "learn-catalog-owner.mjs",
+    "bytes": 27629,
+    "sha256": "8bec7aa66cc0d20083d262f0c716e9c47e91a5461f26fb7bb491f9c3348cd0ee"
+  },
+  {
+    "file": "lease-tail.mjs",
+    "bytes": 13147,
+    "sha256": "619f707a00ca8360f833266a27fd82d2aa16824cc3b26d013ff09b5c0622e73f"
+  },
+  {
+    "file": "REPORT.md",
+    "bytes": 6414,
+    "sha256": "bd62d4bbaf58db10ccdbceca9c0771bb71a11c376214a7dba1341c3807382110"
+  },
+  {
+    "file": "composition-receipt.json",
+    "bytes": 1697,
+    "sha256": "5b7c3a677f4699f8e0d220a4b0fcf992e23aed4e3bcbfd990136cafcb8b12168"
+  },
+  {
+    "file": "runtime-receipt.json",
+    "bytes": 686,
+    "sha256": "bc262bbee39ae7620692e84b360fe240f791974dfaf6cf35180d643e31a73087"
+  },
+  {
+    "file": "shelf-empty-observer.mjs",
+    "bytes": 36973,
+    "sha256": "c5924f17ce498999aea075561480ecae19739a1bdac3d6ca1c886335bbecf57c"
+  },
+  {
+    "file": "PINS.json",
+    "bytes": 4489,
+    "sha256": "3248ae901b8aa8aa661f3ca61573bbedaf4af14a40304591c914196f4ba2b867"
+  },
+  {
+    "file": "learn-catalog-runtime.sh",
+    "bytes": 50176,
+    "sha256": "e1761c0285832f0a2ee1d7c55b35ba67163260340b53aaee1d06024e1ef050c4"
+  },
+  {
+    "file": "pinned-static-nonce.mjs",
+    "bytes": 10514,
+    "sha256": "99d2c59a8df2134448fcd80ed0b49941de35d13c9ff820e44f92fa53300e83f9"
+  }
+]

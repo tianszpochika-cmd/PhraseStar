@@ -1,0 +1,18 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:22:04.359020+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "preflight": "PASS_PYTHON312",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/forbidden-413-frozen/MANIFEST.json",
+  "runnerPid": 61685,
+  "result": "FAIL_FORBIDDEN_REASON",
+  "releasedAt": "2026-11-07T15:24:18.565282+00:00",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true
+}

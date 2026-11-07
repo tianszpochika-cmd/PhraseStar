@@ -1,0 +1,61 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "executed": false,
+  "passClaimed": false,
+  "locator": ".dev-cta[role=\"button\"]",
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "h5IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "sequentialCountedAsProof": false,
+  "priorMatch": {
+    "count": 1,
+    "disabled": false,
+    "text": "退出其他设备（2）"
+  },
+  "afterMatch": {
+    "count": 1,
+    "disabledPropertyOrAttribute": true,
+    "text": "退出其他设备"
+  },
+  "bulk": {
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "cancelClicks": 0
+  },
+  "sequentialFallback": {
+    "mode": "sequential",
+    "countedAsProof": false,
+    "clicks": false,
+    "reason": "sequential-not-bulk-proof",
+    "predicate": "ctaCount === 1 && genuineDisabled && otherExit === 2"
+  },
+  "independent": {
+    "oldRefreshStatuses": [401, 401],
+    "oldRefreshDenied": 2,
+    "oldRefreshAccepted": 0,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "runsAfterTwoKicks": true,
+    "requiresBulkForObserved": true
+  },
+  "g383Actual": {
+    "status": "FAIL",
+    "reason": "wire-outcome",
+    "instrumentStatus": "FAILED",
+    "instrumentReason": "readback-mismatch",
+    "mode": "sequential",
+    "bulkClicks": 0,
+    "confirmClicks": 2,
+    "rowExitClicks": 2,
+    "kickoutPosts": 2,
+    "kickoutStatuses": [200, 200],
+    "ctaDisabledAfter": false,
+    "oldRefreshStatuses": [],
+    "oldRefreshDenied": 0,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "priorLeak": false
+  }
+}

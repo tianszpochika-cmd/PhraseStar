@@ -1,0 +1,48 @@
+{
+  "actor": "disposable-generated",
+  "browser": "not-started",
+  "commerceTarget": false,
+  "consentWrite": "not-sent",
+  "containerName": "cloudstudy-mobile-forbidden-h5-413",
+  "domainProcesses": "not-started",
+  "executed": false,
+  "gateway": "not-started",
+  "gatewayJarSha256": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+  "gatewayModes": {
+    "ASSESSMENT": "LEGACY",
+    "COMMERCE": "LEGACY",
+    "CONTENT": "LEGACY",
+    "GAMIFICATION": "LEGACY",
+    "LEARNER": "LEGACY",
+    "LEARNING": "LEGACY",
+    "MEDIA": "LEGACY",
+    "SOCIAL": "LEGACY"
+  },
+  "h5": "not-started",
+  "iamJarSha256": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+  "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "job": "MB005-H5-FORBIDDEN-413",
+  "label": "cloudstudy.qa.mobile-forbidden-h5-413",
+  "passwordOmitted": true,
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "probe": {
+    "boundReceipt": "/tmp/grok-mobile-resume-forbidden-h5-413/wire-receipt.json",
+    "entryGap": "import.meta.url-vs-pathToFileURL-argv",
+    "nodeEntry": "Path.resolve(strict=True)",
+    "probeBytes": 12537,
+    "probeSha256": "3d83250d5fcea43c231007c85c2496ae12ac462143bdaba0ae41ae84b706d6d8",
+    "substitution": "receipt-constant-only"
+  },
+  "probeExecuted": false,
+  "processesStarted": false,
+  "publicationSeed": "three-synthetic-fixtures",
+  "reason": null,
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "stage": "preflight",
+  "status": "PREFLIGHT"
+}

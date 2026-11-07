@@ -1,0 +1,16 @@
+{
+  "holder": "G419_ROOT_RUNTIME",
+  "at": "2026-11-07T15:12:59.152043+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18088,
+    18089,
+    18183
+  ],
+  "status": "STARTING",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/shelf-419-frozen/MANIFEST.json",
+  "subnet": "10.254.254.0/28",
+  "runnerPid": 11689
+}

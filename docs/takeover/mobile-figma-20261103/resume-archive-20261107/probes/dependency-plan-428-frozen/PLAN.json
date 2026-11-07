@@ -1,0 +1,2035 @@
+{
+  "schemaVersion": 1,
+  "task": "G417",
+  "status": "PLAN_ONLY",
+  "auditRecheck": "NOT_RUN",
+  "mutations": [],
+  "gate": {
+    "threshold": "high/critical",
+    "policyField": "policy.highOrCriticalVulnerability",
+    "policyValue": "fail",
+    "source": "config/p1r-dependency-policy.json",
+    "preserved": true,
+    "behavior": "The dependency audit blocks when metadata high plus critical is greater than zero. Low and moderate findings do not block. An unparsable pnpm audit payload stays fail-closed. This plan does not waive, downgrade, or retune that rule."
+  },
+  "reconciliation": {
+    "metadataHigh": 33,
+    "metadataCritical": 4,
+    "metadataBlocking": 37,
+    "advisoryObjectsHigh": 32,
+    "advisoryObjectsCritical": 4,
+    "advisoryObjectsBlocking": 36,
+    "findingRowsHigh": 33,
+    "findingRowsCritical": 4,
+    "findingRows": 37,
+    "explanation": "The captured payload has 36 advisory objects at high or critical. @vue/server-renderer GHSA-g2v6-rqmx-r4w6 is one object with two findings, 3.5.41 and 3.4.21. Counting findings gives 33 high and 4 critical, matching blockingVulnerabilities 37. The table has one row per finding. No advisory was added."
+  },
+  "source": {
+    "log": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/ci-after-governance/supply-chain-job.log",
+    "worktreePinStatedByRoot": "61b9ede7",
+    "auditSourceCommit": "5d921ed002207440cb0063cc118644ebf94bfbd4",
+    "dependencyFilesDeclaredToMatchAuditCommit": true,
+    "gitInvocationThisPhase": "not run",
+    "generatedAt": "2026-11-07T14:20:02.772Z",
+    "mode": "runtime",
+    "ciResult": "FAIL",
+    "vulnerabilityResult": "FAIL",
+    "exitCode": 1,
+    "policyEcho": "fail",
+    "blockingVulnerabilities": 37,
+    "counts": {
+      "info": 0,
+      "low": 19,
+      "moderate": 44,
+      "high": 33,
+      "critical": 4
+    },
+    "totalDependencies": 1150,
+    "advisoryObjects": 92,
+    "blockingObjects": 36,
+    "lockfileVersion": "9.0",
+    "catalog": {
+      "node": "20.19.5",
+      "pnpm": "10.19.0",
+      "java": 25,
+      "mavenMinimum": "3.9.9",
+      "springBoot": "4.1.1",
+      "springCloud": "2025.1.3",
+      "mavenEnforcerPlugin": "3.6.2",
+      "cycloneDxMavenPlugin": "2.9.1"
+    },
+    "hashes": {
+      "package.json": {
+        "actual": "e2bf8a40f36d435116326383be7fff376cb5fe126420583affceca76fa2c03c4",
+        "ci": "e2bf8a40f36d435116326383be7fff376cb5fe126420583affceca76fa2c03c4",
+        "match": true
+      },
+      "pnpm-lock.yaml": {
+        "actual": "2893c70c02b105ae9fe4aea626a47d44af70dfe9161567def286a300b9465f1c",
+        "ci": "2893c70c02b105ae9fe4aea626a47d44af70dfe9161567def286a300b9465f1c",
+        "match": true
+      },
+      "pom.xml": {
+        "actual": "d663a16aea33c574e89b3062085adf916f0d7d4d6d14224e73445a825dc4ea0e",
+        "ci": "d663a16aea33c574e89b3062085adf916f0d7d4d6d14224e73445a825dc4ea0e",
+        "match": true
+      },
+      "config/toolchain-baseline.json": {
+        "actual": "3b4d41a16d3278bee54187eee6a3bcb5d8dea5f3aa353ff468be502e71cc0143",
+        "ci": "db1003a93e030e4f4f336e0d239209c46fb02ca44f67202331b52af9339205b2",
+        "match": false
+      },
+      "config/p1r-dependency-policy.json": {
+        "actual": "158a07e10e0e01ffb97801eddb79d98ffb1b2c39c0fd6fb148fe518b90d8de60",
+        "ci": "158a07e10e0e01ffb97801eddb79d98ffb1b2c39c0fd6fb148fe518b90d8de60",
+        "match": true
+      }
+    },
+    "existingOverrides": {
+      "express>path-to-regexp": "0.1.13",
+      "@dcloudio/uni-nvue-styler>postcss": "8.5.23",
+      "@dcloudio/uni-cli-shared>adm-zip": "0.6.1",
+      "@dcloudio/uni-cli-shared>@intlify/core-base": "9.1.11",
+      "@intlify/message-resolver": "9.1.11",
+      "svgo": ">=4.1.0"
+    },
+    "secondJobError": [
+      "Node license inventory failed: {\n  \"error\": {\n    \"code\": \"ERR_PNPM_MISSING_PACKAGE_INDEX_FILE\",\n    \"message\": \"Failed to find package index file for @napi-rs/lzma-linux-x64-gnu@1.5.1 (at /home/runner/setup-pnpm/node_modules/.bin/store/v10/index/a1/35c42216b84acb97753038232b248f4929771db255776177be5cdafdf11ab1-@napi-rs+lzma-linux-x64-gnu@1.5.1.json), please consider running 'pnpm install'\"\n  }\n}",
+      "pnpm audit found 37 high/critical vulnerability(ies)"
+    ],
+    "licensesResult": "PASS",
+    "mavenSbom": {
+      "checked": true,
+      "result": "PASS",
+      "exitCode": 0,
+      "components": 207
+    }
+  },
+  "vitePeerRangesFromLock": {
+    "@dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822": "8.2.2",
+    "@vitejs/plugin-vue@5.2.4": "^5.0.0 || ^6.0.0",
+    "@vitejs/plugin-vue@6.0.7": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@vitejs/plugin-vue@6.0.8": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+  },
+  "stackHeld": {
+    "vue": "3.x; mobile package.json pins vue and @vue/* at 3.5.41",
+    "uniApp": "apps/mobile devDependencies pin the matched @dcloudio family at 3.0.0-alpha-1000920260909822",
+    "vite": "mobile vite 8.2.2; admin-web and learner-web vite 6.4.3",
+    "java": 25,
+    "springBoot": "4.1.1",
+    "springCloud": "2025.1.3",
+    "node": "20.19.5",
+    "pnpm": "10.19.0"
+  },
+  "existingOverridesKept": {
+    "express>path-to-regexp": "0.1.13",
+    "@dcloudio/uni-nvue-styler>postcss": "8.5.23",
+    "@dcloudio/uni-cli-shared>adm-zip": "0.6.1",
+    "@dcloudio/uni-cli-shared>@intlify/core-base": "9.1.11",
+    "@intlify/message-resolver": "9.1.11",
+    "svgo": ">=4.1.0"
+  },
+  "advisories": [
+    {
+      "advisoryId": 1123686,
+      "githubAdvisoryId": "GHSA-xcpc-8h2w-3j85",
+      "url": "https://github.com/advisories/GHSA-xcpc-8h2w-3j85",
+      "module": "adm-zip",
+      "severity": "high",
+      "title": "adm-zip: Crafted ZIP file triggers 4GB memory allocation",
+      "vulnerableVersions": "<0.6.0",
+      "patchedVersions": ">=0.6.0",
+      "installed": "0.5.16",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-uts-v1>adm-zip"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-uts-v1"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "0.6.0",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": true,
+      "lockParents": [
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "0.5.16",
+        "integrity": "sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}",
+        "tarball": null
+      },
+      "n": 1
+    },
+    {
+      "advisoryId": 1239030,
+      "githubAdvisoryId": "GHSA-7q85-xj36-vmfc",
+      "url": "https://github.com/advisories/GHSA-7q85-xj36-vmfc",
+      "module": "adm-zip",
+      "severity": "high",
+      "title": "adm-zip: Uncontrolled memory allocation via the declared uncompressed size (DoS)",
+      "vulnerableVersions": "<0.6.1",
+      "patchedVersions": ">=0.6.1",
+      "installed": "0.5.16",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-uts-v1>adm-zip"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-uts-v1"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "0.6.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": true,
+      "lockParents": [
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "0.5.16",
+        "integrity": "sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}",
+        "tarball": null
+      },
+      "n": 2
+    },
+    {
+      "advisoryId": 1240032,
+      "githubAdvisoryId": "GHSA-rcw4-f5rp-g42v",
+      "url": "https://github.com/advisories/GHSA-rcw4-f5rp-g42v",
+      "module": "adm-zip",
+      "severity": "high",
+      "title": "adm-zip: Decompression-bomb protection (fix for CVE-2026-39244) can be bypassed by declaring uncompressed size as 0",
+      "vulnerableVersions": "<=0.6.0",
+      "patchedVersions": ">=0.6.1",
+      "installed": "0.5.16",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-uts-v1>adm-zip"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-uts-v1"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "0.6.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": true,
+      "lockParents": [
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "0.5.16",
+        "integrity": "sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}",
+        "tarball": null
+      },
+      "n": 3
+    },
+    {
+      "advisoryId": 1240034,
+      "githubAdvisoryId": "GHSA-j5f4-cc29-5x44",
+      "url": "https://github.com/advisories/GHSA-j5f4-cc29-5x44",
+      "module": "adm-zip",
+      "severity": "high",
+      "title": "adm-zip extraction preserves SUID/SGID bits from untrusted ZIPs -> local privilege escalation",
+      "vulnerableVersions": "<=0.6.0",
+      "patchedVersions": ">=0.6.1",
+      "installed": "0.5.16",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-uts-v1>adm-zip"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-uts-v1"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "0.6.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": true,
+      "lockParents": [
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "0.5.16",
+        "integrity": "sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}",
+        "tarball": null
+      },
+      "n": 4
+    },
+    {
+      "advisoryId": 1240066,
+      "githubAdvisoryId": "GHSA-8238-w5pm-2374",
+      "url": "https://github.com/advisories/GHSA-8238-w5pm-2374",
+      "module": "adm-zip",
+      "severity": "high",
+      "title": "adm-zip: Unhandled error event in async DEFLATE decompression crashes Node.js process (DoS)",
+      "vulnerableVersions": "<=0.6.0",
+      "patchedVersions": ">=0.6.1",
+      "installed": "0.5.16",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-uts-v1>adm-zip"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-uts-v1"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "0.6.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": true,
+      "lockParents": [
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "0.5.16",
+        "integrity": "sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}",
+        "tarball": null
+      },
+      "n": 5
+    },
+    {
+      "advisoryId": 1240105,
+      "githubAdvisoryId": "GHSA-qhr7-859c-m2p7",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "module": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "vulnerableVersions": ">=2.0.0 <2.1.6",
+      "patchedVersions": ">=2.1.6",
+      "installed": "2.1.4",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__admin-web>vue-tsc>@vue/language-core>minimatch>brace-expansion"
+      ],
+      "manifests": [
+        "apps/admin-web/package.json"
+      ],
+      "workspaceDirect": [
+        "vue-tsc"
+      ],
+      "workspaceDirectSpecifier": [
+        "^2.0.0"
+      ],
+      "floor": "2.1.6",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "minimatch@5.1.9",
+        "minimatch@9.0.9"
+      ],
+      "packageSource": {
+        "version": "2.1.4",
+        "integrity": "sha512-hGfVzPxthbf3+2yjg/RBs60cB0FhqBS/zvdV/4wn4/BmN0bNMMHPc4V/BbFieqf1TKAGGAHnY4eSjajCl0f2Xg==}",
+        "tarball": null
+      },
+      "n": 6
+    },
+    {
+      "advisoryId": 1240107,
+      "githubAdvisoryId": "GHSA-qhr7-859c-m2p7",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "module": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "vulnerableVersions": ">=4.0.0 <5.0.11",
+      "patchedVersions": ">=5.0.11",
+      "installed": "5.0.9",
+      "scope": "runtime",
+      "exposure": "official-site nitro file-tracing chain under the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/nitro-server>nitropack>@vercel/nft>glob>minimatch>brace-expansion"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.0.11",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "minimatch@10.2.6"
+      ],
+      "packageSource": {
+        "version": "5.0.9",
+        "integrity": "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}",
+        "tarball": null
+      },
+      "n": 7
+    },
+    {
+      "advisoryId": 1240109,
+      "githubAdvisoryId": "GHSA-6j4f-fj2g-mc7p",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "module": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "vulnerableVersions": ">=2.0.0 <2.1.5",
+      "patchedVersions": ">=2.1.5",
+      "installed": "2.1.4",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__admin-web>vue-tsc>@vue/language-core>minimatch>brace-expansion"
+      ],
+      "manifests": [
+        "apps/admin-web/package.json"
+      ],
+      "workspaceDirect": [
+        "vue-tsc"
+      ],
+      "workspaceDirectSpecifier": [
+        "^2.0.0"
+      ],
+      "floor": "2.1.5",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "minimatch@5.1.9",
+        "minimatch@9.0.9"
+      ],
+      "packageSource": {
+        "version": "2.1.4",
+        "integrity": "sha512-hGfVzPxthbf3+2yjg/RBs60cB0FhqBS/zvdV/4wn4/BmN0bNMMHPc4V/BbFieqf1TKAGGAHnY4eSjajCl0f2Xg==}",
+        "tarball": null
+      },
+      "n": 8
+    },
+    {
+      "advisoryId": 1240111,
+      "githubAdvisoryId": "GHSA-6j4f-fj2g-mc7p",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "module": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "vulnerableVersions": ">=4.0.0 <5.0.10",
+      "patchedVersions": ">=5.0.10",
+      "installed": "5.0.9",
+      "scope": "runtime",
+      "exposure": "official-site nitro file-tracing chain under the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/nitro-server>nitropack>@vercel/nft>glob>minimatch>brace-expansion"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.0.10",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "minimatch@10.2.6"
+      ],
+      "packageSource": {
+        "version": "5.0.9",
+        "integrity": "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}",
+        "tarball": null
+      },
+      "n": 9
+    },
+    {
+      "advisoryId": 1240870,
+      "githubAdvisoryId": "GHSA-j22f-vq7h-c4qm",
+      "url": "https://github.com/advisories/GHSA-j22f-vq7h-c4qm",
+      "module": "devalue",
+      "severity": "high",
+      "title": "devalue: `stringify`/`uneval` serialize shared memory",
+      "vulnerableVersions": ">=5.1.0 <=5.9.2",
+      "patchedVersions": ">=5.9.3",
+      "installed": "5.9.0",
+      "scope": "runtime",
+      "exposure": "official-site server dependency of nuxt",
+      "paths": [
+        "apps__official-site>nuxt>devalue"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.9.3",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/nitro-server@3.21.11",
+        "nuxt@3.21.11"
+      ],
+      "packageSource": {
+        "version": "5.9.0",
+        "integrity": "sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}",
+        "tarball": null
+      },
+      "n": 10
+    },
+    {
+      "advisoryId": 1240872,
+      "githubAdvisoryId": "GHSA-mcm9-63f2-9j32",
+      "url": "https://github.com/advisories/GHSA-mcm9-63f2-9j32",
+      "module": "devalue",
+      "severity": "high",
+      "title": "devalue: Repeated primitive strings cause quadratic expansion in uneval",
+      "vulnerableVersions": "<=5.9.2",
+      "patchedVersions": ">=5.9.3",
+      "installed": "5.9.0",
+      "scope": "runtime",
+      "exposure": "official-site server dependency of nuxt",
+      "paths": [
+        "apps__official-site>nuxt>devalue"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.9.3",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/nitro-server@3.21.11",
+        "nuxt@3.21.11"
+      ],
+      "packageSource": {
+        "version": "5.9.0",
+        "integrity": "sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}",
+        "tarball": null
+      },
+      "n": 11
+    },
+    {
+      "advisoryId": 1240874,
+      "githubAdvisoryId": "GHSA-x5rw-q4pp-hg5g",
+      "url": "https://github.com/advisories/GHSA-x5rw-q4pp-hg5g",
+      "module": "devalue",
+      "severity": "high",
+      "title": "devalue: stringifyAsync can cause an unhandled rejection despite a caught returned promise",
+      "vulnerableVersions": ">=5.8.0 <=5.9.2",
+      "patchedVersions": ">=5.9.3",
+      "installed": "5.9.0",
+      "scope": "runtime",
+      "exposure": "official-site server dependency of nuxt",
+      "paths": [
+        "apps__official-site>nuxt>devalue"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.9.3",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/nitro-server@3.21.11",
+        "nuxt@3.21.11"
+      ],
+      "packageSource": {
+        "version": "5.9.0",
+        "integrity": "sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}",
+        "tarball": null
+      },
+      "n": 12
+    },
+    {
+      "advisoryId": 1240912,
+      "githubAdvisoryId": "GHSA-86w9-cpqp-85rv",
+      "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": "<0.0.0",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": null,
+      "floorAction": "no-upstream-fix-in-advisory",
+      "sameMajor": null,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 13
+    },
+    {
+      "advisoryId": 1241198,
+      "githubAdvisoryId": "GHSA-v5rq-49vh-5v5c",
+      "url": "https://github.com/advisories/GHSA-v5rq-49vh-5v5c",
+      "module": "@simple-git/argv-parser",
+      "severity": "critical",
+      "title": "simple-git: `VISUAL` editor environment variable is omitted from unsafe editor detection",
+      "vulnerableVersions": "<2.0.1",
+      "patchedVersions": ">=2.0.1",
+      "installed": "1.1.1",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>simple-git>@simple-git/argv-parser"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "2.0.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": false,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "simple-git@3.36.0"
+      ],
+      "packageSource": {
+        "version": "1.1.1",
+        "integrity": "sha512-Q9lBcfQ+VQCpQqGJFHe5yooOS5hGdLFFbJ5R+R5aDsnkPCahtn1hSkMcORX65J2Z5lxSkD0lQorMsncuBQxYUw==}",
+        "tarball": null
+      },
+      "n": 14
+    },
+    {
+      "advisoryId": 1241199,
+      "githubAdvisoryId": "GHSA-x6jw-m9v5-85vh",
+      "url": "https://github.com/advisories/GHSA-x6jw-m9v5-85vh",
+      "module": "simple-git",
+      "severity": "critical",
+      "title": "simple-git unsafe-operation guard does not block trailer command configuration",
+      "vulnerableVersions": ">=3.15.0 <4.0.1",
+      "patchedVersions": ">=4.0.1",
+      "installed": "3.36.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>simple-git"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "4.0.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": false,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/devtools@3.4.1"
+      ],
+      "packageSource": {
+        "version": "3.36.0",
+        "integrity": "sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}",
+        "tarball": null
+      },
+      "n": 15
+    },
+    {
+      "advisoryId": 1241200,
+      "githubAdvisoryId": "GHSA-g4wm-2vf7-vfgr",
+      "url": "https://github.com/advisories/GHSA-g4wm-2vf7-vfgr",
+      "module": "simple-git",
+      "severity": "high",
+      "title": "simple-git allows command execution through unblocked Git configuration includes",
+      "vulnerableVersions": "<=3.36.0",
+      "patchedVersions": ">=4.0.0",
+      "installed": "3.36.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>simple-git"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "4.0.0",
+      "floorAction": "advisory-floor",
+      "sameMajor": false,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/devtools@3.4.1"
+      ],
+      "packageSource": {
+        "version": "3.36.0",
+        "integrity": "sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}",
+        "tarball": null
+      },
+      "n": 16
+    },
+    {
+      "advisoryId": 1241208,
+      "githubAdvisoryId": "GHSA-jp82-f5mq-hwhp",
+      "url": "https://github.com/advisories/GHSA-jp82-f5mq-hwhp",
+      "module": "seroval",
+      "severity": "high",
+      "title": "Seroval: Memory exhaustion via unchecked TypedArray length in JSON deserialization",
+      "vulnerableVersions": "<=1.6.2",
+      "patchedVersions": ">=1.6.3",
+      "installed": "1.6.2",
+      "scope": "runtime",
+      "exposure": "workspace production dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/vite-builder>seroval"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.6.3",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/vite-builder@3.21.11"
+      ],
+      "packageSource": {
+        "version": "1.6.2",
+        "integrity": "sha512-mPT+SD2TrlB6wvte1KkYOYUkubaTbd6pZ/6Kk3C9nxzrHmCZyhxOO7XGAeL7f+yLKZglzGtM9odUVvg/EhO+vQ==}",
+        "tarball": null
+      },
+      "n": 17
+    },
+    {
+      "advisoryId": 1241209,
+      "githubAdvisoryId": "GHSA-68fv-2mgg-jv7q",
+      "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+      "module": "source-map-js",
+      "severity": "high",
+      "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+      "vulnerableVersions": ">=1.0.0 <1.2.2",
+      "patchedVersions": ">=1.2.2",
+      "installed": "1.2.1",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__admin-web>vite>postcss>source-map-js"
+      ],
+      "manifests": [
+        "apps/admin-web/package.json"
+      ],
+      "workspaceDirect": [
+        "vite"
+      ],
+      "workspaceDirectSpecifier": [
+        "6.4.3"
+      ],
+      "floor": "1.2.2",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@dcloudio/uni-app-uts@3.0.0-alpha-1000920260909822",
+        "@dcloudio/uni-cli-shared@3.0.0-alpha-1000920260909822",
+        "@dcloudio/uni-uts-v1@3.0.0-alpha-1000920260909822",
+        "@dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822",
+        "@vue/compiler-core@3.4.21",
+        "@vue/compiler-core@3.5.41",
+        "@vue/compiler-sfc@3.4.21",
+        "@vue/compiler-sfc@3.5.41",
+        "css-tree@2.2.1",
+        "css-tree@3.2.1",
+        "magicast@0.5.4",
+        "postcss@8.5.23",
+        "postcss@8.5.26",
+        "sass@1.103.0",
+        "vite-plugin-vue-tracer@1.5.0"
+      ],
+      "packageSource": {
+        "version": "1.2.1",
+        "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}",
+        "tarball": null
+      },
+      "n": 18
+    },
+    {
+      "advisoryId": 1241210,
+      "githubAdvisoryId": "GHSA-jqcg-44mw-7w3h",
+      "url": "https://github.com/advisories/GHSA-jqcg-44mw-7w3h",
+      "module": "proxy-addr",
+      "severity": "critical",
+      "title": "proxy-addr vulnerable to IP spoofing via IPv4-mapped IPv6 trust subnet",
+      "vulnerableVersions": ">=1.1.0 <2.0.8",
+      "patchedVersions": ">=2.0.8",
+      "installed": "2.0.7",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/vite-plugin-uni>express>proxy-addr"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/vite-plugin-uni"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "2.0.8",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "express@4.20.0"
+      ],
+      "packageSource": {
+        "version": "2.0.7",
+        "integrity": "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}",
+        "tarball": null
+      },
+      "n": 19
+    },
+    {
+      "advisoryId": 1241259,
+      "githubAdvisoryId": "GHSA-g2v6-rqmx-r4w6",
+      "url": "https://github.com/advisories/GHSA-g2v6-rqmx-r4w6",
+      "module": "@vue/server-renderer",
+      "severity": "high",
+      "title": "@vue/server-renderer: XSS via missing CR in attribute-name blacklist",
+      "vulnerableVersions": "<3.5.42",
+      "patchedVersions": ">=3.5.42",
+      "installed": "3.5.41",
+      "scope": "runtime",
+      "exposure": "workspace production dependency",
+      "paths": [
+        "apps__admin-web>vue>@vue/server-renderer"
+      ],
+      "manifests": [
+        "apps/admin-web/package.json"
+      ],
+      "workspaceDirect": [
+        "vue"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.4.0"
+      ],
+      "floor": "3.5.42",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "vue@3.5.41"
+      ],
+      "packageSource": {
+        "version": "3.5.41",
+        "integrity": "sha512-n6hx/pNFfbD6SuyeuMVkvqox8bwf/ET9JlA/kAz/imw8sw++wkqKe2mHX5KutjPpbKE4Z56yTHszoOjGMI9igQ==}",
+        "tarball": null
+      },
+      "n": 20
+    },
+    {
+      "advisoryId": 1241259,
+      "githubAdvisoryId": "GHSA-g2v6-rqmx-r4w6",
+      "url": "https://github.com/advisories/GHSA-g2v6-rqmx-r4w6",
+      "module": "@vue/server-renderer",
+      "severity": "high",
+      "title": "@vue/server-renderer: XSS via missing CR in attribute-name blacklist",
+      "vulnerableVersions": "<3.5.42",
+      "patchedVersions": ">=3.5.42",
+      "installed": "3.4.21",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/uni-app>@dcloudio/uni-cloud>@dcloudio/uni-cli-shared>@vue/server-renderer"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/uni-app"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "3.5.42",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@dcloudio/uni-cli-shared@3.0.0-alpha-1000920260909822",
+        "@dcloudio/uni-h5-vite@3.0.0-alpha-1000920260909822",
+        "@dcloudio/uni-h5-vue@3.0.0-alpha-1000920260909822",
+        "@dcloudio/uni-h5@3.0.0-alpha-1000920260909822"
+      ],
+      "packageSource": {
+        "version": "3.4.21",
+        "integrity": "sha512-aV1gXyKSN6Rz+6kZ6kr5+Ll14YzmIbeuWe7ryJl5muJ4uwSwY/aStXTixx76TwkZFJLm1aAlA/HSWEJ4EyiMkg==}",
+        "tarball": null
+      },
+      "n": 21
+    },
+    {
+      "advisoryId": 1241332,
+      "githubAdvisoryId": "GHSA-pqg4-j6r4-53mv",
+      "url": "https://github.com/advisories/GHSA-pqg4-j6r4-53mv",
+      "module": "shell-quote",
+      "severity": "critical",
+      "title": "shell-quote: `quote()` command injection via a line terminator in a token after a `{ comment }` token",
+      "vulnerableVersions": ">=1.8.4 <1.11.0",
+      "patchedVersions": ">=1.11.0",
+      "installed": "1.10.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>launch-editor>shell-quote"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.11.0",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "launch-editor@2.14.1"
+      ],
+      "packageSource": {
+        "version": "1.10.0",
+        "integrity": "sha512-w1aiOKwKuRgtwAReIIj89puqg+I7GvX4IbLrvmhXbzQsj1+Zwi4VO3+fa6ZF91TWSjIxoEkKnMeHcLEODK5ZXA==}",
+        "tarball": null
+      },
+      "n": 22
+    },
+    {
+      "advisoryId": 1242362,
+      "githubAdvisoryId": "GHSA-r9w8-h9r3-54w4",
+      "url": "https://github.com/advisories/GHSA-r9w8-h9r3-54w4",
+      "module": "devalue",
+      "severity": "high",
+      "title": "devalue: Custom ArrayBuffer revivers can bypass typed-array allocation validation",
+      "vulnerableVersions": "<=5.9.2",
+      "patchedVersions": ">=5.9.3",
+      "installed": "5.9.0",
+      "scope": "runtime",
+      "exposure": "official-site server dependency of nuxt",
+      "paths": [
+        "apps__official-site>nuxt>devalue"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "5.9.3",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/nitro-server@3.21.11",
+        "nuxt@3.21.11"
+      ],
+      "packageSource": {
+        "version": "5.9.0",
+        "integrity": "sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}",
+        "tarball": null
+      },
+      "n": 23
+    },
+    {
+      "advisoryId": 1242658,
+      "githubAdvisoryId": "GHSA-587h-7wmj-h5pm",
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "module": "vite",
+      "severity": "high",
+      "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+      "vulnerableVersions": "<=6.4.3",
+      "patchedVersions": ">=6.4.4",
+      "installed": "6.4.3",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__admin-web>vite"
+      ],
+      "manifests": [
+        "apps/admin-web/package.json"
+      ],
+      "workspaceDirect": [
+        "vite"
+      ],
+      "workspaceDirectSpecifier": [
+        "6.4.3"
+      ],
+      "floor": "6.4.4",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@vitejs/plugin-vue@5.2.4"
+      ],
+      "packageSource": {
+        "version": "6.4.3",
+        "integrity": "sha512-NTKlcQjlAK7MlQoyb6LgaqHc8sso/pVyUJYWMws3jg21uTJw/LddqIFPcPqP6PzpgbIcZyKI85sFE4HBrQDA8A==}",
+        "tarball": null
+      },
+      "n": 24
+    },
+    {
+      "advisoryId": 1242659,
+      "githubAdvisoryId": "GHSA-587h-7wmj-h5pm",
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "module": "vite",
+      "severity": "high",
+      "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+      "vulnerableVersions": ">=7.0.0 <=7.3.6",
+      "patchedVersions": ">=7.3.7",
+      "installed": "7.3.6",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>vite"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "7.3.7",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/devtools-kit@3.4.1",
+        "@nuxt/devtools@3.4.1",
+        "@nuxt/vite-builder@3.21.11",
+        "@vitejs/plugin-vue-jsx@5.1.6",
+        "@vitejs/plugin-vue@6.0.8",
+        "unplugin@3.3.0",
+        "vite-dev-rpc@2.0.0",
+        "vite-hot-client@2.2.0",
+        "vite-node@5.3.0",
+        "vite-plugin-checker@0.14.5",
+        "vite-plugin-inspect@11.4.1",
+        "vite-plugin-vue-tracer@1.5.0"
+      ],
+      "packageSource": {
+        "version": "7.3.6",
+        "integrity": "sha512-4XP60spRGjSZFf1qYH+dJIkK2znL3zQfl9KkOV9MkkRR/3Dls0dxaBsQPTloEc5BLXWPL9vsOxopxyKoMmDueg==}",
+        "tarball": null
+      },
+      "n": 25
+    },
+    {
+      "advisoryId": 1242661,
+      "githubAdvisoryId": "GHSA-587h-7wmj-h5pm",
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "module": "vite",
+      "severity": "high",
+      "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+      "vulnerableVersions": ">=8.2.0 <=8.2.3",
+      "patchedVersions": ">=8.2.4",
+      "installed": "8.2.2",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>vite"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "vite"
+      ],
+      "workspaceDirectSpecifier": [
+        "8.2.2"
+      ],
+      "floor": "8.2.4",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822",
+        "@vitejs/plugin-basic-ssl@2.3.0",
+        "@vitejs/plugin-legacy@8.1.0",
+        "@vitejs/plugin-vue-jsx@5.1.6",
+        "@vitejs/plugin-vue@6.0.7"
+      ],
+      "packageSource": {
+        "version": "8.2.2",
+        "integrity": "sha512-cFKLV/PRgAUlIRm5WjMjJ86jrftzpqcgH+Us+DS8mI3CDNiH30Whrz8uHL3+MOLPAgqbMBAqWdAHAphOAM+z/Q==}",
+        "tarball": null
+      },
+      "n": 26
+    },
+    {
+      "advisoryId": 1242663,
+      "githubAdvisoryId": "GHSA-587h-7wmj-h5pm",
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "module": "launch-editor",
+      "severity": "high",
+      "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+      "vulnerableVersions": "<=2.14.1",
+      "patchedVersions": ">=2.14.2",
+      "installed": "2.14.1",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>launch-editor"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "2.14.2",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/devtools@3.4.1"
+      ],
+      "packageSource": {
+        "version": "2.14.1",
+        "integrity": "sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==}",
+        "tarball": null
+      },
+      "n": 27
+    },
+    {
+      "advisoryId": 1243073,
+      "githubAdvisoryId": "GHSA-27r3-jxmh-p828",
+      "url": "https://github.com/advisories/GHSA-27r3-jxmh-p828",
+      "module": "body-parser",
+      "severity": "high",
+      "title": "body-parser vulnerable to Denial of Service via trailing bytes after a compressed request body",
+      "vulnerableVersions": "<1.20.9",
+      "patchedVersions": ">=1.20.9",
+      "installed": "1.20.3",
+      "scope": "build",
+      "exposure": "build toolchain",
+      "paths": [
+        "apps__mobile>@dcloudio/vite-plugin-uni>express>body-parser"
+      ],
+      "manifests": [
+        "apps/mobile/package.json"
+      ],
+      "workspaceDirect": [
+        "@dcloudio/vite-plugin-uni"
+      ],
+      "workspaceDirectSpecifier": [
+        "3.0.0-alpha-1000920260909822"
+      ],
+      "floor": "1.20.9",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "express@4.20.0"
+      ],
+      "packageSource": {
+        "version": "1.20.3",
+        "integrity": "sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}",
+        "tarball": null
+      },
+      "n": 28
+    },
+    {
+      "advisoryId": 1243612,
+      "githubAdvisoryId": "GHSA-97r2-qh9m-474h",
+      "url": "https://github.com/advisories/GHSA-97r2-qh9m-474h",
+      "module": "seroval",
+      "severity": "high",
+      "title": "Seroval: fromJSON deserializer trusts node-supplied array length and sequence doneAt (unauthenticated event-loop DoS)",
+      "vulnerableVersions": "<=1.6.7",
+      "patchedVersions": ">=1.6.8",
+      "installed": "1.6.2",
+      "scope": "runtime",
+      "exposure": "workspace production dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/vite-builder>seroval"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.6.8",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/vite-builder@3.21.11"
+      ],
+      "packageSource": {
+        "version": "1.6.2",
+        "integrity": "sha512-mPT+SD2TrlB6wvte1KkYOYUkubaTbd6pZ/6Kk3C9nxzrHmCZyhxOO7XGAeL7f+yLKZglzGtM9odUVvg/EhO+vQ==}",
+        "tarball": null
+      },
+      "n": 29
+    },
+    {
+      "advisoryId": 1243613,
+      "githubAdvisoryId": "GHSA-wp97-x4hv-qvhp",
+      "url": "https://github.com/advisories/GHSA-wp97-x4hv-qvhp",
+      "module": "seroval",
+      "severity": "high",
+      "title": "Seroval `fromJSON`/`fromCrossJSON` denial of service via unvalidated array node length",
+      "vulnerableVersions": ">=1.4.1 <=1.6.7",
+      "patchedVersions": ">=1.6.8",
+      "installed": "1.6.2",
+      "scope": "runtime",
+      "exposure": "workspace production dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/vite-builder>seroval"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.6.8",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/vite-builder@3.21.11"
+      ],
+      "packageSource": {
+        "version": "1.6.2",
+        "integrity": "sha512-mPT+SD2TrlB6wvte1KkYOYUkubaTbd6pZ/6Kk3C9nxzrHmCZyhxOO7XGAeL7f+yLKZglzGtM9odUVvg/EhO+vQ==}",
+        "tarball": null
+      },
+      "n": 30
+    },
+    {
+      "advisoryId": 1243614,
+      "githubAdvisoryId": "GHSA-7rv5-mrxv-xcr9",
+      "url": "https://github.com/advisories/GHSA-7rv5-mrxv-xcr9",
+      "module": "seroval",
+      "severity": "high",
+      "title": "Seroval: Deserialization invokes attacker-chosen callables: AsyncIteratorFactoryInstance calls source.on(listener) without type check",
+      "vulnerableVersions": "<=1.6.7",
+      "patchedVersions": ">=1.6.8",
+      "installed": "1.6.2",
+      "scope": "runtime",
+      "exposure": "workspace production dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/vite-builder>seroval"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.6.8",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/vite-builder@3.21.11"
+      ],
+      "packageSource": {
+        "version": "1.6.2",
+        "integrity": "sha512-mPT+SD2TrlB6wvte1KkYOYUkubaTbd6pZ/6Kk3C9nxzrHmCZyhxOO7XGAeL7f+yLKZglzGtM9odUVvg/EhO+vQ==}",
+        "tarball": null
+      },
+      "n": 31
+    },
+    {
+      "advisoryId": 1244017,
+      "githubAdvisoryId": "GHSA-7wch-p9px-956x",
+      "url": "https://github.com/advisories/GHSA-7wch-p9px-956x",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "Forge: Regular expression denial of service in PEM decoding (pem.decode)",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": ">=1.4.1",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.4.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 32
+    },
+    {
+      "advisoryId": 1244021,
+      "githubAdvisoryId": "GHSA-jc66-7q78-782g",
+      "url": "https://github.com/advisories/GHSA-jc66-7q78-782g",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "Forge: PKCS#12 MAC forgery and constant-key PBE via zero iteration count",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": ">=1.4.1",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.4.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 33
+    },
+    {
+      "advisoryId": 1244022,
+      "githubAdvisoryId": "GHSA-8hrf-8g6f-7xwp",
+      "url": "https://github.com/advisories/GHSA-8hrf-8g6f-7xwp",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "Forge: Denial of service in TLS record processing via a record interleaved with a fragmented handshake message",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": ">=1.4.1",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.4.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 34
+    },
+    {
+      "advisoryId": 1244023,
+      "githubAdvisoryId": "GHSA-hqq3-7jhf-c5jx",
+      "url": "https://github.com/advisories/GHSA-hqq3-7jhf-c5jx",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "Forge: Denial of service in TLS record processing via call stack exhaustion",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": ">=1.4.1",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.4.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 35
+    },
+    {
+      "advisoryId": 1244024,
+      "githubAdvisoryId": "GHSA-5x38-2vff-x55p",
+      "url": "https://github.com/advisories/GHSA-5x38-2vff-x55p",
+      "module": "node-forge",
+      "severity": "high",
+      "title": "Forge: X.509 basicConstraints bypass in verifyCertificateChain() via deprecated extension OIDs 2.5.29.10 and 2.5.29.13",
+      "vulnerableVersions": "<=1.4.0",
+      "patchedVersions": ">=1.4.1",
+      "installed": "1.4.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt CLI through listhen; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/cli>listhen>node-forge"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "1.4.1",
+      "floorAction": "advisory-floor",
+      "sameMajor": true,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "listhen@1.10.1"
+      ],
+      "packageSource": {
+        "version": "1.4.0",
+        "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}",
+        "tarball": null
+      },
+      "n": 36
+    },
+    {
+      "advisoryId": 1244059,
+      "githubAdvisoryId": "GHSA-858h-whjf-mvg5",
+      "url": "https://github.com/advisories/GHSA-858h-whjf-mvg5",
+      "module": "simple-git",
+      "severity": "high",
+      "title": "simple-git: unsafe-operations plugin bypass via git long-option abbreviation (--receive-p/--exe) -> command execution (residual of CVE-2026-28291)",
+      "vulnerableVersions": "<=3.36.0",
+      "patchedVersions": ">=4.0.0",
+      "installed": "3.36.0",
+      "scope": "runtime",
+      "exposure": "official-site Nuxt devtools chain; the workspace edge is the nuxt dependency",
+      "paths": [
+        "apps__official-site>nuxt>@nuxt/devtools>simple-git"
+      ],
+      "manifests": [
+        "apps/official-site/package.json"
+      ],
+      "workspaceDirect": [
+        "nuxt"
+      ],
+      "workspaceDirectSpecifier": [
+        "^3.11.0"
+      ],
+      "floor": "4.0.0",
+      "floorAction": "advisory-floor",
+      "sameMajor": false,
+      "zeroMinorBump": false,
+      "lockParents": [
+        "@nuxt/devtools@3.4.1"
+      ],
+      "packageSource": {
+        "version": "3.36.0",
+        "integrity": "sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}",
+        "tarball": null
+      },
+      "n": 37
+    }
+  ],
+  "actions": [
+    {
+      "id": "A01",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'@dcloudio/uni-uts-v1>adm-zip': 0.6.1",
+      "module": "adm-zip",
+      "installed": "0.5.16",
+      "floor": "0.6.1",
+      "whyThisFloor": "GHSA-xcpc-8h2w-3j85 is fixed at >=0.6.0. The other four adm-zip advisories are fixed only at >=0.6.1, and GHSA-rcw4-f5rp-g42v, GHSA-j5f4-cc29-5x44, and GHSA-8238-w5pm-2374 still include 0.6.0.",
+      "scope": "build",
+      "stack": "uni-app family pin stays 3.0.0-alpha-1000920260909822. This adds the missing parent next to the existing @dcloudio/uni-cli-shared>adm-zip override, which is already 0.6.1.",
+      "compatibility": "0.x minor move from 0.5.16 to 0.6.1. The same 0.6.1 pin is already used on the uni-cli-shared edge.",
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "advisories": [
+        "GHSA-xcpc-8h2w-3j85",
+        "GHSA-7q85-xj36-vmfc",
+        "GHSA-rcw4-f5rp-g42v",
+        "GHSA-j5f4-cc29-5x44",
+        "GHSA-8238-w5pm-2374"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A02",
+      "decision": "propose-range-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'brace-expansion@>=2.0.0 <3.0.0': 2.1.6",
+      "module": "brace-expansion",
+      "installed": "2.1.4",
+      "floor": "2.1.6",
+      "whyThisFloor": "2.1.6 satisfies both >=2.1.5 (GHSA-6j4f-fj2g-mc7p) and >=2.1.6 (GHSA-qhr7-859c-m2p7). 2.1.5 leaves the second advisory open.",
+      "scope": "build",
+      "stack": "Leaves Vue, uni-app, Vite, and Java unchanged. Lock parents of 2.1.4 are minimatch@5.1.9 and minimatch@9.0.9.",
+      "compatibility": "Same 2.1 line. The captured path is apps/admin-web > vue-tsc. apps/learner-web also locks vue-tsc@2.2.12; this range covers that copy without a second key.",
+      "numbers": [
+        6,
+        8
+      ],
+      "advisories": [
+        "GHSA-qhr7-859c-m2p7",
+        "GHSA-6j4f-fj2g-mc7p"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A03",
+      "decision": "propose-range-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'brace-expansion@>=5.0.0 <6.0.0': 5.0.11",
+      "module": "brace-expansion",
+      "installed": "5.0.9",
+      "floor": "5.0.11",
+      "whyThisFloor": "5.0.11 satisfies both >=5.0.10 and >=5.0.11. A single minimatch>brace-expansion pin cannot serve the 2.x and 5.x lines together.",
+      "scope": "runtime",
+      "stack": "Lock parent is minimatch@10.2.6, reached through nuxt > @nuxt/nitro-server > nitropack > @vercel/nft > glob. Nuxt stays at the locked 3.21.11.",
+      "compatibility": "Same 5.0 line.",
+      "numbers": [
+        7,
+        9
+      ],
+      "advisories": [
+        "GHSA-qhr7-859c-m2p7",
+        "GHSA-6j4f-fj2g-mc7p"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A04",
+      "decision": "propose-version-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'devalue@5.9.0': 5.9.3",
+      "module": "devalue",
+      "installed": "5.9.0",
+      "floor": "5.9.3",
+      "whyThisFloor": "All four devalue advisories share patchedVersions >=5.9.3.",
+      "scope": "runtime",
+      "stack": "Lock parents are nuxt@3.21.11 and @nuxt/nitro-server@3.21.11. The Nuxt version stays.",
+      "compatibility": "Same 5.9 line.",
+      "numbers": [
+        10,
+        11,
+        12,
+        23
+      ],
+      "advisories": [
+        "GHSA-j22f-vq7h-c4qm",
+        "GHSA-mcm9-63f2-9j32",
+        "GHSA-x5rw-q4pp-hg5g",
+        "GHSA-r9w8-h9r3-54w4"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A05",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'listhen>node-forge': 1.4.1",
+      "module": "node-forge",
+      "installed": "1.4.0",
+      "floor": "1.4.1",
+      "whyThisFloor": "Five node-forge advisories are fixed at >=1.4.1. This does not clear GHSA-86w9-cpqp-85rv.",
+      "scope": "runtime",
+      "stack": "Only lock parent is listhen@1.10.1, under nuxt > @nuxt/cli. Nuxt stays 3.21.11.",
+      "compatibility": "Same 1.4 line.",
+      "numbers": [
+        32,
+        33,
+        34,
+        35,
+        36
+      ],
+      "advisories": [
+        "GHSA-7wch-p9px-956x",
+        "GHSA-jc66-7q78-782g",
+        "GHSA-8hrf-8g6f-7xwp",
+        "GHSA-hqq3-7jhf-c5jx",
+        "GHSA-5x38-2vff-x55p"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A06",
+      "decision": "no-upstream-fix",
+      "mechanism": "none",
+      "yaml": null,
+      "module": "node-forge",
+      "installed": "1.4.0",
+      "floor": null,
+      "whyThisFloor": "patchedVersions is <0.0.0, the advisory sentinel for no patched release.",
+      "scope": "runtime",
+      "stack": "Same listhen@1.10.1 edge as A05. No Vue, uni-app, or Java change removes this object.",
+      "compatibility": "The high/critical gate stays fail while this object is present. Do not waive it and do not lower the threshold.",
+      "numbers": [
+        13
+      ],
+      "advisories": [
+        "GHSA-86w9-cpqp-85rv"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A07",
+      "decision": "propose-major-with-parent-review",
+      "mechanism": "pnpm-override",
+      "yaml": "'@nuxt/devtools>simple-git': 4.0.1",
+      "module": "simple-git",
+      "installed": "3.36.0",
+      "floor": "4.0.1",
+      "whyThisFloor": "GHSA-g4wm-2vf7-vfgr and GHSA-858h-whjf-mvg5 fix at >=4.0.0. GHSA-x6jw-m9v5-85vh fixes only at >=4.0.1.",
+      "scope": "runtime",
+      "stack": "Lock parent is @nuxt/devtools@3.4.1. Devtools and Nuxt versions stay. This is outside the Vue 3, uni-app, and Java pins.",
+      "compatibility": "Major move from 3.36.0 to 4.0.1. The advisory gives no 3.x floor. The parent's declared range is not in the lock snapshot. Apply it in the same lock refresh as A08.",
+      "numbers": [
+        15,
+        16,
+        37
+      ],
+      "advisories": [
+        "GHSA-x6jw-m9v5-85vh",
+        "GHSA-g4wm-2vf7-vfgr",
+        "GHSA-858h-whjf-mvg5"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A08",
+      "decision": "propose-major-with-parent-review",
+      "mechanism": "pnpm-override",
+      "yaml": "'simple-git>@simple-git/argv-parser': 2.0.1",
+      "module": "@simple-git/argv-parser",
+      "installed": "1.1.1",
+      "floor": "2.0.1",
+      "whyThisFloor": "The only patched range is >=2.0.1.",
+      "scope": "runtime",
+      "stack": "Lock parent is simple-git@3.36.0, itself under @nuxt/devtools@3.4.1.",
+      "compatibility": "Major move from 1.1.1 to 2.0.1. Apply together with simple-git 4.0.1 so the nested parser and its parent move in one resolution.",
+      "numbers": [
+        14
+      ],
+      "advisories": [
+        "GHSA-v5rq-49vh-5v5c"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A09",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'@nuxt/vite-builder>seroval': 1.6.8",
+      "module": "seroval",
+      "installed": "1.6.2",
+      "floor": "1.6.8",
+      "whyThisFloor": "GHSA-jp82-f5mq-hwhp is fixed at >=1.6.3. GHSA-97r2-qh9m-474h, GHSA-wp97-x4hv-qvhp, and GHSA-7rv5-mrxv-xcr9 are fixed only at >=1.6.8.",
+      "scope": "runtime",
+      "stack": "Only lock parent is @nuxt/vite-builder@3.21.11. Nuxt stays 3.21.11.",
+      "compatibility": "Same 1.6 line.",
+      "numbers": [
+        17,
+        29,
+        30,
+        31
+      ],
+      "advisories": [
+        "GHSA-jp82-f5mq-hwhp",
+        "GHSA-97r2-qh9m-474h",
+        "GHSA-wp97-x4hv-qvhp",
+        "GHSA-7rv5-mrxv-xcr9"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A10",
+      "decision": "propose-module-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'source-map-js': 1.2.2",
+      "module": "source-map-js",
+      "installed": "1.2.1",
+      "floor": "1.2.2",
+      "whyThisFloor": "The only patched range is >=1.2.2.",
+      "scope": "build",
+      "stack": "The captured path is apps/admin-web > vite > postcss. The lock also resolves 1.2.1 under 15 parents, including postcss 8.5.23 and 8.5.26, both Vue 3.4.21 and 3.5.41 compilers, sass, and four @dcloudio packages. One module pin clears every locked copy. Vue and uni-app version pins stay.",
+      "compatibility": "Same 1.2 line. A postcss-only selector would leave the other locked parents on 1.2.1.",
+      "numbers": [
+        18
+      ],
+      "advisories": [
+        "GHSA-68fv-2mgg-jv7q"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A11",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'express>proxy-addr': 2.0.8",
+      "module": "proxy-addr",
+      "installed": "2.0.7",
+      "floor": "2.0.8",
+      "whyThisFloor": "The only patched range is >=2.0.8.",
+      "scope": "build",
+      "stack": "Lock parent is express@4.20.0 under @dcloudio/vite-plugin-uni. The uni-app family pin stays. This matches the existing express>path-to-regexp override style.",
+      "compatibility": "Same 2.0 line.",
+      "numbers": [
+        19
+      ],
+      "advisories": [
+        "GHSA-jqcg-44mw-7w3h"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A12",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'express>body-parser': 1.20.9",
+      "module": "body-parser",
+      "installed": "1.20.3",
+      "floor": "1.20.9",
+      "whyThisFloor": "The only patched range is >=1.20.9.",
+      "scope": "build",
+      "stack": "Same express@4.20.0 parent as proxy-addr. No Express major move.",
+      "compatibility": "Same 1.20 line.",
+      "numbers": [
+        28
+      ],
+      "advisories": [
+        "GHSA-27r3-jxmh-p828"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A13",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'vue>@vue/server-renderer': 3.5.42",
+      "module": "@vue/server-renderer",
+      "installed": "3.5.41",
+      "floor": "3.5.42",
+      "whyThisFloor": "Vulnerable range is <3.5.42. There is no older patched release in the advisory.",
+      "scope": "runtime",
+      "stack": "Lock parent is vue@3.5.41, the version already resolved for admin-web, learner-web, and mobile. The vue specifier stays 3.5.41 on mobile and ^3.4.0 on the Vue web apps.",
+      "compatibility": "Vue 3 patch, one release above the locked 3.5.41 renderer. The captured path is apps/admin-web > vue.",
+      "numbers": [
+        20
+      ],
+      "advisories": [
+        "GHSA-g2v6-rqmx-r4w6"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A14",
+      "decision": "propose-version-override-with-uni-build-check",
+      "mechanism": "pnpm-override",
+      "yaml": "'@vue/server-renderer@3.4.21': 3.5.42",
+      "module": "@vue/server-renderer",
+      "installed": "3.4.21",
+      "floor": "3.5.42",
+      "whyThisFloor": "The advisory's patched range starts at 3.5.42, so the 3.4 line has no patched release.",
+      "scope": "build",
+      "stack": "The captured path is @dcloudio/uni-cli-shared. The lock also resolves 3.4.21 from @dcloudio/uni-h5, @dcloudio/uni-h5-vite, and @dcloudio/uni-h5-vue. Those packages stay on alpha 3.0.0-alpha-1000920260909822. @dcloudio/uni-shared still resolves @vue/shared@3.4.21.",
+      "compatibility": "Stays on Vue 3 and does not change the uni-app family pin. It does move this renderer copy from the 3.4 line to 3.5.42. Root should build the mobile H5/App targets before accepting it. Skipping it leaves a high finding in place.",
+      "numbers": [
+        21
+      ],
+      "advisories": [
+        "GHSA-g2v6-rqmx-r4w6"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A15",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'launch-editor>shell-quote': 1.11.0",
+      "module": "shell-quote",
+      "installed": "1.10.0",
+      "floor": "1.11.0",
+      "whyThisFloor": "The only patched range is >=1.11.0.",
+      "scope": "runtime",
+      "stack": "Lock parent is launch-editor@2.14.1 under @nuxt/devtools@3.4.1.",
+      "compatibility": "Same 1.x line. Apply with the launch-editor pin in A16.",
+      "numbers": [
+        22
+      ],
+      "advisories": [
+        "GHSA-pqg4-j6r4-53mv"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A16",
+      "decision": "propose-parent-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'@nuxt/devtools>launch-editor': 2.14.2",
+      "module": "launch-editor",
+      "installed": "2.14.1",
+      "floor": "2.14.2",
+      "whyThisFloor": "GHSA-587h-7wmj-h5pm fixes launch-editor at >=2.14.2. The Vite copies of this advisory are separate rows.",
+      "scope": "runtime",
+      "stack": "Lock parent is @nuxt/devtools@3.4.1. Devtools stays.",
+      "compatibility": "Same 2.14 line.",
+      "numbers": [
+        27
+      ],
+      "advisories": [
+        "GHSA-587h-7wmj-h5pm"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A17",
+      "decision": "propose-direct-pin",
+      "mechanism": "direct-specifier",
+      "yaml": "apps/admin-web/package.json and apps/learner-web/package.json: vite 6.4.3 -> 6.4.4",
+      "module": "vite",
+      "installed": "6.4.3",
+      "floor": "6.4.4",
+      "whyThisFloor": "The Vite 6 range of GHSA-587h-7wmj-h5pm is fixed at >=6.4.4.",
+      "scope": "build",
+      "stack": "Stays on Vite 6. Do not use one workspace vite override; that would also move the Vite 7 and Vite 8 copies.",
+      "compatibility": "The captured path lists apps/admin-web only. The lock importers for both admin-web and learner-web specify vite 6.4.3 and resolve 6.4.3. @vitejs/plugin-vue@5.2.4 peers vite at ^5.0.0 || ^6.0.0, which accepts 6.4.4.",
+      "numbers": [
+        24
+      ],
+      "advisories": [
+        "GHSA-587h-7wmj-h5pm"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A18",
+      "decision": "propose-range-override",
+      "mechanism": "pnpm-override",
+      "yaml": "'vite@>=7.0.0 <8.0.0': 7.3.7",
+      "module": "vite",
+      "installed": "7.3.6",
+      "floor": "7.3.7",
+      "whyThisFloor": "The Vite 7 range is fixed at >=7.3.7. The upper bound keeps Vite 6 and Vite 8 on their own actions.",
+      "scope": "runtime",
+      "stack": "Twelve lock parents, all under the Nuxt 3.21 / @nuxt/devtools 3.4.1 graph, including @nuxt/vite-builder and @vitejs/plugin-vue@6.0.8. Nuxt and devtools versions stay.",
+      "compatibility": "Same Vite 7 line. @vitejs/plugin-vue@6.0.8 peers vite at ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0, which accepts 7.3.7. The only exact vite peer in the lock is @dcloudio/vite-plugin-uni at 8.2.2, so this selector does not move mobile.",
+      "numbers": [
+        25
+      ],
+      "advisories": [
+        "GHSA-587h-7wmj-h5pm"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    },
+    {
+      "id": "A19",
+      "decision": "blocked-exact-peer",
+      "mechanism": "none",
+      "yaml": null,
+      "module": "vite",
+      "installed": "8.2.2",
+      "floor": "8.2.4",
+      "whyThisFloor": "The Vite 8 range is fixed at >=8.2.4. 8.2.3 is still inside the vulnerable range <=8.2.3.",
+      "scope": "build",
+      "stack": "@dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822 peers vite exactly at 8.2.2. The uni-app family pin stays. @vitejs/plugin-vue@6.0.7, @vitejs/plugin-vue-jsx@5.1.6, @vitejs/plugin-legacy@8.1.0, and @vitejs/plugin-basic-ssl@2.3.0 accept a Vite 8 range.",
+      "compatibility": "No version satisfies both patchedVersions >=8.2.4 and the exact peer vite 8.2.2 of @dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822. Do not change apps/mobile vite in this plan. The other Vite 8 plugins in the lock accept a ^8 range.",
+      "numbers": [
+        26
+      ],
+      "advisories": [
+        "GHSA-587h-7wmj-h5pm"
+      ],
+      "registryConfirmed": false,
+      "applied": false
+    }
+  ],
+  "expectedGateAfterProposedPins": {
+    "compatibleFloors": 35,
+    "remaining": [
+      {
+        "githubAdvisoryId": "GHSA-86w9-cpqp-85rv",
+        "module": "node-forge",
+        "installed": "1.4.0",
+        "reason": "patchedVersions is <0.0.0"
+      },
+      {
+        "githubAdvisoryId": "GHSA-587h-7wmj-h5pm",
+        "module": "vite",
+        "installed": "8.2.2",
+        "reason": "advisory floor 8.2.4 conflicts with exact peer vite 8.2.2 on @dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822"
+      }
+    ],
+    "result": "FAIL",
+    "reason": "Two high findings stay inside the current Vue 3, uni-app alpha, and exact-peer constraints. The gate is unchanged. This expectation was not executed.",
+    "uniRendererCheck": "A14 moves @vue/server-renderer 3.4.21 to 3.5.42. It stays on Vue 3 and needs a mobile build check because @dcloudio/uni-shared still resolves @vue/shared 3.4.21."
+  }
+}

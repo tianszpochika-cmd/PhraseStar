@@ -1,0 +1,16 @@
+{
+  "baseCommit": "f69fd71f2adc683441face4d4d7d79dd0c2c3a89",
+  "paths": [
+    "apps/admin-web/package.json",
+    "apps/learner-web/package.json",
+    "apps/mobile/package.json",
+    "apps/official-site/package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "review": "UNMERGED_BUILD_NOT_RUN",
+  "auditBeforeHighCritical": 37,
+  "auditAfterHighCritical": 1,
+  "remaining": "mobile vite8.2.2 exact uni-app peer",
+  "cliClose": "report completed; stalled CLI interrupted with SIGINT; no terminal session receipt; do not guess --resume"
+}

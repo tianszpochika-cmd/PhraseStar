@@ -1,0 +1,213 @@
+{
+  "account": "svc_gamification",
+  "actorOrigin": "http://127.0.0.1:18183",
+  "applied": true,
+  "className": "DEFAULT_OWNER_EMPTY",
+  "classes": {
+    "quests": "IMPLEMENTED_EMPTY_LIST",
+    "rewards": "EMPTY_GRANT_LIST",
+    "season": "DEFAULT_CALENDAR_SHELL",
+    "streak": "DEFAULT_ZERO",
+    "summary": "DEFAULT_PROJECTION"
+  },
+  "classifierReason": "default-owner-empty",
+  "classifierStatus": "WIRE_SHAPE",
+  "cleanup": {
+    "browser": {
+      "reaped": 0,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    },
+    "java": {
+      "reaped": 3,
+      "remaining": 0,
+      "signaled": 3,
+      "unverified": 0
+    },
+    "portsFree": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18094": true,
+      "18183": true
+    },
+    "released": true,
+    "scratch": true,
+    "tail": {
+      "reaped": 1,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    }
+  },
+  "container": "cloudstudy-mobile-world-h5-default-424",
+  "executed": true,
+  "extraWrites": 0,
+  "factsAfter": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "factsBefore": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "factsReady": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "factsStayZero": true,
+  "fixtureRows": 3,
+  "g382Wire": {
+    "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/world-gateway-default-owned-runtime-382-root/gateway-default-receipt.json",
+    "role": "historical-wire-pin",
+    "usedAsH5Proof": false
+  },
+  "gatewayCaps": 1,
+  "guard": "/tmp/grok-mobile-resume-world-repair-424/root-lease.py",
+  "h5": {
+    "clickedClaim": false,
+    "counts": {
+      "claim": 0,
+      "loginPost": 1,
+      "principal": 4,
+      "probability": 0,
+      "quests": 1,
+      "rewards": 1,
+      "season": 1,
+      "streak": 1,
+      "summary": 1,
+      "write": 0
+    },
+    "forbiddenOpened": false,
+    "h5Started": true,
+    "historicalReceiptUsed": true,
+    "identifierOmitted": true,
+    "indexMatch": true,
+    "launched": true,
+    "nonceClosed": true,
+    "nonceValueOmitted": true,
+    "observed": true,
+    "onboardingOpened": false,
+    "passwordOmitted": true,
+    "principalEligible": true,
+    "reason": "default-owner-empty",
+    "rendered": {
+      "claimButtons": 0,
+      "copy": "zh",
+      "entries": 4,
+      "holds": true,
+      "missing": [],
+      "presentForbidden": [],
+      "questRows": 0,
+      "rewardRows": 0,
+      "route": "/pages/world/world",
+      "surface": "rendered"
+    },
+    "routeFulfill": true,
+    "status": "OBSERVED",
+    "subjectOmitted": true,
+    "wire": {
+      "className": "DEFAULT_OWNER_EMPTY",
+      "classes": {
+        "quests": "IMPLEMENTED_EMPTY_LIST",
+        "rewards": "EMPTY_GRANT_LIST",
+        "season": "DEFAULT_CALENDAR_SHELL",
+        "streak": "DEFAULT_ZERO",
+        "summary": "DEFAULT_PROJECTION"
+      },
+      "classifierReason": "default-owner-empty",
+      "classifierStatus": "WIRE_SHAPE",
+      "g368ObserveWorldOwner": "unused-for-live-b139",
+      "holds": true,
+      "observed": false,
+      "surface": "wire"
+    },
+    "worldEmptyReady": true,
+    "writes": 0
+  },
+  "h5Claimed": true,
+  "h5PortOpened": true,
+  "historicalReceiptUsed": false,
+  "knownMarker": "MB018-H5-DEFAULT-424",
+  "label": "cloudstudy.qa.mobile-world-h5-default-424",
+  "ledger": {
+    "adultGate": 1,
+    "consent": 3,
+    "register": 1
+  },
+  "observed": true,
+  "passwordOmitted": true,
+  "ports": {
+    "gamification": 18094,
+    "gateway": 18070,
+    "h5": 18183,
+    "iam": 18087,
+    "mysql": 13306
+  },
+  "reason": "default-owner-empty",
+  "receipt": "/tmp/grok-mobile-resume-world-repair-424/world-h5-default-receipt.json",
+  "released": true,
+  "rendered": {
+    "claimButtons": 0,
+    "copy": "zh",
+    "entries": 4,
+    "holds": true,
+    "missing": [],
+    "presentForbidden": [],
+    "questRows": 0,
+    "rewardRows": 0,
+    "route": "/pages/world/world",
+    "surface": "rendered"
+  },
+  "runId": "3520c8df",
+  "schema": "gamification_service",
+  "scopeClean": true,
+  "seeded": false,
+  "sourceWritten": false,
+  "status": "FAIL",
+  "wire": {
+    "className": "DEFAULT_OWNER_EMPTY",
+    "classes": {
+      "quests": "IMPLEMENTED_EMPTY_LIST",
+      "rewards": "EMPTY_GRANT_LIST",
+      "season": "DEFAULT_CALENDAR_SHELL",
+      "streak": "DEFAULT_ZERO",
+      "summary": "DEFAULT_PROJECTION"
+    },
+    "classifierReason": "default-owner-empty",
+    "classifierStatus": "WIRE_SHAPE",
+    "g368ObserveWorldOwner": "unused-for-live-b139",
+    "holds": true,
+    "observed": false,
+    "surface": "wire"
+  },
+  "worldEmptyReady": true
+}

@@ -1,0 +1,311 @@
+[
+  {
+    "name": "vue",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/vue/-/vue-3.5.45.tgz",
+    "integrity": "sha512-3cvsib8m9c0vB24+MDKsgcW4+Da4xaBl9Z/5Tbm2pmSIsRPxcil4cdXjXlVsmJ2g64XJo5h+IRd7rsdGT9pZaw==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/shared",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/shared/-/shared-3.5.45.tgz",
+    "integrity": "sha512-ue9fgHmVNPlP7iW3+cxoBX/Cnlw53dHlVSw0JKGY6z1lObg8pHoj928M2nzG4/yVsMZ3NaRZ2s2z61uC16NDwQ==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/compiler-dom",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.5.45.tgz",
+    "integrity": "sha512-LbP2d19GSOYGPmvMBBCVJVlv7TKtjM1Cfeyu3cYia720pknZP+1cLX7H5MVatvruT6MuJhiPuNbQBW/MDn/EwA==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/compiler-sfc",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/compiler-sfc/-/compiler-sfc-3.5.45.tgz",
+    "integrity": "sha512-MKFjb2UX0M/l/jhfzqMLrI8VM4pfvFKG3pqFZkSZFHRLtNld/O4RtUPZFWSwhro/14qP88UQEkWzHxAZAQ0tsw==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/compiler-core",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.5.45.tgz",
+    "integrity": "sha512-XGHJrM6ufZARAc/w+tyOswStw9tdKiqCKBScI4gGaNxD+aaGu/HQWgKJ+JItjRLPqenQ7iE7G8AJC7T5ew1p+g==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/compiler-ssr",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/compiler-ssr/-/compiler-ssr-3.5.45.tgz",
+    "integrity": "sha512-RF5sbZOfYz5AK00tOJUn2PwFXR2fS1u2HVzI8D9VF9rGAFxuGBqg2bB1kJ3ZHMprqSltXnT9MZE1IsqjSM8oew==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/server-renderer",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/server-renderer/-/server-renderer-3.5.45.tgz",
+    "integrity": "sha512-1fNXUHhhsWf4EVL4XixbGBU5mKdiIXJAB82feHRTyPPo6ZUEYWIJuEeUl3mVV6QDBp50HJOX4obLhxYXlrjrzA==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/runtime-core",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.5.45.tgz",
+    "integrity": "sha512-bzIO3+FABjpj85uIKSc+Qnj36/sxDNI3tcH9i6w6xKA1k6e0ejv0G0jMCfeJBvK3yGL5XbJ3DMZj+ClqyCHFYw==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/runtime-dom",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.5.45.tgz",
+    "integrity": "sha512-ZvRTFMDgfqTDYWvJfoVpQTJx1RN5M6l7Pyd6wfdY2NaXzbPQVh9ezeQYFbNPP6bIcRVn2SqSSR25N/jSW69BFw==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@vue/reactivity",
+    "version": "3.5.45",
+    "tarball": "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.5.45.tgz",
+    "integrity": "sha512-WqkyubNWpI4OYBOipSrjIssMdJO8K1i9Zts/Wm8Er10/0msOEwCyWWWvZnAI7WW3kQsTong6DJp8Cbb+vd4cPA==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "vite",
+    "version": "6.4.5",
+    "tarball": "https://registry.npmjs.org/vite/-/vite-6.4.5.tgz",
+    "integrity": "sha512-4enwjFfi4IwtEh0w+jPzpLVOFQiPHmmzPxcHXQOyEur47o6u0jE573DmGpjA+7irXoMLYRZD5ZaFUEneS3abPg==",
+    "engines": {
+      "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "vite",
+    "version": "7.3.7",
+    "tarball": "https://registry.npmjs.org/vite/-/vite-7.3.7.tgz",
+    "integrity": "sha512-AHEzTORMbi7/7aXp7w7KZ5+DCUdSeLsJz0grY8xHpc9DHdYb0vQu6DqJfm2tOw3gDExNgPgnJTXxM6syYFHaCA==",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "vite",
+    "version": "8.2.2",
+    "tarball": "https://registry.npmjs.org/vite/-/vite-8.2.2.tgz",
+    "integrity": "sha512-cFKLV/PRgAUlIRm5WjMjJ86jrftzpqcgH+Us+DS8mI3CDNiH30Whrz8uHL3+MOLPAgqbMBAqWdAHAphOAM+z/Q==",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "adm-zip",
+    "version": "0.6.1",
+    "tarball": "https://registry.npmjs.org/adm-zip/-/adm-zip-0.6.1.tgz",
+    "integrity": "sha512-Xwrja8nx9e5o2N1my4DsKCeKpdrnACyr1wtbPxBDgGzKzKyE9kRtBFA8mWldI+RVlD7CBZNWY/wQ2+ydwOR6kQ==",
+    "engines": {
+      "node": ">=14.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "brace-expansion",
+    "version": "2.1.7",
+    "tarball": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.7.tgz",
+    "integrity": "sha512-uZbew1NqdmPDTMJ8ah1y+b+9QEJrfkXFk3RcTQw3X0jW/xRUvFKsg1CfQdSYGdTbXZWExtU3J3ccxtnfw1Fi0g==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "brace-expansion",
+    "version": "5.0.12",
+    "tarball": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.12.tgz",
+    "integrity": "sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==",
+    "engines": {
+      "node": "20 || >=22"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "devalue",
+    "version": "5.9.4",
+    "tarball": "https://registry.npmjs.org/devalue/-/devalue-5.9.4.tgz",
+    "integrity": "sha512-sPAT4pztbu6586/hrhOnMKS17IJrvg12mXiSPSS3W5qDeN2RGgvZ0diZCm31dBbnevfVmujNO3IM2wrS4Y2Rhg==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "node-forge",
+    "version": "1.4.3",
+    "tarball": "https://registry.npmjs.org/node-forge/-/node-forge-1.4.3.tgz",
+    "integrity": "sha512-P6wzfh6t70avmV8FrVEAd/36sOPJQ+hkaJVX1Laap9J/77m7M0eyozDvc8SwnDf4P7MP94gwbAAo0rg3YVXT+g==",
+    "engines": {
+      "node": ">= 6.13.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "seroval",
+    "version": "1.6.12",
+    "tarball": "https://registry.npmjs.org/seroval/-/seroval-1.6.12.tgz",
+    "integrity": "sha512-CqbIVfk/7GL3ITwZI55lcPbpQbjHZ2DD5cUj4iH7E9YsCfHNJV1mx7yNp86Z84w5IpmkZZS/2s5vPOWmVWSdQg==",
+    "engines": {
+      "node": ">=10"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "source-map-js",
+    "version": "1.2.2",
+    "tarball": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
+    "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",
+    "engines": {
+      "node": ">=0.10.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "proxy-addr",
+    "version": "2.0.8",
+    "tarball": "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.8.tgz",
+    "integrity": "sha512-5nnx0yGyVUcY6t9RnWcARWtwT9F1D8O9rt08htPvnd49W1IgZtmLkhu9WfMzQj1cFxjHIO6connUNVW5k7AVyQ==",
+    "engines": {
+      "node": ">= 0.10"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "body-parser",
+    "version": "1.20.9",
+    "tarball": "https://registry.npmjs.org/body-parser/-/body-parser-1.20.9.tgz",
+    "integrity": "sha512-FISIQxV5u91Y9gvuFq3q/tA/qTqLJn3AhRcEvyozyhJTh5OBFFtv827AdHU7Rbyct4r+Ba1/99oFa1Y3yuFsdw==",
+    "engines": {
+      "npm": "1.2.8000 || >= 1.4.16",
+      "node": ">= 0.8"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "shell-quote",
+    "version": "1.12.0",
+    "tarball": "https://registry.npmjs.org/shell-quote/-/shell-quote-1.12.0.tgz",
+    "integrity": "sha512-PcByqNyT/38F2kDNi006HAMRJaULuBzq/FOsw3qdZvX/GA9W/jamDaRskgHjubHiftXK5sIFxLNkvrXUwcof6Q==",
+    "engines": {
+      "node": ">= 0.4"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@nuxt/devtools",
+    "version": "3.4.4",
+    "tarball": "https://registry.npmjs.org/@nuxt/devtools/-/devtools-3.4.4.tgz",
+    "integrity": "sha512-cPwBW+odVCCid6pllN3f93L0hyOCYRXrEZLmCiV2IgBoQ3lskhuu304JDJjv/VvtWB+OVWfHQ38aowX28WybXQ==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": ">=6.0",
+    "peer_vue": null
+  },
+  {
+    "name": "launch-editor",
+    "version": "2.14.2",
+    "tarball": "https://registry.npmjs.org/launch-editor/-/launch-editor-2.14.2.tgz",
+    "integrity": "sha512-NHJEb30MGBCkmZXLZwz25t37QR4aY03ZzPYUJXOJaOa92uWwExI9SBQUuIznBYc1xkD7cJNGX7oc3Nl3sq2kQQ==",
+    "engines": null,
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@nuxt/kit",
+    "version": "4.6.4",
+    "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.6.4.tgz",
+    "integrity": "sha512-S7JqP/CCJejDNGADlCIct/SHEPf+Jz3Chrxq7GDgyRPRkRD2flbxoanGq4bkib9kD9QBXJlF4TuCsqqL9a7COw==",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "deps_vite": null,
+    "peer_vite": null,
+    "peer_vue": null
+  },
+  {
+    "name": "@nuxt/vite-builder",
+    "version": "3.21.11",
+    "tarball": "https://registry.npmjs.org/@nuxt/vite-builder/-/vite-builder-3.21.11.tgz",
+    "integrity": "sha512-4w3g5IFzXhVdX0ZIgmd/zKE2xPZ/e2ms4On1z0OWTDIzvIbrWeednYAJA0bgmgwCBsInYppdih8ZN0w+yWIQmw==",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "deps_vite": "^7.3.6",
+    "peer_vite": null,
+    "peer_vue": "^3.3.4"
+  },
+  {
+    "name": "vite-node",
+    "version": "5.3.0",
+    "tarball": "https://registry.npmjs.org/vite-node/-/vite-node-5.3.0.tgz",
+    "integrity": "sha512-8f20COPYJujc3OKPX6OuyBy3ZIv2det4eRRU4GY1y2MjbeGSUmPjedxg1b72KnTagCofwvZ65ThzjxDW2AtQFQ==",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "deps_vite": "^7.3.1",
+    "peer_vite": null,
+    "peer_vue": null
+  }
+]

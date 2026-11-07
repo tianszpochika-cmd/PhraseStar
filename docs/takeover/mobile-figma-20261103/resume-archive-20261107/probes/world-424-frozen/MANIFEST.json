@@ -1,0 +1,27 @@
+[
+  {
+    "path": "REPORT.md",
+    "bytes": 5511,
+    "sha256": "2d29ce9bcca45d9e65f03236705e07cd02cf2be31a7579102d91070b264b086a"
+  },
+  {
+    "path": "root-lease.py",
+    "bytes": 60099,
+    "sha256": "a69e62170199782123ff1a00d45a5d95e2736690316843c801e514f835fdb5ea"
+  },
+  {
+    "path": "h5-lease-tail.mjs",
+    "bytes": 4290,
+    "sha256": "3a8a23acd1e3f14824e135040eaa3438b4e84e7000662480152226af02829f08"
+  },
+  {
+    "path": "world-default-observer.mjs",
+    "bytes": 41246,
+    "sha256": "513820f610923dfa9b13f9a987b84b9887165e2d1a03e2e4ff241d8ca209def1"
+  },
+  {
+    "path": "pin.json",
+    "bytes": 3002,
+    "sha256": "6cdd665b639e8aae5b0a9d5b419df0eb1393fd1e08cbf194cd234dfcec6ddbdb"
+  }
+]

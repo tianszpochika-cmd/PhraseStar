@@ -1,0 +1,37 @@
+[
+  {
+    "file": "REPORT.md",
+    "sha256": "1661e34d3195af9720f2f7f109a0a55bbcd1fe6eabb0487cf660de8bf1f986b3",
+    "bytes": 8899
+  },
+  {
+    "file": "device-others-owner-402.cjs",
+    "sha256": "23c1fa467e909030f7c4fcd7c165285b88febb9457d73148f67c35af86f6e515",
+    "bytes": 46893
+  },
+  {
+    "file": "device-others-runtime.sh",
+    "sha256": "0701a4265bfdd31a7441793a99d94c5c085fa5d248a63df5c3af82e583b7ce20",
+    "bytes": 49180
+  },
+  {
+    "file": "output.json",
+    "sha256": "d9749f3257563434764d263fb4709c32c3c96d75f596c5044e0b988879e2bf4e",
+    "bytes": 1593
+  },
+  {
+    "file": "pin.json",
+    "sha256": "7b2ff5ee6425f4e20bde4aeea63d0e85950a0846ac2de509e38e2e05a671b030",
+    "bytes": 2060
+  },
+  {
+    "file": "pinned-static-nonce.cjs",
+    "sha256": "797025d65987d0fdd220c1bce13299c3320edbeadf3aabb57c98e5661c99bbe5",
+    "bytes": 10484
+  },
+  {
+    "file": "static-gate.cjs",
+    "sha256": "11b24bb82e7facf451cf10ddd24f336b4ee31df24db60c9771b8e9233d3b3636",
+    "bytes": 6805
+  }
+]

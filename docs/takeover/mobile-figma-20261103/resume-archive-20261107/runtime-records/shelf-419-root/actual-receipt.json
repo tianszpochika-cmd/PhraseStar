@@ -1,0 +1,46 @@
+{
+  "probe": "mb009-learn-catalog-owner",
+  "gateway": "http://127.0.0.1:18070",
+  "pass": true,
+  "outcome": "empty",
+  "stage": "pair",
+  "separated": "ok",
+  "contentLocale": "en-US",
+  "freshAlias0": false,
+  "preferenceVersion": 1,
+  "stageStatus": null,
+  "itemCount": 0,
+  "gatewayLogin": true,
+  "unrelatedWrites": 0,
+  "planReads": 0,
+  "b326": {
+    "applied": false,
+    "httpClass": "ok",
+    "page": "catalog-empty",
+    "homeStatus": "empty",
+    "clearsPreviousHome": false,
+    "planQueueRead": false
+  },
+  "home": {
+    "projectionVersion": 1,
+    "contentEpoch": 1,
+    "taskCount": 0,
+    "firstDayState": "NOT_READY",
+    "blocker": "PLACEMENT_REQUIRED",
+    "stale": false,
+    "contentStatus": "EMPTY"
+  },
+  "catalog": {
+    "itemCount": 0,
+    "contentEpoch": 1,
+    "projectionVersion": 1,
+    "stale": false,
+    "cards": []
+  },
+  "page": {
+    "homeStatus": "empty",
+    "page": "catalog-empty",
+    "contentStatus": "EMPTY",
+    "accessible": 0
+  }
+}

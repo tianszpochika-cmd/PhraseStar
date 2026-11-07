@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-07T14:57:40.257229+00:00",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18094": true,
+    "18183": true
+  },
+  "ownedContainerAbsent": true,
+  "workerReceiptReleased": false,
+  "workerRemainingPids": 0,
+  "independentRelease": "CONFIRMED"
+}

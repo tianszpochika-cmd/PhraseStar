@@ -1,0 +1,84 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "executed": false,
+  "passClaimed": false,
+  "identity": 434,
+  "locator": ".dev-cta[role=\"button\"]",
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "h5IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "sequentialCountedAsProof": false,
+  "ctaEnabledExactLiteralCount": 2,
+  "repo": "/Users/Admin/.codex/worktrees/mobile-iam-http-acceptance-20261105/cloudstudy",
+  "refreshProtocol": {
+    "origin": "http://127.0.0.1:18183",
+    "referer": "http://127.0.0.1:18183/",
+    "cookie": "yuxuexing_refresh",
+    "body": "absent",
+    "denied": 401,
+    "protocolRejectedNotAccepted": 403
+  },
+  "priorMatch": {
+    "count": 1,
+    "disabled": false,
+    "text": "退出其他设备（2）"
+  },
+  "afterMatch": {
+    "count": 1,
+    "disabledPropertyOrAttribute": true,
+    "text": "退出其他设备"
+  },
+  "bulk": {
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "cancelClicks": 0
+  },
+  "sequentialFallback": {
+    "mode": "sequential",
+    "countedAsProof": false,
+    "clicks": false,
+    "reason": "sequential-not-bulk-proof",
+    "predicate": "ctaCount === 1 && genuineDisabled && otherExit === 2"
+  },
+  "independent": {
+    "oldRefreshStatuses": [401, 401],
+    "oldRefreshDenied": 2,
+    "oldRefreshAccepted": 0,
+    "oldRefreshProtocolRejected": 0,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "runsAfterTwoKicks": true,
+    "requiresBulkForObserved": true
+  },
+  "g415Actual": {
+    "status": "FAIL",
+    "reason": "wire-outcome",
+    "nodeStatus": 0,
+    "instrumentPresent": true,
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "kickoutStatuses": [200, 200],
+    "refreshStatuses": [403, 403],
+    "oldRefreshDenied": 0,
+    "oldRefreshAccepted": 2,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "ledgerStatus": "PARTIAL",
+    "ledgerPassed": 183,
+    "requiredFailed": 0,
+    "firstFailedCheck": "repo.branch"
+  },
+  "g402Actual": {
+    "status": "FAIL",
+    "reason": "instrument-result-absent",
+    "nodeStatus": 1,
+    "timedOut": false,
+    "runtimeLog": "empty",
+    "instrumentPresent": false,
+    "staticStringGate": "FAILED_LITERAL_COUNT_FALSE_POSITIVE"
+  }
+}

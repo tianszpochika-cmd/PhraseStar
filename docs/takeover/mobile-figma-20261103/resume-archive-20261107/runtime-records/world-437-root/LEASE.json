@@ -1,0 +1,16 @@
+{
+  "holder": "G437_ROOT_RUNTIME",
+  "at": "2026-11-07T15:37:34.000455+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18094,
+    18183
+  ],
+  "status": "STARTING",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/world-437-frozen/MANIFEST.json",
+  "preflight": "PASS_PYTHON312",
+  "flagCases": 12,
+  "runnerPid": 68534
+}

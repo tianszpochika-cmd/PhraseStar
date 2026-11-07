@@ -1,0 +1,194 @@
+{
+  "auditDate": "2026-11-07",
+  "branch": "dev",
+  "productSourceChanged": false,
+  "runtimeVerified": false,
+  "defaultEnabled": false,
+  "property": "learning.events.assessment-consumer.enabled",
+  "consumer": {
+    "service": "learning-service",
+    "groupId": "cg.learning-from-assessment.v1",
+    "clientId": "cg.learning-from-assessment.v1",
+    "topic": "platform.assessment.v1",
+    "eventName": "assessment.item.assessed.v2",
+    "schemaVersion": "assessment.event.v2",
+    "bootstrap": "127.0.0.1:19092",
+    "ack": "MANUAL",
+    "autoCommit": false,
+    "autoOffsetReset": "earliest",
+    "maxAttempts": 5,
+    "baseDelayMs": 1000,
+    "maxDelayMs": 60000
+  },
+  "reuse": [
+    {
+      "symbol": "LearningMasteryService.applyAssessment",
+      "signature": "LearningCommandResult<MasteryProjection> applyAssessment(LearningPrincipalContext principal, ApplyAssessmentLearningCommand command)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/application/LearningMasteryService.java"
+    },
+    {
+      "symbol": "ApplyAssessmentLearningCommand.fingerprint",
+      "signature": "String fingerprint()",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/application/ApplyAssessmentLearningCommand.java"
+    },
+    {
+      "symbol": "AssessmentLearningEvent",
+      "signature": "AssessmentLearningEvent(String eventId, LearningTenantScope scope, LearningItemType itemType, long itemId, long contentVersionId, boolean correct, int score, String reason, String ruleVersion, VerificationStage verificationStage, Instant occurredAt)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/port/AssessmentLearningEvent.java"
+    },
+    {
+      "symbol": "LearningFactStore.executeIdempotently",
+      "signature": "<T> IdempotentExecution<T> executeIdempotently(LearningTenantScope scope, String operation, IdempotencyKey key, String requestFingerprint, Supplier<T> action)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/port/LearningFactStore.java",
+      "operation": "mastery.apply"
+    },
+    {
+      "symbol": "JdbcLearningFactStore.executeIdempotently",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/adapter/jdbc/JdbcLearningFactStore.java",
+      "transaction": "TransactionTemplate PROPAGATION_REQUIRED joins the consumer transaction"
+    },
+    {
+      "symbol": "MasteryProjection.apply",
+      "signature": "ApplyResult apply(MasteryEvidence evidence)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/domain/MasteryProjection.java",
+      "dedupe": "appliedEvidenceIds contains evidence.evidenceId"
+    },
+    {
+      "symbol": "LearningTenantScope.forPhaseOne",
+      "signature": "static LearningTenantScope forPhaseOne(String principalId, long userId)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/domain/LearningTenantScope.java"
+    },
+    {
+      "symbol": "LearningTenantScope.stableUserIdFor",
+      "signature": "static long stableUserIdFor(String subject)",
+      "file": "services/learning-service/src/main/java/com/englishflow/learning/domain/LearningTenantScope.java"
+    },
+    {
+      "symbol": "B10AssessmentAttemptBindingController.matchB10AssessmentAttemptBinding",
+      "signature": "Map<String, Object> matchB10AssessmentAttemptBinding(Authentication authentication, String attemptId, JsonNode body)",
+      "http": "POST /internal/v1/assessment/attempts/{attemptId}/binding",
+      "file": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentAttemptBindingController.java",
+      "directBase": "http://127.0.0.1:18091"
+    },
+    {
+      "symbol": "AssessmentOutboxKafkaRelay.record",
+      "file": "services/assessment-service/src/main/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelay.java",
+      "headers": ["eventId", "eventName", "schemaVersion", "eventVersion", "dedupeKey", "requestId", "traceId"]
+    }
+  ],
+  "authorizedBy": [
+    {
+      "rule": "offsetCommit AFTER_EFFECT_AND_RECEIPT_COMMIT; effectAndReceiptSameOwnerTransaction; no Kafka transaction",
+      "ref": "packages/contracts/events/v1/reliability-policy.json#/consumer/deduplication"
+    },
+    {
+      "rule": "primary key (consumerGroup, eventId); secondary dedupeKey; sameDedupeKeyDifferentEventId REJECT_AND_AUDIT",
+      "ref": "packages/contracts/events/v1/reliability-policy.json#/consumer/deduplication"
+    },
+    {
+      "rule": "dedupeKey = attemptId + ':' + itemAssessmentId; pin equality; CURRENT and HISTORICAL",
+      "ref": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json#/paths/~1internal~1v1~1assessment~1attempts~1{attemptId}~1binding/post/x-contract/ownerMatch"
+    },
+    {
+      "rule": "subscriber learning-service group cg.learning-from-assessment.v1 topic platform.assessment.v1 key aggregateId",
+      "ref": "packages/contracts/events/v1/catalog.json#/events/assessment.item.assessed.v2/x-p1r-governance"
+    },
+    {
+      "rule": "operation subscribe_assessment_item_assessed_v2_cg_learning_from_assessment_v1 groupId enum",
+      "ref": "packages/contracts/events/v1/catalog.json#/asyncapi/operations/subscribe_assessment_item_assessed_v2_cg_learning_from_assessment_v1"
+    },
+    {
+      "rule": "payload B10AssessmentItemAssessedV2 additionalProperties false",
+      "ref": "packages/contracts/events/v1/fragments/b10-learning-loop.events.json#/payloadSchemas/B10AssessmentItemAssessedV2"
+    },
+    {
+      "rule": "retry 5, exponential jitter, retryable TIMEOUT TEMPORARY_UNAVAILABLE CONFLICT_RETRYABLE; terminal FORBIDDEN OWNER_MISMATCH SCHEMA_INVALID STALE_VERSION; unknown NON_RETRYABLE_FAIL_CLOSED",
+      "ref": "packages/contracts/events/v1/reliability-policy.json#/retryBudget"
+    },
+    {
+      "rule": "rootEventId equals eventId for a root event",
+      "ref": "packages/contracts/events/v1/reliability-policy.json#/identityAndLineage/rootEvent"
+    },
+    {
+      "rule": "READ allow cg.learning-from-assessment.v1 on platform.assessment.v1; DLQ WRITE is svc.workflow-service only",
+      "ref": "config/b26-event-runtime.json topics platform.assessment.v1 and platform.events.dlq.v1"
+    },
+    {
+      "rule": "IAM learning-service permission assessment:attempt-binding:read",
+      "ref": "services/iam-service/src/main/resources/application.yaml service-clients.learning-service"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "B110",
+      "file": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B110-GRAMMAR-H5-KAFKA.md",
+      "proved": "one H5 grammar item produced one assessment.item.assessed.v2 Kafka record",
+      "open": "Learning consumption"
+    },
+    {
+      "id": "B120",
+      "file": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B120-ASSESSMENT-OWNER-BINDING.md",
+      "proved": "match binding 200 for the learning workload; 401, 403, 404, 409",
+      "open": "Learning consumption"
+    },
+    {
+      "id": "B122",
+      "file": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B122-ASSESSMENT-KAFKA-ACL.md",
+      "proved": "ACL allow and deny on assessment and DLQ topics",
+      "open": "Learning consume, business write, offset commit"
+    },
+    {
+      "id": "B134",
+      "file": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B134-LEARNING-JAVA-OWNER-BINDING.md",
+      "proved": "three HTTP binding calls: match, wrong learner, wrong version",
+      "open": "client class is not in services/learning-service; event consumption open"
+    }
+  ],
+  "missingPolicy": [
+    {
+      "id": "MAP-1",
+      "blocks": "production AssessmentLearningEvent construction",
+      "need": "LearningItemType, long itemId, int score 0-100, and VerificationStage for payload verificationStage NONE and IMMEDIATE_REPAIR. Payload and binding data do not carry these. Do not call private B10AssessmentJdbcController.numericItemId and do not map objectiveCorrect onto a score inside this card."
+    },
+    {
+      "id": "PRINCIPAL-1",
+      "blocks": "production LearningPrincipalContext",
+      "need": "A server policy source for phase-1, role learner, learning.mastery.write, and ConsentState.GRANTED. LearningTestPrincipals.phaseOne must not be used in production. IAM learning-service cannot read consent."
+    },
+    {
+      "id": "DLQ-1",
+      "blocks": "ack of terminal records and enablement",
+      "need": "A workflow-service writer for platform.events.dlq.v1. This consumer must not publish there. Terminal item records stay unacked. The same group also receives assessment.placement.completed.v1; those records stay unacked and stop the listener."
+    }
+  ],
+  "sequence": [
+    "Add V15 learning_assessment_consumer_receipt with PK (consumer_group, event_id) and unique (consumer_group, dedupe_key). No raw payload.",
+    "Add default-false properties and listener configuration. Fixed group, topic, and client id. Manual ack. No DLQ recoverer.",
+    "Add a pure schema gate for the producer envelope and B10AssessmentItemAssessedV2. SCHEMA_INVALID writes nothing and does not ack.",
+    "Add an HTTP binding client to 127.0.0.1:18091 using an injected bearer Supplier. Call it outside the DB transaction.",
+    "In one TransactionTemplate, insert the receipt and, for a new event id, call LearningMasteryService.applyAssessment. Ack only after commit. Production beans do not supply a principal or a field mapper.",
+    "Retry TIMEOUT, TEMPORARY_UNAVAILABLE, and CONFLICT_RETRYABLE inside the listener up to 5 attempts. Terminal codes do not retry, do not ack, and do not publish.",
+    "Add AssessmentItemAssessedConsumerTest with fakes only.",
+    "Add one CHANGELOG line. Do not edit STATUS or the four reviews. Leave the flag false."
+  ],
+  "files": [
+    "services/learning-service/src/main/resources/db/migration/V15__learning_assessment_consumer_receipt.sql",
+    "services/learning-service/src/main/java/com/englishflow/learning/integration/AssessmentItemAssessedConsumerProperties.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/integration/AssessmentItemAssessedConsumerConfiguration.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/integration/AssessmentItemAssessedSchemaGate.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentAttemptBindingClient.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/integration/AssessmentItemAssessedConsumer.java",
+    "services/learning-service/src/test/java/com/englishflow/learning/integration/AssessmentItemAssessedConsumerTest.java",
+    "CHANGELOG.md"
+  ],
+  "unchanged": [
+    "services/learning-service/src/main/java/com/englishflow/learning/application/LearningMasteryService.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/port/AssessmentLearningEvent.java",
+    "services/learning-service/src/main/java/com/englishflow/learning/port/LearningFactStore.java",
+    "services/assessment-service/src/main/java/com/englishflow/assessment/integration/AssessmentOutboxKafkaRelay.java",
+    "packages/contracts/events/v1/catalog.json",
+    "packages/contracts/events/v1/reliability-policy.json",
+    "config/b26-event-runtime.json",
+    "docs/STATUS.md"
+  ]
+}

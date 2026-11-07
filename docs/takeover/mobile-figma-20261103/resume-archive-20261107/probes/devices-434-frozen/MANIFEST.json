@@ -1,0 +1,42 @@
+[
+  {
+    "path": "static-gate.cjs",
+    "bytes": 9675,
+    "sha256": "37ba24cdeb8730f7e070bb2000d38afa27870fb9132a37778c3bbfed725ac008"
+  },
+  {
+    "path": "REPORT.md",
+    "bytes": 9809,
+    "sha256": "a973208178c37eedd085378dafc37efc9943da12ef8e12acfd48ed48acaec5d1"
+  },
+  {
+    "path": "device-others-runtime.sh",
+    "bytes": 62006,
+    "sha256": "6396027e9365f81fb54580015163164db3224aa8da6e46e463c79faf0ef41df9"
+  },
+  {
+    "path": "output.json",
+    "bytes": 2295,
+    "sha256": "86bb7249d6134b749ac189b21faae2734a67566b06f5170aa68ba95db59a7614"
+  },
+  {
+    "path": "device-others-owner-434.cjs",
+    "bytes": 47812,
+    "sha256": "09ed4f967ede127b75849a201a00a946455e73b77a3dea8b2543ba4605103eaf"
+  },
+  {
+    "path": "pin.json",
+    "bytes": 4505,
+    "sha256": "a137c7b392301284441b1de7cd408e56a02b9fe6fbb5a6ea0211b244af13bfda"
+  },
+  {
+    "path": "preflight.json",
+    "bytes": 2217,
+    "sha256": "a4dc46f2ede9038f5ca5a3d3b4434445248296174dbce4f2cbcec7de20c22551"
+  },
+  {
+    "path": "pinned-static-nonce.cjs",
+    "bytes": 10484,
+    "sha256": "6a92806e326b5cc9182f5d317a2cfb15b60c7529f38aab11767c0bfa119e4a66"
+  }
+]
