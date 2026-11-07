@@ -1,0 +1,21 @@
+{
+  "batch": "B147",
+  "at": "2026-11-07T14:15:27.150091+00:00",
+  "classification": "LOCAL_STATIC_TOOLCHAIN_FIXED",
+  "workers": [
+    "G400",
+    "G407"
+  ],
+  "sourceBase": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "sourceFile": "config/toolchain-baseline.json",
+  "sourceSha256": "db1003a93e030e4f4f336e0d239209c46fb02ca44f67202331b52af9339205b2",
+  "canonicalSha256": "7021074c9ab24113c91be87ec153fd91388b71004638d39023ca220d8459da8f",
+  "staticChecks": 52,
+  "ciPolicyAssertions": 80,
+  "independentReview": true,
+  "portsChanged": false,
+  "guardChanged": false,
+  "runtimeStarted": false,
+  "remoteCi": "PENDING_NEW_COMMIT",
+  "routeTrace": "TRACE_PENDING"
+}

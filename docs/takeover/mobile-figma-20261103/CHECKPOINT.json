@@ -6265,5 +6265,17 @@
     "tracePending": 33,
     "runtimePolicy": "exclusive fixed-port lease",
     "review": "RESUME-20261107.md"
+  },
+  "integration_B147_toolchain_ports_pin": {
+    "status": "LOCAL_STATIC_FIXED_REMOTE_PENDING",
+    "workers": [
+      "G400",
+      "G407"
+    ],
+    "staticChecks": 52,
+    "policyAssertions": 80,
+    "review": "reviews/INTEGRATION-B147-TOOLCHAIN-PORTS-PIN.md",
+    "evidence": "evidence/ROOT-B147-TOOLCHAIN-PORTS-PIN-20261107.json",
+    "tracePending": 33
   }
 }

@@ -5,7 +5,7 @@
     "missingRuntime": "fail",
     "supportedPlatforms": ["windows-x64", "linux-x64", "darwin-arm64", "darwin-x64"],
     "portsSource": "config/local-ports.json",
-    "portsCanonicalSha256": "28d84de5a93c65dd3e13b5d5dd99d455f8516975a2257bcb0462024f458c21da",
+    "portsCanonicalSha256": "7021074c9ab24113c91be87ec153fd91388b71004638d39023ca220d8459da8f",
     "portsAutoIncrement": false
   },
   "node": {
