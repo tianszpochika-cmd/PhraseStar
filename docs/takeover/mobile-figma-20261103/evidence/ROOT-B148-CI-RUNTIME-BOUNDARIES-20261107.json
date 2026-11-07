@@ -55,5 +55,23 @@
       "supply-chain 37 high/critical findings"
     ]
   },
-  "routeTrace": "TRACE_PENDING"
+  "routeTrace": "TRACE_PENDING",
+  "remoteCandidateObservation": {
+    "commit": "f69fd71f2adc683441face4d4d7d79dd0c2c3a89",
+    "run": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42385657308",
+    "passedJobs": 7,
+    "failedJobs": 2,
+    "passedScopes": [
+      "governance Ubuntu and Windows",
+      "frontend Ubuntu and macOS",
+      "Java17",
+      "Java25 including MinIO",
+      "fresh infrastructure including Kafka provision"
+    ],
+    "failures": {
+      "contractsData": "pnpm test:p1r 1481 tests:1455 passed,26 failed; later contract/data commands NOT_RUN",
+      "supplyChain": "37 high/critical findings and Node optional-package license inventory error"
+    },
+    "historicalEvidenceGate": "PASS"
+  }
 }

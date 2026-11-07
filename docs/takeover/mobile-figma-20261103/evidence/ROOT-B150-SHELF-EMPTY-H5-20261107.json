@@ -1,0 +1,83 @@
+{
+  "batch": "B150",
+  "at": "2026-11-07T15:33:18.063239+00:00",
+  "classification": "LOCAL_PINNED_H5_SHELF_EMPTY_PASS",
+  "workers": [
+    "G401",
+    "G419",
+    "G433"
+  ],
+  "devCheckpoint": "f69fd71f2adc683441face4d4d7d79dd0c2c3a89",
+  "compiledCandidate": "B139 frozen H5",
+  "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "sourcePins": [
+    {
+      "path": "learn-catalog-runtime.sh",
+      "bytes": 58321,
+      "sha256": "ae5d9d20c3c889faef5855f35aa8724e2b365f0cd7904b54c9b24fce860842d5"
+    },
+    {
+      "path": "lease-tail.mjs",
+      "bytes": 13147,
+      "sha256": "423ff99aa2cb1c51d11c9775d1238a131e9413428bc3c8319a515e7e448b4e85"
+    },
+    {
+      "path": "owned-bridge-subnet.py",
+      "bytes": 18244,
+      "sha256": "c3a144b2cda0b63464957e47cdf31f293c707789e831a2c8a017c516322ba2b0"
+    },
+    {
+      "path": "shelf-empty-observer.mjs",
+      "bytes": 39324,
+      "sha256": "3606bb0211ad8cd7fe2e74c046c3e4e27445fd9a09711a41fedade2cc7d05d14"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/B150-SHELF-EMPTY-H5/runtime-receipt.json",
+      "sha256": "1f4f280ac8ece9d275be6907d18e16c891db15d30bf5448321aec904cb2bafbb",
+      "bytes": 833
+    },
+    {
+      "path": "evidence/B150-SHELF-EMPTY-H5/shelf-receipt.json",
+      "sha256": "384c3f0d554509346a6d39ceadf5cd3c3e7685786b573c19043b72f266fc515c",
+      "bytes": 1460
+    },
+    {
+      "path": "evidence/B150-SHELF-EMPTY-H5/network-create-diagnostic.json",
+      "sha256": "4f8f1bb70a269c8d0edba322a3788f029ec84a6cb43cb33d206cee7f310227ec",
+      "bytes": 237
+    }
+  ],
+  "independentRuntime": true,
+  "independentRelease": true,
+  "liveFacts": {
+    "loginStatus": 200,
+    "principalOk": true,
+    "homeContract": true,
+    "homeWireContentStatus": "absent",
+    "catalogContract": true,
+    "catalogItemCount": 0,
+    "placementRequired": true,
+    "locale": "en-US",
+    "shelfState": "catalog-empty",
+    "emptyStaysEmpty": true,
+    "pageStageBusinessMutations": 0
+  },
+  "observerRepair": "B9HomeProjection and live HomeData omit contentStatus; prior G329 receipt derived EMPTY from catalog. Preserve contract field absence; real catalog and DOM must stay empty.",
+  "priorFailuresPreserved": [
+    "G401 mysql-network",
+    "G419 content-status"
+  ],
+  "native": "NOT_RUN",
+  "deployment": "NOT_RUN",
+  "formalRouteSignoff": "TRACE_PENDING",
+  "remaining": [
+    "nonempty catalog",
+    "real denial flow",
+    "formal full trace",
+    "native device",
+    "deployed environment"
+  ],
+  "setup": "Fresh synthetic adult, three mock consent publications; setup account/gate/consent/target writes are outside page mutation count"
+}

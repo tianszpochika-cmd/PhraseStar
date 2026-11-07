@@ -6307,5 +6307,31 @@
     "manifests_edited": false,
     "review": "reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md",
     "evidence": "evidence/ROOT-B149-EVIDENCE-SOURCE-BINDING-20261107.json"
+  },
+  "integration_B150_shelf_empty_h5": {
+    "classification": "LOCAL_PINNED_H5_SHELF_EMPTY_PASS",
+    "review": "reviews/INTEGRATION-B150-SHELF-EMPTY-H5.md",
+    "evidence": "evidence/ROOT-B150-SHELF-EMPTY-H5-20261107.json",
+    "compiled_candidate": "B139",
+    "route_trace": "TRACE_PENDING",
+    "resources": "RELEASED_INDEPENDENTLY_VERIFIED"
+  },
+  "remote_ci_after_B149": {
+    "commit": "f69fd71f2adc683441face4d4d7d79dd0c2c3a89",
+    "run": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42385657308",
+    "passedJobs": 7,
+    "failedJobs": 2,
+    "passedScopes": [
+      "governance Ubuntu and Windows",
+      "frontend Ubuntu and macOS",
+      "Java17",
+      "Java25 including MinIO",
+      "fresh infrastructure including Kafka provision"
+    ],
+    "failures": {
+      "contractsData": "pnpm test:p1r 1481 tests:1455 passed,26 failed; later contract/data commands NOT_RUN",
+      "supplyChain": "37 high/critical findings and Node optional-package license inventory error"
+    },
+    "historicalEvidenceGate": "PASS"
   }
 }

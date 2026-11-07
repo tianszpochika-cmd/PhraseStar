@@ -4,7 +4,9 @@
 
 <!-- 2026-11-05 mobile resume -->
 
-2026-11-07，B149 修正历史证据摘要与原提交的绑定，29 项回归独立复跑通过，完整证据门及远程 CI 继续核对。 [B149](takeover/mobile-figma-20261103/reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md)
+2026-11-07，B150 在固定版本本机真实 H5 通过书架空态与本人首页／目录读回，资源独立确认释放。f69fd71f 远程 CI 已通过 7 个作业，契约数据回归 26 项失败及依赖审计继续待处理。 [B150](takeover/mobile-figma-20261103/reviews/INTEGRATION-B150-SHELF-EMPTY-H5.md)
+
+2026-11-07，B149 修正历史证据摘要与原提交的绑定，29 项回归独立复跑通过，干净库完整证据门通过 108 项历史任务，远程证据门也通过；后续全量 P1R 回归仍有 26 项失败。 [B149](takeover/mobile-figma-20261103/reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md)
 
 2026-11-07，B148 修复 CI 的临时对象存储缺失与 Kafka 参数分隔符，3 项回归和 80 项规则独立复跑通过，候选远程运行待验。 [B148](takeover/mobile-figma-20261103/reviews/INTEGRATION-B148-CI-RUNTIME-BOUNDARIES.md)
 
