@@ -1,0 +1,105 @@
+{
+  "batch": "B151",
+  "at": "2026-11-07T15:38:26.048253+00:00",
+  "classification": "LOCAL_PINNED_H5_EXACT_BULK_REVOKE_PASS",
+  "workers": [
+    "G402",
+    "G415",
+    "G434"
+  ],
+  "compiledCandidate": "B139",
+  "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "artifacts": [
+    {
+      "path": "evidence/B151-DEVICES-BULK-H5/receipt.json",
+      "sha256": "2bae63e1e6f640d4916ff3eb9108d2ab480e5ae8571bf246c946e2e30f0bd4a0"
+    },
+    {
+      "path": "evidence/B151-DEVICES-BULK-H5/instrument-result.json",
+      "sha256": "ed632166042f85c84c0b2d3c62763b8d6299c0852125a65ef1c1a78f72226e22"
+    },
+    {
+      "path": "evidence/B151-DEVICES-BULK-H5/diagnosis.json",
+      "sha256": "d74a989994e709748e6f09d666b8e34d8e79afaf17a7dbd4687dd0ca0318af1f"
+    }
+  ],
+  "sourcePins": [
+    {
+      "path": "static-gate.cjs",
+      "bytes": 9675,
+      "sha256": "37ba24cdeb8730f7e070bb2000d38afa27870fb9132a37778c3bbfed725ac008"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 9809,
+      "sha256": "a973208178c37eedd085378dafc37efc9943da12ef8e12acfd48ed48acaec5d1"
+    },
+    {
+      "path": "device-others-runtime.sh",
+      "bytes": 62006,
+      "sha256": "6396027e9365f81fb54580015163164db3224aa8da6e46e463c79faf0ef41df9"
+    },
+    {
+      "path": "output.json",
+      "bytes": 2295,
+      "sha256": "86bb7249d6134b749ac189b21faae2734a67566b06f5170aa68ba95db59a7614"
+    },
+    {
+      "path": "device-others-owner-434.cjs",
+      "bytes": 47812,
+      "sha256": "09ed4f967ede127b75849a201a00a946455e73b77a3dea8b2543ba4605103eaf"
+    },
+    {
+      "path": "pin.json",
+      "bytes": 4505,
+      "sha256": "a137c7b392301284441b1de7cd408e56a02b9fe6fbb5a6ea0211b244af13bfda"
+    },
+    {
+      "path": "preflight.json",
+      "bytes": 2217,
+      "sha256": "a4dc46f2ede9038f5ca5a3d3b4434445248296174dbce4f2cbcec7de20c22551"
+    },
+    {
+      "path": "pinned-static-nonce.cjs",
+      "bytes": 10484,
+      "sha256": "6a92806e326b5cc9182f5d317a2cfb15b60c7529f38aab11767c0bfa119e4a66"
+    }
+  ],
+  "independentRuntime": true,
+  "independentRelease": true,
+  "wire": {
+    "instrumentStatus": "OBSERVED",
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "kickoutPosts": 2,
+    "kickoutStatuses": [
+      200,
+      200
+    ],
+    "kickoutPathsExact": true,
+    "refreshStatuses": [
+      401,
+      401
+    ],
+    "refreshDenied": 2,
+    "refreshAccepted": 0,
+    "refreshProtocolRejected": 0,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "expectedRows": 3
+  },
+  "ledger": {
+    "status": "PARTIAL",
+    "passed": 183,
+    "requiredFailed": 0,
+    "runtimeStatus": "NOT_RUNTIME_VERIFIED"
+  },
+  "ledgerCaveat": "One optional repo.branch metadata check fails after intentional branch retirement; 183 pass, requiredFailed0. No old branch recreated. Mock consent fixture remains NOT_RUNTIME_VERIFIED.",
+  "protocol": "Real IAM cookie refresh with trusted H5 Origin/Referer and empty body; exact401 plus no access/rotated-refresh token required for each old session",
+  "priorFailurePreserved": "G415 missing Origin/Referer produced403; not counted as accepted or revoked proof",
+  "native": "NOT_RUN",
+  "deployment": "NOT_RUN",
+  "formalRouteSignoff": "TRACE_PENDING"
+}

@@ -6333,5 +6333,16 @@
       "supplyChain": "37 high/critical findings and Node optional-package license inventory error"
     },
     "historicalEvidenceGate": "PASS"
+  },
+  "integration_B151_devices_bulk_h5": {
+    "classification": "LOCAL_PINNED_H5_EXACT_BULK_REVOKE_PASS",
+    "review": "reviews/INTEGRATION-B151-DEVICES-BULK-H5.md",
+    "evidence": "evidence/ROOT-B151-DEVICES-BULK-H5-20261107.json",
+    "compiled_candidate": "B139",
+    "ledger_passed": 183,
+    "required_failed": 0,
+    "optional_legacy_branch_check": "PARTIAL",
+    "route_trace": "TRACE_PENDING",
+    "resources": "RELEASED_INDEPENDENTLY_VERIFIED"
   }
 }

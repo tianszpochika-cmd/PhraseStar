@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "reason": null,
+  "timedOut": false,
+  "nodeStatus": 0,
+  "priorLeak": false,
+  "supervisor": {
+    "process": "device-others-runtime",
+    "user": "Admin",
+    "uid": 502,
+    "unixRoot": false,
+    "sudo": false
+  },
+  "label": "cloudstudy.qa.mobile-resume-devices-434-a450f6cf",
+  "containerName": "cloudstudy-owner-434-a450f6cf",
+  "prefix": "/tmp/grok-mobile-resume-devices-refresh-434",
+  "parentErrorCategory": "repo-branch-optional",
+  "childErrorCategory": "probe-exit-zero",
+  "stage": "probe-exit",
+  "hookStage": "probe-exit",
+  "probeStatus": 0,
+  "acceptanceStatus": "PARTIAL",
+  "acceptancePreflightStatus": "PASS",
+  "firstFailedCheck": "repo.branch",
+  "instrumentPresent": true,
+  "logsOmitted": true,
+  "dockerUserConfig": "not-consulted",
+  "registryAuth": false,
+  "imagePull": "never",
+  "credentialGuard": "admin-socket-and-ephemeral-mysql-env",
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "locator": ".dev-cta[role=\"button\"]",
+  "sequentialCountedAsProof": false,
+  "ledger": {
+    "status": "PARTIAL",
+    "passed": 183,
+    "requiredFailed": 0,
+    "runtimeStatus": "NOT_RUNTIME_VERIFIED"
+  },
+  "wire": {
+    "instrumentStatus": "OBSERVED",
+    "mode": "bulk",
+    "bulkClicks": 1,
+    "confirmClicks": 1,
+    "rowExitClicks": 0,
+    "kickoutPosts": 2,
+    "kickoutStatuses": [
+      200,
+      200
+    ],
+    "kickoutPathsExact": true,
+    "refreshStatuses": [
+      401,
+      401
+    ],
+    "refreshDenied": 2,
+    "refreshAccepted": 0,
+    "refreshProtocolRejected": 0,
+    "currentStays": true,
+    "foreignUnchanged": true,
+    "expectedRows": 3
+  },
+  "counts": {
+    "accounts": 3,
+    "sessions": 6,
+    "devices": 6,
+    "consentRows": 3,
+    "notRuntimeVerified": 3
+  },
+  "ports": [
+    "127.0.0.1:13306",
+    "127.0.0.1:18070",
+    "127.0.0.1:18087",
+    "127.0.0.1:18183"
+  ],
+  "priorDirectory": "historical-two-file",
+  "priorResult": "absent",
+  "priorResultSha256": null,
+  "priorUnchanged": true,
+  "priorCleanup": "not-deleted"
+}

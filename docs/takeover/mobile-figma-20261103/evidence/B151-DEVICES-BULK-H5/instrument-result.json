@@ -1,0 +1,109 @@
+{
+  "status": "OBSERVED",
+  "reason": null,
+  "executed": true,
+  "bulkClosedInSource": false,
+  "operation": "bulk",
+  "lease": {
+    "iam": "127.0.0.1:18087",
+    "gateway": "127.0.0.1:18070",
+    "page": "127.0.0.1:18183"
+  },
+  "fixture": {
+    "birthYear": 1995,
+    "adultPolicy": "b30-adult-v1",
+    "actorOtherType": "WEB",
+    "ownerType": "H5",
+    "browserType": "H5",
+    "expectedRows": 3
+  },
+  "ownerBefore": {
+    "status": 200,
+    "noStore": true,
+    "total": 1,
+    "active": 1,
+    "revoked": 0,
+    "current": 1,
+    "ownerActive": true,
+    "ownerCurrent": true,
+    "ownerTypeH5": true
+  },
+  "ownerAfter": {
+    "status": 200,
+    "noStore": true,
+    "total": 1,
+    "active": 1,
+    "revoked": 0,
+    "current": 1,
+    "ownerActive": true,
+    "ownerCurrent": true,
+    "ownerTypeH5": true
+  },
+  "ownerUnchanged": true,
+  "actorStillAccepted": true,
+  "actorDistinctFromOwner": true,
+  "oldRefreshDenied": 2,
+  "oldRefreshAccepted": 0,
+  "oldRefreshProtocolRejected": 0,
+  "oldRefreshStatuses": [
+    401,
+    401
+  ],
+  "browser": {
+    "reason": null,
+    "ui": {
+      "mode": "bulk",
+      "reachedDevices": true,
+      "exactBeforeClick": true,
+      "currentExitBefore": 0,
+      "otherExitBefore": 2,
+      "bulkClicks": 1,
+      "confirmClicks": 1,
+      "rowExitClicks": 0,
+      "cancelClicks": 0,
+      "successAfterReadback": true,
+      "successBeforeReadback": false,
+      "currentTaggedAfter": true,
+      "revokedTagsAfter": 2,
+      "ctaDisabledAfter": true,
+      "dialogMatched": true,
+      "ctaEnabledExactBefore": true,
+      "ctaDisabledExactAfter": true
+    },
+    "api": {
+      "loginPosts": 1,
+      "deviceGets": 2,
+      "deviceGetsBefore": 1,
+      "deviceGetsAfterKicks": 1,
+      "kickoutPosts": 2,
+      "kickoutStatuses": [
+        200,
+        200
+      ],
+      "kickoutPathsExact": true,
+      "idempotencyKeysNonempty": true,
+      "refreshPostsInBrowser": 0,
+      "logoutAborts": 0,
+      "currentKickoutAborts": 0,
+      "ownerKickoutAborts": 0,
+      "unexpectedAborts": 0,
+      "syntheticTargetGets": 0,
+      "staticFulfills": 52,
+      "nonceHeader": "x-mb004-static-qa",
+      "nonceValueOmitted": true
+    }
+  },
+  "independent": {
+    "twoKicks": true,
+    "oldRefreshDenied": 2,
+    "oldRefreshAccepted": 0,
+    "oldRefreshProtocolRejected": 0,
+    "currentStays": true,
+    "foreignUnchanged": true
+  },
+  "nonceHeader": "x-mb004-static-qa",
+  "nonceValueOmitted": true,
+  "h5IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "locator": ".dev-cta[role=\"button\"]",
+  "sequentialCountedAsProof": false
+}

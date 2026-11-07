@@ -1,0 +1,19 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:35:44.288854+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/devices-434-frozen/MANIFEST.json",
+  "preflight": "PASS",
+  "staticGate": "STATIC_GATE",
+  "runnerPid": 67155,
+  "releasedAt": "2026-11-07T15:37:33.488824+00:00",
+  "result": "PASS_EXACT_BULK_TWO_KICKS_TWO_REFRESH401",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true
+}

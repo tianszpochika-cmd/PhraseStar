@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-07，B151 在冻结 H5 通过一次批量退出、两次旧会话刷新 401，并确认当前会话和另一账号保持。临时资源独立确认释放，正式签收待验。 [B151](takeover/mobile-figma-20261103/reviews/INTEGRATION-B151-DEVICES-BULK-H5.md)
+
 2026-11-07，B150 在固定版本本机真实 H5 通过书架空态与本人首页／目录读回，资源独立确认释放。f69fd71f 远程 CI 已通过 7 个作业，契约数据回归 26 项失败及依赖审计继续待处理。 [B150](takeover/mobile-figma-20261103/reviews/INTEGRATION-B150-SHELF-EMPTY-H5.md)
 
 2026-11-07，B149 修正历史证据摘要与原提交的绑定，29 项回归独立复跑通过，干净库完整证据门通过 108 项历史任务，远程证据门也通过；后续全量 P1R 回归仍有 26 项失败。 [B149](takeover/mobile-figma-20261103/reviews/INTEGRATION-B149-EVIDENCE-SOURCE-BINDING.md)
