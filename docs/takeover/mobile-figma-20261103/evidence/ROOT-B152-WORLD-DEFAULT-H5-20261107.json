@@ -1,0 +1,127 @@
+{
+  "batch": "B152",
+  "at": "2026-11-07T15:43:02.042730+00:00",
+  "classification": "H5_WORLD_DEFAULT_OBSERVED_AUTOMATIC_RELEASE_CERTIFICATE_FAILED",
+  "workers": [
+    "G404",
+    "G424",
+    "G437"
+  ],
+  "compiledCandidate": "B139",
+  "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "functionalObservation": "OBSERVED",
+  "workerLeaseStatus": "FAIL",
+  "workerLeaseReason": "cleanup",
+  "workerReleased": false,
+  "independentRelease": "CONFIRMED_FREE_PORTS_OWNED_CONTAINER_ABSENT",
+  "counts": {
+    "claim": 0,
+    "loginPost": 1,
+    "principal": 4,
+    "probability": 0,
+    "quests": 1,
+    "rewards": 1,
+    "season": 1,
+    "streak": 1,
+    "summary": 1,
+    "write": 0
+  },
+  "wire": {
+    "className": "DEFAULT_OWNER_EMPTY",
+    "classes": {
+      "quests": "IMPLEMENTED_EMPTY_LIST",
+      "rewards": "EMPTY_GRANT_LIST",
+      "season": "DEFAULT_CALENDAR_SHELL",
+      "streak": "DEFAULT_ZERO",
+      "summary": "DEFAULT_PROJECTION"
+    },
+    "classifierReason": "default-owner-empty",
+    "classifierStatus": "WIRE_SHAPE",
+    "g368ObserveWorldOwner": "unused-for-live-b139",
+    "holds": true,
+    "observed": false,
+    "surface": "wire"
+  },
+  "rendered": {
+    "claimButtons": 0,
+    "copy": "zh",
+    "entries": 4,
+    "holds": true,
+    "missing": [],
+    "presentForbidden": [],
+    "questRows": 0,
+    "rewardRows": 0,
+    "route": "/pages/world/world",
+    "surface": "rendered"
+  },
+  "factsBefore": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "factsAfter": {
+    "coin_ledger": 0,
+    "gamification_active_date": 0,
+    "gamification_event_record": 0,
+    "gamification_feature_state": 0,
+    "gamification_game_session": 0,
+    "gamification_idempotency_record": 0,
+    "gamification_outbox_event": 0,
+    "gamification_season_fact": 0,
+    "gamification_user_timezone": 0,
+    "reward_grant": 0,
+    "xp_ledger": 0
+  },
+  "sourcePins": [
+    {
+      "path": "REPORT.md",
+      "bytes": 3668,
+      "sha256": "369be29cd7f4096db44133d8d1c5891e9d7465f7c0c4ca5122fcabc6341b5979"
+    },
+    {
+      "path": "root-lease.py",
+      "bytes": 62353,
+      "sha256": "e8651785451aaba1cd751b8415f0346eb8c5902d63e1c4d7a3ec8fb4f304fafe"
+    },
+    {
+      "path": "h5-lease-tail.mjs",
+      "bytes": 4288,
+      "sha256": "1f376ab19696e10b29d6df734af15822270c4a7fba76f505b30d823a0d9015fc"
+    },
+    {
+      "path": "world-default-observer.mjs",
+      "bytes": 41245,
+      "sha256": "be4a664434e33124a68fc508fae774ebe60663c51f250cdfca7a17be96759324"
+    },
+    {
+      "path": "pin.json",
+      "bytes": 3001,
+      "sha256": "87db9c5b9ef8dd8cd5600e6ade3a86405899fb6c3beb9370ee51c4c260dceb90"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/B152-WORLD-DEFAULT-H5/world-h5-default-receipt.json",
+      "sha256": "e66965aed4751ffdcd3e37068bfde598340bd0de044829268c935d16a292e44e"
+    }
+  ],
+  "formalRouteSignoff": "TRACE_PENDING",
+  "notRun": [
+    "populated world",
+    "native host/device",
+    "reader",
+    "deployed environment"
+  ],
+  "remaining": [
+    "diagnose automatic container release confirmation without replaying actor or overwriting actual FAIL",
+    "formal trace and full route signoff"
+  ]
+}

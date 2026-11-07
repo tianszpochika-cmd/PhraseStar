@@ -1,0 +1,22 @@
+{
+  "holder": null,
+  "at": "2026-11-07T15:37:34.000455+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18094,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261107/world-437-frozen/MANIFEST.json",
+  "preflight": "PASS_PYTHON312",
+  "flagCases": 12,
+  "runnerPid": 68534,
+  "releasedAt": "2026-11-07T15:41:26.135003+00:00",
+  "result": "H5_OBSERVED_AUTOMATIC_CLEANUP_CERTIFICATE_FAIL_RETAINED",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true,
+  "workerLeaseStatus": "FAIL",
+  "workerLeaseReason": "cleanup"
+}

@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-07，B152 真实 H5 观察到成长世界默认展示与五项读取，11 张表保持零。自动清理证书仍失败，Root 独立确认资源释放；整体租约和正式签收继续待验。 [B152](takeover/mobile-figma-20261103/reviews/INTEGRATION-B152-WORLD-DEFAULT-H5.md)
+
 2026-11-07，B151 在冻结 H5 通过一次批量退出、两次旧会话刷新 401，并确认当前会话和另一账号保持。临时资源独立确认释放，正式签收待验。 [B151](takeover/mobile-figma-20261103/reviews/INTEGRATION-B151-DEVICES-BULK-H5.md)
 
 2026-11-07，B150 在固定版本本机真实 H5 通过书架空态与本人首页／目录读回，资源独立确认释放。f69fd71f 远程 CI 已通过 7 个作业，契约数据回归 26 项失败及依赖审计继续待处理。 [B150](takeover/mobile-figma-20261103/reviews/INTEGRATION-B150-SHELF-EMPTY-H5.md)

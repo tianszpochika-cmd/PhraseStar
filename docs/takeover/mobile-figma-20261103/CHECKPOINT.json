@@ -6344,5 +6344,14 @@
     "optional_legacy_branch_check": "PARTIAL",
     "route_trace": "TRACE_PENDING",
     "resources": "RELEASED_INDEPENDENTLY_VERIFIED"
+  },
+  "observation_B152_world_default_h5": {
+    "classification": "H5_WORLD_DEFAULT_OBSERVED_AUTOMATIC_RELEASE_CERTIFICATE_FAILED",
+    "review": "reviews/INTEGRATION-B152-WORLD-DEFAULT-H5.md",
+    "evidence": "evidence/ROOT-B152-WORLD-DEFAULT-H5-20261107.json",
+    "functional": "OBSERVED",
+    "automatic_lease": "FAIL_CLEANUP",
+    "independent_release": "CONFIRMED",
+    "route_trace": "TRACE_PENDING"
   }
 }
