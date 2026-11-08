@@ -1,0 +1,679 @@
+{
+  "unit": "B157",
+  "scope": "RC-G_AND_RC-I_STATIC_ONLY",
+  "sourcePins": {
+    "scripts/audit/p1r-gateway-contract-check.mjs": "525659f6ba64072bfd3a3f47650a54946072a06603145c11108d445b72ddec71",
+    "tests/p1r/p1r-gateway-contract.test.mjs": "afec011e4d8fdf4a4fa28883a10ae0b0d514e05a835820e28d40aeff682a63a9",
+    "config/p1r-learning-loop-contract.v1.json": "6c831061054ca8168cfcf63f21bc41622e13a2156b10811b93f4472c85b94053",
+    "scripts/audit/p1r-learning-loop-contract-check.mjs": "bd210ebd3ef9a40bd74d39397ce5a1e7659a9a4e2bbe6bae05ab94b409964ff3",
+    "tests/p1r/p1r-learning-loop-contract.test.mjs": "01abdb962fcc262363a4a275e660c7c351417e9920f5077a5ceef6d83dbf78d5",
+    "tests/p1r/p1r-learning-loop-generated-types.test.mjs": "68866e63df9b0588a675e01fb38d9ef25614bd803890af2e70e569ac5344e899"
+  },
+  "independentTests": {
+    "tests": 123,
+    "pass": 122,
+    "fail": 1,
+    "remainingFailure": [
+      "not ok 3 - M2-001 health identity is Gateway-owned and the compatibility projection permits exactly two scalar corrections plus the root plus reviewed additive nodes"
+    ]
+  },
+  "reviewedPublicDelta": {
+    "sourceCount": 365,
+    "headCount": 404,
+    "added": [
+      {
+        "operationId": "activateMediaAsset",
+        "method": "PUT",
+        "path": "/api/v1/media/assets/{assetId}/active",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "approveWorkflowRecovery",
+        "method": "POST",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/approve",
+        "explicitOwner": null,
+        "permission": "admin.recovery.command",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "compensateWorkflowSaga",
+        "method": "POST",
+        "path": "/api/v1/admin/recovery/sagas/{sagaId}/compensate",
+        "explicitOwner": null,
+        "permission": "admin.recovery.command",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "decideAdminRiskCase",
+        "method": "POST",
+        "path": "/api/v1/admin/ops/risk/cases/{caseId}/commands",
+        "explicitOwner": "admin-ops-service",
+        "permission": "admin.risk.write",
+        "routeRuleId": "admin-domain",
+        "routeRuleOwner": "admin-ops-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "ensureB10LearningPlan",
+        "method": "POST",
+        "path": "/api/v1/learning/plans:ensure",
+        "explicitOwner": "learning-service",
+        "permission": "learning.plan.write",
+        "routeRuleId": "learning-domain",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "evaluateAdminRiskRules",
+        "method": "POST",
+        "path": "/api/v1/admin/ops/risk/rules:evaluate",
+        "explicitOwner": "admin-ops-service",
+        "permission": "admin.risk.write",
+        "routeRuleId": "admin-domain",
+        "routeRuleOwner": "admin-ops-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "executeWorkflowRecovery",
+        "method": "POST",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/execute",
+        "explicitOwner": null,
+        "permission": "admin.recovery.command",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "fileAdminRiskCase",
+        "method": "POST",
+        "path": "/api/v1/admin/ops/risk/cases",
+        "explicitOwner": "admin-ops-service",
+        "permission": "admin.risk.write",
+        "routeRuleId": "admin-domain",
+        "routeRuleOwner": "admin-ops-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "getAdminLearnerAssessments",
+        "method": "GET",
+        "path": "/api/v1/admin/learners/{subjectId}/assessments",
+        "explicitOwner": "assessment-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-assessments",
+        "routeRuleOwner": "assessment-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "getAdminLearnerPlans",
+        "method": "GET",
+        "path": "/api/v1/admin/learners/{subjectId}/plans",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-plans",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "getAdminLearnerProfile",
+        "method": "GET",
+        "path": "/api/v1/admin/learners/{subjectId}/profile",
+        "explicitOwner": "learner-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-profile",
+        "routeRuleOwner": "learner-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "getAdminLearnerSrs",
+        "method": "GET",
+        "path": "/api/v1/admin/learners/{subjectId}/srs",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-srs",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "getLearningReportShare",
+        "method": "GET",
+        "path": "/api/v1/public/learning/report-shares/{ref}",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "public-learning-report-share",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "importB9ContentBatch",
+        "method": "POST",
+        "path": "/api/v1/admin/content-commands/import/batch",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": "admin-content",
+        "routeRuleOwner": "content-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "issueAssessmentVariant",
+        "method": "POST",
+        "path": "/api/v1/assessment/mistakes/{mistakeId}/variant",
+        "explicitOwner": "assessment-service",
+        "permission": "assessment.session.write",
+        "routeRuleId": "assessment-domain",
+        "routeRuleOwner": "assessment-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "issueLearningReportShare",
+        "method": "POST",
+        "path": "/api/v1/learning/reports/{reportType}/shares",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "learning-domain",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "listAdminLearnerSubjects",
+        "method": "GET",
+        "path": "/api/v1/admin/learners/search",
+        "explicitOwner": "learner-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-search",
+        "routeRuleOwner": "learner-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "listAdminRiskCases",
+        "method": "GET",
+        "path": "/api/v1/admin/ops/risk/cases",
+        "explicitOwner": "admin-ops-service",
+        "permission": "admin.risk.read",
+        "routeRuleId": "admin-domain",
+        "routeRuleOwner": "admin-ops-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "listAssessmentMistakes",
+        "method": "GET",
+        "path": "/api/v1/assessment/mistakes",
+        "explicitOwner": "assessment-service",
+        "permission": "assessment.session.read",
+        "routeRuleId": "assessment-domain",
+        "routeRuleOwner": "assessment-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "listB8LockedAccounts",
+        "method": "GET",
+        "path": "/api/v1/iam/accounts/locked",
+        "explicitOwner": "iam-service",
+        "permission": "admin.risk.read",
+        "routeRuleId": "iam-domain",
+        "routeRuleOwner": "iam-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "listUnfinishedSagas",
+        "method": "GET",
+        "path": "/api/v1/admin/recovery/sagas/unfinished",
+        "explicitOwner": null,
+        "permission": "admin.recovery.read",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "mintMediaUploadUrl",
+        "method": "POST",
+        "path": "/api/v1/media/assets/{assetId}/upload-url",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "readMediaAssetTasks",
+        "method": "GET",
+        "path": "/api/v1/media/assets/{assetId}/tasks",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "readPrivacyExportDownload",
+        "method": "GET",
+        "path": "/api/v1/privacy/export/{exportId}/download",
+        "explicitOwner": null,
+        "permission": null,
+        "routeRuleId": "privacy-domain",
+        "routeRuleOwner": "learner-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "readPrivacyExportStatus",
+        "method": "GET",
+        "path": "/api/v1/privacy/export/{exportId}",
+        "explicitOwner": null,
+        "permission": null,
+        "routeRuleId": "privacy-domain",
+        "routeRuleOwner": "learner-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "readWorkflowSaga",
+        "method": "GET",
+        "path": "/api/v1/admin/recovery/sagas/{sagaId}",
+        "explicitOwner": null,
+        "permission": "admin.recovery.read",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "registerMediaAsset",
+        "method": "POST",
+        "path": "/api/v1/media/assets",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "rejectWorkflowRecovery",
+        "method": "POST",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/reject",
+        "explicitOwner": null,
+        "permission": "admin.recovery.command",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "replanB10LearningPlan",
+        "method": "POST",
+        "path": "/api/v1/learning/plans:replan",
+        "explicitOwner": "learning-service",
+        "permission": "learning.plan.write",
+        "routeRuleId": "learning-domain",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "requestWorkflowRecovery",
+        "method": "POST",
+        "path": "/api/v1/admin/recovery/recoveries",
+        "explicitOwner": null,
+        "permission": "admin.recovery.request",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": false,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "resolveB9LearnerContentSubstitute",
+        "method": "GET",
+        "path": "/api/v1/content/learner/substitute",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": "content-domain",
+        "routeRuleOwner": "content-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "retestB10PlacementSession",
+        "method": "POST",
+        "path": "/api/v1/assessment/placement/sessions/{sessionId}/retest",
+        "explicitOwner": "assessment-service",
+        "permission": "assessment.placement.session.create",
+        "routeRuleId": "assessment-domain",
+        "routeRuleOwner": "assessment-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "retryMediaAsset",
+        "method": "POST",
+        "path": "/api/v1/media/assets/{assetId}/retry",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "revokeLearningReportShare",
+        "method": "POST",
+        "path": "/api/v1/learning/report-shares/{ref}/revoke",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "learning-domain",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "sendAdminLearnerCommand",
+        "method": "POST",
+        "path": "/api/v1/admin/learners/{subjectId}/commands",
+        "explicitOwner": "learner-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-commands",
+        "routeRuleOwner": "learner-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "sendAdminLearningCommand",
+        "method": "POST",
+        "path": "/api/v1/admin/learners/{subjectId}/learning-commands",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": "admin-learner-learning-commands",
+        "routeRuleOwner": "learning-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "upsertMediaSubtitle",
+        "method": "POST",
+        "path": "/api/v1/media/assets/{assetId}/subtitles",
+        "explicitOwner": "media-service",
+        "permission": null,
+        "routeRuleId": "media-domain",
+        "routeRuleOwner": "media-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "validateB9ContentAuto",
+        "method": "POST",
+        "path": "/api/v1/admin/content-commands/validate/auto",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": "admin-content",
+        "routeRuleOwner": "content-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      },
+      {
+        "operationId": "verifyAssessmentMistake",
+        "method": "POST",
+        "path": "/api/v1/assessment/mistakes/{mistakeId}/verify",
+        "explicitOwner": "assessment-service",
+        "permission": "assessment.session.write",
+        "routeRuleId": "assessment-domain",
+        "routeRuleOwner": "assessment-service",
+        "routeRuleCount": 1,
+        "explicitOwnerMatchesRule": true,
+        "scope": "public-added"
+      }
+    ],
+    "removed": [],
+    "remainderCount": 365,
+    "remainderEqualsSourceOperationIds": true,
+    "remainderDigest": "7a609b793e5372d7f65a352f08f38929922caf03c849735a56e0ecc7647f721c",
+    "sourceDigest": "7a609b793e5372d7f65a352f08f38929922caf03c849735a56e0ecc7647f721c",
+    "explicitOwnerGaps": [
+      {
+        "operationId": "approveWorkflowRecovery",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/approve",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "compensateWorkflowSaga",
+        "path": "/api/v1/admin/recovery/sagas/{sagaId}/compensate",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "executeWorkflowRecovery",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/execute",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "listUnfinishedSagas",
+        "path": "/api/v1/admin/recovery/sagas/unfinished",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "readPrivacyExportDownload",
+        "path": "/api/v1/privacy/export/{exportId}/download",
+        "routeRuleId": "privacy-domain",
+        "routeRuleOwner": "learner-service"
+      },
+      {
+        "operationId": "readPrivacyExportStatus",
+        "path": "/api/v1/privacy/export/{exportId}",
+        "routeRuleId": "privacy-domain",
+        "routeRuleOwner": "learner-service"
+      },
+      {
+        "operationId": "readWorkflowSaga",
+        "path": "/api/v1/admin/recovery/sagas/{sagaId}",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "rejectWorkflowRecovery",
+        "path": "/api/v1/admin/recovery/recoveries/{recoveryId}/reject",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      },
+      {
+        "operationId": "requestWorkflowRecovery",
+        "path": "/api/v1/admin/recovery/recoveries",
+        "routeRuleId": "admin-recovery",
+        "routeRuleOwner": "workflow-service"
+      }
+    ],
+    "conflictingOwners": [],
+    "uncovered": []
+  },
+  "reviewedInternalDelta": {
+    "sourceRef": "66246d5b4a68a988a9af4ece68a446640b123812",
+    "sourceCount": 62,
+    "headCount": 70,
+    "addedSinceSource": [
+      "bindB9PublishedReading",
+      "getB10LearningPlanView",
+      "getIamLearningConsentFact",
+      "getPlacementBankPlanItems",
+      "getPlacementBankSealedSnapshot",
+      "matchB10AssessmentAttemptBinding",
+      "pinB9LearnerTargetContent",
+      "scoreB10AssessmentContentSnapshot"
+    ],
+    "removed": [],
+    "alreadyInsideFrozen66": [
+      {
+        "operationId": "getB10LearningPlanView",
+        "method": "GET",
+        "path": "/internal/v1/learning/plans/current-view",
+        "explicitOwner": "learning-service",
+        "permission": null,
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-already-in-66"
+      },
+      {
+        "operationId": "getPlacementBankPlanItems",
+        "method": "GET",
+        "path": "/internal/v1/content/placement-bank/plan-items",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-already-in-66"
+      },
+      {
+        "operationId": "getPlacementBankSealedSnapshot",
+        "method": "GET",
+        "path": "/internal/v1/content/placement-bank/sealed",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-already-in-66"
+      },
+      {
+        "operationId": "pinB9LearnerTargetContent",
+        "method": "PUT",
+        "path": "/internal/v1/learner/targets/pin",
+        "explicitOwner": "learner-service",
+        "permission": "learner.target.write",
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-already-in-66"
+      }
+    ],
+    "reviewedResidual": [
+      {
+        "operationId": "getIamLearningConsentFact",
+        "method": "GET",
+        "path": "/internal/v1/iam/principals/{principalId}/learning-consent",
+        "explicitOwner": "iam-service",
+        "permission": "iam.consent.read",
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-reviewed-residual"
+      },
+      {
+        "operationId": "matchB10AssessmentAttemptBinding",
+        "method": "POST",
+        "path": "/internal/v1/assessment/attempts/{attemptId}/binding",
+        "explicitOwner": "assessment-service",
+        "permission": "assessment:attempt-binding:read",
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-reviewed-residual"
+      },
+      {
+        "operationId": "bindB9PublishedReading",
+        "method": "POST",
+        "path": "/internal/v1/content/admin/reading-bindings",
+        "explicitOwner": "content-service",
+        "permission": null,
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-reviewed-residual"
+      },
+      {
+        "operationId": "scoreB10AssessmentContentSnapshot",
+        "method": "POST",
+        "path": "/internal/v1/content/assessment-snapshots/{contentVersionId}/score",
+        "explicitOwner": "content-service",
+        "permission": "content:answer-rules:read",
+        "routeRuleId": null,
+        "routeRuleOwner": null,
+        "routeRuleCount": 0,
+        "explicitOwnerMatchesRule": false,
+        "scope": "internal-reviewed-residual"
+      }
+    ],
+    "headMinusReviewedCount": 66,
+    "remainderDigest": "3dcf74c3f6510daa9bb593482310e177ac655ca8d837c22996fef7c0eec22d92",
+    "policyBaselineOperationCount": 66
+  },
+  "fullCI": "FAIL_PENDING_OTHER_ROOT_CAUSES",
+  "formalRouteAcceptance": "TRACE_PENDING",
+  "deployment": "NOT_RUN"
+}

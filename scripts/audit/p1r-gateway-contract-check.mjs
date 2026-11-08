@@ -7,8 +7,66 @@ import { isDeepStrictEqual } from 'node:util';
 const DEFAULT_INPUT = path.join('packages', 'contracts', 'fragments', 'p1r-gateway-boundary.openapi.json');
 const DEFAULT_CANONICAL = path.join('packages', 'contracts', 'openapi', 'v1', 'openapi.json');
 const ROOT_EXTENSION = 'x-p1r-gateway-boundary';
-const EXPECTED_PUBLIC_OPERATION_COUNT = 365;
-const EXPECTED_INTERNAL_OPERATION_COUNT = 66;
+const FROZEN_PUBLIC_OPERATION_BASELINE = 365;
+// Reviewed additions since M2-001 source 66246d5. The removed set is empty.
+// The baseline digest is the operationId set that remains after subtracting
+// these ids, and it equals that source's public operationIds. It is not the
+// M2-001 semantic pin and not the execution-target digest.
+export const REVIEWED_PUBLIC_OPERATION_ADDITIONS = Object.freeze([
+  'listAdminLearnerSubjects',
+  'getAdminLearnerAssessments',
+  'getAdminLearnerPlans',
+  'getAdminLearnerProfile',
+  'getAdminLearnerSrs',
+  'listAdminRiskCases',
+  'listUnfinishedSagas',
+  'readWorkflowSaga',
+  'listAssessmentMistakes',
+  'resolveB9LearnerContentSubstitute',
+  'listB8LockedAccounts',
+  'readMediaAssetTasks',
+  'readPrivacyExportStatus',
+  'readPrivacyExportDownload',
+  'getLearningReportShare',
+  'importB9ContentBatch',
+  'validateB9ContentAuto',
+  'sendAdminLearnerCommand',
+  'sendAdminLearningCommand',
+  'fileAdminRiskCase',
+  'decideAdminRiskCase',
+  'evaluateAdminRiskRules',
+  'requestWorkflowRecovery',
+  'approveWorkflowRecovery',
+  'executeWorkflowRecovery',
+  'rejectWorkflowRecovery',
+  'compensateWorkflowSaga',
+  'issueAssessmentVariant',
+  'verifyAssessmentMistake',
+  'retestB10PlacementSession',
+  'ensureB10LearningPlan',
+  'replanB10LearningPlan',
+  'revokeLearningReportShare',
+  'issueLearningReportShare',
+  'registerMediaAsset',
+  'retryMediaAsset',
+  'upsertMediaSubtitle',
+  'mintMediaUploadUrl',
+  'activateMediaAsset',
+]);
+const EXPECTED_PUBLIC_OPERATION_COUNT = FROZEN_PUBLIC_OPERATION_BASELINE + REVIEWED_PUBLIC_OPERATION_ADDITIONS.length;
+const FROZEN_PUBLIC_BASELINE_OPERATION_ID_SHA256 = '7a609b793e5372d7f65a352f08f38929922caf03c849735a56e0ecc7647f721c';
+const FROZEN_INTERNAL_OPERATION_BASELINE = 66;
+// The frozen 66 already includes learner target pin, placement-bank plan-items,
+// learning plans current-view, and placement-bank sealed. These four are the
+// only further internal additions. HEAD minus this set remains 66.
+export const REVIEWED_INTERNAL_OPERATION_ADDITIONS = Object.freeze([
+  'getIamLearningConsentFact',
+  'matchB10AssessmentAttemptBinding',
+  'bindB9PublishedReading',
+  'scoreB10AssessmentContentSnapshot',
+]);
+const EXPECTED_INTERNAL_OPERATION_COUNT = FROZEN_INTERNAL_OPERATION_BASELINE + REVIEWED_INTERNAL_OPERATION_ADDITIONS.length;
+const FROZEN_INTERNAL_BASELINE_OPERATION_ID_SHA256 = '3dcf74c3f6510daa9bb593482310e177ac655ca8d837c22996fef7c0eec22d92';
 // Plan wiring (2026-09-27): +3 internal reads (learner targets/pin,
 // content placement-bank plan-items, learning plans current-view). The ensure
 // op itself is public (same 365->394 drift line, no new failure).
@@ -28,8 +86,9 @@ const EXPECTED_ROUTE_RULE_COUNT = 75;
 // controller target today.  The latter must never turn a coarse PREFIX rule
 // into an arbitrary upstream proxy.
 // P4 demo loop (2026-09-26): 210 pre-existing available + the same 7 skill
-// reads moving unavailable -> available. Zero new operations (365 -> 393 public
-// drift, iam-deletions frozen reason and M2-001 digest drift stay open).
+// reads moving unavailable -> available. Zero new operations at that edit.
+// The later public 365->404 and internal 66->70 residuals are the reviewed
+// inventories above. The M2-001 execution-target digest stays pinned.
 // B3 interaction (2026-09-27): +1 available (reading/questions, bound bank
 // items); plan and execution counts move together, no new operation.
 // Plan wiring (2026-09-27): +1 available (learning plans:ensure inside the
@@ -201,7 +260,6 @@ const EXPECTED_UNAVAILABLE_EXECUTION_REASONS = {
   'learning-content-snapshot': 'content_owner_controller_mapping_not_present',
   'speaking-recordings': 'canonical_media_owner_conflicts_with_current_learning_controller',
   'speaking-shadowing-completion': 'canonical_assessment_owner_conflicts_with_current_learning_controller',
-  'iam-account-deletions': 'iam_owner_controller_mapping_not_present',
   'privacy-exports': 'learner_owner_plural_export_controller_mapping_not_present',
   'sync-domain': 'canonical_learning_owner_conflicts_with_current_notification_controller',
   'exam-domain': 'assessment_owner_controller_mapping_not_present',
@@ -789,6 +847,35 @@ function hasAll(actual, expected) {
   return Array.isArray(actual) && expected.every((item) => actual.includes(item));
 }
 
+function operationIdDigest(ids) {
+  return createHash('sha256').update(`[${[...ids].sort().map((id) => JSON.stringify(id)).join(',')}]`).digest('hex');
+}
+
+function checkReviewedOperationInventory(actualOperations, frozenBaseline, reviewedIds, frozenDigest, label, errors) {
+  const ids = actualOperations.map((item) => item.operation?.operationId);
+  const unique = new Set(ids);
+  add(
+    errors,
+    ids.length === unique.size && ids.every((id) => typeof id === 'string' && id.length > 0),
+    `${label} operation ids must be unique and present`,
+  );
+  const expected = frozenBaseline + reviewedIds.length;
+  add(errors, ids.length === expected, `${label} operation baseline drift: expected ${expected}, got ${ids.length}`);
+  const missing = reviewedIds.filter((id) => !unique.has(id));
+  add(
+    errors,
+    reviewedIds.length === new Set(reviewedIds).size && missing.length === 0,
+    `${label} reviewed operation inventory drifted: ${missing.join(', ') || 'duplicate reviewed id'}`,
+  );
+  const reviewed = new Set(reviewedIds);
+  const remainder = [...unique].filter((id) => !reviewed.has(id));
+  add(
+    errors,
+    remainder.length === frozenBaseline && operationIdDigest(remainder) === frozenDigest,
+    `${label} operation inventory outside the reviewed additions drifted`,
+  );
+}
+
 function operations(openApi, prefix) {
   if (!isRecord(openApi?.paths)) return [];
   const result = [];
@@ -1162,7 +1249,14 @@ function checkRouteRules(policy, canonicalOpenApi, ownerById, errors) {
   }
 
   const publicOperations = operations(canonicalOpenApi, policy.d2Boundary?.publicPrefix ?? '/api/v1');
-  add(errors, publicOperations.length === EXPECTED_PUBLIC_OPERATION_COUNT, `public operation baseline drift: expected ${EXPECTED_PUBLIC_OPERATION_COUNT}, got ${publicOperations.length}`);
+  checkReviewedOperationInventory(
+    publicOperations,
+    FROZEN_PUBLIC_OPERATION_BASELINE,
+    REVIEWED_PUBLIC_OPERATION_ADDITIONS,
+    FROZEN_PUBLIC_BASELINE_OPERATION_ID_SHA256,
+    'public',
+    errors,
+  );
   let covered = 0;
   let conflicts = 0;
   let coverageErrors = 0;
@@ -1206,9 +1300,16 @@ function checkInternalPolicy(policy, canonicalOpenApi, errors) {
   add(errors, internal?.externalExposure === 'DENY' && internal?.externalCors === 'DENY', 'all internal operations must deny public exposure and CORS');
   add(errors, internal?.requiredCallerIdentity === 'VALIDATED_WORKLOAD_IDENTITY', 'internal operations must require validated workload identity');
   add(errors, internal?.networkIsolationRequired === true && internal?.applicationDenyIsSufficient === false, 'internal operations require network isolation beyond application denial');
-  add(errors, internal?.baselineOperationCount === EXPECTED_INTERNAL_OPERATION_COUNT, `internal operation baseline must be ${EXPECTED_INTERNAL_OPERATION_COUNT}`);
+  add(errors, internal?.baselineOperationCount === FROZEN_INTERNAL_OPERATION_BASELINE, `internal operation baseline must be ${FROZEN_INTERNAL_OPERATION_BASELINE}`);
   const internalOperations = operations(canonicalOpenApi, internal?.pathPrefix ?? '/internal/v1');
-  add(errors, internalOperations.length === EXPECTED_INTERNAL_OPERATION_COUNT, `internal operation baseline drift: expected ${EXPECTED_INTERNAL_OPERATION_COUNT}, got ${internalOperations.length}`);
+  checkReviewedOperationInventory(
+    internalOperations,
+    FROZEN_INTERNAL_OPERATION_BASELINE,
+    REVIEWED_INTERNAL_OPERATION_ADDITIONS,
+    FROZEN_INTERNAL_BASELINE_OPERATION_ID_SHA256,
+    'internal',
+    errors,
+  );
   const publicOperations = operations(canonicalOpenApi, policy.d2Boundary?.publicPrefix ?? '/api/v1');
   const expectedM1015Keys = new Set(EXPECTED_M1015_INTERNAL_OPERATIONS.map((expected) => `${expected.method} ${expected.route}`));
   const expectedM1015OperationIds = new Set(EXPECTED_M1015_INTERNAL_OPERATIONS.map((expected) => expected.operationId));

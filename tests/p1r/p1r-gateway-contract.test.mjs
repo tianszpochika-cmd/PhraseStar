@@ -6,6 +6,8 @@ import test from 'node:test';
 
 import {
   FROZEN_EXECUTION_TARGET_PLAN_SHA256,
+  REVIEWED_INTERNAL_OPERATION_ADDITIONS,
+  REVIEWED_PUBLIC_OPERATION_ADDITIONS,
   executionTargetPlanDigest,
   validateGatewayContract,
   validateGatewayContractData,
@@ -82,20 +84,29 @@ test('Gateway contract audit passes the dedicated fragment and exact canonical p
   const report = validateGatewayContract({ root });
   assert.equal(report.result, 'PASS', report.errors.join('\n'));
   assert.deepEqual(report.errors, []);
+  assert.equal(REVIEWED_PUBLIC_OPERATION_ADDITIONS.length, 39);
+  assert.equal(new Set(REVIEWED_PUBLIC_OPERATION_ADDITIONS).size, 39);
+  assert.deepEqual(REVIEWED_INTERNAL_OPERATION_ADDITIONS, [
+    'getIamLearningConsentFact',
+    'matchB10AssessmentAttemptBinding',
+    'bindB9PublishedReading',
+    'scoreB10AssessmentContentSnapshot',
+  ]);
   assert.deepEqual(report.summary, {
-    routeRuleCount: 56,
-    publicOperationCount: 365,
-    coveredPublicOperationCount: 365,
+    routeRuleCount: 75,
+    publicOperationCount: 404,
+    coveredPublicOperationCount: 404,
     publicCoverageErrorCount: 0,
-    executionPlanCount: 56,
-    executionProjectionCount: 153,
-    availableExecutionOperationCount: 170,
-    unavailableExecutionOperationCount: 195,
+    executionPlanCount: 75,
+    executionProjectionCount: 209,
+    availableExecutionOperationCount: 226,
+    unavailableExecutionOperationCount: 178,
     executionTargetPlanDigest: FROZEN_EXECUTION_TARGET_PLAN_SHA256,
-    internalOperationCount: 62,
-    externalDeniedInternalOperationCount: 62,
+    internalOperationCount: 70,
+    externalDeniedInternalOperationCount: 70,
     canonicalProjectionMatches: true,
   });
+  assert.equal(report.summary.executionTargetPlanDigest, 'f6e9cb48732fd64abd8a89f5f7d9c1dd6892981c13722a0def638343ea5fb80d');
 });
 
 test('Gateway execution targets cannot drift to a different upstream owner or controller path', () => {
@@ -196,7 +207,7 @@ test('Gateway executable rules cannot lose their finite targets', () => {
 test('Gateway execution plan shape cannot bypass validation', () => {
   assertMutationFails((document) => {
     document[extension].routeExecutions = {};
-  }, /route execution plan count must be 56/);
+  }, /route execution plan count must be 75/);
 });
 
 test('Gateway unavailable rules cannot be promoted to an upstream projection', () => {
@@ -291,9 +302,14 @@ test('M1-016 notification operations cannot be exposed under the public prefix',
 test('M1-017 has exactly eight public and nine internal operations with exact owner, security and authorization', () => {
   const report = validateGatewayContract({ root });
   assert.equal(report.result, 'PASS', report.errors.join('\n'));
-  assert.equal(report.summary.publicOperationCount, 365);
-  assert.equal(report.summary.routeRuleCount, 56);
-  assert.equal(report.summary.internalOperationCount, 62);
+  assert.equal(report.summary.publicOperationCount, 404);
+  assert.equal(report.summary.routeRuleCount, 75);
+  assert.equal(report.summary.executionPlanCount, 75);
+  assert.equal(report.summary.executionProjectionCount, 209);
+  assert.equal(report.summary.availableExecutionOperationCount, 226);
+  assert.equal(report.summary.unavailableExecutionOperationCount, 178);
+  assert.equal(report.summary.internalOperationCount, 70);
+  assert.equal(report.summary.executionTargetPlanDigest, 'f6e9cb48732fd64abd8a89f5f7d9c1dd6892981c13722a0def638343ea5fb80d');
 });
 
 test('M1-017 public operations cannot weaken owner or authorization', () => {
@@ -330,6 +346,52 @@ test('M1-017 internal operations cannot be exposed under the public prefix', () 
     leaked.post['x-contract'].task = 'LEGACY';
     canonicalOpenApi.paths['/api/v1/privacy/exports/{exportId}/recovery'] = leaked;
   }, /M1-017 internal operation route must not be exposed publicly/);
+});
+
+test('one extra public operationId fails the reviewed 404 lock', () => {
+  assertMutationFails((document, canonicalOpenApi) => {
+    const extra = structuredClone(canonicalOpenApi.paths['/api/v1/learning/plans/current']);
+    extra.get.operationId = 'extraPublicOperation';
+    canonicalOpenApi.paths['/api/v1/learning/plans/current-extra'] = extra;
+  }, /public operation baseline drift: expected 404, got 405/);
+});
+
+test('internal inventory cannot replace a reviewed operation id', () => {
+  assertMutationFails((document, canonicalOpenApi) => {
+    canonicalOpenApi.paths['/internal/v1/iam/principals/{principalId}/learning-consent'].get.operationId = 'replacedIamLearningConsentFact';
+  }, /internal reviewed operation inventory drifted: getIamLearningConsentFact/);
+});
+
+test('omitted account-deletion execution targets stay fail-closed', () => {
+  assertMutationFails((document) => {
+    executionPlan(document, 'iam-account-deletions').projections = [];
+  }, /Gateway executable rule must retain only exact targets and an unavailable default: iam-account-deletions/);
+});
+
+test('restoring the old account-deletion unavailable reason fails', () => {
+  assertMutationFails((document) => {
+    executionPlan(document, 'iam-account-deletions').defaultReason = 'iam_owner_controller_mapping_not_present';
+  }, /Gateway executable rule must retain only exact targets and an unavailable default: iam-account-deletions/);
+});
+
+test('public account-deletion create still throws 503 and the route stays', () => {
+  const source = fs.readFileSync(path.join(root, 'services', 'iam-service', 'src', 'main', 'java', 'com', 'englishflow', 'iam', 'web', 'IamAccountDeletionController.java'), 'utf8');
+  const createStart = source.indexOf('@PostMapping("/api/v1/iam/account-deletions")');
+  const statusStart = source.indexOf('@GetMapping("/api/v1/iam/account-deletions/{deletionRequestId}")');
+  assert.ok(createStart >= 0 && statusStart > createStart);
+  const create = source.slice(createStart, statusStart);
+  assert.match(create, /throw new ResponseStatusException\(HttpStatus\.SERVICE_UNAVAILABLE,/);
+  assert.doesNotMatch(create, /return envelope/);
+  const plan = executionPlan(fragment, 'iam-account-deletions');
+  assert.equal(plan.defaultStatus, 'UNAVAILABLE');
+  assert.equal(plan.defaultReason, 'no_exact_canonical_execution_target');
+  assert.deepEqual(plan.projections.map((projection) => projection.projectionId).sort(), [
+    'iam-account-deletions.deletion-cancel',
+    'iam-account-deletions.deletion-request',
+    'iam-account-deletions.deletion-status',
+  ]);
+  assert.equal(plan.projections.find((projection) => projection.projectionId === 'iam-account-deletions.deletion-request').publicPathTemplate, '/api/v1/iam/account-deletions');
+  assert.deepEqual(plan.projections.find((projection) => projection.projectionId === 'iam-account-deletions.deletion-request').methods, ['POST']);
 });
 
 test('canonical operations outside the governed API prefixes fail closed', () => {

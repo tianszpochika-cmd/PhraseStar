@@ -63,7 +63,23 @@ function compileFixture(source) {
 
 test('generated types are required M1-013 public promotion evidence', () => {
   assert.equal(policy.compatibilityPromotion.scope, 'OPENAPI_EVENT_GOVERNANCE_B26_STATIC');
-  assert.equal(policy.compatibilityPromotion.canonicalRoutes.length, 11);
+  assert.equal(policy.compatibilityPromotion.canonicalRoutes.length, 13);
+  const routeByOperation = new Map(policy.compatibilityPromotion.canonicalRoutes.map((route) => [route.operationId, route]));
+  for (const operationId of [
+    'listB10LearningReviewQueue', 'completeB10LearningReview', 'getB10LearningMasteryProjection',
+    'getB10LearningPlan', 'getB10LearningToday', 'reorderB10LearningPlan', 'completeB10LearningTask',
+    'listB10LearningRepairs', 'getB10LearningRepair', 'getB10LearningMasteryOverview', 'getB10LearningReport',
+  ]) assert.ok(routeByOperation.has(operationId), operationId);
+  assert.deepEqual(routeByOperation.get('ensureB10LearningPlan'), {
+    id: 'B10-PLAN-ENSURE', method: 'POST', path: '/api/v1/learning/plans:ensure', operationId: 'ensureB10LearningPlan',
+    requestSchema: 'B10EnsurePlanRequest', responseSchema: 'B10EnsurePlanResult', owner: 'learning-service',
+    requiredPermission: 'learning.plan.write', security: 'bearerAuth', idempotency: 'REQUIRED',
+  });
+  assert.deepEqual(routeByOperation.get('replanB10LearningPlan'), {
+    id: 'B10-PLAN-REPLAN', method: 'POST', path: '/api/v1/learning/plans:replan', operationId: 'replanB10LearningPlan',
+    requestSchema: 'B10PlanReplanRequest', responseSchema: 'B10PlanReplanResult', owner: 'learning-service',
+    requiredPermission: 'learning.plan.write', security: 'bearerAuth', idempotency: 'REQUIRED',
+  });
   assert.equal(policy.compatibilityPromotion.approvedCanonicalEvents.length, 3);
   assert.equal(hasM1013ReviewTypeShape(), true, 'generated B10 review types must be current promotion evidence');
 });

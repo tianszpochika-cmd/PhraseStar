@@ -6418,6 +6418,11 @@
         "review": "reviews/INTEGRATION-B156-H5-IAM-LOGOUT.md",
         "evidence": "evidence/ROOT-B156-H5-IAM-LOGOUT-20261108.json",
         "status": "PASS_SOURCE_TEST_RUNTIME_PENDING"
+      },
+      "B157": {
+        "review": "reviews/INTEGRATION-B157-ROUTE-POLICIES.md",
+        "evidence": "evidence/ROOT-B157-ROUTE-POLICIES-20261108.json",
+        "status": "RC_G_I_VERIFIED_FULL_CI_FAIL"
       }
     }
   }

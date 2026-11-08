@@ -313,6 +313,15 @@ reject('canonical route inventory cannot omit a B10 learning route', (input) => 
   input.policy.compatibilityPromotion.canonicalRoutes.pop();
 }, /B10 canonical learning route projection/);
 
+reject('a third unlisted canonical learning route fails the exact inventory', (input) => {
+  input.b10OpenApi.paths['/api/v1/learning/plans:unreviewed'] = {
+    post: {
+      operationId: 'unreviewedB10LearningPlan',
+      'x-contract': { canonical: true, owner: 'learning-service' },
+    },
+  };
+}, /B10 canonical learning route projection/);
+
 reject('legacy policy must cover exactly the M1-013 fixed 24 operationIds', (input) => {
   input.policy.compatibilityPromotion.legacyAdapters.pop();
 }, /fixed 24 legacy adapters/);

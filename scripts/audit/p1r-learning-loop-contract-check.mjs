@@ -28,7 +28,9 @@ export const DEFAULT_GENERATED_API_CLIENT = 'packages/api-client/src/generated/i
 
 // Deliberately frozen after the rule-model author completed its invariant review.
 // Candidate policy content is never accepted by calculating a replacement value at runtime.
-export const FROZEN_POLICY_SHA256 = 'd1e467d8697f9f873c5ac3b45fa7c5a39085c9b975dfd3abbffac251d5847973';
+// Reviewed inventory adds POST /api/v1/learning/plans:ensure and plans:replan only.
+// The exact canonical route-key match stays.
+export const FROZEN_POLICY_SHA256 = 'db9871277991f8fcf072446de1a6c985f07ad6e3a6c4bdb4406014cb50c9df5c';
 
 const SOURCE_BASELINE = 'a07a58a7d245295c54d39487a6669545d077c513';
 const ROOT_KEYS = Object.freeze([
