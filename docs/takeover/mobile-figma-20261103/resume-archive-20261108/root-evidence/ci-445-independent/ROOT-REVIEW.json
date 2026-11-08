@@ -1,0 +1,12 @@
+{
+  "focusedExit": 0,
+  "cliExit": 0,
+  "negativeExit": 0,
+  "files": {
+    "config/p1r-data-ownership.v1.json": "31333598faae95b7216599b8965c16e4b8f56f249e92131980d78eae585b3d9f",
+    "scripts/audit/p1r-data-ownership-check.mjs": "5b25a2fd3f74265eebb78df8efa635c6a44e70af97e516c084414d6213578ddb",
+    "tests/p1r/p1r-data-ownership.test.mjs": "ba01cbdfe9ba6128ea049a9b315298ec80b3ab53630ff68946d5cff1d3d2a420",
+    "tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs": "a68a0031704b839980d94066902178b42b8e9fca9b36c8b4b4f235e790e19a86"
+  },
+  "runtimeStatus": "NOT_RUNTIME_VERIFIED"
+}

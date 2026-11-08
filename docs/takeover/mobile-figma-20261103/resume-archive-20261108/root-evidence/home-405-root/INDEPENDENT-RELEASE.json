@@ -1,0 +1,18 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18088": true,
+    "18089": true,
+    "18090": true,
+    "18091": true,
+    "18183": true
+  },
+  "ownedNameAbsent": true,
+  "ownedLabelAbsent": true,
+  "at": "2026-11-08T00:49:36.184930+00:00",
+  "runtimeStatus": "FAIL_PREFLIGHT_MISSING_IAM_JAR",
+  "businessFlowRan": false
+}

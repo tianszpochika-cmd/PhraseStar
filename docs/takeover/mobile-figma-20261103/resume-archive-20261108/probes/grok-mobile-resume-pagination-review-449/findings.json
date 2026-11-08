@@ -1,0 +1,279 @@
+{
+  "job": "G449",
+  "reviewedCandidate": "G442 pagination",
+  "baseline": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "frozenSource": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/pagination-442-reviewed-source",
+  "manifestSha256": { "files": 28, "matches": 28, "mismatches": [] },
+  "productSourceChanged": false,
+  "acceptanceClaimed": false,
+  "fixture": "reproduction-results.json",
+  "findings": [
+    {
+      "id": "G449-1",
+      "severity": "high",
+      "actualRegressionVsEd6a1e57": true,
+      "title": "HttpAssessmentMistakeFeed returns a successful prefix when a later page fails, is malformed, or repeats a cursor",
+      "summary": "ed6a1e57 read the owner mistake set in one response and returned an empty list on any non-200, transport error, or parse failure. The frozen walker keeps earlier pages and returns them as a normal list. AssessmentMistakeQueueProjector inserts that prefix, and the learner mistake routes then answer HTTP 200 from b3_learning_interaction.",
+      "scenarios": [
+        {
+          "name": "later-page-401",
+          "setup": "150 owner ZERO mistakes. Page size 100. First response 200 with hasMore true. Second response 401.",
+          "observed": "list() returns 100 facts. Fixture outcome partial-on-later-non-200.",
+          "userVisible": "GET /mastery/mistakes and GET /mistakes/queue project the prefix and return 200. The other 50 mistakes are absent. The learner does not see 401."
+        },
+        {
+          "name": "later-page-malformed-body",
+          "setup": "First page valid. Second body is not JSON.",
+          "observed": "parsePage returns an empty page with hasMore false, the loop breaks, and the first 100 facts are returned as the end of the list."
+        },
+        {
+          "name": "repeated-cursor",
+          "setup": "Every 200 page returns the same 100 ids and the same nextCursor with hasMore true. The tail starts at item 101.",
+          "observed": "100 requests, 10000 fact rows, 100 unique ids, tail never read, then a normal return."
+        },
+        {
+          "name": "timeout-after-first-page",
+          "setup": "First page 200. Second call throws.",
+          "observed": "The catch returns the 100 facts already collected."
+        },
+        {
+          "name": "first-page-403",
+          "setup": "The only response is 403.",
+          "observed": "Empty list. This empty-on-non-200 path already existed at ed6a1e57 lines 48-50 and is still present. It is not new. It still presents an auth failure as no facts."
+        }
+      ],
+      "frozen": [
+        {
+          "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java",
+          "lines": "39-73, 80-109"
+        }
+      ],
+      "baseline": [
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java",
+          "lines": "37-56"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java",
+          "lines": "34-67"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/learning-service/src/main/java/com/englishflow/learning/web/B3LearningJdbcController.java",
+          "lines": "412-414"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java",
+          "lines": "640-660"
+        }
+      ],
+      "rework": [
+        "Make list() fail the whole walk on non-200, transport failure, parse failure, a repeated nextCursor, or exhaustion of the page budget while hasMore is still true.",
+        "Return a result the projector can see. project() must not insert unless the walk completed.",
+        "On assessment 401 or 403, leave the learning read as a failure. Do not write a prefix and do not answer the learner route as an empty successful book.",
+        "Keep assessment invalid-cursor responses at 400. Do not map them to 401 or 403."
+      ]
+    },
+    {
+      "id": "G449-2",
+      "severity": "high",
+      "actualRegressionVsEd6a1e57": "signaling",
+      "title": "listAllUnfinishedSagaIds stops after 50 pages and the recovery screen treats that prefix as the full list",
+      "summary": "The frozen walker issues at most 50 requests of pageSize 100 and returns the array even when the 50th response still has hasMore and nextCursor. AdminRecoveryView assigns that array and sets ready. A later-page HTTP failure does throw, so this path does not turn 400 or 401 into a partial saga list.",
+      "comparedWithEd6a1e57": "The previous console issued one request. The server returned at most 200 ids (SagaController.unfinished called service.unfinished(200), and JdbcSagaStore applied LIMIT ?). A stable set of 5000 or fewer unfinished sagas is larger on the new screen than on the old one. The new defect is the dropped hasMore flag: 5100 stable oldest-first ids produce a successful array of the oldest 5000, and the newest 100 never appear.",
+      "scenario": {
+        "setup": "5100 unfinished saga ids, stable order, each page 100, every response 200, hasMore true until the last real page.",
+        "observed": "50 requests, 5000 ids returned, first omitted id is the 5001st, the 50th response still had hasMore true and a nextCursor. A second-page thrown 400 rejects the promise and does not return the first page."
+      },
+      "frozen": [
+        {
+          "path": "apps/admin-web/src/api/recovery.ts",
+          "lines": "119-128"
+        },
+        {
+          "path": "apps/admin-web/src/views/AdminRecoveryView.vue",
+          "lines": "39-54, 247-251"
+        }
+      ],
+      "baseline": [
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "apps/admin-web/src/api/recovery.ts",
+          "lines": "89-93"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+          "lines": "86-90"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+          "lines": "125-138"
+        }
+      ],
+      "rework": [
+        "If the loop exits while the last page still has hasMore and a nextCursor, fail the load. AdminRecoveryView must stay on the error state and must not render the prefix as 待恢复业务流程.",
+        "Apply the same rule to the mistake feed's 100-page budget.",
+        "Keep non-2xx as a thrown AdminApiError. 403 stays the permission view. 401 stays the login redirect. 400 stays the error view."
+      ]
+    },
+    {
+      "id": "G449-3",
+      "severity": "high",
+      "actualRegressionVsEd6a1e57": true,
+      "title": "Unfinished saga pages are ordered by mutable updated_at, so a status update duplicates an already returned saga",
+      "summary": "saga_instance.updated_at is DATETIME(6) ON UPDATE CURRENT_TIMESTAMP(6). updateStatus does not set updated_at, so MySQL moves the row to the newest position. The keyset is (updated_at, saga_id) ascending. A row already emitted moves past the cursor and is returned again. ed6a1e57 read the set in one statement specifically so a sweep would not walk it twice. That comment and that single statement are gone.",
+      "scenarios": [
+        {
+          "name": "duplicate-after-status-touch",
+          "setup": "Three unfinished rows at updated_at 1, 2, 3. Page size 1. After the page that returns saga-a, its updated_at becomes 10, which is what ON UPDATE does.",
+          "observed": "The walk emits saga-a, saga-b, saga-c, saga-a.",
+          "ui": "AdminRecoveryView renders v-for with :key equal to the saga id, so the duplicate row collapses in the DOM. The array still contains the duplicate, and a 50-page budget can be spent before unseen rows are covered."
+        },
+        {
+          "name": "forward-update-does-not-skip-an-unseen-row",
+          "setup": "An unseen row only moves to a newer updated_at.",
+          "observed": "It stays after the cursor and is still returned. Ordinary ON UPDATE does not skip it."
+        },
+        {
+          "name": "same-microsecond-insert-can-skip",
+          "setup": "Page size 1 returns saga-m at updated_at 5. Before the next page a new unfinished row saga-a is inserted at the same updated_at with a smaller saga_id.",
+          "observed": "The keyset updated_at > 5 OR (updated_at = 5 AND saga_id > saga-m) never returns saga-a.",
+          "likelihood": "Narrow. Inserts use UTC_TIMESTAMP(6), so this needs the same microsecond and a saga_id that sorts before the cursor."
+        },
+        {
+          "name": "started_at-control",
+          "setup": "Same three rows keyed by immutable started_at. saga-a's updated_at still moves to 10.",
+          "observed": "The walk emits saga-a, saga-b, saga-c once each."
+        }
+      ],
+      "contract": [
+        "Frozen UnfinishedSagaPaging says the order is oldest-first and unique.",
+        "Frozen OpenAPI Cursor parameter says the cursor is a stable server-issued cursor.",
+        "ApiCursorPageMeta requires hasMore to agree with nextCursor. Each single response does that. The cross-page set is not stable, and snapshotAt is not set."
+      ],
+      "frozen": [
+        {
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+          "lines": "126-152"
+        },
+        {
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java",
+          "lines": "12-15, 102-126"
+        },
+        {
+          "path": "packages/contracts/openapi/v1/openapi.json",
+          "lines": "40108, 63285-63287"
+        },
+        {
+          "path": "apps/admin-web/src/views/AdminRecoveryView.vue",
+          "lines": "251"
+        }
+      ],
+      "baseline": [
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/workflow-service/src/main/resources/db/migration/V1__create_workflow_service_schema.sql",
+          "lines": "12-29"
+        },
+        {
+          "commit": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+          "lines": "93-99, 125-138"
+        }
+      ],
+      "rework": [
+        "Keyset on started_at, saga_id. started_at is written at insert and is not ON UPDATE. Keep the terminal status predicate.",
+        "Do not order a multi-page walk by updated_at while that column moves on updateStatus.",
+        "Encode the cursor from the same started_at value that the SQL comparison uses, truncated to microseconds.",
+        "SagaStore.unfinished(int) now funnels through clampLimit and therefore silently caps at 100. Leave the recovery console on the cursor walk. Do not send a sweep back through unfinished(200) expecting the old LIMIT 200."
+      ]
+    },
+    {
+      "id": "G449-4",
+      "severity": "medium",
+      "actualRegressionVsEd6a1e57": "split-deploy",
+      "title": "A caller that still expects one unbounded page receives the default first page of 20",
+      "summary": "Public and internal mistake reads are the same B10AssessmentJdbcController.listMistakes. Public and internal unfinished-saga reads are the same SagaController.unfinished. The success document is one cursor envelope on both sides. An old client that unwraps data and ignores meta stops on that first page. Omitted pageSize is 20. Mistake data.count is the page length, not the owner total.",
+      "scenarios": [
+        {
+          "name": "old-admin-against-new-saga-route",
+          "setup": "ed6a1e57 listUnfinishedSagas unwraps data and returns it. It sends no pageSize. The new server defaults pageSize to 20.",
+          "observed": "The old console shows 20 ids. ed6a1e57 showed up to 200."
+        },
+        {
+          "name": "old-feed-against-new-mistake-route",
+          "setup": "ed6a1e57 feed calls /internal/v1/assessment/mistakes once, without pageSize, and does not read meta.",
+          "observed": "It projects the oldest 20 mistakes. The previous SQL returned every owner row."
+        },
+        {
+          "name": "same-candidate-clients",
+          "setup": "The frozen admin walker sends pageSize 100 and follows nextCursor. The frozen feed sends pageSize 100 and follows nextCursor.",
+          "observed": "Those two callers are updated in this candidate. They still hit G449-1 and G449-2."
+        }
+      ],
+      "frozen": [
+        {
+          "path": "services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java",
+          "lines": "33-40"
+        },
+        {
+          "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+          "lines": "560-575, 1846-1860"
+        },
+        {
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java",
+          "lines": "19-20, 39-46"
+        },
+        {
+          "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+          "lines": "93-125"
+        },
+        {
+          "path": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+          "lines": "2784-2887"
+        },
+        {
+          "path": "packages/contracts/fragments/b26-workflow-recovery.openapi.json",
+          "lines": "309-396"
+        }
+      ],
+      "rework": [
+        "Ship the assessment handler and HttpAssessmentMistakeFeed together, and the saga handler and admin recovery client together.",
+        "Keep data.count as the page length only if every caller reads meta. The name is easy to treat as a total; the rework can rename it in the operation schema if a total is still required, or document the page length at the operation and stop any caller from using it as the owner total.",
+        "Mobile listMistakeBook stays on /mastery/mistakes. Do not retarget it in this rework."
+      ]
+    }
+  ],
+  "checkedHolding": [
+    {
+      "item": "Mistake SQL binds tenant and subject before the keyset",
+      "result": "JdbcAssessmentMistakeList.page binds tenant_id, subject_id, then optional mistake_id, then limit. TENANT is the server constant platform. subject comes from AssessmentHttpPrincipals before the query. A cursor minted for another subject cannot read that subject's rows. Fixture: owner B presenting a cursor of mistake_id 500 sees only B's 600, and does not see A's 500 or the other tenant's 700.",
+      "residual": "The cursor payload is asm.v1 plus a global mistake id. A well-formed foreign or forged high id returns 200 and skips the caller's smaller ids. That is a silent skip of the caller's own prefix, not a cross-tenant read. Optional rework: put the owner identity in the cursor and reject a mismatch with 400."
+    },
+    {
+      "item": "Saga status predicate",
+      "result": "SQL excludes COMPLETED, COMPENSATED, and COMPENSATION_FAILED. SagaStatus.isTerminal() is those three values. In-memory slice uses isTerminal(). COMPENSATION_FAILED remains excluded, as it was at ed6a1e57. needsOperator() is only that excluded status. No new status leak."
+    },
+    {
+      "item": "Saga tenant boundary",
+      "result": "saga_instance has no tenant_id. The route requires platform tenant and admin.recovery.read before the controller. The list is every unfinished platform saga. There is no per-operator owner predicate. The SagaStore comment that says owner filters is ahead of the SQL."
+    },
+    {
+      "item": "Invalid cursor and pageSize on the HTTP handlers",
+      "result": "Both handlers authorize first. Assessment maps only ASM_CURSOR_INVALID and ASM_PAGE_SIZE_INVALID to 400. Saga maps IllegalArgumentException to 400. An empty owner mistake page is 200 with items [] and hasMore false. That empty page happens after authentication. GatewayErrorHandlingGlobalFilter rewrites gateway transport failures only; it does not convert an upstream 400 into 401."
+    },
+    {
+      "item": "Cursor encoding shape",
+      "result": "Offline base64url round-trip of asm.v1 ids and v1 instant-plus-saga payloads matches the canonical Cursor pattern ^[A-Za-z0-9._:-]{8,512}$. This does not execute the JVM encoder."
+    },
+    {
+      "item": "Internal and public success documents",
+      "result": "Gateway rewrites /api/v1/assessment/mistakes to /internal/v1/assessment/mistakes and /api/v1/admin/recovery/sagas/unfinished to /internal/v1/workflow/sagas/unfinished. Each pair is one controller method and one cursor envelope. Cursor fields stay in meta."
+    }
+  ]
+}

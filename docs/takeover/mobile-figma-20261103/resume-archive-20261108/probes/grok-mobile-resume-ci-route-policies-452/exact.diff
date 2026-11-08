@@ -1,0 +1,363 @@
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract-check.mjs	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/p1r-gateway-contract-check.mjs	2026-11-08 09:09:39
+@@ -7,8 +7,66 @@
+ const DEFAULT_INPUT = path.join('packages', 'contracts', 'fragments', 'p1r-gateway-boundary.openapi.json');
+ const DEFAULT_CANONICAL = path.join('packages', 'contracts', 'openapi', 'v1', 'openapi.json');
+ const ROOT_EXTENSION = 'x-p1r-gateway-boundary';
+-const EXPECTED_PUBLIC_OPERATION_COUNT = 365;
+-const EXPECTED_INTERNAL_OPERATION_COUNT = 66;
++const FROZEN_PUBLIC_OPERATION_BASELINE = 365;
++// Reviewed additions since M2-001 source 66246d5. The removed set is empty.
++// The baseline digest is the operationId set that remains after subtracting
++// these ids, and it equals that source's public operationIds. It is not the
++// M2-001 semantic pin and not the execution-target digest.
++export const REVIEWED_PUBLIC_OPERATION_ADDITIONS = Object.freeze([
++  'listAdminLearnerSubjects',
++  'getAdminLearnerAssessments',
++  'getAdminLearnerPlans',
++  'getAdminLearnerProfile',
++  'getAdminLearnerSrs',
++  'listAdminRiskCases',
++  'listUnfinishedSagas',
++  'readWorkflowSaga',
++  'listAssessmentMistakes',
++  'resolveB9LearnerContentSubstitute',
++  'listB8LockedAccounts',
++  'readMediaAssetTasks',
++  'readPrivacyExportStatus',
++  'readPrivacyExportDownload',
++  'getLearningReportShare',
++  'importB9ContentBatch',
++  'validateB9ContentAuto',
++  'sendAdminLearnerCommand',
++  'sendAdminLearningCommand',
++  'fileAdminRiskCase',
++  'decideAdminRiskCase',
++  'evaluateAdminRiskRules',
++  'requestWorkflowRecovery',
++  'approveWorkflowRecovery',
++  'executeWorkflowRecovery',
++  'rejectWorkflowRecovery',
++  'compensateWorkflowSaga',
++  'issueAssessmentVariant',
++  'verifyAssessmentMistake',
++  'retestB10PlacementSession',
++  'ensureB10LearningPlan',
++  'replanB10LearningPlan',
++  'revokeLearningReportShare',
++  'issueLearningReportShare',
++  'registerMediaAsset',
++  'retryMediaAsset',
++  'upsertMediaSubtitle',
++  'mintMediaUploadUrl',
++  'activateMediaAsset',
++]);
++const EXPECTED_PUBLIC_OPERATION_COUNT = FROZEN_PUBLIC_OPERATION_BASELINE + REVIEWED_PUBLIC_OPERATION_ADDITIONS.length;
++const FROZEN_PUBLIC_BASELINE_OPERATION_ID_SHA256 = '7a609b793e5372d7f65a352f08f38929922caf03c849735a56e0ecc7647f721c';
++const FROZEN_INTERNAL_OPERATION_BASELINE = 66;
++// The frozen 66 already includes learner target pin, placement-bank plan-items,
++// learning plans current-view, and placement-bank sealed. These four are the
++// only further internal additions. HEAD minus this set remains 66.
++export const REVIEWED_INTERNAL_OPERATION_ADDITIONS = Object.freeze([
++  'getIamLearningConsentFact',
++  'matchB10AssessmentAttemptBinding',
++  'bindB9PublishedReading',
++  'scoreB10AssessmentContentSnapshot',
++]);
++const EXPECTED_INTERNAL_OPERATION_COUNT = FROZEN_INTERNAL_OPERATION_BASELINE + REVIEWED_INTERNAL_OPERATION_ADDITIONS.length;
++const FROZEN_INTERNAL_BASELINE_OPERATION_ID_SHA256 = '3dcf74c3f6510daa9bb593482310e177ac655ca8d837c22996fef7c0eec22d92';
+ // Plan wiring (2026-09-27): +3 internal reads (learner targets/pin,
+ // content placement-bank plan-items, learning plans current-view). The ensure
+ // op itself is public (same 365->394 drift line, no new failure).
+@@ -28,8 +86,9 @@
+ // controller target today.  The latter must never turn a coarse PREFIX rule
+ // into an arbitrary upstream proxy.
+ // P4 demo loop (2026-09-26): 210 pre-existing available + the same 7 skill
+-// reads moving unavailable -> available. Zero new operations (365 -> 393 public
+-// drift, iam-deletions frozen reason and M2-001 digest drift stay open).
++// reads moving unavailable -> available. Zero new operations at that edit.
++// The later public 365->404 and internal 66->70 residuals are the reviewed
++// inventories above. The M2-001 execution-target digest stays pinned.
+ // B3 interaction (2026-09-27): +1 available (reading/questions, bound bank
+ // items); plan and execution counts move together, no new operation.
+ // Plan wiring (2026-09-27): +1 available (learning plans:ensure inside the
+@@ -201,7 +260,6 @@
+   'learning-content-snapshot': 'content_owner_controller_mapping_not_present',
+   'speaking-recordings': 'canonical_media_owner_conflicts_with_current_learning_controller',
+   'speaking-shadowing-completion': 'canonical_assessment_owner_conflicts_with_current_learning_controller',
+-  'iam-account-deletions': 'iam_owner_controller_mapping_not_present',
+   'privacy-exports': 'learner_owner_plural_export_controller_mapping_not_present',
+   'sync-domain': 'canonical_learning_owner_conflicts_with_current_notification_controller',
+   'exam-domain': 'assessment_owner_controller_mapping_not_present',
+@@ -789,6 +847,35 @@
+   return Array.isArray(actual) && expected.every((item) => actual.includes(item));
+ }
+ 
++function operationIdDigest(ids) {
++  return createHash('sha256').update(`[${[...ids].sort().map((id) => JSON.stringify(id)).join(',')}]`).digest('hex');
++}
++
++function checkReviewedOperationInventory(actualOperations, frozenBaseline, reviewedIds, frozenDigest, label, errors) {
++  const ids = actualOperations.map((item) => item.operation?.operationId);
++  const unique = new Set(ids);
++  add(
++    errors,
++    ids.length === unique.size && ids.every((id) => typeof id === 'string' && id.length > 0),
++    `${label} operation ids must be unique and present`,
++  );
++  const expected = frozenBaseline + reviewedIds.length;
++  add(errors, ids.length === expected, `${label} operation baseline drift: expected ${expected}, got ${ids.length}`);
++  const missing = reviewedIds.filter((id) => !unique.has(id));
++  add(
++    errors,
++    reviewedIds.length === new Set(reviewedIds).size && missing.length === 0,
++    `${label} reviewed operation inventory drifted: ${missing.join(', ') || 'duplicate reviewed id'}`,
++  );
++  const reviewed = new Set(reviewedIds);
++  const remainder = [...unique].filter((id) => !reviewed.has(id));
++  add(
++    errors,
++    remainder.length === frozenBaseline && operationIdDigest(remainder) === frozenDigest,
++    `${label} operation inventory outside the reviewed additions drifted`,
++  );
++}
++
+ function operations(openApi, prefix) {
+   if (!isRecord(openApi?.paths)) return [];
+   const result = [];
+@@ -1162,7 +1249,14 @@
+   }
+ 
+   const publicOperations = operations(canonicalOpenApi, policy.d2Boundary?.publicPrefix ?? '/api/v1');
+-  add(errors, publicOperations.length === EXPECTED_PUBLIC_OPERATION_COUNT, `public operation baseline drift: expected ${EXPECTED_PUBLIC_OPERATION_COUNT}, got ${publicOperations.length}`);
++  checkReviewedOperationInventory(
++    publicOperations,
++    FROZEN_PUBLIC_OPERATION_BASELINE,
++    REVIEWED_PUBLIC_OPERATION_ADDITIONS,
++    FROZEN_PUBLIC_BASELINE_OPERATION_ID_SHA256,
++    'public',
++    errors,
++  );
+   let covered = 0;
+   let conflicts = 0;
+   let coverageErrors = 0;
+@@ -1206,9 +1300,16 @@
+   add(errors, internal?.externalExposure === 'DENY' && internal?.externalCors === 'DENY', 'all internal operations must deny public exposure and CORS');
+   add(errors, internal?.requiredCallerIdentity === 'VALIDATED_WORKLOAD_IDENTITY', 'internal operations must require validated workload identity');
+   add(errors, internal?.networkIsolationRequired === true && internal?.applicationDenyIsSufficient === false, 'internal operations require network isolation beyond application denial');
+-  add(errors, internal?.baselineOperationCount === EXPECTED_INTERNAL_OPERATION_COUNT, `internal operation baseline must be ${EXPECTED_INTERNAL_OPERATION_COUNT}`);
++  add(errors, internal?.baselineOperationCount === FROZEN_INTERNAL_OPERATION_BASELINE, `internal operation baseline must be ${FROZEN_INTERNAL_OPERATION_BASELINE}`);
+   const internalOperations = operations(canonicalOpenApi, internal?.pathPrefix ?? '/internal/v1');
+-  add(errors, internalOperations.length === EXPECTED_INTERNAL_OPERATION_COUNT, `internal operation baseline drift: expected ${EXPECTED_INTERNAL_OPERATION_COUNT}, got ${internalOperations.length}`);
++  checkReviewedOperationInventory(
++    internalOperations,
++    FROZEN_INTERNAL_OPERATION_BASELINE,
++    REVIEWED_INTERNAL_OPERATION_ADDITIONS,
++    FROZEN_INTERNAL_BASELINE_OPERATION_ID_SHA256,
++    'internal',
++    errors,
++  );
+   const publicOperations = operations(canonicalOpenApi, policy.d2Boundary?.publicPrefix ?? '/api/v1');
+   const expectedM1015Keys = new Set(EXPECTED_M1015_INTERNAL_OPERATIONS.map((expected) => `${expected.method} ${expected.route}`));
+   const expectedM1015OperationIds = new Set(EXPECTED_M1015_INTERNAL_OPERATIONS.map((expected) => expected.operationId));
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract.test.mjs	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-gateway-contract.test.mjs	2026-11-08 09:10:26
+@@ -6,6 +6,8 @@
+ 
+ import {
+   FROZEN_EXECUTION_TARGET_PLAN_SHA256,
++  REVIEWED_INTERNAL_OPERATION_ADDITIONS,
++  REVIEWED_PUBLIC_OPERATION_ADDITIONS,
+   executionTargetPlanDigest,
+   validateGatewayContract,
+   validateGatewayContractData,
+@@ -82,20 +84,29 @@
+   const report = validateGatewayContract({ root });
+   assert.equal(report.result, 'PASS', report.errors.join('\n'));
+   assert.deepEqual(report.errors, []);
++  assert.equal(REVIEWED_PUBLIC_OPERATION_ADDITIONS.length, 39);
++  assert.equal(new Set(REVIEWED_PUBLIC_OPERATION_ADDITIONS).size, 39);
++  assert.deepEqual(REVIEWED_INTERNAL_OPERATION_ADDITIONS, [
++    'getIamLearningConsentFact',
++    'matchB10AssessmentAttemptBinding',
++    'bindB9PublishedReading',
++    'scoreB10AssessmentContentSnapshot',
++  ]);
+   assert.deepEqual(report.summary, {
+-    routeRuleCount: 56,
+-    publicOperationCount: 365,
+-    coveredPublicOperationCount: 365,
++    routeRuleCount: 75,
++    publicOperationCount: 404,
++    coveredPublicOperationCount: 404,
+     publicCoverageErrorCount: 0,
+-    executionPlanCount: 56,
+-    executionProjectionCount: 153,
+-    availableExecutionOperationCount: 170,
+-    unavailableExecutionOperationCount: 195,
++    executionPlanCount: 75,
++    executionProjectionCount: 209,
++    availableExecutionOperationCount: 226,
++    unavailableExecutionOperationCount: 178,
+     executionTargetPlanDigest: FROZEN_EXECUTION_TARGET_PLAN_SHA256,
+-    internalOperationCount: 62,
+-    externalDeniedInternalOperationCount: 62,
++    internalOperationCount: 70,
++    externalDeniedInternalOperationCount: 70,
+     canonicalProjectionMatches: true,
+   });
++  assert.equal(report.summary.executionTargetPlanDigest, 'f6e9cb48732fd64abd8a89f5f7d9c1dd6892981c13722a0def638343ea5fb80d');
+ });
+ 
+ test('Gateway execution targets cannot drift to a different upstream owner or controller path', () => {
+@@ -196,7 +207,7 @@
+ test('Gateway execution plan shape cannot bypass validation', () => {
+   assertMutationFails((document) => {
+     document[extension].routeExecutions = {};
+-  }, /route execution plan count must be 56/);
++  }, /route execution plan count must be 75/);
+ });
+ 
+ test('Gateway unavailable rules cannot be promoted to an upstream projection', () => {
+@@ -291,9 +302,14 @@
+ test('M1-017 has exactly eight public and nine internal operations with exact owner, security and authorization', () => {
+   const report = validateGatewayContract({ root });
+   assert.equal(report.result, 'PASS', report.errors.join('\n'));
+-  assert.equal(report.summary.publicOperationCount, 365);
+-  assert.equal(report.summary.routeRuleCount, 56);
+-  assert.equal(report.summary.internalOperationCount, 62);
++  assert.equal(report.summary.publicOperationCount, 404);
++  assert.equal(report.summary.routeRuleCount, 75);
++  assert.equal(report.summary.executionPlanCount, 75);
++  assert.equal(report.summary.executionProjectionCount, 209);
++  assert.equal(report.summary.availableExecutionOperationCount, 226);
++  assert.equal(report.summary.unavailableExecutionOperationCount, 178);
++  assert.equal(report.summary.internalOperationCount, 70);
++  assert.equal(report.summary.executionTargetPlanDigest, 'f6e9cb48732fd64abd8a89f5f7d9c1dd6892981c13722a0def638343ea5fb80d');
+ });
+ 
+ test('M1-017 public operations cannot weaken owner or authorization', () => {
+@@ -330,8 +346,54 @@
+     leaked.post['x-contract'].task = 'LEGACY';
+     canonicalOpenApi.paths['/api/v1/privacy/exports/{exportId}/recovery'] = leaked;
+   }, /M1-017 internal operation route must not be exposed publicly/);
++});
++
++test('one extra public operationId fails the reviewed 404 lock', () => {
++  assertMutationFails((document, canonicalOpenApi) => {
++    const extra = structuredClone(canonicalOpenApi.paths['/api/v1/learning/plans/current']);
++    extra.get.operationId = 'extraPublicOperation';
++    canonicalOpenApi.paths['/api/v1/learning/plans/current-extra'] = extra;
++  }, /public operation baseline drift: expected 404, got 405/);
+ });
+ 
++test('internal inventory cannot replace a reviewed operation id', () => {
++  assertMutationFails((document, canonicalOpenApi) => {
++    canonicalOpenApi.paths['/internal/v1/iam/principals/{principalId}/learning-consent'].get.operationId = 'replacedIamLearningConsentFact';
++  }, /internal reviewed operation inventory drifted: getIamLearningConsentFact/);
++});
++
++test('omitted account-deletion execution targets stay fail-closed', () => {
++  assertMutationFails((document) => {
++    executionPlan(document, 'iam-account-deletions').projections = [];
++  }, /Gateway executable rule must retain only exact targets and an unavailable default: iam-account-deletions/);
++});
++
++test('restoring the old account-deletion unavailable reason fails', () => {
++  assertMutationFails((document) => {
++    executionPlan(document, 'iam-account-deletions').defaultReason = 'iam_owner_controller_mapping_not_present';
++  }, /Gateway executable rule must retain only exact targets and an unavailable default: iam-account-deletions/);
++});
++
++test('public account-deletion create still throws 503 and the route stays', () => {
++  const source = fs.readFileSync(path.join(root, 'services', 'iam-service', 'src', 'main', 'java', 'com', 'englishflow', 'iam', 'web', 'IamAccountDeletionController.java'), 'utf8');
++  const createStart = source.indexOf('@PostMapping("/api/v1/iam/account-deletions")');
++  const statusStart = source.indexOf('@GetMapping("/api/v1/iam/account-deletions/{deletionRequestId}")');
++  assert.ok(createStart >= 0 && statusStart > createStart);
++  const create = source.slice(createStart, statusStart);
++  assert.match(create, /throw new ResponseStatusException\(HttpStatus\.SERVICE_UNAVAILABLE,/);
++  assert.doesNotMatch(create, /return envelope/);
++  const plan = executionPlan(fragment, 'iam-account-deletions');
++  assert.equal(plan.defaultStatus, 'UNAVAILABLE');
++  assert.equal(plan.defaultReason, 'no_exact_canonical_execution_target');
++  assert.deepEqual(plan.projections.map((projection) => projection.projectionId).sort(), [
++    'iam-account-deletions.deletion-cancel',
++    'iam-account-deletions.deletion-request',
++    'iam-account-deletions.deletion-status',
++  ]);
++  assert.equal(plan.projections.find((projection) => projection.projectionId === 'iam-account-deletions.deletion-request').publicPathTemplate, '/api/v1/iam/account-deletions');
++  assert.deepEqual(plan.projections.find((projection) => projection.projectionId === 'iam-account-deletions.deletion-request').methods, ['POST']);
++});
++
+ test('canonical operations outside the governed API prefixes fail closed', () => {
+   assertMutationFails((document, canonicalOpenApi) => {
+     canonicalOpenApi.paths['/v1/audit/exports'] = structuredClone(canonicalOpenApi.paths['/internal/v1/audit/exports']);
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract.v1.json	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/config/p1r-learning-loop-contract.v1.json	2026-11-08 09:09:38
+@@ -112,6 +112,8 @@
+       { "id": "B10-PLAN-CURRENT", "method": "GET", "path": "/api/v1/learning/plans/current", "operationId": "getB10LearningPlan", "requestSchema": "NONE", "responseSchema": "B10LearningPlan", "owner": "learning-service", "requiredPermission": "learning.plan.read", "security": "bearerAuth", "idempotency": "NOT_REQUIRED" },
+       { "id": "B10-TODAY", "method": "GET", "path": "/api/v1/learning/today", "operationId": "getB10LearningToday", "requestSchema": "NONE", "responseSchema": "B10TodayLearningPlan", "owner": "learning-service", "requiredPermission": "learning.today.read", "security": "bearerAuth", "idempotency": "NOT_REQUIRED" },
+       { "id": "B10-PLAN-REORDER", "method": "POST", "path": "/api/v1/learning/plans/reorder", "operationId": "reorderB10LearningPlan", "requestSchema": "B10PlanReorderRequest", "responseSchema": "B10PlanReorderResult", "owner": "learning-service", "requiredPermission": "learning.plan.write", "security": "bearerAuth", "idempotency": "REQUIRED" },
++      { "id": "B10-PLAN-ENSURE", "method": "POST", "path": "/api/v1/learning/plans:ensure", "operationId": "ensureB10LearningPlan", "requestSchema": "B10EnsurePlanRequest", "responseSchema": "B10EnsurePlanResult", "owner": "learning-service", "requiredPermission": "learning.plan.write", "security": "bearerAuth", "idempotency": "REQUIRED" },
++      { "id": "B10-PLAN-REPLAN", "method": "POST", "path": "/api/v1/learning/plans:replan", "operationId": "replanB10LearningPlan", "requestSchema": "B10PlanReplanRequest", "responseSchema": "B10PlanReplanResult", "owner": "learning-service", "requiredPermission": "learning.plan.write", "security": "bearerAuth", "idempotency": "REQUIRED" },
+       { "id": "B10-TASK-COMPLETE", "method": "POST", "path": "/api/v1/learning/tasks/{taskId}/complete", "operationId": "completeB10LearningTask", "requestSchema": "B10TaskCompletionRequest", "responseSchema": "B10TaskCompletionResult", "owner": "learning-service", "requiredPermission": "learning.task.write", "security": "bearerAuth", "idempotency": "REQUIRED" },
+       { "id": "B10-REPAIR-LIST", "method": "GET", "path": "/api/v1/learning/repairs", "operationId": "listB10LearningRepairs", "requestSchema": "NONE", "responseSchema": "B10RepairItem[]", "owner": "learning-service", "requiredPermission": "learning.repair.read", "security": "bearerAuth", "idempotency": "NOT_REQUIRED" },
+       { "id": "B10-REPAIR-DETAIL", "method": "GET", "path": "/api/v1/learning/repairs/{repairId}", "operationId": "getB10LearningRepair", "requestSchema": "NONE", "responseSchema": "B10RepairItem", "owner": "learning-service", "requiredPermission": "learning.repair.read", "security": "bearerAuth", "idempotency": "NOT_REQUIRED" },
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract-check.mjs	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/p1r-learning-loop-contract-check.mjs	2026-11-08 09:10:26
+@@ -28,7 +28,9 @@
+ 
+ // Deliberately frozen after the rule-model author completed its invariant review.
+ // Candidate policy content is never accepted by calculating a replacement value at runtime.
+-export const FROZEN_POLICY_SHA256 = 'd1e467d8697f9f873c5ac3b45fa7c5a39085c9b975dfd3abbffac251d5847973';
++// Reviewed inventory adds POST /api/v1/learning/plans:ensure and plans:replan only.
++// The exact canonical route-key match stays.
++export const FROZEN_POLICY_SHA256 = 'db9871277991f8fcf072446de1a6c985f07ad6e3a6c4bdb4406014cb50c9df5c';
+ 
+ const SOURCE_BASELINE = 'a07a58a7d245295c54d39487a6669545d077c513';
+ const ROOT_KEYS = Object.freeze([
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract.test.mjs	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-learning-loop-contract.test.mjs	2026-11-08 09:10:26
+@@ -313,6 +313,15 @@
+   input.policy.compatibilityPromotion.canonicalRoutes.pop();
+ }, /B10 canonical learning route projection/);
+ 
++reject('a third unlisted canonical learning route fails the exact inventory', (input) => {
++  input.b10OpenApi.paths['/api/v1/learning/plans:unreviewed'] = {
++    post: {
++      operationId: 'unreviewedB10LearningPlan',
++      'x-contract': { canonical: true, owner: 'learning-service' },
++    },
++  };
++}, /B10 canonical learning route projection/);
++
+ reject('legacy policy must cover exactly the M1-013 fixed 24 operationIds', (input) => {
+   input.policy.compatibilityPromotion.legacyAdapters.pop();
+ }, /fixed 24 legacy adapters/);
+--- /tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-generated-types.test.mjs	2026-11-08 09:08:25
++++ /Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-learning-loop-generated-types.test.mjs	2026-11-08 09:10:26
+@@ -63,7 +63,23 @@
+ 
+ test('generated types are required M1-013 public promotion evidence', () => {
+   assert.equal(policy.compatibilityPromotion.scope, 'OPENAPI_EVENT_GOVERNANCE_B26_STATIC');
+-  assert.equal(policy.compatibilityPromotion.canonicalRoutes.length, 11);
++  assert.equal(policy.compatibilityPromotion.canonicalRoutes.length, 13);
++  const routeByOperation = new Map(policy.compatibilityPromotion.canonicalRoutes.map((route) => [route.operationId, route]));
++  for (const operationId of [
++    'listB10LearningReviewQueue', 'completeB10LearningReview', 'getB10LearningMasteryProjection',
++    'getB10LearningPlan', 'getB10LearningToday', 'reorderB10LearningPlan', 'completeB10LearningTask',
++    'listB10LearningRepairs', 'getB10LearningRepair', 'getB10LearningMasteryOverview', 'getB10LearningReport',
++  ]) assert.ok(routeByOperation.has(operationId), operationId);
++  assert.deepEqual(routeByOperation.get('ensureB10LearningPlan'), {
++    id: 'B10-PLAN-ENSURE', method: 'POST', path: '/api/v1/learning/plans:ensure', operationId: 'ensureB10LearningPlan',
++    requestSchema: 'B10EnsurePlanRequest', responseSchema: 'B10EnsurePlanResult', owner: 'learning-service',
++    requiredPermission: 'learning.plan.write', security: 'bearerAuth', idempotency: 'REQUIRED',
++  });
++  assert.deepEqual(routeByOperation.get('replanB10LearningPlan'), {
++    id: 'B10-PLAN-REPLAN', method: 'POST', path: '/api/v1/learning/plans:replan', operationId: 'replanB10LearningPlan',
++    requestSchema: 'B10PlanReplanRequest', responseSchema: 'B10PlanReplanResult', owner: 'learning-service',
++    requiredPermission: 'learning.plan.write', security: 'bearerAuth', idempotency: 'REQUIRED',
++  });
+   assert.equal(policy.compatibilityPromotion.approvedCanonicalEvents.length, 3);
+   assert.equal(hasM1013ReviewTypeShape(), true, 'generated B10 review types must be current promotion evidence');
+ });

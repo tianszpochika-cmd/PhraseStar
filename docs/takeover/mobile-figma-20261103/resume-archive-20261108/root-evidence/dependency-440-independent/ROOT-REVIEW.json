@@ -1,0 +1,19 @@
+{
+  "mobileExit": 0,
+  "mobileSummary": [
+    "[node-test] discovered 85 test file(s)",
+    "# tests 680",
+    "# pass 680",
+    "# fail 0",
+    "# skipped 0"
+  ],
+  "at": "2026-11-08T00:39:05.557982+00:00",
+  "auditExit": 1,
+  "vulnerabilities": {
+    "info": 0,
+    "low": 11,
+    "moderate": 19,
+    "high": 1,
+    "critical": 0
+  }
+}

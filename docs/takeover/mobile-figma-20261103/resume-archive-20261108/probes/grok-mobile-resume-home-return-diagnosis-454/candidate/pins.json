@@ -1,0 +1,49 @@
+{
+  "job": "MB454_FRESH_ACTOR_HOME_RETURN",
+  "authoredAt": "2026-11-08",
+  "status": "PREPARED_NOT_RUN",
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "repo": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+  "runDir": "/private/tmp/grok-mobile-resume-home-return-454/run",
+  "authorDir": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate",
+  "refusesRunDirs": [
+    "/private/tmp/grok-mobile-resume-home-405/run",
+    "/tmp/grok-mobile-resume-home-405/run"
+  ],
+  "container": "cloudstudy-mobile-home-return-454-20261108",
+  "label": "cloudstudy.qa.mobile-home-return-454-20261108",
+  "retestContinuation": false,
+  "freshIdentity": "acceptance-learner-target.mjs mints mb004-<runId>@example.invalid and a random password for each run. G454 does not import the G405 actor.",
+  "h5": {
+    "root": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+    "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "header": "x-mb004-static-qa",
+    "rejectIndexSha256": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520"
+  },
+  "stagedHarness": "/tmp/grok-mobile-resume-home-405/staged-harness",
+  "playwrightRoots": [
+    "/Users/Admin/.codex/worktrees/mobile-figma-integration-20261103/cloudstudy/package.json",
+    "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy/package.json"
+  ],
+  "ports": [18070, 18087, 18088, 18089, 18090, 18091, 18183, 13306],
+  "loginReturnTo": "/pages/home/home",
+  "entryPath": "/",
+  "entryAlias": "/pages/home/home",
+  "pass": {
+    "finalHash": "/",
+    "finalHashRejectedAlias": "/pages/home/home",
+    "pageRoute": "pages/home/home",
+    "origin": "http://127.0.0.1:18183",
+    "loginHttp": 200,
+    "principalHttp": 200,
+    "learningAccess": "ELIGIBLE",
+    "serverAdultStatus": "PASSED",
+    "homeHttp": 200,
+    "firstDayState": "READY",
+    "placementStatus": "COMPLETED",
+    "targetReady": true,
+    "blocker": null,
+    "taskCountMin": 1,
+    "onePlanVersionFromEnsure": true
+  }
+}

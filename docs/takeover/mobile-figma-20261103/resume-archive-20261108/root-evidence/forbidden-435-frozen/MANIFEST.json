@@ -1,0 +1,32 @@
+[
+  {
+    "path": "forbidden-h5-wrapper.py",
+    "bytes": 47077,
+    "sha256": "05176cd7826ff7f56724974a5ec8993378bc1d257fc55f00976266a595bd5570"
+  },
+  {
+    "path": "REPORT.md",
+    "bytes": 10935,
+    "sha256": "f349c438784f4791507de3a11f1073dba605da65caab710f173eb77dfa55c469"
+  },
+  {
+    "path": "h5-lease-tail.mjs",
+    "bytes": 3447,
+    "sha256": "b51b1cf8b88da3202a7f9f21c9017510b9df6044f441104c5cfb8685925eb63e"
+  },
+  {
+    "path": "pin.json",
+    "bytes": 4135,
+    "sha256": "4997b6e4cc093d6f6961b547b590f97cc2bb57edd8c9ed79c29639efd1afaea3"
+  },
+  {
+    "path": "preflight.json",
+    "bytes": 1551,
+    "sha256": "8338297c2b3fcca82d4537ad3aa409745c64202192417f7ef769db334d385795"
+  },
+  {
+    "path": "forbidden-h5-observer.mjs",
+    "bytes": 33597,
+    "sha256": "f1cb36669bc6efc84cf9d6ba2b914b5432a08a0e0f1b5c8215778d70897e4ebf"
+  }
+]

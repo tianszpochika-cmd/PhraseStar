@@ -1,0 +1,49 @@
+{
+  "checkout": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+  "head": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "recorded_at": "2026-11-08T08:28:20.496919",
+  "files": [
+    {
+      "path": "apps/mobile/package.json",
+      "sha256": "edbfcdca12677c30d6693ac3f458da717ed50a46a4be78d6149174f9790cd308",
+      "bytes": 1909,
+      "old_worktree_sha256": "edbfcdca12677c30d6693ac3f458da717ed50a46a4be78d6149174f9790cd308",
+      "matches_old_worktree": true
+    },
+    {
+      "path": "apps/admin-web/package.json",
+      "sha256": "64e1d7a3770486130fde979cadfe02349bda7cbfe7d8fcf77c5f28d5fc617b31",
+      "bytes": 1120,
+      "old_worktree_sha256": "64e1d7a3770486130fde979cadfe02349bda7cbfe7d8fcf77c5f28d5fc617b31",
+      "matches_old_worktree": true
+    },
+    {
+      "path": "apps/learner-web/package.json",
+      "sha256": "c5dc4a4911fc2cf8c72c2d0c69f55755a5e240362061651a9206424dd21812d9",
+      "bytes": 1065,
+      "old_worktree_sha256": "c5dc4a4911fc2cf8c72c2d0c69f55755a5e240362061651a9206424dd21812d9",
+      "matches_old_worktree": true
+    },
+    {
+      "path": "apps/official-site/package.json",
+      "sha256": "8ca60badfff0e3b9328edadad8ba2381e3a7135024931d11bf93bf40735d3716",
+      "bytes": 1087,
+      "old_worktree_sha256": "8ca60badfff0e3b9328edadad8ba2381e3a7135024931d11bf93bf40735d3716",
+      "matches_old_worktree": true
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "bd44ffef7784beaed6d6fb8da6e76389a17292d980950df639ba8bf2a741da65",
+      "bytes": 3849,
+      "old_worktree_sha256": "bd44ffef7784beaed6d6fb8da6e76389a17292d980950df639ba8bf2a741da65",
+      "matches_old_worktree": true
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6d6c5afa27e996ed1174270e7da18df241529daa52b73aff88e7094177ca5dd4",
+      "bytes": 415180,
+      "old_worktree_sha256": "6d6c5afa27e996ed1174270e7da18df241529daa52b73aff88e7094177ca5dd4",
+      "matches_old_worktree": true
+    }
+  ]
+}

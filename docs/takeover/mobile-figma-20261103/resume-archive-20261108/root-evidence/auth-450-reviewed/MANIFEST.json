@@ -1,0 +1,8 @@
+{
+  "apps/mobile/src/api/client.ts": "136f297ddad8337bcf4125026455aec51ecdc8db951d398cab758eb90c0dd16f",
+  "apps/mobile/src/auth/gateway-auth.ts": "08f59285061940606e8eb520c50cb4c81f8881539b52ba366aab525388971ab1",
+  "apps/mobile/tests/iam-auth-transport.test.mjs": "08db1dd787b76091907fa02d7072ff9e2223f91de15d23c1908782f49ef93478",
+  "apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs": "30901b7a4282f1526a8f54e576afd22a9890b1f74afb2480c5a713e7478d9c89",
+  "apps/mobile/tests/onboarding-auth-projection.test.mjs": "59f0fa23808ae2253b64d54360737b11852a762d5ab0557920bf2f6b40cbe5a4",
+  "services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java": "d9cfc5c46380a4e9ee166a738b70df5eb0dabd6c93bcda4dae6fe96d5d90d864"
+}

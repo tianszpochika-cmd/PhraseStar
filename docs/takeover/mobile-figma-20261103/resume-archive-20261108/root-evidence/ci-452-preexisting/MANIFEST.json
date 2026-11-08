@@ -1,0 +1,9 @@
+{
+  "tests/p1r/p1r-kafka-topic-provision-parser.test.mjs": "ae7545ae22338ac08df4f8e3adb07d6719f84684d733d77859fbe73ebc7a79e1",
+  ".github/workflows/ci.yml": "a133f77a7636333d58d3f1d5eac0f4bafe589cb4de95e331f4e7ae995dc7c89e",
+  "config/toolchain-baseline.json": "db1003a93e030e4f4f336e0d239209c46fb02ca44f67202331b52af9339205b2",
+  "scripts/audit/p1r-evidence-gate.mjs": "137f2530241e9ce1cfa660fe7f2f07dd8942f950493a9b41a387e60d68e2ae21",
+  "scripts/audit/rebind-manifests.mjs": "e224640b9e7e60a3475dd844046a899508fb27d34a98404af5e7f340aa3aa96f",
+  "scripts/runtime/provision-kafka-topics.mjs": "068eeddab523223722d964c47328c66c6f380eec5128fc78840cbc29c17a29ac",
+  "tests/p1r/p1r-evidence-gate.test.mjs": "cb72caafd7d42e499901f4c78d7c161e42d0fdca3b117370b46381af8914d507"
+}

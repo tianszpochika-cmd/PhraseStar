@@ -1,0 +1,81 @@
+{
+  "job": "MB005-H5-FORBIDDEN-444",
+  "writable": "/tmp/grok-mobile-resume-forbidden-cookie-444",
+  "authoredAt": "2026-11-08",
+  "executed": false,
+  "g393JobId": "MB005-G393-canonical-node-entry",
+  "derivedJobId": "MB005-H5-FORBIDDEN-444",
+  "rebinds": "MB005-H5-FORBIDDEN-435",
+  "files": {
+    "observer": "/tmp/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-observer.mjs",
+    "tail": "/tmp/grok-mobile-resume-forbidden-cookie-444/h5-lease-tail.mjs",
+    "wrapper": "/tmp/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-wrapper.py",
+    "report": "/tmp/grok-mobile-resume-forbidden-cookie-444/REPORT.md"
+  },
+  "sourceHead": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+  "b145": {
+    "review": "docs/takeover/mobile-figma-20261103/reviews/INTEGRATION-B145-IAM-REJECTED-ELIGIBILITY-WIRE.md",
+    "evidence": "docs/takeover/mobile-figma-20261103/evidence/ROOT-B145-IAM-REJECTED-ELIGIBILITY-WIRE-20261106.json",
+    "worker": "G393",
+    "recordedSource": "/tmp/grok-mobile-forbidden-iam-canonical-node-entry-393/iam-only-lease.py",
+    "recordedWireReceipt": "/tmp/grok-mobile-forbidden-iam-canonical-node-entry-393/wire-receipt.json",
+    "rootReceiptCopy": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/forbidden-iam-canonical-node-entry-393-root",
+    "rootCopyStatus": "FAIL",
+    "rootCopyReason": "cleanup-incomplete",
+    "probeInsideCopy": "OBSERVED",
+    "differentSourcePathInRepoEvidence": false
+  },
+  "reuse": {
+    "g378Probe": "/tmp/grok-mobile-forbidden-synthetic-age-owner-wire-378/wire-probe.mjs",
+    "g378Fixture": "/tmp/grok-mobile-forbidden-synthetic-age-owner-wire-378/adult-gate-fixture.json",
+    "g384Supervisor": "/tmp/grok-mobile-forbidden-iam-only-derived-lease-384/iam-only-lease.py",
+    "g393Supervisor": "/tmp/grok-mobile-forbidden-iam-canonical-node-entry-393/iam-only-lease.py",
+    "nonce": "/tmp/grok-mobile-learn-shelf-derived-current-h5-lease-388/pinned-static-nonce.mjs",
+    "nonceHeader": "x-mb004-static-qa"
+  },
+  "h5": {
+    "root": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+    "indexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "b116Rejected": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+    "route": "#/pages/forbidden/forbidden"
+  },
+  "jars": {
+    "iam": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b"
+  },
+  "seed": {
+    "java": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/iam-http-24-dsh-draft/seed/Seed.java",
+    "javaSha256": "248094e5a2e6ceb2f1c5433a15d8908dad194e0b0d5e6a421987a5c6c998536e",
+    "sql": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/iam-http-24-dsh-draft/sql/seed-full.sql",
+    "sqlSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+    "role": "three synthetic publication rows required before register; not a consent signature"
+  },
+  "fixture": {
+    "confirmed": true,
+    "birthYear": 2015,
+    "policyVersion": "b30-adult-v1"
+  },
+  "copy": {
+    "adultTitle": "暂时无法开始学习",
+    "adultDescription": "当前版本仅向年满18周岁的用户开放学习。你仍可管理账号或查看帮助。",
+    "logout": "退出登录",
+    "loginTitle": "欢迎回来",
+    "gateTitle": "先确认你的年龄"
+  },
+  "unknownTitle": "暂时无法确认访问状态",
+  "ports": [13306, 18070, 18087, 18183],
+  "containerName": "cloudstudy-mobile-forbidden-cookie-444",
+  "label": "cloudstudy.qa.mobile-forbidden-cookie-444",
+  "cookieName": "yuxuexing_refresh",
+  "cookiePath": "/api/v1/auth",
+  "predecessor": {
+    "job": "MB005-H5-FORBIDDEN-435",
+    "writable": "/tmp/grok-mobile-resume-forbidden-flow-435",
+    "receiptsPreserved": true,
+    "result": "FAIL_COOKIE_NOT_CLEARED",
+    "containerReleasedInThatReceipt": false,
+    "currentContainerFactsReleased": true,
+    "portsVerifiedFree": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "job": "resume-20261108-mobile-reading-455",
+  "kind": "MB455",
+  "sourceRun": {
+    "kind": "MB446",
+    "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/runtime-receipt.json",
+    "release": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/INDEPENDENT-RELEASE.json",
+    "exit": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/EXIT.json",
+    "frozen": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-frozen"
+  },
+  "result": "FAIL_ATTEMPT_POST_NO_OBSERVED_RESPONSE",
+  "observerReason": "attempt-not-one",
+  "actualCounters": {
+    "abortedWrites": 0,
+    "attemptPosts": 1,
+    "attemptReplays": 0,
+    "attemptWrites": 0,
+    "choiceCount": 1,
+    "choiceGesture": "click",
+    "practicePosts": 1,
+    "practiceGets": 1,
+    "postStatus": 200,
+    "getStatus": 200,
+    "attemptStatus": null,
+    "savedReceipt": false,
+    "feedbackVisible": false,
+    "continued": 21
+  },
+  "attemptProbe": {
+    "abortedWrites": 0,
+    "attemptPosts": 1,
+    "closed": [
+      {
+        "disposition": "continue",
+        "host": "127.0.0.1",
+        "method": "POST",
+        "pathShape": "/api/v1/assessment/sessions/{session}/attempts",
+        "reason": null,
+        "status": null,
+        "type": "attempt-post"
+      }
+    ]
+  },
+  "expectedPost": {
+    "method": "POST",
+    "host": "127.0.0.1",
+    "origin": "http://127.0.0.1:18070",
+    "pathShape": "/api/v1/assessment/sessions/{session}/attempts",
+    "query": "none",
+    "idempotencyHeader": "Idempotency-Key",
+    "bodyShape": {
+      "expectedStateVersion": 1,
+      "items": 1,
+      "response.selectedOptionKeys": 1
+    }
+  },
+  "timeoutsMs": {
+    "observerDeadline": 120000,
+    "attemptWaitBound": 15000,
+    "settlePractice": 15000,
+    "playwrightDefault": 20000,
+    "g387Http": 12000,
+    "observerProcessGuard": 150000
+  },
+  "proven": [
+    "G446 continued exactly one POST /api/v1/assessment/sessions/{session}/attempts on 127.0.0.1",
+    "attemptPosts is 1 and abortedWrites is 0",
+    "the continued attempt-post row kept status null",
+    "practice create/read already collected status 200 on the same page",
+    "G446 wait loop exits when practiceGate.attemptContinued === 1, which is set before route.continue()",
+    "settlePractice only waits for practiceTasks already pushed; attemptFacts is pushed only after a response event",
+    "G280/G446 have no requestfailed listener",
+    "G280 pending match uses response.url pathname; the route queues request.url pathname",
+    "session-readback did not run because failedStage is observer",
+    "compiled B139 CHOICE click emits selectedOptionKeys and POSTs via submitAssessmentAnswer",
+    "EXIT timedOut is false; the observer process finished with FAILED"
+  ],
+  "unproven": [
+    "whether Gateway or Assessment returned 200, 4xx, or 5xx",
+    "whether Playwright emitted requestfailed",
+    "whether response.url pathname diverged from request.url pathname",
+    "whether browser.close aborted an in-flight POST after finish()",
+    "product feedback-unmount after a saved answer",
+    "assessment or content call timeout as a server fault"
+  ],
+  "notAssumedProven": [
+    "product-feedback-unmount",
+    "assessment-down",
+    "gateway-timeout",
+    "extra-submit",
+    "auth-injection"
+  ],
+  "composition": {
+    "g280": "abort POST /attempts; page.on(response) attaches status via pending key method+response.pathname; practiceTasks only for session create POST and session GET",
+    "g416": "continue first matching POST /attempts once; attemptFacts on 200 body; wait for attemptContinued then settlePractice",
+    "g446": "same continue-one; FORBIDDEN dropped from request body; wait still exits on attemptContinued; attemptProbe added",
+    "g455": "same continue-one and one-click; wait the existing 15s bound for status or requestfailed; replay uses the existing 8s bound the same way; pending key uses request.url; requestfailed class; sanitized body shape and error code; owner DB counts on observer failure; success oracle still requires status 200, attemptSha256, saved receipt, feedback, one replay after save"
+  },
+  "conclusion": "observer-collection-gap-proven; server-outcome-unproven",
+  "productPatch": null,
+  "b139IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32"
+}

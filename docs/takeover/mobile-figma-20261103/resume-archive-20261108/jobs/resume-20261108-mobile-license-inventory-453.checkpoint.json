@@ -1,0 +1,18 @@
+{
+  "state": "exited",
+  "started_at_utc": "2026-11-08T01:01:51.990359+00:00",
+  "runner_pid": 31205,
+  "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453-job.json",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+  "session": "01a1b8ad-10b5-7483-a8c6-522588468d81",
+  "task_file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453-task.md",
+  "cli": "grok",
+  "stdout_jsonl": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453.events.jsonl",
+  "stderr": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453.stderr.log",
+  "quota": "UNKNOWN",
+  "cli_pid": 31207,
+  "exit_code": 1,
+  "finished_at_utc": "2026-11-08T01:25:35.344421+00:00",
+  "session_source": "CLI end.sessionId receipt",
+  "terminalReason": "max_turn_requests"
+}

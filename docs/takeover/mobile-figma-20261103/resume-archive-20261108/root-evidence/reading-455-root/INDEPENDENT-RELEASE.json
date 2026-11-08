@@ -1,0 +1,23 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "result": "FAIL_FEEDBACK_NOT_RENDERED",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18088": true,
+    "18089": true,
+    "18091": true,
+    "18183": true
+  },
+  "ownedNameAbsent": true,
+  "ownedLabelAbsent": true,
+  "releasedProof": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "at": "2026-11-08T01:26:20.308497+00:00"
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "path": "apps/admin-web/package.json",
+    "sha256": "64e1d7a3770486130fde979cadfe02349bda7cbfe7d8fcf77c5f28d5fc617b31",
+    "bytes": 1120
+  },
+  {
+    "path": "apps/learner-web/package.json",
+    "sha256": "c5dc4a4911fc2cf8c72c2d0c69f55755a5e240362061651a9206424dd21812d9",
+    "bytes": 1065
+  },
+  {
+    "path": "apps/mobile/package.json",
+    "sha256": "edbfcdca12677c30d6693ac3f458da717ed50a46a4be78d6149174f9790cd308",
+    "bytes": 1909
+  },
+  {
+    "path": "apps/official-site/package.json",
+    "sha256": "8ca60badfff0e3b9328edadad8ba2381e3a7135024931d11bf93bf40735d3716",
+    "bytes": 1087
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "sha256": "6d6c5afa27e996ed1174270e7da18df241529daa52b73aff88e7094177ca5dd4",
+    "bytes": 415180
+  },
+  {
+    "path": "pnpm-workspace.yaml",
+    "sha256": "bd44ffef7784beaed6d6fb8da6e76389a17292d980950df639ba8bf2a741da65",
+    "bytes": 3849
+  }
+]

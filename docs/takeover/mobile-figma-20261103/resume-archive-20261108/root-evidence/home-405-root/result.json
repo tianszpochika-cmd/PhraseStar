@@ -1,0 +1,467 @@
+{
+  "kind": "MB004_R1_008_LOCAL_HTTP_ACCEPTANCE",
+  "schemaVersion": "1",
+  "generatedAt": "2026-11-08T00:35:30.693Z",
+  "mode": "run",
+  "status": "FAIL",
+  "preflightStatus": "FAIL",
+  "candidate": {
+    "repo": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+    "expectedCommit": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+    "head": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+    "branch": null,
+    "trackedClean": true,
+    "authorOnly": true
+  },
+  "fixture": {
+    "path": "apps/mobile/tests/fixtures/mock-consent-publication.json",
+    "fileSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+    "documents": [
+      {
+        "type": "TERMS",
+        "purpose": "ACCOUNT_TERMS",
+        "documentVersion": "mock-mb004-terms-v1",
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411",
+        "codePoints": 180,
+        "bytes": 485
+      },
+      {
+        "type": "PRIVACY",
+        "purpose": "PRIVACY_NOTICE",
+        "documentVersion": "mock-mb004-privacy-v1",
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451",
+        "codePoints": 165,
+        "bytes": 436
+      },
+      {
+        "type": "ADULT_LEARNING",
+        "purpose": "ADULT_LEARNING_ELIGIBILITY",
+        "documentVersion": "mock-mb004-adult-v1",
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15",
+        "codePoints": 156,
+        "bytes": 413
+      }
+    ]
+  },
+  "runtime": {
+    "status": "FAIL",
+    "reason": null,
+    "gateway": "http://127.0.0.1:18070/api/v1",
+    "iam": "https://127.0.0.1:18087/api/v1",
+    "mysql": "127.0.0.1:13306/iam_service",
+    "profiles": [
+      "local"
+    ],
+    "policySource": "control-plane",
+    "fixtureRuntimeStatus": "NOT_RUNTIME_VERIFIED",
+    "error": "IAM jar is missing or lacks the candidate V19/B69 classes: target directory missing"
+  },
+  "checks": [
+    {
+      "id": "run.approval",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.disposable_confirmation",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.mysql_user",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.mysql_password",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "repo.candidate",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "head": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+        "expected": "61b9ede7c65ef065c76c846c27fb69a52cd042cd"
+      }
+    },
+    {
+      "id": "repo.clean",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "dirty": []
+      }
+    },
+    {
+      "id": "repo.branch",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "branch": null,
+        "authorOnly": true
+      }
+    },
+    {
+      "id": "fixture.scope",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fixtureScope": "SYNTHETIC_TEST_ONLY"
+      }
+    },
+    {
+      "id": "fixture.count",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 3
+      }
+    },
+    {
+      "id": "fixture.order",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "order": [
+          "TERMS",
+          "PRIVACY",
+          "ADULT_LEARNING"
+        ]
+      }
+    },
+    {
+      "id": "fixture.TERMS.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411",
+        "codePoints": 180,
+        "bytes": 485
+      }
+    },
+    {
+      "id": "fixture.TERMS.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.TERMS.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.PRIVACY.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451",
+        "codePoints": 165,
+        "bytes": 436
+      }
+    },
+    {
+      "id": "fixture.PRIVACY.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.PRIVACY.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15",
+        "codePoints": 156,
+        "bytes": 413
+      }
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.file_sha256",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fileSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846"
+      }
+    },
+    {
+      "id": "routes.iam",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "routes.gateway",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "mobile.transport",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "directIamHttps": true,
+        "gatewayLoopback": true,
+        "h5Device": true,
+        "passwordPosts": true,
+        "refreshPath": true,
+        "principalPath": true,
+        "adultGatePath": true,
+        "idempotencyHeader": true,
+        "expectedDigest": true,
+        "publishedDocuments": true,
+        "withCredentials": true
+      }
+    },
+    {
+      "id": "migration.v19",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "path": "services/iam-service/src/main/resources/db/migration/V19__add_iam_consent_document_body.sql"
+      }
+    },
+    {
+      "id": "owner.schema",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "schema": "iam_service"
+      }
+    },
+    {
+      "id": "sql.use_iam_service",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.only_fixture_versions",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.full.three",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.partial.two",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "hasTerms": true,
+        "hasPrivacy": true,
+        "hasAdult": false
+      }
+    },
+    {
+      "id": "sql.cleanup.scoped",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.runtime_status",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.fixture_ids",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "ids": [
+          "b0040000-0000-4000-8000-000000000001",
+          "b0040000-0000-4000-8000-000000000002",
+          "b0040000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "id": "seed.helper.exists",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "path": "/private/tmp/grok-mobile-resume-home-405/run/harness/seed/Seed.java"
+      }
+    },
+    {
+      "id": "seed.helper.guard",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "java.25",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "jars.iam",
+      "ok": false,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "harness.preflight",
+      "ok": false,
+      "required": true,
+      "detail": {
+        "error": "IAM jar is missing or lacks the candidate V19/B69 classes: target directory missing"
+      }
+    }
+  ],
+  "counts": {
+    "total": 46,
+    "passed": 44,
+    "failed": 2,
+    "warned": 0,
+    "requiredFailed": 2
+  },
+  "coverage": {
+    "covered": [
+      "real IAM HTTPS on 127.0.0.1:18087 with local profile, MySQL iam_service, Flyway V19, control-plane policy source",
+      "real Gateway HTTP on 127.0.0.1:18070 for bearer domain calls, the anonymous protected probe, JWKS, and CORS preflight only",
+      "partial control-plane publication fails closed before account creation",
+      "direct IAM mobile-H5 registration/login/refresh transport with secure HttpOnly SameSite=None Partitioned cookie",
+      "authenticated principal before adult gate omits publishedConsentDocuments",
+      "local adult gate PASSED/ELIGIBLE",
+      "three exact fixture documents in publishedConsentDocuments with UTF-8 hashes, versions, purposes, policy refs and no-store",
+      "JWT RS256 signature and access-token profile verified from Gateway JWKS",
+      "consent missing-key 400, stale-version 409, exact-document-digest writes, idempotent replay",
+      "GET /iam/consents grant evidence with provenance and no document body",
+      "completed signatures remove publishedConsentDocuments and bodyText from principal and consent list"
+    ],
+    "notCovered": [
+      "Gateway password registration or login; no prior runtime is treated as evidence",
+      "formal legal publication, authorizer approval, deployed Gateway/IAM, production rollout",
+      "actual mobile H5/browser or native app, device secure storage, screen reader, real device",
+      "browser-enforced CORS, cookie partitioning, and certificate UX (only HTTP-level preflight/cookie attributes are checked)",
+      "withdrawal, logout, refresh-token replay detection, multi-device kickout",
+      "invalid body digest, missing body, oversize body, NUL body or partial projection over HTTP (unit/JDBC tests exist, not repeated here)",
+      "durable audit-service ingest and database-level audit row assertions",
+      "visual onboarding UI, navigation, i18n and responsive behavior"
+    ]
+  },
+  "infrastructureComparison": {
+    "r1IamLifecycle": {
+      "path": "scripts/redesign/r1-iam-lifecycle/iam-lifecycle-runtime.mjs",
+      "exists": true,
+      "coversR1008": true,
+      "coversPublishedConsentDocuments": false,
+      "coversGateway18070": false,
+      "conclusion": "R1-008 consent writes exist, but no B69 publishedConsentDocuments projection and no Gateway 18070 path."
+    },
+    "gatewayRuntime": {
+      "path": "services/api-gateway/src/test/runtime/p1r-m2-001-runtime.mjs",
+      "exists": true,
+      "coversFixturePublication": false,
+      "conclusion": "Real Gateway/IAM boundary exists, but it does not seed or assert the B69 first-consent fixture documents."
+    },
+    "standardLauncher": {
+      "path": "scripts/runtime/run-v2-services.mjs",
+      "exists": true,
+      "conclusion": "The standard local launcher starts the full stack and does not seed or assert B69 fixture projection; its loopback/profile/TLS environment shape is reused here, not the full stack."
+    },
+    "chosen": "A minimal harness under /tmp because no existing runner covers the B69 fixture projection through Gateway with an isolated MySQL control plane."
+  },
+  "cleanup": {
+    "performed": false,
+    "preferred": "Drop the disposable iam_service database/container after review."
+  }
+}

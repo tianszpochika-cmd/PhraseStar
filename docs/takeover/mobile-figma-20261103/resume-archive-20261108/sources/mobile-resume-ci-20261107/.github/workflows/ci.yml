@@ -1,0 +1,245 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [dev, master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  governance:
+    name: Governance (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - uses: browser-actions/setup-chrome@v1
+      - name: Frozen workspace install
+        run: pnpm install --frozen-lockfile
+      - name: CI policy guard
+        run: pnpm p1r:ci:check
+      - name: Static toolchain and version governance
+        run: pnpm p1r:toolchain:static
+      - name: Runtime toolchain diagnostics
+        run: pnpm p1r:toolchain:check
+      - name: Fixed port diagnostics
+        run: pnpm ports:check
+
+  contracts-and-data:
+    name: Contracts and data boundaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm plan:p1r:check
+      - run: pnpm p1r:evidence:check
+      - run: pnpm test:p1r
+      - run: pnpm p1r:fixtures:validate
+      - run: pnpm p1r:fixtures:audit
+      - run: pnpm contracts:merge:check
+      - run: pnpm contracts:generate:check
+      - run: pnpm contracts:validate
+      - run: pnpm contracts:compatibility:git -- --ref 463c4b238caceb1592bff6c61327c00ab9bac922 --governance-ref 868c2177f62b6d2cf613bed702686dddcfe6943f --kind all --json
+      - run: pnpm db:validate
+      - run: pnpm redis:validate
+      - run: pnpm config:check
+
+  frontend:
+    name: Frontend typecheck and build
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    needs: governance
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm p1r:toolchain:static
+      - run: pnpm test
+      - run: pnpm --filter @englishflow/mobile test:b11
+      - run: pnpm typecheck
+      - run: pnpm build
+      - run: pnpm --filter @englishflow/mobile build:h5
+
+  local-infrastructure:
+    name: Fresh local infrastructure bootstrap
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm ports:check
+      - run: pnpm infra:check
+      - run: pnpm infra:up
+      - run: docker compose -f infra/docker/docker-compose.dev.yml up -d --wait --wait-timeout 180 mysql redis minio kafka
+      - run: node scripts/check-local-infra.mjs --require-healthy
+      - run: docker compose -f infra/docker/docker-compose.dev.yml run --rm --no-deps minio-init
+      - run: pnpm redis:acl
+      - run: pnpm db:prepare:iam
+      - run: pnpm p1r:kafka:topics -- --apply
+      - name: Stop local infrastructure
+        if: always()
+        run: docker compose -f infra/docker/docker-compose.dev.yml down
+
+  backend-v2:
+    name: Java 25 v2 service tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Generate ephemeral MinIO credentials
+        run: |
+          set -euo pipefail
+          access="ci$(openssl rand -hex 6)"
+          secret="$(openssl rand -hex 24)"
+          if [ "${#access}" -lt 3 ] || [ "${#secret}" -lt 8 ] || [ "$access" = "$secret" ]; then
+            echo "ephemeral MinIO credentials were not generated" >&2
+            exit 1
+          fi
+          echo "::add-mask::${access}"
+          echo "::add-mask::${secret}"
+          {
+            printf 'MINIO_ROOT_USER=%s\n' "$access"
+            printf 'MINIO_ROOT_PASSWORD=%s\n' "$secret"
+            printf 'MEDIA_TEST_MINIO_ACCESS_KEY=%s\n' "$access"
+            printf 'MEDIA_TEST_MINIO_SECRET_KEY=%s\n' "$secret"
+          } >> "$GITHUB_ENV"
+      - name: Start owned ephemeral MinIO
+        run: |
+          set -euo pipefail
+          if [ -z "${MINIO_ROOT_USER:-}" ] || [ -z "${MINIO_ROOT_PASSWORD:-}" ]; then
+            echo "ephemeral MinIO credentials are required before startup" >&2
+            exit 1
+          fi
+          if [ -z "${MEDIA_TEST_MINIO_ACCESS_KEY:-}" ] || [ -z "${MEDIA_TEST_MINIO_SECRET_KEY:-}" ]; then
+            echo "media test MinIO credentials are required before startup" >&2
+            exit 1
+          fi
+          if [ "$MINIO_ROOT_USER" = "change-me" ] || [ "$MINIO_ROOT_PASSWORD" = "change-me-local" ]; then
+            echo "refusing default MinIO credentials for the CI object store" >&2
+            exit 1
+          fi
+          if [ "$MEDIA_TEST_MINIO_ACCESS_KEY" != "$MINIO_ROOT_USER" ] || [ "$MEDIA_TEST_MINIO_SECRET_KEY" != "$MINIO_ROOT_PASSWORD" ]; then
+            echo "media test MinIO credentials must match the ephemeral server credentials" >&2
+            exit 1
+          fi
+          export MINIO_API_HOST_PORT=19000
+          export COMPOSE_PROJECT_NAME=ci-backend-v2-minio
+          docker compose -p ci-backend-v2-minio -f infra/docker/docker-compose.dev.yml up -d --build --wait --wait-timeout 180 minio
+      - run: mvn --batch-mode --no-transfer-progress -f pom.xml test
+      - name: Remove owned ephemeral MinIO
+        if: always()
+        run: |
+          if [ -f infra/docker/docker-compose.dev.yml ]; then
+            COMPOSE_PROJECT_NAME=ci-backend-v2-minio docker compose -p ci-backend-v2-minio -f infra/docker/docker-compose.dev.yml down -v --remove-orphans
+          fi
+
+  legacy-core-api:
+    name: Java 17 compatibility tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: mvn --batch-mode --no-transfer-progress -f services/core-api/pom.xml test
+
+  supply-chain:
+    name: Lock, licenses, vulnerabilities and SBOM
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - uses: browser-actions/setup-chrome@v1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm p1r:supply-chain:check
+      - name: Upload dependency evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p1r-m0-supply-chain
+          path: |
+            evidence/p1r/m0/devex/
+            target/bom.json
+          if-no-files-found: error

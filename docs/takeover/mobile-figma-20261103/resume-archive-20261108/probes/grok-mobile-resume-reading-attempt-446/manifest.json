@@ -1,0 +1,33 @@
+{
+  "b139IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "files": [
+    {
+      "bytes": 44911,
+      "name": "reading-practice-h5.cjs",
+      "sha256": "223eb8751d2d4af399fac9534cc3a3dfc21fa498822512d8892f837ec7651702"
+    },
+    {
+      "bytes": 13926,
+      "name": "reading-live-hook.mjs",
+      "sha256": "bf6d7951ec74bbcfc1dbfc4500aa7fe48c968753f3c0061e64501f17d311e0c6"
+    },
+    {
+      "bytes": 29708,
+      "name": "run-reading-owner.py",
+      "sha256": "675691c978dc8054dcd6da24af521a461c04c8aa1b74f28fe9f11ed55970fd35"
+    },
+    {
+      "bytes": 13173,
+      "name": "REPORT.md",
+      "sha256": "a2d69d113bfc11e9df5a569e4ff2ff6c5dd4c6ef0ee8cfdddd11fb840e1aad21"
+    },
+    {
+      "bytes": 3791,
+      "name": "pins.json",
+      "sha256": "365aba8131fc88a711d594dde52e93d38c82f20a521a107c85ea723ac4f52def"
+    }
+  ],
+  "job": "resume-20261108-mobile-reading-446",
+  "kind": "MB446",
+  "source": "/tmp/grok-mobile-resume-reading-attempt-446"
+}

@@ -1,0 +1,19 @@
+{
+  "holder": null,
+  "at": "2026-11-08T00:24:09.290723+00:00",
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-435-frozen/MANIFEST.json",
+  "preflight": "PASS_PYTHON312",
+  "sourceMatchesArchive": true,
+  "runnerPid": 19620,
+  "releasedAt": "2026-11-08T00:27:15.845111+00:00",
+  "result": "FAIL_COOKIE_NOT_CLEARED",
+  "portsVerifiedFree": true,
+  "ownedContainerReleased": true
+}

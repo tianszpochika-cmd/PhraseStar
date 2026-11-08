@@ -1,0 +1,1777 @@
+{
+  "generatedAt": "2026-11-08T01:29:41.695749+00:00",
+  "status": "PENDING_NOT_ACCEPTED",
+  "files": [
+    {
+      "path": "sources/mobile-deps-20261108/scripts/audit/p1r-node-license-inventory.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/scripts/audit/p1r-node-license-inventory.mjs",
+      "sha256": "7edd65832ab23b139fe3e3431f59f2508283ef260cec1f9d49e7d0a17d0b8131",
+      "bytes": 18150,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/scripts/audit/p1r-node-license-inventory.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/scripts/audit/p1r-node-license-inventory.test.mjs",
+      "sha256": "a7e8102503d70bdfe173a24019be896d557a86dcbfcd46a9799ad36c47457b8d",
+      "bytes": 13128,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/admin-web/package.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/admin-web/package.json",
+      "sha256": "64e1d7a3770486130fde979cadfe02349bda7cbfe7d8fcf77c5f28d5fc617b31",
+      "bytes": 1120,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/learner-web/package.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/learner-web/package.json",
+      "sha256": "c5dc4a4911fc2cf8c72c2d0c69f55755a5e240362061651a9206424dd21812d9",
+      "bytes": 1065,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/package.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/package.json",
+      "sha256": "e08004d99a0486f6cb56fa2cca5f60f4e22455cc6fc5e0dff09b9e1fbfcad298",
+      "bytes": 1909,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/src/api/client.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/src/api/client.ts",
+      "sha256": "136f297ddad8337bcf4125026455aec51ecdc8db951d398cab758eb90c0dd16f",
+      "bytes": 11078,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/src/auth/gateway-auth.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/src/auth/gateway-auth.ts",
+      "sha256": "08f59285061940606e8eb520c50cb4c81f8881539b52ba366aab525388971ab1",
+      "bytes": 9954,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/tests/iam-auth-transport.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/tests/iam-auth-transport.test.mjs",
+      "sha256": "08db1dd787b76091907fa02d7072ff9e2223f91de15d23c1908782f49ef93478",
+      "bytes": 10137,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs",
+      "sha256": "30901b7a4282f1526a8f54e576afd22a9890b1f74afb2480c5a713e7478d9c89",
+      "bytes": 27693,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/mobile/tests/onboarding-auth-projection.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/mobile/tests/onboarding-auth-projection.test.mjs",
+      "sha256": "59f0fa23808ae2253b64d54360737b11852a762d5ab0557920bf2f6b40cbe5a4",
+      "bytes": 2458,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/apps/official-site/package.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/apps/official-site/package.json",
+      "sha256": "8ca60badfff0e3b9328edadad8ba2381e3a7135024931d11bf93bf40735d3716",
+      "bytes": 1087,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/pnpm-lock.yaml",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/pnpm-lock.yaml",
+      "sha256": "762e018cb7a02d3d3c5c3b5c031229f45b81951308bd57591f76848e02842e3b",
+      "bytes": 414912,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/pnpm-workspace.yaml",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/pnpm-workspace.yaml",
+      "sha256": "e0dec117f697e0c96824fc5b648a8ad65e2ec3ac160ab2d76d8d79e92f1fdc62",
+      "bytes": 4256,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-deps-20261108/scripts/audit/p1r-dependency-audit.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/scripts/audit/p1r-dependency-audit.mjs",
+      "sha256": "409dfc79a36a12cc22317c25f4a30dbd141bfbbaac75383d9eb860f533b6cf10",
+      "bytes": 19439,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java",
+      "sha256": "d9cfc5c46380a4e9ee166a738b70df5eb0dabd6c93bcda4dae6fe96d5d90d864",
+      "bytes": 11098,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/apps/mobile/src/api/client.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/apps/mobile/src/api/client.ts",
+      "sha256": "136f297ddad8337bcf4125026455aec51ecdc8db951d398cab758eb90c0dd16f",
+      "bytes": 11078,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/apps/mobile/src/auth/gateway-auth.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/apps/mobile/src/auth/gateway-auth.ts",
+      "sha256": "08f59285061940606e8eb520c50cb4c81f8881539b52ba366aab525388971ab1",
+      "bytes": 9954,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/apps/mobile/tests/iam-auth-transport.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/apps/mobile/tests/iam-auth-transport.test.mjs",
+      "sha256": "08db1dd787b76091907fa02d7072ff9e2223f91de15d23c1908782f49ef93478",
+      "bytes": 10137,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs",
+      "sha256": "30901b7a4282f1526a8f54e576afd22a9890b1f74afb2480c5a713e7478d9c89",
+      "bytes": 27693,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/apps/mobile/tests/onboarding-auth-projection.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/apps/mobile/tests/onboarding-auth-projection.test.mjs",
+      "sha256": "59f0fa23808ae2253b64d54360737b11852a762d5ab0557920bf2f6b40cbe5a4",
+      "bytes": 2458,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/config/p1r-data-ownership.v1.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/config/p1r-data-ownership.v1.json",
+      "sha256": "31333598faae95b7216599b8965c16e4b8f56f249e92131980d78eae585b3d9f",
+      "bytes": 37126,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/scripts/audit/p1r-data-ownership-check.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/scripts/audit/p1r-data-ownership-check.mjs",
+      "sha256": "5b25a2fd3f74265eebb78df8efa635c6a44e70af97e516c084414d6213578ddb",
+      "bytes": 71625,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/tests/p1r/p1r-data-ownership.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/tests/p1r/p1r-data-ownership.test.mjs",
+      "sha256": "ba01cbdfe9ba6128ea049a9b315298ec80b3ab53630ff68946d5cff1d3d2a420",
+      "bytes": 28162,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-ci-small-20261108/tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-ci-small-20261108/cloudstudy/tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs",
+      "sha256": "a68a0031704b839980d94066902178b42b8e9fca9b36c8b4b4f235e790e19a86",
+      "bytes": 3561,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/admin-web/tests/recovery-sagas.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/admin-web/tests/recovery-sagas.test.mjs",
+      "sha256": "0cc9d8cd22918ffc5dfe774a95d08599f7848bd50d9dbe2b83cc97fc2ce74315",
+      "bytes": 2546,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/learner-web/tests/report-share-idempotency.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/learner-web/tests/report-share-idempotency.test.mjs",
+      "sha256": "7c71e2cf82250757e188c37708c0d56879d99b151a0420304ca403bcf7791beb",
+      "bytes": 5171,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java",
+      "sha256": "35be455a8ba6d9888b90e1cf07523d4989dcb9f39d14023f1e6cf70830bedcc3",
+      "bytes": 2120,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java",
+      "sha256": "7d0f4b811e4d20bd76a58599057a0f414ab875a8b1cc60a81e1d77fbe19d6f2e",
+      "bytes": 4245,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java",
+      "sha256": "0ac9568f1a5219b34f5b08c1e4f97f1a8e54e84ef26f60cbc77c4bcae0998b10",
+      "bytes": 2933,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java",
+      "sha256": "7194cbd289a906f39ecba2a3b0a96ef7b0b1c6a269ee1e2783082bfe54402252",
+      "bytes": 6961,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/main/resources/db/migration/V15__learning_report_share_revoke_idempotency.sql",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/main/resources/db/migration/V15__learning_report_share_revoke_idempotency.sql",
+      "sha256": "2af03d66c32141b015f46c18e0f024c5384acd0340453db49423d8fb92fb5f32",
+      "bytes": 675,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java",
+      "sha256": "bae8886f0cc9e2f34fae29ecbb7e5c30a2641b3f8d6152bf3a5d0ae157d34ebe",
+      "bytes": 5402,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java",
+      "sha256": "13346cdd6aa258f31f8a17c0c0cdc10adfebd24c68c24ea0849520ecdf671c6f",
+      "bytes": 6754,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java",
+      "sha256": "fb31ad6d4644d1c3093ee253370bfdb62cca757661b3c6933df17867bf724a07",
+      "bytes": 2712,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java",
+      "sha256": "3f71653b4b70a9374b7921aeb2b663c76c0df76472d20ec72463bd0bcc002056",
+      "bytes": 3708,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/CHANGELOG.md",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/CHANGELOG.md",
+      "sha256": "12311a628aa7d5261d092f2649268896d52a7b9644cf23c4ede876734de4b0ca",
+      "bytes": 386287,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/admin-web/src/api/recovery.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/admin-web/src/api/recovery.ts",
+      "sha256": "a196bdefdc5afac38ead92b44e16730d5197e989726ae8a51b2e24462d22bd48",
+      "bytes": 4381,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/admin-web/src/views/AdminRecoveryView.vue",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/admin-web/src/views/AdminRecoveryView.vue",
+      "sha256": "f61acfc84ca49ee655f43b9ca4c5b29fc9f4387ce63c8569caca3ed210b935a0",
+      "bytes": 8033,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/learner-web/src/api/b10.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/learner-web/src/api/b10.ts",
+      "sha256": "41d1aa1419335be4a98f597d612e925932dc1c11674c659ae5f95d644c5ee413",
+      "bytes": 50535,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/learner-web/src/pages/B2ReportPage.vue",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/learner-web/src/pages/B2ReportPage.vue",
+      "sha256": "6af36e66662c792b5e59edd5924b3b742dab0c19b17268204e76f1141dccdcc1",
+      "bytes": 11973,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/mobile/src/api/b10.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/mobile/src/api/b10.ts",
+      "sha256": "93e927877749bab8dfb4f4e5e7f03a3e023af7014300743ec0c98031ead23ff6",
+      "bytes": 74685,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/mobile/src/pages/b10-report/b10-report.vue",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/mobile/src/pages/b10-report/b10-report.vue",
+      "sha256": "c8c18c37a9f737cf81f7ddb535ac823b3e885006b6f0ea88dccbbf1ec448fdae",
+      "bytes": 39470,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/apps/mobile/tests/b10-report-page.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/apps/mobile/tests/b10-report-page.test.mjs",
+      "sha256": "ffc50149daaaaf3bce85880832a5b1c69f71add2b1f3033ea32b6bc890cdf124",
+      "bytes": 17973,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/config/p1r-data-ownership.v1.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/config/p1r-data-ownership.v1.json",
+      "sha256": "b27d2bf8a5c00f44e210b11e8cfd4236824e41c968d2a6c23c7c7b4651083b74",
+      "bytes": 37125,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/api-client/src/generated/index.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/api-client/src/generated/index.ts",
+      "sha256": "4190a9a84ce5dc6e4c729ffe9c0fbe0ccf2b7182929585d9994e09a5ecdf8885",
+      "bytes": 106176,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+      "sha256": "84cccb583ca096a23efc8e61542c65f63e19bd6fe0992205c0554e52ce82ad25",
+      "bytes": 242276,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/contracts/fragments/b2-assessment-mastery.openapi.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/contracts/fragments/b2-assessment-mastery.openapi.json",
+      "sha256": "dc046cb9285059584d5d6830a9b3c3ee01f07cc2367e0e21098a91961e0b3bf4",
+      "bytes": 110350,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/contracts/fragments/b26-workflow-recovery.openapi.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/contracts/fragments/b26-workflow-recovery.openapi.json",
+      "sha256": "7f968d616f537d896414645a15138179e6826e9c87518fb18c3df8b646a976ca",
+      "bytes": 16275,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/contracts/generated/openapi.ts",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/contracts/generated/openapi.ts",
+      "sha256": "801c8cf5c55734509dfdd3d8759a7604e3ff8a57f194b2122e0d0143e1616450",
+      "bytes": 379684,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/packages/contracts/openapi/v1/openapi.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/packages/contracts/openapi/v1/openapi.json",
+      "sha256": "054e650406d5233b09ceca1095a341f29d7a1c0158f63eee34b2d36f38aafe61",
+      "bytes": 2649616,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/scripts/audit/p1r-api-contract-check.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/scripts/audit/p1r-api-contract-check.mjs",
+      "sha256": "2124e0a72af4d5f4ac7bb6c6347e3d82b2ccc3753a2aecfe165977a55586476d",
+      "bytes": 23778,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "sha256": "752b1ac6799e84b76abcfd4d50a7f8a0e2f3c5b5b9f7197e06ef89e47598d270",
+      "bytes": 109756,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java",
+      "sha256": "2918ba335af0e7fa53f4f5f978b7dbfafe5f6d7d053481ae939d6bed1b102380",
+      "bytes": 5123,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java",
+      "sha256": "a70b57c09bf47e28f747695468c442b480d1399f8e4bea6fcec94ebab28891ea",
+      "bytes": 5914,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java",
+      "sha256": "cacc61d57340b62e685e52d274f06ad6ae2d1ad2c9756d38a190d0942bdac0e7",
+      "bytes": 70568,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java",
+      "sha256": "f0de312dfb29a5e2fdb436e16f7bbefe2d1b35615eb12d923e5e961409e441dc",
+      "bytes": 2186,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java",
+      "sha256": "cfe35a3b970eef448fe554e3473199ef99574fd43bda62992daeb9badd77e772",
+      "bytes": 28957,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java",
+      "sha256": "f64b57dd556e8e9d8dafb2a83d768ff7fc91a1f0b52898f420a480a321a398aa",
+      "bytes": 30838,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+      "sha256": "3c5b98963d594037004a5708043fbf80a7ea0d114a61b14f1dec091cf4d2ccaf",
+      "bytes": 7737,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+      "sha256": "759d67c872f64d15926cc90de03e0f5cae18fabfbcfa20bff2800f7e5480d381",
+      "bytes": 8519,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java",
+      "sha256": "000632204f706b4d0f9b57666d8d80d7b9e904d7461d8288007b9f7f2d3f94c5",
+      "bytes": 6651,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java",
+      "sha256": "a663a958ecac4694ce7090a0bf4766f5dd8ff8b9a76653ff9f7787978160a8b9",
+      "bytes": 3961,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java",
+      "sha256": "a5d9d5381039300f9fa57e8dc761b1e24714fe66046d1d9d88fb34d0c0757866",
+      "bytes": 8612,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java",
+      "sha256": "581d042c657ca2a227769b24882d95ca17512a00025822a35fec2453593681bf",
+      "bytes": 7767,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java",
+      "sha256": "3bfa537d1a6cbada681b4eec98d9e5f57f09e69e6ca82413f5a8760114d29579",
+      "bytes": 10921,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-api-pagination-20261108/tests/p1r/p1r-api-contract.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy/tests/p1r/p1r-api-contract.test.mjs",
+      "sha256": "d25453ab955d072ea707bf1943ab4e6ed2c64b64b88b4335aaa4753a50a3aac2",
+      "bytes": 13806,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/tests/p1r/p1r-kafka-topic-provision-parser.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-kafka-topic-provision-parser.test.mjs",
+      "sha256": "ae7545ae22338ac08df4f8e3adb07d6719f84684d733d77859fbe73ebc7a79e1",
+      "bytes": 4910,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/.github/workflows/ci.yml",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/.github/workflows/ci.yml",
+      "sha256": "a133f77a7636333d58d3f1d5eac0f4bafe589cb4de95e331f4e7ae995dc7c89e",
+      "bytes": 8035,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/config/p1r-learning-loop-contract.v1.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/config/p1r-learning-loop-contract.v1.json",
+      "sha256": "6c831061054ca8168cfcf63f21bc41622e13a2156b10811b93f4472c85b94053",
+      "bytes": 52920,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/config/toolchain-baseline.json",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/config/toolchain-baseline.json",
+      "sha256": "db1003a93e030e4f4f336e0d239209c46fb02ca44f67202331b52af9339205b2",
+      "bytes": 1506,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/scripts/audit/p1r-evidence-gate.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/p1r-evidence-gate.mjs",
+      "sha256": "137f2530241e9ce1cfa660fe7f2f07dd8942f950493a9b41a387e60d68e2ae21",
+      "bytes": 35394,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/scripts/audit/p1r-gateway-contract-check.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/p1r-gateway-contract-check.mjs",
+      "sha256": "525659f6ba64072bfd3a3f47650a54946072a06603145c11108d445b72ddec71",
+      "bytes": 86191,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/scripts/audit/p1r-learning-loop-contract-check.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/p1r-learning-loop-contract-check.mjs",
+      "sha256": "bd210ebd3ef9a40bd74d39397ce5a1e7659a9a4e2bbe6bae05ab94b409964ff3",
+      "bytes": 136912,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/scripts/audit/rebind-manifests.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/audit/rebind-manifests.mjs",
+      "sha256": "e224640b9e7e60a3475dd844046a899508fb27d34a98404af5e7f340aa3aa96f",
+      "bytes": 5943,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/scripts/runtime/provision-kafka-topics.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/scripts/runtime/provision-kafka-topics.mjs",
+      "sha256": "068eeddab523223722d964c47328c66c6f380eec5128fc78840cbc29c17a29ac",
+      "bytes": 8873,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/tests/p1r/p1r-evidence-gate.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-evidence-gate.test.mjs",
+      "sha256": "cb72caafd7d42e499901f4c78d7c161e42d0fdca3b117370b46381af8914d507",
+      "bytes": 24063,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/tests/p1r/p1r-gateway-contract.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-gateway-contract.test.mjs",
+      "sha256": "afec011e4d8fdf4a4fa28883a10ae0b0d514e05a835820e28d40aeff682a63a9",
+      "bytes": 27478,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/tests/p1r/p1r-learning-loop-contract.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-learning-loop-contract.test.mjs",
+      "sha256": "01abdb962fcc262363a4a275e660c7c351417e9920f5077a5ceef6d83dbf78d5",
+      "bytes": 33607,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "sources/mobile-resume-ci-20261107/tests/p1r/p1r-learning-loop-generated-types.test.mjs",
+      "source": "/Users/Admin/.codex/worktrees/mobile-resume-ci-20261107/cloudstudy/tests/p1r/p1r-learning-loop-generated-types.test.mjs",
+      "sha256": "68866e63df9b0588a675e01fb38d9ef25614bd803890af2e70e569ac5344e899",
+      "bytes": 7136,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-dependency-build-440-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-dependency-build-440-job.json",
+      "sha256": "c0e240a5e1371bcba5f74f29145752506fb6de6ffa1e8f1c9c66d91a2dc56c3c",
+      "bytes": 2331,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-dependency-build-440-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-dependency-build-440-task.md",
+      "sha256": "997582721041d565ce755df107aeb6503d0d77ebd05ae4fdc3e833f2e9ecf056",
+      "bytes": 2741,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-dependency-build-440.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-dependency-build-440.checkpoint.json",
+      "sha256": "22d0515c529614dd0e885f818f76628e4f57a7cebe13ecec22db248f3fe5d2db",
+      "bytes": 1161,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-dependency-build-440/source-pins.json",
+      "source": "/tmp/grok-mobile-resume-dependency-build-440/source-pins.json",
+      "sha256": "7f137a25401cfacd7479894a079c606e65d216795f624a24dd26aa5720431e3a",
+      "bytes": 1954,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-dependency-build-440/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-dependency-build-440/REPORT.md",
+      "sha256": "896f010699b42226cb0baf39ce44802b6c625187c843c4d9d5df702348e13ff1",
+      "bytes": 9580,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-owned-inventory-441-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-owned-inventory-441-job.json",
+      "sha256": "21896309b7f53ef7c313e7683a85ff99ddfea517582d4481537ffa190e82bed5",
+      "bytes": 2338,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-owned-inventory-441-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-owned-inventory-441-task.md",
+      "sha256": "7f725c2491e7df4c99b06a2d66240a91574b34551cbba0a9080c59f518ebb481",
+      "bytes": 2163,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-owned-inventory-441.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-owned-inventory-441.checkpoint.json",
+      "sha256": "d74a648bdcd58452f17ac234406618afe73b052a837130e1b447c5eddcd316e5",
+      "bytes": 1173,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-inventory-441/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-ci-inventory-441/REPORT.md",
+      "sha256": "ab7efc6c0734e687e3b7875826be8576a3150d571de66daf84dd80c9022f689e",
+      "bytes": 5823,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-inventory-441/hashes.json",
+      "source": "/tmp/grok-mobile-resume-ci-inventory-441/hashes.json",
+      "sha256": "f661079f38401ec179edba5f1f7d5e7f2c7a6006717bdacf9f1cff19ec382d16",
+      "bytes": 1873,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-inventory-441/exact.diff",
+      "source": "/tmp/grok-mobile-resume-ci-inventory-441/exact.diff",
+      "sha256": "0de3c4c6810a8716482e59ac4e637c9570713febd7c8ad640ab0451ebec2e14c",
+      "bytes": 19462,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-contract-pagination-442-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-contract-pagination-442-job.json",
+      "sha256": "60ec8e1cc1652433ac3f91b0d4a13c099f205a9d01c446448f17328bfb745ad8",
+      "bytes": 3335,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-contract-pagination-442-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-contract-pagination-442-task.md",
+      "sha256": "0ddda346cdd4d634088455cf2605c66f3865a8e43640df7967b36a17dfdd7483",
+      "bytes": 3016,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-contract-pagination-442.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-contract-pagination-442.checkpoint.json",
+      "sha256": "66c6f5d852a26f7298141f56e637c353dc905867dea2bdfe2d31b0764c0a6c3e",
+      "bytes": 1183,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-442/RC-A-DECISION.md",
+      "source": "/tmp/grok-mobile-resume-pagination-442/RC-A-DECISION.md",
+      "sha256": "1932adb28b7280dd60a94d39c8f75d8289a7df47ab19a462028966b46b5d5796",
+      "bytes": 3257,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-442/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-pagination-442/REPORT.md",
+      "sha256": "cacb35b88a6c88e6902e0e27c14393821c994075fb686a22ce09c281167ad3dc",
+      "bytes": 5551,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-442/exact.diff",
+      "source": "/tmp/grok-mobile-resume-pagination-442/exact.diff",
+      "sha256": "da18a1a63d567efb6548efaf4884bf76eb68e75250d8cfe2f393dc3377021240",
+      "bytes": 96773,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-world-release-certificate-443-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-world-release-certificate-443-job.json",
+      "sha256": "01387c71a0073be3f4619c681f939384dabc4025c42fbcbb53f2cf9cb77c89ed",
+      "bytes": 1287,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-world-release-certificate-443-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-world-release-certificate-443-task.md",
+      "sha256": "36461700505e630c97a30200fa8f62086dfc803424fe0c10f4faee97a1e977a4",
+      "bytes": 1938,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-world-release-certificate-443.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-world-release-certificate-443.checkpoint.json",
+      "sha256": "2044bbaaf9043e24bd06aedd39a8334810c5f566a241009b3a8b8ed07ed6d836",
+      "bytes": 1209,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-world-release-443/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-world-release-443/REPORT.md",
+      "sha256": "c215475a9e8945d59646440d82c78eee82dd0bf1f3374fb14d42dbbf05afb522",
+      "bytes": 6897,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-world-release-443/root-lease.py",
+      "source": "/tmp/grok-mobile-resume-world-release-443/root-lease.py",
+      "sha256": "fab5e13e9c36981efdce02970fd315b6573f86d589d1786db71c8f98d213eb5f",
+      "bytes": 74368,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-world-release-443/h5-lease-tail.mjs",
+      "source": "/tmp/grok-mobile-resume-world-release-443/h5-lease-tail.mjs",
+      "sha256": "164826a19719efea3d6655c1532061115d4ec665df5bb8f6297c4b29211fe736",
+      "bytes": 4292,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-world-release-443/world-default-observer.mjs",
+      "source": "/tmp/grok-mobile-resume-world-release-443/world-default-observer.mjs",
+      "sha256": "d9e5e7c71376dfef8ae011da2ab83553b77aad80dd90d47fecbec9bf5a2a38b8",
+      "bytes": 41247,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-world-release-443/pin.json",
+      "source": "/tmp/grok-mobile-resume-world-release-443/pin.json",
+      "sha256": "faa773d827c495d71abc2c76be90a886413e101643f85da5c8b8776e21a02af1",
+      "bytes": 3539,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-forbidden-cookie-444-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-forbidden-cookie-444-job.json",
+      "sha256": "fa0d931a7e6b795f4c9bf9e1c0e7ccb1edbbfda6f2429e9c135a47299e0528f2",
+      "bytes": 1265,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-forbidden-cookie-444-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-forbidden-cookie-444-task.md",
+      "sha256": "e8dc942544db9883302fc2b7b92db4fe2352610bcc330ed243170d314f6009e2",
+      "bytes": 2312,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-forbidden-cookie-444.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-forbidden-cookie-444.checkpoint.json",
+      "sha256": "58eac18f7269489840a4e858c347206204c9bd7b0d9f2d1682b5984a292f9388",
+      "bytes": 1173,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-wrapper.py",
+      "source": "/tmp/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-wrapper.py",
+      "sha256": "8ba16b45ac8455d08f9f0ae1a5a5e5f89ff7e6122357f0bfe351e939b194ecba",
+      "bytes": 48738,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-forbidden-cookie-444/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-forbidden-cookie-444/REPORT.md",
+      "sha256": "f6aac3475ccd007e4aefdd35d8b7c7ac4e35671bc62056d68f3e0df8dc121679",
+      "bytes": 9169,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-forbidden-cookie-444/h5-lease-tail.mjs",
+      "source": "/tmp/grok-mobile-resume-forbidden-cookie-444/h5-lease-tail.mjs",
+      "sha256": "da8508e1a6995efeacd40ab0cbeacc4734c16dec60983a13928659793acbfec0",
+      "bytes": 3449,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-forbidden-cookie-444/pin.json",
+      "source": "/tmp/grok-mobile-resume-forbidden-cookie-444/pin.json",
+      "sha256": "3a6396850036a0f789baf15c82cf422425539d3c5c411d115b1944c76ac1e519",
+      "bytes": 4337,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-observer.mjs",
+      "source": "/tmp/grok-mobile-resume-forbidden-cookie-444/forbidden-h5-observer.mjs",
+      "sha256": "da0ab5df0bf43df4db9ae81319c45f80a24ec3fc9dfb0a4c0968b59a6e8f8487",
+      "bytes": 43924,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-sql-context-445-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-sql-context-445-job.json",
+      "sha256": "5effb40fa2f934c3493f025f9ea72e4280960e1ebe32212d18c8d6d2ade72fe7",
+      "bytes": 2438,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-sql-context-445-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-sql-context-445-task.md",
+      "sha256": "5695cef60265cc8a3bbf2dc3d7dac1c0887efd88687967861d100525fb241a0c",
+      "bytes": 1838,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-sql-context-445.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-sql-context-445.checkpoint.json",
+      "sha256": "b688ac2d99a4fab986cd01e7a16142b798881aa431bd068d012ec23babb2a54a",
+      "bytes": 1157,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-attempt-446-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-attempt-446-job.json",
+      "sha256": "0a4240686ffbc1c10efd37d5cd4e721dfc68d6eb9f537357eb35ea2e77305c97",
+      "bytes": 1373,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-attempt-446-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-attempt-446-task.md",
+      "sha256": "2a4cc0294243d092cc8b7cde0cad4493398ba937cdf1a94279be5d6e61a5b111",
+      "bytes": 1927,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-attempt-446.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-attempt-446.checkpoint.json",
+      "sha256": "dfec78a5d7411c0c1e85ab2ac7371313840709c9411c03f4ada02ef70933d3ae",
+      "bytes": 1169,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/reading-live-hook.mjs",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/reading-live-hook.mjs",
+      "sha256": "bf6d7951ec74bbcfc1dbfc4500aa7fe48c968753f3c0061e64501f17d311e0c6",
+      "bytes": 13926,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/REPORT.md",
+      "sha256": "a2d69d113bfc11e9df5a569e4ff2ff6c5dd4c6ef0ee8cfdddd11fb840e1aad21",
+      "bytes": 13173,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/run-reading-owner.py",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/run-reading-owner.py",
+      "sha256": "675691c978dc8054dcd6da24af521a461c04c8aa1b74f28fe9f11ed55970fd35",
+      "bytes": 29708,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/reading-practice-h5.cjs",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/reading-practice-h5.cjs",
+      "sha256": "223eb8751d2d4af399fac9534cc3a3dfc21fa498822512d8892f837ec7651702",
+      "bytes": 44911,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/manifest.json",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/manifest.json",
+      "sha256": "60a09b3661f8e120a537ab30047136eecfd438336e04c1852b3f59fe7a88b80a",
+      "bytes": 995,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-attempt-446/pins.json",
+      "source": "/tmp/grok-mobile-resume-reading-attempt-446/pins.json",
+      "sha256": "365aba8131fc88a711d594dde52e93d38c82f20a521a107c85ea723ac4f52def",
+      "bytes": 3791,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-vite-security-447-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-vite-security-447-job.json",
+      "sha256": "b9897656bce59edc6b76b7780ca1a5e586c1cb191dc66da2a5962b981d7cb5b8",
+      "bytes": 2205,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-vite-security-447-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-vite-security-447-task.md",
+      "sha256": "0a436e9948234e5c679a14435915e4b7bee31aafedc924973216872974454b07",
+      "bytes": 2685,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-vite-security-447.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-vite-security-447.checkpoint.json",
+      "sha256": "993fee02e954a81a82ffb5231ec20e0005151545bc62f8853ff75870a8fe2626",
+      "bytes": 1149,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-vite-security-447/fetch-raw.githubusercontent.com_vitejs_vite_v8.2.4_packages_vite_CHANGELOG.md",
+      "source": "/tmp/grok-mobile-resume-vite-security-447/fetch-raw.githubusercontent.com_vitejs_vite_v8.2.4_packages_vite_CHANGELOG.md",
+      "sha256": "9289ca930390e2c6bd149eae6726bb29e329e7444a2c4b5d8f0c548118afa3de",
+      "bytes": 200000,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-vite-security-447/ADR-PROPOSAL.md",
+      "source": "/tmp/grok-mobile-resume-vite-security-447/ADR-PROPOSAL.md",
+      "sha256": "a51756148c84f8eaa80e24ebea10ac9894663de4137f0068ea058c31e0f864f1",
+      "bytes": 5752,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-vite-security-447/INSPECTION.md",
+      "source": "/tmp/grok-mobile-resume-vite-security-447/INSPECTION.md",
+      "sha256": "19af303a7c300fc9963fd15e39afbf1bbb415c6e9abef71979f1989db635752a",
+      "bytes": 2819,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-vite-security-447/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-vite-security-447/REPORT.md",
+      "sha256": "37f9d0ab5597c64b99dfa09fa847d2e3b744e07c94d842c9411b9241f2ae6be8",
+      "bytes": 8611,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-share-write-idempotency-448-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-share-write-idempotency-448-job.json",
+      "sha256": "335e6a0821d30a91ae9ff9102cccf5bd7a58e801c5505e6dabdc0773d04c30e8",
+      "bytes": 3956,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-share-write-idempotency-448-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-share-write-idempotency-448-task.md",
+      "sha256": "16364e39c1844376da8d24c038b7d1f0f4a1db23574de8697930bade6db67ee7",
+      "bytes": 2540,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-share-write-idempotency-448.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-share-write-idempotency-448.checkpoint.json",
+      "sha256": "b1764931d613324221c9350566ec9a3fe545d75a448cfe5d32856eecb0bb0445",
+      "bytes": 1200,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-pagination-review-449-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449-job.json",
+      "sha256": "3ac4f4dd9c6073d64197388cc84b49079272af2cf4f3ed7d3c395981b1b6832f",
+      "bytes": 1270,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-pagination-review-449-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449-task.md",
+      "sha256": "8be33ca0d70b37a05fa82f2ee56d33cea234a6bdcc2daef1a49c8ffe8e507eca",
+      "bytes": 1815,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-pagination-review-449.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449.checkpoint.json",
+      "sha256": "538e55320bfcef7116dc5e9435bf46a74b923595921631a72990a90aa8d88227",
+      "bytes": 1177,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-review-449/reproduce.mjs",
+      "source": "/tmp/grok-mobile-resume-pagination-review-449/reproduce.mjs",
+      "sha256": "278e0544e1a036ae33447199b959f9814ebe0d6a434cf723e388ee3d609d6f17",
+      "bytes": 15932,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-review-449/reproduction-results.json",
+      "source": "/tmp/grok-mobile-resume-pagination-review-449/reproduction-results.json",
+      "sha256": "6bfd0317b763c8194de7a9805b033f920d54f3b0b240a878bb1f0e6fd1d343b2",
+      "bytes": 3257,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-review-449/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-pagination-review-449/REPORT.md",
+      "sha256": "18337f8d07e791915bdfeec941dc7bc518fad76e197a0a644a67de91f1d85bd4",
+      "bytes": 10647,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-pagination-review-449/findings.json",
+      "source": "/tmp/grok-mobile-resume-pagination-review-449/findings.json",
+      "sha256": "119c8ce4c45c0a9c8dc9d12486b86a7123082ede224c3117323c5d0d53677c54",
+      "bytes": 17195,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-iam-logout-450-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-iam-logout-450-job.json",
+      "sha256": "2de1ee18a77da32fad9e983c308949b4e5a62ff338ef5d4c9be52d3cb8cf0b86",
+      "bytes": 2346,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-iam-logout-450-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-iam-logout-450-task.md",
+      "sha256": "7107510e10247d8f9d5b17fe940c7d8b07a37f6dae2d6cf49b3dd609ec5a92fd",
+      "bytes": 2285,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-iam-logout-450.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-iam-logout-450.checkpoint.json",
+      "sha256": "1626073002dcfb9815a975921dedf10551a443170f0be238b5a120bfef64d149",
+      "bytes": 1153,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-iam-logout-450/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-h5-iam-logout-450/REPORT.md",
+      "sha256": "878f37b986a1aa8dd309a20a63d91982946a460205f78e42f6ab76830f3cd975",
+      "bytes": 10340,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-iam-logout-450/hashes.json",
+      "source": "/tmp/grok-mobile-resume-h5-iam-logout-450/hashes.json",
+      "sha256": "4e9158e78ce6e36c136fb011edea7f5ea5e2220787e041e25e7c88e9d67e7098",
+      "bytes": 3204,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-iam-logout-450/exact-new.diff",
+      "source": "/tmp/grok-mobile-resume-h5-iam-logout-450/exact-new.diff",
+      "sha256": "29ca6b8d8629386db2774bfc07dafcad2540341e535f28be84aebbbd4041c53e",
+      "bytes": 26164,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-451-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-451-job.json",
+      "sha256": "53b063b58438d155e608d5b74f263adb101b9054c53f786b0ccb1074b3f2cf31",
+      "bytes": 1354,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-451-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-451-task.md",
+      "sha256": "f2ef15a73108f1da9741e39dd3b82f4bcec421dd2eaf569f9a6bd925085fd398",
+      "bytes": 1963,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-451.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-451.checkpoint.json",
+      "sha256": "5d6f832328c138ccd63f18ecf6bf4b87aee7a2a157d77c160f4657df764cd205",
+      "bytes": 1161,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-451/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-451/REPORT.md",
+      "sha256": "fced10e6ed1b4771951c5417f5c822eab76a4a072deb716e3b2b1c97c1a5ebe1",
+      "bytes": 4763,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-451/prepare-receipt.json",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-451/prepare-receipt.json",
+      "sha256": "8a332419f8307ff3a3e89bc11424997e65f95fe07c9be70a5afe58d65baec093",
+      "bytes": 3780,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-451/run-current-h5.mjs",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-451/run-current-h5.mjs",
+      "sha256": "c1957ed27a468b5ee0a6c5afe60afa8b2b627c599a9dbb539194d5cc9cb3244a",
+      "bytes": 33833,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-451/pins.json",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-451/pins.json",
+      "sha256": "99ef1e1d0d2df14204b5cfc8f58ceb015800cd92f467026a9ca05c83b6b04ad2",
+      "bytes": 5260,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-route-policies-452-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-route-policies-452-job.json",
+      "sha256": "823250cdf4dbf97cee67fd8b471d656fef5ea3522a1fae570710bd7847b6328f",
+      "bytes": 2697,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-route-policies-452-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-route-policies-452-task.md",
+      "sha256": "38ec69beb2f4f2ecb67bd9b52edc2b14ee997e85b0a7deade652ce9d3ec91226",
+      "bytes": 2390,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-ci-route-policies-452.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-ci-route-policies-452.checkpoint.json",
+      "sha256": "3ffd73163776097ea7e4c33722c5d9a2b2d25c46e4d1fafa3d4e96d24bf16118",
+      "bytes": 1170,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/write-deltas.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/write-deltas.mjs",
+      "sha256": "45d5c6d09db9bb1c2ded5c4b4cfee1e9808d600cf559aa7436e2b145f95a2ef3",
+      "bytes": 4438,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/verify-residuals.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/verify-residuals.mjs",
+      "sha256": "fe395776745488c5a3d0ffbd0df75fc2735e5f800f12893bb6f73998f3afc03a",
+      "bytes": 9458,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract-check.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract-check.mjs",
+      "sha256": "edb3896ac59ef4f9e5de310f6971213a611b68d617f463ad95b3d1bee3959fdc",
+      "bytes": 82488,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/REPORT.md",
+      "sha256": "ca03d27db1506fa3e0caac019c367dfe4f8b33373bf3e168d781d066ad45c654",
+      "bytes": 8371,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract.test.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract.test.mjs",
+      "sha256": "1ffeead8845e62b266bd6e7d1a522a94b1668ec74a12c2f4d8eccfa27650e973",
+      "bytes": 33262,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-generated-types.test.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-generated-types.test.mjs",
+      "sha256": "f93a3093f1c12e185376073033c0b97a2f21b7413abdfaa2936b08229254e17d",
+      "bytes": 5807,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract.test.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-gateway-contract.test.mjs",
+      "sha256": "16e3872e6498ec623816c2f617f921deb48ebc6869395448ed638ab2aac5e526",
+      "bytes": 23641,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract-check.mjs",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/before-p1r-learning-loop-contract-check.mjs",
+      "sha256": "248aff172396627a29f311576a45e85dad08f637d6908a41690fef6056a4f018",
+      "bytes": 136781,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-ci-route-policies-452/exact.diff",
+      "source": "/tmp/grok-mobile-resume-ci-route-policies-452/exact.diff",
+      "sha256": "5e851018c86c7bb0d4690ab5a7ca0260d631e9a501e7388f343397c112d2365f",
+      "bytes": 22596,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-license-inventory-453-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453-job.json",
+      "sha256": "fd8519bb67f7326f38fd69d20ac8b8fb7816e2d7011d7b59a98f525275752c73",
+      "bytes": 2290,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-license-inventory-453-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453-task.md",
+      "sha256": "861c473917d467fb806e6846c5330234fd45c591445f4275affeb94d65ae529a",
+      "bytes": 2298,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-license-inventory-453.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-license-inventory-453.checkpoint.json",
+      "sha256": "c9061d428a9dbddf877d0f133d83de84f4a879217d463afc319c5208699e17e5",
+      "bytes": 1174,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-home-return-diagnosis-454-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-home-return-diagnosis-454-job.json",
+      "sha256": "91247bdc747f4b486abe08f5e71e73e4ad521be6e6f46e58ac434535cb620a9d",
+      "bytes": 1358,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-home-return-diagnosis-454-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-home-return-diagnosis-454-task.md",
+      "sha256": "36f9a2fa8c5406b8f8ed8365879e26c2603a86b836116018920b4ea502d8e244",
+      "bytes": 2292,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-home-return-diagnosis-454.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-home-return-diagnosis-454.checkpoint.json",
+      "sha256": "862c4d793d909e33321378fe2e64b50edbd043cecb9ecd4f861d440a6636cbc2",
+      "bytes": 1193,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/REPORT.md",
+      "sha256": "79983c435db9b7d5be3155af553c6b5ecee11971452e2802ae90aa09ab424023",
+      "bytes": 10408,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/DIAGNOSIS.json",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/DIAGNOSIS.json",
+      "sha256": "68dd1d84df1e5631f37d15dc011a680edd917b9852ac1674d8dd4551732c2b2a",
+      "bytes": 4280,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/CANDIDATE.md",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/CANDIDATE.md",
+      "sha256": "1f3d81027d9ac74ecee29acab4c77a8d0a550f21cdaf427d2d003f99b45a4e95",
+      "bytes": 2033,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/home-return-hook.cjs",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/home-return-hook.cjs",
+      "sha256": "a119d995e3b56268b15422635127c43b7d1a0b5b10d86453dac6477114f7e2e0",
+      "bytes": 1606,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle-offline-check.cjs",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle-offline-check.cjs",
+      "sha256": "04bfa91cb33a09a8332acbb1d40b01474a43d59e7826afbfbf3fcb51732c18b7",
+      "bytes": 8463,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/home-return-observer.cjs",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/home-return-observer.cjs",
+      "sha256": "e3fa13bfa0c94e6bf59d5eaf1f87d6260043d6819206d238532b9cdc61942821",
+      "bytes": 29621,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle.cjs",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle.cjs",
+      "sha256": "56d3b1ded1acb61d77e3528674dc0ef25899d5ee6b97a6c5a69f84dd0d9e0dc2",
+      "bytes": 6136,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle-live-gate.cjs",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/oracle-live-gate.cjs",
+      "sha256": "5bf5f9f7aadcc6598f5d64baa9a46ca556b3feca5d0da9d635ba43c961db6873",
+      "bytes": 1328,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-home-return-diagnosis-454/candidate/pins.json",
+      "source": "/tmp/grok-mobile-resume-home-return-diagnosis-454/candidate/pins.json",
+      "sha256": "08f209221317a709ac8cda63e888c9cf06bc0f802529bbf209776dfa110ce321",
+      "bytes": 2162,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-response-diagnosis-455-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-response-diagnosis-455-job.json",
+      "sha256": "2fe6fac796b1d82062afdaa89ad6f6d2955d06231dbce74797ec6e1a91137a54",
+      "bytes": 1428,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-response-diagnosis-455-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-response-diagnosis-455-task.md",
+      "sha256": "8f8db5a5d37a49addcc598201830be21966effc8b6d388101177cb1d8562cde6",
+      "bytes": 2235,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-reading-response-diagnosis-455.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-reading-response-diagnosis-455.checkpoint.json",
+      "sha256": "ecf2fb49660439374c8f61c8de5da5c76d559deda011a5b3127150b332325ad2",
+      "bytes": 1213,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/reading-live-hook.mjs",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/reading-live-hook.mjs",
+      "sha256": "21c37a48420df079c8c898207b79ab03f22cda1d9d0e17211a9bf67368182873",
+      "bytes": 13926,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/REPORT.md",
+      "sha256": "37a96f10b7f81ea6e2ebffab9f64d5ea386bd9c4ce30f5d0a72bde844641a37f",
+      "bytes": 11479,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/run-reading-owner.py",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/run-reading-owner.py",
+      "sha256": "ef8b36ca38af0f4cc988c1331b2d907e1fe7cbd232274beb1dc5b1cc1aeed683",
+      "bytes": 33304,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/reading-practice-h5.cjs",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/reading-practice-h5.cjs",
+      "sha256": "dcb34e5614ac06b0ff2f21c6eb6104be3bd3993174c0b6880032e436d2c801ae",
+      "bytes": 53804,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/manifest.json",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/manifest.json",
+      "sha256": "8a159512efa92acfd2e959559f3544aa2e28aab30fd6cad03c04b26dcae30ba4",
+      "bytes": 1006,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/DIAGNOSIS.json",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/DIAGNOSIS.json",
+      "sha256": "43594e6a209c70f30955915d4b7c05410e6b2a5ac9e892cb0126500475851796",
+      "bytes": 4610,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/pins.json",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/pins.json",
+      "sha256": "dedaa8ec62da2534bc82913dea27bdaac9d1e46411ceb5c4eddec308e3d02795",
+      "bytes": 4727,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-reading-response-diagnosis-455/response-classifier-offline.cjs",
+      "source": "/tmp/grok-mobile-resume-reading-response-diagnosis-455/response-classifier-offline.cjs",
+      "sha256": "4810a3bc3b569c242b3c1194bd5630f586cd5638cc7c3dab9fdd7b6bba700353",
+      "bytes": 6946,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-rework-456-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-rework-456-job.json",
+      "sha256": "ab633b8de530dba47fecebe769ca12ecf68f385d4807313ec2f364a3771bc75d",
+      "bytes": 1389,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-rework-456-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-rework-456-task.md",
+      "sha256": "a07d160d1b6c3773640548ce3c341f984e837ed9f793b53ec403224785f94f69",
+      "bytes": 1913,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-current-h5-smoke-rework-456.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-current-h5-smoke-rework-456.checkpoint.json",
+      "sha256": "85c75a5017c8794507ca7bfd05c5d719ccc94660477601247788dfab7eca474c",
+      "bytes": 1189,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-rework-456/REPORT.md",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-rework-456/REPORT.md",
+      "sha256": "0c1eaa83d0f0d3c4fdcb9f2a095b753a4396bc25de4192eaeb0a83008c25843a",
+      "bytes": 8207,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-rework-456/prepare-receipt.json",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-rework-456/prepare-receipt.json",
+      "sha256": "188981c1ccb57ed76ce880471cd39f1fd397267d4fa163185747feab4949f9a5",
+      "bytes": 7433,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-rework-456/run-current-h5.mjs",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-rework-456/run-current-h5.mjs",
+      "sha256": "ffb2c6614b0d2a8e96e026afc76bfba258e71a3d7f171ccd7b9e1cfba54500d0",
+      "bytes": 69492,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-current-h5-smoke-rework-456/pins.json",
+      "source": "/tmp/grok-mobile-resume-current-h5-smoke-rework-456/pins.json",
+      "sha256": "497229a1577eff0db11dc8799bf4b1192fc6187f846682eda6eb50e7625a5e6e",
+      "bytes": 7766,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-logout-live-candidate-457-job.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-logout-live-candidate-457-job.json",
+      "sha256": "8ad233782431a35b745805d9ffa452ed3e9e3f05da24dd362084e9cbc89756fb",
+      "bytes": 2736,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-logout-live-candidate-457-task.md",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-logout-live-candidate-457-task.md",
+      "sha256": "3053f242b8b3e3e1272278ec3aede878130e34435ac7b2c22f2993c77e1b2434",
+      "bytes": 3113,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "jobs/resume-20261108-mobile-h5-logout-live-candidate-457.checkpoint.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-h5-logout-live-candidate-457.checkpoint.json",
+      "sha256": "0cc0020e445cfb43b2ab3f8eaeee898014bb7f15ce2e9fbbf996e025c5ee3c3e",
+      "bytes": 1080,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-logout-live-candidate-457/forbidden-h5-wrapper.py",
+      "source": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/forbidden-h5-wrapper.py",
+      "sha256": "863c23444787f3c42ae72475c6ccc436af39fd79f519a39415e5a2d2c5e7ed61",
+      "bytes": 52560,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-logout-live-candidate-457/h5-lease-tail.mjs",
+      "source": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/h5-lease-tail.mjs",
+      "sha256": "6e39425d0c8e2516554e1fe01081037e787b08b3de8b7759cd5bb7088c597860",
+      "bytes": 3446,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-logout-live-candidate-457/forbidden-h5-observer.mjs",
+      "source": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/forbidden-h5-observer.mjs",
+      "sha256": "5bb94d95e9cac593a4c56513005a47ca53b48f026959775bc0a94a58d39b4c11",
+      "bytes": 49917,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "probes/grok-mobile-resume-h5-logout-live-candidate-457/pinned-static-nonce.mjs",
+      "source": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/pinned-static-nonce.mjs",
+      "sha256": "5dd844b7188ba016b1016a89a4b86f318c65da8b9d237002a90236826f1b9174",
+      "bytes": 10966,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-446-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/EXIT.json",
+      "sha256": "91ab225bd9c74017822604142c7c5dc953499c37bc8b172eae36d1156fbb9347",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-446-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/INDEPENDENT-RELEASE.json",
+      "sha256": "d3d55494af96f563166e08998cba556b18105603a6cbe100061eb1baaba02897",
+      "bytes": 530,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-446-root/runtime-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-446-root/runtime-receipt.json",
+      "sha256": "99c75c1824f4941d0393920b0a337f0e5678fc89184acf79b296f56db949e6b6",
+      "bytes": 6603,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/dependency-447-independent/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-447-independent/ROOT-REVIEW.json",
+      "sha256": "1a2b16df994e9fde4b3074de8203778e36388294353583f5dd1b939a7e6b6092",
+      "bytes": 531,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-ready-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-ready-root/EXIT.json",
+      "sha256": "5f21cdea03b0fcd85f1f112f95776522fb6b31cbc7290eaea136ce710b2396b5",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-ready-root/result.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-ready-root/result.json",
+      "sha256": "fa618a7305f311511c763583ae552007c23e30ea972c8433893755bd3638b2d0",
+      "bytes": 112815,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-ready-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-ready-root/INDEPENDENT-RELEASE.json",
+      "sha256": "86523b736ff8f5a1caf4a720c6d3a7c1727cb877d6be01d99fbf2cf04e8ce7b5",
+      "bytes": 408,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/current-h5-456-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/current-h5-456-root/EXIT.json",
+      "sha256": "3cf1bf40bdcbffa1d103602f6f30cd532b4eed2914b7c9e1be645aad52dc1795",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/current-h5-456-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/current-h5-456-root/INDEPENDENT-RELEASE.json",
+      "sha256": "67cad9b292867a21167efd622cb8533ac55e5efef25352c59d3a326abfcd21f0",
+      "bytes": 1760,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/dependency-440-reviewed/SOURCE-MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-440-reviewed/SOURCE-MANIFEST.json",
+      "sha256": "24b3712b4225f7851d6ddaf428fccb0515f8cecf31e3102d7fa1165d26c51718",
+      "bytes": 899,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/dependency-440-reviewed/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-440-reviewed/ROOT-REVIEW.json",
+      "sha256": "bcb6baee50edbb999c6c2ba931a03fb01bc68a9ae4c1d4cda45785438391edf7",
+      "bytes": 2447,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/pagination-442-root-review/REWORK.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/pagination-442-root-review/REWORK.json",
+      "sha256": "b2170c827e9cc4e6695331b098ff041ad1a53793dfe0a154450a6dad45f0c3d6",
+      "bytes": 423,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/world-443-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/world-443-root/EXIT.json",
+      "sha256": "9ee6c55a1feb93f631a505facc1c162e8a1353f647be4ff31a97968cfccf0fc2",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/world-443-root/world-h5-default-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/world-443-root/world-h5-default-receipt.json",
+      "sha256": "baf1f68ae455d3406d0da6e224439c2c597d9e662c73aa084603f67f2fac85d2",
+      "bytes": 6328,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/world-443-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/world-443-root/INDEPENDENT-RELEASE.json",
+      "sha256": "d8d59102dc53422b8f04a7576ea9de9d641d601108320df25849e6fb11c1f680",
+      "bytes": 305,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-prereq-build/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-prereq-build/EXIT.json",
+      "sha256": "85e80d4916e0e656f243cf4289ff03fe415840f4f8cc971f9cc7499e26d9cc8b",
+      "bytes": 54,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/world-443-frozen/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/world-443-frozen/MANIFEST.json",
+      "sha256": "71957b578c4f616b9ac4262fe480a5e68f092543d8fb600dad4a509b8f56eeb6",
+      "bytes": 446,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/ci-445-independent/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/ci-445-independent/ROOT-REVIEW.json",
+      "sha256": "a4373a6879e2de72d876afcad63ea1c6a98e92661c362289381a3695422ec23a",
+      "bytes": 587,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-root/EXIT.json",
+      "sha256": "dd23590b7d919353b65dae155f5edf99683263d62565421317a9dcc9279e799d",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-root/result.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-root/result.json",
+      "sha256": "c50f236dad125c71325a014ebb27f2239e3e70e9cabf75e0921d27bfa94d81ff",
+      "bytes": 12386,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-root/INDEPENDENT-RELEASE.json",
+      "sha256": "e22ffb337f8270ab12e7fb1930b1d9de9fc2e66cd67c4a81504da9b676f97e6b",
+      "bytes": 403,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-444-frozen/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-444-frozen/MANIFEST.json",
+      "sha256": "159d603e8fba67ead4a4aff24c4ed97521a922fe192da820192bcbf4676199f0",
+      "bytes": 543,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/ci-452-preexisting/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/ci-452-preexisting/MANIFEST.json",
+      "sha256": "49e04809ce2984eb8b2c2c020d422eb985af168b3214f62eadb2c7107c3fcaed",
+      "bytes": 773,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-435-frozen/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-435-frozen/MANIFEST.json",
+      "sha256": "8c3e817d8476797000a9937b5f0cefaace3ff2c7c13d18f98315bae8d40d1401",
+      "bytes": 852,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/ci-452-reviewed/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/ci-452-reviewed/MANIFEST.json",
+      "sha256": "c7b93b22ff99d8427c35a71b4401881162786e6a72f87c6b06111c498fb047d6",
+      "bytes": 718,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-416-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-416-root/EXIT.json",
+      "sha256": "65f25b367cb829ae142a345723f63e5458bbcccb15e134669a8e15f398b31247",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-416-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-416-root/INDEPENDENT-RELEASE.json",
+      "sha256": "3d7b1e7df6333db36865f01efff946c060b6b24efb7b004261badc5e3f6a57b1",
+      "bytes": 578,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-416-root/runtime-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-416-root/runtime-receipt.json",
+      "sha256": "b0636ca1fc559b3941839f75dc90358c6f48cafe19196ed546fb3954716196da",
+      "bytes": 6222,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/current-h5-456-frozen/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/current-h5-456-frozen/MANIFEST.json",
+      "sha256": "4bb7a2ab7e67438524cf72b35ac645c369db5ee68614b1fb2f0761485d26ad58",
+      "bytes": 458,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/dependency-447-reviewed/SOURCE-MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-447-reviewed/SOURCE-MANIFEST.json",
+      "sha256": "cf0e07c466e26428651c6c5ee119718df5cdcb7853d86b33be12d294cc5bb7d2",
+      "bytes": 282,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/ci-452-independent/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/ci-452-independent/ROOT-REVIEW.json",
+      "sha256": "70143a2e476b87072fd253dd237925e4e1ca219801fa6fddce6bc834f1d7050c",
+      "bytes": 312,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/pagination-442-reviewed-source/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/pagination-442-reviewed-source/MANIFEST.json",
+      "sha256": "ae04a6f6d9964d82d5856068b6a7dfee4ac19f107d302b644969c560f5d01cac",
+      "bytes": 4433,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/home-405-frozen/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/home-405-frozen/MANIFEST.json",
+      "sha256": "7ebea47e6bbbbb8535f7df84150300c8cfd21e4a63e05d7f5d15a28a57ce8eb2",
+      "bytes": 1266,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-435-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-435-root/EXIT.json",
+      "sha256": "6f38100a7438ac583bb1a697d1d544457f325de17dd6cc98d2ec508cce590111",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-435-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-435-root/INDEPENDENT-RELEASE.json",
+      "sha256": "d58537dc87a484e844c7880a737d81fc93da1a685bcf4cbcb32a7d0140c6dcfe",
+      "bytes": 582,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-435-root/lease-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-435-root/lease-receipt.json",
+      "sha256": "2efdf8cd89eef642ea1a8a9d53e0be700cfd03bbaf32f0c8eaff3486846dd3ae",
+      "bytes": 5636,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-455-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-455-root/EXIT.json",
+      "sha256": "19be8c23fe89be131c522ef4d132daf23b90c2e634bd54fb632156954c929a18",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-455-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-455-root/INDEPENDENT-RELEASE.json",
+      "sha256": "f9d12b2ec9ad9abdeefea6df4822ad9526b2d8d4eeb972f27d0dd47c43a05ef5",
+      "bytes": 474,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/reading-455-root/runtime-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/reading-455-root/runtime-receipt.json",
+      "sha256": "c67350415910911d91e3f6b97d926e7b51a68f312689f6e1c979fc4caf7009c7",
+      "bytes": 6448,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/auth-450-reviewed/MANIFEST.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/auth-450-reviewed/MANIFEST.json",
+      "sha256": "89448ab2cd85a91cedf3c4c83849c8e332d3d288104e98350aa08b168cb91ffb",
+      "bytes": 764,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-444-root/EXIT.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-444-root/EXIT.json",
+      "sha256": "72edfe87d745b05c1a9e72bc67bca710fc7381948b3686287d8acf3f442230f3",
+      "bytes": 73,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-444-root/INDEPENDENT-RELEASE.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-444-root/INDEPENDENT-RELEASE.json",
+      "sha256": "7543d7f85a6e183ed47065605f21bd0bc6128bb4fac70ef17eb9bdb8d3ecfadd",
+      "bytes": 285,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/forbidden-444-root/lease-receipt.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-444-root/lease-receipt.json",
+      "sha256": "a63fb1404eccef77a2622e1410a2ff52a1a7cce4f9dc19eec7aae865e002166a",
+      "bytes": 6232,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/dependency-440-independent/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-440-independent/ROOT-REVIEW.json",
+      "sha256": "21d13c510185d29fa0f41f23d4c0355b86a881f26c8e424a328ebd3693926fea",
+      "bytes": 338,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/auth-450-independent/ROOT-IAM-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/auth-450-independent/ROOT-IAM-REVIEW.json",
+      "sha256": "175adf1a6de7cccac1a72a601403ed619d052ac403e039d3d2e09d79132c6182",
+      "bytes": 187,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "root-evidence/auth-450-independent/ROOT-REVIEW.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/auth-450-independent/ROOT-REVIEW.json",
+      "sha256": "b86be2f30524973d73d763e2bc6f3dd2daf1a2ce6f725f346621fd9fabc8689d",
+      "bytes": 681,
+      "scope": "PENDING_NOT_ACCEPTED"
+    },
+    {
+      "path": "ROOT-SUPERVISION.json",
+      "source": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/ROOT-SUPERVISION.json",
+      "sha256": "a092fe6d9e6678154c5175534af3a6404caf0b073f5b551f10c30bcc2ebcfbf4",
+      "bytes": 417629,
+      "scope": "PENDING_NOT_ACCEPTED"
+    }
+  ]
+}

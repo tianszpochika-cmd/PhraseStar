@@ -1,0 +1,481 @@
+diff --git a/apps/mobile/src/api/client.ts b/apps/mobile/src/api/client.ts
+index eba24cfd..3c3e2d2d 100644
+--- a/apps/mobile/src/api/client.ts
++++ b/apps/mobile/src/api/client.ts
+@@ -194,9 +194,16 @@ export const mobileApiClient = createMobileApiClient(
+   },
+ )
+ 
+-/** Password posts and the refresh cookie. No bearer. Domain calls and bearer logout stay on mobileApiClient. */
++/** Password posts and the refresh cookie. No bearer. Domain calls stay on mobileApiClient. */
+ export const mobileIamAuthClient = createMobileApiClient(
+   requireIamAuthBaseUrl(getIamAuthBaseUrl()),
+   undefined,
+   () => ({ accessToken: null, identity: null, revision: 0 }),
+ )
++
++/** H5 logout and current-session revoke. In-memory bearer only. Native logout stays on mobileApiClient. */
++export const mobileIamBearerClient = createMobileApiClient(
++  requireIamAuthBaseUrl(getIamAuthBaseUrl()),
++  undefined,
++  getInMemoryAuthRequestSnapshot,
++)
+diff --git a/apps/mobile/src/auth/gateway-auth.ts b/apps/mobile/src/auth/gateway-auth.ts
+index 1a9705a8..9e62f56e 100644
+--- a/apps/mobile/src/auth/gateway-auth.ts
++++ b/apps/mobile/src/auth/gateway-auth.ts
+@@ -8,8 +8,9 @@ import {
+   type B8RefreshRequest,
+   type B8PasswordResetConfirmRequest,
+ } from '@englishflow/contracts'
+-import { MobileApiError, mobileApiClient, mobileIamAuthClient } from '../api/client'
++import { MobileApiError, mobileApiClient, mobileIamAuthClient, mobileIamBearerClient } from '../api/client'
+ import { safeInternalReturnTo } from '../platform/gateway'
++import { isNativeAppRuntime } from '../platform/uni-runtime'
+ 
+ export type MobileAdultGateStatus = 'UNKNOWN' | 'REQUIRED' | 'PASSED' | 'REJECTED'
+ export type MobileAdultLearningAccess = NonNullable<B8AdultGateResponse['learningAccess']> | 'UNKNOWN'
+@@ -152,6 +153,10 @@ function authIdempotencyKey(prefix: string): string {
+   return `${prefix}-${Date.now()}-${loginSequence}`
+ }
+ 
++function sessionLifecycleClient() {
++  return isNativeAppRuntime() ? mobileApiClient : mobileIamBearerClient
++}
++
+ export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
+   return {
+     async login(input) {
+@@ -224,7 +229,7 @@ export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
+       }))
+     },
+     async logout(input) {
+-      await mobileApiClient.request('/auth/logout', {
++      await sessionLifecycleClient().request('/auth/logout', {
+         method: 'POST',
+         data: input ?? {},
+         header: { 'Idempotency-Key': authIdempotencyKey('logout') },
+@@ -233,7 +238,7 @@ export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
+       })
+     },
+     async revoke(sessionId) {
+-      await mobileApiClient.request(`/auth/sessions/${encodeURIComponent(sessionId)}/revoke`, {
++      await sessionLifecycleClient().request(`/auth/sessions/${encodeURIComponent(sessionId)}/revoke`, {
+         method: 'POST',
+         data: {},
+         header: { 'Idempotency-Key': authIdempotencyKey('revoke') },
+diff --git a/apps/mobile/tests/iam-auth-transport.test.mjs b/apps/mobile/tests/iam-auth-transport.test.mjs
+index abb88953..3d965c7d 100644
+--- a/apps/mobile/tests/iam-auth-transport.test.mjs
++++ b/apps/mobile/tests/iam-auth-transport.test.mjs
+@@ -37,8 +37,13 @@ test('mobile IAM auth base stays on TLS and rejects an http override', async ()
+   assert.throws(() => gateway.requireIamAuthBaseUrl('http://127.0.0.1:18087/api/v1'), /HTTPS/)
+ })
+ 
+-test('mobile password posts and refresh use the IAM client; domain reads and logout stay on the Gateway client', async () => {
+-  const calls = []
++function headerOf(call, name) {
++  const header = call.options?.header ?? {}
++  const match = Object.keys(header).find((key) => key.toLowerCase() === name.toLowerCase())
++  return match ? header[match] : undefined
++}
++
++function loadAuthAdapter(calls, native) {
+   function client(name, url) {
+     return {
+       async request(path, options = {}) {
+@@ -53,10 +58,17 @@ test('mobile password posts and refresh use the IAM client; domain reads and log
+       MobileApiError: class MobileApiError extends Error { constructor(message, status) { super(message); this.status = status } },
+       mobileApiClient: client('gateway', 'http://127.0.0.1:18070/api/v1'),
+       mobileIamAuthClient: client('iam', 'https://127.0.0.1:18087/api/v1'),
++      mobileIamBearerClient: client('iam-bearer', 'https://127.0.0.1:18087/api/v1'),
+     },
+     '../platform/gateway': { safeInternalReturnTo: (value, fallback) => (typeof value === 'string' ? value : fallback) },
++    '../platform/uni-runtime': { isNativeAppRuntime: () => native },
+   })
+-  const adapter = auth.createGatewayMobileAuthAdapter()
++  return auth.createGatewayMobileAuthAdapter()
++}
++
++test('mobile password posts and refresh use bearer-less IAM TLS; H5 logout and current-session revoke use the in-memory bearer IAM client', async () => {
++  const calls = []
++  const adapter = loadAuthAdapter(calls, false)
+   const password = 'fixture-password'
+   const credentials = { identifier: 'learner@example.com', password, device: { deviceType: 'MOBILE', clientVersion: 'test' } }
+   await adapter.login(credentials)
+@@ -66,6 +78,7 @@ test('mobile password posts and refresh use the IAM client; domain reads and log
+   await adapter.getPermissions()
+   await adapter.refresh()
+   await adapter.logout()
++  await adapter.revoke('session-1')
+ 
+   const sequence = calls.map((call) => ({
+     name: call.name,
+@@ -82,7 +95,8 @@ test('mobile password posts and refresh use the IAM client; domain reads and log
+     { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/password-reset/confirm', method: 'POST' },
+     { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/iam/principal/me', method: 'GET' },
+     { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/token/refresh', method: 'POST' },
+-    { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/auth/logout', method: 'POST' },
++    { name: 'iam-bearer', url: 'https://127.0.0.1:18087/api/v1/auth/logout', method: 'POST' },
++    { name: 'iam-bearer', url: 'https://127.0.0.1:18087/api/v1/auth/sessions/session-1/revoke', method: 'POST' },
+   ])
+   const secretPosts = calls.filter((call) => (
+     call.url.endsWith('/auth/login')
+@@ -91,9 +105,29 @@ test('mobile password posts and refresh use the IAM client; domain reads and log
+   ))
+   assert.equal(secretPosts.length, 3)
+   assert.ok(secretPosts.every((call) => call.name === 'iam' && call.url.startsWith('https://') && JSON.stringify(call.options.data).includes(password)))
+-  assert.equal(calls.some((call) => call.name === 'gateway' && JSON.stringify(call.options.data ?? {}).includes(password)), false)
+-  assert.ok(calls.filter((call) => call.name === 'iam').every((call) => call.url.startsWith('https://127.0.0.1:18087/')))
++  assert.equal(calls.some((call) => call.name !== 'iam' && JSON.stringify(call.options.data ?? {}).includes(password)), false)
++  assert.ok(calls.filter((call) => call.name === 'iam' || call.name === 'iam-bearer').every((call) => call.url.startsWith('https://127.0.0.1:18087/')))
+   assert.ok(calls.filter((call) => call.name === 'gateway').every((call) => call.url.startsWith('http://127.0.0.1:18070/')))
++  const h5SessionPosts = calls.filter((call) => call.name === 'iam-bearer')
++  assert.equal(h5SessionPosts.length, 2)
++  assert.ok(h5SessionPosts.every((call) => headerOf(call, 'X-Auth-Transport') === undefined))
++})
++
++test('native logout and current-session revoke stay on the Gateway client', async () => {
++  const calls = []
++  const adapter = loadAuthAdapter(calls, true)
++  const password = 'fixture-password'
++  await adapter.login({ identifier: 'learner@example.com', password, device: { deviceType: 'IOS', clientVersion: 'test' } })
++  await adapter.logout()
++  await adapter.revoke('session-1')
++  assert.deepEqual(calls.map((call) => ({ name: call.name, url: call.url, method: call.options.method ?? 'GET' })), [
++    { name: 'iam', url: 'https://127.0.0.1:18087/api/v1/auth/login', method: 'POST' },
++    { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/auth/logout', method: 'POST' },
++    { name: 'gateway', url: 'http://127.0.0.1:18070/api/v1/auth/sessions/session-1/revoke', method: 'POST' },
++  ])
++  assert.equal(JSON.stringify(calls[0].options.data).includes(password), true)
++  assert.equal(calls.some((call) => call.name === 'iam-bearer'), false)
++  assert.ok(calls.slice(1).every((call) => call.name === 'gateway' && headerOf(call, 'X-Auth-Transport') === undefined))
+ })
+ 
+ test('mobile IAM client posts the password to TLS without the current bearer', async () => {
+@@ -132,3 +166,49 @@ test('mobile IAM client posts the password to TLS without the current bearer', a
+   assert.equal(requests[0].url, 'http://127.0.0.1:18070/api/v1/iam/permissions')
+   assert.equal(requests[0].header.Authorization, 'Bearer stale-bearer')
+ })
++
++test('mobile IAM bearer client posts H5 logout to TLS with the in-memory bearer and credentials', async () => {
++  const gateway = await loadEsm('src/platform/gateway.ts')
++  const requests = []
++  const snapshot = {
++    accessToken: 'memory-bearer',
++    identity: { subject: 'A', revision: 3 },
++    revision: 3,
++  }
++  const api = loadCjs('src/api/client.ts', {
++    '../platform/gateway': gateway,
++    '../platform/uni-runtime': {
++      getUniRuntime: () => ({
++        request(options) {
++          requests.push(options)
++          options.success({ statusCode: 200, data: { status: 'REVOKED' } })
++        },
++      }),
++    },
++    '../auth/access-token': {
++      getInMemoryAuthRequestSnapshot: () => snapshot,
++    },
++  })
++  await api.mobileIamBearerClient.request('/auth/logout', {
++    method: 'POST',
++    data: {},
++    skipAuthRetry: true,
++    authBootstrap: 'logout',
++  })
++  assert.equal(requests.length, 1)
++  assert.equal(requests[0].url, 'https://127.0.0.1:18087/api/v1/auth/logout')
++  assert.equal(requests[0].withCredentials, true)
++  assert.equal(requests[0].header.Authorization, `Bearer ${snapshot.accessToken}`)
++  assert.equal(requests[0].header['X-Auth-Transport'], undefined)
++  assert.equal(Object.keys(requests[0].header).some((key) => key.toLowerCase() === 'x-auth-transport'), false)
++
++  requests.length = 0
++  await api.mobileIamAuthClient.request('/auth/login', {
++    method: 'POST',
++    data: { identifier: 'learner@example.com', password: 'fixture-password' },
++    skipAuthRetry: true,
++  })
++  assert.equal(requests[0].url, 'https://127.0.0.1:18087/api/v1/auth/login')
++  assert.equal(requests[0].header.Authorization, undefined)
++  assert.equal(requests[0].withCredentials, true)
++})
+diff --git a/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs b/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs
+index ef2442b8..019dfdf3 100644
+--- a/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs
++++ b/apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs
+@@ -59,6 +59,7 @@ function environment() {
+   const auth = load('src/auth/gateway-auth.ts', {
+     '../api/client': api,
+     '../platform/gateway': gateway,
++    '../platform/uni-runtime': platform,
+   })
+   const secureStorageProvider = load('src/platform/secure-storage-provider.ts', { './uni-runtime': platform })
+   const sessionModule = load('src/stores/session.ts', {
+@@ -252,7 +253,10 @@ test('a late refreshed A principal cannot replace B after logout while restore w
+   const loggingOut = env.session.logout()
+   await waitFor(() => env.requests.length === 5)
+   const logoutRequest = requestAt(env, '/auth/logout')
++  assert.equal(new URL(logoutRequest.url).origin, 'https://iam.example.test')
++  assert.equal(logoutRequest.withCredentials, true)
+   assert.equal(logoutRequest.header.Authorization, 'Bearer token-A-refreshed')
++  assert.equal(logoutRequest.header['X-Auth-Transport'], undefined)
+   await completeRequest(logoutRequest, 204)
+   assert.equal(await loggingOut, true)
+   assert.equal(env.session.verifiedSubject, null)
+@@ -441,7 +445,10 @@ test('real logout adapter can revoke the old token only on its exact route after
+   await waitFor(() => env.requests.length === 3)
+   const logoutRequest = requestAt(env, '/auth/logout')
+   assert.equal(logoutRequest.method, 'POST')
++  assert.equal(new URL(logoutRequest.url).origin, 'https://iam.example.test')
++  assert.equal(logoutRequest.withCredentials, true)
+   assert.equal(logoutRequest.header.Authorization, 'Bearer token-A')
++  assert.equal(logoutRequest.header['X-Auth-Transport'], undefined)
+   assert.equal(env.accessTokens.getInMemoryAuthRequestSnapshot().identity, null)
+   await completeRequest(logoutRequest, 204)
+ 
+@@ -463,7 +470,10 @@ test('real revoke adapter can revoke a session only on the session-specific rout
+   await waitFor(() => env.requests.length === 3)
+   const revokeRequest = requestAt(env, '/auth/sessions/session-A/revoke')
+   assert.equal(revokeRequest.method, 'POST')
++  assert.equal(new URL(revokeRequest.url).origin, 'https://iam.example.test')
++  assert.equal(revokeRequest.withCredentials, true)
+   assert.equal(revokeRequest.header.Authorization, 'Bearer token-A')
++  assert.equal(revokeRequest.header['X-Auth-Transport'], undefined)
+   assert.equal(env.accessTokens.getInMemoryAuthRequestSnapshot().identity, null)
+   await completeRequest(revokeRequest, 204)
+ 
+diff --git a/apps/mobile/tests/onboarding-auth-projection.test.mjs b/apps/mobile/tests/onboarding-auth-projection.test.mjs
+index 16e155fd..8686edf4 100644
+--- a/apps/mobile/tests/onboarding-auth-projection.test.mjs
++++ b/apps/mobile/tests/onboarding-auth-projection.test.mjs
+@@ -8,8 +8,9 @@ function adapter(response) {
+   const calls = [], module = { exports: {} }
+   const client = { request: async (path, options = {}) => { calls.push({ path, method: options.method ?? 'GET' }); return { data: response } } }
+   new Function('require', 'module', 'exports', compiled)(name => {
+-    if (name === '../api/client') return { mobileApiClient: client, mobileIamAuthClient: client, MobileApiError: class extends Error {} }
++    if (name === '../api/client') return { mobileApiClient: client, mobileIamAuthClient: client, mobileIamBearerClient: client, MobileApiError: class extends Error {} }
+     if (name === '../platform/gateway') return { safeInternalReturnTo: (_value, fallback) => fallback }
++    if (name === '../platform/uni-runtime') return { isNativeAppRuntime: () => false }
+     throw new Error(`Unexpected import ${name}`)
+   }, module, module.exports)
+   return { adapter: module.exports.createGatewayMobileAuthAdapter(), calls }
+diff --git a/services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java b/services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java
+new file mode 100644
+index 00000000..1881e2c2
+--- /dev/null
++++ b/services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java
+@@ -0,0 +1,210 @@
++package com.englishflow.iam.web;
++
++import com.englishflow.iam.auth.JwtSigningKeyProvider;
++import com.englishflow.iam.auth.JwtTokenService;
++import com.englishflow.iam.config.IamServiceProperties;
++import com.englishflow.iam.domain.AccountRecord;
++import com.englishflow.iam.domain.AdultGateService;
++import com.englishflow.iam.domain.ClientAuthorityClaims;
++import com.englishflow.iam.domain.ConsentPolicyPort;
++import com.englishflow.iam.domain.ConsentService;
++import com.englishflow.iam.domain.DeviceId;
++import com.englishflow.iam.domain.DeviceRegistrationCommand;
++import com.englishflow.iam.domain.DeviceService;
++import com.englishflow.iam.domain.IamTransactionRunner;
++import com.englishflow.iam.domain.IdempotencyService;
++import com.englishflow.iam.domain.InMemoryAccountStore;
++import com.englishflow.iam.domain.InMemoryAdultGateFactStore;
++import com.englishflow.iam.domain.InMemoryAuditFactPort;
++import com.englishflow.iam.domain.InMemoryConsentStore;
++import com.englishflow.iam.domain.InMemoryDeviceRegistry;
++import com.englishflow.iam.domain.InMemoryIdempotencyStore;
++import com.englishflow.iam.domain.InMemoryPasswordResetChallengeStore;
++import com.englishflow.iam.domain.InMemoryPasswordResetDelivery;
++import com.englishflow.iam.domain.InMemoryRateLimitStore;
++import com.englishflow.iam.domain.InMemorySessionStore;
++import com.englishflow.iam.domain.PasswordAccountService;
++import com.englishflow.iam.domain.PasswordResetService;
++import com.englishflow.iam.domain.PrincipalId;
++import com.englishflow.iam.domain.ServerPrincipalContext;
++import com.englishflow.iam.domain.SessionRecord;
++import com.englishflow.iam.domain.SessionService;
++import com.englishflow.iam.domain.SessionStatus;
++import com.englishflow.iam.domain.StaticConsentPolicy;
++import com.fasterxml.jackson.databind.ObjectMapper;
++import com.nimbusds.jose.jwk.source.JWKSource;
++import com.nimbusds.jose.proc.SecurityContext;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.http.HttpHeaders;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.core.authority.SimpleGrantedAuthority;
++import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
++import org.springframework.security.oauth2.jwt.Jwt;
++import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
++import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
++
++import java.time.Clock;
++import java.time.Duration;
++import java.time.Instant;
++import java.time.ZoneOffset;
++import java.time.ZonedDateTime;
++import java.time.format.DateTimeFormatter;
++import java.util.LinkedHashMap;
++import java.util.List;
++import java.util.Locale;
++import java.util.Map;
++import java.util.UUID;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++class IamLogoutCookieClearControllerTest {
++
++    private static final Instant NOW = Instant.parse("2026-10-09T00:00:00Z");
++    private static final String PASSWORD = "ValidPassword123!";
++
++    private IamServiceProperties properties;
++    private SessionService sessions;
++    private IamAuthenticationController controller;
++    private PrincipalId principalId;
++    private SessionRecord session;
++    private JwtAuthenticationToken authToken;
++
++    @BeforeEach
++    void setUp() {
++        Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
++        properties = new IamServiceProperties();
++        properties.getJwt().setIssuer("https://auth.englishflow.test");
++        properties.getJwt().setAudience("englishflow-platform");
++        properties.getJwt().setEphemeralKeysAllowed(true);
++        properties.getJwt().setAccessTokenTtl(Duration.ofMinutes(15));
++        properties.getJwt().setRefreshTokenTtl(Duration.ofDays(30));
++        properties.getJwt().setRefreshCookieSecure(true);
++        properties.getJwt().setRefreshCookieName("yuxuexing_refresh");
++        properties.getIdempotency().setReplaySecret("controller-replay-secret-for-idempotency-2026");
++        properties.getIdempotency().setFingerprintSecret("controller-fingerprint-secret-for-idempotency-2026");
++        properties.setLocalAdultGateEnabled(true);
++
++        InMemoryAuditFactPort audit = new InMemoryAuditFactPort();
++        InMemoryRateLimitStore rateLimits = new InMemoryRateLimitStore();
++        InMemoryAccountStore accounts = new InMemoryAccountStore();
++        PasswordAccountService passwords = new PasswordAccountService(
++                accounts, new BCryptPasswordEncoder(12), audit, clock, properties, rateLimits);
++        AccountRecord account = passwords.register("h5-logout@example.com", PASSWORD, ClientAuthorityClaims.none());
++        principalId = account.principalId();
++        ServerPrincipalContext context = ServerPrincipalContext.forPlatform(principalId, account.roles());
++
++        sessions = new SessionService(new InMemorySessionStore(), audit, clock, properties);
++        DeviceService devices = new DeviceService(new InMemoryDeviceRegistry(), audit, clock);
++        DeviceId deviceId = new DeviceId(UUID.randomUUID().toString());
++        devices.register(context, new DeviceRegistrationCommand(deviceId, "H5", "Mobile H5", ClientAuthorityClaims.none()));
++        session = sessions.open(context, deviceId).session();
++
++        InMemoryAdultGateFactStore adultGateFacts = new InMemoryAdultGateFactStore();
++        AdultGateService adultGates = new AdultGateService(audit, clock, adultGateFacts, sessions, IamTransactionRunner.direct());
++        ConsentPolicyPort consentPolicy = StaticConsentPolicy.localCandidate(true);
++        InMemoryConsentStore consentStore = new InMemoryConsentStore();
++        ConsentService consents = new ConsentService(consentStore, consentPolicy, audit, clock, sessions, IamTransactionRunner.direct());
++        PasswordResetService passwordResets = new PasswordResetService(accounts,
++                new InMemoryPasswordResetChallengeStore(), passwords, audit, clock, properties,
++                sessions, IamTransactionRunner.direct(), rateLimits,
++                new InMemoryPasswordResetDelivery(), properties.getIdempotency().getFingerprintSecret());
++
++        JwtSigningKeyProvider keys = new JwtSigningKeyProvider(properties);
++        JWKSource<SecurityContext> source = (selector, ctx) -> List.of(keys.signingKey());
++        JwtTokenService tokens = new JwtTokenService(new NimbusJwtEncoder(source), keys, properties, clock);
++        IdempotencyService idempotency = new IdempotencyService(new InMemoryIdempotencyStore(),
++                new ObjectMapper().findAndRegisterModules(),
++                IamTransactionRunner.direct(), properties.getIdempotency().getReplaySecret(),
++                properties.getIdempotency().getFingerprintSecret(), Duration.ofHours(24));
++
++        controller = new IamAuthenticationController(properties, passwords,
++                passwordResets, tokens, keys, sessions, devices, adultGates, adultGateFacts,
++                consents, consentStore, idempotency, clock);
++        authToken = createAuthToken(session);
++    }
++
++    @Test
++    void webCookieCurrentSessionLogoutClearsRefreshCookieAttributes() {
++        ResponseEntity<?> response = controller.logout(authToken, null, null, "web-cookie-logout-key-01");
++        assertEquals(200, response.getStatusCode().value());
++        assertEquals(SessionStatus.REVOKED, sessions.find(session.sessionId()).status());
++        assertClearCookie(response, true);
++    }
++
++    @Test
++    void webCookieCurrentSessionRevokeClearsRefreshCookieAttributes() {
++        ResponseEntity<?> response = controller.revoke(
++                authToken, session.sessionId().toString(), null, "web-cookie-revoke-key-01");
++        assertEquals(200, response.getStatusCode().value());
++        assertEquals(SessionStatus.REVOKED, sessions.find(session.sessionId()).status());
++        assertClearCookie(response, true);
++    }
++
++    @Test
++    void webCookieLogoutOmitsSecureWhenRefreshCookieIsNotConfiguredSecure() {
++        properties.getJwt().setRefreshCookieSecure(false);
++        ResponseEntity<?> response = controller.logout(authToken, null, null, "web-cookie-logout-key-02");
++        assertEquals(200, response.getStatusCode().value());
++        assertClearCookie(response, false);
++    }
++
++    private JwtAuthenticationToken createAuthToken(SessionRecord userSession) {
++        Jwt jwt = Jwt.withTokenValue("jwt-" + UUID.randomUUID())
++                .header("alg", "RS256")
++                .header("typ", "JWT")
++                .subject(principalId.toString())
++                .issuedAt(NOW)
++                .expiresAt(NOW.plus(Duration.ofMinutes(15)))
++                .claim("token_type", "access")
++                .claim("tenant_id", userSession.scope().tenantId())
++                .claim("owner_id", userSession.scope().owner().toString())
++                .claim("session_id", userSession.sessionId().toString())
++                .claim("device_id", userSession.deviceId().value())
++                .build();
++        return new JwtAuthenticationToken(jwt, List.of(new SimpleGrantedAuthority("TOKEN_TYPE_access")));
++    }
++
++    private static void assertClearCookie(ResponseEntity<?> response, boolean secureConfigured) {
++        List<String> cookies = response.getHeaders().get(HttpHeaders.SET_COOKIE);
++        assertNotNull(cookies);
++        assertEquals(1, cookies.size());
++        Map<String, String> attrs = cookieAttributes(cookies.getFirst());
++        assertEquals("yuxuexing_refresh", attrs.get("name"));
++        assertEquals("", attrs.get("value"));
++        assertEquals("/api/v1/auth", attrs.get("Path"));
++        assertEquals("0", attrs.get("Max-Age"));
++        assertTrue(attrs.containsKey("Expires"), cookies.getFirst());
++        Instant expires = ZonedDateTime.parse(attrs.get("Expires"), DateTimeFormatter.RFC_1123_DATE_TIME.withLocale(Locale.US))
++                .toInstant();
++        assertTrue(expires.isBefore(NOW), attrs.get("Expires"));
++        assertTrue(attrs.containsKey("HttpOnly"), cookies.getFirst());
++        assertEquals("None", attrs.get("SameSite"));
++        assertTrue(attrs.containsKey("Partitioned"), cookies.getFirst());
++        if (secureConfigured) {
++            assertTrue(attrs.containsKey("Secure"), cookies.getFirst());
++        } else {
++            assertFalse(attrs.containsKey("Secure"), cookies.getFirst());
++        }
++    }
++
++    private static Map<String, String> cookieAttributes(String header) {
++        String[] parts = header.split(";");
++        Map<String, String> attrs = new LinkedHashMap<>();
++        String first = parts[0].trim();
++        int eq = first.indexOf('=');
++        assertTrue(eq >= 0, header);
++        attrs.put("name", first.substring(0, eq));
++        attrs.put("value", first.substring(eq + 1));
++        for (int i = 1; i < parts.length; i++) {
++            String part = parts[i].trim();
++            int sep = part.indexOf('=');
++            if (sep < 0) attrs.put(part, "");
++            else attrs.put(part.substring(0, sep), part.substring(sep + 1));
++        }
++        return attrs;
++    }
++}

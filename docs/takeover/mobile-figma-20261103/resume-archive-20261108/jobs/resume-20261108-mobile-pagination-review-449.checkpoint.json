@@ -1,0 +1,18 @@
+{
+  "state": "exited",
+  "started_at_utc": "2026-11-08T00:53:00.272588+00:00",
+  "runner_pid": 29320,
+  "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449-job.json",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+  "session": "01a1b8a4-f3b9-7a10-9c50-b3378a895f02",
+  "task_file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449-task.md",
+  "cli": "grok",
+  "stdout_jsonl": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449.events.jsonl",
+  "stderr": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108-mobile-pagination-review-449.stderr.log",
+  "quota": "UNKNOWN",
+  "cli_pid": 29322,
+  "exit_code": 0,
+  "finished_at_utc": "2026-11-08T01:11:40.323928+00:00",
+  "session_source": "CLI end.sessionId receipt",
+  "terminalReason": "end_turn"
+}

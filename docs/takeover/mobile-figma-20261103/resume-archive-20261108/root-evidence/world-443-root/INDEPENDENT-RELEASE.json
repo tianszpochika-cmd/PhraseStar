@@ -1,0 +1,14 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18094": true,
+    "18183": true
+  },
+  "ownedNameAbsent": true,
+  "ownedLabelAbsent": true,
+  "result": "PASS_DEFAULT_OWNER_EMPTY",
+  "at": "2026-11-08T00:55:31.939928+00:00"
+}

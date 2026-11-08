@@ -1,0 +1,4247 @@
+{
+  "kind": "MB004_R1_008_LOCAL_HTTP_ACCEPTANCE",
+  "schemaVersion": "1",
+  "generatedAt": "2026-11-08T01:00:10.163Z",
+  "mode": "run",
+  "status": "FAIL",
+  "preflightStatus": "PASS",
+  "candidate": {
+    "repo": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+    "expectedCommit": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+    "head": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+    "branch": null,
+    "trackedClean": true,
+    "authorOnly": true
+  },
+  "fixture": {
+    "path": "apps/mobile/tests/fixtures/mock-consent-publication.json",
+    "fileSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846",
+    "documents": [
+      {
+        "type": "TERMS",
+        "purpose": "ACCOUNT_TERMS",
+        "documentVersion": "mock-mb004-terms-v1",
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411",
+        "codePoints": 180,
+        "bytes": 485
+      },
+      {
+        "type": "PRIVACY",
+        "purpose": "PRIVACY_NOTICE",
+        "documentVersion": "mock-mb004-privacy-v1",
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451",
+        "codePoints": 165,
+        "bytes": 436
+      },
+      {
+        "type": "ADULT_LEARNING",
+        "purpose": "ADULT_LEARNING_ELIGIBILITY",
+        "documentVersion": "mock-mb004-adult-v1",
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15",
+        "codePoints": 156,
+        "bytes": 413
+      }
+    ]
+  },
+  "runtime": {
+    "status": "COMPLETED",
+    "reason": null,
+    "gateway": "http://127.0.0.1:18070/api/v1",
+    "iam": "https://127.0.0.1:18087/api/v1",
+    "mysql": "127.0.0.1:13306/iam_service",
+    "profiles": [
+      "local"
+    ],
+    "policySource": "control-plane",
+    "fixtureRuntimeStatus": "NOT_RUNTIME_VERIFIED",
+    "runId": "mw74l3ab-5b87946d",
+    "principalIdPresent": true,
+    "principalIdSha256": "39744f53c91d3b3a42c06c345ee272a6746b0d0e5521ae505ab8b3a0e60db302",
+    "seed": {
+      "fixtureRows": 3,
+      "documentBodyColumn": true,
+      "runtimeStatus": "NOT_RUNTIME_VERIFIED"
+    },
+    "jars": {
+      "iam": "4a3e3e5869558dc075d9b8a898a3bba23cc7b7935ea490e019e8d5d8e0790edf",
+      "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1"
+    },
+    "tls": {
+      "material": "../../../../../tmp/cloudstudy-mobile-placement-qa.i9WEsvj8/dsh-mb033-b72-mw74l3ab-581469/tls",
+      "caSha256": "3fe8220831fac21a424787570066e3947967a96c476f044fc643ca31317ad483"
+    },
+    "logs": {
+      "iam": "../../../../../tmp/cloudstudy-mobile-placement-qa.i9WEsvj8/dsh-mb033-b72-mw74l3ab-581469/logs/iam.log",
+      "gateway": "../../../../../tmp/cloudstudy-mobile-placement-qa.i9WEsvj8/dsh-mb033-b72-mw74l3ab-581469/logs/gateway.log"
+    }
+  },
+  "checks": [
+    {
+      "id": "run.approval",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.disposable_confirmation",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.mysql_user",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "run.mysql_password",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "repo.candidate",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "head": "61b9ede7c65ef065c76c846c27fb69a52cd042cd",
+        "expected": "61b9ede7c65ef065c76c846c27fb69a52cd042cd"
+      }
+    },
+    {
+      "id": "repo.clean",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "dirty": []
+      }
+    },
+    {
+      "id": "repo.branch",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "branch": null,
+        "authorOnly": true
+      }
+    },
+    {
+      "id": "fixture.scope",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fixtureScope": "SYNTHETIC_TEST_ONLY"
+      }
+    },
+    {
+      "id": "fixture.count",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 3
+      }
+    },
+    {
+      "id": "fixture.order",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "order": [
+          "TERMS",
+          "PRIVACY",
+          "ADULT_LEARNING"
+        ]
+      }
+    },
+    {
+      "id": "fixture.TERMS.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411",
+        "codePoints": 180,
+        "bytes": 485
+      }
+    },
+    {
+      "id": "fixture.TERMS.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.TERMS.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.PRIVACY.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451",
+        "codePoints": 165,
+        "bytes": 436
+      }
+    },
+    {
+      "id": "fixture.PRIVACY.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.PRIVACY.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15",
+        "codePoints": 156,
+        "bytes": 413
+      }
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "fixture.ADULT_LEARNING.published_at",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "publishedAt": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "fixture.file_sha256",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fileSha256": "aaf60cd02f10ae6eec3534edd9bc304baa7b9cc6b766012591d98f2430ac9846"
+      }
+    },
+    {
+      "id": "routes.iam",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "routes.gateway",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "mobile.transport",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "directIamHttps": true,
+        "gatewayLoopback": true,
+        "h5Device": true,
+        "passwordPosts": true,
+        "refreshPath": true,
+        "principalPath": true,
+        "adultGatePath": true,
+        "idempotencyHeader": true,
+        "expectedDigest": true,
+        "publishedDocuments": true,
+        "withCredentials": true
+      }
+    },
+    {
+      "id": "migration.v19",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "path": "services/iam-service/src/main/resources/db/migration/V19__add_iam_consent_document_body.sql"
+      }
+    },
+    {
+      "id": "owner.schema",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "schema": "iam_service"
+      }
+    },
+    {
+      "id": "sql.use_iam_service",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.only_fixture_versions",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.full.three",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.partial.two",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "hasTerms": true,
+        "hasPrivacy": true,
+        "hasAdult": false
+      }
+    },
+    {
+      "id": "sql.cleanup.scoped",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.runtime_status",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.TERMS.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.PRIVACY.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.digest",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.ADULT_LEARNING.storage",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "sql.fixture_ids",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "ids": [
+          "b0040000-0000-4000-8000-000000000001",
+          "b0040000-0000-4000-8000-000000000002",
+          "b0040000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "id": "seed.helper.exists",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "path": "/private/tmp/grok-mobile-resume-home-405/run/harness/seed/Seed.java"
+      }
+    },
+    {
+      "id": "seed.helper.guard",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "java.25",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "jars.iam",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "jars.gateway",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "jars.iam.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "4a3e3e5869558dc075d9b8a898a3bba23cc7b7935ea490e019e8d5d8e0790edf"
+      }
+    },
+    {
+      "id": "jars.gateway.digest",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "digest": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1"
+      }
+    },
+    {
+      "id": "mysql.reachable",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "ports.gateway_free",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "ports.iam_free",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "iam.started",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "port": 18087,
+        "pid": 30422
+      }
+    },
+    {
+      "id": "iam.ready",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "port": 18087
+      }
+    },
+    {
+      "id": "gateway.started",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "port": 18070,
+        "pid": 30426
+      }
+    },
+    {
+      "id": "gateway.ready",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "port": 18070
+      }
+    },
+    {
+      "id": "seed.partial",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fixtureRows": 2,
+        "documentBodyColumn": true
+      }
+    },
+    {
+      "id": "partial.register.503",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 503
+      }
+    },
+    {
+      "id": "partial.register.error",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "errorCode": "SERVICE_UNAVAILABLE",
+        "message": "iam.consent.version_unavailable"
+      }
+    },
+    {
+      "id": "partial.register.no_token",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "seed.full",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "fixtureRows": 3,
+        "documentBodyColumn": true
+      }
+    },
+    {
+      "id": "auth.register.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 201,
+        "expected": 201
+      }
+    },
+    {
+      "id": "auth.register.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 201
+      }
+    },
+    {
+      "id": "auth.register.direct.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "auth.register.direct.content_type",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "contentType": "application/json"
+      }
+    },
+    {
+      "id": "auth.register.direct.token",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authTransport": "WEB_COOKIE",
+        "tokenType": "Bearer",
+        "hasAccessToken": true,
+        "refreshTokenInBody": false,
+        "hasSessionId": true,
+        "hasDeviceId": true
+      }
+    },
+    {
+      "id": "auth.register.direct.cookie",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "present": true,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None",
+        "partitioned": true,
+        "path": "/api/v1/auth",
+        "maxAgePositive": true
+      }
+    },
+    {
+      "id": "principal.anonymous.denied",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 401
+      }
+    },
+    {
+      "id": "principal.anonymous.no_token",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.pre_gate.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "principal.pre_gate.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "principal.pre_gate.key_absent",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "keyPresent": false
+      }
+    },
+    {
+      "id": "principal.pre_gate.wire_absent",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.pre_gate.body_absent",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.pre_gate.restricted",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": "RESTRICTED",
+        "accepted": false
+      }
+    },
+    {
+      "id": "adult_gate.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "adult_gate.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "adult_gate.passed",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": "PASSED",
+        "learningAccess": "ELIGIBLE",
+        "evidenceStatus": "SERVER_VERIFIED"
+      }
+    },
+    {
+      "id": "principal.docs.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "principal.docs.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "principal.docs.content_type",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.utf8",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "utf8Error": null
+      }
+    },
+    {
+      "id": "principal.docs.restricted_until_consent",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": "RESTRICTED",
+        "learningAccess": "ELIGIBLE",
+        "accepted": false
+      }
+    },
+    {
+      "id": "principal.docs.count",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 3
+      }
+    },
+    {
+      "id": "principal.docs.TERMS.exact",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "TERMS",
+        "purpose": "ACCOUNT_TERMS",
+        "codePoints": 180,
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411"
+      }
+    },
+    {
+      "id": "principal.docs.TERMS.published_at",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "actual": "2026-11-05T00:00:00Z",
+        "expected": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "principal.docs.TERMS.hash",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "recomputed": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411"
+      }
+    },
+    {
+      "id": "principal.docs.TERMS.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.PRIVACY.exact",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "PRIVACY",
+        "purpose": "PRIVACY_NOTICE",
+        "codePoints": 165,
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451"
+      }
+    },
+    {
+      "id": "principal.docs.PRIVACY.published_at",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "actual": "2026-11-05T00:00:00Z",
+        "expected": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "principal.docs.PRIVACY.hash",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "recomputed": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451"
+      }
+    },
+    {
+      "id": "principal.docs.PRIVACY.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.ADULT_LEARNING.exact",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "ADULT_LEARNING",
+        "purpose": "ADULT_LEARNING_ELIGIBILITY",
+        "codePoints": 156,
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15"
+      }
+    },
+    {
+      "id": "principal.docs.ADULT_LEARNING.published_at",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "actual": "2026-11-05T00:00:00Z",
+        "expected": "2026-11-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "principal.docs.ADULT_LEARNING.hash",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "recomputed": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15"
+      }
+    },
+    {
+      "id": "principal.docs.ADULT_LEARNING.no_nul",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.no_state_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.no_state_docs",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.docs.wire_literal",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "allBodiesLiteralInWireJson": true
+      }
+    },
+    {
+      "id": "jwks.mobile_origin.diagnostic",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "historicalFailedResult": {
+          "archived": true,
+          "check": "jwks.status",
+          "status": 403
+        },
+        "knownSample": 403,
+        "status": 403,
+        "browserPublicJwksAccepted": false
+      }
+    },
+    {
+      "id": "jwks.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "jwks.keys",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "jwks.public_rs256",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "jwks.no_store",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "cacheControl": "max-age=300, public"
+      }
+    },
+    {
+      "id": "jwt.initial.signature",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "alg": "RS256",
+        "typ": "JWT",
+        "kid": "iam-local-2026-08"
+      }
+    },
+    {
+      "id": "jwt.initial.claims",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "issuer": "http://127.0.0.1:18087",
+        "audience": [
+          "yuxuexing-api"
+        ],
+        "tokenType": "access",
+        "hasSubject": true,
+        "hasSession": true,
+        "hasDevice": true,
+        "tenant": "platform",
+        "exp": 1794100521
+      }
+    },
+    {
+      "id": "jwt.initial.principal_binding",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "subjectMatchesPrincipal": true,
+        "sessionMatchesPrincipal": true,
+        "deviceMatchesPrincipal": true
+      }
+    },
+    {
+      "id": "consent.missing_key.400",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 400,
+        "errorCode": "VALIDATION_ERROR",
+        "message": "iam.idempotency.invalid"
+      }
+    },
+    {
+      "id": "consent.stale.409",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "CONFLICT",
+        "message": "iam.consent.version_mismatch"
+      }
+    },
+    {
+      "id": "consent.stale.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consents.after_stale.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consents.after_stale.empty",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "id": "consent.terms.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consent.terms.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consent.terms.shape",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "TERMS",
+        "purpose": "ACCOUNT_TERMS",
+        "state": "GRANTED",
+        "decision": "ACCEPTED"
+      }
+    },
+    {
+      "id": "consent.terms.document",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "version": "mock-mb004-terms-v1",
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411"
+      }
+    },
+    {
+      "id": "consent.terms.policy",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "policyVersion": "mock-mb004-policy-v1",
+        "policyRef": "iam://consent/ACCOUNT_TERMS"
+      }
+    },
+    {
+      "id": "consent.terms.provenance",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authority": "IAM_SERVER_RECORDED_CONSENT",
+        "recordedAt": "2026-11-08T01:00:23.214726Z",
+        "documentSource": "PUBLISHED_DOCUMENT_VERSION_AND_DIGEST",
+        "policySource": "IAM_ACTIVE_POLICY_CONTROL_PLANE"
+      }
+    },
+    {
+      "id": "consent.terms.no_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "consent.terms.decision_ref",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "present": true
+      }
+    },
+    {
+      "id": "consent.terms_replay.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consent.terms_replay.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consent.terms_replay.shape",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "TERMS",
+        "purpose": "ACCOUNT_TERMS",
+        "state": "GRANTED",
+        "decision": "ACCEPTED"
+      }
+    },
+    {
+      "id": "consent.terms_replay.document",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "version": "mock-mb004-terms-v1",
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411"
+      }
+    },
+    {
+      "id": "consent.terms_replay.policy",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "policyVersion": "mock-mb004-policy-v1",
+        "policyRef": "iam://consent/ACCOUNT_TERMS"
+      }
+    },
+    {
+      "id": "consent.terms_replay.provenance",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authority": "IAM_SERVER_RECORDED_CONSENT",
+        "recordedAt": "2026-11-08T01:00:23.214726Z",
+        "documentSource": "PUBLISHED_DOCUMENT_VERSION_AND_DIGEST",
+        "policySource": "IAM_ACTIVE_POLICY_CONTROL_PLANE"
+      }
+    },
+    {
+      "id": "consent.terms_replay.no_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "consent.terms_replay.same_record",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "sameDecisionRef": true
+      }
+    },
+    {
+      "id": "consents.after_terms.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consents.after_terms.one",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "consent.privacy.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consent.privacy.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consent.privacy.shape",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "PRIVACY",
+        "purpose": "PRIVACY_NOTICE",
+        "state": "GRANTED",
+        "decision": "ACCEPTED"
+      }
+    },
+    {
+      "id": "consent.privacy.document",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "version": "mock-mb004-privacy-v1",
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451"
+      }
+    },
+    {
+      "id": "consent.privacy.policy",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "policyVersion": "mock-mb004-policy-v1",
+        "policyRef": "iam://consent/PRIVACY_NOTICE"
+      }
+    },
+    {
+      "id": "consent.privacy.provenance",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authority": "IAM_SERVER_RECORDED_CONSENT",
+        "recordedAt": "2026-11-08T01:00:23.500742Z",
+        "documentSource": "PUBLISHED_DOCUMENT_VERSION_AND_DIGEST",
+        "policySource": "IAM_ACTIVE_POLICY_CONTROL_PLANE"
+      }
+    },
+    {
+      "id": "consent.privacy.no_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "consent.adult.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consent.adult.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consent.adult.shape",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "ADULT_LEARNING",
+        "purpose": "ADULT_LEARNING_ELIGIBILITY",
+        "state": "GRANTED",
+        "decision": "ACCEPTED"
+      }
+    },
+    {
+      "id": "consent.adult.document",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "version": "mock-mb004-adult-v1",
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15"
+      }
+    },
+    {
+      "id": "consent.adult.policy",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "policyVersion": "mock-mb004-policy-v1",
+        "policyRef": "iam://consent/ADULT_LEARNING_ELIGIBILITY"
+      }
+    },
+    {
+      "id": "consent.adult.provenance",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authority": "IAM_SERVER_RECORDED_CONSENT",
+        "recordedAt": "2026-11-08T01:00:23.586230Z",
+        "documentSource": "PUBLISHED_DOCUMENT_VERSION_AND_DIGEST",
+        "policySource": "IAM_ACTIVE_POLICY_CONTROL_PLANE"
+      }
+    },
+    {
+      "id": "consent.adult.no_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "consents.get.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "consents.get.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "consents.get.count",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 3
+      }
+    },
+    {
+      "id": "consents.get.TERMS.one",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "consents.get.TERMS.grant",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "TERMS",
+        "state": "GRANTED",
+        "decision": "ACCEPTED",
+        "digest": "d89f227f3d2a43a165b2a6899110fc608b2bc5b7bc0e5ce2a604de32f9802411"
+      }
+    },
+    {
+      "id": "consents.get.PRIVACY.one",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "consents.get.PRIVACY.grant",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "PRIVACY",
+        "state": "GRANTED",
+        "decision": "ACCEPTED",
+        "digest": "1b4baa000763f9f5021e311387b924442730bbb479961f644a1aa7f79ddff451"
+      }
+    },
+    {
+      "id": "consents.get.ADULT_LEARNING.one",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "id": "consents.get.ADULT_LEARNING.grant",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "type": "ADULT_LEARNING",
+        "state": "GRANTED",
+        "decision": "ACCEPTED",
+        "digest": "e5e814e6dbc377d1f2ccc6a423c4eff7dcf684df462594da7b5ae438419a7c15"
+      }
+    },
+    {
+      "id": "consents.get.no_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.completed.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "principal.completed.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "principal.completed.key_absent",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "keyPresent": false
+      }
+    },
+    {
+      "id": "principal.completed.wire_absent",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.completed.body_absent",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "principal.completed.active",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": "ACTIVE",
+        "accepted": true,
+        "learningAccess": "ELIGIBLE"
+      }
+    },
+    {
+      "id": "principal.completed.no_consent_body",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "auth.login.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "auth.login.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "auth.login.direct.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "auth.login.direct.content_type",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "contentType": "application/json"
+      }
+    },
+    {
+      "id": "auth.login.direct.token",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authTransport": "WEB_COOKIE",
+        "tokenType": "Bearer",
+        "hasAccessToken": true,
+        "refreshTokenInBody": false,
+        "hasSessionId": true,
+        "hasDeviceId": true
+      }
+    },
+    {
+      "id": "auth.login.direct.cookie",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "present": true,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None",
+        "partitioned": true,
+        "path": "/api/v1/auth",
+        "maxAgePositive": true
+      }
+    },
+    {
+      "id": "auth.login.direct.principal.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "auth.login.direct.principal.completed",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "auth.refresh.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "auth.refresh.direct.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "auth.refresh.direct.no_store",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "cacheControl": "no-store"
+      }
+    },
+    {
+      "id": "auth.refresh.direct.content_type",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "contentType": "application/json"
+      }
+    },
+    {
+      "id": "auth.refresh.direct.token",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "authTransport": "WEB_COOKIE",
+        "tokenType": "Bearer",
+        "hasAccessToken": true,
+        "refreshTokenInBody": false,
+        "hasSessionId": true,
+        "hasDeviceId": true
+      }
+    },
+    {
+      "id": "auth.refresh.direct.cookie",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "present": true,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None",
+        "partitioned": true,
+        "path": "/api/v1/auth",
+        "maxAgePositive": true
+      }
+    },
+    {
+      "id": "auth.refresh.rotated",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "accessTokenChanged": true,
+        "cookieChanged": true
+      }
+    },
+    {
+      "id": "auth.refresh.principal.status",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "status": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "auth.refresh.principal.completed",
+      "ok": true,
+      "required": true,
+      "detail": {}
+    },
+    {
+      "id": "jwt.refreshed.signature",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "alg": "RS256",
+        "typ": "JWT",
+        "kid": "iam-local-2026-08"
+      }
+    },
+    {
+      "id": "jwt.refreshed.claims",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "issuer": "http://127.0.0.1:18087",
+        "audience": [
+          "yuxuexing-api"
+        ],
+        "tokenType": "access",
+        "hasSubject": true,
+        "hasSession": true,
+        "hasDevice": true,
+        "tenant": "platform",
+        "exp": 1794100524
+      }
+    },
+    {
+      "id": "jwt.refreshed.principal_binding",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "subjectMatchesPrincipal": true,
+        "sessionMatchesPrincipal": true,
+        "deviceMatchesPrincipal": true
+      }
+    },
+    {
+      "id": "cors.gateway.preflight",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "status": 200,
+        "allowOrigin": "http://127.0.0.1:18183"
+      }
+    },
+    {
+      "id": "cors.iam.preflight",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "status": 200,
+        "allowOrigin": "http://127.0.0.1:18183"
+      }
+    },
+    {
+      "id": "gateway.request_headers",
+      "ok": true,
+      "required": false,
+      "detail": {
+        "requestId": true,
+        "traceId": true
+      }
+    },
+    {
+      "id": "cleanup.processes_stopped",
+      "ok": true,
+      "required": true,
+      "detail": {
+        "gatewayFree": true,
+        "iamFree": true
+      }
+    }
+  ],
+  "counts": {
+    "total": 184,
+    "passed": 184,
+    "failed": 0,
+    "warned": 0,
+    "requiredFailed": 0
+  },
+  "coverage": {
+    "covered": [
+      "real IAM HTTPS on 127.0.0.1:18087 with local profile, MySQL iam_service, Flyway V19, control-plane policy source",
+      "real Gateway HTTP on 127.0.0.1:18070 for bearer domain calls, the anonymous protected probe, JWKS, and CORS preflight only",
+      "partial control-plane publication fails closed before account creation",
+      "direct IAM mobile-H5 registration/login/refresh transport with secure HttpOnly SameSite=None Partitioned cookie",
+      "authenticated principal before adult gate omits publishedConsentDocuments",
+      "local adult gate PASSED/ELIGIBLE",
+      "three exact fixture documents in publishedConsentDocuments with UTF-8 hashes, versions, purposes, policy refs and no-store",
+      "JWT RS256 signature and access-token profile verified from Gateway JWKS",
+      "consent missing-key 400, stale-version 409, exact-document-digest writes, idempotent replay",
+      "GET /iam/consents grant evidence with provenance and no document body",
+      "completed signatures remove publishedConsentDocuments and bodyText from principal and consent list",
+      "MB-004 local H5 browser target smoke and real Gateway owner target/profile/preferences readback after B72 signing",
+      "MB-006 full H5 observer while owned Content, Assessment, and Learning are up, with learner, assessment, learning, and content B14 TARGET"
+    ],
+    "notCovered": [
+      "Gateway password registration or login; no prior runtime is treated as evidence",
+      "formal legal publication, authorizer approval, deployed Gateway/IAM, production rollout",
+      "actual mobile H5/browser or native app, device secure storage, screen reader, real device",
+      "browser-enforced CORS, cookie partitioning, and certificate UX (only HTTP-level preflight/cookie attributes are checked)",
+      "withdrawal, logout, refresh-token replay detection, multi-device kickout",
+      "invalid body digest, missing body, oversize body, NUL body or partial projection over HTTP (unit/JDBC tests exist, not repeated here)",
+      "durable audit-service ingest and database-level audit row assertions",
+      "visual onboarding UI, navigation, i18n and responsive behavior",
+      "The harness does not POST a target, placement, answer, or plan. Content internal reads stay direct on 18089. The browser catalog GET uses Gateway content TARGET. Kafka stays disabled. DEC-04 and DB rows are not asserted here.",
+      "Browser/Chrome internals, H5 rendering, visual assertions, and the browser module receipt content are owned by browser-target-probe.cjs and the root wrapper, not by this harness"
+    ]
+  },
+  "infrastructureComparison": {
+    "r1IamLifecycle": {
+      "path": "scripts/redesign/r1-iam-lifecycle/iam-lifecycle-runtime.mjs",
+      "exists": true,
+      "coversR1008": true,
+      "coversPublishedConsentDocuments": false,
+      "coversGateway18070": false,
+      "conclusion": "R1-008 consent writes exist, but no B69 publishedConsentDocuments projection and no Gateway 18070 path."
+    },
+    "gatewayRuntime": {
+      "path": "services/api-gateway/src/test/runtime/p1r-m2-001-runtime.mjs",
+      "exists": true,
+      "coversFixturePublication": false,
+      "conclusion": "Real Gateway/IAM boundary exists, but it does not seed or assert the B69 first-consent fixture documents."
+    },
+    "standardLauncher": {
+      "path": "scripts/runtime/run-v2-services.mjs",
+      "exists": true,
+      "conclusion": "The standard local launcher starts the full stack and does not seed or assert B69 fixture projection; its loopback/profile/TLS environment shape is reused here, not the full stack."
+    },
+    "chosen": "A minimal harness under /tmp because no existing runner covers the B69 fixture projection through Gateway with an isolated MySQL control plane."
+  },
+  "cleanup": {
+    "performed": true,
+    "preferred": "Drop the disposable iam_service, learner_service, dedicated mb006 content and assessment schemas/accounts, and the fifth mb007_lrn_* learning schema/account; do not retain them.",
+    "cleanupSql": null,
+    "processesStopped": true
+  },
+  "targetProbe": {
+    "enabled": true,
+    "mode": "BROWSER",
+    "browserModule": "browser-target-probe.cjs",
+    "runDirectory": "/private/tmp/grok-mobile-resume-home-405/run",
+    "learnerJar": "learner-service-0.1.0-SNAPSHOT.jar",
+    "learnerJarSha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+    "jdbc": {
+      "host": "127.0.0.1",
+      "port": 13306,
+      "schema": "learner_service"
+    },
+    "dbUserNonRoot": true,
+    "consentRecheck": {
+      "enabled": true,
+      "iamBaseUrl": "https://127.0.0.1:18087",
+      "clientId": "learner-service",
+      "digestMatched": true
+    },
+    "route": {
+      "gatewayB14Enabled": true,
+      "learner": "TARGET",
+      "assessment": "TARGET",
+      "learning": "TARGET",
+      "content": "TARGET",
+      "contentBase": "http://127.0.0.1:18089",
+      "contentInternal": "DIRECT",
+      "otherDomains": "LEGACY",
+      "learningPort": 18090,
+      "kafka": false,
+      "contentDirect": true
+    },
+    "port18088Free": true
+  },
+  "learnerTargetProbe": {
+    "kind": "MB004_LEARNER_TARGET_BROWSER_PROBE",
+    "schemaVersion": "1",
+    "generatedAt": "2026-11-08T01:01:03.426Z",
+    "mode": "BROWSER",
+    "browserOptIn": "YES_LOCAL_H5_TARGET_SMOKE",
+    "browser": {
+      "status": "FAILED",
+      "reason": "home-return-final-hash",
+      "placementOptIn": true,
+      "fullOptIn": true,
+      "indexMatch": true,
+      "expectedIndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "targetPutCount": 1,
+      "targetPutStatus": 200,
+      "preferenceWrites": 0,
+      "consentWrites": 0,
+      "placementCreateCount": 1,
+      "sessionReadCount": 0,
+      "errorId": null,
+      "full": {
+        "responses": [
+          {
+            "sequence": 1,
+            "status": 200,
+            "acceptedSequence": 1,
+            "nextSequence": 2,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 2,
+            "status": 200,
+            "acceptedSequence": 2,
+            "nextSequence": 3,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 3,
+            "status": 200,
+            "acceptedSequence": 3,
+            "nextSequence": 4,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 4,
+            "status": 200,
+            "acceptedSequence": 4,
+            "nextSequence": 5,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 5,
+            "status": 200,
+            "acceptedSequence": 5,
+            "nextSequence": 6,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 6,
+            "status": 200,
+            "acceptedSequence": 6,
+            "nextSequence": 7,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 7,
+            "status": 200,
+            "acceptedSequence": 7,
+            "nextSequence": 8,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 8,
+            "status": 200,
+            "acceptedSequence": 8,
+            "nextSequence": 9,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 9,
+            "status": 200,
+            "acceptedSequence": 9,
+            "nextSequence": 10,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 10,
+            "status": 200,
+            "acceptedSequence": 10,
+            "nextSequence": 11,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": true,
+            "firstOptionIndex": 0
+          }
+        ],
+        "responseCount": 10,
+        "finalReportPresent": true,
+        "finalReportKind": "ASSESSED",
+        "finalReportLevelPresent": true,
+        "finalReportScorePresent": true,
+        "finalReportItemCount": 10,
+        "finalReportFullCount": 3,
+        "finalReportDigestPresent": false,
+        "reportVisible": true,
+        "reportCardVisible": true,
+        "reportCompleteVisible": true,
+        "reportLevelMatch": true,
+        "reportScoreMatch": true,
+        "reportSavedVisible": true,
+        "reportPlanError": false,
+        "reportTodayButton": true,
+        "planEnsureCount": 1,
+        "planEnsureStatus": 200,
+        "planEnsureBodyOk": true,
+        "planEnsureIdempotency": true,
+        "planEnsurePlanPresent": true,
+        "planEnsurePlanVersion": 2,
+        "todayReadCount": 3,
+        "todayAfterEnsureCount": 2,
+        "todayAfterEnsureStatuses": [
+          200,
+          200
+        ],
+        "todayAfterEnsurePlanMatch": true,
+        "todayAfterUiCount": 1,
+        "todayAfterUiStatuses": [
+          200
+        ],
+        "todayUiClicked": true,
+        "todayUiVisible": true,
+        "todayUiVisual": false,
+        "todayUiAlgorithmVersionPresent": true,
+        "todayUiAlgorithmVersionMatch": true,
+        "todayDueRowsCount": 3,
+        "todayDueRowsMatch": true,
+        "todayFalseEmptyVisible": false,
+        "todayDueRowsReadOnly": true,
+        "homeCount": 1,
+        "homeRequests": 1,
+        "homeStatuses": [
+          200
+        ],
+        "catalogCount": 1,
+        "catalogRequests": 1,
+        "catalogStatuses": [
+          200
+        ],
+        "submitClicks": 10,
+        "retestContinuation": false,
+        "retestWrites": 0,
+        "retestStatus": null,
+        "retestBodyEmpty": false,
+        "retestIdempotency": false,
+        "retestAuthorized": false,
+        "retestSessionNew": false,
+        "retestQuestionVisible": false,
+        "retestReportScreenLeft": false,
+        "retestConfirmClicks": 0,
+        "retestSubmitStillDisabled": false,
+        "retestNoChoice": false,
+        "retestFirstItem": false,
+        "skipWrites": 0,
+        "unexpectedPlanWrites": 0,
+        "extraContinuedWrites": 0,
+        "duplicateResponseAttempts": 0,
+        "prematureResponseAttempts": 0,
+        "wrongSequenceAttempts": 0,
+        "wrongVersionAttempts": 0,
+        "wrongItemAttempts": 0,
+        "wrongOptionAttempts": 0,
+        "wrongBodyAttempts": 0,
+        "wrongDigestAttempts": 0,
+        "wrongSessionAttempts": 0,
+        "duplicateEnsureAttempts": 0,
+        "earlyEnsureAttempts": 0,
+        "earlyHomeAttempts": 0,
+        "duplicateHomeAttempts": 0,
+        "syntheticResponses": 0,
+        "unknownContinued": 0,
+        "missingAuthorization": 0,
+        "foreignOriginAttempts": 0
+      }
+    },
+    "browserStatus": "FAILED",
+    "programmaticWrites": 0,
+    "fullBrowser": {
+      "kind": "MB006_PLACEMENT_FULL_BROWSER",
+      "schemaVersion": "1",
+      "optIn": "MB006_PLACEMENT_FULL_BROWSER",
+      "status": "FAIL",
+      "dec04": "NOT_ASSERTED",
+      "separateFromIamChecks": true,
+      "scenario": "H5_PLACEMENT_ANSWERS_ENSURE_TODAY",
+      "budgetMet": false,
+      "fullArtifact": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+      "fullIndexSha": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "programmaticTargetWrite": false,
+      "programmaticPlacementPost": false,
+      "programmaticAnswerPost": false,
+      "programmaticPlanPost": false,
+      "scoreToken": "UNSET",
+      "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+      "serviceTokenHeldByCaller": false,
+      "kafka": false,
+      "contentRoute": "TARGET",
+      "contentBase": "http://127.0.0.1:18089",
+      "contentInternal": "DIRECT",
+      "observer": {
+        "status": "FAILED",
+        "reason": "home-return-final-hash",
+        "placementOptIn": true,
+        "fullOptIn": true,
+        "indexMatch": true,
+        "expectedIndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+        "targetPutCount": 1,
+        "targetPutStatus": 200,
+        "preferenceWrites": 0,
+        "consentWrites": 0,
+        "placementCreateCount": 1,
+        "sessionReadCount": 0,
+        "errorId": null,
+        "full": {
+          "responses": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "acceptedSequence": 1,
+              "nextSequence": 2,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "acceptedSequence": 2,
+              "nextSequence": 3,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "acceptedSequence": 3,
+              "nextSequence": 4,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "acceptedSequence": 4,
+              "nextSequence": 5,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "acceptedSequence": 5,
+              "nextSequence": 6,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 6,
+              "status": 200,
+              "acceptedSequence": 6,
+              "nextSequence": 7,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 7,
+              "status": 200,
+              "acceptedSequence": 7,
+              "nextSequence": 8,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 8,
+              "status": 200,
+              "acceptedSequence": 8,
+              "nextSequence": 9,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 9,
+              "status": 200,
+              "acceptedSequence": 9,
+              "nextSequence": 10,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 10,
+              "status": 200,
+              "acceptedSequence": 10,
+              "nextSequence": 11,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": true,
+              "firstOptionIndex": 0
+            }
+          ],
+          "responseCount": 10,
+          "finalReportPresent": true,
+          "finalReportKind": "ASSESSED",
+          "finalReportLevelPresent": true,
+          "finalReportScorePresent": true,
+          "finalReportItemCount": 10,
+          "finalReportFullCount": 3,
+          "finalReportDigestPresent": false,
+          "reportVisible": true,
+          "reportCardVisible": true,
+          "reportCompleteVisible": true,
+          "reportLevelMatch": true,
+          "reportScoreMatch": true,
+          "reportSavedVisible": true,
+          "reportPlanError": false,
+          "reportTodayButton": true,
+          "planEnsureCount": 1,
+          "planEnsureStatus": 200,
+          "planEnsureBodyOk": true,
+          "planEnsureIdempotency": true,
+          "planEnsurePlanPresent": true,
+          "planEnsurePlanVersion": 2,
+          "todayReadCount": 3,
+          "todayAfterEnsureCount": 2,
+          "todayAfterEnsureStatuses": [
+            200,
+            200
+          ],
+          "todayAfterEnsurePlanMatch": true,
+          "todayAfterUiCount": 1,
+          "todayAfterUiStatuses": [
+            200
+          ],
+          "todayUiClicked": true,
+          "todayUiVisible": true,
+          "todayUiVisual": false,
+          "todayUiAlgorithmVersionPresent": true,
+          "todayUiAlgorithmVersionMatch": true,
+          "todayDueRowsCount": 3,
+          "todayDueRowsMatch": true,
+          "todayFalseEmptyVisible": false,
+          "todayDueRowsReadOnly": true,
+          "homeCount": 1,
+          "homeRequests": 1,
+          "homeStatuses": [
+            200
+          ],
+          "catalogCount": 1,
+          "catalogRequests": 1,
+          "catalogStatuses": [
+            200
+          ],
+          "submitClicks": 10,
+          "retestContinuation": false,
+          "retestWrites": 0,
+          "retestStatus": null,
+          "retestBodyEmpty": false,
+          "retestIdempotency": false,
+          "retestAuthorized": false,
+          "retestSessionNew": false,
+          "retestQuestionVisible": false,
+          "retestReportScreenLeft": false,
+          "retestConfirmClicks": 0,
+          "retestSubmitStillDisabled": false,
+          "retestNoChoice": false,
+          "retestFirstItem": false,
+          "skipWrites": 0,
+          "unexpectedPlanWrites": 0,
+          "extraContinuedWrites": 0,
+          "duplicateResponseAttempts": 0,
+          "prematureResponseAttempts": 0,
+          "wrongSequenceAttempts": 0,
+          "wrongVersionAttempts": 0,
+          "wrongItemAttempts": 0,
+          "wrongOptionAttempts": 0,
+          "wrongBodyAttempts": 0,
+          "wrongDigestAttempts": 0,
+          "wrongSessionAttempts": 0,
+          "duplicateEnsureAttempts": 0,
+          "earlyEnsureAttempts": 0,
+          "earlyHomeAttempts": 0,
+          "duplicateHomeAttempts": 0,
+          "syntheticResponses": 0,
+          "unknownContinued": 0,
+          "missingAuthorization": 0,
+          "foreignOriginAttempts": 0
+        }
+      },
+      "services": {
+        "status": "PASS",
+        "launch": {
+          "phase": "run",
+          "mode": "BROWSER",
+          "programmaticPlacementPost": false,
+          "content": {
+            "schema": "mb006_cnt_9c2eebd73c",
+            "user": "mb006c_9c2eebd73c",
+            "jarSha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2",
+            "port": 18089
+          },
+          "assessment": {
+            "schema": "mb006_asm_9c2eebd73c",
+            "user": "mb006a_9c2eebd73c",
+            "jarSha256": "467fb91b9299c0569f48d52b482be580a18b6a9b90bd74aa523659e16fed6912",
+            "port": 18091
+          },
+          "gateway": {
+            "assessmentRoute": "TARGET",
+            "learnerRoute": "TARGET",
+            "contentRoute": "TARGET",
+            "learningRoute": "TARGET",
+            "contentBase": "http://127.0.0.1:18089",
+            "contentInternal": "DIRECT"
+          },
+          "scoreToken": "UNSET",
+          "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+          "fullLearning": true,
+          "learningStarted": true,
+          "attachedToExisting": false,
+          "learning": {
+            "schema": "mb007_lrn_9c2eebd73c",
+            "user": "mb007l_9c2eebd73c",
+            "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+            "port": 18090,
+            "route": "TARGET",
+            "kafka": false,
+            "adapters": {
+              "mode": "http",
+              "learner": "http://127.0.0.1:18088",
+              "content": "http://127.0.0.1:18089",
+              "assessment": "http://127.0.0.1:18091"
+            },
+            "flyway": true,
+            "jdbc": true
+          },
+          "contentDirect": true,
+          "kafka": false
+        },
+        "learningLaunch": {
+          "schema": "mb007_lrn_9c2eebd73c",
+          "user": "mb007l_9c2eebd73c",
+          "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+          "port": 18090,
+          "route": "TARGET",
+          "kafka": false,
+          "adapters": {
+            "mode": "http",
+            "learner": "http://127.0.0.1:18088",
+            "content": "http://127.0.0.1:18089",
+            "assessment": "http://127.0.0.1:18091"
+          },
+          "flyway": true,
+          "jdbc": true
+        },
+        "learningPortBusy": false,
+        "cleanup": {
+          "trackedOnly": true,
+          "owned": 3,
+          "services": [
+            {
+              "service": "content",
+              "port": 18089,
+              "pid": 30792,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            },
+            {
+              "service": "assessment",
+              "port": 18091,
+              "pid": 30901,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            },
+            {
+              "service": "learning",
+              "port": 18090,
+              "pid": 31023,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            }
+          ],
+          "learningPort": 18090,
+          "learningStarted": true
+        },
+        "cleanupError": null,
+        "error": null,
+        "dec04": "NOT_ASSERTED",
+        "answersSubmittedByHarness": 0,
+        "scoreRequestedByHarness": false,
+        "scoreToken": "UNSET",
+        "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+        "serviceTokenHeldByCaller": false,
+        "learningStarted": true,
+        "programmaticPlacementPost": false,
+        "programmaticAnswerPost": false,
+        "programmaticPlanPost": false,
+        "planEnsuredByHarness": false,
+        "targetSeeded": false,
+        "harnessCalls": 0,
+        "kafka": false,
+        "contentDirect": true,
+        "attachedToExisting": false,
+        "stoppedUntracked": false
+      }
+    },
+    "status": "FAIL",
+    "out": "/private/tmp/grok-mobile-resume-home-405/run/browser-target-result.json",
+    "runDirectory": "/private/tmp/grok-mobile-resume-home-405/run",
+    "gateway": "http://127.0.0.1:18070/api/v1",
+    "syntheticAccount": true,
+    "optIn": "YES_RUN_MB033_LEARNER_TARGET_PROBE",
+    "route": {
+      "gatewayB14Enabled": true,
+      "learner": "TARGET",
+      "assessment": "TARGET",
+      "learning": "TARGET",
+      "content": "TARGET",
+      "contentBase": "http://127.0.0.1:18089",
+      "contentInternal": "DIRECT",
+      "otherDomains": "LEGACY",
+      "learningPort": 18090,
+      "learningStarted": true,
+      "kafka": false,
+      "contentDirect": true
+    },
+    "jwt": {
+      "alg": "RS256",
+      "issuer": "http://127.0.0.1:18087",
+      "audience": [
+        "yuxuexing-api"
+      ],
+      "subjectPresent": true,
+      "roleLearner": true,
+      "permissionTargetWrite": true,
+      "permissionProfileRead": true,
+      "tokenType": "access",
+      "scopePresent": true,
+      "adultGate": "PASSED",
+      "consentState": "GRANTED",
+      "phase": "phase-1",
+      "accountStatus": "ACTIVE",
+      "tenant": "platform"
+    },
+    "learner": {
+      "started": true,
+      "owned": true,
+      "port": 18088,
+      "log": "/tmp/cloudstudy-mobile-placement-qa.i9WEsvj8/dsh-mb033-b72-mw74l3ab-581469/learner-service.log",
+      "jarSha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+      "truststoreSha256": "1041973838e2b7c5a8ad21eff2ffe84a9414234dd89c63404fe11d9fd87bf123",
+      "pid": 30450
+    },
+    "db": {
+      "host": "127.0.0.1",
+      "port": 13306,
+      "schema": "learner_service",
+      "userNonRoot": true
+    },
+    "request": null,
+    "observations": {
+      "anonymousStatus": 401,
+      "priorStateVersion": 0,
+      "profileStatusBefore": "ONBOARDING",
+      "targetPresentBefore": false,
+      "preferencesBefore": {
+        "uiLocale": "zh-CN",
+        "contentLocale": "en-US",
+        "timezone": "Asia/Shanghai",
+        "themeMode": "SYSTEM",
+        "highContrast": false,
+        "motionMode": "FULL"
+      },
+      "browser": {
+        "status": "FAILED",
+        "outDir": "/private/tmp/grok-mobile-resume-home-405/run/browser",
+        "receipt": "browser-target-module-result.json"
+      }
+    },
+    "steps": [
+      {
+        "id": "anonymous.profile",
+        "method": "GET",
+        "path": "/learner/profile",
+        "status": 401,
+        "bodySha256": "274b51938def73d9446367b3f94b827b81f8b55866a734c73428536e3346e784"
+      },
+      {
+        "id": "profile.before",
+        "method": "GET",
+        "path": "/learner/profile",
+        "status": 200,
+        "bodySha256": "53fae8d34cb6415edb4eca0242b690942e913166fc3329b9611ec0ec9cfd4358"
+      },
+      {
+        "id": "targets.before",
+        "method": "GET",
+        "path": "/learner/targets",
+        "status": 404,
+        "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "id": "preferences.before",
+        "method": "GET",
+        "path": "/learner/preferences",
+        "status": 200,
+        "bodySha256": "4e8f33bac1d1b189b1bd9671a933f99a3940b3d4b91699f4e4a2403c9ec8a593"
+      }
+    ],
+    "assertions": [
+      {
+        "id": "token.missing",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.shape",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.alg",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.issuer_audience",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.authority",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.eligibility",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.root",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.exact",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.directory",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.jar",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.jar_sha256",
+        "ok": true,
+        "detail": {
+          "actual": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733"
+        }
+      },
+      {
+        "id": "learner.jdbc_url",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.schema",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.db_user",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.truststore",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.java",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_digest",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_secret",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_digest_match",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_enabled",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_base_url",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_client_id",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_requires_b85_b89",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.requires_browser",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.gateway_jar",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.identifier",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.password",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.ca_pem",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.log_directory_private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.start_opt_in",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.port_busy",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "anonymous.profile.status",
+        "ok": true,
+        "detail": {
+          "status": 401,
+          "expected": [
+            401,
+            403
+          ]
+        }
+      },
+      {
+        "id": "profile.before.status",
+        "ok": true,
+        "detail": {
+          "status": 200,
+          "expected": [
+            200
+          ]
+        }
+      },
+      {
+        "id": "profile.before.envelope",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.subject",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.state_version",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.no_target",
+        "ok": true,
+        "detail": {
+          "targetGoalPresent": false
+        }
+      },
+      {
+        "id": "profile.before.version_zero",
+        "ok": true,
+        "detail": {
+          "priorVersion": 0
+        }
+      },
+      {
+        "id": "targets.before.status",
+        "ok": true,
+        "detail": {
+          "status": 404,
+          "expected": [
+            200,
+            404
+          ]
+        }
+      },
+      {
+        "id": "targets.before.fresh",
+        "ok": true,
+        "detail": {
+          "status": 404
+        }
+      },
+      {
+        "id": "preferences.before.status",
+        "ok": true,
+        "detail": {
+          "status": 200,
+          "expected": [
+            200
+          ]
+        }
+      },
+      {
+        "id": "preferences.before.envelope",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "preferences.before.version",
+        "ok": true,
+        "detail": {
+          "preferencesVersion": 0,
+          "priorVersion": 0
+        }
+      },
+      {
+        "id": "browser.out_dir_private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.module",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_callback",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_owner_pin",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.status_shape",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.status",
+        "ok": false,
+        "detail": {
+          "status": "FAILED"
+        }
+      }
+    ],
+    "counters": {
+      "requests": 4,
+      "anonymous": 1,
+      "reads": 4,
+      "writes": 0,
+      "programmaticWrites": 0,
+      "browserCalls": 1,
+      "programmaticPlacementPosts": 0,
+      "programmaticAnswerPosts": 0,
+      "programmaticPlanPosts": 0,
+      "replays": 0,
+      "ownerReadbacks": 0
+    },
+    "cleanup": {
+      "owned": true,
+      "started": true,
+      "stopped": true,
+      "released": true,
+      "portFree": true
+    },
+    "cleanupError": null,
+    "error": {
+      "id": "browser.status",
+      "message": "browser target smoke did not observe success",
+      "detail": {
+        "status": "FAILED"
+      }
+    },
+    "warnings": []
+  },
+  "browserTargetProbe": {
+    "kind": "MB004_LEARNER_TARGET_BROWSER_PROBE",
+    "schemaVersion": "1",
+    "generatedAt": "2026-11-08T01:01:03.426Z",
+    "mode": "BROWSER",
+    "browserOptIn": "YES_LOCAL_H5_TARGET_SMOKE",
+    "browser": {
+      "status": "FAILED",
+      "reason": "home-return-final-hash",
+      "placementOptIn": true,
+      "fullOptIn": true,
+      "indexMatch": true,
+      "expectedIndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "targetPutCount": 1,
+      "targetPutStatus": 200,
+      "preferenceWrites": 0,
+      "consentWrites": 0,
+      "placementCreateCount": 1,
+      "sessionReadCount": 0,
+      "errorId": null,
+      "full": {
+        "responses": [
+          {
+            "sequence": 1,
+            "status": 200,
+            "acceptedSequence": 1,
+            "nextSequence": 2,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 2,
+            "status": 200,
+            "acceptedSequence": 2,
+            "nextSequence": 3,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 3,
+            "status": 200,
+            "acceptedSequence": 3,
+            "nextSequence": 4,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 4,
+            "status": 200,
+            "acceptedSequence": 4,
+            "nextSequence": 5,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 5,
+            "status": 200,
+            "acceptedSequence": 5,
+            "nextSequence": 6,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 6,
+            "status": 200,
+            "acceptedSequence": 6,
+            "nextSequence": 7,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 7,
+            "status": 200,
+            "acceptedSequence": 7,
+            "nextSequence": 8,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 8,
+            "status": 200,
+            "acceptedSequence": 8,
+            "nextSequence": 9,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 9,
+            "status": 200,
+            "acceptedSequence": 9,
+            "nextSequence": 10,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 10,
+            "status": 200,
+            "acceptedSequence": 10,
+            "nextSequence": 11,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": true,
+            "firstOptionIndex": 0
+          }
+        ],
+        "responseCount": 10,
+        "finalReportPresent": true,
+        "finalReportKind": "ASSESSED",
+        "finalReportLevelPresent": true,
+        "finalReportScorePresent": true,
+        "finalReportItemCount": 10,
+        "finalReportFullCount": 3,
+        "finalReportDigestPresent": false,
+        "reportVisible": true,
+        "reportCardVisible": true,
+        "reportCompleteVisible": true,
+        "reportLevelMatch": true,
+        "reportScoreMatch": true,
+        "reportSavedVisible": true,
+        "reportPlanError": false,
+        "reportTodayButton": true,
+        "planEnsureCount": 1,
+        "planEnsureStatus": 200,
+        "planEnsureBodyOk": true,
+        "planEnsureIdempotency": true,
+        "planEnsurePlanPresent": true,
+        "planEnsurePlanVersion": 2,
+        "todayReadCount": 3,
+        "todayAfterEnsureCount": 2,
+        "todayAfterEnsureStatuses": [
+          200,
+          200
+        ],
+        "todayAfterEnsurePlanMatch": true,
+        "todayAfterUiCount": 1,
+        "todayAfterUiStatuses": [
+          200
+        ],
+        "todayUiClicked": true,
+        "todayUiVisible": true,
+        "todayUiVisual": false,
+        "todayUiAlgorithmVersionPresent": true,
+        "todayUiAlgorithmVersionMatch": true,
+        "todayDueRowsCount": 3,
+        "todayDueRowsMatch": true,
+        "todayFalseEmptyVisible": false,
+        "todayDueRowsReadOnly": true,
+        "homeCount": 1,
+        "homeRequests": 1,
+        "homeStatuses": [
+          200
+        ],
+        "catalogCount": 1,
+        "catalogRequests": 1,
+        "catalogStatuses": [
+          200
+        ],
+        "submitClicks": 10,
+        "retestContinuation": false,
+        "retestWrites": 0,
+        "retestStatus": null,
+        "retestBodyEmpty": false,
+        "retestIdempotency": false,
+        "retestAuthorized": false,
+        "retestSessionNew": false,
+        "retestQuestionVisible": false,
+        "retestReportScreenLeft": false,
+        "retestConfirmClicks": 0,
+        "retestSubmitStillDisabled": false,
+        "retestNoChoice": false,
+        "retestFirstItem": false,
+        "skipWrites": 0,
+        "unexpectedPlanWrites": 0,
+        "extraContinuedWrites": 0,
+        "duplicateResponseAttempts": 0,
+        "prematureResponseAttempts": 0,
+        "wrongSequenceAttempts": 0,
+        "wrongVersionAttempts": 0,
+        "wrongItemAttempts": 0,
+        "wrongOptionAttempts": 0,
+        "wrongBodyAttempts": 0,
+        "wrongDigestAttempts": 0,
+        "wrongSessionAttempts": 0,
+        "duplicateEnsureAttempts": 0,
+        "earlyEnsureAttempts": 0,
+        "earlyHomeAttempts": 0,
+        "duplicateHomeAttempts": 0,
+        "syntheticResponses": 0,
+        "unknownContinued": 0,
+        "missingAuthorization": 0,
+        "foreignOriginAttempts": 0
+      }
+    },
+    "browserStatus": "FAILED",
+    "programmaticWrites": 0,
+    "fullBrowser": {
+      "kind": "MB006_PLACEMENT_FULL_BROWSER",
+      "schemaVersion": "1",
+      "optIn": "MB006_PLACEMENT_FULL_BROWSER",
+      "status": "FAIL",
+      "dec04": "NOT_ASSERTED",
+      "separateFromIamChecks": true,
+      "scenario": "H5_PLACEMENT_ANSWERS_ENSURE_TODAY",
+      "budgetMet": false,
+      "fullArtifact": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+      "fullIndexSha": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "programmaticTargetWrite": false,
+      "programmaticPlacementPost": false,
+      "programmaticAnswerPost": false,
+      "programmaticPlanPost": false,
+      "scoreToken": "UNSET",
+      "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+      "serviceTokenHeldByCaller": false,
+      "kafka": false,
+      "contentRoute": "TARGET",
+      "contentBase": "http://127.0.0.1:18089",
+      "contentInternal": "DIRECT",
+      "observer": {
+        "status": "FAILED",
+        "reason": "home-return-final-hash",
+        "placementOptIn": true,
+        "fullOptIn": true,
+        "indexMatch": true,
+        "expectedIndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+        "targetPutCount": 1,
+        "targetPutStatus": 200,
+        "preferenceWrites": 0,
+        "consentWrites": 0,
+        "placementCreateCount": 1,
+        "sessionReadCount": 0,
+        "errorId": null,
+        "full": {
+          "responses": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "acceptedSequence": 1,
+              "nextSequence": 2,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "acceptedSequence": 2,
+              "nextSequence": 3,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "acceptedSequence": 3,
+              "nextSequence": 4,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "acceptedSequence": 4,
+              "nextSequence": 5,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "acceptedSequence": 5,
+              "nextSequence": 6,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 6,
+              "status": 200,
+              "acceptedSequence": 6,
+              "nextSequence": 7,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 7,
+              "status": 200,
+              "acceptedSequence": 7,
+              "nextSequence": 8,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 8,
+              "status": 200,
+              "acceptedSequence": 8,
+              "nextSequence": 9,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 9,
+              "status": 200,
+              "acceptedSequence": 9,
+              "nextSequence": 10,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": false,
+              "firstOptionIndex": 0
+            },
+            {
+              "sequence": 10,
+              "status": 200,
+              "acceptedSequence": 10,
+              "nextSequence": 11,
+              "versionOk": true,
+              "itemOk": true,
+              "bodyOk": true,
+              "idempotency": true,
+              "feedbackPresent": true,
+              "nextItemOk": true,
+              "finalOk": true,
+              "firstOptionIndex": 0
+            }
+          ],
+          "responseCount": 10,
+          "finalReportPresent": true,
+          "finalReportKind": "ASSESSED",
+          "finalReportLevelPresent": true,
+          "finalReportScorePresent": true,
+          "finalReportItemCount": 10,
+          "finalReportFullCount": 3,
+          "finalReportDigestPresent": false,
+          "reportVisible": true,
+          "reportCardVisible": true,
+          "reportCompleteVisible": true,
+          "reportLevelMatch": true,
+          "reportScoreMatch": true,
+          "reportSavedVisible": true,
+          "reportPlanError": false,
+          "reportTodayButton": true,
+          "planEnsureCount": 1,
+          "planEnsureStatus": 200,
+          "planEnsureBodyOk": true,
+          "planEnsureIdempotency": true,
+          "planEnsurePlanPresent": true,
+          "planEnsurePlanVersion": 2,
+          "todayReadCount": 3,
+          "todayAfterEnsureCount": 2,
+          "todayAfterEnsureStatuses": [
+            200,
+            200
+          ],
+          "todayAfterEnsurePlanMatch": true,
+          "todayAfterUiCount": 1,
+          "todayAfterUiStatuses": [
+            200
+          ],
+          "todayUiClicked": true,
+          "todayUiVisible": true,
+          "todayUiVisual": false,
+          "todayUiAlgorithmVersionPresent": true,
+          "todayUiAlgorithmVersionMatch": true,
+          "todayDueRowsCount": 3,
+          "todayDueRowsMatch": true,
+          "todayFalseEmptyVisible": false,
+          "todayDueRowsReadOnly": true,
+          "homeCount": 1,
+          "homeRequests": 1,
+          "homeStatuses": [
+            200
+          ],
+          "catalogCount": 1,
+          "catalogRequests": 1,
+          "catalogStatuses": [
+            200
+          ],
+          "submitClicks": 10,
+          "retestContinuation": false,
+          "retestWrites": 0,
+          "retestStatus": null,
+          "retestBodyEmpty": false,
+          "retestIdempotency": false,
+          "retestAuthorized": false,
+          "retestSessionNew": false,
+          "retestQuestionVisible": false,
+          "retestReportScreenLeft": false,
+          "retestConfirmClicks": 0,
+          "retestSubmitStillDisabled": false,
+          "retestNoChoice": false,
+          "retestFirstItem": false,
+          "skipWrites": 0,
+          "unexpectedPlanWrites": 0,
+          "extraContinuedWrites": 0,
+          "duplicateResponseAttempts": 0,
+          "prematureResponseAttempts": 0,
+          "wrongSequenceAttempts": 0,
+          "wrongVersionAttempts": 0,
+          "wrongItemAttempts": 0,
+          "wrongOptionAttempts": 0,
+          "wrongBodyAttempts": 0,
+          "wrongDigestAttempts": 0,
+          "wrongSessionAttempts": 0,
+          "duplicateEnsureAttempts": 0,
+          "earlyEnsureAttempts": 0,
+          "earlyHomeAttempts": 0,
+          "duplicateHomeAttempts": 0,
+          "syntheticResponses": 0,
+          "unknownContinued": 0,
+          "missingAuthorization": 0,
+          "foreignOriginAttempts": 0
+        }
+      },
+      "services": {
+        "status": "PASS",
+        "launch": {
+          "phase": "run",
+          "mode": "BROWSER",
+          "programmaticPlacementPost": false,
+          "content": {
+            "schema": "mb006_cnt_9c2eebd73c",
+            "user": "mb006c_9c2eebd73c",
+            "jarSha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2",
+            "port": 18089
+          },
+          "assessment": {
+            "schema": "mb006_asm_9c2eebd73c",
+            "user": "mb006a_9c2eebd73c",
+            "jarSha256": "467fb91b9299c0569f48d52b482be580a18b6a9b90bd74aa523659e16fed6912",
+            "port": 18091
+          },
+          "gateway": {
+            "assessmentRoute": "TARGET",
+            "learnerRoute": "TARGET",
+            "contentRoute": "TARGET",
+            "learningRoute": "TARGET",
+            "contentBase": "http://127.0.0.1:18089",
+            "contentInternal": "DIRECT"
+          },
+          "scoreToken": "UNSET",
+          "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+          "fullLearning": true,
+          "learningStarted": true,
+          "attachedToExisting": false,
+          "learning": {
+            "schema": "mb007_lrn_9c2eebd73c",
+            "user": "mb007l_9c2eebd73c",
+            "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+            "port": 18090,
+            "route": "TARGET",
+            "kafka": false,
+            "adapters": {
+              "mode": "http",
+              "learner": "http://127.0.0.1:18088",
+              "content": "http://127.0.0.1:18089",
+              "assessment": "http://127.0.0.1:18091"
+            },
+            "flyway": true,
+            "jdbc": true
+          },
+          "contentDirect": true,
+          "kafka": false
+        },
+        "learningLaunch": {
+          "schema": "mb007_lrn_9c2eebd73c",
+          "user": "mb007l_9c2eebd73c",
+          "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+          "port": 18090,
+          "route": "TARGET",
+          "kafka": false,
+          "adapters": {
+            "mode": "http",
+            "learner": "http://127.0.0.1:18088",
+            "content": "http://127.0.0.1:18089",
+            "assessment": "http://127.0.0.1:18091"
+          },
+          "flyway": true,
+          "jdbc": true
+        },
+        "learningPortBusy": false,
+        "cleanup": {
+          "trackedOnly": true,
+          "owned": 3,
+          "services": [
+            {
+              "service": "content",
+              "port": 18089,
+              "pid": 30792,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            },
+            {
+              "service": "assessment",
+              "port": 18091,
+              "pid": 30901,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            },
+            {
+              "service": "learning",
+              "port": 18090,
+              "pid": 31023,
+              "stopped": true,
+              "portFree": true,
+              "stopError": null
+            }
+          ],
+          "learningPort": 18090,
+          "learningStarted": true
+        },
+        "cleanupError": null,
+        "error": null,
+        "dec04": "NOT_ASSERTED",
+        "answersSubmittedByHarness": 0,
+        "scoreRequestedByHarness": false,
+        "scoreToken": "UNSET",
+        "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+        "serviceTokenHeldByCaller": false,
+        "learningStarted": true,
+        "programmaticPlacementPost": false,
+        "programmaticAnswerPost": false,
+        "programmaticPlanPost": false,
+        "planEnsuredByHarness": false,
+        "targetSeeded": false,
+        "harnessCalls": 0,
+        "kafka": false,
+        "contentDirect": true,
+        "attachedToExisting": false,
+        "stoppedUntracked": false
+      }
+    },
+    "status": "FAIL",
+    "out": "/private/tmp/grok-mobile-resume-home-405/run/browser-target-result.json",
+    "runDirectory": "/private/tmp/grok-mobile-resume-home-405/run",
+    "gateway": "http://127.0.0.1:18070/api/v1",
+    "syntheticAccount": true,
+    "optIn": "YES_RUN_MB033_LEARNER_TARGET_PROBE",
+    "route": {
+      "gatewayB14Enabled": true,
+      "learner": "TARGET",
+      "assessment": "TARGET",
+      "learning": "TARGET",
+      "content": "TARGET",
+      "contentBase": "http://127.0.0.1:18089",
+      "contentInternal": "DIRECT",
+      "otherDomains": "LEGACY",
+      "learningPort": 18090,
+      "learningStarted": true,
+      "kafka": false,
+      "contentDirect": true
+    },
+    "jwt": {
+      "alg": "RS256",
+      "issuer": "http://127.0.0.1:18087",
+      "audience": [
+        "yuxuexing-api"
+      ],
+      "subjectPresent": true,
+      "roleLearner": true,
+      "permissionTargetWrite": true,
+      "permissionProfileRead": true,
+      "tokenType": "access",
+      "scopePresent": true,
+      "adultGate": "PASSED",
+      "consentState": "GRANTED",
+      "phase": "phase-1",
+      "accountStatus": "ACTIVE",
+      "tenant": "platform"
+    },
+    "learner": {
+      "started": true,
+      "owned": true,
+      "port": 18088,
+      "log": "/tmp/cloudstudy-mobile-placement-qa.i9WEsvj8/dsh-mb033-b72-mw74l3ab-581469/learner-service.log",
+      "jarSha256": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733",
+      "truststoreSha256": "1041973838e2b7c5a8ad21eff2ffe84a9414234dd89c63404fe11d9fd87bf123",
+      "pid": 30450
+    },
+    "db": {
+      "host": "127.0.0.1",
+      "port": 13306,
+      "schema": "learner_service",
+      "userNonRoot": true
+    },
+    "request": null,
+    "observations": {
+      "anonymousStatus": 401,
+      "priorStateVersion": 0,
+      "profileStatusBefore": "ONBOARDING",
+      "targetPresentBefore": false,
+      "preferencesBefore": {
+        "uiLocale": "zh-CN",
+        "contentLocale": "en-US",
+        "timezone": "Asia/Shanghai",
+        "themeMode": "SYSTEM",
+        "highContrast": false,
+        "motionMode": "FULL"
+      },
+      "browser": {
+        "status": "FAILED",
+        "outDir": "/private/tmp/grok-mobile-resume-home-405/run/browser",
+        "receipt": "browser-target-module-result.json"
+      }
+    },
+    "steps": [
+      {
+        "id": "anonymous.profile",
+        "method": "GET",
+        "path": "/learner/profile",
+        "status": 401,
+        "bodySha256": "274b51938def73d9446367b3f94b827b81f8b55866a734c73428536e3346e784"
+      },
+      {
+        "id": "profile.before",
+        "method": "GET",
+        "path": "/learner/profile",
+        "status": 200,
+        "bodySha256": "53fae8d34cb6415edb4eca0242b690942e913166fc3329b9611ec0ec9cfd4358"
+      },
+      {
+        "id": "targets.before",
+        "method": "GET",
+        "path": "/learner/targets",
+        "status": 404,
+        "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "id": "preferences.before",
+        "method": "GET",
+        "path": "/learner/preferences",
+        "status": 200,
+        "bodySha256": "4e8f33bac1d1b189b1bd9671a933f99a3940b3d4b91699f4e4a2403c9ec8a593"
+      }
+    ],
+    "assertions": [
+      {
+        "id": "token.missing",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.shape",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.alg",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.issuer_audience",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.authority",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "jwt.eligibility",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.root",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.exact",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.directory",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "run_directory.private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.jar",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.jar_sha256",
+        "ok": true,
+        "detail": {
+          "actual": "62b9dda75ec2547a32ef55b99fe6821fdcfe4e65841bf77d54e28289fc5c4733"
+        }
+      },
+      {
+        "id": "learner.jdbc_url",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.schema",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.db_user",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.truststore",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.java",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_digest",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_secret",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_digest_match",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_enabled",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_base_url",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.consent_client_id",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_requires_b85_b89",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.requires_browser",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.gateway_jar",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.identifier",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.password",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.ca_pem",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.log_directory_private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.start_opt_in",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "learner.port_busy",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "anonymous.profile.status",
+        "ok": true,
+        "detail": {
+          "status": 401,
+          "expected": [
+            401,
+            403
+          ]
+        }
+      },
+      {
+        "id": "profile.before.status",
+        "ok": true,
+        "detail": {
+          "status": 200,
+          "expected": [
+            200
+          ]
+        }
+      },
+      {
+        "id": "profile.before.envelope",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.subject",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.state_version",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "profile.before.no_target",
+        "ok": true,
+        "detail": {
+          "targetGoalPresent": false
+        }
+      },
+      {
+        "id": "profile.before.version_zero",
+        "ok": true,
+        "detail": {
+          "priorVersion": 0
+        }
+      },
+      {
+        "id": "targets.before.status",
+        "ok": true,
+        "detail": {
+          "status": 404,
+          "expected": [
+            200,
+            404
+          ]
+        }
+      },
+      {
+        "id": "targets.before.fresh",
+        "ok": true,
+        "detail": {
+          "status": 404
+        }
+      },
+      {
+        "id": "preferences.before.status",
+        "ok": true,
+        "detail": {
+          "status": 200,
+          "expected": [
+            200
+          ]
+        }
+      },
+      {
+        "id": "preferences.before.envelope",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "preferences.before.version",
+        "ok": true,
+        "detail": {
+          "preferencesVersion": 0,
+          "priorVersion": 0
+        }
+      },
+      {
+        "id": "browser.out_dir_private",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.module",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_callback",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "placement.full_owner_pin",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.status_shape",
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "id": "browser.status",
+        "ok": false,
+        "detail": {
+          "status": "FAILED"
+        }
+      }
+    ],
+    "counters": {
+      "requests": 4,
+      "anonymous": 1,
+      "reads": 4,
+      "writes": 0,
+      "programmaticWrites": 0,
+      "browserCalls": 1,
+      "programmaticPlacementPosts": 0,
+      "programmaticAnswerPosts": 0,
+      "programmaticPlanPosts": 0,
+      "replays": 0,
+      "ownerReadbacks": 0
+    },
+    "cleanup": {
+      "owned": true,
+      "started": true,
+      "stopped": true,
+      "released": true,
+      "portFree": true
+    },
+    "cleanupError": null,
+    "error": {
+      "id": "browser.status",
+      "message": "browser target smoke did not observe success",
+      "detail": {
+        "status": "FAILED"
+      }
+    },
+    "warnings": []
+  },
+  "cleanupInstructions": "Drop the disposable iam_service, learner_service, dedicated mb006 content and assessment schemas and accounts, and the fifth mb007_lrn_* learning schema and account. No run/cleanup.sql was written because it would contain the synthetic principal id; the target proof never publishes that id.",
+  "fullBrowser": {
+    "kind": "MB006_PLACEMENT_FULL_BROWSER",
+    "schemaVersion": "1",
+    "optIn": "MB006_PLACEMENT_FULL_BROWSER",
+    "status": "FAIL",
+    "dec04": "NOT_ASSERTED",
+    "separateFromIamChecks": true,
+    "scenario": "H5_PLACEMENT_ANSWERS_ENSURE_TODAY",
+    "budgetMet": false,
+    "fullArtifact": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5",
+    "fullIndexSha": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "programmaticTargetWrite": false,
+    "programmaticPlacementPost": false,
+    "programmaticAnswerPost": false,
+    "programmaticPlanPost": false,
+    "scoreToken": "UNSET",
+    "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+    "serviceTokenHeldByCaller": false,
+    "kafka": false,
+    "contentRoute": "TARGET",
+    "contentBase": "http://127.0.0.1:18089",
+    "contentInternal": "DIRECT",
+    "observer": {
+      "status": "FAILED",
+      "reason": "home-return-final-hash",
+      "placementOptIn": true,
+      "fullOptIn": true,
+      "indexMatch": true,
+      "expectedIndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+      "targetPutCount": 1,
+      "targetPutStatus": 200,
+      "preferenceWrites": 0,
+      "consentWrites": 0,
+      "placementCreateCount": 1,
+      "sessionReadCount": 0,
+      "errorId": null,
+      "full": {
+        "responses": [
+          {
+            "sequence": 1,
+            "status": 200,
+            "acceptedSequence": 1,
+            "nextSequence": 2,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 2,
+            "status": 200,
+            "acceptedSequence": 2,
+            "nextSequence": 3,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 3,
+            "status": 200,
+            "acceptedSequence": 3,
+            "nextSequence": 4,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 4,
+            "status": 200,
+            "acceptedSequence": 4,
+            "nextSequence": 5,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 5,
+            "status": 200,
+            "acceptedSequence": 5,
+            "nextSequence": 6,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 6,
+            "status": 200,
+            "acceptedSequence": 6,
+            "nextSequence": 7,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 7,
+            "status": 200,
+            "acceptedSequence": 7,
+            "nextSequence": 8,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 8,
+            "status": 200,
+            "acceptedSequence": 8,
+            "nextSequence": 9,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 9,
+            "status": 200,
+            "acceptedSequence": 9,
+            "nextSequence": 10,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": false,
+            "firstOptionIndex": 0
+          },
+          {
+            "sequence": 10,
+            "status": 200,
+            "acceptedSequence": 10,
+            "nextSequence": 11,
+            "versionOk": true,
+            "itemOk": true,
+            "bodyOk": true,
+            "idempotency": true,
+            "feedbackPresent": true,
+            "nextItemOk": true,
+            "finalOk": true,
+            "firstOptionIndex": 0
+          }
+        ],
+        "responseCount": 10,
+        "finalReportPresent": true,
+        "finalReportKind": "ASSESSED",
+        "finalReportLevelPresent": true,
+        "finalReportScorePresent": true,
+        "finalReportItemCount": 10,
+        "finalReportFullCount": 3,
+        "finalReportDigestPresent": false,
+        "reportVisible": true,
+        "reportCardVisible": true,
+        "reportCompleteVisible": true,
+        "reportLevelMatch": true,
+        "reportScoreMatch": true,
+        "reportSavedVisible": true,
+        "reportPlanError": false,
+        "reportTodayButton": true,
+        "planEnsureCount": 1,
+        "planEnsureStatus": 200,
+        "planEnsureBodyOk": true,
+        "planEnsureIdempotency": true,
+        "planEnsurePlanPresent": true,
+        "planEnsurePlanVersion": 2,
+        "todayReadCount": 3,
+        "todayAfterEnsureCount": 2,
+        "todayAfterEnsureStatuses": [
+          200,
+          200
+        ],
+        "todayAfterEnsurePlanMatch": true,
+        "todayAfterUiCount": 1,
+        "todayAfterUiStatuses": [
+          200
+        ],
+        "todayUiClicked": true,
+        "todayUiVisible": true,
+        "todayUiVisual": false,
+        "todayUiAlgorithmVersionPresent": true,
+        "todayUiAlgorithmVersionMatch": true,
+        "todayDueRowsCount": 3,
+        "todayDueRowsMatch": true,
+        "todayFalseEmptyVisible": false,
+        "todayDueRowsReadOnly": true,
+        "homeCount": 1,
+        "homeRequests": 1,
+        "homeStatuses": [
+          200
+        ],
+        "catalogCount": 1,
+        "catalogRequests": 1,
+        "catalogStatuses": [
+          200
+        ],
+        "submitClicks": 10,
+        "retestContinuation": false,
+        "retestWrites": 0,
+        "retestStatus": null,
+        "retestBodyEmpty": false,
+        "retestIdempotency": false,
+        "retestAuthorized": false,
+        "retestSessionNew": false,
+        "retestQuestionVisible": false,
+        "retestReportScreenLeft": false,
+        "retestConfirmClicks": 0,
+        "retestSubmitStillDisabled": false,
+        "retestNoChoice": false,
+        "retestFirstItem": false,
+        "skipWrites": 0,
+        "unexpectedPlanWrites": 0,
+        "extraContinuedWrites": 0,
+        "duplicateResponseAttempts": 0,
+        "prematureResponseAttempts": 0,
+        "wrongSequenceAttempts": 0,
+        "wrongVersionAttempts": 0,
+        "wrongItemAttempts": 0,
+        "wrongOptionAttempts": 0,
+        "wrongBodyAttempts": 0,
+        "wrongDigestAttempts": 0,
+        "wrongSessionAttempts": 0,
+        "duplicateEnsureAttempts": 0,
+        "earlyEnsureAttempts": 0,
+        "earlyHomeAttempts": 0,
+        "duplicateHomeAttempts": 0,
+        "syntheticResponses": 0,
+        "unknownContinued": 0,
+        "missingAuthorization": 0,
+        "foreignOriginAttempts": 0
+      }
+    },
+    "services": {
+      "status": "PASS",
+      "launch": {
+        "phase": "run",
+        "mode": "BROWSER",
+        "programmaticPlacementPost": false,
+        "content": {
+          "schema": "mb006_cnt_9c2eebd73c",
+          "user": "mb006c_9c2eebd73c",
+          "jarSha256": "852578df43b40fdc45569a6e60c074c3561c0b43bf8e7bd6b8acafd51e2f3eb2",
+          "port": 18089
+        },
+        "assessment": {
+          "schema": "mb006_asm_9c2eebd73c",
+          "user": "mb006a_9c2eebd73c",
+          "jarSha256": "467fb91b9299c0569f48d52b482be580a18b6a9b90bd74aa523659e16fed6912",
+          "port": 18091
+        },
+        "gateway": {
+          "assessmentRoute": "TARGET",
+          "learnerRoute": "TARGET",
+          "contentRoute": "TARGET",
+          "learningRoute": "TARGET",
+          "contentBase": "http://127.0.0.1:18089",
+          "contentInternal": "DIRECT"
+        },
+        "scoreToken": "UNSET",
+        "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+        "fullLearning": true,
+        "learningStarted": true,
+        "attachedToExisting": false,
+        "learning": {
+          "schema": "mb007_lrn_9c2eebd73c",
+          "user": "mb007l_9c2eebd73c",
+          "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+          "port": 18090,
+          "route": "TARGET",
+          "kafka": false,
+          "adapters": {
+            "mode": "http",
+            "learner": "http://127.0.0.1:18088",
+            "content": "http://127.0.0.1:18089",
+            "assessment": "http://127.0.0.1:18091"
+          },
+          "flyway": true,
+          "jdbc": true
+        },
+        "contentDirect": true,
+        "kafka": false
+      },
+      "learningLaunch": {
+        "schema": "mb007_lrn_9c2eebd73c",
+        "user": "mb007l_9c2eebd73c",
+        "jarSha256": "5eff984611443d2cf842eb5887fdabc160c4c87faff5fd77c471ab510d0a444f",
+        "port": 18090,
+        "route": "TARGET",
+        "kafka": false,
+        "adapters": {
+          "mode": "http",
+          "learner": "http://127.0.0.1:18088",
+          "content": "http://127.0.0.1:18089",
+          "assessment": "http://127.0.0.1:18091"
+        },
+        "flyway": true,
+        "jdbc": true
+      },
+      "learningPortBusy": false,
+      "cleanup": {
+        "trackedOnly": true,
+        "owned": 3,
+        "services": [
+          {
+            "service": "content",
+            "port": 18089,
+            "pid": 30792,
+            "stopped": true,
+            "portFree": true,
+            "stopError": null
+          },
+          {
+            "service": "assessment",
+            "port": 18091,
+            "pid": 30901,
+            "stopped": true,
+            "portFree": true,
+            "stopError": null
+          },
+          {
+            "service": "learning",
+            "port": 18090,
+            "pid": 31023,
+            "stopped": true,
+            "portFree": true,
+            "stopError": null
+          }
+        ],
+        "learningPort": 18090,
+        "learningStarted": true
+      },
+      "cleanupError": null,
+      "error": null,
+      "dec04": "NOT_ASSERTED",
+      "answersSubmittedByHarness": 0,
+      "scoreRequestedByHarness": false,
+      "scoreToken": "UNSET",
+      "scoreExchange": "IAM_CLIENT_CREDENTIALS",
+      "serviceTokenHeldByCaller": false,
+      "learningStarted": true,
+      "programmaticPlacementPost": false,
+      "programmaticAnswerPost": false,
+      "programmaticPlanPost": false,
+      "planEnsuredByHarness": false,
+      "targetSeeded": false,
+      "harnessCalls": 0,
+      "kafka": false,
+      "contentDirect": true,
+      "attachedToExisting": false,
+      "stoppedUntracked": false
+    }
+  }
+}

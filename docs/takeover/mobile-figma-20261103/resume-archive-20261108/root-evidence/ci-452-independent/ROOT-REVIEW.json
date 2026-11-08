@@ -1,0 +1,9 @@
+{
+  "exit": 1,
+  "failed": [
+    "not ok 3 - M2-001 health identity is Gateway-owned and the compatibility projection permits exactly two scalar corrections plus the root plus reviewed additive nodes"
+  ],
+  "scope": "RC-G_AND_RC-I_ONLY",
+  "otherKnownFailure": "RC-D_M2_001_PROJECTION",
+  "fullCI": "NOT_RUN"
+}

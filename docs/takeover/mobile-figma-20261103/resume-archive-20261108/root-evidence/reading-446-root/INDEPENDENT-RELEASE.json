@@ -1,0 +1,23 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "result": "FAIL_ATTEMPT_POST_NO_OBSERVED_RESPONSE",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18088": true,
+    "18089": true,
+    "18091": true,
+    "18183": true
+  },
+  "ownedLabelAbsent": true,
+  "label": "cloudstudy.qa.mobile-resume-reading-attempt-446-20261106",
+  "releasedProof": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "at": "2026-11-08T01:05:34.833339+00:00"
+}

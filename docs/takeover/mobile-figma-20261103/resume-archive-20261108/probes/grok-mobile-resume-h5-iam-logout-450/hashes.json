@@ -1,0 +1,40 @@
+{
+  "job": "G450-H5-IAM-LOGOUT-TRANSPORT",
+  "checkout": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "detached": true,
+  "gitWrites": false,
+  "g441IntegratedAs": "dev@924bb073",
+  "g441StatusInThisCheckout": "preexisting dirty bytes, byte-identical to reviewed G441/G445, excluded from exact-new.diff",
+  "baseHead": {
+    "config/p1r-data-ownership.v1.json": "384303265eb8e85f237f86aa8f9f57ed9fedf9557cfeb766d77826e2a29b8997",
+    "scripts/audit/p1r-data-ownership-check.mjs": "93d5f600aada211151703dba8312833c47597ae6ca10eb3b5db71263157d3be1",
+    "tests/p1r/p1r-data-ownership.test.mjs": "bca2be8b3c632a347442fe3174efdf59ee2769ae8f5d7e6036c67dd16b6a6940",
+    "tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs": "3b92d342b8d5daafbab9f6d86bcf791a63677af179361dce953859e64daf9057",
+    "apps/mobile/src/api/client.ts": "c332170a0ac228d8e8a15329df9e75a423f6ec8414ab044776ae0cba78a50e84",
+    "apps/mobile/src/auth/gateway-auth.ts": "746bb9d83d241162bce9d9cd701d2f6662d11a132977533e3ba2a11e428c3277",
+    "apps/mobile/tests/iam-auth-transport.test.mjs": "a7bbb400f1d474c670a7cd60173564a4e804c195054132cb1a135145305b271c",
+    "apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs": "55b983568a6be5a56be4a01cd0c8c478c29f0dc9f8bec774f971f9e2e3409a97",
+    "apps/mobile/tests/onboarding-auth-projection.test.mjs": "3f55fb099464119c6575926b2e67c2a8ed73428facb9eb4b4fd029c2e0a1aeaa",
+    "services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java": null
+  },
+  "preexistingG441Worktree": {
+    "config/p1r-data-ownership.v1.json": "31333598faae95b7216599b8965c16e4b8f56f249e92131980d78eae585b3d9f",
+    "scripts/audit/p1r-data-ownership-check.mjs": "5b25a2fd3f74265eebb78df8efa635c6a44e70af97e516c084414d6213578ddb",
+    "tests/p1r/p1r-data-ownership.test.mjs": "ba01cbdfe9ba6128ea049a9b315298ec80b3ab53630ff68946d5cff1d3d2a420",
+    "tests/p1r/p1r-m2-002-adult-gate-validation.test.mjs": "a68a0031704b839980d94066902178b42b8e9fca9b36c8b4b4f235e790e19a86"
+  },
+  "g450Worktree": {
+    "apps/mobile/src/api/client.ts": "136f297ddad8337bcf4125026455aec51ecdc8db951d398cab758eb90c0dd16f",
+    "apps/mobile/src/auth/gateway-auth.ts": "08f59285061940606e8eb520c50cb4c81f8881539b52ba366aab525388971ab1",
+    "apps/mobile/tests/iam-auth-transport.test.mjs": "08db1dd787b76091907fa02d7072ff9e2223f91de15d23c1908782f49ef93478",
+    "apps/mobile/tests/mobile-gateway-auth-bootstrap.test.mjs": "30901b7a4282f1526a8f54e576afd22a9890b1f74afb2480c5a713e7478d9c89",
+    "apps/mobile/tests/onboarding-auth-projection.test.mjs": "59f0fa23808ae2253b64d54360737b11852a762d5ab0557920bf2f6b40cbe5a4",
+    "services/iam-service/src/test/java/com/englishflow/iam/web/IamLogoutCookieClearControllerTest.java": "d9cfc5c46380a4e9ee166a738b70df5eb0dabd6c93bcda4dae6fe96d5d90d864"
+  },
+  "artifacts": {
+    "exact-new.diff": "29ca6b8d8629386db2774bfc07dafcad2540341e535f28be84aebbbd4041c53e",
+    "mobile-all-tests.valid.log": "cdbb16d0a332c20c040a21128a97cb117f612be360895e211824c51855af7505",
+    "iam-cookie-clear-maven.log": "21f45becf04641398c5afe10639044970dbaebb4311a9f642bfb27e3f49826fb",
+    "REPORT.md": "878f37b986a1aa8dd309a20a63d91982946a460205f78e42f6ab76830f3cd975"
+  }
+}

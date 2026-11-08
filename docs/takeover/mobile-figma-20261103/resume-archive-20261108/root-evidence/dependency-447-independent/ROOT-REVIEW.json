@@ -1,0 +1,17 @@
+{
+  "status": "INDEPENDENT_STATIC_PASS_RUNTIME_PENDING",
+  "files": {
+    "apps/mobile/package.json": "e08004d99a0486f6cb56fa2cca5f60f4e22455cc6fc5e0dff09b9e1fbfcad298",
+    "pnpm-workspace.yaml": "e0dec117f697e0c96824fc5b648a8ad65e2ec3ac160ab2d76d8d79e92f1fdc62",
+    "pnpm-lock.yaml": "762e018cb7a02d3d3c5c3b5c031229f45b81951308bd57591f76848e02842e3b"
+  },
+  "audit": {
+    "info": 0,
+    "low": 10,
+    "moderate": 15,
+    "high": 0,
+    "critical": 0
+  },
+  "mobileTests": 680,
+  "native": "COMPILE_ONLY_NOT_DEVICE_VERIFIED"
+}

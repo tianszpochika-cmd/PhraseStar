@@ -1,0 +1,277 @@
+{
+  "activeReadingBindings": 2,
+  "assessmentStarted": true,
+  "authorized": "/private/tmp/grok-mobile-resume-reading-repair-416",
+  "broker": false,
+  "cleanup": {
+    "container": {
+      "released": true,
+      "stopped": 1
+    },
+    "guards": {
+      "groups": [
+        {
+          "children": [
+            {
+              "pid": 21768,
+              "reason": "stale-or-absent",
+              "released": true,
+              "signaled": false
+            }
+          ],
+          "name": "fixture",
+          "released": true
+        },
+        {
+          "children": [
+            {
+              "pid": 21850,
+              "reason": "stale-or-absent",
+              "released": true,
+              "signaled": false
+            }
+          ],
+          "name": "seed",
+          "released": true
+        },
+        {
+          "children": [
+            {
+              "pid": 21924,
+              "reason": "stale-or-absent",
+              "released": true,
+              "signaled": false
+            }
+          ],
+          "name": "hook",
+          "released": true
+        },
+        {
+          "children": [
+            {
+              "pid": 22018,
+              "reason": "stale-or-absent",
+              "released": true,
+              "signaled": false
+            }
+          ],
+          "name": "observer",
+          "released": true
+        }
+      ],
+      "released": true
+    },
+    "jvms": {
+      "groups": [
+        {
+          "name": "assessment",
+          "pid": 21991,
+          "reason": "released",
+          "released": true,
+          "signaled": true
+        },
+        {
+          "name": "content",
+          "pid": 21938,
+          "reason": "released",
+          "released": true,
+          "signaled": true
+        },
+        {
+          "name": "learner",
+          "pid": 21859,
+          "reason": "released",
+          "released": true,
+          "signaled": true
+        },
+        {
+          "name": "gateway",
+          "pid": 21857,
+          "reason": "released",
+          "released": true,
+          "signaled": true
+        },
+        {
+          "name": "iam",
+          "pid": 21820,
+          "reason": "released",
+          "released": true,
+          "signaled": true
+        }
+      ],
+      "released": true
+    },
+    "overlay": {
+      "classRemoved": 1,
+      "sourceRemoved": true,
+      "surefireReportsRemoved": 2
+    },
+    "ports": {
+      "13306": "free",
+      "18070": "free",
+      "18087": "free",
+      "18088": "free",
+      "18089": "free",
+      "18091": "free",
+      "18183": "free"
+    },
+    "scratch": {
+      "removed": true
+    }
+  },
+  "completedStages": [
+    "preflight",
+    "mysql",
+    "fixture-stage",
+    "fixture-run",
+    "readback-fixture",
+    "tls",
+    "iam",
+    "seed",
+    "gateway",
+    "learner",
+    "credential",
+    "hook",
+    "readback-actor",
+    "content",
+    "readback-content",
+    "assessment",
+    "gates"
+  ],
+  "contentVersionId": 266101,
+  "databaseReleased": true,
+  "dockerContext": "desktop-linux",
+  "dockerSocket": "unix:///Users/Admin/.docker/run/docker.sock",
+  "failedStage": "observer",
+  "fixture": {
+    "exit": 0,
+    "migrationsV34": true,
+    "oneTestPass": true
+  },
+  "h5Fulfills": 0,
+  "h5Proof": false,
+  "health": {
+    "assessment": true,
+    "content": true,
+    "gateway": true,
+    "iam": true,
+    "learner": true
+  },
+  "historicalReceiptsAreNotRuntime": true,
+  "kind": "MB416",
+  "learningStarted": false,
+  "migrationFiles": 33,
+  "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b",
+  "observer": {
+    "counts": {
+      "abortedWrites": 1,
+      "attemptPosts": 0,
+      "attemptReplays": 0,
+      "attemptWrites": 0,
+      "continued": 20,
+      "foreignOrigins": 0,
+      "learningWrites": 0,
+      "legacyCreates": 0,
+      "practiceGets": 1,
+      "practicePosts": 1,
+      "questionsClosed": 1,
+      "reading200": 2,
+      "reading403": 0,
+      "readingDetails": 1,
+      "readingLists": 1,
+      "scoreWrites": 0,
+      "sideReadsClosed": 0,
+      "syntheticFulfills": 0,
+      "unknownContinued": 0
+    },
+    "dialedAssessment": false,
+    "dialedContent": false,
+    "dialedLearning": false,
+    "dialedMysql": false,
+    "exit": 1,
+    "indexPin": "pinned",
+    "practice": {
+      "attemptStatus": null,
+      "choiceCount": 1,
+      "choiceGesture": "click",
+      "entryMarker": "reading",
+      "feedbackVisible": false,
+      "gesture": "keyboard",
+      "gestureCount": 1,
+      "getStatus": 200,
+      "postShape": "expected",
+      "postStatus": 200,
+      "postVersion": 266101,
+      "questionSame": true,
+      "replayStatus": null,
+      "sameAttempt": false,
+      "sameSession": true,
+      "savedReceipt": false,
+      "scoreBucket": null,
+      "sessionInUrl": false
+    },
+    "practiceEntry": "not-this-proof",
+    "publishedDetail": "not-this-proof",
+    "reading": [
+      {
+        "contentVersionId": 266101,
+        "count": 1,
+        "kind": "list",
+        "practiceRef": "exact",
+        "requestId": "req-2738b4a5c42b43949c8780829510e1e7",
+        "shape": "expected",
+        "status": 200
+      },
+      {
+        "contentVersionId": 266101,
+        "count": null,
+        "kind": "detail",
+        "practiceRef": "exact",
+        "requestId": "req-05586dd4459a4f64aafd5ea48ec43125",
+        "shape": "expected",
+        "status": 200
+      }
+    ],
+    "reason": "attempt-not-one",
+    "status": "FAILED",
+    "syntheticFulfills": 0
+  },
+  "observerFailure": {
+    "choiceGesture": "click",
+    "h5Proof": false,
+    "reason": "attempt-not-one",
+    "status": "FAILED"
+  },
+  "portLease": [
+    "mysql:13306",
+    "gateway:18070",
+    "iam-tls:18087",
+    "learner:18088",
+    "content:18089",
+    "assessment:18091",
+    "h5:18183"
+  ],
+  "portsAfter": [
+    "13306:free",
+    "18070:free",
+    "18087:free",
+    "18088:free",
+    "18089:free",
+    "18091:free",
+    "18183:free"
+  ],
+  "profileWrite": false,
+  "publishedArticles": 1,
+  "reason": "observer",
+  "releasedProof": {
+    "container": true,
+    "groups": true,
+    "overlay": true,
+    "ports": true,
+    "scratch": true
+  },
+  "runnerBusinessInserts": 0,
+  "stage": "observer",
+  "status": "FAIL",
+  "targetWrite": true
+}

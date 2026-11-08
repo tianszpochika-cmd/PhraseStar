@@ -1,0 +1,1975 @@
+### git diff HEAD (tracked)
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index a12a610f..9de959f6 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,7 @@
+ # Changelog
+ 
++- [RC-B-PAGINATION-20261108] `listUnfinishedSagas` 与 `listAssessmentMistakes` 改为 canonical cursor 分页：fragment SSOT、生成契约、workflow-service / assessment-service 按 owner 过滤后分页，admin-web 与错题 feed 消费 envelope。Saga 不再以固定 200 条作为公开契约；错题列表不再一次倒出全表。
++
+ - [MOBILE-FIGMA-CODEX-RESERVE-20261107] 按用户确认预留 Codex 五小时额度 20%，保存已审核成果、未验依赖候选、契约 CI 计划及探针停点，临时服务已释放。
+ 
+ - [MOBILE-FIGMA-B152-20261107] 记录成长世界真实 H5 默认展示与五项读取，保留自动清理证书失败，并补充 Root 独立资源释放确认。
+diff --git a/apps/admin-web/src/api/recovery.ts b/apps/admin-web/src/api/recovery.ts
+index ed8a6bc5..622cc197 100644
+--- a/apps/admin-web/src/api/recovery.ts
++++ b/apps/admin-web/src/api/recovery.ts
+@@ -86,8 +86,44 @@ export async function executeRecovery(recoveryId: string): Promise<RecoveryView
+   return viewOf(raw)
+ }
+ 
+-export async function listUnfinishedSagas(): Promise<string[]> {
+-  const raw = await adminClient.request('/admin/recovery/sagas/unfinished')
++export interface UnfinishedSagaPage {
++  sagaIds: string[]
++  hasMore: boolean
++  nextCursor: string | null
++  pageSize: number
++}
++
++export async function listUnfinishedSagas(input?: {
++  cursor?: string
++  pageSize?: number
++}): Promise<UnfinishedSagaPage> {
++  const params = new URLSearchParams()
++  if (input?.cursor) params.set('cursor', input.cursor)
++  if (input?.pageSize != null) params.set('pageSize', String(input.pageSize))
++  const query = params.toString()
++  const raw = await adminClient.request(
++    `/admin/recovery/sagas/unfinished${query ? `?${query}` : ''}`,
++  )
+   const data = unwrap(raw)
+-  return Array.isArray(data) ? data.filter((x): x is string => typeof x === 'string') : []
++  const sagaIds = Array.isArray(data) ? data.filter((value): value is string => typeof value === 'string') : []
++  const meta = isRecord(raw) && isRecord(raw.meta) ? raw.meta : {}
++  const nextCursor = typeof meta.nextCursor === 'string' && meta.nextCursor.trim() ? meta.nextCursor : null
++  return {
++    sagaIds,
++    hasMore: meta.hasMore === true,
++    nextCursor,
++    pageSize: typeof meta.pageSize === 'number' ? meta.pageSize : sagaIds.length,
++  }
++}
++
++export async function listAllUnfinishedSagaIds(): Promise<string[]> {
++  const sagaIds: string[] = []
++  let cursor: string | undefined
++  for (let page = 0; page < 50; page += 1) {
++    const result = await listUnfinishedSagas({ cursor, pageSize: 100 })
++    sagaIds.push(...result.sagaIds)
++    if (!result.hasMore || !result.nextCursor) break
++    cursor = result.nextCursor
++  }
++  return sagaIds
+ }
+diff --git a/apps/admin-web/src/views/AdminRecoveryView.vue b/apps/admin-web/src/views/AdminRecoveryView.vue
+index fbe71e9f..30177373 100644
+--- a/apps/admin-web/src/views/AdminRecoveryView.vue
++++ b/apps/admin-web/src/views/AdminRecoveryView.vue
+@@ -7,7 +7,7 @@ import { AdminApiError } from "../api/client";
+ import {
+   approveRecovery,
+   executeRecovery,
+-  listUnfinishedSagas,
++  listAllUnfinishedSagaIds,
+   rejectRecovery,
+   requestRecovery,
+   type RecoveryView,
+@@ -45,7 +45,7 @@ async function load(): Promise<void> {
+   state.value = "loading";
+   lastError.value = null;
+   try {
+-    sagas.value = await listUnfinishedSagas();
++    sagas.value = await listAllUnfinishedSagaIds();
+     state.value = current.value || sagas.value.length ? "ready" : "empty";
+   } catch (error) {
+     state.value = stateFrom(error);
+diff --git a/packages/api-client/src/generated/index.ts b/packages/api-client/src/generated/index.ts
+index 088e851e..1a06d4d6 100644
+--- a/packages/api-client/src/generated/index.ts
++++ b/packages/api-client/src/generated/index.ts
+@@ -439,7 +439,7 @@ export interface GeneratedApiOperationRegistry {
+   approveWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/approve"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+   rejectWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/reject"; request: { reason?: string; }; requestBodyRequired: false; response: Record<string, never>; };
+   executeWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/execute"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+-  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; requestBodyRequired: false; response: ReadonlyArray<string>; };
++  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: ReadonlyArray<string>; }; };
+   readWorkflowSaga: { method: "GET"; path: "/api/v1/admin/recovery/sagas/{sagaId}"; request: never; requestBodyRequired: false; response: Record<string, never>; };
+   compensateWorkflowSaga: { method: "POST"; path: "/api/v1/admin/recovery/sagas/{sagaId}/compensate"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+   importB9ContentBatch: { method: "POST"; path: "/api/v1/admin/content-commands/import/batch"; request: { items: ReadonlyArray<Record<string, never>>; }; requestBodyRequired: true; response: unknown; };
+@@ -450,7 +450,7 @@ export interface GeneratedApiOperationRegistry {
+   upsertMediaSubtitle: { method: "POST"; path: "/api/v1/media/assets/{assetId}/subtitles"; request: Record<string, never>; requestBodyRequired: true; response: unknown; };
+   mintMediaUploadUrl: { method: "POST"; path: "/api/v1/media/assets/{assetId}/upload-url"; request: never; requestBodyRequired: false; response: unknown; };
+   activateMediaAsset: { method: "PUT"; path: "/api/v1/media/assets/{assetId}/active"; request: { verifiedChecksumSha256: string; verifiedSizeBytes: number; }; requestBodyRequired: true; response: unknown; };
+-  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; requestBodyRequired: false; response: unknown; };
++  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: { items: ReadonlyArray<Record<string, never>>; count: number; }; }; };
+   verifyAssessmentMistake: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/verify"; request: { outcome: "CORRECT" | "WRONG"; }; requestBodyRequired: true; response: unknown; };
+   issueAssessmentVariant: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/variant"; request: { variantItemId: number; }; requestBodyRequired: true; response: unknown; };
+   readPrivacyExportStatus: { method: "GET"; path: "/api/v1/privacy/export/{exportId}"; request: never; requestBodyRequired: false; response: unknown; };
+diff --git a/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json b/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
+index 78441dd8..68c29fda 100644
+--- a/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
++++ b/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
+@@ -2804,10 +2804,86 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "OK"
++            "description": "Cursor page of owner-scoped mistake facts",
++            "content": {
++              "application/json": {
++                "schema": {
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "object",
++                          "additionalProperties": false,
++                          "required": [
++                            "items",
++                            "count"
++                          ],
++                          "properties": {
++                            "items": {
++                              "type": "array",
++                              "items": {
++                                "type": "object"
++                              },
++                              "maxItems": 100
++                            },
++                            "count": {
++                              "type": "integer",
++                              "minimum": 0,
++                              "maximum": 100
++                            }
++                          }
++                        }
++                      }
++                    }
++                  ]
++                }
++              }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
++            }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/packages/contracts/fragments/b26-workflow-recovery.openapi.json b/packages/contracts/fragments/b26-workflow-recovery.openapi.json
+index df62d6af..1d38d1c7 100644
+--- a/packages/contracts/fragments/b26-workflow-recovery.openapi.json
++++ b/packages/contracts/fragments/b26-workflow-recovery.openapi.json
+@@ -326,20 +326,73 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "Unfinished saga ids",
++            "description": "Cursor page of unfinished saga ids",
+             "content": {
+               "application/json": {
+                 "schema": {
+-                  "type": "array",
+-                  "items": {
+-                    "type": "string"
+-                  }
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "array",
++                          "items": {
++                            "type": "string",
++                            "minLength": 8,
++                            "maxLength": 128
++                          },
++                          "maxItems": 100
++                        }
++                      }
++                    }
++                  ]
+                 }
+               }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
+             }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/packages/contracts/generated/openapi.ts b/packages/contracts/generated/openapi.ts
+index 8fa45bca..0ce8c23f 100644
+--- a/packages/contracts/generated/openapi.ts
++++ b/packages/contracts/generated/openapi.ts
+@@ -4636,7 +4636,7 @@ export interface ApiOperationRegistry {
+   approveWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/approve"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+   rejectWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/reject"; request: { reason?: string; }; response: Record<string, never>; idempotent: true };
+   executeWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/execute"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+-  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; response: ReadonlyArray<string>; idempotent: false };
++  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; response: ApiCursorPageEnvelope & { data: ReadonlyArray<string>; }; idempotent: false };
+   readWorkflowSaga: { method: "GET"; path: "/api/v1/admin/recovery/sagas/{sagaId}"; request: never; response: Record<string, never>; idempotent: false };
+   compensateWorkflowSaga: { method: "POST"; path: "/api/v1/admin/recovery/sagas/{sagaId}/compensate"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+   importB9ContentBatch: { method: "POST"; path: "/api/v1/admin/content-commands/import/batch"; request: { items: ReadonlyArray<Record<string, never>>; }; response: unknown; idempotent: true };
+@@ -4647,7 +4647,7 @@ export interface ApiOperationRegistry {
+   upsertMediaSubtitle: { method: "POST"; path: "/api/v1/media/assets/{assetId}/subtitles"; request: Record<string, never>; response: unknown; idempotent: true };
+   mintMediaUploadUrl: { method: "POST"; path: "/api/v1/media/assets/{assetId}/upload-url"; request: never; response: unknown; idempotent: true };
+   activateMediaAsset: { method: "PUT"; path: "/api/v1/media/assets/{assetId}/active"; request: { verifiedChecksumSha256: string; verifiedSizeBytes: number; }; response: unknown; idempotent: true };
+-  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; response: unknown; idempotent: false };
++  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; response: ApiCursorPageEnvelope & { data: { items: ReadonlyArray<Record<string, never>>; count: number; }; }; idempotent: false };
+   verifyAssessmentMistake: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/verify"; request: { outcome: "CORRECT" | "WRONG"; }; response: unknown; idempotent: true };
+   issueAssessmentVariant: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/variant"; request: { variantItemId: number; }; response: unknown; idempotent: true };
+   readPrivacyExportStatus: { method: "GET"; path: "/api/v1/privacy/export/{exportId}"; request: never; response: unknown; idempotent: false };
+diff --git a/packages/contracts/openapi/v1/openapi.json b/packages/contracts/openapi/v1/openapi.json
+index 9c417d9f..be05dc8b 100644
+--- a/packages/contracts/openapi/v1/openapi.json
++++ b/packages/contracts/openapi/v1/openapi.json
+@@ -36775,20 +36775,73 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "Unfinished saga ids",
++            "description": "Cursor page of unfinished saga ids",
+             "content": {
+               "application/json": {
+                 "schema": {
+-                  "type": "array",
+-                  "items": {
+-                    "type": "string"
+-                  }
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "array",
++                          "items": {
++                            "type": "string",
++                            "minLength": 8,
++                            "maxLength": 128
++                          },
++                          "maxItems": 100
++                        }
++                      }
++                    }
++                  ]
+                 }
+               }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
+             }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+@@ -37395,10 +37448,86 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "OK"
++            "description": "Cursor page of owner-scoped mistake facts",
++            "content": {
++              "application/json": {
++                "schema": {
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "object",
++                          "additionalProperties": false,
++                          "required": [
++                            "items",
++                            "count"
++                          ],
++                          "properties": {
++                            "items": {
++                              "type": "array",
++                              "items": {
++                                "type": "object"
++                              },
++                              "maxItems": 100
++                            },
++                            "count": {
++                              "type": "integer",
++                              "minimum": 0,
++                              "maximum": 100
++                            }
++                          }
++                        }
++                      }
++                    }
++                  ]
++                }
++              }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
++            }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java b/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
+index 96b33341..07618a11 100644
+--- a/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
++++ b/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
+@@ -8,7 +8,10 @@ import tools.jackson.databind.node.ObjectNode;
+ 
+ import com.englishflow.assessment.adapter.content.BankPracticeRuleProvider;
+ import com.englishflow.assessment.adapter.content.HttpProtectedContentSnapshotTransport;
++import com.englishflow.assessment.adapter.jdbc.JdbcAssessmentMistakeList;
++import com.englishflow.assessment.domain.AssessmentDomainException;
+ import com.englishflow.assessment.domain.AssessmentMistake;
++import com.englishflow.assessment.domain.MistakeListPaging;
+ import com.englishflow.assessment.port.PlacementRuleScorePort;
+ import com.englishflow.assessment.domain.AssessmentPrincipal;
+ import com.englishflow.assessment.domain.AttemptGuard;
+@@ -47,6 +50,7 @@ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestHeader;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ import org.springframework.web.bind.annotation.RequestMethod;
++import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.bind.annotation.RestController;
+ import org.springframework.web.server.ResponseStatusException;
+ 
+@@ -73,6 +77,7 @@ public class B10AssessmentJdbcController {
+     private final BankPracticeRuleProvider bankRules;
+     private final PlacementRuleScorePort placementScores;
+     private final HttpProtectedContentSnapshotTransport protectedContent;
++    private final JdbcAssessmentMistakeList mistakeList;
+ 
+     public B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper, String contentBaseUrl) {
+         this(jdbc, mapper, contentBaseUrl, null, (HttpProtectedContentSnapshotTransport) null);
+@@ -100,6 +105,7 @@ public class B10AssessmentJdbcController {
+         this.bankRules = new BankPracticeRuleProvider(mapper, contentBaseUrl);
+         this.placementScores = placementScores;
+         this.protectedContent = protectedContent;
++        this.mistakeList = new JdbcAssessmentMistakeList(jdbc);
+     }
+ 
+     @PostMapping("/sessions")
+@@ -552,15 +558,27 @@ public class B10AssessmentJdbcController {
+      * the caller's key via the shared attempt idempotency record.
+      */
+     @GetMapping("/mistakes")
+-    public Map<String, Object> listMistakes(Authentication authentication) {
++    public Map<String, Object> listMistakes(Authentication authentication,
++            @RequestParam(required = false) String cursor,
++            @RequestParam(required = false) Integer pageSize,
++            @RequestHeader(value = "X-Request-Id", required = false) String requestId,
++            @RequestHeader(value = "X-Trace-Id", required = false) String traceId) {
+         Principal principal = principal(authentication, "assessment.session.read");
+-        List<Map<String, Object>> rows = jdbc.queryForList("""
+-                SELECT * FROM assessment_mistake WHERE tenant_id = ? AND subject_id = ?
+-                 ORDER BY mistake_id
+-                """, TENANT, principal.subject());
+-        List<Map<String, Object>> items = new ArrayList<>();
+-        for (Map<String, Object> row : rows) items.add(mistakeView(restoreMistake(row)));
+-        return envelope(Map.of("items", items, "count", items.size()));
++        try {
++            MistakeListPaging.Page<Map<String, Object>> page = mistakeList.page(TENANT, principal.subject(), cursor,
++                    pageSize);
++            List<Map<String, Object>> items = new ArrayList<>();
++            for (Map<String, Object> row : page.items()) items.add(mistakeView(restoreMistake(row)));
++            Map<String, Object> data = new LinkedHashMap<>();
++            data.put("items", items);
++            data.put("count", items.size());
++            return cursorPage(data, page.hasMore(), page.nextCursor(), page.pageSize(), requestId, traceId);
++        } catch (AssessmentDomainException invalid) {
++            if ("ASM_CURSOR_INVALID".equals(invalid.code()) || "ASM_PAGE_SIZE_INVALID".equals(invalid.code())) {
++                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage(), invalid);
++            }
++            throw invalid;
++        }
+     }
+ 
+     @PostMapping("/mistakes/{mistakeId}/verify")
+@@ -1824,6 +1842,23 @@ public class B10AssessmentJdbcController {
+ 
+     private static String compactUuid() { return UUID.randomUUID().toString().replace("-", ""); }
+     private static Map<String, Object> envelope(Object data) { return Map.of("data", data); }
++
++    private static Map<String, Object> cursorPage(Object data, boolean hasMore, String nextCursor, int pageSize,
++            String requestId, String traceId) {
++        Map<String, Object> meta = new LinkedHashMap<>();
++        meta.put("requestId", canonicalRequestId(requestId));
++        meta.put("traceId", canonicalTraceId(traceId));
++        meta.put("apiVersion", "v1");
++        meta.put("schemaVersion", "1.0.0");
++        meta.put("serverTime", Instant.now().toString());
++        meta.put("hasMore", hasMore);
++        meta.put("pageSize", pageSize);
++        meta.put("nextCursor", nextCursor);
++        Map<String, Object> body = new LinkedHashMap<>();
++        body.put("data", data);
++        body.put("meta", meta);
++        return body;
++    }
+     private static String timestamp(Object value) { return value == null ? null : value instanceof java.sql.Timestamp timestamp ? timestamp.toInstant().toString() : String.valueOf(value); }
+     private static long number(Object value) { return number(value, 0L); }
+     private static long number(Object value, long fallback) { return value instanceof Number number ? number.longValue() : fallback; }
+diff --git a/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java b/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
+index b8550037..830ffde6 100644
+--- a/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
++++ b/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
+@@ -53,7 +53,7 @@ class AssessmentJdbcAuthorizationBoundaryTest {
+         deniedBeforeJdbc(jdbc, () -> controller.issueVariant(readOnly, 1L, Map.of(), "key"));
+         deniedBeforeJdbc(jdbc, () -> controller.saveCheckpoint(readOnly, "session-1", "attempt-1", Map.of(), "key"));
+         deniedBeforeJdbc(jdbc, () -> controller.readSession(writeOnly, "session-1"));
+-        deniedBeforeJdbc(jdbc, () -> controller.listMistakes(writeOnly));
++        deniedBeforeJdbc(jdbc, () -> controller.listMistakes(writeOnly, null, null, null, null));
+         deniedBeforeJdbc(jdbc, () -> controller.readReport(writeOnly, "report-1"));
+     }
+ 
+@@ -64,7 +64,8 @@ class AssessmentJdbcAuthorizationBoundaryTest {
+         B10AssessmentJdbcController b10 = new B10AssessmentJdbcController(jdbc, new ObjectMapper(),
+                 "http://127.0.0.1:18089");
+         deniedBeforeJdbc(jdbc, () -> b25.dailyStream(authentication("assessment.session.write", null, null), null, 10));
+-        deniedBeforeJdbc(jdbc, () -> b10.listMistakes(authentication("assessment.session.read", "PASSED", "WITHDRAWN")));
++        deniedBeforeJdbc(jdbc, () -> b10.listMistakes(authentication("assessment.session.read", "PASSED", "WITHDRAWN"),
++                null, null, null, null));
+     }
+ 
+     private static void deniedBeforeJdbc(JdbcTemplate jdbc, Executable request) {
+diff --git a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
+index c9281427..2c2ce7ad 100644
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
+@@ -1,9 +1,11 @@
+ package com.englishflow.learning.adapter.http;
+ 
+ import java.net.URI;
++import java.net.URLEncoder;
+ import java.net.http.HttpClient;
+ import java.net.http.HttpRequest;
+ import java.net.http.HttpResponse;
++import java.nio.charset.StandardCharsets;
+ import java.time.Duration;
+ import java.util.ArrayList;
+ import java.util.LinkedHashMap;
+@@ -36,33 +38,52 @@ public final class HttpAssessmentMistakeFeed {
+ 
+     public List<Map<String, Object>> list(String bearer) {
+         if (bearer == null || bearer.isBlank() || !assessmentBaseUrl.startsWith("http")) return List.of();
++        List<Map<String, Object>> facts = new ArrayList<>();
++        String cursor = null;
+         try {
+-            HttpRequest request = HttpRequest.newBuilder()
+-                    .uri(URI.create(assessmentBaseUrl + "/internal/v1/assessment/mistakes"))
+-                    .header("Accept", "application/json")
+-                    .header("Authorization", "Bearer " + bearer.trim())
+-                    .timeout(Duration.ofSeconds(4))
+-                    .GET()
+-                    .build();
+-            HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+-            if (response.statusCode() != 200) {
+-                LOG.warning("assessment mistake feed returned " + response.statusCode());
+-                return List.of();
++            for (int page = 0; page < 100; page++) {
++                StringBuilder uri = new StringBuilder(assessmentBaseUrl)
++                        .append("/internal/v1/assessment/mistakes?pageSize=100");
++                if (cursor != null) {
++                    uri.append("&cursor=").append(URLEncoder.encode(cursor, StandardCharsets.UTF_8));
++                }
++                HttpRequest request = HttpRequest.newBuilder()
++                        .uri(URI.create(uri.toString()))
++                        .header("Accept", "application/json")
++                        .header("Authorization", "Bearer " + bearer.trim())
++                        .timeout(Duration.ofSeconds(4))
++                        .GET()
++                        .build();
++                HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
++                if (response.statusCode() != 200) {
++                    LOG.warning("assessment mistake feed returned " + response.statusCode());
++                    return page == 0 ? List.of() : List.copyOf(facts);
++                }
++                Page parsed = parsePage(response.body());
++                facts.addAll(parsed.facts);
++                if (!parsed.hasMore || parsed.nextCursor == null || parsed.nextCursor.isBlank()) {
++                    break;
++                }
++                cursor = parsed.nextCursor;
+             }
+-            return parse(response.body());
++            return List.copyOf(facts);
+         } catch (Exception exception) {
+             LOG.warning("assessment mistake feed unavailable: " + exception.getClass().getSimpleName());
+-            return List.of();
++            return facts.isEmpty() ? List.of() : List.copyOf(facts);
+         }
+     }
+ 
+-    @SuppressWarnings("unchecked")
+     List<Map<String, Object>> parse(String body) {
++        return parsePage(body).facts;
++    }
++
++    Page parsePage(String body) {
+         try {
+             Object parsed = mapper.readValue(body, Object.class);
+-            Object data = parsed instanceof Map<?, ?> map ? map.get("data") : null;
++            if (!(parsed instanceof Map<?, ?> map)) return Page.empty();
++            Object data = map.get("data");
+             Object items = data instanceof Map<?, ?> dataMap ? dataMap.get("items") : null;
+-            if (!(items instanceof List<?> list)) return List.of();
++            if (!(items instanceof List<?> list)) return Page.empty();
+             List<Map<String, Object>> facts = new ArrayList<>();
+             for (Object entry : list) {
+                 if (!(entry instanceof Map<?, ?> raw)) continue;
+@@ -74,9 +95,23 @@ public final class HttpAssessmentMistakeFeed {
+                 fact.put("sourceAttemptId", sourceAttempt(raw));
+                 facts.add(fact);
+             }
+-            return facts;
++            Object meta = map.get("meta");
++            boolean hasMore = meta instanceof Map<?, ?> metaMap && Boolean.TRUE.equals(metaMap.get("hasMore"));
++            String nextCursor = null;
++            if (meta instanceof Map<?, ?> metaMap) {
++                Object cursor = metaMap.get("nextCursor");
++                if (cursor instanceof String text && !text.isBlank()) nextCursor = text;
++            }
++            if (!hasMore) nextCursor = null;
++            return new Page(List.copyOf(facts), hasMore, nextCursor);
+         } catch (Exception ignored) {
+-            return List.of();
++            return Page.empty();
++        }
++    }
++
++    record Page(List<Map<String, Object>> facts, boolean hasMore, String nextCursor) {
++        static Page empty() {
++            return new Page(List.of(), false, null);
+         }
+     }
+ 
+diff --git a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
+index d334d5df..dfceabcc 100644
+--- a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
++++ b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
+@@ -25,4 +25,21 @@ class HttpAssessmentMistakeFeedTest {
+         assertEquals("aatm_1", facts.getFirst().get("sourceAttemptId"));
+         org.junit.jupiter.api.Assertions.assertFalse(facts.getFirst().containsKey("answerHash"));
+     }
++
++    @Test
++    void theFeedReadsCanonicalCursorMetaAndLeavesCursorStateOutOfFacts() {
++        String body = """
++                {"data":{"items":[{"itemId":7,"scoreBucket":"ZERO","errorCategory":"UNCLASSIFIED",
++                "contentCode":"p1.placement.v1","sourceAttemptId":"aatm_2"}],"count":1},
++                "meta":{"hasMore":true,"pageSize":1,"nextCursor":"v1.mid.7xxxxxxxx"}}
++                """;
++        HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), "http://127.0.0.1:18091");
++        HttpAssessmentMistakeFeed.Page page = feed.parsePage(body);
++        assertEquals(1, page.facts().size());
++        assertEquals(7, page.facts().getFirst().get("itemId"));
++        assertEquals(true, page.hasMore());
++        assertEquals("v1.mid.7xxxxxxxx", page.nextCursor());
++        org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("nextCursor"));
++        org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("hasMore"));
++    }
+ }
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
+index 2937ec06..5925b5d5 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
+@@ -13,11 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestHeader;
+ import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.bind.annotation.RestController;
+ import org.springframework.web.server.ResponseStatusException;
+ 
++import com.englishflow.workflow.domain.SagaStore;
++import com.englishflow.workflow.domain.UnfinishedSagaPaging;
++
++import java.time.Instant;
++import java.util.LinkedHashMap;
+ import java.util.List;
+ import java.util.Map;
++import java.util.UUID;
+ 
+ /**
+  * The saga boundary.
+@@ -85,8 +92,53 @@ public class SagaController {
+ 
+     /** Sagas still in flight, for the recovery sweep and for an operator looking at what is stuck. */
+     @GetMapping("/unfinished")
+-    public ResponseEntity<List<String>> unfinished() {
+-        return ResponseEntity.ok(service.unfinished(200));
++    public ResponseEntity<Map<String, Object>> unfinished(
++            @RequestParam(required = false) String cursor,
++            @RequestParam(required = false) Integer pageSize,
++            @RequestHeader(value = "X-Request-Id", required = false) String requestId,
++            @RequestHeader(value = "X-Trace-Id", required = false) String traceId) {
++        try {
++            int size = UnfinishedSagaPaging.requestPageSize(pageSize);
++            SagaStore.UnfinishedPage page = service.unfinishedPage(cursor, size);
++            List<String> ids = page.items().stream().map(SagaStore.SagaRecord::sagaId).toList();
++            String resolvedRequestId = canonicalRequestId(requestId);
++            String resolvedTraceId = canonicalTraceId(traceId);
++            Map<String, Object> meta = new LinkedHashMap<>();
++            meta.put("requestId", resolvedRequestId);
++            meta.put("traceId", resolvedTraceId);
++            meta.put("apiVersion", "v1");
++            meta.put("schemaVersion", "1.0.0");
++            meta.put("serverTime", Instant.now().toString());
++            meta.put("hasMore", page.hasMore());
++            meta.put("pageSize", page.pageSize());
++            meta.put("nextCursor", page.nextCursor());
++            Map<String, Object> body = new LinkedHashMap<>();
++            body.put("data", ids);
++            body.put("meta", meta);
++            return ResponseEntity.ok()
++                    .header("X-Request-Id", resolvedRequestId)
++                    .header("X-Trace-Id", resolvedTraceId)
++                    .header("X-API-Version", "v1")
++                    .body(body);
++        } catch (IllegalArgumentException invalid) {
++            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage(), invalid);
++        }
++    }
++
++    private static String canonicalRequestId(String value) {
++        String candidate = value == null ? "" : value.trim();
++        if (candidate.matches("^[A-Za-z][A-Za-z0-9._-]{7,127}$")) {
++            return candidate;
++        }
++        return "req_" + UUID.randomUUID().toString().replace("-", "");
++    }
++
++    private static String canonicalTraceId(String value) {
++        String candidate = value == null ? "" : value.trim();
++        if (candidate.matches("^[a-f0-9]{32}$")) {
++            return candidate;
++        }
++        return UUID.randomUUID().toString().replace("-", "");
+     }
+ 
+     /** The body of a start request. */
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
+index 1aaa2a10..a2e94dfd 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
+@@ -2,8 +2,13 @@ package com.englishflow.workflow.adapter.jdbc;
+ 
+ import com.englishflow.workflow.domain.SagaStatus;
+ import com.englishflow.workflow.domain.SagaStore;
++import com.englishflow.workflow.domain.UnfinishedSagaPaging;
+ import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.jdbc.core.RowMapper;
+ 
++import java.sql.Timestamp;
++import java.time.Instant;
++import java.time.temporal.ChronoUnit;
+ import java.util.List;
+ import java.util.Optional;
+ 
+@@ -98,13 +103,9 @@ public class JdbcSagaStore implements SagaStore {
+     public Optional<SagaRecord> find(String sagaId) {
+         List<SagaRecord> rows = jdbc.query(WorkflowTables.sql("""
+                 SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+-                       last_error_code, last_error_message
++                       last_error_code, last_error_message, updated_at
+                   FROM workflow_service.saga_instance WHERE saga_id = ?
+-                """), (resultSet, index) -> new SagaRecord(
+-                resultSet.getString("saga_id"), resultSet.getString("saga_name"),
+-                resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
+-                resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
+-                resultSet.getString("last_error_code"), resultSet.getString("last_error_message")), sagaId);
++                """), MAPPER, sagaId);
+         return rows.stream().findFirst();
+     }
+ 
+@@ -122,19 +123,46 @@ public class JdbcSagaStore implements SagaStore {
+     }
+ 
+     @Override
+-    public List<SagaRecord> unfinished(int limit) {
+-        // Ordered oldest first and read in one statement, so a recovery sweep cannot walk the set twice and
+-        // compensate the same saga in two passes.
+-        return jdbc.query(WorkflowTables.sql("""
+-                SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+-                       last_error_code, last_error_message
+-                  FROM workflow_service.saga_instance
+-                 WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
+-                 ORDER BY updated_at, saga_id LIMIT ?
+-                """), (resultSet, index) -> new SagaRecord(
+-                resultSet.getString("saga_id"), resultSet.getString("saga_name"),
+-                resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
+-                resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
+-                resultSet.getString("last_error_code"), resultSet.getString("last_error_message")), limit);
++    public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++        int size = UnfinishedSagaPaging.requestPageSize(pageSize);
++        UnfinishedSagaPaging.Position after = UnfinishedSagaPaging.decode(cursor);
++        List<SagaRecord> fetched;
++        if (after == null) {
++            fetched = jdbc.query(WorkflowTables.sql("""
++                    SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
++                           last_error_code, last_error_message, updated_at
++                      FROM workflow_service.saga_instance
++                     WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
++                     ORDER BY updated_at, saga_id LIMIT ?
++                    """), MAPPER, size + 1);
++        } else {
++            Timestamp updatedAt = Timestamp.from(after.updatedAt());
++            fetched = jdbc.query(WorkflowTables.sql("""
++                    SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
++                           last_error_code, last_error_message, updated_at
++                      FROM workflow_service.saga_instance
++                     WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
++                       AND (updated_at > ? OR (updated_at = ? AND saga_id > ?))
++                     ORDER BY updated_at, saga_id LIMIT ?
++                    """), MAPPER, updatedAt, updatedAt, after.sagaId(), size + 1);
++        }
++        boolean hasMore = fetched.size() > size;
++        List<SagaRecord> items = hasMore ? List.copyOf(fetched.subList(0, size)) : List.copyOf(fetched);
++        String nextCursor = hasMore ? UnfinishedSagaPaging.encode(items.get(items.size() - 1)) : null;
++        return new UnfinishedPage(items, hasMore, nextCursor, size);
++    }
++
++    private static final RowMapper<SagaRecord> MAPPER = (resultSet, index) -> new SagaRecord(
++            resultSet.getString("saga_id"), resultSet.getString("saga_name"),
++            resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
++            resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
++            resultSet.getString("last_error_code"), resultSet.getString("last_error_message"),
++            instantOf(resultSet.getTimestamp("updated_at")));
++
++    private static Instant instantOf(Timestamp value) {
++        if (value == null) {
++            throw new IllegalStateException("saga updated_at is missing");
++        }
++        return value.toInstant().truncatedTo(ChronoUnit.MICROS);
+     }
+ }
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java b/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
+index 6f1336dd..345b1ad1 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
+@@ -119,6 +119,11 @@ public class SagaService {
+         return store.unfinished(limit).stream().map(SagaStore.SagaRecord::sagaId).toList();
+     }
+ 
++    /** Cursor page of unfinished saga ids for the recovery console. */
++    public SagaStore.UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++        return store.unfinishedPage(cursor, pageSize);
++    }
++
+     /** Whether a saga's status means an operator has to act. */
+     public static boolean needsOperator(SagaStatus status) {
+         return status.needsOperator();
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
+index 07878bd5..92838874 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
+@@ -46,12 +46,27 @@ public interface SagaStore {
+     /** The steps of a saga in the order they were planned. */
+     List<SagaStepRecord> steps(String sagaId);
+ 
++    /** One cursor page of unfinished sagas. {@code nextCursor} is derived from the last returned row. */
++    record UnfinishedPage(List<SagaRecord> items, boolean hasMore, String nextCursor, int pageSize) {
++        public UnfinishedPage {
++            items = items == null ? List.of() : List.copyOf(items);
++        }
++    }
++
++    /**
++     * Unfinished sagas after owner/status filters, oldest first, then {@code saga_id}.
++     * {@code cursor} is opaque; a blank cursor is the first page.
++     */
++    UnfinishedPage unfinishedPage(String cursor, int pageSize);
++
+     /** Statuses of every unfinished saga, oldest first, for the recovery sweep. */
+-    List<SagaRecord> unfinished(int limit);
++    default List<SagaRecord> unfinished(int limit) {
++        return unfinishedPage(null, UnfinishedSagaPaging.clampLimit(limit)).items();
++    }
+ 
+-    /** A saga's own row. */
++    /** A saga's own row. {@code updatedAt} participates in the unfinished list keyset. */
+     record SagaRecord(String sagaId, String sagaName, String correlationId, SagaStatus status, String currentStep,
+-                      int attemptCount, String lastErrorCode, String lastErrorMessage) {
++                      int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt) {
+     }
+ 
+     /** A step's row. */
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
+index 94e5f74b..ada55c13 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
+@@ -92,7 +92,7 @@ class SagaControllerTest {
+         @Override
+         public Optional<SagaRecord> find(String sagaId) {
+             return Optional.of(new SagaRecord(sagaId, "enrolment", "corr", SagaStatus.valueOf(status.get(sagaId)),
+-                    currentStep, 1, errorCode, errorMessage));
++                    currentStep, 1, errorCode, errorMessage, java.time.Instant.EPOCH));
+         }
+ 
+         @Override
+@@ -104,12 +104,14 @@ class SagaControllerTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return status.entrySet().stream()
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            List<SagaRecord> rows = status.entrySet().stream()
+                     .filter((entry) -> !SagaStatus.valueOf(entry.getValue()).isTerminal())
+                     .map((entry) -> new SagaRecord(entry.getKey(), "enrolment", "corr",
+-                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage))
++                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage,
++                            java.time.Instant.EPOCH))
+                     .toList();
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(rows, cursor, pageSize);
+         }
+ 
+         private Step step(String name) {
+@@ -187,6 +189,6 @@ class SagaControllerTest {
+                 List.of(new SagaController.StepBody("charge-card", "refund-card"))));
+ 
+         // The step ran and completed, so nothing is in flight and the sweep is empty.
+-        assertTrue(controller.unfinished().getBody().isEmpty());
++        assertTrue(((List<?>) controller.unfinished(null, null, null, null).getBody().get("data")).isEmpty());
+     }
+ }
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
+index 09c3bf86..731420de 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
+@@ -181,8 +181,8 @@ class SagaCompensationExecutorTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return List.of();
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(List.of(), cursor, pageSize);
+         }
+ 
+         static final class Step {
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
+index f22f4534..6d15cfae 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
+@@ -206,7 +206,7 @@ class SagaServiceTest {
+         @Override
+         public Optional<SagaRecord> find(String sagaId) {
+             return Optional.of(new SagaRecord(sagaId, "enrolment", "corr", SagaStatus.valueOf(status.get(sagaId)),
+-                    currentStep, 1, errorCode, errorMessage));
++                    currentStep, 1, errorCode, errorMessage, java.time.Instant.EPOCH));
+         }
+ 
+         @Override
+@@ -218,12 +218,14 @@ class SagaServiceTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return status.entrySet().stream()
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            List<SagaRecord> rows = status.entrySet().stream()
+                     .filter((entry) -> !SagaStatus.valueOf(entry.getValue()).isTerminal())
+                     .map((entry) -> new SagaRecord(entry.getKey(), "enrolment", "corr",
+-                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage))
++                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage,
++                            java.time.Instant.EPOCH))
+                     .toList();
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(rows, cursor, pageSize);
+         }
+ 
+         private Step step(String name) {
+
+### untracked files as new-file diffs
+diff --git a/apps/admin-web/tests/recovery-sagas.test.mjs b/apps/admin-web/tests/recovery-sagas.test.mjs
+new file mode 100644
+index 00000000..caf96a59
+--- /dev/null
++++ b/apps/admin-web/tests/recovery-sagas.test.mjs
+@@ -0,0 +1,65 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import fs from 'node:fs'
++import path from 'path'
++import ts from 'typescript'
++
++const appRoot = path.resolve(import.meta.dirname, '..')
++
++function loadRecovery(responses) {
++  const source = fs.readFileSync(path.join(appRoot, 'src/api/recovery.ts'), 'utf8')
++  const compiled = ts.transpileModule(source, {
++    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
++  }).outputText
++  const requests = []
++  const module = { exports: {} }
++  new Function('require', 'module', 'exports', compiled)((name) => {
++    const modules = {
++      './client': {
++        adminClient: {
++          async request(requestPath) {
++            requests.push(requestPath)
++            const next = responses.shift()
++            if (next === undefined) throw new Error('No fixture response queued')
++            return next
++          },
++        },
++      },
++      '../platform/client-id': { createClientId: () => 'recovery-fixture-key-0001' },
++    }
++    if (!(name in modules)) throw new Error(`Unexpected import ${name}`)
++    return modules[name]
++  }, module, module.exports)
++  return { api: module.exports, requests }
++}
++
++test('unfinished saga list reads canonical envelope data and meta', async () => {
++  const page = loadRecovery([
++    {
++      data: ['11111111-1111-1111-1111-111111111111'],
++      meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.cursor1' },
++    },
++  ])
++  const result = await page.api.listUnfinishedSagas({ cursor: 'v1.saga.prev', pageSize: 1 })
++  assert.deepEqual(result.sagaIds, ['11111111-1111-1111-1111-111111111111'])
++  assert.equal(result.hasMore, true)
++  assert.equal(result.nextCursor, 'v1.saga.cursor1')
++  assert.equal(result.pageSize, 1)
++  assert.match(page.requests[0], /\/admin\/recovery\/sagas\/unfinished\?/)
++  assert.match(page.requests[0], /cursor=v1\.saga\.prev/)
++  assert.match(page.requests[0], /pageSize=1/)
++})
++
++test('unfinished saga walker follows nextCursor and stops', async () => {
++  const page = loadRecovery([
++    { data: ['aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1'], meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.two' } },
++    { data: ['aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2'], meta: { hasMore: false, pageSize: 1, nextCursor: null } },
++  ])
++  const ids = await page.api.listAllUnfinishedSagaIds()
++  assert.deepEqual(ids, [
++    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
++    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
++  ])
++  assert.equal(page.requests.length, 2)
++  assert.match(page.requests[1], /cursor=v1\.saga\.two/)
++})
+diff --git a/services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java b/services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java
+new file mode 100644
+index 00000000..f4399c2f
+--- /dev/null
++++ b/services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java
+@@ -0,0 +1,55 @@
++package com.englishflow.assessment.adapter.jdbc;
++
++import java.util.List;
++import java.util.Map;
++
++import org.springframework.jdbc.core.JdbcTemplate;
++
++import com.englishflow.assessment.domain.MistakeListPaging;
++
++/**
++ * Owner-scoped mistake list. Filters tenant and subject before the unique
++ * {@code mistake_id} keyset; it never joins another service schema.
++ */
++public final class JdbcAssessmentMistakeList {
++
++    private final JdbcTemplate jdbc;
++
++    public JdbcAssessmentMistakeList(JdbcTemplate jdbc) {
++        this.jdbc = jdbc;
++    }
++
++    public MistakeListPaging.Page<Map<String, Object>> page(String tenantId, String subjectId, String cursor,
++            Integer pageSize) {
++        int size = MistakeListPaging.requestPageSize(pageSize);
++        Long afterId = MistakeListPaging.decode(cursor);
++        List<Map<String, Object>> fetched;
++        if (afterId == null) {
++            fetched = jdbc.queryForList("""
++                    SELECT * FROM assessment_mistake WHERE tenant_id = ? AND subject_id = ?
++                     ORDER BY mistake_id LIMIT ?
++                    """, tenantId, subjectId, size + 1);
++        } else {
++            fetched = jdbc.queryForList("""
++                    SELECT * FROM assessment_mistake WHERE tenant_id = ? AND subject_id = ?
++                       AND mistake_id > ?
++                     ORDER BY mistake_id LIMIT ?
++                    """, tenantId, subjectId, afterId, size + 1);
++        }
++        boolean hasMore = fetched.size() > size;
++        List<Map<String, Object>> items = hasMore ? List.copyOf(fetched.subList(0, size)) : List.copyOf(fetched);
++        String nextCursor = null;
++        if (hasMore) {
++            nextCursor = MistakeListPaging.encode(mistakeId(items.get(items.size() - 1)));
++        }
++        return new MistakeListPaging.Page<>(items, hasMore, nextCursor, size);
++    }
++
++    private static long mistakeId(Map<String, Object> row) {
++        Object value = row.get("mistake_id");
++        if (value instanceof Number number) {
++            return number.longValue();
++        }
++        throw new IllegalStateException("mistake_id is missing");
++    }
++}
+diff --git a/services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java b/services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java
+new file mode 100644
+index 00000000..0b0375ef
+--- /dev/null
++++ b/services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java
+@@ -0,0 +1,101 @@
++package com.englishflow.assessment.domain;
++
++import java.nio.charset.StandardCharsets;
++import java.util.ArrayList;
++import java.util.Base64;
++import java.util.Comparator;
++import java.util.List;
++import java.util.regex.Pattern;
++
++/**
++ * Cursor paging for assessment-owned mistake facts. Owner and tenant filters run
++ * before the keyset; order is unique {@code mistake_id} ascending. The next
++ * cursor is taken from an actual returned row.
++ */
++public final class MistakeListPaging {
++
++    public static final int DEFAULT_PAGE_SIZE = 20;
++    public static final int MAX_PAGE_SIZE = 100;
++    static final Pattern CURSOR_PATTERN = Pattern.compile("^[A-Za-z0-9._:-]{8,512}$");
++    private static final Base64.Encoder ENCODER = Base64.getUrlEncoder().withoutPadding();
++    private static final Base64.Decoder DECODER = Base64.getUrlDecoder();
++    private static final String VERSION = "asm.v1";
++
++    private MistakeListPaging() {
++    }
++
++    public record Page<T>(List<T> items, boolean hasMore, String nextCursor, int pageSize) {
++        public Page {
++            items = items == null ? List.of() : List.copyOf(items);
++        }
++    }
++
++    public static int requestPageSize(Integer pageSize) {
++        if (pageSize == null) {
++            return DEFAULT_PAGE_SIZE;
++        }
++        if (pageSize < 1 || pageSize > MAX_PAGE_SIZE) {
++            throw AssessmentDomainException.invalid("ASM_PAGE_SIZE_INVALID", "pageSize is invalid");
++        }
++        return pageSize;
++    }
++
++    public static Long decode(String cursor) {
++        if (cursor == null || cursor.isBlank()) {
++            return null;
++        }
++        if (!CURSOR_PATTERN.matcher(cursor).matches()) {
++            throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++        }
++        try {
++            byte[] bytes = DECODER.decode(cursor);
++            String payload = new String(bytes, StandardCharsets.UTF_8);
++            int separator = payload.indexOf('|');
++            if (bytes.length == 0 || bytes.length > 64 || separator != VERSION.length()
++                    || !VERSION.equals(payload.substring(0, separator))
++                    || payload.indexOf('|', separator + 1) >= 0
++                    || !ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8)).equals(cursor)) {
++                throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++            }
++            long mistakeId = Long.parseLong(payload.substring(separator + 1));
++            if (mistakeId < 1) {
++                throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++            }
++            return mistakeId;
++        } catch (IllegalArgumentException invalid) {
++            throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++        }
++    }
++
++    public static String encode(long mistakeId) {
++        if (mistakeId < 1) {
++            throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++        }
++        String payload = VERSION + '|' + mistakeId;
++        String cursor = ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8));
++        if (!CURSOR_PATTERN.matcher(cursor).matches()) {
++            throw AssessmentDomainException.invalid("ASM_CURSOR_INVALID", "cursor is invalid");
++        }
++        return cursor;
++    }
++
++    public static <T> Page<T> slice(List<T> ownedOrdered, String cursor, int pageSize, java.util.function.ToLongFunction<T> idOf) {
++        int size = requestPageSize(pageSize);
++        Long afterId = decode(cursor);
++        List<T> remaining = new ArrayList<>();
++        for (T row : ownedOrdered) {
++            long id = idOf.applyAsLong(row);
++            if (afterId == null || id > afterId) {
++                remaining.add(row);
++            }
++        }
++        boolean hasMore = remaining.size() > size;
++        List<T> items = hasMore ? List.copyOf(remaining.subList(0, size)) : List.copyOf(remaining);
++        String nextCursor = hasMore ? encode(idOf.applyAsLong(items.get(items.size() - 1))) : null;
++        return new Page<>(items, hasMore, nextCursor, size);
++    }
++
++    public static Comparator<AssessmentMistake> order() {
++        return Comparator.comparingLong(AssessmentMistake::mistakeId);
++    }
++}
+diff --git a/services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java b/services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java
+new file mode 100644
+index 00000000..34174873
+--- /dev/null
++++ b/services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java
+@@ -0,0 +1,62 @@
++package com.englishflow.assessment.domain;
++
++import java.time.Instant;
++import java.util.List;
++import java.util.stream.IntStream;
++
++import org.junit.jupiter.api.Test;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++class MistakeListPagingTest {
++
++    @Test
++    void firstNextEmptyBoundaryAndInvalidCursor() {
++        List<AssessmentMistake> rows = IntStream.rangeClosed(1, 5).mapToObj(MistakeListPagingTest::mistake).toList();
++        MistakeListPaging.Page<AssessmentMistake> first = MistakeListPaging.slice(rows, null, 2, AssessmentMistake::mistakeId);
++        assertEquals(List.of(1L, 2L), ids(first));
++        assertTrue(first.hasMore());
++        assertEquals(2, first.pageSize());
++
++        MistakeListPaging.Page<AssessmentMistake> next = MistakeListPaging.slice(rows, first.nextCursor(), 2,
++                AssessmentMistake::mistakeId);
++        assertEquals(List.of(3L, 4L), ids(next));
++        assertTrue(java.util.Collections.disjoint(ids(first), ids(next)));
++
++        MistakeListPaging.Page<AssessmentMistake> last = MistakeListPaging.slice(rows, next.nextCursor(), 2,
++                AssessmentMistake::mistakeId);
++        assertEquals(List.of(5L), ids(last));
++        assertFalse(last.hasMore());
++        assertNull(last.nextCursor());
++
++        MistakeListPaging.Page<AssessmentMistake> empty = MistakeListPaging.slice(List.of(), null, 20,
++                AssessmentMistake::mistakeId);
++        assertTrue(empty.items().isEmpty());
++        assertFalse(empty.hasMore());
++        assertEquals(20, empty.pageSize());
++
++        MistakeListPaging.Page<AssessmentMistake> exact = MistakeListPaging.slice(rows.subList(0, 2), null, 2,
++                AssessmentMistake::mistakeId);
++        assertFalse(exact.hasMore());
++        assertNull(exact.nextCursor());
++
++        assertThrows(AssessmentDomainException.class, () -> MistakeListPaging.decode("short"));
++        assertThrows(AssessmentDomainException.class, () -> MistakeListPaging.decode("!!!!!!!!"));
++        assertThrows(AssessmentDomainException.class, () -> MistakeListPaging.requestPageSize(0));
++        assertThrows(AssessmentDomainException.class, () -> MistakeListPaging.requestPageSize(101));
++        assertEquals(20, MistakeListPaging.requestPageSize(null));
++    }
++
++    private static List<Long> ids(MistakeListPaging.Page<AssessmentMistake> page) {
++        return page.items().stream().map(AssessmentMistake::mistakeId).toList();
++    }
++
++    private static AssessmentMistake mistake(int id) {
++        return new AssessmentMistake(id, AssessmentPrincipal.authenticated("prn_learner0000000001", "platform"),
++                id, id, "UNCLASSIFIED", "v1", "a".repeat(64), Instant.parse("2026-01-01T00:00:00Z"));
++    }
++}
+diff --git a/services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java b/services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java
+new file mode 100644
+index 00000000..3ac699a5
+--- /dev/null
++++ b/services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java
+@@ -0,0 +1,150 @@
++package com.englishflow.assessment.web;
++
++import java.sql.Timestamp;
++import java.time.Instant;
++import java.util.ArrayList;
++import java.util.Comparator;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++import org.junit.jupiter.api.Test;
++import org.springframework.http.HttpStatus;
++import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.security.oauth2.jwt.Jwt;
++import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
++import org.springframework.web.server.ResponseStatusException;
++import tools.jackson.databind.ObjectMapper;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++class B10MistakeListPaginationTest {
++
++    private static final String OWNER = "prn_learner0000000001";
++    private static final String OTHER = "prn_learner0000000002";
++
++    @Test
++    void listHonorsCursorPageSizeEmptyBoundaryAndOwnerIsolation() {
++        FakeJdbc jdbc = new FakeJdbc();
++        jdbc.add(row(1, OWNER));
++        jdbc.add(row(2, OWNER));
++        jdbc.add(row(3, OWNER));
++        jdbc.add(row(4, OTHER));
++        jdbc.add(row(5, OWNER));
++        B10AssessmentJdbcController controller = new B10AssessmentJdbcController(jdbc, new ObjectMapper(),
++                "http://127.0.0.1:18089");
++
++        Map<String, Object> first = controller.listMistakes(learner(OWNER), null, 2, "req_mistake01",
++                "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
++        List<Long> firstIds = ids(first);
++        assertEquals(List.of(1L, 2L), firstIds);
++        Map<?, ?> firstMeta = (Map<?, ?>) first.get("meta");
++        assertEquals(Boolean.TRUE, firstMeta.get("hasMore"));
++        assertEquals(2, firstMeta.get("pageSize"));
++        assertEquals(2, ((Map<?, ?>) first.get("data")).get("count"));
++        assertEquals("req_mistake01", firstMeta.get("requestId"));
++
++        Map<String, Object> next = controller.listMistakes(learner(OWNER), (String) firstMeta.get("nextCursor"), 2,
++                null, null);
++        List<Long> nextIds = ids(next);
++        assertEquals(List.of(3L, 5L), nextIds);
++        assertTrue(java.util.Collections.disjoint(firstIds, nextIds));
++        assertFalse((Boolean) ((Map<?, ?>) next.get("meta")).get("hasMore"));
++        assertNull(((Map<?, ?>) next.get("meta")).get("nextCursor"));
++
++        Map<String, Object> empty = controller.listMistakes(learner("prn_learner0000000003"), null, 20, null, null);
++        assertEquals(List.of(), ids(empty));
++        assertEquals(Boolean.FALSE, ((Map<?, ?>) empty.get("meta")).get("hasMore"));
++        assertEquals(20, ((Map<?, ?>) empty.get("meta")).get("pageSize"));
++
++        Map<String, Object> other = controller.listMistakes(learner(OTHER), null, 20, null, null);
++        assertEquals(List.of(4L), ids(other));
++    }
++
++    @Test
++    void listRejectsInvalidCursorAndPageSizeWithoutReadingOwnerRows() {
++        FakeJdbc jdbc = new FakeJdbc();
++        jdbc.add(row(1, OWNER));
++        B10AssessmentJdbcController controller = new B10AssessmentJdbcController(jdbc, new ObjectMapper(),
++                "http://127.0.0.1:18089");
++        ResponseStatusException cursor = assertThrows(ResponseStatusException.class,
++                () -> controller.listMistakes(learner(OWNER), "!!!!!!!!", 2, null, null));
++        assertEquals(HttpStatus.BAD_REQUEST, cursor.getStatusCode());
++        assertEquals(0, jdbc.queries);
++        ResponseStatusException size = assertThrows(ResponseStatusException.class,
++                () -> controller.listMistakes(learner(OWNER), null, 0, null, null));
++        assertEquals(HttpStatus.BAD_REQUEST, size.getStatusCode());
++        assertEquals(0, jdbc.queries);
++    }
++
++    @SuppressWarnings("unchecked")
++    private static List<Long> ids(Map<String, Object> body) {
++        Map<String, Object> data = (Map<String, Object>) body.get("data");
++        List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("items");
++        return items.stream().map(item -> ((Number) item.get("mistakeId")).longValue()).toList();
++    }
++
++    private static JwtAuthenticationToken learner(String subject) {
++        Jwt jwt = Jwt.withTokenValue("verified")
++                .header("alg", "RS256")
++                .subject(subject)
++                .issuedAt(Instant.parse("2026-09-23T00:00:00Z"))
++                .expiresAt(Instant.parse("2026-09-23T01:00:00Z"))
++                .claim("tenant_id", "platform")
++                .claim("roles", List.of("learner"))
++                .claim("permissions", List.of("assessment.session.read"))
++                .claim("adult_gate", "PASSED")
++                .claim("consent_state", "GRANTED")
++                .build();
++        return new JwtAuthenticationToken(jwt, List.of(), subject);
++    }
++
++    private static Map<String, Object> row(long mistakeId, String subject) {
++        Timestamp time = Timestamp.from(Instant.parse("2026-09-22T00:00:00Z"));
++        Map<String, Object> mistake = new HashMap<>();
++        mistake.put("mistake_id", mistakeId);
++        mistake.put("subject_id", subject);
++        mistake.put("tenant_id", "platform");
++        mistake.put("item_id", mistakeId * 10);
++        mistake.put("question_id", mistakeId * 10);
++        mistake.put("error_category", "UNCLASSIFIED");
++        mistake.put("rule_version", "v1");
++        mistake.put("answer_hash", "hash");
++        mistake.put("wrong_count", 1);
++        mistake.put("mistake_status", "PENDING_RETRY");
++        mistake.put("mastery_status", "LEARNING");
++        mistake.put("first_error_at", time);
++        mistake.put("last_error_at", time);
++        mistake.put("next_action_at", time);
++        mistake.put("reason_trace_json", "[]");
++        return mistake;
++    }
++
++    private static final class FakeJdbc extends JdbcTemplate {
++        private final List<Map<String, Object>> rows = new ArrayList<>();
++        private int queries;
++
++        void add(Map<String, Object> row) {
++            rows.add(row);
++        }
++
++        @Override
++        public List<Map<String, Object>> queryForList(String sql, Object... args) {
++            queries++;
++            String tenant = String.valueOf(args[0]);
++            String subject = String.valueOf(args[1]);
++            Long after = args.length == 4 ? ((Number) args[2]).longValue() : null;
++            int limit = ((Number) args[args.length - 1]).intValue();
++            return rows.stream()
++                    .filter(row -> tenant.equals(row.get("tenant_id")) && subject.equals(row.get("subject_id")))
++                    .filter(row -> after == null || ((Number) row.get("mistake_id")).longValue() > after)
++                    .sorted(Comparator.comparingLong(row -> ((Number) row.get("mistake_id")).longValue()))
++                    .limit(limit)
++                    .toList();
++        }
++    }
++}
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java
+new file mode 100644
+index 00000000..65868caa
+--- /dev/null
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java
+@@ -0,0 +1,128 @@
++package com.englishflow.workflow.domain;
++
++import java.nio.charset.StandardCharsets;
++import java.time.Instant;
++import java.time.temporal.ChronoUnit;
++import java.util.ArrayList;
++import java.util.Base64;
++import java.util.Comparator;
++import java.util.List;
++import java.util.regex.Pattern;
++
++/**
++ * Cursor paging for unfinished sagas. Ordering is {@code updated_at, saga_id} so the
++ * recovery list is oldest-first and unique. Cursor state is opaque and derived from
++ * an actual returned row.
++ */
++public final class UnfinishedSagaPaging {
++
++    public static final int DEFAULT_PAGE_SIZE = 20;
++    public static final int MAX_PAGE_SIZE = 100;
++    static final Pattern CURSOR_PATTERN = Pattern.compile("^[A-Za-z0-9._:-]{8,512}$");
++    private static final Base64.Encoder ENCODER = Base64.getUrlEncoder().withoutPadding();
++    private static final Base64.Decoder DECODER = Base64.getUrlDecoder();
++    private static final String VERSION = "v1";
++    private static final Comparator<SagaStore.SagaRecord> ORDER =
++            Comparator.comparing(SagaStore.SagaRecord::updatedAt).thenComparing(SagaStore.SagaRecord::sagaId);
++
++    private UnfinishedSagaPaging() {
++    }
++
++    public record Position(Instant updatedAt, String sagaId) {
++        public Position {
++            if (updatedAt == null || sagaId == null || sagaId.isBlank()) {
++                throw new IllegalArgumentException("cursor is invalid");
++            }
++        }
++    }
++
++    public static int requestPageSize(Integer pageSize) {
++        if (pageSize == null) {
++            return DEFAULT_PAGE_SIZE;
++        }
++        if (pageSize < 1 || pageSize > MAX_PAGE_SIZE) {
++            throw new IllegalArgumentException("pageSize is invalid");
++        }
++        return pageSize;
++    }
++
++    public static int clampLimit(int limit) {
++        if (limit < 1) {
++            return 1;
++        }
++        return Math.min(limit, MAX_PAGE_SIZE);
++    }
++
++    public static boolean unfinished(SagaStatus status) {
++        return status != null && !status.isTerminal();
++    }
++
++    public static Position decode(String cursor) {
++        if (cursor == null || cursor.isBlank()) {
++            return null;
++        }
++        if (!CURSOR_PATTERN.matcher(cursor).matches()) {
++            throw new IllegalArgumentException("cursor is invalid");
++        }
++        try {
++            byte[] bytes = DECODER.decode(cursor);
++            String payload = new String(bytes, StandardCharsets.UTF_8);
++            int first = payload.indexOf('|');
++            int second = first < 0 ? -1 : payload.indexOf('|', first + 1);
++            if (bytes.length == 0 || bytes.length > 256 || first <= 0 || second <= first
++                    || payload.indexOf('|', second + 1) >= 0
++                    || !VERSION.equals(payload.substring(0, first))) {
++                throw new IllegalArgumentException("cursor is invalid");
++            }
++            Instant updatedAt = Instant.parse(payload.substring(first + 1, second)).truncatedTo(ChronoUnit.MICROS);
++            String sagaId = payload.substring(second + 1);
++            if (sagaId.length() < 8 || sagaId.length() > 128
++                    || sagaId.codePoints().anyMatch(Character::isISOControl)
++                    || !ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8)).equals(cursor)) {
++                throw new IllegalArgumentException("cursor is invalid");
++            }
++            return new Position(updatedAt, sagaId);
++        } catch (IllegalArgumentException | java.time.DateTimeException invalid) {
++            throw new IllegalArgumentException("cursor is invalid");
++        }
++    }
++
++    public static String encode(SagaStore.SagaRecord row) {
++        if (row == null || row.updatedAt() == null || row.sagaId() == null || row.sagaId().isBlank()) {
++            throw new IllegalArgumentException("cursor is invalid");
++        }
++        String payload = VERSION + '|' + row.updatedAt().truncatedTo(ChronoUnit.MICROS) + '|' + row.sagaId();
++        String cursor = ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8));
++        if (!CURSOR_PATTERN.matcher(cursor).matches()) {
++            throw new IllegalArgumentException("cursor is invalid");
++        }
++        return cursor;
++    }
++
++    public static int compare(SagaStore.SagaRecord row, Position after) {
++        int byTime = row.updatedAt().compareTo(after.updatedAt());
++        if (byTime != 0) {
++            return byTime;
++        }
++        return row.sagaId().compareTo(after.sagaId());
++    }
++
++    public static SagaStore.UnfinishedPage slice(List<SagaStore.SagaRecord> rows, String cursor, int pageSize) {
++        int size = requestPageSize(pageSize);
++        Position after = decode(cursor);
++        List<SagaStore.SagaRecord> ordered = rows.stream()
++                .filter(row -> unfinished(row.status()))
++                .sorted(ORDER)
++                .toList();
++        List<SagaStore.SagaRecord> remaining = new ArrayList<>();
++        for (SagaStore.SagaRecord row : ordered) {
++            if (after == null || compare(row, after) > 0) {
++                remaining.add(row);
++            }
++        }
++        boolean hasMore = remaining.size() > size;
++        List<SagaStore.SagaRecord> items = hasMore ? List.copyOf(remaining.subList(0, size)) : List.copyOf(remaining);
++        String nextCursor = hasMore ? encode(items.get(items.size() - 1)) : null;
++        return new SagaStore.UnfinishedPage(items, hasMore, nextCursor, size);
++    }
++}
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java
+new file mode 100644
+index 00000000..587be824
+--- /dev/null
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java
+@@ -0,0 +1,162 @@
++package com.englishflow.workflow.adapter.http;
++
++import java.time.Instant;
++import java.util.ArrayList;
++import java.util.LinkedHashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Optional;
++import java.util.UUID;
++
++import com.englishflow.workflow.application.SagaService;
++import com.englishflow.workflow.application.WorkflowRequestIdempotency;
++import com.englishflow.workflow.domain.SagaStatus;
++import com.englishflow.workflow.domain.SagaStore;
++import com.englishflow.workflow.domain.UnfinishedSagaPaging;
++import org.junit.jupiter.api.Test;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.server.ResponseStatusException;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++import static org.mockito.Mockito.mock;
++
++class SagaUnfinishedPaginationTest {
++
++    @Test
++    void unfinishedHonorsCursorPageSizeAndEnvelope() {
++        MemoryStore store = MemoryStore.withUnfinished(5);
++        SagaController controller = controller(store);
++
++        ResponseEntity<Map<String, Object>> first = controller.unfinished(null, 2, "req_pagination01",
++                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
++        assertEquals(200, first.getStatusCode().value());
++        assertEquals("req_pagination01", first.getHeaders().getFirst("X-Request-Id"));
++        assertEquals("v1", first.getHeaders().getFirst("X-API-Version"));
++        List<String> firstIds = ids(first);
++        assertEquals(List.of(store.id(0), store.id(1)), firstIds);
++        Map<?, ?> firstMeta = meta(first);
++        assertEquals(Boolean.TRUE, firstMeta.get("hasMore"));
++        assertEquals(2, firstMeta.get("pageSize"));
++        String next = (String) firstMeta.get("nextCursor");
++
++        ResponseEntity<Map<String, Object>> second = controller.unfinished(next, 2, null, null);
++        List<String> secondIds = ids(second);
++        assertEquals(List.of(store.id(2), store.id(3)), secondIds);
++        assertTrue(java.util.Collections.disjoint(firstIds, secondIds));
++
++        ResponseEntity<Map<String, Object>> last = controller.unfinished((String) meta(second).get("nextCursor"), 2,
++                null, null);
++        assertEquals(List.of(store.id(4)), ids(last));
++        assertEquals(Boolean.FALSE, meta(last).get("hasMore"));
++        assertNull(meta(last).get("nextCursor"));
++    }
++
++    @Test
++    void unfinishedRejectsInvalidCursorAndPageSize() {
++        SagaController controller = controller(MemoryStore.withUnfinished(1));
++        ResponseStatusException cursor = assertThrows(ResponseStatusException.class,
++                () -> controller.unfinished("!!!!!!!!", 2, null, null));
++        assertEquals(400, cursor.getStatusCode().value());
++        ResponseStatusException size = assertThrows(ResponseStatusException.class,
++                () -> controller.unfinished(null, 0, null, null));
++        assertEquals(400, size.getStatusCode().value());
++    }
++
++    @Test
++    void unfinishedEmptyPageKeepsCanonicalMeta() {
++        ResponseEntity<Map<String, Object>> response = controller(new MemoryStore()).unfinished(null, null, null, null);
++        assertEquals(List.of(), ids(response));
++        Map<?, ?> meta = meta(response);
++        assertEquals(Boolean.FALSE, meta.get("hasMore"));
++        assertEquals(20, meta.get("pageSize"));
++        assertNull(meta.get("nextCursor"));
++        assertEquals("v1", meta.get("apiVersion"));
++    }
++
++    @SuppressWarnings("unchecked")
++    private static List<String> ids(ResponseEntity<Map<String, Object>> response) {
++        return (List<String>) response.getBody().get("data");
++    }
++
++    private static Map<?, ?> meta(ResponseEntity<Map<String, Object>> response) {
++        return (Map<?, ?>) response.getBody().get("meta");
++    }
++
++    private static SagaController controller(SagaStore store) {
++        return new SagaController(new SagaService(store, new com.englishflow.workflow.application.SagaCompensationExecutor(store)),
++                (step) -> { }, (name) -> { }, mock(WorkflowRequestIdempotency.class));
++    }
++
++    private static final class MemoryStore implements SagaStore {
++        private final Map<String, SagaRecord> rows = new LinkedHashMap<>();
++
++        static MemoryStore withUnfinished(int count) {
++            MemoryStore store = new MemoryStore();
++            Instant start = Instant.parse("2026-01-01T00:00:00Z");
++            for (int index = 0; index < count; index++) {
++                String sagaId = store.id(index);
++                store.rows.put(sagaId, new SagaRecord(sagaId, "enrolment", "corr-" + index, SagaStatus.STARTED,
++                        "step", 1, null, null, start.plusMillis(index)));
++            }
++            return store;
++        }
++
++        String id(int index) {
++            return UUID.nameUUIDFromBytes(("unfinished-" + index).getBytes()).toString();
++        }
++
++        @Override
++        public void start(String sagaId, String sagaName, String correlationId) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void recordStepPlanned(String sagaId, String stepName, int stepOrder, String compensationName) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void markStepStarted(String sagaId, String stepName) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void markStepCompleted(String sagaId, String stepName) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void markStepFailed(String sagaId, String stepName, String errorCode, String errorMessage) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void markCompensation(String sagaId, String stepName, boolean succeeded, String errorMessage) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void updateStatus(String sagaId, SagaStatus status, String currentStep, String errorCode, String errorMessage) {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public Optional<SagaRecord> find(String sagaId) {
++            return Optional.ofNullable(rows.get(sagaId));
++        }
++
++        @Override
++        public List<SagaStepRecord> steps(String sagaId) {
++            return List.of();
++        }
++
++        @Override
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            return UnfinishedSagaPaging.slice(new ArrayList<>(rows.values()), cursor, pageSize);
++        }
++    }
++}
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java
+new file mode 100644
+index 00000000..05f9c907
+--- /dev/null
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java
+@@ -0,0 +1,66 @@
++package com.englishflow.workflow.adapter.jdbc;
++
++import java.time.Instant;
++import java.util.List;
++import java.util.UUID;
++
++import com.englishflow.workflow.domain.SagaStatus;
++import com.englishflow.workflow.domain.SagaStore;
++import org.junit.jupiter.api.Test;
++import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.jdbc.core.RowMapper;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++class JdbcSagaStorePaginationTest {
++
++    @Test
++    void repositoryPagesFromFetchedRowsAndBindsCursor() {
++        FakeJdbc jdbc = new FakeJdbc();
++        JdbcSagaStore store = new JdbcSagaStore(jdbc);
++        Instant start = Instant.parse("2026-01-01T00:00:00Z");
++        jdbc.rows = List.of(
++                record("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1", start),
++                record("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2", start.plusMillis(1)),
++                record("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3", start.plusMillis(2)));
++
++        SagaStore.UnfinishedPage first = store.unfinishedPage(null, 2);
++        assertEquals(2, first.items().size());
++        assertTrue(first.hasMore());
++        assertTrue(jdbc.sql.contains("ORDER BY updated_at, saga_id"));
++        assertTrue(jdbc.sql.contains("status NOT IN"));
++        assertEquals(3, jdbc.args[0]);
++
++        jdbc.rows = List.of(record("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3", start.plusMillis(2)));
++        SagaStore.UnfinishedPage next = store.unfinishedPage(first.nextCursor(), 2);
++        assertEquals(List.of("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3"),
++                next.items().stream().map(SagaStore.SagaRecord::sagaId).toList());
++        assertFalse(next.hasMore());
++        assertNull(next.nextCursor());
++        assertEquals(4, jdbc.args.length);
++        assertEquals("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2", jdbc.args[2]);
++        assertEquals(3, jdbc.args[3]);
++    }
++
++    private static SagaStore.SagaRecord record(String sagaId, Instant updatedAt) {
++        return new SagaStore.SagaRecord(sagaId, "enrolment", "corr", SagaStatus.STARTED, "step", 1, null, null,
++                updatedAt);
++    }
++
++    private static final class FakeJdbc extends JdbcTemplate {
++        String sql;
++        Object[] args;
++        List<SagaStore.SagaRecord> rows = List.of();
++
++        @Override
++        @SuppressWarnings("unchecked")
++        public <T> List<T> query(String sql, RowMapper<T> rowMapper, @org.springframework.lang.Nullable Object... args) {
++            this.sql = sql;
++            this.args = args;
++            return (List<T>) rows;
++        }
++    }
++}
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java
+new file mode 100644
+index 00000000..e5d00b5f
+--- /dev/null
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java
+@@ -0,0 +1,84 @@
++package com.englishflow.workflow.domain;
++
++import java.time.Instant;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.UUID;
++
++import org.junit.jupiter.api.Test;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++class UnfinishedSagaPagingTest {
++
++    @Test
++    void firstPageNextEmptyBoundaryAndInvalidCursor() {
++        List<SagaStore.SagaRecord> rows = records(5);
++        SagaStore.UnfinishedPage first = UnfinishedSagaPaging.slice(rows, null, 2);
++        assertEquals(List.of(id(0), id(1)), ids(first));
++        assertTrue(first.hasMore());
++        assertEquals(2, first.pageSize());
++
++        SagaStore.UnfinishedPage next = UnfinishedSagaPaging.slice(rows, first.nextCursor(), 2);
++        assertEquals(List.of(id(2), id(3)), ids(next));
++        assertTrue(next.hasMore());
++        assertTrue(java.util.Collections.disjoint(ids(first), ids(next)));
++
++        SagaStore.UnfinishedPage last = UnfinishedSagaPaging.slice(rows, next.nextCursor(), 2);
++        assertEquals(List.of(id(4)), ids(last));
++        assertFalse(last.hasMore());
++        assertNull(last.nextCursor());
++
++        SagaStore.UnfinishedPage empty = UnfinishedSagaPaging.slice(List.of(), null, 20);
++        assertTrue(empty.items().isEmpty());
++        assertFalse(empty.hasMore());
++        assertNull(empty.nextCursor());
++        assertEquals(20, empty.pageSize());
++
++        SagaStore.UnfinishedPage exact = UnfinishedSagaPaging.slice(records(2), null, 2);
++        assertEquals(2, exact.items().size());
++        assertFalse(exact.hasMore());
++        assertNull(exact.nextCursor());
++
++        assertThrows(IllegalArgumentException.class, () -> UnfinishedSagaPaging.slice(rows, "short", 2));
++        assertThrows(IllegalArgumentException.class, () -> UnfinishedSagaPaging.slice(rows, "!!!!!!!!", 2));
++        assertThrows(IllegalArgumentException.class, () -> UnfinishedSagaPaging.requestPageSize(0));
++        assertThrows(IllegalArgumentException.class, () -> UnfinishedSagaPaging.requestPageSize(101));
++        assertEquals(20, UnfinishedSagaPaging.requestPageSize(null));
++    }
++
++    @Test
++    void terminalRowsAreFilteredBeforePaging() {
++        List<SagaStore.SagaRecord> rows = new ArrayList<>(records(3));
++        rows.add(record(id(9), Instant.parse("2026-01-01T00:00:00Z"), SagaStatus.COMPLETED));
++        rows.add(record(id(8), Instant.parse("2026-01-01T00:00:00.000001Z"), SagaStatus.COMPENSATED));
++        SagaStore.UnfinishedPage page = UnfinishedSagaPaging.slice(rows, null, 10);
++        assertEquals(List.of(id(0), id(1), id(2)), ids(page));
++        assertFalse(page.hasMore());
++    }
++
++    private static List<String> ids(SagaStore.UnfinishedPage page) {
++        return page.items().stream().map(SagaStore.SagaRecord::sagaId).toList();
++    }
++
++    private static List<SagaStore.SagaRecord> records(int count) {
++        List<SagaStore.SagaRecord> rows = new ArrayList<>();
++        Instant start = Instant.parse("2026-01-01T00:00:00Z");
++        for (int index = 0; index < count; index++) {
++            rows.add(record(id(index), start.plusMillis(index), SagaStatus.STARTED));
++        }
++        return rows;
++    }
++
++    private static SagaStore.SagaRecord record(String sagaId, Instant updatedAt, SagaStatus status) {
++        return new SagaStore.SagaRecord(sagaId, "enrolment", "corr", status, "step", 1, null, null, updatedAt);
++    }
++
++    private static String id(int index) {
++        return UUID.nameUUIDFromBytes(("saga-" + index).getBytes()).toString();
++    }
++}

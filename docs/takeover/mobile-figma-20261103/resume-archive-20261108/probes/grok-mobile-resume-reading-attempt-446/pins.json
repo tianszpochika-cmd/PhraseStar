@@ -1,0 +1,63 @@
+{
+  "b139IndexSha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+  "job": "resume-20261108-mobile-reading-446",
+  "kind": "MB446",
+  "pins": [
+    {
+      "name": "G314-runner",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-owner-grant-314-frozen/run-reading-owner.py",
+      "sha256": "415f98729c5670a5662a1467ef719bbea230705920749b715391485c35e244d4"
+    },
+    {
+      "name": "G314-hook",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-owner-grant-314-frozen/reading-live-hook.mjs",
+      "sha256": "0a3f35a5f894f298919420c3d93c55f8b2c36dfd8be9e8e3f8eb98e45dc2ec47"
+    },
+    {
+      "name": "G280-observer",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-pinned-practice-h5-observer-280-frozen/reading-practice-h5.cjs",
+      "sha256": "679db31207ef097a117170a88b1ba2d305f0755b7f2ddc38f5c070be91573137"
+    },
+    {
+      "name": "G360-wrapper",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-integrated-h5-runtime-pin-360-frozen/reading-practice-h5.cjs",
+      "sha256": "fa504d284cbcd8fe9a56c9f32cf0c1d5c871b53dc288a2f60a858c557b3ac0a1"
+    },
+    {
+      "name": "G360-hook",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-integrated-h5-runtime-pin-360-frozen/reading-live-hook.mjs",
+      "sha256": "b2260bb649fd8d6ab0c3cdf7e82ccdec10edf27453670c205612bf5b9ee8b5e8"
+    },
+    {
+      "name": "G360-runner",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-integrated-h5-runtime-pin-360-frozen/run-reading-owner.py",
+      "sha256": "70d2cb1c92afc5b64fd913949f6fc6eea6ad3ab4dbe5c3387b54190558f7e55c"
+    },
+    {
+      "name": "G399-partial-hook",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/399/reading-live-hook.mjs",
+      "sha256": "b2260bb649fd8d6ab0c3cdf7e82ccdec10edf27453670c205612bf5b9ee8b5e8"
+    },
+    {
+      "name": "G399-partial-observer",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/399/reading-practice-h5.cjs",
+      "sha256": "fa504d284cbcd8fe9a56c9f32cf0c1d5c871b53dc288a2f60a858c557b3ac0a1"
+    },
+    {
+      "name": "G399-partial-runner",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/user-pause-20261106/worker-snapshots/399/run-reading-owner.py",
+      "sha256": "70d2cb1c92afc5b64fd913949f6fc6eea6ad3ab4dbe5c3387b54190558f7e55c"
+    },
+    {
+      "name": "G387-score-cli",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-score-login-envelope-bound-387-frozen/reading-assessment-score.mjs",
+      "sha256": "d5435882744debab29b679c65da88935978dd0c25b110cc613a507ea12e16fa5"
+    },
+    {
+      "name": "B139-G351-h5-index",
+      "path": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/reading-practice-integrated-g351-root/h5/index.html",
+      "sha256": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32"
+    }
+  ],
+  "source": "/tmp/grok-mobile-resume-reading-attempt-446"
+}

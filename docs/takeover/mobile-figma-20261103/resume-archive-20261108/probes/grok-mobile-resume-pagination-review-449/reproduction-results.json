@@ -1,0 +1,141 @@
+{
+  "hashCheck": {
+    "files": 28,
+    "mismatches": []
+  },
+  "sagaWalker": {
+    "sourceCapPresent": true,
+    "inputIds": 5100,
+    "returned": 5000,
+    "omitted": 100,
+    "requests": 50,
+    "lastRequest": "/admin/recovery/sagas/unfinished?cursor=cursor-4900&pageSize=100",
+    "firstOmitted": "saga-5000-aaaa-aaaa-aaaaaaaaaaaa",
+    "returnedIsPrefixOfOldest": true,
+    "page50ResponseStillHasMore": true,
+    "page50NextCursor": "cursor-5000",
+    "page2HttpFailureThrows": {
+      "threw": true,
+      "message": "cursor is invalid"
+    }
+  },
+  "mistakeFeed": {
+    "later401": {
+      "outcome": "partial-on-later-non-200",
+      "status": 401,
+      "returned": 100,
+      "calls": 2,
+      "unique": 100
+    },
+    "later500": {
+      "outcome": "partial-on-later-non-200",
+      "returned": 100
+    },
+    "malformedSecondPage": {
+      "outcome": "returned-after-loop",
+      "returned": 100,
+      "calls": 2
+    },
+    "repeatedCursor": {
+      "outcome": "returned-after-loop",
+      "calls": 100,
+      "returnedFacts": 10000,
+      "unique": 100,
+      "sawTail": false
+    },
+    "page0Forbidden": {
+      "outcome": "empty-on-non-200",
+      "returned": 0
+    },
+    "timeoutAfterFirstPage": {
+      "outcome": "partial-on-throw",
+      "returned": 100
+    }
+  },
+  "updatedAtKeyset": {
+    "duplicateWalk": {
+      "pages": [
+        [
+          "saga-a"
+        ],
+        [
+          "saga-b"
+        ],
+        [
+          "saga-c"
+        ],
+        [
+          "saga-a"
+        ]
+      ],
+      "seen": [
+        "saga-a",
+        "saga-b",
+        "saga-c",
+        "saga-a"
+      ],
+      "unique": [
+        "saga-a",
+        "saga-b",
+        "saga-c"
+      ]
+    },
+    "sameMicrosecondSmallerIdSkip": {
+      "pages": [
+        [
+          "saga-m"
+        ]
+      ],
+      "seen": [
+        "saga-m"
+      ]
+    },
+    "startedAtControl": [
+      "saga-a",
+      "saga-b",
+      "saga-c"
+    ]
+  },
+  "ownerCursor": {
+    "foreignCursorMistakeIdsVisibleToOwnerB": [
+      600
+    ]
+  },
+  "cursorRoundTrip": [
+    {
+      "payload": "asm.v1|1",
+      "cursor": "YXNtLnYxfDE",
+      "roundTrip": true,
+      "matchesCanonicalPattern": true,
+      "length": 11
+    },
+    {
+      "payload": "asm.v1|9007199254740991",
+      "cursor": "YXNtLnYxfDkwMDcxOTkyNTQ3NDA5OTE",
+      "roundTrip": true,
+      "matchesCanonicalPattern": true,
+      "length": 31
+    },
+    {
+      "payload": "v1|2026-11-08T00:00:00Z|aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "cursor": "djF8MjAyNi0xMS0wOFQwMDowMDowMFp8YWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFh",
+      "roundTrip": true,
+      "matchesCanonicalPattern": true,
+      "length": 80
+    },
+    {
+      "payload": "v1|2026-11-08T00:00:00.100Z|aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "cursor": "djF8MjAyNi0xMS0wOFQwMDowMDowMC4xMDBafGFhYWFhYWFhLWFhYWEtYWFhYS1hYWFhLWFhYWFhYWFhYWFhYQ",
+      "roundTrip": true,
+      "matchesCanonicalPattern": true,
+      "length": 86
+    },
+    {
+      "payload": "v1|2026-11-08T00:00:00.123456Z|aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "cursor": "djF8MjAyNi0xMS0wOFQwMDowMDowMC4xMjM0NTZafGFhYWFhYWFhLWFhYWEtYWFhYS1hYWFhLWFhYWFhYWFhYWFhYQ",
+      "roundTrip": true,
+      "matchesCanonicalPattern": true,
+      "length": 90
+    }
+  ]
+}

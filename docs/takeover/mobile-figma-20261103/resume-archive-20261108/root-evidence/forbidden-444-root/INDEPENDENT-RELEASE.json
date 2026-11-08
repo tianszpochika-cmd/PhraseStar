@@ -1,0 +1,13 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "result": "FAIL_COOKIE_NOT_CLEARED",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18183": true
+  },
+  "ownedNameAbsent": true,
+  "ownedLabelAbsent": true,
+  "at": "2026-11-08T00:59:33.087062+00:00"
+}

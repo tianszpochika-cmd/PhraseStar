@@ -1,0 +1,6 @@
+{
+  "exit": 0,
+  "testSourceSha256": "d9cfc5c46380a4e9ee166a738b70df5eb0dabd6c93bcda4dae6fe96d5d90d864",
+  "testClass": "IamLogoutCookieClearControllerTest",
+  "defaultNamedLock": true
+}

@@ -1,0 +1,8 @@
+{
+  "scripts/audit/p1r-gateway-contract-check.mjs": "525659f6ba64072bfd3a3f47650a54946072a06603145c11108d445b72ddec71",
+  "tests/p1r/p1r-gateway-contract.test.mjs": "afec011e4d8fdf4a4fa28883a10ae0b0d514e05a835820e28d40aeff682a63a9",
+  "config/p1r-learning-loop-contract.v1.json": "6c831061054ca8168cfcf63f21bc41622e13a2156b10811b93f4472c85b94053",
+  "scripts/audit/p1r-learning-loop-contract-check.mjs": "bd210ebd3ef9a40bd74d39397ce5a1e7659a9a4e2bbe6bae05ab94b409964ff3",
+  "tests/p1r/p1r-learning-loop-contract.test.mjs": "01abdb962fcc262363a4a275e660c7c351417e9920f5077a5ceef6d83dbf78d5",
+  "tests/p1r/p1r-learning-loop-generated-types.test.mjs": "68866e63df9b0588a675e01fb38d9ef25614bd803890af2e70e569ac5344e899"
+}
