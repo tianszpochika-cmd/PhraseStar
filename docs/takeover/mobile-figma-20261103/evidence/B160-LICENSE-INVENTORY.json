@@ -1,0 +1,26 @@
+{
+  "unit": "B160",
+  "workers": [
+    "G461",
+    "G465"
+  ],
+  "sourceFiles": {
+    "scripts/audit/p1r-dependency-audit.mjs": "3ce778f64a719eecddae86538e50722db92d02c2f4ddf4e8627d2e3f887ae29b",
+    "scripts/audit/p1r-node-license-inventory.mjs": "9b7ac1e6a9902452ae54c49b0084fe73cd39f175adafdf3e1ad888ce26b568c6",
+    "scripts/audit/p1r-node-license-inventory.test.mjs": "1b74d4a337e539f5ea9cf4a7b134bb207fedee84e96b98ea28a19a0ada0058b9",
+    "tests/p1r/p1r-node-license-inventory.test.mjs": "388774b74043a9462592ef5256e9eb850ed43e9a57a4b32941179db633febe34"
+  },
+  "independent": {
+    "exit": 0,
+    "sourceStable": true,
+    "at": "2026-11-08T14:53:26.430661+00:00"
+  },
+  "tests": {
+    "pass": 10,
+    "fail": 0,
+    "skip": 0
+  },
+  "linuxStore": "NOT_RUN",
+  "fullCI": "PENDING",
+  "policyChanged": false
+}

@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { currentLibc, isDeniedLicense, isUnknownLicense, recoverNodeLicenseInventory } from './p1r-node-license-inventory.mjs';
 
 const root = process.cwd();
 const runtime = process.argv.includes('--runtime');
@@ -149,7 +150,7 @@ function compactAudit(raw) {
 }
 
 function containsDeniedLicense(expression) {
-  return policy.licenses.denied.some((denied) => new RegExp(`(^|[^A-Za-z0-9.-])${denied.replaceAll('.', '\\.')}(?=$|[^A-Za-z0-9.-])`).test(expression));
+  return isDeniedLicense(expression, policy.licenses.denied);
 }
 
 for (const relativePath of Object.values(policy.manifests)) {
@@ -196,7 +197,30 @@ assert('Maven direct inventory', javaComponents.length > 0, 'no dependencies wer
 let licenseGroups = [];
 const licenseProbe = run('pnpm', ['licenses', 'list', '--json']);
 if (licenseProbe.status !== 0) {
-  errors.push(`Node license inventory failed: ${String(licenseProbe.stderr || licenseProbe.stdout).trim() || 'pnpm returned no diagnostics'}`);
+  const diagnostic = [licenseProbe.stderr, licenseProbe.stdout, licenseProbe.error?.message]
+    .filter((part) => part && String(part).trim())
+    .join('\n')
+    .trim() || 'pnpm returned no diagnostics';
+  // pnpm 10.19 licenses list reads a store index for every os/cpu match and ignores engines.
+  // Install omits optional packages that fail the engine check, and omits other-libc builds whose
+  // lock entry has no libc field. Recover only when the lock id proves that absence.
+  const recovered = recoverNodeLicenseInventory({
+    diagnostic,
+    lockText,
+    root,
+    platform: { os: process.platform, cpu: process.arch, libc: currentLibc() },
+    nodeVersion: process.version,
+    pnpmVersion: policy.catalog.pnpm
+  });
+  if (!recovered.ok) {
+    errors.push(`Node license inventory failed: ${diagnostic}`);
+    if (recovered.reason && recovered.reason !== 'unclassified-command-failure') {
+      errors.push(`Node license inventory recovery refused: ${recovered.reason}`);
+    }
+  } else {
+    licenseGroups = recovered.groups;
+    checks.push({ name: 'Node license inventory provenance', passed: true, detail: recovered.detail });
+  }
 } else {
   try {
     licenseGroups = compactNodeLicenses(parseJsonOutput(licenseProbe.stdout));
@@ -205,7 +229,7 @@ if (licenseProbe.status !== 0) {
   }
 }
 const deniedLicenseGroups = licenseGroups.filter((entry) => containsDeniedLicense(entry.license));
-const unknownLicenseGroups = licenseGroups.filter((entry) => !entry.license || /unknown|unlicensed|see license/i.test(entry.license));
+const unknownLicenseGroups = licenseGroups.filter((entry) => isUnknownLicense(entry.license));
 const licensedNodeComponents = new Set(licenseGroups.flatMap((entry) => entry.packages.flatMap((item) => item.versions.map((version) => `${item.name}@${version}`))));
 assert('Node lock/license coverage', nodeComponents.length >= licensedNodeComponents.size, `lock inventory ${nodeComponents.length} is smaller than resolved license inventory ${licensedNodeComponents.size}`);
 if (deniedLicenseGroups.length > 0) errors.push(`Denied Node licenses: ${deniedLicenseGroups.map((entry) => entry.license).join(', ')}`);

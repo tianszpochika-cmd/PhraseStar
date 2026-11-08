@@ -1,5 +1,7 @@
 # Mobile Figma 改造监督入口（2026-11-03）
 
+2026-11-08 B160：修复许可证库存检查的可解释可选包缺失，并接入 CI 测试发现入口；独立 10/10 通过，Linux 与远程完整 CI 继续待验。 [B160](reviews/INTEGRATION-B160-LICENSE-INVENTORY.md)
+
 2026-11-08 B159：移动端 Vite 安全补丁及 ADR-0030 已审核；独立匿名 H5 75/75 通过，当前高危／严重均为 0，中低危和完整 CI 继续处理。 [B159](reviews/INTEGRATION-B159-VITE-SECURITY.md)
 
 2026-11-08 第二次恢复已启动，见[当前分发与停点](RESUME-20261108-2.md)。历史暂停记录继续保留。

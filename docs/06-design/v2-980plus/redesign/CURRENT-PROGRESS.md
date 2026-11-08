@@ -1,5 +1,7 @@
 # 迭代 2（第二轮重设计）进度 — dev
 
+2026-11-08 B160：修复许可证库存检查的可解释可选包缺失，并接入 CI 测试发现入口；独立 10/10 通过，Linux 与远程完整 CI 继续待验。 [B160](../../../takeover/mobile-figma-20261103/reviews/INTEGRATION-B160-LICENSE-INVENTORY.md)
+
 2026-11-08 B159：移动端 Vite 安全补丁及 ADR-0030 已审核；独立匿名 H5 75/75 通过，当前高危／严重均为 0，中低危和完整 CI 继续处理。 [B159](../../../takeover/mobile-figma-20261103/reviews/INTEGRATION-B159-VITE-SECURITY.md)
 
 2026-11-08：本轮已按 Codex 20% 预留收口，B153—B157 与未验候选、真实失败及跨电脑恢复见[最新停点](../../../takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)。后续从 dev 和归档差量继续，逐页签收保持待验。

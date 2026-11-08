@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B160-20261108] 2026-11-08 B160：修复许可证库存检查的可解释可选包缺失，并接入 CI 测试发现入口；独立 10/10 通过，Linux 与远程完整 CI 继续待验。
+
 - [MOBILE-FIGMA-B159-20261108] 2026-11-08 B159：移动端 Vite 安全补丁及 ADR-0030 已审核；独立匿名 H5 75/75 通过，当前高危／严重均为 0，中低危和完整 CI 继续处理。
 
 - [MOBILE-FIGMA-B158-20261108] Preserve ordinary practice saved feedback after the last question; independent 687 mobile tests and typecheck pass; live H5 pending.
