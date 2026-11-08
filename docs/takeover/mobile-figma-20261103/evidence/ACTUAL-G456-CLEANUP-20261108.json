@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-08T01:26:30.199Z",
+  "status": "FAIL",
+  "failedStage": "complete",
+  "error": null,
+  "code": null,
+  "cleanup": {
+    "browserClose": {
+      "attempted": true,
+      "ok": true,
+      "error": null,
+      "connectedAfter": false
+    },
+    "serverClose": {
+      "attempted": true,
+      "ok": true,
+      "error": null
+    },
+    "signals": [],
+    "refusedSignals": [],
+    "leftoversAfterClose": [],
+    "identityEstablished": true,
+    "resourceUnreleased": false,
+    "resourceUnreleasedReasons": [],
+    "portAfterClose": {
+      "freeOfOurs": true,
+      "holders": [],
+      "elapsedMs": 91
+    },
+    "passBecauseProcessMissing": false,
+    "failClosed": false,
+    "cleanupPassReason": "owned-chrome-gone-after-browser-close-and-optional-exact-sigterm",
+    "ok": true,
+    "revalidation": [
+      {
+        "pid": 34890,
+        "gone": true,
+        "exactMatch": false,
+        "reuse": false,
+        "foundStartTime": null,
+        "foundCommand": null
+      },
+      {
+        "pid": 34906,
+        "gone": true,
+        "exactMatch": false,
+        "reuse": false,
+        "foundStartTime": null,
+        "foundCommand": null
+      },
+      {
+        "pid": 34905,
+        "gone": true,
+        "exactMatch": false,
+        "reuse": false,
+        "foundStartTime": null,
+        "foundCommand": null
+      },
+      {
+        "pid": 34904,
+        "gone": true,
+        "exactMatch": false,
+        "reuse": false,
+        "foundStartTime": null,
+        "foundCommand": null
+      },
+      {
+        "pid": 34903,
+        "gone": true,
+        "exactMatch": false,
+        "reuse": false,
+        "foundStartTime": null,
+        "foundCommand": null
+      }
+    ]
+  },
+  "identityEstablished": true,
+  "playwrightProcessMethodUsed": false,
+  "passBecauseProcessMissing": false
+}

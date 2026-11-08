@@ -1,5 +1,7 @@
 # CloudStudy 接手入口
 
+2026-11-08：本轮已按 Codex 20% 预留收口，B153—B157 与未验候选、真实失败及跨电脑恢复见[最新停点](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)。后续从 dev 和归档差量继续，逐页签收保持待验。
+
 > 更新：2026-11-08。当前状态只看 [docs/STATUS.md](docs/STATUS.md)；本页只给接手顺序。
 
 1. 迭代 2 和移动端 Figma 改造统一从 `dev` 接手，接手时与 `origin/dev` 对比。保留当前工作树的未提交文件和 stash。常设分支为 `dev` 和 `master`，项目续作以 `dev` 为准。 [分支清理记录](docs/takeover/mobile-figma-20261103/cross-machine-20261106/BRANCH-RETIREMENT.json)

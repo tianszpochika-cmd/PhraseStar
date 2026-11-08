@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-08，本轮已按 Codex 20% 预留约定收口暂停。B153—B157 已提交；未验候选、真实失败及 255 份恢复文件已远程归档。阅读保存后反馈缺失、新构建 Cookie 清除、分页返工及完整 CI 为后续重点，33 路由签收未变。 [续作与归档](takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)
+
 2026-11-08，B157 完成网关操作清单和计划 ensure／replan 策略登记。独立复跑 123 项中 122 项通过，1 项既有契约投影失败保留；完整 CI 继续处理。 [B157](takeover/mobile-figma-20261103/reviews/INTEGRATION-B157-ROUTE-POLICIES.md)
 
 2026-11-08，B156 将 H5 退出和当前会话撤销改走 IAM TLS，独立复跑移动测试 682/682、IAM Cookie 属性测试 3/3 通过。旧浏览器失败保留，新构建的真实 Cookie 清除待验。 [B156](takeover/mobile-figma-20261103/reviews/INTEGRATION-B156-H5-IAM-LOGOUT.md)
