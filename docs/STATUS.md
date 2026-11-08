@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-08，B156 将 H5 退出和当前会话撤销改走 IAM TLS，独立复跑移动测试 682/682、IAM Cookie 属性测试 3/3 通过。旧浏览器失败保留，新构建的真实 Cookie 清除待验。 [B156](takeover/mobile-figma-20261103/reviews/INTEGRATION-B156-H5-IAM-LOGOUT.md)
+
 2026-11-08，B155 在冻结 B139 真实 H5 通过成长世界默认状态、五项读取和 11 张表零变化；当前资源释放已自动及独立确认。旧 B152 FAIL 保留，新依赖构建和正式签收另验。 [B155](takeover/mobile-figma-20261103/reviews/INTEGRATION-B155-WORLD-H5.md)
 
 2026-11-08，B154 修正数据归属库存、Java 身份比较误判与成人资格测试定位。39 项独立复验及五个跨服务拒绝／合法比较样例通过；运行归属和完整 CI 继续待验。 [B154](takeover/mobile-figma-20261103/reviews/INTEGRATION-B154-DATA-OWNERSHIP.md)

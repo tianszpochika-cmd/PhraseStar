@@ -6413,6 +6413,11 @@
         "review": "reviews/INTEGRATION-B155-WORLD-H5.md",
         "evidence": "evidence/ROOT-B155-WORLD-H5-20261108.json",
         "status": "PASS_FROZEN_B139_LOCAL_H5_RESOURCE_RELEASED"
+      },
+      "B156": {
+        "review": "reviews/INTEGRATION-B156-H5-IAM-LOGOUT.md",
+        "evidence": "evidence/ROOT-B156-H5-IAM-LOGOUT-20261108.json",
+        "status": "PASS_SOURCE_TEST_RUNTIME_PENDING"
       }
     }
   }

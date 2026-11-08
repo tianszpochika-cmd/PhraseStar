@@ -8,8 +8,9 @@ function adapter(response) {
   const calls = [], module = { exports: {} }
   const client = { request: async (path, options = {}) => { calls.push({ path, method: options.method ?? 'GET' }); return { data: response } } }
   new Function('require', 'module', 'exports', compiled)(name => {
-    if (name === '../api/client') return { mobileApiClient: client, mobileIamAuthClient: client, MobileApiError: class extends Error {} }
+    if (name === '../api/client') return { mobileApiClient: client, mobileIamAuthClient: client, mobileIamBearerClient: client, MobileApiError: class extends Error {} }
     if (name === '../platform/gateway') return { safeInternalReturnTo: (_value, fallback) => fallback }
+    if (name === '../platform/uni-runtime') return { isNativeAppRuntime: () => false }
     throw new Error(`Unexpected import ${name}`)
   }, module, module.exports)
   return { adapter: module.exports.createGatewayMobileAuthAdapter(), calls }

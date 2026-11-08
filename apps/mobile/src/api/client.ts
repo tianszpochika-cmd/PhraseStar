@@ -194,9 +194,16 @@ export const mobileApiClient = createMobileApiClient(
   },
 )
 
-/** Password posts and the refresh cookie. No bearer. Domain calls and bearer logout stay on mobileApiClient. */
+/** Password posts and the refresh cookie. No bearer. Domain calls stay on mobileApiClient. */
 export const mobileIamAuthClient = createMobileApiClient(
   requireIamAuthBaseUrl(getIamAuthBaseUrl()),
   undefined,
   () => ({ accessToken: null, identity: null, revision: 0 }),
+)
+
+/** H5 logout and current-session revoke. In-memory bearer only. Native logout stays on mobileApiClient. */
+export const mobileIamBearerClient = createMobileApiClient(
+  requireIamAuthBaseUrl(getIamAuthBaseUrl()),
+  undefined,
+  getInMemoryAuthRequestSnapshot,
 )

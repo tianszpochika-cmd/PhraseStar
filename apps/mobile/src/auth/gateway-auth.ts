@@ -8,8 +8,9 @@ import {
   type B8RefreshRequest,
   type B8PasswordResetConfirmRequest,
 } from '@englishflow/contracts'
-import { MobileApiError, mobileApiClient, mobileIamAuthClient } from '../api/client'
+import { MobileApiError, mobileApiClient, mobileIamAuthClient, mobileIamBearerClient } from '../api/client'
 import { safeInternalReturnTo } from '../platform/gateway'
+import { isNativeAppRuntime } from '../platform/uni-runtime'
 
 export type MobileAdultGateStatus = 'UNKNOWN' | 'REQUIRED' | 'PASSED' | 'REJECTED'
 export type MobileAdultLearningAccess = NonNullable<B8AdultGateResponse['learningAccess']> | 'UNKNOWN'
@@ -152,6 +153,10 @@ function authIdempotencyKey(prefix: string): string {
   return `${prefix}-${Date.now()}-${loginSequence}`
 }
 
+function sessionLifecycleClient() {
+  return isNativeAppRuntime() ? mobileApiClient : mobileIamBearerClient
+}
+
 export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
   return {
     async login(input) {
@@ -224,7 +229,7 @@ export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
       }))
     },
     async logout(input) {
-      await mobileApiClient.request('/auth/logout', {
+      await sessionLifecycleClient().request('/auth/logout', {
         method: 'POST',
         data: input ?? {},
         header: { 'Idempotency-Key': authIdempotencyKey('logout') },
@@ -233,7 +238,7 @@ export function createGatewayMobileAuthAdapter(): MobileAuthAdapter {
       })
     },
     async revoke(sessionId) {
-      await mobileApiClient.request(`/auth/sessions/${encodeURIComponent(sessionId)}/revoke`, {
+      await sessionLifecycleClient().request(`/auth/sessions/${encodeURIComponent(sessionId)}/revoke`, {
         method: 'POST',
         data: {},
         header: { 'Idempotency-Key': authIdempotencyKey('revoke') },

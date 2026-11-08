@@ -59,6 +59,7 @@ function environment() {
   const auth = load('src/auth/gateway-auth.ts', {
     '../api/client': api,
     '../platform/gateway': gateway,
+    '../platform/uni-runtime': platform,
   })
   const secureStorageProvider = load('src/platform/secure-storage-provider.ts', { './uni-runtime': platform })
   const sessionModule = load('src/stores/session.ts', {
@@ -252,7 +253,10 @@ test('a late refreshed A principal cannot replace B after logout while restore w
   const loggingOut = env.session.logout()
   await waitFor(() => env.requests.length === 5)
   const logoutRequest = requestAt(env, '/auth/logout')
+  assert.equal(new URL(logoutRequest.url).origin, 'https://iam.example.test')
+  assert.equal(logoutRequest.withCredentials, true)
   assert.equal(logoutRequest.header.Authorization, 'Bearer token-A-refreshed')
+  assert.equal(logoutRequest.header['X-Auth-Transport'], undefined)
   await completeRequest(logoutRequest, 204)
   assert.equal(await loggingOut, true)
   assert.equal(env.session.verifiedSubject, null)
@@ -441,7 +445,10 @@ test('real logout adapter can revoke the old token only on its exact route after
   await waitFor(() => env.requests.length === 3)
   const logoutRequest = requestAt(env, '/auth/logout')
   assert.equal(logoutRequest.method, 'POST')
+  assert.equal(new URL(logoutRequest.url).origin, 'https://iam.example.test')
+  assert.equal(logoutRequest.withCredentials, true)
   assert.equal(logoutRequest.header.Authorization, 'Bearer token-A')
+  assert.equal(logoutRequest.header['X-Auth-Transport'], undefined)
   assert.equal(env.accessTokens.getInMemoryAuthRequestSnapshot().identity, null)
   await completeRequest(logoutRequest, 204)
 
@@ -463,7 +470,10 @@ test('real revoke adapter can revoke a session only on the session-specific rout
   await waitFor(() => env.requests.length === 3)
   const revokeRequest = requestAt(env, '/auth/sessions/session-A/revoke')
   assert.equal(revokeRequest.method, 'POST')
+  assert.equal(new URL(revokeRequest.url).origin, 'https://iam.example.test')
+  assert.equal(revokeRequest.withCredentials, true)
   assert.equal(revokeRequest.header.Authorization, 'Bearer token-A')
+  assert.equal(revokeRequest.header['X-Auth-Transport'], undefined)
   assert.equal(env.accessTokens.getInMemoryAuthRequestSnapshot().identity, null)
   await completeRequest(revokeRequest, 204)
 
