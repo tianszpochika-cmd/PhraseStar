@@ -6393,5 +6393,13 @@
       "safeCloseRemainingPercent": 25
     },
     "record": "RESUME-20261108.md"
+  },
+  "integration_B153_dependency_patch": {
+    "classification": "LOCAL_DEPENDENCY_PATCH_37_TO1_BUILD_VERIFIED_GATE_STILL_FAIL",
+    "evidence": "evidence/ROOT-B153-FRONTEND-DEPENDENCY-VERIFIED-20261108.json",
+    "review": "reviews/INTEGRATION-B153-FRONTEND-DEPENDENCY-VERIFIED.md",
+    "independent_mobile_tests": 680,
+    "security_gate": "FAIL_ONE_HIGH",
+    "new_h5_runtime": "NOT_RUN"
   }
 }

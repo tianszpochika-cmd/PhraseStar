@@ -12,7 +12,7 @@
     "test:website": "node --test tests/b13-official-site.test.mjs tests/b14-fe-005.test.mjs tests/website-entry.test.mjs tests/public-projection-bff.test.mjs tests/site-motion.test.mjs tests/seo-runtime.test.mjs tests/scoped-contrast.test.mjs"
   },
   "dependencies": {
-    "vue": "^3.4.0",
+    "vue": "3.5.45",
     "nuxt": "^3.11.0",
     "@englishflow/design-tokens": "workspace:*",
     "@englishflow/i18n": "workspace:*",

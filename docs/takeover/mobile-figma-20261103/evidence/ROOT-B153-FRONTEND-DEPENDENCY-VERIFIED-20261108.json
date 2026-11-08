@@ -1,0 +1,89 @@
+{
+  "batch": "B153",
+  "at": "2026-11-08T00:42:40.694826+00:00",
+  "classification": "LOCAL_DEPENDENCY_PATCH_37_TO1_BUILD_VERIFIED_GATE_STILL_FAIL",
+  "worker": "G440",
+  "sourceBase": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "artifacts": [
+    {
+      "path": "apps/admin-web/package.json",
+      "sha256": "64e1d7a3770486130fde979cadfe02349bda7cbfe7d8fcf77c5f28d5fc617b31",
+      "bytes": 1120
+    },
+    {
+      "path": "apps/learner-web/package.json",
+      "sha256": "c5dc4a4911fc2cf8c72c2d0c69f55755a5e240362061651a9206424dd21812d9",
+      "bytes": 1065
+    },
+    {
+      "path": "apps/mobile/package.json",
+      "sha256": "edbfcdca12677c30d6693ac3f458da717ed50a46a4be78d6149174f9790cd308",
+      "bytes": 1909
+    },
+    {
+      "path": "apps/official-site/package.json",
+      "sha256": "8ca60badfff0e3b9328edadad8ba2381e3a7135024931d11bf93bf40735d3716",
+      "bytes": 1087
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6d6c5afa27e996ed1174270e7da18df241529daa52b73aff88e7094177ca5dd4",
+      "bytes": 415180
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "bd44ffef7784beaed6d6fb8da6e76389a17292d980950df639ba8bf2a741da65",
+      "bytes": 3849
+    }
+  ],
+  "independentReview": {
+    "mobileExit": 0,
+    "mobileSummary": [
+      "[node-test] discovered 85 test file(s)",
+      "# tests 680",
+      "# pass 680",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "at": "2026-11-08T00:39:05.557982+00:00",
+    "auditExit": 1,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 11,
+      "moderate": 19,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "installedVersions": {
+    "vue": "3.5.45",
+    "mobileVite": "8.2.2",
+    "webVite": "6.4.5",
+    "nuxt": "3.21.11",
+    "dcloudFamily": "3.0.0-alpha-1000920260909822"
+  },
+  "authorChecks": {
+    "freshOwnModules": true,
+    "workspaceTests": 11,
+    "mobileB11Tests": 14,
+    "typecheckTasks": 7,
+    "webBuilds": 3,
+    "mobileH5Build": true,
+    "turboCacheHits": 0
+  },
+  "independentMobileTests": {
+    "files": 85,
+    "total": 680,
+    "passed": 680,
+    "failed": 0,
+    "note": "B11 subset overlaps; do not sum"
+  },
+  "securityGate": "FAIL_ONE_HIGH_VITE_REMAINS",
+  "highCriticalBefore": 37,
+  "highCriticalAfter": 1,
+  "newH5IndexSha256": "7622ab9cc7ceeaf68fa009921bb0187232b4cc7a1dcd0913b16f560cbaf4a9d8",
+  "newH5BusinessRuntime": "NOT_RUN",
+  "native": "NOT_RUN",
+  "deployment": "NOT_RUN",
+  "routeTrace": "TRACE_PENDING"
+}

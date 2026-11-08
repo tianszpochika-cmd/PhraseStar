@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-08，B153 合入经过独立安装、四端构建与 680 项移动源码复验的依赖修补，高危／严重由 37 降为 1。移动 Vite 余项继续处理，安全门禁保持失败；新构建的真实链路和正式签收待验。 [B153](takeover/mobile-figma-20261103/reviews/INTEGRATION-B153-FRONTEND-DEPENDENCY-VERIFIED.md)
+
 2026-11-08，用户恢复移动端推进。Grok 接续依赖构建、库存与门禁、真实分页和清理确认。禁止访问页已真实显示成人拒绝并退出返回登录，Cookie 清理未达到验收要求，已保留失败。Codex 20% 预留继续有效。 [本轮恢复](takeover/mobile-figma-20261103/RESUME-20261108.md)
 
 2026-11-07，本轮按用户确认的 Codex 20% 额度预留安全收口。B147—B151 已审核成果在 dev；B152 保留自动清理失败与独立释放确认。未验依赖候选、26 项 CI 失败的后续计划和探针已记录并归档。 [收口与续作](takeover/mobile-figma-20261103/RESERVE-CLOSE-20261107.md)
