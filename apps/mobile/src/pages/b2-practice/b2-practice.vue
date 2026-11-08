@@ -7,7 +7,7 @@ import AppIcon from '../../components/AppIcon.vue'
 import B10ExerciseCard from '../../components/b10/B10ExerciseCard.vue'
 import B10StatusPanel from '../../components/b10/B10StatusPanel.vue'
 import type { B10AnswerInput, B10AnswerResult } from '../../domain/b10'
-import { acceptSubmission, practiceFeedback, resumeView, showPracticeReward } from '../../domain/practice-loop'
+import { acceptedPracticeReceipt, acceptSubmission, practiceFeedback, resumeView, showPracticeReward } from '../../domain/practice-loop'
 import { ensureMobilePageAccess } from '../../auth/navigation'
 import { mobileExperienceEngine, mobileT, setMobileQuality, useMobileExperience } from '../../platform/experience'
 import { b10ThemeMode, b10T } from '../../platform/b10-foundation'
@@ -50,15 +50,19 @@ const exercise = computed(() => {
   return list.find((item, index) => index >= start && !store.answerResults[String(item.exerciseId)]) ?? null
 })
 const answeredCount = computed(() => Object.keys(store.answerResults).length)
-const answerFeedback = computed(() => lastResult.value ? practiceFeedback({
-  correct: lastResult.value.isCorrect,
-  savedReceipt: lastResult.value.savedReceipt,
-  feedbackText: lastResult.value.feedbackText,
-  nextQuestion: lastResult.value.nextQuestion,
-  scoreBucket: lastResult.value.scoreBucket,
-  received: answeredCount.value,
-  total: store.practice?.exercises.length ?? 0,
-}) : null)
+const savedResult = computed(() => acceptedPracticeReceipt(lastResult.value))
+const answerFeedback = computed(() => {
+  const result = savedResult.value
+  return result ? practiceFeedback({
+    correct: result.isCorrect,
+    savedReceipt: result.savedReceipt,
+    feedbackText: result.feedbackText,
+    nextQuestion: result.nextQuestion,
+    scoreBucket: result.scoreBucket,
+    received: answeredCount.value,
+    total: store.practice?.exercises.length ?? 0,
+  }) : null
+})
 const finished = computed(() => (store.practice?.exercises.length ?? 0) > 0 && !exercise.value && !resume.value.stopped)
 const authKind = computed(() => {
   if (!accessGranted.value) return 'gate'
@@ -98,8 +102,9 @@ function load(): void {
 }
 async function answer(value: B10AnswerInput): Promise<void> {
   if (!accessGranted.value || !exercise.value || !acceptSubmission(submitting.value)) return
+  const exerciseId = exercise.value.exerciseId
   submitting.value = true
-  try { lastResult.value = await store.submitAnswer(exercise.value.exerciseId, value) }
+  try { lastResult.value = acceptedPracticeReceipt(await store.submitAnswer(exerciseId, value)) }
   finally { submitting.value = false }
 }
 function checkpoint(): void {
@@ -187,6 +192,14 @@ onUnmounted(() => { unsubscribeQuality() })
         </view>
       </view>
       <view v-else-if="finished" class="yx-card v2-b2p-card card" data-panel="finished">
+        <view v-if="answerFeedback" class="b10-result v2-b2p-fb fb" role="alert">
+          <text class="b10-result__title v2-b2p-title">{{ lastResult?.isCorrect === true ? '规则命中' : lastResult?.isCorrect === false ? '需要修复' : '' }}</text>
+          <text v-if="lastResult?.scoringStatus" class="v2-b2p-d d">{{ lastResult.scoringStatus }}</text>
+          <text data-save-receipt class="v2-b2p-d d">{{ answerFeedback.savedReceipt }}</text>
+          <text data-feedback-text class="v2-b2p-d d">{{ answerFeedback.feedbackText }}</text>
+          <text data-next-question class="v2-b2p-d d">{{ answerFeedback.nextQuestion }}</text>
+          <text v-if="lastResult?.contentVersionStale" class="b10-result__stale v2-b2p-d d">{{ b10T('common.stale') }}</text>
+        </view>
         <text v-if="!showPracticeReward()" data-reward-hidden class="v2-b2p-d d">本次练习已完成。</text>
         <button tabindex="0" role="button" class="yx-button v2-b2p-btn v2-b2p-submit btn" type="button" @click="openReport">{{ b10T('practice.complete') }}<AppIcon name="chev" :size="14" /></button>
       </view>

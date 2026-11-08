@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B158-20261108] Preserve ordinary practice saved feedback after the last question; independent 687 mobile tests and typecheck pass; live H5 pending.
+
 - [MOBILE-FIGMA-RESUME2-20261108] 用户恢复 Grok CLI 推进，接续阅读反馈、组合 H5 退出、分页返工和 CI，继续保留 Codex 20%。
 
 - [MOBILE-FIGMA-CODEX-RESERVE-20261108] 按 Codex 20% 预留收口，保存 B153—B157、真实失败与 255 份远程恢复快照，停止本轮 Grok 和临时服务。

@@ -1,0 +1,45 @@
+{
+  "unit": "B158",
+  "worker": "G458 Grok CLI",
+  "base": "310a7d01e4af6dadeb26a815b4e6e58a7bbd380b",
+  "files": [
+    {
+      "path": "apps/mobile/src/domain/practice-loop.ts",
+      "sha256": "02c8377ed9253cfc510de106271972beb4a3b9f79d09e826caabd8166f45a1a2",
+      "bytes": 3086
+    },
+    {
+      "path": "apps/mobile/src/pages/b2-practice/b2-practice.vue",
+      "sha256": "74e7822a13c29b331aab1788b1cb96f735f56c56dab56fd4d7d7183fd96ecf4b",
+      "bytes": 23410
+    },
+    {
+      "path": "apps/mobile/tests/b2-practice-saved-feedback.test.mjs",
+      "sha256": "4985e75a7357bd75c11f595a2d34ce7771c9a472192d7dcc811c336237ab760c",
+      "bytes": 12443
+    }
+  ],
+  "rootReview": {
+    "sourceStable": true,
+    "checks": [
+      {
+        "check": "typecheck",
+        "exit": 0
+      },
+      {
+        "check": "mobile-tests",
+        "exit": 0
+      }
+    ],
+    "at": "2026-11-08T14:42:39.655611+00:00",
+    "linkPrerequisite": "ROOT DEPENDENCY-LINK-CORRECTION; installed bytes unchanged",
+    "liveH5": "NOT_RUN"
+  },
+  "mobileTests": {
+    "pass": 687,
+    "fail": 0,
+    "skip": 0
+  },
+  "liveH5": "NOT_RUN",
+  "oldG455": "FAIL_FEEDBACK_NOT_RENDERED_PRESERVED"
+}

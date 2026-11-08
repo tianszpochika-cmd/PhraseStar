@@ -6665,6 +6665,9 @@
       "G463"
     ],
     "fullCI": "FAIL_AT_BASE",
-    "formalRoutes": "33_TRACE_PENDING"
+    "formalRoutes": "33_TRACE_PENDING",
+    "acceptedUnits": [
+      "B158"
+    ]
   }
 }

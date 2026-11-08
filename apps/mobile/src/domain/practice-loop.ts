@@ -5,6 +5,13 @@ export interface PracticeFeedbackView {
   nextQuestion: string
 }
 
+/** A missing server receipt must not be shown as a saved result. */
+export function acceptedPracticeReceipt<T extends { savedReceipt?: string | null }>(
+  result: T | null | undefined,
+): T | null {
+  return result?.savedReceipt?.trim() ? result : null
+}
+
 export function practiceFeedback(input: {
   scoreBucket?: string | null
   correct?: boolean | null
