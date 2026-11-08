@@ -57,10 +57,16 @@ overrides:
   # so those major overrides are not applied.
   'nuxt>@nuxt/devtools': 3.4.4
   '@nuxt/devtools>launch-editor': 2.14.2
-  # Vite 6 and Vite 8 stay on their own lines. Vite 8.2.2 remains the uni-app exact peer.
-  # Parent selector only. A vite@>=7 <8 selector rewrote multi-major peer ranges
-  # (plugin-vue 6, devtools, unplugin) to exact 7.3.7 and mismatched Vite 8.
+  # Vite 6 and Vite 8 stay on their own lines. Parent selector only. A vite@>=7 <8
+  # selector rewrote multi-major peer ranges (plugin-vue 6, devtools, unplugin) to
+  # exact 7.3.7 and mismatched Vite 8.
   '@nuxt/vite-builder>vite': 7.3.7
+  # Application-maintained compatibility experiment (not an upstream support claim).
+  # @dcloudio/vite-plugin-uni@3.0.0-alpha-1000920260909822 still publishes exact
+  # peer vite 8.2.2. No matched 10.x family release peers >=8.2.4. This parent
+  # selector only rewrites that plugin's vite edge so mobile can take the 8.2.4
+  # security patch. Rollback: delete this line and restore apps/mobile vite 8.2.2.
+  '@dcloudio/vite-plugin-uni>vite': 8.2.4
   # Vue 3.5.45 is the current stable 3.5 release and pulls matching @vue packages.
   # The uni-app 3.4.21 renderer has no 3.4 fix, so its compiler siblings move with it.
   'vue@3.5.41': 3.5.45

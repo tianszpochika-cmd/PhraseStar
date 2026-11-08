@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-B159-20261108] 2026-11-08 B159：移动端 Vite 安全补丁及 ADR-0030 已审核；独立匿名 H5 75/75 通过，当前高危／严重均为 0，中低危和完整 CI 继续处理。
+
 - [MOBILE-FIGMA-B158-20261108] Preserve ordinary practice saved feedback after the last question; independent 687 mobile tests and typecheck pass; live H5 pending.
 
 - [MOBILE-FIGMA-RESUME2-20261108] 用户恢复 Grok CLI 推进，接续阅读反馈、组合 H5 退出、分页返工和 CI，继续保留 Codex 20%。

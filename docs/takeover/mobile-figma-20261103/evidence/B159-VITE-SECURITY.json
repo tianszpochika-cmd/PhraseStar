@@ -1,0 +1,43 @@
+{
+  "unit": "B159",
+  "worker": "G447 Grok CLI",
+  "sourceFiles": {
+    "apps/mobile/package.json": "e08004d99a0486f6cb56fa2cca5f60f4e22455cc6fc5e0dff09b9e1fbfcad298",
+    "pnpm-workspace.yaml": "e0dec117f697e0c96824fc5b648a8ad65e2ec3ac160ab2d76d8d79e92f1fdc62",
+    "pnpm-lock.yaml": "762e018cb7a02d3d3c5c3b5c031229f45b81951308bd57591f76848e02842e3b"
+  },
+  "independentMobileTests": 680,
+  "freshAudit": {
+    "info": 0,
+    "low": 10,
+    "moderate": 15,
+    "high": 0,
+    "critical": 0
+  },
+  "anonymousH5": {
+    "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+    "at": "2026-11-08T14:47:16.153624+00:00",
+    "port18183Free": true,
+    "trackedPidsGone": {
+      "68297": true,
+      "68325": true,
+      "68324": true,
+      "68323": true,
+      "68322": true
+    },
+    "sourceStable": true,
+    "matrix": {
+      "total": 75,
+      "pass": 75,
+      "fail": 0,
+      "failed": []
+    },
+    "authenticatedBusinessAcceptance": false
+  },
+  "h5TreeSha256": "f2ab7809b9d08d9bc8e342314e12c0b16d09628cfab62351390dd21e5f11740e",
+  "h5IndexSha256": "7622ab9cc7ceeaf68fa009921bb0187232b4cc7a1dcd0913b16f560cbaf4a9d8",
+  "fullCI": "PENDING",
+  "native": "COMPILE_ONLY",
+  "oldG456": "FAIL_PRESERVED",
+  "at": "2026-11-08T14:52:00.579215+00:00"
+}

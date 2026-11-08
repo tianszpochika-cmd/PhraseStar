@@ -28,3 +28,5 @@ ADR-0001、ADR-0002、ADR-0003 与 ADR-0004 均为 superseded 但不删除，保
 > 补记：ADR-0015 此前已存在但未列入本表，ADR-0016 于同日新增。两者的补入使"编号连续"这一条与文件实际相符；此前该条自述 `0001–0014`，而目录中已有 0015，属表述落后于事实。
 
 本地运行补充：[ADR-0029：本地对象存储从固定官方源码构建](0029-local-object-storage-source-build.md)（仅本地维护采用，正式发布与供应链验收单独判断）。
+
+[ADR-0030: Mobile Vite security peer override](0030-mobile-vite-security-peer.md) accepted for this application composition; native and full CI remain pending.
