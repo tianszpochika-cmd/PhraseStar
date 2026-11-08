@@ -6372,5 +6372,26 @@
     "archive_tag": "archive/cloudstudy-20261107-reserve",
     "archive_url": "https://github.com/tianszpochika-cmd/PhraseStar/tree/archive/cloudstudy-20261107-reserve/docs/takeover/mobile-figma-20261103/resume-archive-20261107",
     "other_project_port18091": "qida-b03-mock-identity"
+  },
+  "current_execution_resume_20261108": {
+    "status": "ACTIVE_USER_RESUMED",
+    "base": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+    "at": "2026-11-08T00:28:24.286311+00:00",
+    "worker": "GROK_CLI",
+    "jobs": [
+      "G440",
+      "G441",
+      "G442",
+      "G443",
+      "G444"
+    ],
+    "reserve": {
+      "provider": "codex",
+      "windowMinutes": 300,
+      "reservePercent": 20,
+      "stopDispatchRemainingPercent": 30,
+      "safeCloseRemainingPercent": 25
+    },
+    "record": "RESUME-20261108.md"
   }
 }

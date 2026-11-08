@@ -28,3 +28,5 @@
 2026-11-07 已按用户要求恢复，移动端续作与进度记录统一进入 `origin/dev`。首轮 Grok 任务见[恢复记录](../../../takeover/mobile-figma-20261103/RESUME-20261107.md)。61 份待复核工作树快照单独归档，逐页签收继续待验。 [暂停交接](../../../takeover/mobile-figma-20261103/PAUSE-20261106.md) · [跨机快照清单](https://github.com/tianszpochika-cmd/PhraseStar/blob/580c17d1412beb9131ecd0e0899b724b9ec77b67/docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md)
 
 2026-11-07 本轮按 Codex 20% 额度预留收口，已审核成果与未验候选见[续作记录](../../../takeover/mobile-figma-20261103/RESERVE-CLOSE-20261107.md)。
+
+2026-11-08 用户恢复推进，Grok 作业与复验范围见[本轮恢复](../../../takeover/mobile-figma-20261103/RESUME-20261108.md)，Codex 20% 预留继续有效。

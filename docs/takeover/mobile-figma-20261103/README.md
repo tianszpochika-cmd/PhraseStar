@@ -1,6 +1,6 @@
 # Mobile Figma 改造监督入口（2026-11-03）
 
-本轮已按用户 Codex 20% 额度预留收口，成果与待办见[收口记录](RESERVE-CLOSE-20261107.md)。
+2026-11-08 已按用户要求恢复，停点见[本轮恢复](RESUME-20261108.md)。上轮成果见[收口记录](RESERVE-CLOSE-20261107.md)，Codex 20% 预留继续有效。
 
 2026-11-07 已按用户要求恢复，首轮 Grok 任务见[恢复记录](RESUME-20261107.md)。从 `origin/dev` 取回当前已审核成果。跨电脑接手顺序、资源回执及 61 份待复核工作树快照分别记录。 [本次安全收口](PAUSE-20261106.md) · [CHECKPOINT](CHECKPOINT.json) · [跨机快照清单](https://github.com/tianszpochika-cmd/PhraseStar/blob/580c17d1412beb9131ecd0e0899b724b9ec77b67/docs/takeover/mobile-figma-20261103/cross-machine-20261106/README.md) · [历史暂停记录](PAUSE-20261104.md)
 

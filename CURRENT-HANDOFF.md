@@ -1,6 +1,6 @@
 # CloudStudy 接手入口
 
-> 更新：2026-11-07。当前状态只看 [docs/STATUS.md](docs/STATUS.md)；本页只给接手顺序。
+> 更新：2026-11-08。当前状态只看 [docs/STATUS.md](docs/STATUS.md)；本页只给接手顺序。
 
 1. 迭代 2 和移动端 Figma 改造统一从 `dev` 接手，接手时与 `origin/dev` 对比。保留当前工作树的未提交文件和 stash。常设分支为 `dev` 和 `master`，项目续作以 `dev` 为准。 [分支清理记录](docs/takeover/mobile-figma-20261103/cross-machine-20261106/BRANCH-RETIREMENT.json)
 2. 读 [STATUS](docs/STATUS.md)：分支、R1（115/115 已签收）、移动端 UI 规格、MB 页面状态和部署版本。
@@ -24,3 +24,7 @@ App 构建使用同版 App-Plus 与 UTS 工具链。B92 已核对 33 条路由�
 ## Codex 额度预留收口（2026-11-07）
 
 用户确认预留 Codex 五小时额度 20%。本轮已保存作业停点并释放临时服务。已审核成果、未验候选及恢复顺序见[本次收口](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261107.md)。开发继续优先使用 Grok CLI，Root 负责分发与审核。
+
+## 当前恢复（2026-11-08）
+
+用户已恢复推进，优先 Grok CLI，继续保留 Codex 20%。从[本轮恢复记录](docs/takeover/mobile-figma-20261103/RESUME-20261108.md)接续已保存候选，核对唯一写者和固定端口租约。
