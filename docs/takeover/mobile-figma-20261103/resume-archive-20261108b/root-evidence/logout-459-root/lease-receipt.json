@@ -1,0 +1,232 @@
+{
+  "actor": "disposable-generated",
+  "browser": "started",
+  "checkoutHeadIsIntegratedDev": false,
+  "cleanup": {
+    "autoRemoved": false,
+    "chrome": {
+      "reaped": 0,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    },
+    "containerFacts": {
+      "currentReleased": true,
+      "idState": "absent",
+      "identityAmbiguous": false,
+      "labelAbsent": true,
+      "nameAbsent": true
+    },
+    "containerName": "cloudstudy-mobile-h5-logout-459",
+    "containerReleased": false,
+    "extraPortsFree": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18183": true
+    },
+    "identityAmbiguous": false,
+    "java": {
+      "reaped": 2,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    },
+    "javaReported": {
+      "reaped": 0,
+      "remaining": 0,
+      "signaled": 3,
+      "unverified": 0
+    },
+    "label": "cloudstudy.qa.mobile-h5-logout-459",
+    "ports": [
+      13306,
+      18070,
+      18087,
+      18183
+    ],
+    "portsFree": true,
+    "probe": {
+      "reaped": 0,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    },
+    "probeReported": {
+      "reaped": 0,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    },
+    "scratchRemoved": true,
+    "tail": {
+      "reaped": 1,
+      "remaining": 0,
+      "signaled": 0,
+      "unverified": 0
+    }
+  },
+  "commerceTarget": false,
+  "composition": "ed6a1e57 base + B153/G447 dependency files + B156 five mobile files",
+  "consentWrite": "not-sent",
+  "containerName": "cloudstudy-mobile-h5-logout-459",
+  "domainProcesses": "not-started",
+  "executed": true,
+  "gateway": "started",
+  "gatewayJarSha256": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+  "gatewayModes": {
+    "ASSESSMENT": "LEGACY",
+    "COMMERCE": "LEGACY",
+    "CONTENT": "LEGACY",
+    "GAMIFICATION": "LEGACY",
+    "LEARNER": "LEGACY",
+    "LEARNING": "LEGACY",
+    "MEDIA": "LEGACY",
+    "SOCIAL": "LEGACY"
+  },
+  "h5": "started",
+  "iamJarSha256": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+  "indexSha256": "8233e1edfaf8bb40489c80ce068ccc9abd6901a4fbb828bc012e999eaa91e7a3",
+  "integratedDevCommit": "84f0dead8e8d3ea32a1f5d5d7c13b76167371b34",
+  "job": "MB005-H5-IAM-LOGOUT-459",
+  "label": "cloudstudy.qa.mobile-h5-logout-459",
+  "observer": {
+    "actor": "disposable-generated",
+    "afterLogout": {
+      "forbiddenTitleVisible": false,
+      "loginTitle": "",
+      "path": "/pages/forbidden/forbidden",
+      "surface": "forbidden",
+      "title": "unknown"
+    },
+    "birthYear": 2015,
+    "blockedWriteCount": 1,
+    "consentAccepted": false,
+    "consentRequestCount": 0,
+    "domain": "example.invalid",
+    "fakedResponse": false,
+    "gate": {
+      "evidenceStatus": "REJECTED",
+      "learningAccess": "RESTRICTED",
+      "minimumAge": 18,
+      "policyVersion": "b30-adult-v1",
+      "retryAllowed": true,
+      "status": "REJECTED"
+    },
+    "identifierOmitted": true,
+    "injectedAuthState": false,
+    "learningPermissionCount": 0,
+    "learningWriteCount": 0,
+    "logout": {
+      "authorizationBearer": false,
+      "beforeHostOnlyLoopback": true,
+      "beforeHttpOnly": true,
+      "beforePartitioned": true,
+      "beforeSameSiteNone": true,
+      "beforeSecure": true,
+      "clearOverHttps": false,
+      "cookieCleared": false,
+      "count": 0,
+      "credentialCookie": false,
+      "headerCount": 0,
+      "headerEmptyValue": false,
+      "headerExpiresPast": false,
+      "headerHttpOnly": false,
+      "headerMaxAgeZero": false,
+      "headerNameMatch": false,
+      "headerPartitioned": false,
+      "headerPathMatch": false,
+      "headerReadable": false,
+      "headerSameSiteNone": false,
+      "headerSecure": false,
+      "jarRemains": true,
+      "revocationScope": null,
+      "revocationStatus": null,
+      "status": null,
+      "storedBefore": true,
+      "transportHeader": false
+    },
+    "mockDocuments": "synthetic-fixture-only",
+    "nonceClosed": true,
+    "nonceOmitted": true,
+    "observed": false,
+    "passwordOmitted": true,
+    "permissionsEndpoint": "not-called-by-h5",
+    "principalAdultStatus": "REJECTED",
+    "principalLearningAccess": "RESTRICTED",
+    "principalStatus": "RESTRICTED",
+    "publishedConsentDocuments": false,
+    "reason": "logout-page",
+    "rendered": {
+      "description": "\u5f53\u524d\u7248\u672c\u4ec5\u5411\u5e74\u6ee118\u5468\u5c81\u7684\u7528\u6237\u5f00\u653e\u5b66\u4e60\u3002\u4f60\u4ecd\u53ef\u7ba1\u7406\u8d26\u53f7\u6216\u67e5\u770b\u5e2e\u52a9\u3002",
+      "logout": "\u9000\u51fa\u767b\u5f55",
+      "reason": "adult",
+      "title": "\u6682\u65f6\u65e0\u6cd5\u5f00\u59cb\u5b66\u4e60"
+    },
+    "requests": [
+      {
+        "method": "POST",
+        "path": "/api/v1/auth/register",
+        "status": 201,
+        "via": "iam"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "via": "gateway"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "via": "gateway"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/iam/adult-gate",
+        "status": 200,
+        "via": "gateway"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/iam/principal/me",
+        "status": 200,
+        "via": "gateway"
+      }
+    ],
+    "routeFulfillCount": 0,
+    "status": "FAILED",
+    "surface": {
+      "path": "/pages/forbidden/forbidden",
+      "surface": "forbidden",
+      "title": "adult"
+    },
+    "targetWriteCount": 0,
+    "targetWritePresent": false
+  },
+  "observerStatus": "FAILED",
+  "passwordOmitted": true,
+  "ports": [
+    13306,
+    18070,
+    18087,
+    18183
+  ],
+  "probe": {
+    "boundReceipt": "/tmp/grok-mobile-resume-h5-logout-probe-459/wire-receipt.json",
+    "entryGap": "import.meta.url-vs-pathToFileURL-argv",
+    "nodeEntry": "Path.resolve(strict=True)",
+    "probeBytes": 12537,
+    "probeSha256": "3d83250d5fcea43c231007c85c2496ae12ac462143bdaba0ae41ae84b706d6d8",
+    "substitution": "receipt-constant-only"
+  },
+  "probeExecuted": false,
+  "processesStarted": true,
+  "publicationSeed": "three-synthetic-fixtures",
+  "reason": "logout-page",
+  "sourceHead": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "sourceHeadRole": "git-HEAD-only",
+  "stage": "h5",
+  "status": "FAILED"
+}

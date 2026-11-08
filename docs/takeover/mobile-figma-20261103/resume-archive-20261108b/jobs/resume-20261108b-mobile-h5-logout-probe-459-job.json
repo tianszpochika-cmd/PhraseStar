@@ -1,0 +1,40 @@
+{
+  "name": "resume-20261108b-mobile-h5-logout-probe-459",
+  "cli": "grok",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+  "task_file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459-task.md",
+  "args": [
+    "/Users/Admin/.grok/bin/grok",
+    "--cwd",
+    "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+    "--sandbox",
+    "workspace",
+    "--permission-mode",
+    "auto",
+    "--no-plan",
+    "--no-subagents",
+    "--max-turns",
+    "95",
+    "--output-format",
+    "streaming-json",
+    "--prompt-file",
+    "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459-task.md",
+    "--allow",
+    "Read(/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/**)",
+    "--allow",
+    "Read(/tmp/grok-*/**)",
+    "--allow",
+    "Read(/Users/Admin/Desktop/work/cloudstudy/**)",
+    "--allow",
+    "Edit(/tmp/grok-mobile-resume-h5-logout-probe-459/**)",
+    "--allow",
+    "Write(/tmp/grok-mobile-resume-h5-logout-probe-459/**)",
+    "--disallowed-tools",
+    "web_fetch,web_search,monitor"
+  ],
+  "output": "/tmp/grok-mobile-resume-h5-logout-probe-459",
+  "env": {
+    "JAVA_HOME": "/Users/Admin/.local/tools/jdk-25.0.4.1+1/Contents/Home",
+    "PATH": "/Users/Admin/.local/tools/jdk-25.0.4.1+1/Contents/Home/bin:/Users/Admin/.local/tools/maven/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/Admin/.local/bin"
+  }
+}

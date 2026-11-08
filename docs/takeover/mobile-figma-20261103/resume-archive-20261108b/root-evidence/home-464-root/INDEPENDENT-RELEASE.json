@@ -1,0 +1,21 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "portsFree": {
+    "13306": true,
+    "18070": true,
+    "18087": true,
+    "18088": true,
+    "18089": true,
+    "18090": true,
+    "18091": true,
+    "18183": true
+  },
+  "ownedLabelAbsent": true,
+  "ownedNameAbsent": true,
+  "scratchRemoved": true,
+  "sourceStable": true,
+  "runtimeResult": "FAILED",
+  "runtimeReason": "page-route",
+  "realChecks": 184,
+  "at": "2026-11-08T14:58:16.426961+00:00"
+}

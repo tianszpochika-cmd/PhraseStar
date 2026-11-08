@@ -1,0 +1,17 @@
+{
+  "status": "PREFLIGHT_FAILED_NO_RUNTIME_OR_ACTOR",
+  "reason": "Root PATH omitted docker and rg; corrected by preserving inherited PATH",
+  "portsFree": [
+    13306,
+    18070,
+    18087,
+    18088,
+    18089,
+    18090,
+    18091,
+    18183
+  ],
+  "ownedLabelAbsent": true,
+  "businessStarted": false,
+  "at": "2026-11-08T14:30:54.769089+00:00"
+}

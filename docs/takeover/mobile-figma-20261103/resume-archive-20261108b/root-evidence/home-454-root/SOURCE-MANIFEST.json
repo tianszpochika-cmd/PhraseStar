@@ -1,0 +1,10 @@
+{
+  "CANDIDATE.md": "1f3d81027d9ac74ecee29acab4c77a8d0a550f21cdaf427d2d003f99b45a4e95",
+  "home-return-hook.cjs": "a119d995e3b56268b15422635127c43b7d1a0b5b10d86453dac6477114f7e2e0",
+  "oracle-offline-check.cjs": "04bfa91cb33a09a8332acbb1d40b01474a43d59e7826afbfbf3fcb51732c18b7",
+  "wrapper.sh": "9d151dbcdec5ea8a6c82120edfe522e831a51ddf9ec1a9665d47142890aaa1ba",
+  "home-return-observer.cjs": "e3fa13bfa0c94e6bf59d5eaf1f87d6260043d6819206d238532b9cdc61942821",
+  "oracle.cjs": "56d3b1ded1acb61d77e3528674dc0ef25899d5ee6b97a6c5a69f84dd0d9e0dc2",
+  "oracle-live-gate.cjs": "5bf5f9f7aadcc6598f5d64baa9a46ca556b3feca5d0da9d635ba43c961db6873",
+  "pins.json": "08f209221317a709ac8cda63e888c9cf06bc0f802529bbf209776dfa110ce321"
+}

@@ -1,0 +1,320 @@
+{
+  "count": 45,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "exists": true,
+      "bytes": 386762,
+      "sha256": "2ba848751bd6ec01044d512180161985784f470f9c8dc031e8bb89afc2c5a06b",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "apps/admin-web/src/api/recovery.ts",
+      "exists": true,
+      "bytes": 5264,
+      "sha256": "9bda2f0f97b306b5da5e4c4ccba11f7f2854453fdbe4f5e8ca091a52a6b10815",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "apps/admin-web/src/views/AdminRecoveryView.vue",
+      "exists": true,
+      "bytes": 8110,
+      "sha256": "0e021e49cb50a2efa8911969ee1dd2c4f1b21b0fabd1b48684028c17e584035d",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "apps/admin-web/tests/recovery-sagas.test.mjs",
+      "exists": true,
+      "bytes": 8650,
+      "sha256": "18210aefd54632cb1e3feafcaf99b8254c790d962daa7a83cce56af255194b47",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "apps/learner-web/src/api/b10.ts",
+      "exists": true,
+      "bytes": 50535,
+      "sha256": "41d1aa1419335be4a98f597d612e925932dc1c11674c659ae5f95d644c5ee413",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "apps/learner-web/src/pages/B2ReportPage.vue",
+      "exists": true,
+      "bytes": 11973,
+      "sha256": "6af36e66662c792b5e59edd5924b3b742dab0c19b17268204e76f1141dccdcc1",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "apps/learner-web/tests/report-share-idempotency.test.mjs",
+      "exists": true,
+      "bytes": 5171,
+      "sha256": "7c71e2cf82250757e188c37708c0d56879d99b151a0420304ca403bcf7791beb",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "apps/mobile/src/api/b10.ts",
+      "exists": true,
+      "bytes": 74685,
+      "sha256": "93e927877749bab8dfb4f4e5e7f03a3e023af7014300743ec0c98031ead23ff6",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "apps/mobile/src/pages/b10-report/b10-report.vue",
+      "exists": true,
+      "bytes": 39470,
+      "sha256": "c8c18c37a9f737cf81f7ddb535ac823b3e885006b6f0ea88dccbbf1ec448fdae",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "apps/mobile/tests/b10-report-page.test.mjs",
+      "exists": true,
+      "bytes": 17973,
+      "sha256": "ffc50149daaaaf3bce85880832a5b1c69f71add2b1f3033ea32b6bc890cdf124",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "config/p1r-data-ownership.v1.json",
+      "exists": true,
+      "bytes": 37125,
+      "sha256": "b27d2bf8a5c00f44e210b11e8cfd4236824e41c968d2a6c23c7c7b4651083b74",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/api-client/src/generated/index.ts",
+      "exists": true,
+      "bytes": 106176,
+      "sha256": "4190a9a84ce5dc6e4c729ffe9c0fbe0ccf2b7182929585d9994e09a5ecdf8885",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json",
+      "exists": true,
+      "bytes": 242276,
+      "sha256": "84cccb583ca096a23efc8e61542c65f63e19bd6fe0992205c0554e52ce82ad25",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/contracts/fragments/b2-assessment-mastery.openapi.json",
+      "exists": true,
+      "bytes": 110350,
+      "sha256": "dc046cb9285059584d5d6830a9b3c3ee01f07cc2367e0e21098a91961e0b3bf4",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/contracts/fragments/b26-workflow-recovery.openapi.json",
+      "exists": true,
+      "bytes": 16275,
+      "sha256": "7f968d616f537d896414645a15138179e6826e9c87518fb18c3df8b646a976ca",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/contracts/generated/openapi.ts",
+      "exists": true,
+      "bytes": 379684,
+      "sha256": "801c8cf5c55734509dfdd3d8759a7604e3ff8a57f194b2122e0d0143e1616450",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "packages/contracts/openapi/v1/openapi.json",
+      "exists": true,
+      "bytes": 2649616,
+      "sha256": "054e650406d5233b09ceca1095a341f29d7a1c0158f63eee34b2d36f38aafe61",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "scripts/audit/p1r-api-contract-check.mjs",
+      "exists": true,
+      "bytes": 23778,
+      "sha256": "2124e0a72af4d5f4ac7bb6c6347e3d82b2ccc3753a2aecfe165977a55586476d",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/adapter/jdbc/JdbcAssessmentMistakeList.java",
+      "exists": true,
+      "bytes": 2120,
+      "sha256": "35be455a8ba6d9888b90e1cf07523d4989dcb9f39d14023f1e6cf70830bedcc3",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/domain/MistakeListPaging.java",
+      "exists": true,
+      "bytes": 4245,
+      "sha256": "7d0f4b811e4d20bd76a58599057a0f414ab875a8b1cc60a81e1d77fbe19d6f2e",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java",
+      "exists": true,
+      "bytes": 109756,
+      "sha256": "752b1ac6799e84b76abcfd4d50a7f8a0e2f3c5b5b9f7197e06ef89e47598d270",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/domain/MistakeListPagingTest.java",
+      "exists": true,
+      "bytes": 2933,
+      "sha256": "0ac9568f1a5219b34f5b08c1e4f97f1a8e54e84ef26f60cbc77c4bcae0998b10",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java",
+      "exists": true,
+      "bytes": 5123,
+      "sha256": "2918ba335af0e7fa53f4f5f978b7dbfafe5f6d7d053481ae939d6bed1b102380",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/assessment-service/src/test/java/com/englishflow/assessment/web/B10MistakeListPaginationTest.java",
+      "exists": true,
+      "bytes": 6961,
+      "sha256": "7194cbd289a906f39ecba2a3b0a96ef7b0b1c6a269ee1e2783082bfe54402252",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeFeedException.java",
+      "exists": true,
+      "bytes": 665,
+      "sha256": "a99a97bde342949ff2fd484fb976340d7e6aef02e02cc6289541b5fc8225cc42",
+      "vs_start": "CHANGED_FROM_CLEAN_OR_NEW"
+    },
+    {
+      "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java",
+      "exists": true,
+      "bytes": 4369,
+      "sha256": "2ea965d4483ee4b1d25d2be05bca45c1e689afc2f608cbe460a9e6ca2197ea01",
+      "vs_start": "CHANGED_FROM_CLEAN_OR_NEW"
+    },
+    {
+      "path": "services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java",
+      "exists": true,
+      "bytes": 8998,
+      "sha256": "c5bcd86924431f2075334f0e96d902c5761dae9fd4e0d07f1026e6b3c3455a59",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java",
+      "exists": true,
+      "bytes": 70568,
+      "sha256": "cacc61d57340b62e685e52d274f06ad6ae2d1ad2c9756d38a190d0942bdac0e7",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/learning-service/src/main/resources/db/migration/V15__learning_report_share_revoke_idempotency.sql",
+      "exists": true,
+      "bytes": 675,
+      "sha256": "2af03d66c32141b015f46c18e0f024c5384acd0340453db49423d8fb92fb5f32",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java",
+      "exists": true,
+      "bytes": 5933,
+      "sha256": "0e62b224d08836743ba3978cd7f6da21051fd3c063268d69d8e677cd7ff289c3",
+      "vs_start": "CHANGED_FROM_CLEAN_OR_NEW"
+    },
+    {
+      "path": "services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java",
+      "exists": true,
+      "bytes": 10970,
+      "sha256": "1a862121577cf6b5be3996f78f6e0a6c0c41e7c0566c826dccff1ba008fad4e3",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java",
+      "exists": true,
+      "bytes": 28957,
+      "sha256": "cfe35a3b970eef448fe554e3473199ef99574fd43bda62992daeb9badd77e772",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java",
+      "exists": true,
+      "bytes": 30838,
+      "sha256": "f64b57dd556e8e9d8dafb2a83d768ff7fc91a1f0b52898f420a480a321a398aa",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java",
+      "exists": true,
+      "bytes": 7737,
+      "sha256": "3c5b98963d594037004a5708043fbf80a7ea0d114a61b14f1dec091cf4d2ccaf",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java",
+      "exists": true,
+      "bytes": 8663,
+      "sha256": "169f5cb0b4194b2a3ff1259d7a4343c4eec9d4c40ddd60974d991abbddf78a4d",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java",
+      "exists": true,
+      "bytes": 6651,
+      "sha256": "000632204f706b4d0f9b57666d8d80d7b9e904d7461d8288007b9f7f2d3f94c5",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java",
+      "exists": true,
+      "bytes": 4593,
+      "sha256": "d8d4e919f26507091c606cb15fa0396050b409636bc16236e2bba4c0b01082d0",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java",
+      "exists": true,
+      "bytes": 6002,
+      "sha256": "ef5340ed86bb807478bcca3e625d3c75f648dd9b1ea1cd555aee4ebbb67a303f",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java",
+      "exists": true,
+      "bytes": 8612,
+      "sha256": "a5d9d5381039300f9fa57e8dc761b1e24714fe66046d1d9d88fb34d0c0757866",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java",
+      "exists": true,
+      "bytes": 8260,
+      "sha256": "f15b8cda476cf630dbd06eee60808b6dee4861acde12d36aa26f9ec50935dbc4",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java",
+      "exists": true,
+      "bytes": 2934,
+      "sha256": "5a3801f3ed7711daa6ef29fd2000984d33f2ccbda212c0a4498914cb55da63c7",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java",
+      "exists": true,
+      "bytes": 7767,
+      "sha256": "581d042c657ca2a227769b24882d95ca17512a00025822a35fec2453593681bf",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java",
+      "exists": true,
+      "bytes": 10921,
+      "sha256": "3bfa537d1a6cbada681b4eec98d9e5f57f09e69e6ca82413f5a8760114d29579",
+      "vs_start": "UNCHANGED"
+    },
+    {
+      "path": "services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java",
+      "exists": true,
+      "bytes": 6885,
+      "sha256": "a0ec25574a62e0efe4d0d2ef997648f39ab264b2886475ce6c6eb1292ebee1d0",
+      "vs_start": "CHANGED"
+    },
+    {
+      "path": "tests/p1r/p1r-api-contract.test.mjs",
+      "exists": true,
+      "bytes": 13806,
+      "sha256": "d25453ab955d072ea707bf1943ab4e6ed2c64b64b88b4335aaa4753a50a3aac2",
+      "vs_start": "UNCHANGED"
+    }
+  ]
+}

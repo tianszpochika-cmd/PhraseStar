@@ -1,0 +1,28 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "at": "2026-11-08T14:44:56.293316+00:00",
+  "ports": [
+    {
+      "port": 13306,
+      "free": true
+    },
+    {
+      "port": 18070,
+      "free": true
+    },
+    {
+      "port": 18087,
+      "free": true
+    },
+    {
+      "port": 18183,
+      "free": true
+    }
+  ],
+  "ownedLabelAbsent": true,
+  "ownedNameAbsent": true,
+  "scratchAbsent": true,
+  "runtimeResult": "FAIL_LOGOUT_PAGE",
+  "oldReportedContainerReleased": false,
+  "currentReleaseSeparate": true
+}

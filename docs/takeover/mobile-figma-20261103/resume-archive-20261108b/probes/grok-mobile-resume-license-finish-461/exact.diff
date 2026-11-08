@@ -1,0 +1,958 @@
+--- /tmp/grok-mobile-resume-license-inventory-453/baseline/p1r-dependency-audit.mjs	2026-11-08 09:18:58
++++ scripts/audit/p1r-dependency-audit.mjs	2026-11-08 22:35:01
+@@ -2,6 +2,7 @@
+ import fs from 'node:fs';
+ import path from 'node:path';
+ import { spawnSync } from 'node:child_process';
++import { currentLibc, isDeniedLicense, isUnknownLicense, recoverNodeLicenseInventory } from './p1r-node-license-inventory.mjs';
+ 
+ const root = process.cwd();
+ const runtime = process.argv.includes('--runtime');
+@@ -149,7 +150,7 @@
+ }
+ 
+ function containsDeniedLicense(expression) {
+-  return policy.licenses.denied.some((denied) => new RegExp(`(^|[^A-Za-z0-9.-])${denied.replaceAll('.', '\\.')}(?=$|[^A-Za-z0-9.-])`).test(expression));
++  return isDeniedLicense(expression, policy.licenses.denied);
+ }
+ 
+ for (const relativePath of Object.values(policy.manifests)) {
+@@ -196,7 +197,30 @@
+ let licenseGroups = [];
+ const licenseProbe = run('pnpm', ['licenses', 'list', '--json']);
+ if (licenseProbe.status !== 0) {
+-  errors.push(`Node license inventory failed: ${String(licenseProbe.stderr || licenseProbe.stdout).trim() || 'pnpm returned no diagnostics'}`);
++  const diagnostic = [licenseProbe.stderr, licenseProbe.stdout, licenseProbe.error?.message]
++    .filter((part) => part && String(part).trim())
++    .join('\n')
++    .trim() || 'pnpm returned no diagnostics';
++  // pnpm 10.19 licenses list reads a store index for every os/cpu match and ignores engines.
++  // Install omits optional packages that fail the engine check, and omits other-libc builds whose
++  // lock entry has no libc field. Recover only when the lock id proves that absence.
++  const recovered = recoverNodeLicenseInventory({
++    diagnostic,
++    lockText,
++    root,
++    platform: { os: process.platform, cpu: process.arch, libc: currentLibc() },
++    nodeVersion: process.version,
++    pnpmVersion: policy.catalog.pnpm
++  });
++  if (!recovered.ok) {
++    errors.push(`Node license inventory failed: ${diagnostic}`);
++    if (recovered.reason && recovered.reason !== 'unclassified-command-failure') {
++      errors.push(`Node license inventory recovery refused: ${recovered.reason}`);
++    }
++  } else {
++    licenseGroups = recovered.groups;
++    checks.push({ name: 'Node license inventory provenance', passed: true, detail: recovered.detail });
++  }
+ } else {
+   try {
+     licenseGroups = compactNodeLicenses(parseJsonOutput(licenseProbe.stdout));
+@@ -205,7 +229,7 @@
+   }
+ }
+ const deniedLicenseGroups = licenseGroups.filter((entry) => containsDeniedLicense(entry.license));
+-const unknownLicenseGroups = licenseGroups.filter((entry) => !entry.license || /unknown|unlicensed|see license/i.test(entry.license));
++const unknownLicenseGroups = licenseGroups.filter((entry) => isUnknownLicense(entry.license));
+ const licensedNodeComponents = new Set(licenseGroups.flatMap((entry) => entry.packages.flatMap((item) => item.versions.map((version) => `${item.name}@${version}`))));
+ assert('Node lock/license coverage', nodeComponents.length >= licensedNodeComponents.size, `lock inventory ${nodeComponents.length} is smaller than resolved license inventory ${licensedNodeComponents.size}`);
+ if (deniedLicenseGroups.length > 0) errors.push(`Denied Node licenses: ${deniedLicenseGroups.map((entry) => entry.license).join(', ')}`);
+--- /dev/null	2026-11-08 22:38:12
++++ scripts/audit/p1r-node-license-inventory.mjs	2026-11-08 22:35:01
+@@ -0,0 +1,500 @@
++import fs from 'node:fs';
++import path from 'node:path';
++import { createRequire } from 'node:module';
++
++const LICENSE_FILES = [
++  'LICENSE',
++  'LICENCE',
++  'LICENSE.md',
++  'LICENCE.md',
++  'LICENSE.txt',
++  'LICENCE.txt',
++  'MIT-LICENSE.txt',
++  'MIT-LICENSE.md',
++  'MIT-LICENSE'
++];
++
++// Names pnpm's license scanner accepts from a LICENSE file body. A non-match stays Unknown.
++const LICENSE_NAMES = [
++  'Apache1_1', 'Apache-1.1', 'Apache 1.1',
++  'Apache2', 'Apache-2.0', 'Apache 2.0',
++  'BSD', 'BSD-4-Clause',
++  'CC01', 'CC0-1.0', 'CC0 1.0',
++  'CDDL1', 'CDDL-1.0', 'Common Development and Distribution License 1.0',
++  'EPL1', 'EPL-1.0', 'Eclipse Public License 1.0',
++  'GPLv2', 'GPL-2.0-only',
++  'GPLv3', 'GPL-3.0-only',
++  'ISC',
++  'LGPL', 'LGPL-3.0-only',
++  'LGPL2_1', 'LGPL-2.1-only',
++  'MIT',
++  'MPL1_1', 'MPL-1.1', 'Mozilla Public License 1.1',
++  'MPL2', 'MPL-2.0', 'Mozilla Public License 2.0',
++  'NewBSD', 'BSD-3-Clause', 'New BSD',
++  'OFL', 'OFL-1.1', 'SIL OPEN FONT LICENSE Version 1.1',
++  'Python', 'PSF-2.0', 'Python Software Foundation License',
++  'Ruby',
++  'SimplifiedBSD', 'BSD-2-Clause', 'Simplified BSD',
++  'WTFPL',
++  '0BSD', 'BSD Zero Clause License',
++  'Zlib', 'zlib/libpng license'
++];
++
++const MISSING_INDEX_CODE = 'ERR_PNPM_MISSING_PACKAGE_INDEX_FILE';
++const MISSING_INDEX_PATTERN = /Failed to find package index file for (.+?) \(at /g;
++
++export function isDeniedLicense(expression, denied) {
++  return denied.some((item) => new RegExp(`(^|[^A-Za-z0-9.-])${String(item).replaceAll('.', '\\.')}(?=$|[^A-Za-z0-9.-])`).test(expression));
++}
++
++export function isUnknownLicense(expression) {
++  return !expression || /unknown|unlicensed|see license/i.test(expression);
++}
++
++export function currentLibc() {
++  if (process.platform !== 'linux') return 'unknown';
++  try {
++    const report = process.report?.getReport?.() ?? {};
++    if (report.header?.glibcVersionRuntime) return 'glibc';
++    const shared = Array.isArray(report.sharedObjects) ? report.sharedObjects : [];
++    if (shared.some((file) => String(file).includes('libc.musl-') || String(file).includes('ld-musl-'))) return 'musl';
++  } catch {
++    return 'unknown';
++  }
++  return 'unknown';
++}
++
++export function missingPackageIndexIds(diagnostic) {
++  const text = String(diagnostic ?? '');
++  let code = null;
++  let message = text;
++  const start = text.indexOf('{');
++  if (start >= 0) {
++    try {
++      const parsed = JSON.parse(text.slice(start));
++      code = parsed?.error?.code ?? parsed?.code ?? null;
++      message = parsed?.error?.message ?? parsed?.message ?? text;
++    } catch {
++      code = null;
++    }
++  }
++  const ids = [];
++  for (const source of [message, text]) {
++    MISSING_INDEX_PATTERN.lastIndex = 0;
++    let match = MISSING_INDEX_PATTERN.exec(source);
++    while (match) {
++      if (!ids.includes(match[1])) ids.push(match[1]);
++      match = MISSING_INDEX_PATTERN.exec(source);
++    }
++  }
++  if (code === MISSING_INDEX_CODE) return ids;
++  if (ids.length > 0 && text.includes(MISSING_INDEX_CODE)) return ids;
++  return null;
++}
++
++export function recoverNodeLicenseInventory(options) {
++  try {
++    return recoverUncaught(options);
++  } catch (error) {
++    return { ok: false, reason: error instanceof Error ? error.message : String(error) };
++  }
++}
++
++function recoverUncaught(options) {
++  const ids = missingPackageIndexIds(options.diagnostic);
++  if (ids === null) {
++    return { ok: false, reason: 'unclassified-command-failure' };
++  }
++  if (ids.length === 0) {
++    return { ok: false, reason: 'missing package index error did not name a package' };
++  }
++  const lock = options.lock ?? parsePnpmLock(options.lockText, options.root);
++  const satisfies = options.satisfies ?? loadSatisfies(options.root);
++  const platform = options.platform;
++  const manifests = options.manifests ?? indexInstalledManifests(options.root);
++  const requested = platformMatchingPackages(lock, platform, options.nodeVersion, options.pnpmVersion, satisfies, manifests);
++  const byId = indexLockPackages(lock);
++  const absences = [];
++  const included = [];
++
++  for (const pkg of requested) {
++    const key = `${pkg.name}@${pkg.version}`;
++    const manifest = manifests.get(key) ?? null;
++    if (manifest?.conflict) {
++      return { ok: false, reason: `installed license metadata conflicts for ${key}` };
++    }
++    if (manifest) {
++      included.push({ pkg, license: licenseFromInstalled(manifest) });
++      continue;
++    }
++    const reason = legitimateAbsence(pkg, platform, options.nodeVersion, options.pnpmVersion, satisfies);
++    if (reason) {
++      absences.push({ id: pkg.depPath, packageId: key, reason });
++      continue;
++    }
++    return { ok: false, reason: `missing installed metadata for ${key}` };
++  }
++
++  for (const id of ids) {
++    const explained = explainDiagnosticId(id, byId, manifests, absences, platform, options.nodeVersion, options.pnpmVersion, satisfies);
++    if (!explained.ok) return explained;
++  }
++
++  if (included.length === 0) {
++    return { ok: false, reason: 'recovered license inventory is empty' };
++  }
++
++  const detail = `installed package manifests; omitted ${absences.map((entry) => `${entry.packageId} (${entry.reason})`).join(', ') || 'none'}`;
++  return {
++    ok: true,
++    groups: compactLicenseGroups(included),
++    absences,
++    provenance: 'installed-manifests',
++    detail
++  };
++}
++
++function explainDiagnosticId(id, byId, manifests, absences, platform, nodeVersion, pnpmVersion, satisfies) {
++  const pkg = byId.get(id) ?? [...byId.values()].find((entry) => `${entry.name}@${entry.version}` === id || entry.depPath === id);
++  if (!pkg) return { ok: false, reason: `missing package index names ${id}, which is not in the lockfile` };
++  const key = `${pkg.name}@${pkg.version}`;
++  if (manifests.get(key) && !manifests.get(key).conflict) return { ok: true };
++  if (absences.some((entry) => entry.packageId === key || entry.id === pkg.depPath || entry.id === id)) return { ok: true };
++  const reason = legitimateAbsence(pkg, platform, nodeVersion, pnpmVersion, satisfies);
++  if (reason && !manifests.has(key)) {
++    if (!absences.some((entry) => entry.packageId === key)) {
++      absences.push({ id: pkg.depPath, packageId: key, reason });
++    }
++    return { ok: true };
++  }
++  return { ok: false, reason: `missing package index for ${id} is not a proven optional absence` };
++}
++
++export function legitimateAbsence(pkg, platform, nodeVersion, pnpmVersion, satisfies) {
++  if (!pkg?.optional) return null;
++  if (!platformMatches(pkg, platform)) {
++    return `foreign-platform os=${JSON.stringify(pkg.os ?? ['any'])} cpu=${JSON.stringify(pkg.cpu ?? ['any'])} libc=${JSON.stringify(pkg.libc ?? ['any'])}`;
++  }
++  const encoded = encodedPlatform(pkg.name);
++  if (encoded && encodedPlatformConflicts(encoded, platform)) {
++    return `foreign-platform package-id os=${encoded.os} cpu=${encoded.cpu} libc=${encoded.libc ?? 'any'}`;
++  }
++  const engines = pkg.engines ?? null;
++  if (!engines?.node && !engines?.pnpm) return null;
++  if (typeof satisfies !== 'function') return null;
++  if (engines.pnpm && !pnpmVersion) return null;
++  const nodeDecision = engines.node ? satisfiesSafe(satisfies, nodeVersion, engines.node) : true;
++  const pnpmDecision = engines.pnpm ? satisfiesSafe(satisfies, pnpmVersion, engines.pnpm) : true;
++  if (nodeDecision === null || pnpmDecision === null) return null;
++  if (nodeDecision === false || pnpmDecision === false) {
++    return `unsupported-engine node=${engines.node ?? ''} pnpm=${engines.pnpm ?? ''}`;
++  }
++  return null;
++}
++
++function satisfiesSafe(satisfies, version, range) {
++  try {
++    return satisfies(version, range, { includePrerelease: true }) ? true : false;
++  } catch {
++    return null;
++  }
++}
++
++export function platformMatches(pkg, platform) {
++  const osOk = pkg.os ? checkList(platform.os, pkg.os) : true;
++  const cpuOk = pkg.cpu ? checkList(platform.cpu, pkg.cpu) : true;
++  const libcOk = pkg.libc && platform.libc && platform.libc !== 'unknown' ? checkList(platform.libc, pkg.libc) : true;
++  return osOk && cpuOk && libcOk;
++}
++
++const LIBC_TOKENS = new Set(['gnu', 'musl', 'glibc', 'msvc', 'gnueabihf', 'musleabihf']);
++const CPU_TOKENS = new Set(['x64', 'arm64', 'arm', 'ia32', 'ppc64', 'riscv64', 's390x', 'loong64', 'mips64el']);
++const OS_TOKENS = new Set(['linux', 'darwin', 'win32', 'freebsd', 'openbsd', 'android', 'netbsd', 'sunos', 'openharmony', 'aix']);
++
++// Optional native packages encode the target in the package id. The lockfile records os/cpu and
++// usually omits libc, so gnu and musl builds are not distinguishable from os/cpu alone.
++function encodedPlatform(name) {
++  const tokens = String(name).split('/').pop().split('-');
++  if (tokens.length < 2) return null;
++  const encoded = {};
++  let index = tokens.length - 1;
++  if (LIBC_TOKENS.has(tokens[index])) {
++    encoded.libc = tokens[index];
++    index -= 1;
++  }
++  if (index >= 1 && tokens[index] === 'eabi' && tokens[index - 1] === 'arm') {
++    encoded.cpu = 'arm';
++    index -= 2;
++  } else if (index >= 0 && CPU_TOKENS.has(tokens[index])) {
++    encoded.cpu = tokens[index];
++    index -= 1;
++  } else {
++    return null;
++  }
++  if (index >= 0 && OS_TOKENS.has(tokens[index])) {
++    encoded.os = tokens[index];
++    return encoded;
++  }
++  return null;
++}
++
++function encodedPlatformConflicts(encoded, platform) {
++  // Lock os/cpu already matched. The package id proves a foreign build only when it
++  // names this same os and cpu plus a libc the lock entry does not record.
++  if (!encoded.libc || !encoded.os || !encoded.cpu) return false;
++  if (encoded.os !== platform.os || encoded.cpu !== platform.cpu) return false;
++  if (!platform.libc || platform.libc === 'unknown') return false;
++  return normalizeLibc(encoded.libc) !== normalizeLibc(platform.libc);
++}
++
++function normalizeLibc(libc) {
++  if (libc === 'glibc' || libc === 'gnu' || libc === 'gnueabihf') return 'gnu';
++  if (libc === 'musl' || libc === 'musleabihf') return 'musl';
++  return libc;
++}
++
++function checkList(value, list) {
++  let match = false;
++  let blc = 0;
++  if (typeof list === 'string') list = [list];
++  list = list.filter((item) => typeof item === 'string');
++  if (list.length === 1 && list[0] === 'any') return true;
++  const values = Array.isArray(value) ? value : [value];
++  for (const value2 of values) {
++    for (const item of list) {
++      if (item[0] === '!') {
++        if (item.slice(1) === value2) return false;
++        blc += 1;
++      } else {
++        match = match || item === value2;
++      }
++    }
++  }
++  return match || blc === list.length;
++}
++
++function platformMatchingPackages(lock, platform, nodeVersion, pnpmVersion, satisfies, manifests) {
++  const seen = new Set();
++  const requested = [];
++  const visit = (depPath) => {
++    if (!depPath || seen.has(depPath)) return;
++    const pkg = lock.packages.get(depPath);
++    if (!pkg) {
++      seen.add(depPath);
++      return;
++    }
++    seen.add(depPath);
++    // Same gate as pnpm's license scanner: os/cpu/libc only. Engines are intentionally not applied here.
++    if (!platformMatches(pkg, platform)) return;
++    requested.push(pkg);
++    const record = manifests.get(`${pkg.name}@${pkg.version}`);
++    // Install never fetches an optional package it has already rejected, nor that package's
++    // exclusive subtree. Keep the package itself so its absence must be proven, but do not
++    // demand children that have no other install path. An installed copy still walks children.
++    if (!(record && !record.conflict) && legitimateAbsence(pkg, platform, nodeVersion, pnpmVersion, satisfies)) return;
++    for (const [name, reference] of Object.entries({ ...pkg.dependencies, ...pkg.optionalDependencies })) {
++      visit(refToRelative(reference, name));
++    }
++  };
++  for (const importer of lock.importers.values()) {
++    for (const [name, reference] of importer.entries) visit(refToRelative(reference, name));
++  }
++  return requested;
++}
++
++function indexLockPackages(lock) {
++  const byId = new Map();
++  for (const pkg of lock.packages.values()) {
++    byId.set(pkg.depPath, pkg);
++    byId.set(`${pkg.name}@${pkg.version}`, pkg);
++  }
++  return byId;
++}
++
++export function parsePnpmLock(lockText, root) {
++  const yaml = loadYaml(root);
++  const document = yaml.parse(lockText);
++  const packages = new Map();
++  const bases = document.packages ?? {};
++  const snapshots = document.snapshots ?? {};
++  for (const depPath of Object.keys(snapshots)) {
++    const identity = nameVer(depPath);
++    const base = bases[identity.id] ?? {};
++    const snapshot = snapshots[depPath] ?? {};
++    packages.set(depPath, {
++      depPath,
++      name: identity.name,
++      version: identity.version,
++      optional: snapshot.optional === true,
++      os: base.os ?? snapshot.os,
++      cpu: base.cpu ?? snapshot.cpu,
++      libc: base.libc ?? snapshot.libc,
++      engines: base.engines ?? snapshot.engines ?? null,
++      dependencies: stringifyEdges(snapshot.dependencies),
++      optionalDependencies: stringifyEdges(snapshot.optionalDependencies)
++    });
++  }
++  const importers = new Map();
++  for (const [importerId, importer] of Object.entries(document.importers ?? {})) {
++    const entries = [];
++    for (const field of ['dependencies', 'devDependencies', 'optionalDependencies']) {
++      for (const [name, entry] of Object.entries(importer?.[field] ?? {})) {
++        const reference = typeof entry === 'string' ? entry : entry?.version;
++        if (reference) entries.push([name, reference]);
++      }
++    }
++    importers.set(importerId, { entries });
++  }
++  return { packages, importers };
++}
++
++function stringifyEdges(edges) {
++  const result = {};
++  for (const [name, reference] of Object.entries(edges ?? {})) result[name] = String(reference);
++  return result;
++}
++
++function nameVer(depPath) {
++  const id = String(depPath).split('(')[0];
++  const at = id.lastIndexOf('@');
++  return { id, name: id.slice(0, at), version: id.slice(at + 1) };
++}
++
++function refToRelative(reference, pkgName) {
++  if (!reference || String(reference).startsWith('link:')) return null;
++  const value = String(reference);
++  if (value[0] === '@') return value;
++  const atIndex = value.indexOf('@');
++  if (atIndex === -1) return `${pkgName}@${value}`;
++  const colonIndex = value.indexOf(':');
++  const bracketIndex = value.indexOf('(');
++  if ((colonIndex === -1 || atIndex < colonIndex) && (bracketIndex === -1 || atIndex < bracketIndex)) return value;
++  return `${pkgName}@${value}`;
++}
++
++function licenseFromInstalled(record) {
++  const field = record.manifest.license ?? record.manifest.licenses;
++  const parsed = parseLicenseManifestField(field);
++  if (parsed && !/see license/i.test(parsed)) return parsed;
++  const fromFile = licenseFromFiles(record.directory, record.licenseText);
++  return fromFile ?? 'Unknown';
++}
++
++function parseLicenseManifestField(field) {
++  if (Array.isArray(field)) {
++    const licenseTypes = field.map((license) => coerceToString(license?.type) ?? coerceToString(license?.name)).filter(Boolean);
++    if (licenseTypes.length > 1) return `(${licenseTypes.join(' OR ')})`;
++    return licenseTypes[0] ?? null;
++  }
++  if (field && typeof field === 'object') return field.type ?? coerceToString(field);
++  return coerceToString(field);
++}
++
++function coerceToString(field) {
++  if (field == null) return null;
++  const string = String(field);
++  return typeof field === 'string' || field === string ? string : null;
++}
++
++function licenseFromFiles(directory, licenseText) {
++  const contents = licenseText ?? readLicenseFile(directory);
++  if (!contents) return null;
++  const match = contents.match(new RegExp(`\\b(${LICENSE_NAMES.join('|')})\\b`, 'gi'));
++  if (!match) return null;
++  return [...new Set(match)].join(' OR ');
++}
++
++function readLicenseFile(directory) {
++  if (!directory) return null;
++  for (const name of LICENSE_FILES) {
++    const file = path.join(directory, name);
++    if (!fs.existsSync(file)) continue;
++    const stat = fs.statSync(file);
++    if (!stat.isFile() || stat.size > 1024 * 1024) continue;
++    return fs.readFileSync(file, 'utf8');
++  }
++  return null;
++}
++
++function compactLicenseGroups(included) {
++  const byLicense = new Map();
++  for (const entry of included) {
++    if (!byLicense.has(entry.license)) byLicense.set(entry.license, new Map());
++    const versions = byLicense.get(entry.license);
++    if (!versions.has(entry.pkg.name)) versions.set(entry.pkg.name, new Set());
++    versions.get(entry.pkg.name).add(entry.pkg.version);
++  }
++  return [...byLicense.entries()].map(([license, packages]) => ({
++    license,
++    packages: [...packages.entries()].map(([name, versions]) => ({
++      name,
++      versions: [...versions].sort((left, right) => left.localeCompare(right, 'en')),
++      license
++    })).sort((left, right) => left.name.localeCompare(right.name, 'en'))
++  })).sort((left, right) => left.license.localeCompare(right.license, 'en'));
++}
++
++function indexInstalledManifests(root) {
++  const virtualStore = path.join(root, 'node_modules', '.pnpm');
++  const manifests = new Map();
++  if (!fs.existsSync(virtualStore)) return manifests;
++  for (const entry of fs.readdirSync(virtualStore, { withFileTypes: true })) {
++    if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
++    const modules = path.join(virtualStore, entry.name, 'node_modules');
++    if (!fs.existsSync(modules)) continue;
++    for (const child of fs.readdirSync(modules, { withFileTypes: true })) {
++      if (child.name.startsWith('.')) continue;
++      if (child.name.startsWith('@')) {
++        const scope = path.join(modules, child.name);
++        for (const inner of fs.readdirSync(scope, { withFileTypes: true })) {
++          considerManifest(manifests, path.join(scope, inner.name));
++        }
++      } else {
++        considerManifest(manifests, path.join(modules, child.name));
++      }
++    }
++  }
++  return manifests;
++}
++
++function considerManifest(manifests, directory) {
++  const manifestPath = path.join(directory, 'package.json');
++  if (!fs.existsSync(manifestPath)) return;
++  let manifest;
++  try {
++    manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
++  } catch {
++    return;
++  }
++  if (!manifest?.name || !manifest?.version) return;
++  const key = `${manifest.name}@${manifest.version}`;
++  const record = { manifest, directory };
++  const existing = manifests.get(key);
++  if (!existing) {
++    manifests.set(key, record);
++    return;
++  }
++  if (licenseFromInstalled(existing) !== licenseFromInstalled(record)) {
++    manifests.set(key, { conflict: true, manifest, directory });
++  }
++}
++
++function loadYaml(root) {
++  return loadVirtualPackage(root, 'yaml@2.', 'yaml');
++}
++
++function loadSatisfies(root) {
++  try {
++    return loadVirtualPackage(root, 'semver@7.', 'semver').satisfies;
++  } catch {
++    return null;
++  }
++}
++
++function loadVirtualPackage(root, prefix, name) {
++  const virtualStore = path.join(root, 'node_modules', '.pnpm');
++  const directory = fs.readdirSync(virtualStore).filter((entry) => entry.startsWith(prefix)).sort().at(-1);
++  if (!directory) throw new Error(`installed ${name} parser is unavailable`);
++  const require = createRequire(path.join(root, 'package.json'));
++  return require(path.join(virtualStore, directory, 'node_modules', name));
++}
+--- /dev/null	2026-11-08 22:38:12
++++ scripts/audit/p1r-node-license-inventory.test.mjs	2026-11-08 22:36:00
+@@ -0,0 +1,392 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import path from 'node:path';
++import test from 'node:test';
++import { createRequire } from 'node:module';
++import { fileURLToPath } from 'node:url';
++import {
++  isDeniedLicense,
++  isUnknownLicense,
++  legitimateAbsence,
++  missingPackageIndexIds,
++  parsePnpmLock,
++  recoverNodeLicenseInventory
++} from './p1r-node-license-inventory.mjs';
++
++const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
++const require = createRequire(path.join(root, 'package.json'));
++const virtualStore = path.join(root, 'node_modules/.pnpm');
++const semverDir = fs.readdirSync(virtualStore).filter((entry) => entry.startsWith('semver@7.')).sort().at(-1);
++const { satisfies } = require(path.join(virtualStore, semverDir, 'node_modules/semver'));
++const denied = ['AGPL-1.0', 'AGPL-3.0', 'SSPL-1.0'];
++
++function missingIndex(id) {
++  return JSON.stringify({
++    error: {
++      code: 'ERR_PNPM_MISSING_PACKAGE_INDEX_FILE',
++      message: `Failed to find package index file for ${id} (at /store/index/${id}.json), please consider running 'pnpm install'`
++    }
++  });
++}
++
++function lockFrom(packages, entries) {
++  const map = new Map(packages.map((pkg) => [pkg.depPath, {
++    dependencies: {},
++    optionalDependencies: {},
++    ...pkg
++  }]));
++  return { packages: map, importers: new Map([['.', { entries }]]) };
++}
++
++function installed(records) {
++  return new Map(records.map((record) => [`${record.name}@${record.version}`, {
++    manifest: record,
++    licenseText: record.licenseText ?? null
++  }]));
++}
++
++function names(result) {
++  return result.groups.flatMap((group) => group.packages.flatMap((pkg) => pkg.versions.map((version) => `${pkg.name}@${version}`)));
++}
++
++test('unclassified pnpm failure is not an inventory', () => {
++  const result = recoverNodeLicenseInventory({
++    diagnostic: 'pnpm: command not found',
++    lock: lockFrom([], []),
++    platform: { os: 'linux', cpu: 'x64', libc: 'glibc' },
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([])
++  });
++  assert.equal(result.ok, false);
++  assert.equal(result.reason, 'unclassified-command-failure');
++  assert.equal(missingPackageIndexIds('ENOENT'), null);
++  assert.deepEqual(missingPackageIndexIds(`WARN ignored\n${missingIndex('@napi-rs/lzma-linux-x64-gnu@1.5.1')}`), ['@napi-rs/lzma-linux-x64-gnu@1.5.1']);
++});
++
++test('foreign-platform optional absence keeps installed denied and unknown licenses', () => {
++  const lock = lockFrom([
++    { depPath: 'app@1.0.0', name: 'app', version: '1.0.0', optional: false, dependencies: { kept: '1.0.0', 'foreign-linux': '1.0.0', 'optional-agpl': '1.0.0', mystery: '1.0.0' } },
++    { depPath: 'kept@1.0.0', name: 'kept', version: '1.0.0', optional: false },
++    { depPath: 'foreign-linux@1.0.0', name: 'foreign-linux', version: '1.0.0', optional: true, os: ['linux'], cpu: ['x64'] },
++    { depPath: 'optional-agpl@1.0.0', name: 'optional-agpl', version: '1.0.0', optional: true, os: ['darwin'], cpu: ['arm64'] },
++    { depPath: 'mystery@1.0.0', name: 'mystery', version: '1.0.0', optional: false }
++  ], [['app', '1.0.0']]);
++  const result = recoverNodeLicenseInventory({
++    diagnostic: missingIndex('foreign-linux@1.0.0'),
++    lock,
++    platform: { os: 'darwin', cpu: 'arm64', libc: 'unknown' },
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'app', version: '1.0.0', license: 'MIT' },
++      { name: 'kept', version: '1.0.0', license: 'Unknown' },
++      { name: 'optional-agpl', version: '1.0.0', license: 'AGPL-3.0' },
++      { name: 'mystery', version: '1.0.0', licenseText: 'All rights reserved. No grant.' }
++    ])
++  });
++  assert.equal(result.ok, true, result.reason);
++  assert.deepEqual(names(result).sort(), ['app@1.0.0', 'kept@1.0.0', 'mystery@1.0.0', 'optional-agpl@1.0.0']);
++  assert.equal(result.groups.find((group) => group.license === 'AGPL-3.0').packages[0].name, 'optional-agpl');
++  assert.equal(result.groups.find((group) => group.license === 'Unknown').packages.map((pkg) => pkg.name).sort().join(), 'kept,mystery');
++  assert.equal(result.absences.some((entry) => entry.packageId === 'foreign-linux@1.0.0' && entry.reason.startsWith('foreign-platform')), true);
++  assert.equal(names(result).includes('foreign-linux@1.0.0'), false);
++});
++
++test('missing current-platform native package stays a failure', () => {
++  const linux = { os: 'linux', cpu: 'x64', libc: 'glibc' };
++  const native = { depPath: '@rollup/rollup-linux-x64-gnu@4.62.4', name: '@rollup/rollup-linux-x64-gnu', version: '4.62.4', optional: true, os: ['linux'], cpu: ['x64'], engines: { node: '>=18' } };
++  const app = { depPath: 'app@1.0.0', name: 'app', version: '1.0.0', optional: false, optionalDependencies: { '@rollup/rollup-linux-x64-gnu': '4.62.4' } };
++  const result = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(native.depPath),
++    lock: lockFrom([app, native], [['app', '1.0.0']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([{ name: 'app', version: '1.0.0', license: 'MIT' }])
++  });
++  assert.equal(result.ok, false);
++  assert.match(result.reason, /missing installed metadata for @rollup\/rollup-linux-x64-gnu@4\.62\.4/);
++});
++
++test('optional engine mismatch on the current platform can be omitted with the rest inventoried', () => {
++  const linux = { os: 'linux', cpu: 'x64', libc: 'glibc' };
++  const napi = {
++    depPath: '@napi-rs/lzma-linux-x64-gnu@1.5.1',
++    name: '@napi-rs/lzma-linux-x64-gnu',
++    version: '1.5.1',
++    optional: true,
++    os: ['linux'],
++    cpu: ['x64'],
++    engines: { node: '^22.20 || ^24.12 || >=25' }
++  };
++  const app = { depPath: 'rollup@4.62.4', name: 'rollup', version: '4.62.4', optional: false, optionalDependencies: { '@napi-rs/lzma-linux-x64-gnu': '1.5.1' } };
++  const result = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(napi.depPath),
++    lock: lockFrom([app, napi], [['rollup', '4.62.4']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([{ name: 'rollup', version: '4.62.4', license: 'MIT' }])
++  });
++  assert.equal(result.ok, true, result.reason);
++  assert.deepEqual(names(result), ['rollup@4.62.4']);
++  assert.match(result.detail, /unsupported-engine node=\^22\.20 \|\| \^24\.12 \|\| >=25/);
++  const accepted = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(napi.depPath),
++    lock: lockFrom([app, napi], [['rollup', '4.62.4']]),
++    platform: linux,
++    nodeVersion: 'v22.20.0',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([{ name: 'rollup', version: '4.62.4', license: 'MIT' }])
++  });
++  assert.equal(accepted.ok, false);
++  assert.match(accepted.reason, /missing installed metadata/);
++});
++
++test('non-optional engine mismatch and an empty recovery stay failures', () => {
++  const linux = { os: 'linux', cpu: 'x64', libc: 'glibc' };
++  const visualizer = { depPath: 'rollup-plugin-visualizer@7.1.1', name: 'rollup-plugin-visualizer', version: '7.1.1', optional: false, engines: { node: '>=22' } };
++  const rejected = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(visualizer.depPath),
++    lock: lockFrom([visualizer], [['rollup-plugin-visualizer', '7.1.1']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([])
++  });
++  assert.equal(rejected.ok, false);
++  const onlyAbsent = {
++    depPath: '@napi-rs/lzma-linux-x64-gnu@1.5.1',
++    name: '@napi-rs/lzma-linux-x64-gnu',
++    version: '1.5.1',
++    optional: true,
++    os: ['linux'],
++    cpu: ['x64'],
++    engines: { node: '^22.20 || ^24.12 || >=25' }
++  };
++  const empty = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(onlyAbsent.depPath),
++    lock: lockFrom([onlyAbsent], [['@napi-rs/lzma-linux-x64-gnu', '1.5.1']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([])
++  });
++  assert.equal(empty.ok, false);
++  assert.match(empty.reason, /empty/);
++});
++
++test('same-os optional musl binary is foreign on gnu and the gnu build is not skipped', () => {
++  const linux = { os: 'linux', cpu: 'x64', libc: 'glibc' };
++  const gnu = { depPath: '@rollup/rollup-linux-x64-gnu@4.62.4', name: '@rollup/rollup-linux-x64-gnu', version: '4.62.4', optional: true, os: ['linux'], cpu: ['x64'] };
++  const musl = { depPath: '@rollup/rollup-linux-x64-musl@4.62.4', name: '@rollup/rollup-linux-x64-musl', version: '4.62.4', optional: true, os: ['linux'], cpu: ['x64'] };
++  const app = { depPath: 'rollup@4.62.4', name: 'rollup', version: '4.62.4', optional: false, optionalDependencies: { '@rollup/rollup-linux-x64-gnu': '4.62.4', '@rollup/rollup-linux-x64-musl': '4.62.4' } };
++  const result = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(musl.depPath),
++    lock: lockFrom([app, gnu, musl], [['rollup', '4.62.4']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'rollup', version: '4.62.4', license: 'MIT' },
++      { name: '@rollup/rollup-linux-x64-gnu', version: '4.62.4', license: 'MIT' }
++    ])
++  });
++  assert.equal(result.ok, true, result.reason);
++  assert.equal(names(result).includes('@rollup/rollup-linux-x64-gnu@4.62.4'), true);
++  assert.equal(names(result).includes('@rollup/rollup-linux-x64-musl@4.62.4'), false);
++  const missingGnu = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(gnu.depPath),
++    lock: lockFrom([app, gnu], [['rollup', '4.62.4']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([{ name: 'rollup', version: '4.62.4', license: 'MIT' }])
++  });
++  assert.equal(missingGnu.ok, false);
++  assert.match(missingGnu.reason, /rollup-linux-x64-gnu/);
++  const installedMusl = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(musl.depPath),
++    lock: lockFrom([app, gnu, musl], [['rollup', '4.62.4']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'rollup', version: '4.62.4', license: 'MIT' },
++      { name: '@rollup/rollup-linux-x64-gnu', version: '4.62.4', license: 'MIT' },
++      { name: '@rollup/rollup-linux-x64-musl', version: '4.62.4', license: 'AGPL-3.0' }
++    ])
++  });
++  assert.equal(installedMusl.ok, true, installedMusl.reason);
++  assert.equal(installedMusl.groups.some((group) => group.license === 'AGPL-3.0' && group.packages.some((pkg) => pkg.name === '@rollup/rollup-linux-x64-musl')), true);
++});
++
++test('transitive optional subtrees are omitted and transitive required gaps stay failures', () => {
++  const linux = { os: 'linux', cpu: 'x64', libc: 'glibc' };
++  const darwin = { os: 'darwin', cpu: 'arm64', libc: 'unknown' };
++  const child = { depPath: 'only-through-optional@1.0.0', name: 'only-through-optional', version: '1.0.0', optional: false };
++  const foreign = { depPath: 'foreign-linux@1.0.0', name: 'foreign-linux', version: '1.0.0', optional: true, os: ['linux'], cpu: ['x64'], dependencies: { 'only-through-optional': '1.0.0' } };
++  const napi = {
++    depPath: '@napi-rs/lzma-linux-x64-gnu@1.5.1',
++    name: '@napi-rs/lzma-linux-x64-gnu',
++    version: '1.5.1',
++    optional: true,
++    os: ['linux'],
++    cpu: ['x64'],
++    engines: { node: '^22.20 || ^24.12 || >=25' },
++    dependencies: { 'only-through-optional': '1.0.0' }
++  };
++  const mid = { depPath: 'mid@1.0.0', name: 'mid', version: '1.0.0', optional: false, dependencies: { leaf: '1.0.0', 'current-native': '1.0.0' } };
++  const leaf = { depPath: 'leaf@1.0.0', name: 'leaf', version: '1.0.0', optional: false };
++  const currentNative = { depPath: 'current-native@1.0.0', name: 'current-native', version: '1.0.0', optional: true, os: ['linux'], cpu: ['x64'] };
++  const app = { depPath: 'app@1.0.0', name: 'app', version: '1.0.0', optional: false, dependencies: { mid: '1.0.0' }, optionalDependencies: { '@napi-rs/lzma-linux-x64-gnu': '1.5.1' } };
++  const omitted = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(napi.depPath),
++    lock: lockFrom([app, mid, leaf, currentNative, napi, child], [['app', '1.0.0']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'app', version: '1.0.0', license: 'MIT' },
++      { name: 'mid', version: '1.0.0', license: 'MIT' },
++      { name: 'leaf', version: '1.0.0', license: 'MIT' },
++      { name: 'current-native', version: '1.0.0', license: 'MIT' }
++    ])
++  });
++  assert.equal(omitted.ok, true, omitted.reason);
++  assert.equal(names(omitted).includes('only-through-optional@1.0.0'), false);
++  assert.equal(names(omitted).includes('@napi-rs/lzma-linux-x64-gnu@1.5.1'), false);
++  assert.equal(names(omitted).includes('leaf@1.0.0'), true);
++  assert.equal(names(omitted).includes('current-native@1.0.0'), true);
++  const missingLeaf = recoverNodeLicenseInventory({
++    diagnostic: missingIndex('leaf@1.0.0'),
++    lock: lockFrom([app, mid, leaf], [['app', '1.0.0']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'app', version: '1.0.0', license: 'MIT' },
++      { name: 'mid', version: '1.0.0', license: 'MIT' }
++    ])
++  });
++  assert.equal(missingLeaf.ok, false);
++  assert.match(missingLeaf.reason, /leaf@1\.0\.0/);
++  const missingNative = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(currentNative.depPath),
++    lock: lockFrom([
++      { ...app, optionalDependencies: {} },
++      mid,
++      currentNative
++    ], [['app', '1.0.0']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'app', version: '1.0.0', license: 'MIT' },
++      { name: 'mid', version: '1.0.0', license: 'MIT' }
++    ])
++  });
++  assert.equal(missingNative.ok, false);
++  assert.match(missingNative.reason, /current-native@1\.0\.0/);
++  const requiredChild = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(child.depPath),
++    lock: lockFrom([
++      { ...app, dependencies: { mid: '1.0.0', 'only-through-optional': '1.0.0' }, optionalDependencies: { '@napi-rs/lzma-linux-x64-gnu': '1.5.1' } },
++      mid,
++      napi,
++      child
++    ], [['app', '1.0.0']]),
++    platform: linux,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([
++      { name: 'app', version: '1.0.0', license: 'MIT' },
++      { name: 'mid', version: '1.0.0', license: 'MIT' }
++    ])
++  });
++  assert.equal(requiredChild.ok, false);
++  assert.match(requiredChild.reason, /only-through-optional@1\.0\.0/);
++  const darwinForeign = recoverNodeLicenseInventory({
++    diagnostic: missingIndex(foreign.depPath),
++    lock: lockFrom([
++      { ...app, dependencies: {}, optionalDependencies: { 'foreign-linux': '1.0.0' } },
++      foreign,
++      child
++    ], [['app', '1.0.0']]),
++    platform: darwin,
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies,
++    manifests: installed([{ name: 'app', version: '1.0.0', license: 'MIT' }])
++  });
++  assert.equal(darwinForeign.ok, true, darwinForeign.reason);
++  assert.equal(names(darwinForeign).includes('only-through-optional@1.0.0'), false);
++});
++
++test('license policy still rejects denied and unknown expressions', () => {
++  assert.equal(isDeniedLicense('AGPL-3.0', denied), true);
++  assert.equal(isDeniedLicense('(MIT OR AGPL-3.0)', denied), true);
++  assert.equal(isDeniedLicense('GPL-3.0', denied), false);
++  assert.equal(isDeniedLicense('MIT', denied), false);
++  assert.equal(isUnknownLicense('Unknown'), true);
++  assert.equal(isUnknownLicense('SEE LICENSE IN LICENSE'), true);
++  assert.equal(isUnknownLicense(''), true);
++  assert.equal(isUnknownLicense('MIT'), false);
++});
++
++test('the installed G447 lock proves the napi package absence without skipping current-platform natives', () => {
++  const lock = parsePnpmLock(fs.readFileSync(path.join(root, 'pnpm-lock.yaml'), 'utf8'), root);
++  const napi = lock.packages.get('@napi-rs/lzma-linux-x64-gnu@1.5.1');
++  assert.equal(napi.optional, true);
++  assert.deepEqual(napi.os, ['linux']);
++  assert.deepEqual(napi.cpu, ['x64']);
++  assert.equal(napi.engines.node, '^22.20 || ^24.12 || >=25');
++  assert.match(legitimateAbsence(napi, { os: 'darwin', cpu: 'arm64', libc: 'unknown' }, 'v20.19.5', '10.19.0', satisfies), /^foreign-platform/);
++  assert.match(legitimateAbsence(napi, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v20.19.5', '10.19.0', satisfies), /^unsupported-engine/);
++  assert.equal(legitimateAbsence(napi, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v22.20.0', '10.19.0', satisfies), null);
++  const native = [...lock.packages.values()].find((pkg) => pkg.name === '@rollup/rollup-linux-x64-gnu' && pkg.version === '4.62.4');
++  assert.equal(native.optional, true);
++  assert.equal(legitimateAbsence(native, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v20.19.5', '10.19.0', satisfies), null);
++  assert.match(legitimateAbsence(native, { os: 'darwin', cpu: 'arm64', libc: 'unknown' }, 'v20.19.5', '10.19.0', satisfies), /^foreign-platform/);
++  const musl = [...lock.packages.values()].find((pkg) => pkg.name === '@rollup/rollup-linux-x64-musl' && pkg.version === '4.62.4');
++  assert.match(legitimateAbsence(musl, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v20.19.5', '10.19.0', satisfies), /^foreign-platform package-id/);
++  assert.equal(legitimateAbsence(musl, { os: 'linux', cpu: 'x64', libc: 'unknown' }, 'v20.19.5', '10.19.0', satisfies), null);
++  const esbuild = [...lock.packages.values()].find((pkg) => pkg.name === '@esbuild/linux-x64');
++  assert.equal(legitimateAbsence(esbuild, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v20.19.5', '10.19.0', satisfies), null);
++  const portableName = { ...musl, os: ['linux'], cpu: ['x64'], name: 'helper-win32-x64-msvc' };
++  assert.equal(legitimateAbsence(portableName, { os: 'linux', cpu: 'x64', libc: 'glibc' }, 'v20.19.5', '10.19.0', satisfies), null);
++});
++
++test('fresh G447 install recovers a non-empty inventory when the linux optional index is the only reported gap', () => {
++  const diagnostic = missingIndex('@napi-rs/lzma-linux-x64-gnu@1.5.1');
++  const result = recoverNodeLicenseInventory({
++    diagnostic,
++    lockText: fs.readFileSync(path.join(root, 'pnpm-lock.yaml'), 'utf8'),
++    root,
++    platform: { os: 'darwin', cpu: 'arm64', libc: 'unknown' },
++    nodeVersion: 'v20.19.5',
++    pnpmVersion: '10.19.0',
++    satisfies
++  });
++  assert.equal(result.ok, true, result.reason);
++  assert.equal(names(result).includes('@napi-rs/lzma-linux-x64-gnu@1.5.1'), false);
++  assert.equal(result.groups.some((group) => group.license === 'MIT' && group.packages.some((pkg) => pkg.name === '@alloc/quick-lru' && pkg.versions.includes('5.2.0'))), true);
++  assert.equal(result.groups.some((group) => group.license === 'Unknown' && group.packages.some((pkg) => pkg.name === '@dcloudio/uts')), true);
++  assert.equal(result.groups.some((group) => isDeniedLicense(group.license, denied)), false);
++  assert.ok(names(result).length > 900);
++});

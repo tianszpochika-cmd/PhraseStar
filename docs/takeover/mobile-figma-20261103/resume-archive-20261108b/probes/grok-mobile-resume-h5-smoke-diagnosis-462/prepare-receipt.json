@@ -1,0 +1,189 @@
+{
+  "mode": "prepare",
+  "at": "2026-11-08T14:40:29.290Z",
+  "node": "v20.19.5",
+  "pid": 67387,
+  "output": "/tmp/grok-mobile-resume-h5-smoke-diagnosis-462",
+  "pinsPath": "/tmp/grok-mobile-resume-h5-smoke-diagnosis-462/pins.json",
+  "live": {
+    "h5_realpath": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-447-reviewed/h5",
+    "index_html_realpath": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/dependency-447-reviewed/h5/index.html",
+    "index_sha256": "7622ab9cc7ceeaf68fa009921bb0187232b4cc7a1dcd0913b16f560cbaf4a9d8",
+    "index_bytes": 1419,
+    "tree_fingerprint_sha256": "f2ab7809b9d08d9bc8e342314e12c0b16d09628cfab62351390dd21e5f11740e",
+    "file_count": 797
+  },
+  "routes": {
+    "requested": [
+      "pages/home/home",
+      "pages/learn/learn",
+      "pages/practice/practice",
+      "pages/b2-vocabulary/b2-vocabulary",
+      "pages/b2-practice/b2-practice",
+      "pages/b3-grammar/b3-grammar",
+      "pages/b3-writing/b3-writing",
+      "pages/b3-listening/b3-listening",
+      "pages/b3-reading/b3-reading",
+      "pages/b3-speaking/b3-speaking",
+      "pages/b11-listening/b11-listening",
+      "pages/b11-reading/b11-reading",
+      "pages/b11-speaking/b11-speaking",
+      "pages/world/world",
+      "pages/b5-commerce/b5-commerce",
+      "pages/b6-platform/b6-platform",
+      "pages/b4-games/b4-games",
+      "pages/b4-social/b4-social",
+      "pages/b4-avatar/b4-avatar",
+      "pages/b4-offline/b4-offline",
+      "pages/profile/profile",
+      "pages/login/login",
+      "pages/register/register",
+      "pages/reset-password/reset-password",
+      "pages/forbidden/forbidden",
+      "pages/onboarding/onboarding",
+      "pages/assessment/assessment",
+      "pages/today/today",
+      "pages/report-share/report-share",
+      "pages/b10-report/b10-report",
+      "pages/settings/settings",
+      "pages/devices/devices",
+      "pages/support/support"
+    ],
+    "requestedCount": 33,
+    "pagesMdCount": 33,
+    "pagesMdSetEqualsPagesJson": true,
+    "publicCount": 5,
+    "protectedCount": 28
+  },
+  "chrome": {
+    "testing": [
+      {
+        "path": "/Users/Admin/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "exists": true
+      },
+      {
+        "path": "/Users/Admin/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "exists": true
+      },
+      {
+        "path": "/Users/Admin/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "exists": true
+      }
+    ],
+    "system": {
+      "path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "exists": true
+    }
+  },
+  "playwright": {
+    "ok": true,
+    "id": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/node_modules/.pnpm/playwright@1.63.0/node_modules/playwright/index.js",
+    "error": null
+  },
+  "playwrightTypeFacts": {
+    "ok": true,
+    "playwrightCoreVersion": "1.63.0",
+    "packageJson": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/node_modules/.pnpm/playwright-core@1.63.0/node_modules/playwright-core/package.json",
+    "typesPath": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy/node_modules/.pnpm/playwright-core@1.63.0/node_modules/playwright-core/types/types.d.ts",
+    "browserInterface": {
+      "startLine": 11018,
+      "endLine": 11807,
+      "declaresProcess": false,
+      "declaresClose": true,
+      "methods": [
+        "addListener",
+        "bind",
+        "browserType",
+        "close",
+        "contexts",
+        "isConnected",
+        "newBrowserCDPSession",
+        "newContext",
+        "newPage",
+        "off",
+        "on",
+        "once",
+        "prependListener",
+        "removeAllListeners",
+        "removeListener",
+        "startTracing",
+        "stopTracing",
+        "unbind",
+        "version"
+      ]
+    },
+    "browserServer": {
+      "startLine": 20385,
+      "declaresProcessChildProcess": true,
+      "processLine": 20429
+    },
+    "electronApplication": {
+      "startLine": 18825,
+      "declaresProcessChildProcess": true,
+      "processLine": 19102
+    },
+    "launchReturnsBrowser": true,
+    "note": "chromium.launch returns Browser. process() is on BrowserServer and ElectronApplication only."
+  },
+  "ownershipPolicy": {
+    "playwright_api": "chromium.launch() -> Browser.close() first; never Browser.process(); never launchServer().process()",
+    "capture": "snapshot OS process table descendants of this Node pid after launch; keep only Chrome-family children that were not present before launch; identity is pid+ppid+startTime+command",
+    "signal": "SIGTERM leftovers only after exact identity revalidation immediately before kill; never kill foreign or reused PID; never SIGKILL; if identity cannot be established, send no manual signal and fail closed with resource-unreleased evidence",
+    "receipt": "always write run-receipt.json and cleanup-receipt.json from finally, including exceptions before matrix; preserve exact failedStage; missing process() is not a cleanup PASS"
+  },
+  "g451Defect": {
+    "line": "ownership.browserPid = browser.process()?.pid || null",
+    "why": "browser.process()?.pid calls process() first; Playwright 1.63 Browser from chromium.launch() has no process() method, so this is TypeError before navigation. Optional chaining is on the return value (.pid), not on the call. process() exists on BrowserServer and ElectronApplication only. terminateOwn(pid) also lacked start-time/argv identity against PID reuse. finally closed browser/server without a durable FAIL+cleanup receipt.",
+    "playwright_core": "1.63.0",
+    "browser_interface": {
+      "types": "node_modules/playwright-core/types/types.d.ts",
+      "start_line": 11018,
+      "end_line": 11789,
+      "methods": [
+        "addListener",
+        "bind",
+        "browserType",
+        "close",
+        "contexts",
+        "isConnected",
+        "newBrowserCDPSession",
+        "newContext",
+        "newPage",
+        "off",
+        "on",
+        "once",
+        "prependListener",
+        "removeAllListeners",
+        "removeListener",
+        "startTracing",
+        "stopTracing",
+        "unbind",
+        "version"
+      ],
+      "declares_process": false
+    },
+    "browser_server_process_line": 20429,
+    "electron_application_process_line": 19102,
+    "client_class": "packages/playwright-core/src/client/browser.ts Browser2 extends ChannelOwner; chromium.launch returns Browser, not BrowserServer"
+  },
+  "port18183": {
+    "policy": "do-not-bind-in-prepare",
+    "holders": []
+  },
+  "matrixDenominator": "66 anonymous phone-theme cells (33 routes × light/dark at 390×844) + 9 public keyboard/layout cells (3 pages × {320, 768, 200% font at 390}) = 75 navigations. Requested routes remain 33. Final routes are recorded separately. Protected landings on login are not 33 authenticated PASSes.",
+  "notRun": [
+    "business",
+    "real-device",
+    "native",
+    "performance",
+    "figma-signoff",
+    "credential-submission",
+    "authenticated-pages",
+    "g462-live-matrix",
+    "browser",
+    "listener",
+    "--run-browser-smoke"
+  ],
+  "bind": false,
+  "browser": false
+}

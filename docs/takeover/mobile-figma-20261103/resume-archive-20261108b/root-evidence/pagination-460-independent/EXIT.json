@@ -1,0 +1,1 @@
+{"exit": 0, "command": ["/Users/Admin/.local/tools/maven/bin/mvn", "-o", "-f", "services/workflow-service/pom.xml", "-Dtest=UnfinishedSagaPagingTest,JdbcSagaStorePaginationTest,SagaUnfinishedPaginationTest,SagaControllerTest,SagaServiceTest", "test"], "at": "2026-11-08T14:53:30.764983+00:00"}

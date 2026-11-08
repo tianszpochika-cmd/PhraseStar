@@ -1,0 +1,41 @@
+{
+  "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+  "at": "2026-11-08T14:31:30.402431+00:00",
+  "ports": [
+    {
+      "port": 13306,
+      "free": true
+    },
+    {
+      "port": 18070,
+      "free": true
+    },
+    {
+      "port": 18087,
+      "free": true
+    },
+    {
+      "port": 18088,
+      "free": true
+    },
+    {
+      "port": 18089,
+      "free": true
+    },
+    {
+      "port": 18090,
+      "free": true
+    },
+    {
+      "port": 18091,
+      "free": true
+    },
+    {
+      "port": 18183,
+      "free": true
+    }
+  ],
+  "ownedLabelAbsent": true,
+  "harnessPreflight": "FAIL_RUN_DIRECTORY_GUARD",
+  "businessJourney": "NOT_RUN"
+}

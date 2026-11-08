@@ -1,0 +1,18 @@
+{
+  "state": "exited",
+  "started_at_utc": "2026-11-08T14:26:15.191858+00:00",
+  "runner_pid": 53963,
+  "job": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459-job.json",
+  "worktree": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+  "session": "01a1bb8d-88b0-7a01-a20d-8ead8bd22355",
+  "task_file": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459-task.md",
+  "cli": "grok",
+  "stdout_jsonl": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459.events.jsonl",
+  "stderr": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-h5-logout-probe-459.stderr.log",
+  "quota": "UNKNOWN",
+  "cli_pid": 53976,
+  "exit_code": 0,
+  "finished_at_utc": "2026-11-08T14:38:39.370562+00:00",
+  "session_source": "CLI end.sessionId receipt",
+  "terminalReason": "end_turn"
+}

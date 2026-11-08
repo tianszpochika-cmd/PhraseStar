@@ -1,0 +1,2335 @@
+# exact-new.diff vs G460 start snapshot
+# UNCHANGED G448 share/fragments/generated/config/B25/V15 omitted.
+
+### CHANGELOG.md origin=git-HEAD-not-start
+--- a/CHANGELOG.md (git-HEAD-not-start)
++++ b/CHANGELOG.md
+@@ -1,4 +1,10 @@
+ # Changelog
+
++
+
++- [RC-B-PAGINATION-REWORK-20261108] 错题 feed 在首屏/后续 401/403/500、超时、解析失败、重复 cursor、重复 id 或预算耗尽且 hasMore 时失败，不再把前缀或空列表当成功；learner 投影只在走完后写入。Admin 未完成 saga 走完才 ready，预算耗尽报错不清前缀。Saga keyset 改为不可变 `started_at,saga_id`，cursor 微秒往返；`updated_at` 变更不再造成跨页重复。handler 与 caller 需一起发布。
+
++
+
++- [RC-A-SHARE-IDEMPOTENCY-20261108] 学习报告分享签发与撤销改为必填 canonical `Idempotency-Key`：fragment SSOT、生成契约、learning-service 在耐久写入前拒绝缺失/非法键，同主体同租户同载荷回放、错用键 409、他主 404；mobile 与 learner-web 每个用户意图生成一次键并在瞬时重试复用。signed-access 仍是唯一 optional-write 例外；fail-closed 媒体 upload-url 继续无成功路径、无副作用、不声明 `x-idempotency`。历史无键签发是破坏性兼容变更，见 RC-A-DECISION。
+
++
+
++- [RC-B-PAGINATION-20261108] `listUnfinishedSagas` 与 `listAssessmentMistakes` 改为 canonical cursor 分页：fragment SSOT、生成契约、workflow-service / assessment-service 按 owner 过滤后分页，admin-web 与错题 feed 消费 envelope。Saga 不再以固定 200 条作为公开契约；错题列表不再一次倒出全表。
+
+ 
+
+ - [MOBILE-FIGMA-CODEX-RESERVE-20261107] 按用户确认预留 Codex 五小时额度 20%，保存已审核成果、未验依赖候选、契约 CI 计划及探针停点，临时服务已释放。
+
+ 
+
+
+### apps/admin-web/src/api/recovery.ts origin=g442-freeze
+--- a/apps/admin-web/src/api/recovery.ts (g442-freeze)
++++ b/apps/admin-web/src/api/recovery.ts
+@@ -116,14 +116,37 @@
+   }
+
+ }
+
+ 
+
++/** Fail-closed walk budget. Hitting it with hasMore still true is an error, not a 5000-row prefix. */
+
++export const UNFINISHED_SAGA_PAGE_BUDGET = 10_000
+
++
+
+ export async function listAllUnfinishedSagaIds(): Promise<string[]> {
+
+   const sagaIds: string[] = []
+
++  const seenIds = new Set<string>()
+
++  const seenCursors = new Set<string>()
+
+   let cursor: string | undefined
+
+-  for (let page = 0; page < 50; page += 1) {
+
++  for (let page = 0; page < UNFINISHED_SAGA_PAGE_BUDGET; page += 1) {
+
+     const result = await listUnfinishedSagas({ cursor, pageSize: 100 })
+
+-    sagaIds.push(...result.sagaIds)
+
+-    if (!result.hasMore || !result.nextCursor) break
+
++    if (result.hasMore && result.sagaIds.length === 0) {
+
++      throw new Error('unfinished saga walk made no progress')
+
++    }
+
++    for (const id of result.sagaIds) {
+
++      if (seenIds.has(id)) {
+
++        throw new Error('unfinished saga walk duplicated an id')
+
++      }
+
++      seenIds.add(id)
+
++      sagaIds.push(id)
+
++    }
+
++    if (!result.hasMore) {
+
++      return sagaIds
+
++    }
+
++    if (!result.nextCursor) {
+
++      throw new Error('unfinished saga walk has more without a cursor')
+
++    }
+
++    if (result.nextCursor === cursor || seenCursors.has(result.nextCursor)) {
+
++      throw new Error('unfinished saga walk repeated a cursor')
+
++    }
+
++    seenCursors.add(result.nextCursor)
+
+     cursor = result.nextCursor
+
+   }
+
+-  return sagaIds
+
++  throw new Error('unfinished saga walk exceeded the page budget')
+
+ }
+
+
+### apps/admin-web/src/views/AdminRecoveryView.vue origin=g442-freeze
+--- a/apps/admin-web/src/views/AdminRecoveryView.vue (g442-freeze)
++++ b/apps/admin-web/src/views/AdminRecoveryView.vue
+@@ -38,16 +38,20 @@
+ 
+
+ async function load(): Promise<void> {
+
+   if (!session.can("admin.recovery.read")) {
+
++    sagas.value = [];
+
+     state.value = "permission";
+
+     lastError.value = "当前会话没有恢复读取权限。";
+
+     return;
+
+   }
+
+   state.value = "loading";
+
+   lastError.value = null;
+
+-  try {
+
+-    sagas.value = await listAllUnfinishedSagaIds();
+
+-    state.value = current.value || sagas.value.length ? "ready" : "empty";
+
++  sagas.value = [];
+
++  try {
+
++    const ids = await listAllUnfinishedSagaIds();
+
++    sagas.value = ids;
+
++    state.value = current.value || ids.length ? "ready" : "empty";
+
+   } catch (error) {
+
++    sagas.value = [];
+
+     state.value = stateFrom(error);
+
+     lastError.value =
+
+       error instanceof Error ? error.message : "恢复列表读取失败。";
+
+
+### apps/admin-web/tests/recovery-sagas.test.mjs origin=g442-freeze
+--- a/apps/admin-web/tests/recovery-sagas.test.mjs (g442-freeze)
++++ b/apps/admin-web/tests/recovery-sagas.test.mjs
+@@ -21,6 +21,7 @@
+             requests.push(requestPath)
+
+             const next = responses.shift()
+
+             if (next === undefined) throw new Error('No fixture response queued')
+
++            if (next && next.throw) throw next.throw
+
+             return next
+
+           },
+
+         },
+
+@@ -33,6 +34,10 @@
+   return { api: module.exports, requests }
+
+ }
+
+ 
+
++function sagaId(index) {
+
++  return `saga-${String(index).padStart(4, '0')}-aaaa-aaaa-aaaaaaaaaaaa`
+
++}
+
++
+
+ test('unfinished saga list reads canonical envelope data and meta', async () => {
+
+   const page = loadRecovery([
+
+     {
+
+@@ -63,3 +68,150 @@
+   assert.equal(page.requests.length, 2)
+
+   assert.match(page.requests[1], /cursor=v1\.saga\.two/)
+
+ })
+
++
+
++test('walker completes 5100 ids across 51 pages instead of silently stopping at 5000', async () => {
+
++  const pages = []
+
++  const expected = []
+
++  for (let page = 0; page < 51; page += 1) {
+
++    const data = []
+
++    for (let i = 0; i < 100; i += 1) {
+
++      const id = sagaId(page * 100 + i)
+
++      data.push(id)
+
++      expected.push(id)
+
++    }
+
++    const hasMore = page < 50
+
++    pages.push({
+
++      data,
+
++      meta: { hasMore, pageSize: 100, nextCursor: hasMore ? `cursor-${(page + 1) * 100}-xxxxxxxx` : null },
+
++    })
+
++  }
+
++  const loaded = loadRecovery(pages)
+
++  const ids = await loaded.api.listAllUnfinishedSagaIds()
+
++  assert.equal(ids.length, 5100)
+
++  assert.equal(ids[0], expected[0])
+
++  assert.equal(ids[4999], expected[4999])
+
++  assert.equal(ids[5099], expected[5099])
+
++  assert.equal(loaded.requests.length, 51)
+
++})
+
++
+
++test('walker completes 5100 pages', async () => {
+
++  const pages = []
+
++  const expected = []
+
++  for (let i = 0; i < 5100; i += 1) {
+
++    const id = sagaId(i)
+
++    expected.push(id)
+
++    const hasMore = i < 5099
+
++    pages.push({
+
++      data: [id],
+
++      meta: { hasMore, pageSize: 1, nextCursor: hasMore ? `cursor-${i + 1}-xxxxxxxx` : null },
+
++    })
+
++  }
+
++  const loaded = loadRecovery(pages)
+
++  const ids = await loaded.api.listAllUnfinishedSagaIds()
+
++  assert.equal(ids.length, 5100)
+
++  assert.deepEqual(ids, expected)
+
++  assert.equal(loaded.requests.length, 5100)
+
++})
+
++
+
++test('walker fails on a repeated cursor instead of looping facts', async () => {
+
++  const loaded = loadRecovery([
+
++    { data: [sagaId(1)], meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.samexx' } },
+
++    { data: [sagaId(2)], meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.samexx' } },
+
++  ])
+
++  await assert.rejects(() => loaded.api.listAllUnfinishedSagaIds(), /repeated a cursor/)
+
++  assert.equal(loaded.requests.length, 2)
+
++})
+
++
+
++test('walker fails on a duplicated id', async () => {
+
++  const loaded = loadRecovery([
+
++    { data: [sagaId(1)], meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.two' } },
+
++    { data: [sagaId(1)], meta: { hasMore: false, pageSize: 1, nextCursor: null } },
+
++  ])
+
++  await assert.rejects(() => loaded.api.listAllUnfinishedSagaIds(), /duplicated an id/)
+
++})
+
++
+
++test('walker fails when the page budget ends with hasMore', async () => {
+
++  const budget = loadRecovery([]).api.UNFINISHED_SAGA_PAGE_BUDGET
+
++  assert.equal(budget, 10_000)
+
++  const pages = []
+
++  for (let i = 0; i < budget; i += 1) {
+
++    pages.push({
+
++      data: [sagaId(i)],
+
++      meta: { hasMore: true, pageSize: 1, nextCursor: `cursor-${i + 1}-xxxxxxxx` },
+
++    })
+
++  }
+
++  const loaded = loadRecovery(pages)
+
++  await assert.rejects(() => loaded.api.listAllUnfinishedSagaIds(), /exceeded the page budget/)
+
++  assert.equal(loaded.requests.length, budget)
+
++})
+
++
+
++test('a later HTTP failure throws and does not return the first page', async () => {
+
++  const loaded = loadRecovery([
+
++    { data: [sagaId(1)], meta: { hasMore: true, pageSize: 1, nextCursor: 'v1.saga.two' } },
+
++    { throw: Object.assign(new Error('cursor is invalid'), { status: 400 }) },
+
++  ])
+
++  await assert.rejects(() => loaded.api.listAllUnfinishedSagaIds(), /cursor is invalid/)
+
++  assert.equal(loaded.requests.length, 2)
+
++})
+
++
+
++function loadRecoveryView(listAll) {
+
++  const source = fs.readFileSync(path.join(appRoot, 'src/views/AdminRecoveryView.vue'), 'utf8')
+
++  const script = source.match(/<script setup lang="ts">([\s\S]*?)<\/script>/)[1]
+
++    + '\nexport { load, state, sagas, lastError }\n'
+
++  const compiled = ts.transpileModule(script, {
+
++    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+
++  }).outputText
+
++  const session = {
+
++    can(permission) { return permission === 'admin.recovery.read' },
+
++  }
+
++  const module = { exports: {} }
+
++  new Function('require', 'module', 'exports', compiled)((name) => {
+
++    const modules = {
+
++      vue: { onMounted() {}, ref(value) { return { value } } },
+
++      '../platform/experience': { ui: (key) => key },
+
++      '../components/AdminPageIntro.vue': {},
+
++      'element-plus': { ElMessage: { error() {}, success() {} }, ElMessageBox: { confirm: async () => {} } },
+
++      '../api/client': { AdminApiError: class AdminApiError extends Error { constructor(message, status) { super(message); this.status = status } } },
+
++      '../api/recovery': {
+
++        listAllUnfinishedSagaIds: listAll,
+
++        requestRecovery: async () => null,
+
++        approveRecovery: async () => null,
+
++        rejectRecovery: async () => null,
+
++        executeRecovery: async () => null,
+
++      },
+
++      '../stores/admin': { useAdminStore: () => session },
+
++    }
+
++    if (!(name in modules)) throw new Error(`Unexpected import ${name}`)
+
++    return modules[name]
+
++  }, module, module.exports)
+
++  return module.exports
+
++}
+
++
+
++test('recovery view is ready only after a complete walk and clears sagas on error', async () => {
+
++  const viewSource = fs.readFileSync(path.join(appRoot, 'src/views/AdminRecoveryView.vue'), 'utf8')
+
++  assert.match(viewSource, /const ids = await listAllUnfinishedSagaIds\(\)/)
+
++  assert.match(viewSource, /sagas\.value = ids/)
+
++  assert.match(viewSource, /sagas\.value = \[\]/)
+
++  assert.doesNotMatch(viewSource, /for \(let page = 0; page < 50; page \+= 1\)/)
+
++
+
++  let resolveWalk
+
++  const pending = new Promise((resolve) => { resolveWalk = resolve })
+
++  const complete = loadRecoveryView(async () => pending)
+
++  complete.state.value = 'loading'
+
++  const walking = complete.load()
+
++  assert.equal(complete.state.value, 'loading')
+
++  assert.deepEqual(complete.sagas.value, [])
+
++  resolveWalk([sagaId(0), sagaId(1)])
+
++  await walking
+
++  assert.equal(complete.state.value, 'ready')
+
++  assert.deepEqual(complete.sagas.value, [sagaId(0), sagaId(1)])
+
++
+
++  const failing = loadRecoveryView(async () => {
+
++    throw new Error('unfinished saga walk exceeded the page budget')
+
++  })
+
++  failing.sagas.value = [sagaId(9)]
+
++  await failing.load()
+
++  assert.equal(failing.state.value, 'error')
+
++  assert.deepEqual(failing.sagas.value, [])
+
++  assert.match(failing.lastError.value, /exceeded the page budget/)
+
++})
+
+
+### services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeFeedException.java origin=new-file
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeFeedException.java (new-file)
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeFeedException.java
+@@ -0,0 +1,23 @@
++package com.englishflow.learning.adapter.http;
+
++
+
++/**
+
++ * The assessment mistake walk did not finish. Callers must not treat a prefix
+
++ * or an empty list as the owner book.
+
++ */
+
++public final class AssessmentMistakeFeedException extends RuntimeException {
+
++    private final int statusCode;
+
++
+
++    public AssessmentMistakeFeedException(int statusCode, String message) {
+
++        super(message);
+
++        this.statusCode = statusCode;
+
++    }
+
++
+
++    public AssessmentMistakeFeedException(int statusCode, String message, Throwable cause) {
+
++        super(message, cause);
+
++        this.statusCode = statusCode;
+
++    }
+
++
+
++    public int statusCode() {
+
++        return statusCode;
+
++    }
+
++}
+
+
+### services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java origin=git-HEAD
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java (git-HEAD)
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java
+@@ -5,7 +5,9 @@
+ import java.util.UUID;
+
+ 
+
+ import org.springframework.dao.DuplicateKeyException;
+
++import org.springframework.http.HttpStatus;
+
+ import org.springframework.jdbc.core.JdbcTemplate;
+
++import org.springframework.web.server.ResponseStatusException;
+
+ 
+
+ import com.englishflow.learning.domain.ZeroMistakeProjection;
+
+ 
+
+@@ -31,9 +33,30 @@
+         return new AssessmentMistakeQueueProjector(new HttpAssessmentMistakeFeed(mapper, assessmentBaseUrl), mapper);
+
+     }
+
+ 
+
++    static AssessmentMistakeQueueProjector of(HttpAssessmentMistakeFeed feed, ObjectMapper mapper) {
+
++        return new AssessmentMistakeQueueProjector(feed, mapper);
+
++    }
+
++
+
+     public void project(JdbcTemplate jdbc, String subject, String bearer) {
+
+         if (feed == null || jdbc == null || subject == null || subject.isBlank()) return;
+
+-        write(jdbc, subject, feed.list(bearer));
+
++        List<Map<String, Object>> admitted;
+
++        try {
+
++            admitted = feed.list(bearer);
+
++        } catch (AssessmentMistakeFeedException exception) {
+
++            throw toResponse(exception);
+
++        }
+
++        write(jdbc, subject, admitted);
+
++    }
+
++
+
++    private static ResponseStatusException toResponse(AssessmentMistakeFeedException exception) {
+
++        HttpStatus status = switch (exception.statusCode()) {
+
++            case 401 -> HttpStatus.UNAUTHORIZED;
+
++            case 403 -> HttpStatus.FORBIDDEN;
+
++            case 408, 504 -> HttpStatus.GATEWAY_TIMEOUT;
+
++            case 503 -> HttpStatus.SERVICE_UNAVAILABLE;
+
++            default -> HttpStatus.BAD_GATEWAY;
+
++        };
+
++        return new ResponseStatusException(status, exception.getMessage(), exception);
+
+     }
+
+ 
+
+     public int write(JdbcTemplate jdbc, String subject, List<Map<String, Object>> admitted) {
+
+
+### services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java origin=g442-freeze
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java (g442-freeze)
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
+@@ -1,17 +1,21 @@
+ package com.englishflow.learning.adapter.http;
+
+ 
+
++import java.io.IOException;
+
+ import java.net.URI;
+
+ import java.net.URLEncoder;
+
+ import java.net.http.HttpClient;
+
+ import java.net.http.HttpRequest;
+
+ import java.net.http.HttpResponse;
+
++import java.net.http.HttpTimeoutException;
+
+ import java.nio.charset.StandardCharsets;
+
+ import java.time.Duration;
+
+ import java.util.ArrayList;
+
++import java.util.HashSet;
+
+ import java.util.LinkedHashMap;
+
++import java.util.LinkedHashSet;
+
+ import java.util.List;
+
+ import java.util.Map;
+
+-import java.util.logging.Logger;
+
++import java.util.Set;
+
+ 
+
+ import tools.jackson.databind.ObjectMapper;
+
+ 
+
+@@ -20,56 +24,95 @@
+  * the assessment schema. The same facts are written to
+
+  * {@code learning.mistake.admitted.v1} in the assessment outbox; this feed is
+
+  * the local consumer while the Kafka relay is off.
+
++ *
+
++ * <p>A walk either finishes or throws. A later 401/403/500, timeout, parse
+
++ * failure, repeated cursor, duplicate id, or budget exit with {@code hasMore}
+
++ * is not a successful prefix or empty book.
+
+  */
+
+ public final class HttpAssessmentMistakeFeed {
+
+-    private static final Logger LOG = Logger.getLogger(HttpAssessmentMistakeFeed.class.getName());
+
++    static final int DEFAULT_MAX_PAGES = 10_000;
+
++    static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(4);
+
+ 
+
+     private final ObjectMapper mapper;
+
+     private final HttpClient http;
+
+     private final String assessmentBaseUrl;
+
++    private final Duration requestTimeout;
+
++    private final int maxPages;
+
+ 
+
+     public HttpAssessmentMistakeFeed(ObjectMapper mapper, String assessmentBaseUrl) {
+
++        this(mapper, assessmentBaseUrl, HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build(),
+
++                DEFAULT_REQUEST_TIMEOUT, DEFAULT_MAX_PAGES);
+
++    }
+
++
+
++    HttpAssessmentMistakeFeed(ObjectMapper mapper, String assessmentBaseUrl, HttpClient http,
+
++            Duration requestTimeout, int maxPages) {
+
+         this.mapper = mapper;
+
+-        this.http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build();
+
++        this.http = http;
+
+         String base = assessmentBaseUrl == null ? "" : assessmentBaseUrl.trim();
+
+         while (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+
+         this.assessmentBaseUrl = base;
+
++        this.requestTimeout = requestTimeout == null ? DEFAULT_REQUEST_TIMEOUT : requestTimeout;
+
++        this.maxPages = maxPages < 1 ? 1 : maxPages;
+
+     }
+
+ 
+
+     public List<Map<String, Object>> list(String bearer) {
+
+-        if (bearer == null || bearer.isBlank() || !assessmentBaseUrl.startsWith("http")) return List.of();
+
++        if (bearer == null || bearer.isBlank()) {
+
++            throw new AssessmentMistakeFeedException(401, "assessment mistake feed missing bearer");
+
++        }
+
++        if (!assessmentBaseUrl.startsWith("http")) {
+
++            throw new AssessmentMistakeFeedException(503, "assessment mistake feed is not configured");
+
++        }
+
+         List<Map<String, Object>> facts = new ArrayList<>();
+
++        Set<String> seenIds = new LinkedHashSet<>();
+
++        Set<String> seenCursors = new HashSet<>();
+
+         String cursor = null;
+
+         try {
+
+-            for (int page = 0; page < 100; page++) {
+
+-                StringBuilder uri = new StringBuilder(assessmentBaseUrl)
+
+-                        .append("/internal/v1/assessment/mistakes?pageSize=100");
+
+-                if (cursor != null) {
+
+-                    uri.append("&cursor=").append(URLEncoder.encode(cursor, StandardCharsets.UTF_8));
+
+-                }
+
+-                HttpRequest request = HttpRequest.newBuilder()
+
+-                        .uri(URI.create(uri.toString()))
+
+-                        .header("Accept", "application/json")
+
+-                        .header("Authorization", "Bearer " + bearer.trim())
+
+-                        .timeout(Duration.ofSeconds(4))
+
+-                        .GET()
+
+-                        .build();
+
+-                HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+
+-                if (response.statusCode() != 200) {
+
+-                    LOG.warning("assessment mistake feed returned " + response.statusCode());
+
+-                    return page == 0 ? List.of() : List.copyOf(facts);
+
++            for (int page = 0; page < maxPages; page++) {
+
++                HttpResponse<String> response = send(cursor, bearer);
+
++                int status = response.statusCode();
+
++                if (status != 200) {
+
++                    throw new AssessmentMistakeFeedException(status,
+
++                            "assessment mistake feed returned " + status);
+
+                 }
+
+                 Page parsed = parsePage(response.body());
+
+-                facts.addAll(parsed.facts);
+
+-                if (!parsed.hasMore || parsed.nextCursor == null || parsed.nextCursor.isBlank()) {
+
+-                    break;
+
++                if (parsed.hasMore && parsed.facts.isEmpty()) {
+
++                    throw new AssessmentMistakeFeedException(502,
+
++                            "assessment mistake feed made no progress");
+
+                 }
+
++                for (Map<String, Object> fact : parsed.facts) {
+
++                    String id = String.valueOf(fact.get("itemId"));
+
++                    if (seenIds.contains(id)) {
+
++                        throw new AssessmentMistakeFeedException(502,
+
++                                "assessment mistake feed duplicated an item");
+
++                    }
+
++                    seenIds.add(id);
+
++                    facts.add(fact);
+
++                }
+
++                if (!parsed.hasMore) {
+
++                    return List.copyOf(facts);
+
++                }
+
++                if (parsed.nextCursor == null || parsed.nextCursor.isBlank()) {
+
++                    throw new AssessmentMistakeFeedException(502,
+
++                            "assessment mistake feed has more without a cursor");
+
++                }
+
++                if (parsed.nextCursor.equals(cursor) || seenCursors.contains(parsed.nextCursor)) {
+
++                    throw new AssessmentMistakeFeedException(502,
+
++                            "assessment mistake feed repeated a cursor");
+
++                }
+
++                seenCursors.add(parsed.nextCursor);
+
+                 cursor = parsed.nextCursor;
+
+             }
+
+-            return List.copyOf(facts);
+
+-        } catch (Exception exception) {
+
+-            LOG.warning("assessment mistake feed unavailable: " + exception.getClass().getSimpleName());
+
+-            return facts.isEmpty() ? List.of() : List.copyOf(facts);
+
++            throw new AssessmentMistakeFeedException(502,
+
++                    "assessment mistake feed exceeded the page budget");
+
++        } catch (AssessmentMistakeFeedException exception) {
+
++            throw exception;
+
++        } catch (HttpTimeoutException exception) {
+
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed timed out", exception);
+
++        } catch (InterruptedException exception) {
+
++            Thread.currentThread().interrupt();
+
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed unavailable", exception);
+
++        } catch (IOException exception) {
+
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed unavailable", exception);
+
+         }
+
+     }
+
+ 
+
+@@ -78,41 +121,61 @@
+     }
+
+ 
+
+     Page parsePage(String body) {
+
++        Object parsed;
+
+         try {
+
+-            Object parsed = mapper.readValue(body, Object.class);
+
+-            if (!(parsed instanceof Map<?, ?> map)) return Page.empty();
+
+-            Object data = map.get("data");
+
+-            Object items = data instanceof Map<?, ?> dataMap ? dataMap.get("items") : null;
+
+-            if (!(items instanceof List<?> list)) return Page.empty();
+
+-            List<Map<String, Object>> facts = new ArrayList<>();
+
+-            for (Object entry : list) {
+
+-                if (!(entry instanceof Map<?, ?> raw)) continue;
+
+-                Map<String, Object> fact = new LinkedHashMap<>();
+
+-                fact.put("itemId", raw.get("itemId"));
+
+-                fact.put("scoreBucket", raw.get("scoreBucket") == null ? "ZERO" : raw.get("scoreBucket"));
+
+-                fact.put("errorCategory", raw.get("errorCategory"));
+
+-                fact.put("contentCode", raw.get("contentCode"));
+
+-                fact.put("sourceAttemptId", sourceAttempt(raw));
+
+-                facts.add(fact);
+
++            parsed = mapper.readValue(body, Object.class);
+
++        } catch (Exception exception) {
+
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not JSON", exception);
+
++        }
+
++        if (!(parsed instanceof Map<?, ?> map) || map.isEmpty()) {
+
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
+
++        }
+
++        Object data = map.get("data");
+
++        Object items = data instanceof Map<?, ?> dataMap ? dataMap.get("items") : null;
+
++        if (!(items instanceof List<?> list)) {
+
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
+
++        }
+
++        List<Map<String, Object>> facts = new ArrayList<>();
+
++        for (Object entry : list) {
+
++            if (!(entry instanceof Map<?, ?> raw)) {
+
++                throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
+
+             }
+
+-            Object meta = map.get("meta");
+
+-            boolean hasMore = meta instanceof Map<?, ?> metaMap && Boolean.TRUE.equals(metaMap.get("hasMore"));
+
+-            String nextCursor = null;
+
+-            if (meta instanceof Map<?, ?> metaMap) {
+
+-                Object cursor = metaMap.get("nextCursor");
+
+-                if (cursor instanceof String text && !text.isBlank()) nextCursor = text;
+
+-            }
+
+-            if (!hasMore) nextCursor = null;
+
+-            return new Page(List.copyOf(facts), hasMore, nextCursor);
+
+-        } catch (Exception ignored) {
+
+-            return Page.empty();
+
++            Map<String, Object> fact = new LinkedHashMap<>();
+
++            fact.put("itemId", raw.get("itemId"));
+
++            fact.put("scoreBucket", raw.get("scoreBucket") == null ? "ZERO" : raw.get("scoreBucket"));
+
++            fact.put("errorCategory", raw.get("errorCategory"));
+
++            fact.put("contentCode", raw.get("contentCode"));
+
++            fact.put("sourceAttemptId", sourceAttempt(raw));
+
++            facts.add(fact);
+
+         }
+
++        Object meta = map.get("meta");
+
++        boolean hasMore = meta instanceof Map<?, ?> metaMap && Boolean.TRUE.equals(metaMap.get("hasMore"));
+
++        String nextCursor = null;
+
++        if (meta instanceof Map<?, ?> metaMap) {
+
++            Object cursor = metaMap.get("nextCursor");
+
++            if (cursor instanceof String text && !text.isBlank()) nextCursor = text;
+
++        }
+
++        if (!hasMore) nextCursor = null;
+
++        return new Page(List.copyOf(facts), hasMore, nextCursor);
+
+     }
+
+ 
+
+     record Page(List<Map<String, Object>> facts, boolean hasMore, String nextCursor) {
+
+-        static Page empty() {
+
+-            return new Page(List.of(), false, null);
+
++    }
+
++
+
++    private HttpResponse<String> send(String cursor, String bearer) throws IOException, InterruptedException {
+
++        StringBuilder uri = new StringBuilder(assessmentBaseUrl)
+
++                .append("/internal/v1/assessment/mistakes?pageSize=100");
+
++        if (cursor != null) {
+
++            uri.append("&cursor=").append(URLEncoder.encode(cursor, StandardCharsets.UTF_8));
+
+         }
+
++        HttpRequest request = HttpRequest.newBuilder()
+
++                .uri(URI.create(uri.toString()))
+
++                .header("Accept", "application/json")
+
++                .header("Authorization", "Bearer " + bearer.trim())
+
++                .timeout(requestTimeout)
+
++                .GET()
+
++                .build();
+
++        return http.send(request, HttpResponse.BodyHandlers.ofString());
+
+     }
+
+ 
+
+     private static String sourceAttempt(Map<?, ?> raw) {
+
+
+### services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java origin=git-HEAD
+--- a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java (git-HEAD)
++++ b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java
+@@ -15,6 +15,16 @@
+ import static org.mockito.Mockito.never;
+
+ import static org.mockito.Mockito.verify;
+
+ import static org.mockito.Mockito.when;
+
++import static org.junit.jupiter.api.Assertions.assertEquals;
+
++import static org.junit.jupiter.api.Assertions.assertThrows;
+
++
+
++import java.net.InetSocketAddress;
+
++import java.nio.charset.StandardCharsets;
+
++
+
++import org.springframework.web.server.ResponseStatusException;
+
++import org.springframework.http.HttpStatus;
+
++
+
++import com.sun.net.httpserver.HttpServer;
+
+ 
+
+ class AssessmentMistakeQueueProjectorTest {
+
+     @Test
+
+@@ -44,4 +54,63 @@
+         org.junit.jupiter.api.Assertions.assertEquals(0, written);
+
+         verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
+
+     }
+
++
+
++    @Test
+
++    void projectDoesNotWriteWhenTheHttpWalkFailsOnTheFirstPage() throws Exception {
+
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+
++        server.createContext("/internal/v1/assessment/mistakes", exchange -> {
+
++            byte[] body = "denied".getBytes(StandardCharsets.UTF_8);
+
++            exchange.sendResponseHeaders(403, body.length);
+
++            exchange.getResponseBody().write(body);
+
++            exchange.close();
+
++        });
+
++        server.start();
+
++        try {
+
++            JdbcTemplate jdbc = mock(JdbcTemplate.class);
+
++            AssessmentMistakeQueueProjector projector = AssessmentMistakeQueueProjector.http(
+
++                    new ObjectMapper(), "http://127.0.0.1:" + server.getAddress().getPort());
+
++            ResponseStatusException thrown = assertThrows(ResponseStatusException.class,
+
++                    () -> projector.project(jdbc, "prn_learner", "token"));
+
++            assertEquals(HttpStatus.FORBIDDEN, thrown.getStatusCode());
+
++            verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
+
++            verify(jdbc, never()).queryForObject(anyString(), eq(Integer.class), any(), any(), any());
+
++        } finally {
+
++            server.stop(0);
+
++        }
+
++    }
+
++
+
++    @Test
+
++    void projectDoesNotWriteWhenALaterPageFails() throws Exception {
+
++        java.util.concurrent.atomic.AtomicInteger calls = new java.util.concurrent.atomic.AtomicInteger();
+
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+
++        server.createContext("/internal/v1/assessment/mistakes", exchange -> {
+
++            int n = calls.incrementAndGet();
+
++            if (n == 1) {
+
++                byte[] body = """
+
++                        {"data":{"items":[{"itemId":1,"scoreBucket":"ZERO"}],"count":1},
+
++                         "meta":{"hasMore":true,"pageSize":100,"nextCursor":"cursor-a"}}
+
++                        """.getBytes(StandardCharsets.UTF_8);
+
++                exchange.sendResponseHeaders(200, body.length);
+
++                exchange.getResponseBody().write(body);
+
++            } else {
+
++                byte[] body = "denied".getBytes(StandardCharsets.UTF_8);
+
++                exchange.sendResponseHeaders(401, body.length);
+
++                exchange.getResponseBody().write(body);
+
++            }
+
++            exchange.close();
+
++        });
+
++        server.start();
+
++        try {
+
++            JdbcTemplate jdbc = mock(JdbcTemplate.class);
+
++            AssessmentMistakeQueueProjector projector = AssessmentMistakeQueueProjector.http(
+
++                    new ObjectMapper(), "http://127.0.0.1:" + server.getAddress().getPort());
+
++            ResponseStatusException thrown = assertThrows(ResponseStatusException.class,
+
++                    () -> projector.project(jdbc, "prn_learner", "token"));
+
++            assertEquals(HttpStatus.UNAUTHORIZED, thrown.getStatusCode());
+
++            verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
+
++            verify(jdbc, never()).queryForObject(anyString(), eq(Integer.class), any(), any(), any());
+
++        } finally {
+
++            server.stop(0);
+
++        }
+
++    }
+
+ }
+
+
+### services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java origin=g442-freeze
+--- a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java (g442-freeze)
++++ b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
+@@ -1,13 +1,24 @@
+ package com.englishflow.learning.adapter.http;
+
+ 
+
++import java.net.InetSocketAddress;
+
++import java.net.http.HttpClient;
+
++import java.nio.charset.StandardCharsets;
+
++import java.time.Duration;
+
++import java.util.ArrayList;
+
+ import java.util.List;
+
+ import java.util.Map;
+
++import java.util.concurrent.atomic.AtomicInteger;
+
++import java.util.function.BiFunction;
+
+ 
+
+ import org.junit.jupiter.api.Test;
+
+ 
+
++import com.sun.net.httpserver.HttpServer;
+
++
+
+ import tools.jackson.databind.ObjectMapper;
+
+ 
+
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+
++import static org.junit.jupiter.api.Assertions.assertThrows;
+
++import static org.junit.jupiter.api.Assertions.assertTrue;
+
+ 
+
+ class HttpAssessmentMistakeFeedTest {
+
+     @Test
+
+@@ -42,4 +53,185 @@
+         org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("nextCursor"));
+
+         org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("hasMore"));
+
+     }
+
++
+
++    @Test
+
++    void aCompleteHttpWalkReturnsEveryPageAndDoesNotWriteAPrefix() {
+
++        AtomicInteger calls = new AtomicInteger();
+
++        withServer((page, cursor) -> {
+
++            calls.incrementAndGet();
+
++            if (cursor == null) return ok(List.of(1, 2), "cursor-a", true);
+
++            assertEquals("cursor-a", cursor);
+
++            return ok(List.of(3), null, false);
+
++        }, (feed, url) -> {
+
++            List<Map<String, Object>> facts = feed.list("token");
+
++            assertEquals(List.of("1", "2", "3"), ids(facts));
+
++            assertEquals(2, calls.get());
+
++        });
+
++    }
+
++
+
++    @Test
+
++    void aMissingFirstPage401ThrowsAndDoesNotReturnEmptySuccess() {
+
++        withServer((page, cursor) -> new Stub(401, "denied", 0), (feed, url) -> {
+
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                    () -> feed.list("token"));
+
++            assertEquals(401, thrown.statusCode());
+
++        });
+
++    }
+
++
+
++    @Test
+
++    void aFirstPage403ThrowsAndDoesNotReturnEmptySuccess() {
+
++        withServer((page, cursor) -> new Stub(403, "forbidden", 0), (feed, url) -> {
+
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                    () -> feed.list("token"));
+
++            assertEquals(403, thrown.statusCode());
+
++        });
+
++    }
+
++
+
++    @Test
+
++    void aLaterPage401ThrowsAndDoesNotReturnThePrefix() {
+
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1, 2), "cursor-a", true) : new Stub(401, "denied", 0),
+
++                (feed, url) -> {
+
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                            () -> feed.list("token"));
+
++                    assertEquals(401, thrown.statusCode());
+
++                });
+
++    }
+
++
+
++    @Test
+
++    void aLaterPage500ThrowsAndDoesNotReturnThePrefix() {
+
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1), "cursor-a", true) : new Stub(500, "broken", 0),
+
++                (feed, url) -> {
+
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                            () -> feed.list("token"));
+
++                    assertEquals(500, thrown.statusCode());
+
++                });
+
++    }
+
++
+
++    @Test
+
++    void aMalformedLaterPageThrowsAndDoesNotEndTheBook() {
+
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1), "cursor-a", true) : new Stub(200, "{not-json", 0),
+
++                (feed, url) -> {
+
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                            () -> feed.list("token"));
+
++                    assertEquals(502, thrown.statusCode());
+
++                    assertTrue(thrown.getMessage().contains("JSON") || thrown.getMessage().contains("page"));
+
++                });
+
++    }
+
++
+
++    @Test
+
++    void aRepeatedCursorThrowsAndDoesNotLoopFacts() {
+
++        AtomicInteger ids = new AtomicInteger();
+
++        withServer((page, cursor) -> ok(List.of(ids.incrementAndGet()), "cursor-a", true), (feed, url) -> {
+
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                    () -> feed.list("token"));
+
++            assertEquals(502, thrown.statusCode());
+
++            assertTrue(thrown.getMessage().contains("repeated a cursor"));
+
++        });
+
++    }
+
++
+
++    @Test
+
++    void aPageBudgetWithHasMoreThrows() {
+
++        AtomicInteger calls = new AtomicInteger();
+
++        withServer(1, Duration.ofSeconds(2), (page, cursor) -> {
+
++            int n = calls.incrementAndGet();
+
++            return ok(List.of(n), "cursor-" + n, true);
+
++        }, (feed, url) -> {
+
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                    () -> feed.list("token"));
+
++            assertEquals(502, thrown.statusCode());
+
++            assertTrue(thrown.getMessage().contains("page budget"));
+
++            assertEquals(1, calls.get());
+
++        });
+
++    }
+
++
+
++    @Test
+
++    void aTimeoutThrowsAndDoesNotReturnAPrefix() {
+
++        withServer(10_000, Duration.ofMillis(150), (page, cursor) -> new Stub(200, ok(List.of(1), null, false).body, 400),
+
++                (feed, url) -> {
+
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
+
++                            () -> feed.list("token"));
+
++                    assertEquals(504, thrown.statusCode());
+
++                });
+
++    }
+
++
+
++    @Test
+
++    void parseFailureOnACompleteLookingEmptyObjectThrows() {
+
++        HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), "http://127.0.0.1:18091");
+
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("{}"));
+
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("[]"));
+
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("{"));
+
++    }
+
++
+
++    private static List<String> ids(List<Map<String, Object>> facts) {
+
++        List<String> ids = new ArrayList<>();
+
++        for (Map<String, Object> fact : facts) ids.add(String.valueOf(fact.get("itemId")));
+
++        return ids;
+
++    }
+
++
+
++    private static Stub ok(List<Integer> itemIds, String nextCursor, boolean hasMore) {
+
++        StringBuilder items = new StringBuilder();
+
++        for (int i = 0; i < itemIds.size(); i++) {
+
++            if (i > 0) items.append(',');
+
++            items.append("{\"itemId\":").append(itemIds.get(i)).append(",\"scoreBucket\":\"ZERO\"}");
+
++        }
+
++        String meta = hasMore
+
++                ? "\"meta\":{\"hasMore\":true,\"pageSize\":100,\"nextCursor\":\"" + nextCursor + "\"}"
+
++                : "\"meta\":{\"hasMore\":false,\"pageSize\":100,\"nextCursor\":null}";
+
++        return new Stub(200, "{\"data\":{\"items\":[" + items + "],\"count\":" + itemIds.size() + "}," + meta + "}", 0);
+
++    }
+
++
+
++    private static void withServer(BiFunction<Integer, String, Stub> pages, FeedCheck check) {
+
++        withServer(HttpAssessmentMistakeFeed.DEFAULT_MAX_PAGES, Duration.ofSeconds(2), pages, check);
+
++    }
+
++
+
++    private static void withServer(int maxPages, Duration timeout, BiFunction<Integer, String, Stub> pages,
+
++            FeedCheck check) {
+
++        HttpServer server = null;
+
++        try {
+
++            AtomicInteger page = new AtomicInteger();
+
++            server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+
++            server.createContext("/internal/v1/assessment/mistakes", exchange -> {
+
++                String query = exchange.getRequestURI().getRawQuery();
+
++                String cursor = null;
+
++                if (query != null) {
+
++                    for (String part : query.split("&")) {
+
++                        if (part.startsWith("cursor=")) {
+
++                            cursor = java.net.URLDecoder.decode(part.substring(7), StandardCharsets.UTF_8);
+
++                        }
+
++                    }
+
++                }
+
++                Stub stub = pages.apply(page.getAndIncrement(), cursor);
+
++                if (stub.delayMs > 0) {
+
++                    try {
+
++                        Thread.sleep(stub.delayMs);
+
++                    } catch (InterruptedException interrupted) {
+
++                        Thread.currentThread().interrupt();
+
++                    }
+
++                }
+
++                byte[] bytes = stub.body.getBytes(StandardCharsets.UTF_8);
+
++                exchange.sendResponseHeaders(stub.status, bytes.length);
+
++                exchange.getResponseBody().write(bytes);
+
++                exchange.close();
+
++            });
+
++            server.start();
+
++            String url = "http://127.0.0.1:" + server.getAddress().getPort();
+
++            HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), url,
+
++                    HttpClient.newBuilder().connectTimeout(Duration.ofMillis(200)).build(), timeout, maxPages);
+
++            check.run(feed, url);
+
++        } catch (RuntimeException exception) {
+
++            throw exception;
+
++        } catch (Exception exception) {
+
++            throw new IllegalStateException(exception);
+
++        } finally {
+
++            if (server != null) server.stop(0);
+
++        }
+
++    }
+
++
+
++    private record Stub(int status, String body, long delayMs) {
+
++    }
+
++
+
++    @FunctionalInterface
+
++    private interface FeedCheck {
+
++        void run(HttpAssessmentMistakeFeed feed, String url) throws Exception;
+
++    }
+
+ }
+
+
+### services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java origin=g442-freeze
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java (g442-freeze)
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
+@@ -103,7 +103,7 @@
+     public Optional<SagaRecord> find(String sagaId) {
+
+         List<SagaRecord> rows = jdbc.query(WorkflowTables.sql("""
+
+                 SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+
+-                       last_error_code, last_error_message, updated_at
+
++                       last_error_code, last_error_message, updated_at, started_at
+
+                   FROM workflow_service.saga_instance WHERE saga_id = ?
+
+                 """), MAPPER, sagaId);
+
+         return rows.stream().findFirst();
+
+@@ -130,21 +130,21 @@
+         if (after == null) {
+
+             fetched = jdbc.query(WorkflowTables.sql("""
+
+                     SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+
+-                           last_error_code, last_error_message, updated_at
+
++                           last_error_code, last_error_message, updated_at, started_at
+
+                       FROM workflow_service.saga_instance
+
+                      WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
+
+-                     ORDER BY updated_at, saga_id LIMIT ?
+
++                     ORDER BY started_at, saga_id LIMIT ?
+
+                     """), MAPPER, size + 1);
+
+         } else {
+
+-            Timestamp updatedAt = Timestamp.from(after.updatedAt());
+
++            Timestamp startedAt = Timestamp.from(after.startedAt());
+
+             fetched = jdbc.query(WorkflowTables.sql("""
+
+                     SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+
+-                           last_error_code, last_error_message, updated_at
+
++                           last_error_code, last_error_message, updated_at, started_at
+
+                       FROM workflow_service.saga_instance
+
+                      WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
+
+-                       AND (updated_at > ? OR (updated_at = ? AND saga_id > ?))
+
+-                     ORDER BY updated_at, saga_id LIMIT ?
+
+-                    """), MAPPER, updatedAt, updatedAt, after.sagaId(), size + 1);
+
++                       AND (started_at > ? OR (started_at = ? AND saga_id > ?))
+
++                     ORDER BY started_at, saga_id LIMIT ?
+
++                    """), MAPPER, startedAt, startedAt, after.sagaId(), size + 1);
+
+         }
+
+         boolean hasMore = fetched.size() > size;
+
+         List<SagaRecord> items = hasMore ? List.copyOf(fetched.subList(0, size)) : List.copyOf(fetched);
+
+@@ -157,11 +157,12 @@
+             resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
+
+             resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
+
+             resultSet.getString("last_error_code"), resultSet.getString("last_error_message"),
+
+-            instantOf(resultSet.getTimestamp("updated_at")));
+
++            instantOf(resultSet.getTimestamp("updated_at"), "updated_at"),
+
++            instantOf(resultSet.getTimestamp("started_at"), "started_at"));
+
+ 
+
+-    private static Instant instantOf(Timestamp value) {
+
++    private static Instant instantOf(Timestamp value, String column) {
+
+         if (value == null) {
+
+-            throw new IllegalStateException("saga updated_at is missing");
+
++            throw new IllegalStateException("saga " + column + " is missing");
+
+         }
+
+         return value.toInstant().truncatedTo(ChronoUnit.MICROS);
+
+     }
+
+
+### services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java origin=g442-freeze
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java (g442-freeze)
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
+@@ -64,9 +64,19 @@
+         return unfinishedPage(null, UnfinishedSagaPaging.clampLimit(limit)).items();
+
+     }
+
+ 
+
+-    /** A saga's own row. {@code updatedAt} participates in the unfinished list keyset. */
+
++    /**
+
++     * A saga's own row. The unfinished list keyset is {@code startedAt, sagaId}.
+
++     * {@code startedAt} is set at insert and is not {@code ON UPDATE}. {@code updatedAt}
+
++     * still records later status changes and must not participate in the keyset.
+
++     */
+
+     record SagaRecord(String sagaId, String sagaName, String correlationId, SagaStatus status, String currentStep,
+
+-                      int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt) {
+
++                      int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt,
+
++                      java.time.Instant startedAt) {
+
++        public SagaRecord(String sagaId, String sagaName, String correlationId, SagaStatus status, String currentStep,
+
++                int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt) {
+
++            this(sagaId, sagaName, correlationId, status, currentStep, attemptCount, lastErrorCode, lastErrorMessage,
+
++                    updatedAt, updatedAt);
+
++        }
+
+     }
+
+ 
+
+     /** A step's row. */
+
+
+### services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java origin=g442-freeze
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java (g442-freeze)
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/UnfinishedSagaPaging.java
+@@ -2,6 +2,8 @@
+ 
+
+ import java.nio.charset.StandardCharsets;
+
+ import java.time.Instant;
+
++import java.time.ZoneOffset;
+
++import java.time.format.DateTimeFormatter;
+
+ import java.time.temporal.ChronoUnit;
+
+ import java.util.ArrayList;
+
+ import java.util.Base64;
+
+@@ -10,9 +12,10 @@
+ import java.util.regex.Pattern;
+
+ 
+
+ /**
+
+- * Cursor paging for unfinished sagas. Ordering is {@code updated_at, saga_id} so the
+
+- * recovery list is oldest-first and unique. Cursor state is opaque and derived from
+
+- * an actual returned row.
+
++ * Cursor paging for unfinished sagas. Ordering is {@code started_at, saga_id} so the
+
++ * recovery list is oldest-first and unique even when {@code updated_at} moves.
+
++ * Cursor state is opaque and derived from an actual returned row. The encoded
+
++ * instant uses microsecond precision so it round-trips to the SQL bind.
+
+  */
+
+ public final class UnfinishedSagaPaging {
+
+ 
+
+@@ -22,15 +25,17 @@
+     private static final Base64.Encoder ENCODER = Base64.getUrlEncoder().withoutPadding();
+
+     private static final Base64.Decoder DECODER = Base64.getUrlDecoder();
+
+     private static final String VERSION = "v1";
+
++    private static final DateTimeFormatter CURSOR_INSTANT =
+
++            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").withZone(ZoneOffset.UTC);
+
+     private static final Comparator<SagaStore.SagaRecord> ORDER =
+
+-            Comparator.comparing(SagaStore.SagaRecord::updatedAt).thenComparing(SagaStore.SagaRecord::sagaId);
+
++            Comparator.comparing(SagaStore.SagaRecord::startedAt).thenComparing(SagaStore.SagaRecord::sagaId);
+
+ 
+
+     private UnfinishedSagaPaging() {
+
+     }
+
+ 
+
+-    public record Position(Instant updatedAt, String sagaId) {
+
++    public record Position(Instant startedAt, String sagaId) {
+
+         public Position {
+
+-            if (updatedAt == null || sagaId == null || sagaId.isBlank()) {
+
++            if (startedAt == null || sagaId == null || sagaId.isBlank()) {
+
+                 throw new IllegalArgumentException("cursor is invalid");
+
+             }
+
+         }
+
+@@ -57,6 +62,13 @@
+         return status != null && !status.isTerminal();
+
+     }
+
+ 
+
++    public static String formatStartedAt(Instant startedAt) {
+
++        if (startedAt == null) {
+
++            throw new IllegalArgumentException("cursor is invalid");
+
++        }
+
++        return CURSOR_INSTANT.format(startedAt.truncatedTo(ChronoUnit.MICROS));
+
++    }
+
++
+
+     public static Position decode(String cursor) {
+
+         if (cursor == null || cursor.isBlank()) {
+
+             return null;
+
+@@ -74,24 +86,24 @@
+                     || !VERSION.equals(payload.substring(0, first))) {
+
+                 throw new IllegalArgumentException("cursor is invalid");
+
+             }
+
+-            Instant updatedAt = Instant.parse(payload.substring(first + 1, second)).truncatedTo(ChronoUnit.MICROS);
+
++            Instant startedAt = Instant.parse(payload.substring(first + 1, second)).truncatedTo(ChronoUnit.MICROS);
+
+             String sagaId = payload.substring(second + 1);
+
+             if (sagaId.length() < 8 || sagaId.length() > 128
+
+                     || sagaId.codePoints().anyMatch(Character::isISOControl)
+
+                     || !ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8)).equals(cursor)) {
+
+                 throw new IllegalArgumentException("cursor is invalid");
+
+             }
+
+-            return new Position(updatedAt, sagaId);
+
++            return new Position(startedAt, sagaId);
+
+         } catch (IllegalArgumentException | java.time.DateTimeException invalid) {
+
+             throw new IllegalArgumentException("cursor is invalid");
+
+         }
+
+     }
+
+ 
+
+     public static String encode(SagaStore.SagaRecord row) {
+
+-        if (row == null || row.updatedAt() == null || row.sagaId() == null || row.sagaId().isBlank()) {
+
++        if (row == null || row.startedAt() == null || row.sagaId() == null || row.sagaId().isBlank()) {
+
+             throw new IllegalArgumentException("cursor is invalid");
+
+         }
+
+-        String payload = VERSION + '|' + row.updatedAt().truncatedTo(ChronoUnit.MICROS) + '|' + row.sagaId();
+
++        String payload = VERSION + '|' + formatStartedAt(row.startedAt()) + '|' + row.sagaId();
+
+         String cursor = ENCODER.encodeToString(payload.getBytes(StandardCharsets.UTF_8));
+
+         if (!CURSOR_PATTERN.matcher(cursor).matches()) {
+
+             throw new IllegalArgumentException("cursor is invalid");
+
+@@ -100,7 +112,7 @@
+     }
+
+ 
+
+     public static int compare(SagaStore.SagaRecord row, Position after) {
+
+-        int byTime = row.updatedAt().compareTo(after.updatedAt());
+
++        int byTime = row.startedAt().compareTo(after.startedAt());
+
+         if (byTime != 0) {
+
+             return byTime;
+
+         }
+
+
+### services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java origin=g442-freeze
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java (g442-freeze)
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaUnfinishedPaginationTest.java
+@@ -67,6 +67,26 @@
+     }
+
+ 
+
+     @Test
+
++    void unfinishedWalkDoesNotDuplicateWhenUpdatedAtMoves() {
+
++        MemoryStore store = MemoryStore.withUnfinished(3);
+
++        SagaController controller = controller(store);
+
++        ResponseEntity<Map<String, Object>> first = controller.unfinished(null, 1, null, null);
+
++        String firstId = ids(first).get(0);
+
++        store.touchUpdatedAt(firstId, Instant.parse("2026-01-01T00:00:10Z"));
+
++        ResponseEntity<Map<String, Object>> second = controller.unfinished((String) meta(first).get("nextCursor"), 1,
+
++                null, null);
+
++        ResponseEntity<Map<String, Object>> third = controller.unfinished((String) meta(second).get("nextCursor"), 1,
+
++                null, null);
+
++        List<String> walk = new ArrayList<>();
+
++        walk.addAll(ids(first));
+
++        walk.addAll(ids(second));
+
++        walk.addAll(ids(third));
+
++        assertEquals(List.of(store.id(0), store.id(1), store.id(2)), walk);
+
++        assertEquals(Boolean.FALSE, meta(third).get("hasMore"));
+
++        assertNull(meta(third).get("nextCursor"));
+
++    }
+
++
+
++    @Test
+
+     void unfinishedEmptyPageKeepsCanonicalMeta() {
+
+         ResponseEntity<Map<String, Object>> response = controller(new MemoryStore()).unfinished(null, null, null, null);
+
+         assertEquals(List.of(), ids(response));
+
+@@ -99,10 +119,18 @@
+             Instant start = Instant.parse("2026-01-01T00:00:00Z");
+
+             for (int index = 0; index < count; index++) {
+
+                 String sagaId = store.id(index);
+
++                Instant at = start.plusMillis(index);
+
+                 store.rows.put(sagaId, new SagaRecord(sagaId, "enrolment", "corr-" + index, SagaStatus.STARTED,
+
+-                        "step", 1, null, null, start.plusMillis(index)));
+
++                        "step", 1, null, null, at, at));
+
+             }
+
+             return store;
+
++        }
+
++
+
++        void touchUpdatedAt(String sagaId, Instant updatedAt) {
+
++            SagaRecord current = rows.get(sagaId);
+
++            rows.put(sagaId, new SagaRecord(current.sagaId(), current.sagaName(), current.correlationId(),
+
++                    current.status(), current.currentStep(), current.attemptCount(), current.lastErrorCode(),
+
++                    current.lastErrorMessage(), updatedAt, current.startedAt()));
+
+         }
+
+ 
+
+         String id(int index) {
+
+
+### services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java origin=g442-freeze
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java (g442-freeze)
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStorePaginationTest.java
+@@ -30,7 +30,8 @@
+         SagaStore.UnfinishedPage first = store.unfinishedPage(null, 2);
+
+         assertEquals(2, first.items().size());
+
+         assertTrue(first.hasMore());
+
+-        assertTrue(jdbc.sql.contains("ORDER BY updated_at, saga_id"));
+
++        assertTrue(jdbc.sql.contains("ORDER BY started_at, saga_id"));
+
++        assertFalse(jdbc.sql.contains("started_at > ?"));
+
+         assertTrue(jdbc.sql.contains("status NOT IN"));
+
+         assertEquals(3, jdbc.args[0]);
+
+ 
+
+@@ -40,6 +41,8 @@
+                 next.items().stream().map(SagaStore.SagaRecord::sagaId).toList());
+
+         assertFalse(next.hasMore());
+
+         assertNull(next.nextCursor());
+
++        assertTrue(jdbc.sql.contains("started_at > ? OR (started_at = ? AND saga_id > ?)"));
+
++        assertTrue(jdbc.sql.contains("ORDER BY started_at, saga_id"));
+
+         assertEquals(4, jdbc.args.length);
+
+         assertEquals("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2", jdbc.args[2]);
+
+         assertEquals(3, jdbc.args[3]);
+
+
+### services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java origin=g442-freeze
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java (g442-freeze)
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/domain/UnfinishedSagaPagingTest.java
+@@ -52,6 +52,58 @@
+     }
+
+ 
+
+     @Test
+
++    void cursorPrecisionRoundTripsMicroseconds() {
+
++        Instant micros = Instant.parse("2026-11-08T00:00:00.123456Z");
+
++        SagaStore.SagaRecord row = record(id(0), micros, micros, SagaStatus.STARTED);
+
++        String cursor = UnfinishedSagaPaging.encode(row);
+
++        UnfinishedSagaPaging.Position position = UnfinishedSagaPaging.decode(cursor);
+
++        assertEquals(micros, position.startedAt());
+
++        assertEquals(id(0), position.sagaId());
+
++        assertEquals(cursor, UnfinishedSagaPaging.encode(
+
++                record(id(0), Instant.parse("2026-11-08T00:00:10Z"), position.startedAt(), SagaStatus.STARTED)));
+
++        assertEquals("2026-11-08T00:00:00.123456Z", UnfinishedSagaPaging.formatStartedAt(micros));
+
++        Instant hundred = Instant.parse("2026-11-08T00:00:00.100Z");
+
++        assertEquals("2026-11-08T00:00:00.100000Z", UnfinishedSagaPaging.formatStartedAt(hundred));
+
++        String hundredCursor = UnfinishedSagaPaging.encode(record(id(1), hundred, hundred, SagaStatus.STARTED));
+
++        assertEquals(hundred.truncatedTo(java.time.temporal.ChronoUnit.MICROS),
+
++                UnfinishedSagaPaging.decode(hundredCursor).startedAt());
+
++        assertEquals(hundredCursor, UnfinishedSagaPaging.encode(record(id(1), hundred.plusSeconds(4),
+
++                UnfinishedSagaPaging.decode(hundredCursor).startedAt(), SagaStatus.STARTED)));
+
++    }
+
++
+
++    @Test
+
++    void mutableUpdatedAtDoesNotDuplicateASagaAcrossPages() {
+
++        Instant t1 = Instant.parse("2026-01-01T00:00:00.000001Z");
+
++        Instant t2 = Instant.parse("2026-01-01T00:00:00.000002Z");
+
++        Instant t3 = Instant.parse("2026-01-01T00:00:00.000003Z");
+
++        Instant moved = Instant.parse("2026-01-01T00:00:00.000010Z");
+
++        String a = id(0);
+
++        String b = id(1);
+
++        String c = id(2);
+
++        List<SagaStore.SagaRecord> original = List.of(
+
++                record(a, t1, t1, SagaStatus.STARTED),
+
++                record(b, t2, t2, SagaStatus.STARTED),
+
++                record(c, t3, t3, SagaStatus.STARTED));
+
++        SagaStore.UnfinishedPage first = UnfinishedSagaPaging.slice(original, null, 1);
+
++        assertEquals(List.of(a), ids(first));
+
++        List<SagaStore.SagaRecord> afterUpdate = List.of(
+
++                record(a, moved, t1, SagaStatus.STARTED),
+
++                record(b, moved, t2, SagaStatus.STARTED),
+
++                record(c, t3, t3, SagaStatus.STARTED));
+
++        SagaStore.UnfinishedPage second = UnfinishedSagaPaging.slice(afterUpdate, first.nextCursor(), 1);
+
++        assertEquals(List.of(b), ids(second));
+
++        SagaStore.UnfinishedPage third = UnfinishedSagaPaging.slice(afterUpdate, second.nextCursor(), 1);
+
++        assertEquals(List.of(c), ids(third));
+
++        assertFalse(third.hasMore());
+
++        assertNull(third.nextCursor());
+
++        List<String> walk = new ArrayList<>();
+
++        walk.addAll(ids(first));
+
++        walk.addAll(ids(second));
+
++        walk.addAll(ids(third));
+
++        assertEquals(List.of(a, b, c), walk);
+
++    }
+
++
+
++    @Test
+
+     void terminalRowsAreFilteredBeforePaging() {
+
+         List<SagaStore.SagaRecord> rows = new ArrayList<>(records(3));
+
+         rows.add(record(id(9), Instant.parse("2026-01-01T00:00:00Z"), SagaStatus.COMPLETED));
+
+@@ -75,7 +127,12 @@
+     }
+
+ 
+
+     private static SagaStore.SagaRecord record(String sagaId, Instant updatedAt, SagaStatus status) {
+
+-        return new SagaStore.SagaRecord(sagaId, "enrolment", "corr", status, "step", 1, null, null, updatedAt);
+
++        return record(sagaId, updatedAt, updatedAt, status);
+
++    }
+
++
+
++    private static SagaStore.SagaRecord record(String sagaId, Instant updatedAt, Instant startedAt, SagaStatus status) {
+
++        return new SagaStore.SagaRecord(sagaId, "enrolment", "corr", status, "step", 1, null, null, updatedAt,
+
++                startedAt);
+
+     }
+
+ 
+
+     private static String id(int index) {
+
+

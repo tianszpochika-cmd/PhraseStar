@@ -1,0 +1,16 @@
+{
+  "sourceStable": true,
+  "checks": [
+    {
+      "check": "typecheck",
+      "exit": 0
+    },
+    {
+      "check": "mobile-tests",
+      "exit": 0
+    }
+  ],
+  "at": "2026-11-08T14:42:39.655611+00:00",
+  "linkPrerequisite": "ROOT DEPENDENCY-LINK-CORRECTION; installed bytes unchanged",
+  "liveH5": "NOT_RUN"
+}

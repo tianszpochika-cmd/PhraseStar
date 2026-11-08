@@ -1,0 +1,22 @@
+{
+  "CANDIDATE.md": "98a37ee44e132f9c18a06335d4adae0d7c4071dc5ac127bb0f8c79be1b704917",
+  "home-return-hook.cjs": "023db3a60094a09c18b9d6b0d56411b9dec1ff5af50b5900d94a689f28125746",
+  "oracle-offline-check.cjs": "8a2a2c8f15ca5e4c0696e88653040f0273c8bfbb09c01de6a3025202737b149d",
+  "wrapper.sh": "5f70d0b6d6bf760f45be555fa16a023e025068882e4206c00ad27d1f7c7ba5cd",
+  "home-return-observer.cjs": "ea701e391aeb18fffe64e5e330a42bf717409ad5cfe5e8f46b0cc44f357ed58b",
+  "oracle.cjs": "11622c9b311f8ec3d3ccf604cafc362dfc80ebeba906fd7e8c3ed4814f2ea572",
+  "stage-offline-check.mjs": "31c775981b749a86cc539e7d54fe545c2cbe6de01863ecc237dfb8892a60c456",
+  "oracle-live-gate.cjs": "0d24da004615354b5b26fc9bc65220ea2047bbe8cd9274faa626e3e6f2876a73",
+  "pins.json": "6e9caaba762b7162358f0eade07a0c9c7764b8fd0497c03f67b1b298b495ea37",
+  "staged-harness/learning-plan-ensure.mjs": "3988fa963a049b4d4393f54630a790de91cb443f3b1118a2e9b78f71b04f7fac",
+  "staged-harness/full-browser-owner.mjs": "ea6643869b0e6118d1e7a3182f9ee73eb4f556a919fd802e19787069f5fe45f6",
+  "staged-harness/browser-target-probe.cjs": "b2736bdc0db251af44217f143fe242a32f9fe1c643dd64b718a73430a5162754",
+  "staged-harness/learner-target-probe.mjs": "b51f9b2cf57a7c56ae2a9b0fe0dad4aa75f0f0af484651de00096787117ec2b1",
+  "staged-harness/acceptance-learner-target.mjs": "55a14ce76190b20a6c7005529a8c325929f8f6a9c6c36587a31ec5784b6bd4a4",
+  "staged-harness/process_guard.py": "0cd650b637208940f6c82ec4dc1228df5a576913445aa6f9772a5f232f351068",
+  "staged-harness/placement-start-read.mjs": "60c716290f184d24a7dd0f0957a3719593e0d9f44f10253d2959a7d27c2dbbea",
+  "staged-harness/seed/Seed.java": "fde6075e353fec4e12385e6e66bc1a74cece280289210adea9906c99cfa3cb9a",
+  "staged-harness/sql/seed-partial.sql": "3ae0a3d00c0dd0578497872714a1db60bd4536fc6e800d6449058acdd9615216",
+  "staged-harness/sql/seed-full.sql": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+  "staged-harness/sql/cleanup-fixtures.sql": "57c586ba0eb70ccfaf7d4463edcb570303d96e320a07dcca40a822a725e004d4"
+}

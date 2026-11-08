@@ -1,0 +1,2985 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index a12a610f..ef18ccf3 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,11 @@
+ # Changelog
+ 
++- [RC-B-PAGINATION-REWORK-20261108] 错题 feed 在首屏/后续 401/403/500、超时、解析失败、重复 cursor、重复 id 或预算耗尽且 hasMore 时失败，不再把前缀或空列表当成功；learner 投影只在走完后写入。Admin 未完成 saga 走完才 ready，预算耗尽报错不清前缀。Saga keyset 改为不可变 `started_at,saga_id`，cursor 微秒往返；`updated_at` 变更不再造成跨页重复。handler 与 caller 需一起发布。
++
++- [RC-A-SHARE-IDEMPOTENCY-20261108] 学习报告分享签发与撤销改为必填 canonical `Idempotency-Key`：fragment SSOT、生成契约、learning-service 在耐久写入前拒绝缺失/非法键，同主体同租户同载荷回放、错用键 409、他主 404；mobile 与 learner-web 每个用户意图生成一次键并在瞬时重试复用。signed-access 仍是唯一 optional-write 例外；fail-closed 媒体 upload-url 继续无成功路径、无副作用、不声明 `x-idempotency`。历史无键签发是破坏性兼容变更，见 RC-A-DECISION。
++
++- [RC-B-PAGINATION-20261108] `listUnfinishedSagas` 与 `listAssessmentMistakes` 改为 canonical cursor 分页：fragment SSOT、生成契约、workflow-service / assessment-service 按 owner 过滤后分页，admin-web 与错题 feed 消费 envelope。Saga 不再以固定 200 条作为公开契约；错题列表不再一次倒出全表。
++
+ - [MOBILE-FIGMA-CODEX-RESERVE-20261107] 按用户确认预留 Codex 五小时额度 20%，保存已审核成果、未验依赖候选、契约 CI 计划及探针停点，临时服务已释放。
+ 
+ - [MOBILE-FIGMA-B152-20261107] 记录成长世界真实 H5 默认展示与五项读取，保留自动清理证书失败，并补充 Root 独立资源释放确认。
+diff --git a/apps/admin-web/src/api/recovery.ts b/apps/admin-web/src/api/recovery.ts
+index ed8a6bc5..8b83673f 100644
+--- a/apps/admin-web/src/api/recovery.ts
++++ b/apps/admin-web/src/api/recovery.ts
+@@ -86,8 +86,67 @@ export async function executeRecovery(recoveryId: string): Promise<RecoveryView
+   return viewOf(raw)
+ }
+ 
+-export async function listUnfinishedSagas(): Promise<string[]> {
+-  const raw = await adminClient.request('/admin/recovery/sagas/unfinished')
++export interface UnfinishedSagaPage {
++  sagaIds: string[]
++  hasMore: boolean
++  nextCursor: string | null
++  pageSize: number
++}
++
++export async function listUnfinishedSagas(input?: {
++  cursor?: string
++  pageSize?: number
++}): Promise<UnfinishedSagaPage> {
++  const params = new URLSearchParams()
++  if (input?.cursor) params.set('cursor', input.cursor)
++  if (input?.pageSize != null) params.set('pageSize', String(input.pageSize))
++  const query = params.toString()
++  const raw = await adminClient.request(
++    `/admin/recovery/sagas/unfinished${query ? `?${query}` : ''}`,
++  )
+   const data = unwrap(raw)
+-  return Array.isArray(data) ? data.filter((x): x is string => typeof x === 'string') : []
++  const sagaIds = Array.isArray(data) ? data.filter((value): value is string => typeof value === 'string') : []
++  const meta = isRecord(raw) && isRecord(raw.meta) ? raw.meta : {}
++  const nextCursor = typeof meta.nextCursor === 'string' && meta.nextCursor.trim() ? meta.nextCursor : null
++  return {
++    sagaIds,
++    hasMore: meta.hasMore === true,
++    nextCursor,
++    pageSize: typeof meta.pageSize === 'number' ? meta.pageSize : sagaIds.length,
++  }
++}
++
++/** Fail-closed walk budget. Hitting it with hasMore still true is an error, not a 5000-row prefix. */
++export const UNFINISHED_SAGA_PAGE_BUDGET = 10_000
++
++export async function listAllUnfinishedSagaIds(): Promise<string[]> {
++  const sagaIds: string[] = []
++  const seenIds = new Set<string>()
++  const seenCursors = new Set<string>()
++  let cursor: string | undefined
++  for (let page = 0; page < UNFINISHED_SAGA_PAGE_BUDGET; page += 1) {
++    const result = await listUnfinishedSagas({ cursor, pageSize: 100 })
++    if (result.hasMore && result.sagaIds.length === 0) {
++      throw new Error('unfinished saga walk made no progress')
++    }
++    for (const id of result.sagaIds) {
++      if (seenIds.has(id)) {
++        throw new Error('unfinished saga walk duplicated an id')
++      }
++      seenIds.add(id)
++      sagaIds.push(id)
++    }
++    if (!result.hasMore) {
++      return sagaIds
++    }
++    if (!result.nextCursor) {
++      throw new Error('unfinished saga walk has more without a cursor')
++    }
++    if (result.nextCursor === cursor || seenCursors.has(result.nextCursor)) {
++      throw new Error('unfinished saga walk repeated a cursor')
++    }
++    seenCursors.add(result.nextCursor)
++    cursor = result.nextCursor
++  }
++  throw new Error('unfinished saga walk exceeded the page budget')
+ }
+diff --git a/apps/admin-web/src/views/AdminRecoveryView.vue b/apps/admin-web/src/views/AdminRecoveryView.vue
+index fbe71e9f..81a4b549 100644
+--- a/apps/admin-web/src/views/AdminRecoveryView.vue
++++ b/apps/admin-web/src/views/AdminRecoveryView.vue
+@@ -7,7 +7,7 @@ import { AdminApiError } from "../api/client";
+ import {
+   approveRecovery,
+   executeRecovery,
+-  listUnfinishedSagas,
++  listAllUnfinishedSagaIds,
+   rejectRecovery,
+   requestRecovery,
+   type RecoveryView,
+@@ -38,16 +38,20 @@ function stateFrom(error: unknown): ViewState {
+ 
+ async function load(): Promise<void> {
+   if (!session.can("admin.recovery.read")) {
++    sagas.value = [];
+     state.value = "permission";
+     lastError.value = "当前会话没有恢复读取权限。";
+     return;
+   }
+   state.value = "loading";
+   lastError.value = null;
++  sagas.value = [];
+   try {
+-    sagas.value = await listUnfinishedSagas();
+-    state.value = current.value || sagas.value.length ? "ready" : "empty";
++    const ids = await listAllUnfinishedSagaIds();
++    sagas.value = ids;
++    state.value = current.value || ids.length ? "ready" : "empty";
+   } catch (error) {
++    sagas.value = [];
+     state.value = stateFrom(error);
+     lastError.value =
+       error instanceof Error ? error.message : "恢复列表读取失败。";
+diff --git a/apps/learner-web/src/api/b10.ts b/apps/learner-web/src/api/b10.ts
+index 1e8e81b6..52116124 100644
+--- a/apps/learner-web/src/api/b10.ts
++++ b/apps/learner-web/src/api/b10.ts
+@@ -1,6 +1,7 @@
+ import { unavailableOperation } from './unavailable'
+ import { mentionsClosedMissing, PACK_CLOSED_COPY } from '../domain/grammar-reading-pack'
+ import { ApiError, apiClient, type ApiRequestOptions } from './client'
++import { createClientId } from '../platform/client-id'
+ import { learnerI18n } from '../platform/v2-foundation'
+ import type {
+   B10DictionaryEntry,
+@@ -102,6 +103,39 @@ function withB10Headers(stableKey?: string, options: ApiRequestOptions = {}): Ap
+   return { ...options, headers }
+ }
+ 
++const REPORT_SHARE_KEY = /^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$/
++
++function reportShareIdempotencyKey(share: { idempotencyKey?: string | null } | undefined, prefix: string): string {
++  if (share == null || !Object.prototype.hasOwnProperty.call(share, 'idempotencyKey')) return createClientId(prefix)
++  const provided = share.idempotencyKey
++  if (typeof provided !== 'string' || !REPORT_SHARE_KEY.test(provided)) {
++    throw new ApiError('Idempotency-Key must contain 16-128 safe characters', 400, { code: 'IDEMPOTENCY_KEY_INVALID' })
++  }
++  return provided
++}
++
++function shareWriteStatus(error: unknown): number | undefined {
++  if (error instanceof ApiError) return error.status
++  if (error && typeof error === 'object' && 'status' in error && typeof (error as { status: unknown }).status === 'number') {
++    return (error as { status: number }).status
++  }
++  return undefined
++}
++
++function isTransientShareWriteError(error: unknown): boolean {
++  const status = shareWriteStatus(error)
++  return status === 0 || status === 503 || status === 504
++}
++
++async function withShareWriteRetry<T>(send: () => Promise<T>): Promise<T> {
++  try {
++    return await send()
++  } catch (error) {
++    if (!isTransientShareWriteError(error)) throw error
++    return await send()
++  }
++}
++
+ function assertPublished(value: RecordValue): void {
+   const status = stringValue(value.status)?.toUpperCase()
+   const rights = stringValue(value.rightsStatus)?.toUpperCase()
+@@ -670,16 +704,21 @@ async function checkpointDigest(value: unknown): Promise<string> {
+   return `${Math.abs(hash).toString(16).padStart(8, '0')}${'0'.repeat(56)}`
+ }
+ 
+-export async function issueReportShare(reportType: 'DAILY' | 'WEEKLY'): Promise<{ ref: string; expiresAt: string; publicPath: string }> {
+-  const response = await apiClient.post<unknown>(`/learning/reports/${reportType}/shares`, {}, withB10Headers())
++export async function issueReportShare(
++  reportType: 'DAILY' | 'WEEKLY',
++  share?: { idempotencyKey?: string | null },
++): Promise<{ ref: string; expiresAt: string; publicPath: string }> {
++  const key = reportShareIdempotencyKey(share, 'lw-report-share')
++  const response = await withShareWriteRetry(() => apiClient.post<unknown>(`/learning/reports/${reportType}/shares`, {}, withB10Headers(key)))
+   const source = recordValue(unwrap(response)) ?? {}
+   const ref = stringValue(source.ref)
+   if (!ref || !/^[0-9a-f]{32}$/.test(ref)) throw new Error('分享链接没有生成。')
+   return { ref, expiresAt: stringValue(source.expiresAt) ?? '', publicPath: stringValue(source.publicPath) ?? `/api/v1/public/learning/report-shares/${ref}` }
+ }
+ 
+-export async function revokeReportShare(ref: string): Promise<void> {
+-  await apiClient.post(`/learning/report-shares/${encodeURIComponent(ref)}/revoke`, {}, withB10Headers())
++export async function revokeReportShare(ref: string, share?: { idempotencyKey?: string | null }): Promise<void> {
++  const key = reportShareIdempotencyKey(share, 'lw-report-share-revoke')
++  await withShareWriteRetry(() => apiClient.post(`/learning/report-shares/${encodeURIComponent(ref)}/revoke`, {}, withB10Headers(key)))
+ }
+ 
+ export async function getLearningReport(reportType: 'DAILY' | 'WEEKLY' = 'DAILY', date = new Date().toISOString().slice(0, 10)): Promise<B10Report> {
+diff --git a/apps/learner-web/src/pages/B2ReportPage.vue b/apps/learner-web/src/pages/B2ReportPage.vue
+index 86fd0b00..b02dc5bd 100644
+--- a/apps/learner-web/src/pages/B2ReportPage.vue
++++ b/apps/learner-web/src/pages/B2ReportPage.vue
+@@ -4,6 +4,7 @@ import { computed, onMounted, ref } from 'vue'
+ import B10StatePanel from '../components/b10/B10StatePanel.vue'
+ import { useLearningUi } from '../platform/learning-ui'
+ import { issueReportShare, revokeReportShare } from '../api/b10'
++import { createClientId } from '../platform/client-id'
+ import { useB10Store } from '../stores/b10'
+ import type { B10PerformanceLevel } from '../domain/b10'
+ 
+@@ -14,10 +15,15 @@ const store = useB10Store()
+ const reportType = ref<'DAILY' | 'WEEKLY'>('DAILY')
+ const shareRef = ref('')
+ const shareNote = ref('')
++const issueShareKeys = new Map<string, string>()
++const revokeShareKeys = new Map<string, string>()
+ async function issueShare(): Promise<void> {
+   shareNote.value = ''
++  const type = reportType.value
++  const key = issueShareKeys.get(type) ?? createClientId('lw-report-share')
++  issueShareKeys.set(type, key)
+   try {
+-    const share = await issueReportShare(reportType.value)
++    const share = await issueReportShare(type, { idempotencyKey: key })
+     shareRef.value = share.ref
+     shareNote.value = '只读链接不含登录信息，7 天后失效。'
+   } catch (error) {
+@@ -26,9 +32,14 @@ async function issueShare(): Promise<void> {
+ }
+ async function revokeShare(): Promise<void> {
+   if (!shareRef.value) return
+-  await revokeReportShare(shareRef.value)
++  const ref = shareRef.value
++  const key = revokeShareKeys.get(ref) ?? createClientId('lw-report-share-revoke')
++  revokeShareKeys.set(ref, key)
++  await revokeReportShare(ref, { idempotencyKey: key })
+   shareRef.value = ''
+   shareNote.value = '这份分享已经撤销。'
++  issueShareKeys.delete(reportType.value)
++  revokeShareKeys.delete(ref)
+ }
+ const status = computed(() => store.reportStatus)
+ const generatedAt = computed(() => {
+diff --git a/apps/mobile/src/api/b10.ts b/apps/mobile/src/api/b10.ts
+index 83ea4ddc..2ca5bdbf 100644
+--- a/apps/mobile/src/api/b10.ts
++++ b/apps/mobile/src/api/b10.ts
+@@ -994,6 +994,37 @@ function parseContentVersion(value: unknown): B10ContentVersionContext {
+ 
+ const REPORT_SHARE_KEY = /^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$/
+ 
++function reportShareIdempotencyKey(share: { idempotencyKey?: string | null } | undefined, prefix: string): string {
++  if (share == null || !Object.prototype.hasOwnProperty.call(share, 'idempotencyKey')) return createClientId(prefix)
++  const provided = share.idempotencyKey
++  if (typeof provided !== 'string' || !REPORT_SHARE_KEY.test(provided)) {
++    throw new MobileApiError('Idempotency-Key must contain 16-128 safe characters', 400, { code: 'IDEMPOTENCY_KEY_INVALID' })
++  }
++  return provided
++}
++
++function shareWriteStatus(error: unknown): number | undefined {
++  if (error instanceof MobileApiError) return error.status
++  if (error && typeof error === 'object' && 'status' in error && typeof (error as { status: unknown }).status === 'number') {
++    return (error as { status: number }).status
++  }
++  return undefined
++}
++
++function isTransientShareWriteError(error: unknown): boolean {
++  const status = shareWriteStatus(error)
++  return status === 0 || status === 503 || status === 504
++}
++
++async function withShareWriteRetry<T>(send: () => Promise<T>): Promise<T> {
++  try {
++    return await send()
++  } catch (error) {
++    if (!isTransientShareWriteError(error)) throw error
++    return await send()
++  }
++}
++
+ export function createB10ClientEventId(prefix: string): string {
+   return createClientId(`b10-${prefix}`)
+ }
+@@ -1129,27 +1160,26 @@ export const b10LearningApi = {
+ 
+   async issueReportShare(period: 'daily' | 'weekly', share?: { idempotencyKey?: string | null; date?: string | null }): Promise<{ ref: string; publicPath: string }> {
+     const type = period === 'weekly' ? 'WEEKLY' : 'DAILY'
+-    let key: string | undefined
+-    if (share !== undefined && share !== null) {
+-      if (typeof share.idempotencyKey !== 'string' || !REPORT_SHARE_KEY.test(share.idempotencyKey)) {
+-        throw new MobileApiError('Idempotency-Key must contain 16-128 safe characters', 400, { code: 'IDEMPOTENCY_KEY_INVALID' })
+-      }
+-      key = share.idempotencyKey
+-    }
++    const key = reportShareIdempotencyKey(share, 'mb016-report-share')
+     const date = typeof share?.date === 'string' ? share.date : undefined
+-    const response = await mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.assessment.reportShare}/${type}/shares`, { date }), {
++    const response = await withShareWriteRetry(() => mobileApiClient.request<unknown>(query(`${B10_GATEWAY_PATHS.assessment.reportShare}/${type}/shares`, { date }), {
+       method: 'POST',
+       data: {},
+-      ...(key ? { header: { 'Idempotency-Key': key } } : {}),
+-    })
++      header: { 'Idempotency-Key': key },
++    }))
+     const source = isRecord(unwrap(response)) ? unwrap(response) as RecordValue : {}
+     const ref = typeof source.ref === 'string' ? source.ref : ''
+     if (!/^[0-9a-f]{32}$/.test(ref)) throw new Error('分享链接没有生成。')
+     return { ref, publicPath: typeof source.publicPath === 'string' ? source.publicPath : `/api/v1/public/learning/report-shares/${ref}` }
+   },
+ 
+-  async revokeReportShare(ref: string): Promise<void> {
+-    await mobileApiClient.request(`${B10_GATEWAY_PATHS.assessment.reportShareRevoke}/${encodeURIComponent(ref)}/revoke`, { method: 'POST', data: {} })
++  async revokeReportShare(ref: string, share?: { idempotencyKey?: string | null }): Promise<void> {
++    const key = reportShareIdempotencyKey(share, 'mb016-report-share-revoke')
++    await withShareWriteRetry(() => mobileApiClient.request(`${B10_GATEWAY_PATHS.assessment.reportShareRevoke}/${encodeURIComponent(ref)}/revoke`, {
++      method: 'POST',
++      data: {},
++      header: { 'Idempotency-Key': key },
++    }))
+   },
+ 
+   async readReport(context: B10RequestContext, period: 'daily' | 'weekly'): Promise<B10Report> {
+diff --git a/apps/mobile/src/pages/b10-report/b10-report.vue b/apps/mobile/src/pages/b10-report/b10-report.vue
+index 75c58ce5..63442b45 100644
+--- a/apps/mobile/src/pages/b10-report/b10-report.vue
++++ b/apps/mobile/src/pages/b10-report/b10-report.vue
+@@ -39,7 +39,9 @@ const shareBusy = ref(false)
+ const shareNote = ref('')
+ const shareError = ref('')
+ interface ShareAttempt { key: string; kind: 'daily' | 'weekly'; token: string; date: string | null }
++interface RevokeAttempt { ref: string; key: string }
+ let shareAttempt: ShareAttempt | null = null
++let revokeAttempt: RevokeAttempt | null = null
+ let detailGeneration = 0
+ let shareGeneration = 0
+ let pageGeneration = 0
+@@ -154,6 +156,7 @@ const primaryDisabled = computed(() => shareBusy.value || retryingId.value !== n
+ function clearShare(): void {
+   shareGeneration += 1
+   shareAttempt = null
++  revokeAttempt = null
+   shareRef.value = ''
+   shareNote.value = ''
+   shareError.value = ''
+@@ -293,6 +296,7 @@ onBeforeUnmount(() => {
+   if (typeof window !== 'undefined') window.removeEventListener('keydown', onDetailKey)
+   shareGeneration += 1
+   shareAttempt = null
++  revokeAttempt = null
+   shareBusy.value = false
+ })
+ async function issueShare(): Promise<void> {
+@@ -325,13 +329,19 @@ async function revokeShare(): Promise<void> {
+   const generation = ++shareGeneration
+   const revision = session.identityRevision
+   const attempt = shareAttempt
++  const ref = shareRef.value
++  if (!revokeAttempt || revokeAttempt.ref !== ref) {
++    revokeAttempt = { ref, key: createClientId('mb016-report-share-revoke') }
++  }
++  const revokeKey = revokeAttempt.key
+   shareBusy.value = true
+   shareError.value = ''
+   try {
+-    await b10LearningApi.revokeReportShare(shareRef.value)
++    await b10LearningApi.revokeReportShare(ref, { idempotencyKey: revokeKey })
+     if (generation !== shareGeneration || revision !== session.identityRevision) return
+     shareRef.value = ''
+     if (shareAttempt === attempt) shareAttempt = null
++    if (revokeAttempt?.ref === ref) revokeAttempt = null
+     shareNote.value = reportT('share.revoked')
+   } catch {
+     if (generation === shareGeneration && revision === session.identityRevision) shareError.value = reportT('share.revokeFailed')
+diff --git a/apps/mobile/tests/b10-report-page.test.mjs b/apps/mobile/tests/b10-report-page.test.mjs
+index 6faf2cb3..ae78cf2c 100644
+--- a/apps/mobile/tests/b10-report-page.test.mjs
++++ b/apps/mobile/tests/b10-report-page.test.mjs
+@@ -155,7 +155,7 @@ test('hide invalidates late share replies and a confirmed replacement still clea
+   const hide = source.slice(hideAt, source.indexOf('\n})', hideAt))
+   assert.match(hide, /shareGeneration \+= 1/)
+   assert.doesNotMatch(hide, /shareAttempt|shareRef|clearShare|issueShare|revokeShare|copyShare/)
+-  assert.match(source, /function clearShare\(\): void \{\n  shareGeneration \+= 1\n  shareAttempt = null\n  shareRef\.value = ''/)
++  assert.match(source, /function clearShare\(\): void \{\n  shareGeneration \+= 1\n  shareAttempt = null\n  revokeAttempt = null\n  shareRef\.value = ''/)
+   assert.match(source, /if \(!confirmedReportSharePeriodChanged\(\{/)
+   assert.match(source, /date: reportShareDate\(period\.periodStart\)/)
+   assert.match(source, /idempotencyKey: attempt\.key, date: attempt\.date/)
+@@ -163,14 +163,17 @@ test('hide invalidates late share replies and a confirmed replacement still clea
+   assert.match(source, /generation !== shareGeneration \|\| revision !== session\.identityRevision \|\| shareAttempt !== attempt/)
+   const revoke = source.slice(source.indexOf('async function revokeShare'), source.indexOf('function copyTextToClipboard'))
+   assert.match(revoke, /generation !== shareGeneration \|\| revision !== session\.identityRevision/)
++  assert.match(revoke, /createClientId\('mb016-report-share-revoke'\)/)
++  assert.match(revoke, /idempotencyKey: revokeKey/)
+   const copy = source.slice(source.indexOf('async function copyShare'), source.indexOf('function previewShare'))
+   assert.match(copy, /generation === shareGeneration/)
+-  assert.match(source, /onBeforeUnmount\(\(\) => \{[\s\S]*?shareGeneration \+= 1\n  shareAttempt = null/)
++  assert.match(source, /onBeforeUnmount\(\(\) => \{[\s\S]*?shareGeneration \+= 1\n  shareAttempt = null\n  revokeAttempt = null/)
+   assert.doesNotMatch(read('src/api/b10.ts'), /optionalReportShareDate|optionalReportShareKey/)
+ })
+ 
+ function loadIssueApi() {
+   const requests = []
++  let sequence = 0
+   let respond = async () => ({ ref: 'a'.repeat(32), publicPath: `/api/v1/public/learning/report-shares/${'a'.repeat(32)}` })
+   const compiled = ts.transpileModule(read('src/api/b10.ts'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
+   const module = { exports: {} }
+@@ -187,7 +190,7 @@ function loadIssueApi() {
+     '../domain/grammar-reading-pack': { mentionsClosedMissing: () => false, PACK_CLOSED_COPY: 'closed' },
+     './b3': { listGrammarExercises: async () => [] },
+     '../domain/grammar-page': { grammarPreviewItems: () => [], grammarQuestionItemId: () => null, parseGrammarPointContent: () => null },
+-    '../platform/client-id': { createClientId: (prefix = 'client') => `${prefix}-test` },
++    '../platform/client-id': { createClientId: (prefix = 'client') => `${prefix}-test-${String(++sequence).padStart(2, '0')}` },
+   }
+   new Function('require', 'module', 'exports', compiled)((name) => {
+     if (!(name in stubs)) throw new Error(`unexpected import ${name}`)
+@@ -196,28 +199,32 @@ function loadIssueApi() {
+   return { api: module.exports.b10LearningApi, requests, setRespond(next) { respond = next }, MobileApiError }
+ }
+ 
++function headerKey(request) {
++  return request.options.header['Idempotency-Key']
++}
++
+ test('a supplied share key is sent or rejected before the network, and a typed date is not reinterpreted', async () => {
+   const api = loadIssueApi()
+   const key = 'mb016-report-share-1234567890abcdef'
+-  const legacy = await api.api.issueReportShare('daily')
+-  assert.equal(legacy.ref, 'a'.repeat(32))
++  const generated = await api.api.issueReportShare('daily')
++  assert.equal(generated.ref, 'a'.repeat(32))
+   assert.equal(api.requests[0].path, '/learning/reports/DAILY/shares')
+   assert.equal(api.requests[0].options.method, 'POST')
+   assert.deepEqual(api.requests[0].options.data, {})
+-  assert.equal(api.requests[0].options.header, undefined)
++  assert.match(headerKey(api.requests[0]), /^mb016-report-share-test-01$/)
+ 
+   await api.api.issueReportShare('weekly', { idempotencyKey: key, date: '2026-10-14' })
+   assert.equal(api.requests[1].path, '/learning/reports/WEEKLY/shares?date=2026-10-14')
+-  assert.equal(api.requests[1].options.header['Idempotency-Key'], key)
++  assert.equal(headerKey(api.requests[1]), key)
+   assert.deepEqual(api.requests[1].options.data, {})
+ 
+   await api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-02-31' })
+   assert.equal(api.requests[2].path, '/learning/reports/DAILY/shares?date=2026-02-31')
+-  assert.equal(api.requests[2].options.header['Idempotency-Key'], key)
++  assert.equal(headerKey(api.requests[2]), key)
+ 
+   await api.api.issueReportShare('daily', { idempotencyKey: key, date: null })
+   assert.equal(api.requests[3].path, '/learning/reports/DAILY/shares')
+-  assert.equal(api.requests[3].options.header['Idempotency-Key'], key)
++  assert.equal(headerKey(api.requests[3]), key)
+ 
+   const beforeReject = api.requests.length
+   await assert.rejects(
+@@ -225,16 +232,70 @@ test('a supplied share key is sent or rejected before the network, and a typed d
+     (error) => error instanceof api.MobileApiError && error.status === 400 && error.message === 'Idempotency-Key must contain 16-128 safe characters' && error.details.code === 'IDEMPOTENCY_KEY_INVALID',
+   )
+   await assert.rejects(() => api.api.issueReportShare('daily', { idempotencyKey: '' }), (error) => error.status === 400 && api.requests.length === beforeReject)
+-  await assert.rejects(() => api.api.issueReportShare('daily', {}), (error) => error.status === 400)
++  await assert.rejects(() => api.api.issueReportShare('daily', { idempotencyKey: null }), (error) => error.status === 400 && api.requests.length === beforeReject)
+   assert.equal(api.requests.length, beforeReject)
+ 
+-  api.setRespond(async () => { throw Object.assign(new Error('unavailable'), { status: 503 }) })
+-  await assert.rejects(() => api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-10-12' }), (error) => error.status === 503 && error.message === 'unavailable')
++  await api.api.issueReportShare('daily', {})
++  assert.match(headerKey(api.requests[beforeReject]), /^mb016-report-share-test-02$/)
++
+   api.setRespond(async () => ({ ref: 'not-a-ref' }))
+   await assert.rejects(() => api.api.issueReportShare('daily'), /分享链接没有生成/)
+ 
+   const web = fs.readFileSync(path.resolve(appRoot, '../learner-web/src/api/b10.ts'), 'utf8')
+-  const webIssue = web.slice(web.indexOf('export async function issueReportShare'), web.indexOf('export async function revokeReportShare'))
+-  assert.doesNotMatch(webIssue, /Idempotency-Key|idempotencyKey/)
+-  assert.match(webIssue, /\/learning\/reports\/\$\{reportType\}\/shares`, \{\}, withB10Headers\(\)/)
++  const webIssue = web.slice(web.indexOf('export async function issueReportShare'), web.indexOf('export async function getLearningReport'))
++  assert.match(webIssue, /idempotencyKey/)
++  assert.match(webIssue, /withB10Headers\(key\)/)
++  assert.match(webIssue, /lw-report-share-revoke/)
++  assert.match(web, /headers\.set\('Idempotency-Key', stableKey\)/)
++  assert.match(web, /withShareWriteRetry/)
++})
++
++test('one generated share key is reused on a transient retry and a new intent gets a new key', async () => {
++  const api = loadIssueApi()
++  const key = 'mb016-report-share-1234567890abcdef'
++  let failures = 1
++  api.setRespond(async () => {
++    if (failures > 0) {
++      failures -= 1
++      throw Object.assign(new Error('unavailable'), { status: 503 })
++    }
++    return { ref: 'a'.repeat(32), publicPath: `/api/v1/public/learning/report-shares/${'a'.repeat(32)}` }
++  })
++  await api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-10-12' })
++  assert.equal(api.requests.length, 2)
++  assert.equal(headerKey(api.requests[0]), key)
++  assert.equal(headerKey(api.requests[1]), key)
++  assert.equal(api.requests[0].path, api.requests[1].path)
++
++  api.setRespond(async () => { throw Object.assign(new Error('unavailable'), { status: 503 }) })
++  const beforeFail = api.requests.length
++  await assert.rejects(
++    () => api.api.issueReportShare('daily', { idempotencyKey: key, date: '2026-10-12' }),
++    (error) => error.status === 503 && error.message === 'unavailable',
++  )
++  assert.equal(api.requests.length, beforeFail + 2)
++  assert.equal(headerKey(api.requests[beforeFail]), key)
++  assert.equal(headerKey(api.requests[beforeFail + 1]), key)
++
++  api.setRespond(async () => ({ ref: 'a'.repeat(32), publicPath: `/api/v1/public/learning/report-shares/${'a'.repeat(32)}` }))
++  await api.api.issueReportShare('daily')
++  await api.api.issueReportShare('daily')
++  const generated = api.requests.slice(-2).map(headerKey)
++  assert.match(generated[0], /^mb016-report-share-test-01$/)
++  assert.match(generated[1], /^mb016-report-share-test-02$/)
++  assert.notEqual(generated[0], generated[1])
++
++  const revokeRef = 'b'.repeat(32)
++  await api.api.revokeReportShare(revokeRef)
++  await api.api.revokeReportShare(revokeRef, { idempotencyKey: 'mb016-report-share-revoke1' })
++  const revokeRequests = api.requests.slice(-2)
++  assert.equal(revokeRequests[0].path, `/learning/report-shares/${revokeRef}/revoke`)
++  assert.match(headerKey(revokeRequests[0]), /^mb016-report-share-revoke-test-03$/)
++  assert.equal(headerKey(revokeRequests[1]), 'mb016-report-share-revoke1')
++  const beforeMalformedRevoke = api.requests.length
++  await assert.rejects(
++    () => api.api.revokeReportShare(revokeRef, { idempotencyKey: 'short' }),
++    (error) => error instanceof api.MobileApiError && error.status === 400,
++  )
++  assert.equal(api.requests.length, beforeMalformedRevoke)
+ })
+diff --git a/config/p1r-data-ownership.v1.json b/config/p1r-data-ownership.v1.json
+index fd88b260..bdd9713a 100644
+--- a/config/p1r-data-ownership.v1.json
++++ b/config/p1r-data-ownership.v1.json
+@@ -785,7 +785,7 @@
+       {
+         "service": "learning-service",
+         "path": "services/learning-service/src/main/resources/db/migration",
+-        "fileCount": 11
++        "fileCount": 15
+       },
+       {
+         "service": "assessment-service",
+diff --git a/packages/api-client/src/generated/index.ts b/packages/api-client/src/generated/index.ts
+index 088e851e..1a06d4d6 100644
+--- a/packages/api-client/src/generated/index.ts
++++ b/packages/api-client/src/generated/index.ts
+@@ -439,7 +439,7 @@ export interface GeneratedApiOperationRegistry {
+   approveWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/approve"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+   rejectWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/reject"; request: { reason?: string; }; requestBodyRequired: false; response: Record<string, never>; };
+   executeWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/execute"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+-  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; requestBodyRequired: false; response: ReadonlyArray<string>; };
++  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: ReadonlyArray<string>; }; };
+   readWorkflowSaga: { method: "GET"; path: "/api/v1/admin/recovery/sagas/{sagaId}"; request: never; requestBodyRequired: false; response: Record<string, never>; };
+   compensateWorkflowSaga: { method: "POST"; path: "/api/v1/admin/recovery/sagas/{sagaId}/compensate"; request: Record<string, never>; requestBodyRequired: false; response: Record<string, never>; };
+   importB9ContentBatch: { method: "POST"; path: "/api/v1/admin/content-commands/import/batch"; request: { items: ReadonlyArray<Record<string, never>>; }; requestBodyRequired: true; response: unknown; };
+@@ -450,7 +450,7 @@ export interface GeneratedApiOperationRegistry {
+   upsertMediaSubtitle: { method: "POST"; path: "/api/v1/media/assets/{assetId}/subtitles"; request: Record<string, never>; requestBodyRequired: true; response: unknown; };
+   mintMediaUploadUrl: { method: "POST"; path: "/api/v1/media/assets/{assetId}/upload-url"; request: never; requestBodyRequired: false; response: unknown; };
+   activateMediaAsset: { method: "PUT"; path: "/api/v1/media/assets/{assetId}/active"; request: { verifiedChecksumSha256: string; verifiedSizeBytes: number; }; requestBodyRequired: true; response: unknown; };
+-  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; requestBodyRequired: false; response: unknown; };
++  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; requestBodyRequired: false; response: ApiCursorPageEnvelope & { data: { items: ReadonlyArray<Record<string, never>>; count: number; }; }; };
+   verifyAssessmentMistake: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/verify"; request: { outcome: "CORRECT" | "WRONG"; }; requestBodyRequired: true; response: unknown; };
+   issueAssessmentVariant: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/variant"; request: { variantItemId: number; }; requestBodyRequired: true; response: unknown; };
+   readPrivacyExportStatus: { method: "GET"; path: "/api/v1/privacy/export/{exportId}"; request: never; requestBodyRequired: false; response: unknown; };
+diff --git a/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json b/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
+index 78441dd8..68c29fda 100644
+--- a/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
++++ b/packages/contracts/fragments/b10/b10-learning-assessment-content.openapi.json
+@@ -2804,10 +2804,86 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "OK"
++            "description": "Cursor page of owner-scoped mistake facts",
++            "content": {
++              "application/json": {
++                "schema": {
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "object",
++                          "additionalProperties": false,
++                          "required": [
++                            "items",
++                            "count"
++                          ],
++                          "properties": {
++                            "items": {
++                              "type": "array",
++                              "items": {
++                                "type": "object"
++                              },
++                              "maxItems": 100
++                            },
++                            "count": {
++                              "type": "integer",
++                              "minimum": 0,
++                              "maximum": 100
++                            }
++                          }
++                        }
++                      }
++                    }
++                  ]
++                }
++              }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
++            }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/packages/contracts/fragments/b2-assessment-mastery.openapi.json b/packages/contracts/fragments/b2-assessment-mastery.openapi.json
+index 31a77683..d1c26455 100644
+--- a/packages/contracts/fragments/b2-assessment-mastery.openapi.json
++++ b/packages/contracts/fragments/b2-assessment-mastery.openapi.json
+@@ -2488,6 +2488,113 @@
+         }
+       }
+     },
++    "/api/v1/learning/reports/{reportType}/shares": {
++      "post": {
++        "tags": [
++          "b2-mastery"
++        ],
++        "operationId": "issueLearningReportShare",
++        "summary": "签发学习报告只读分享",
++        "security": [
++          {
++            "bearerAuth": []
++          }
++        ],
++        "x-owner": "learning-service",
++        "x-idempotency": {
++          "required": true,
++          "strategy": "owner-report-share-ref",
++          "keyHeader": "Idempotency-Key",
++          "replayBehavior": "同一认证主体、租户与键，且报告类型和日期语义一致时，保留已存公开快照、首次随机引用和精确 expiresAt；响应只回放原始签发回执（ref、expiresAt、publicPath、status=ACTIVE），不在响应体中返回快照。该分享之后撤销或过期仍回放这份原始签发回执。键按 ASCII 大小写敏感区分。日期省略记为 ABSENT，缺省日期的重试跨过午夜仍回到原窗口；显式日期按解析后的日历日绑定。同键但报告类型或日期语义不同时返回 HTTP 409，且不改写已存快照。缺失或非法 Idempotency-Key 在耐久写入前返回 HTTP 400。"
++        },
++        "parameters": [
++          {
++            "name": "reportType",
++            "in": "path",
++            "required": true,
++            "schema": {
++              "type": "string",
++              "enum": [
++                "DAILY",
++                "WEEKLY"
++              ]
++            }
++          },
++          {
++            "name": "date",
++            "in": "query",
++            "required": false,
++            "schema": {
++              "type": "string",
++              "format": "date"
++            }
++          },
++          {
++            "$ref": "#/components/parameters/IdempotencyKeyRequired"
++          }
++        ],
++        "responses": {
++          "200": {
++            "description": "回执只含 ref、expiresAt、publicPath 和原始签发 status=ACTIVE。相同 Idempotency-Key 且请求绑定一致时回放首次引用和精确 expiresAt，并保留已存快照；撤销或过期后仍是这份原始签发回执。"
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "409": {
++            "$ref": "#/components/responses/ApiConflict"
++          }
++        }
++      }
++    },
++    "/api/v1/learning/report-shares/{ref}/revoke": {
++      "post": {
++        "tags": [
++          "b2-mastery"
++        ],
++        "operationId": "revokeLearningReportShare",
++        "summary": "撤销自己签发的学习报告分享",
++        "security": [
++          {
++            "bearerAuth": []
++          }
++        ],
++        "x-owner": "learning-service",
++        "x-idempotency": {
++          "required": true,
++          "strategy": "owner-revoke-share",
++          "keyHeader": "Idempotency-Key",
++          "replayBehavior": "同一认证主体、租户与键且引用一致时回放首次撤销回执（ref、status=REVOKED、revokedAt）。同键用于不同引用返回 HTTP 409。缺失或非法 Idempotency-Key 在耐久写入前返回 HTTP 400。他人引用对调用方呈现为 404，不泄露存在性。"
++        },
++        "parameters": [
++          {
++            "name": "ref",
++            "in": "path",
++            "required": true,
++            "schema": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{32}$"
++            }
++          },
++          {
++            "$ref": "#/components/parameters/IdempotencyKeyRequired"
++          }
++        ],
++        "responses": {
++          "200": {
++            "description": "Revoked"
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "404": {
++            "$ref": "#/components/responses/ApiNotFound"
++          },
++          "409": {
++            "$ref": "#/components/responses/ApiConflict"
++          }
++        }
++      }
++    },
+     "/api/v1/mastery/share-assets": {
+       "post": {
+         "tags": [
+diff --git a/packages/contracts/fragments/b26-workflow-recovery.openapi.json b/packages/contracts/fragments/b26-workflow-recovery.openapi.json
+index df62d6af..1d38d1c7 100644
+--- a/packages/contracts/fragments/b26-workflow-recovery.openapi.json
++++ b/packages/contracts/fragments/b26-workflow-recovery.openapi.json
+@@ -326,20 +326,73 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "Unfinished saga ids",
++            "description": "Cursor page of unfinished saga ids",
+             "content": {
+               "application/json": {
+                 "schema": {
+-                  "type": "array",
+-                  "items": {
+-                    "type": "string"
+-                  }
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "array",
++                          "items": {
++                            "type": "string",
++                            "minLength": 8,
++                            "maxLength": 128
++                          },
++                          "maxItems": 100
++                        }
++                      }
++                    }
++                  ]
+                 }
+               }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
+             }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/packages/contracts/generated/openapi.ts b/packages/contracts/generated/openapi.ts
+index 8fa45bca..0ce8c23f 100644
+--- a/packages/contracts/generated/openapi.ts
++++ b/packages/contracts/generated/openapi.ts
+@@ -4636,7 +4636,7 @@ export interface ApiOperationRegistry {
+   approveWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/approve"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+   rejectWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/reject"; request: { reason?: string; }; response: Record<string, never>; idempotent: true };
+   executeWorkflowRecovery: { method: "POST"; path: "/api/v1/admin/recovery/recoveries/{recoveryId}/execute"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+-  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; response: ReadonlyArray<string>; idempotent: false };
++  listUnfinishedSagas: { method: "GET"; path: "/api/v1/admin/recovery/sagas/unfinished"; request: never; response: ApiCursorPageEnvelope & { data: ReadonlyArray<string>; }; idempotent: false };
+   readWorkflowSaga: { method: "GET"; path: "/api/v1/admin/recovery/sagas/{sagaId}"; request: never; response: Record<string, never>; idempotent: false };
+   compensateWorkflowSaga: { method: "POST"; path: "/api/v1/admin/recovery/sagas/{sagaId}/compensate"; request: Record<string, never>; response: Record<string, never>; idempotent: true };
+   importB9ContentBatch: { method: "POST"; path: "/api/v1/admin/content-commands/import/batch"; request: { items: ReadonlyArray<Record<string, never>>; }; response: unknown; idempotent: true };
+@@ -4647,7 +4647,7 @@ export interface ApiOperationRegistry {
+   upsertMediaSubtitle: { method: "POST"; path: "/api/v1/media/assets/{assetId}/subtitles"; request: Record<string, never>; response: unknown; idempotent: true };
+   mintMediaUploadUrl: { method: "POST"; path: "/api/v1/media/assets/{assetId}/upload-url"; request: never; response: unknown; idempotent: true };
+   activateMediaAsset: { method: "PUT"; path: "/api/v1/media/assets/{assetId}/active"; request: { verifiedChecksumSha256: string; verifiedSizeBytes: number; }; response: unknown; idempotent: true };
+-  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; response: unknown; idempotent: false };
++  listAssessmentMistakes: { method: "GET"; path: "/api/v1/assessment/mistakes"; request: never; response: ApiCursorPageEnvelope & { data: { items: ReadonlyArray<Record<string, never>>; count: number; }; }; idempotent: false };
+   verifyAssessmentMistake: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/verify"; request: { outcome: "CORRECT" | "WRONG"; }; response: unknown; idempotent: true };
+   issueAssessmentVariant: { method: "POST"; path: "/api/v1/assessment/mistakes/{mistakeId}/variant"; request: { variantItemId: number; }; response: unknown; idempotent: true };
+   readPrivacyExportStatus: { method: "GET"; path: "/api/v1/privacy/export/{exportId}"; request: never; response: unknown; idempotent: false };
+diff --git a/packages/contracts/openapi/v1/openapi.json b/packages/contracts/openapi/v1/openapi.json
+index 9c417d9f..c92f0e10 100644
+--- a/packages/contracts/openapi/v1/openapi.json
++++ b/packages/contracts/openapi/v1/openapi.json
+@@ -20857,10 +20857,10 @@
+         ],
+         "x-owner": "learning-service",
+         "x-idempotency": {
+-          "required": false,
+-          "strategy": "optional-owner-report-share-ref",
++          "required": true,
++          "strategy": "owner-report-share-ref",
+           "keyHeader": "Idempotency-Key",
+-          "replayBehavior": "缺少 Idempotency-Key 时每次成功仍签发一个新的 32 位引用。同一认证主体、租户与键，且报告类型和日期语义一致时，保留已存公开快照、首次随机引用和精确 expiresAt；响应只回放原始签发回执（ref、expiresAt、publicPath、status=ACTIVE），不在响应体中返回快照。该分享之后撤销或过期仍回放这份原始签发回执，不另造公开链接，也不把公开读到的 REVOKED 或 EXPIRED 当作签发回执状态。键按 ASCII 大小写敏感区分。日期省略记为 ABSENT，缺省日期的重试跨过午夜仍回到原窗口；显式日期按解析后的日历日绑定，不按周一起始归一。同键但报告类型或日期语义不同时返回 HTTP 409，且不改写已存快照。"
++          "replayBehavior": "同一认证主体、租户与键，且报告类型和日期语义一致时，保留已存公开快照、首次随机引用和精确 expiresAt；响应只回放原始签发回执（ref、expiresAt、publicPath、status=ACTIVE），不在响应体中返回快照。该分享之后撤销或过期仍回放这份原始签发回执。键按 ASCII 大小写敏感区分。日期省略记为 ABSENT，缺省日期的重试跨过午夜仍回到原窗口；显式日期按解析后的日历日绑定。同键但报告类型或日期语义不同时返回 HTTP 409，且不改写已存快照。缺失或非法 Idempotency-Key 在耐久写入前返回 HTTP 400。"
+         },
+         "parameters": [
+           {
+@@ -20885,16 +20885,7 @@
+             }
+           },
+           {
+-            "name": "Idempotency-Key",
+-            "in": "header",
+-            "required": false,
+-            "description": "可选。缺失或空白时保持已部署移动端和 Web 的无键签发。存在时只在当前认证主体和 platform 租户内绑定首次分享。比较区分 ASCII 大小写。",
+-            "schema": {
+-              "type": "string",
+-              "minLength": 16,
+-              "maxLength": 128,
+-              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"
+-            }
++            "$ref": "#/components/parameters/IdempotencyKeyRequired"
+           }
+         ],
+         "responses": {
+@@ -20927,7 +20918,7 @@
+           "required": true,
+           "strategy": "owner-revoke-share",
+           "keyHeader": "Idempotency-Key",
+-          "replayBehavior": "同一引用重复撤销仍是已撤销"
++          "replayBehavior": "同一认证主体、租户与键且引用一致时回放首次撤销回执（ref、status=REVOKED、revokedAt）。同键用于不同引用返回 HTTP 409。缺失或非法 Idempotency-Key 在耐久写入前返回 HTTP 400。他人引用对调用方呈现为 404，不泄露存在性。"
+         },
+         "parameters": [
+           {
+@@ -20938,14 +20929,23 @@
+               "type": "string",
+               "pattern": "^[0-9a-f]{32}$"
+             }
++          },
++          {
++            "$ref": "#/components/parameters/IdempotencyKeyRequired"
+           }
+         ],
+         "responses": {
+           "200": {
+             "description": "Revoked"
+           },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
+           "404": {
+             "$ref": "#/components/responses/ApiNotFound"
++          },
++          "409": {
++            "$ref": "#/components/responses/ApiConflict"
+           }
+         }
+       }
+@@ -36775,20 +36775,73 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "Unfinished saga ids",
++            "description": "Cursor page of unfinished saga ids",
+             "content": {
+               "application/json": {
+                 "schema": {
+-                  "type": "array",
+-                  "items": {
+-                    "type": "string"
+-                  }
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "array",
++                          "items": {
++                            "type": "string",
++                            "minLength": 8,
++                            "maxLength": 128
++                          },
++                          "maxItems": 100
++                        }
++                      }
++                    }
++                  ]
+                 }
+               }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
+             }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+@@ -37395,10 +37448,86 @@
+             "bearerAuth": []
+           }
+         ],
++        "parameters": [
++          {
++            "$ref": "#/components/parameters/Cursor"
++          },
++          {
++            "$ref": "#/components/parameters/PageSize"
++          }
++        ],
+         "responses": {
+           "200": {
+-            "description": "OK"
++            "description": "Cursor page of owner-scoped mistake facts",
++            "content": {
++              "application/json": {
++                "schema": {
++                  "allOf": [
++                    {
++                      "$ref": "#/components/schemas/ApiCursorPageEnvelope"
++                    },
++                    {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "required": [
++                        "data"
++                      ],
++                      "properties": {
++                        "data": {
++                          "type": "object",
++                          "additionalProperties": false,
++                          "required": [
++                            "items",
++                            "count"
++                          ],
++                          "properties": {
++                            "items": {
++                              "type": "array",
++                              "items": {
++                                "type": "object"
++                              },
++                              "maxItems": 100
++                            },
++                            "count": {
++                              "type": "integer",
++                              "minimum": 0,
++                              "maximum": 100
++                            }
++                          }
++                        }
++                      }
++                    }
++                  ]
++                }
++              }
++            },
++            "headers": {
++              "X-Request-Id": {
++                "$ref": "#/components/headers/XRequestId"
++              },
++              "X-Trace-Id": {
++                "$ref": "#/components/headers/XTraceId"
++              },
++              "X-API-Version": {
++                "$ref": "#/components/headers/XApiVersion"
++              }
++            }
++          },
++          "400": {
++            "$ref": "#/components/responses/ApiBadRequest"
++          },
++          "401": {
++            "$ref": "#/components/responses/ApiUnauthorized"
++          },
++          "403": {
++            "$ref": "#/components/responses/ApiForbidden"
+           }
++        },
++        "x-pagination": {
++          "mode": "cursor",
++          "cursorParameter": "#/components/parameters/Cursor",
++          "pageSizeParameter": "#/components/parameters/PageSize",
++          "responseMeta": "#/components/schemas/ApiCursorPageMeta"
+         }
+       }
+     },
+diff --git a/scripts/audit/p1r-api-contract-check.mjs b/scripts/audit/p1r-api-contract-check.mjs
+index 37ca4fe9..0905a72e 100644
+--- a/scripts/audit/p1r-api-contract-check.mjs
++++ b/scripts/audit/p1r-api-contract-check.mjs
+@@ -33,6 +33,35 @@ const SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION = Object.freeze({
+   method: 'post',
+   operationId: 'signContentMediaAccess',
+ });
++const FAIL_CLOSED_MEDIA_UPLOAD_WRITE = Object.freeze({
++  route: '/api/v1/media/assets/{assetId}/upload-url',
++  method: 'post',
++  operationId: 'mintMediaUploadUrl',
++});
++const FAIL_CLOSED_MEDIA_UPLOAD_KEYS = Object.freeze(['eligibleRequestStatus', 'mode', 'reason', 'sideEffects']);
++
++function isMediaUploadUrlWrite(route, method, operation) {
++  return route === FAIL_CLOSED_MEDIA_UPLOAD_WRITE.route
++    && method === FAIL_CLOSED_MEDIA_UPLOAD_WRITE.method
++    && operation?.operationId === FAIL_CLOSED_MEDIA_UPLOAD_WRITE.operationId;
++}
++
++function isExactFailClosedMediaUploadWrite(route, method, operation) {
++  if (!isMediaUploadUrlWrite(route, method, operation) || !isRecord(operation)) return false;
++  const failClosed = operation['x-fail-closed'];
++  if (!isRecord(failClosed)) return false;
++  const actualKeys = Object.keys(failClosed).sort();
++  if (JSON.stringify(actualKeys) !== JSON.stringify([...FAIL_CLOSED_MEDIA_UPLOAD_KEYS].sort())) return false;
++  const responses = isRecord(operation.responses) ? operation.responses : {};
++  return failClosed.mode === 'NO_SUCCESS_PATH'
++    && failClosed.sideEffects === false
++    && failClosed.eligibleRequestStatus === 503
++    && failClosed.reason === 'MEDIA_UPLOAD_PUT_GRANT_UNAVAILABLE'
++    && operation['x-contract']?.runtimeStatus === 'FAIL_CLOSED_UPLOAD_NOT_CONFIGURED'
++    && !Object.hasOwn(operation, 'x-idempotency')
++    && isRecord(responses['503'])
++    && !Object.keys(responses).some((status) => /^2\d\d$/.test(status));
++}
+ const REQUIRED_META_FIELDS = ['requestId', 'traceId', 'apiVersion', 'schemaVersion', 'serverTime'];
+ const REQUIRED_ERROR_CODES = [
+   'VALIDATION_ERROR',
+@@ -317,29 +346,34 @@ export function validateApiContractData({ openApi, schemaRegistry }) {
+       const externalWrite = route.startsWith(`${EXTERNAL_PREFIX}/`) && WRITE_METHODS.has(method);
+       if (externalWrite) {
+         externalWriteCount += 1;
+-        const rule = operation['x-idempotency'];
+-        add(errors, isRecord(rule), `${label} needs x-idempotency`);
+-        if (isRecord(rule)) {
+-          add(errors, typeof rule.required === 'boolean', `${label} x-idempotency.required must be boolean`);
+-          add(errors, nonEmpty(rule.strategy), `${label} x-idempotency.strategy is required`);
+-          add(errors, rule.keyHeader === undefined || rule.keyHeader === 'Idempotency-Key', `${label} x-idempotency.keyHeader must be Idempotency-Key when declared`);
+-          add(errors, nonEmpty(rule.replayBehavior), `${label} x-idempotency.replayBehavior is required`);
+-          if (rule.required === true) {
+-            add(errors, operationParameters(pathItem, operation).some((parameter) => isIdempotencyHeader(openApi, parameter)), `${label} must reference a required Idempotency-Key header`);
+-          } else if (rule.required === false) {
+-            idempotencyExceptionCount += 1;
+-            add(
+-              errors,
+-              route === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.route
+-                && method === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.method
+-                && operation.operationId === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.operationId,
+-              `${label} is not the sole allowed signed-access idempotency exception`,
+-            );
+-            const exception = operation['x-p1r-idempotency-exception'];
+-            add(errors, isRecord(exception), `${label} optional idempotency needs x-p1r-idempotency-exception`);
+-            if (isRecord(exception)) {
+-              add(errors, exception.rule === 'writeIdempotency', `${label} idempotency exception rule must be writeIdempotency`);
+-              for (const field of ['reason', 'owner', 'safeBehavior']) add(errors, nonEmpty(exception[field]), `${label} idempotency exception.${field} is required`);
++        if (isMediaUploadUrlWrite(route, method, operation) && Object.hasOwn(operation, 'x-idempotency')) {
++          add(errors, false, `${label} cannot claim durable idempotency while fail-closed`);
++        }
++        if (!isExactFailClosedMediaUploadWrite(route, method, operation)) {
++          const rule = operation['x-idempotency'];
++          add(errors, isRecord(rule), `${label} needs x-idempotency`);
++          if (isRecord(rule)) {
++            add(errors, typeof rule.required === 'boolean', `${label} x-idempotency.required must be boolean`);
++            add(errors, nonEmpty(rule.strategy), `${label} x-idempotency.strategy is required`);
++            add(errors, rule.keyHeader === undefined || rule.keyHeader === 'Idempotency-Key', `${label} x-idempotency.keyHeader must be Idempotency-Key when declared`);
++            add(errors, nonEmpty(rule.replayBehavior), `${label} x-idempotency.replayBehavior is required`);
++            if (rule.required === true) {
++              add(errors, operationParameters(pathItem, operation).some((parameter) => isIdempotencyHeader(openApi, parameter)), `${label} must reference a required Idempotency-Key header`);
++            } else if (rule.required === false) {
++              idempotencyExceptionCount += 1;
++              add(
++                errors,
++                route === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.route
++                  && method === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.method
++                  && operation.operationId === SIGNED_ACCESS_IDEMPOTENCY_EXCEPTION.operationId,
++                `${label} is not the sole allowed signed-access idempotency exception`,
++              );
++              const exception = operation['x-p1r-idempotency-exception'];
++              add(errors, isRecord(exception), `${label} optional idempotency needs x-p1r-idempotency-exception`);
++              if (isRecord(exception)) {
++                add(errors, exception.rule === 'writeIdempotency', `${label} idempotency exception rule must be writeIdempotency`);
++                for (const field of ['reason', 'owner', 'safeBehavior']) add(errors, nonEmpty(exception[field]), `${label} idempotency exception.${field} is required`);
++              }
+             }
+           }
+         }
+diff --git a/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java b/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
+index 96b33341..07618a11 100644
+--- a/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
++++ b/services/assessment-service/src/main/java/com/englishflow/assessment/web/B10AssessmentJdbcController.java
+@@ -8,7 +8,10 @@ import tools.jackson.databind.node.ObjectNode;
+ 
+ import com.englishflow.assessment.adapter.content.BankPracticeRuleProvider;
+ import com.englishflow.assessment.adapter.content.HttpProtectedContentSnapshotTransport;
++import com.englishflow.assessment.adapter.jdbc.JdbcAssessmentMistakeList;
++import com.englishflow.assessment.domain.AssessmentDomainException;
+ import com.englishflow.assessment.domain.AssessmentMistake;
++import com.englishflow.assessment.domain.MistakeListPaging;
+ import com.englishflow.assessment.port.PlacementRuleScorePort;
+ import com.englishflow.assessment.domain.AssessmentPrincipal;
+ import com.englishflow.assessment.domain.AttemptGuard;
+@@ -47,6 +50,7 @@ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestHeader;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ import org.springframework.web.bind.annotation.RequestMethod;
++import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.bind.annotation.RestController;
+ import org.springframework.web.server.ResponseStatusException;
+ 
+@@ -73,6 +77,7 @@ public class B10AssessmentJdbcController {
+     private final BankPracticeRuleProvider bankRules;
+     private final PlacementRuleScorePort placementScores;
+     private final HttpProtectedContentSnapshotTransport protectedContent;
++    private final JdbcAssessmentMistakeList mistakeList;
+ 
+     public B10AssessmentJdbcController(JdbcTemplate jdbc, ObjectMapper mapper, String contentBaseUrl) {
+         this(jdbc, mapper, contentBaseUrl, null, (HttpProtectedContentSnapshotTransport) null);
+@@ -100,6 +105,7 @@ public class B10AssessmentJdbcController {
+         this.bankRules = new BankPracticeRuleProvider(mapper, contentBaseUrl);
+         this.placementScores = placementScores;
+         this.protectedContent = protectedContent;
++        this.mistakeList = new JdbcAssessmentMistakeList(jdbc);
+     }
+ 
+     @PostMapping("/sessions")
+@@ -552,15 +558,27 @@ public class B10AssessmentJdbcController {
+      * the caller's key via the shared attempt idempotency record.
+      */
+     @GetMapping("/mistakes")
+-    public Map<String, Object> listMistakes(Authentication authentication) {
++    public Map<String, Object> listMistakes(Authentication authentication,
++            @RequestParam(required = false) String cursor,
++            @RequestParam(required = false) Integer pageSize,
++            @RequestHeader(value = "X-Request-Id", required = false) String requestId,
++            @RequestHeader(value = "X-Trace-Id", required = false) String traceId) {
+         Principal principal = principal(authentication, "assessment.session.read");
+-        List<Map<String, Object>> rows = jdbc.queryForList("""
+-                SELECT * FROM assessment_mistake WHERE tenant_id = ? AND subject_id = ?
+-                 ORDER BY mistake_id
+-                """, TENANT, principal.subject());
+-        List<Map<String, Object>> items = new ArrayList<>();
+-        for (Map<String, Object> row : rows) items.add(mistakeView(restoreMistake(row)));
+-        return envelope(Map.of("items", items, "count", items.size()));
++        try {
++            MistakeListPaging.Page<Map<String, Object>> page = mistakeList.page(TENANT, principal.subject(), cursor,
++                    pageSize);
++            List<Map<String, Object>> items = new ArrayList<>();
++            for (Map<String, Object> row : page.items()) items.add(mistakeView(restoreMistake(row)));
++            Map<String, Object> data = new LinkedHashMap<>();
++            data.put("items", items);
++            data.put("count", items.size());
++            return cursorPage(data, page.hasMore(), page.nextCursor(), page.pageSize(), requestId, traceId);
++        } catch (AssessmentDomainException invalid) {
++            if ("ASM_CURSOR_INVALID".equals(invalid.code()) || "ASM_PAGE_SIZE_INVALID".equals(invalid.code())) {
++                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage(), invalid);
++            }
++            throw invalid;
++        }
+     }
+ 
+     @PostMapping("/mistakes/{mistakeId}/verify")
+@@ -1824,6 +1842,23 @@ public class B10AssessmentJdbcController {
+ 
+     private static String compactUuid() { return UUID.randomUUID().toString().replace("-", ""); }
+     private static Map<String, Object> envelope(Object data) { return Map.of("data", data); }
++
++    private static Map<String, Object> cursorPage(Object data, boolean hasMore, String nextCursor, int pageSize,
++            String requestId, String traceId) {
++        Map<String, Object> meta = new LinkedHashMap<>();
++        meta.put("requestId", canonicalRequestId(requestId));
++        meta.put("traceId", canonicalTraceId(traceId));
++        meta.put("apiVersion", "v1");
++        meta.put("schemaVersion", "1.0.0");
++        meta.put("serverTime", Instant.now().toString());
++        meta.put("hasMore", hasMore);
++        meta.put("pageSize", pageSize);
++        meta.put("nextCursor", nextCursor);
++        Map<String, Object> body = new LinkedHashMap<>();
++        body.put("data", data);
++        body.put("meta", meta);
++        return body;
++    }
+     private static String timestamp(Object value) { return value == null ? null : value instanceof java.sql.Timestamp timestamp ? timestamp.toInstant().toString() : String.valueOf(value); }
+     private static long number(Object value) { return number(value, 0L); }
+     private static long number(Object value, long fallback) { return value instanceof Number number ? number.longValue() : fallback; }
+diff --git a/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java b/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
+index b8550037..830ffde6 100644
+--- a/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
++++ b/services/assessment-service/src/test/java/com/englishflow/assessment/web/AssessmentJdbcAuthorizationBoundaryTest.java
+@@ -53,7 +53,7 @@ class AssessmentJdbcAuthorizationBoundaryTest {
+         deniedBeforeJdbc(jdbc, () -> controller.issueVariant(readOnly, 1L, Map.of(), "key"));
+         deniedBeforeJdbc(jdbc, () -> controller.saveCheckpoint(readOnly, "session-1", "attempt-1", Map.of(), "key"));
+         deniedBeforeJdbc(jdbc, () -> controller.readSession(writeOnly, "session-1"));
+-        deniedBeforeJdbc(jdbc, () -> controller.listMistakes(writeOnly));
++        deniedBeforeJdbc(jdbc, () -> controller.listMistakes(writeOnly, null, null, null, null));
+         deniedBeforeJdbc(jdbc, () -> controller.readReport(writeOnly, "report-1"));
+     }
+ 
+@@ -64,7 +64,8 @@ class AssessmentJdbcAuthorizationBoundaryTest {
+         B10AssessmentJdbcController b10 = new B10AssessmentJdbcController(jdbc, new ObjectMapper(),
+                 "http://127.0.0.1:18089");
+         deniedBeforeJdbc(jdbc, () -> b25.dailyStream(authentication("assessment.session.write", null, null), null, 10));
+-        deniedBeforeJdbc(jdbc, () -> b10.listMistakes(authentication("assessment.session.read", "PASSED", "WITHDRAWN")));
++        deniedBeforeJdbc(jdbc, () -> b10.listMistakes(authentication("assessment.session.read", "PASSED", "WITHDRAWN"),
++                null, null, null, null));
+     }
+ 
+     private static void deniedBeforeJdbc(JdbcTemplate jdbc, Executable request) {
+diff --git a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java
+index 493000b0..cda059be 100644
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjector.java
+@@ -5,7 +5,9 @@ import java.util.Map;
+ import java.util.UUID;
+ 
+ import org.springframework.dao.DuplicateKeyException;
++import org.springframework.http.HttpStatus;
+ import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.web.server.ResponseStatusException;
+ 
+ import com.englishflow.learning.domain.ZeroMistakeProjection;
+ 
+@@ -31,9 +33,30 @@ public final class AssessmentMistakeQueueProjector {
+         return new AssessmentMistakeQueueProjector(new HttpAssessmentMistakeFeed(mapper, assessmentBaseUrl), mapper);
+     }
+ 
++    static AssessmentMistakeQueueProjector of(HttpAssessmentMistakeFeed feed, ObjectMapper mapper) {
++        return new AssessmentMistakeQueueProjector(feed, mapper);
++    }
++
+     public void project(JdbcTemplate jdbc, String subject, String bearer) {
+         if (feed == null || jdbc == null || subject == null || subject.isBlank()) return;
+-        write(jdbc, subject, feed.list(bearer));
++        List<Map<String, Object>> admitted;
++        try {
++            admitted = feed.list(bearer);
++        } catch (AssessmentMistakeFeedException exception) {
++            throw toResponse(exception);
++        }
++        write(jdbc, subject, admitted);
++    }
++
++    private static ResponseStatusException toResponse(AssessmentMistakeFeedException exception) {
++        HttpStatus status = switch (exception.statusCode()) {
++            case 401 -> HttpStatus.UNAUTHORIZED;
++            case 403 -> HttpStatus.FORBIDDEN;
++            case 408, 504 -> HttpStatus.GATEWAY_TIMEOUT;
++            case 503 -> HttpStatus.SERVICE_UNAVAILABLE;
++            default -> HttpStatus.BAD_GATEWAY;
++        };
++        return new ResponseStatusException(status, exception.getMessage(), exception);
+     }
+ 
+     public int write(JdbcTemplate jdbc, String subject, List<Map<String, Object>> admitted) {
+diff --git a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
+index c9281427..74fcb1ee 100644
+--- a/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
++++ b/services/learning-service/src/main/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeed.java
+@@ -1,15 +1,21 @@
+ package com.englishflow.learning.adapter.http;
+ 
++import java.io.IOException;
+ import java.net.URI;
++import java.net.URLEncoder;
+ import java.net.http.HttpClient;
+ import java.net.http.HttpRequest;
+ import java.net.http.HttpResponse;
++import java.net.http.HttpTimeoutException;
++import java.nio.charset.StandardCharsets;
+ import java.time.Duration;
+ import java.util.ArrayList;
++import java.util.HashSet;
+ import java.util.LinkedHashMap;
++import java.util.LinkedHashSet;
+ import java.util.List;
+ import java.util.Map;
+-import java.util.logging.Logger;
++import java.util.Set;
+ 
+ import tools.jackson.databind.ObjectMapper;
+ 
+@@ -18,66 +24,158 @@ import tools.jackson.databind.ObjectMapper;
+  * the assessment schema. The same facts are written to
+  * {@code learning.mistake.admitted.v1} in the assessment outbox; this feed is
+  * the local consumer while the Kafka relay is off.
++ *
++ * <p>A walk either finishes or throws. A later 401/403/500, timeout, parse
++ * failure, repeated cursor, duplicate id, or budget exit with {@code hasMore}
++ * is not a successful prefix or empty book.
+  */
+ public final class HttpAssessmentMistakeFeed {
+-    private static final Logger LOG = Logger.getLogger(HttpAssessmentMistakeFeed.class.getName());
++    static final int DEFAULT_MAX_PAGES = 10_000;
++    static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(4);
+ 
+     private final ObjectMapper mapper;
+     private final HttpClient http;
+     private final String assessmentBaseUrl;
++    private final Duration requestTimeout;
++    private final int maxPages;
+ 
+     public HttpAssessmentMistakeFeed(ObjectMapper mapper, String assessmentBaseUrl) {
++        this(mapper, assessmentBaseUrl, HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build(),
++                DEFAULT_REQUEST_TIMEOUT, DEFAULT_MAX_PAGES);
++    }
++
++    HttpAssessmentMistakeFeed(ObjectMapper mapper, String assessmentBaseUrl, HttpClient http,
++            Duration requestTimeout, int maxPages) {
+         this.mapper = mapper;
+-        this.http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build();
++        this.http = http;
+         String base = assessmentBaseUrl == null ? "" : assessmentBaseUrl.trim();
+         while (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+         this.assessmentBaseUrl = base;
++        this.requestTimeout = requestTimeout == null ? DEFAULT_REQUEST_TIMEOUT : requestTimeout;
++        this.maxPages = maxPages < 1 ? 1 : maxPages;
+     }
+ 
+     public List<Map<String, Object>> list(String bearer) {
+-        if (bearer == null || bearer.isBlank() || !assessmentBaseUrl.startsWith("http")) return List.of();
++        if (bearer == null || bearer.isBlank()) {
++            throw new AssessmentMistakeFeedException(401, "assessment mistake feed missing bearer");
++        }
++        if (!assessmentBaseUrl.startsWith("http")) {
++            throw new AssessmentMistakeFeedException(503, "assessment mistake feed is not configured");
++        }
++        List<Map<String, Object>> facts = new ArrayList<>();
++        Set<String> seenIds = new LinkedHashSet<>();
++        Set<String> seenCursors = new HashSet<>();
++        String cursor = null;
+         try {
+-            HttpRequest request = HttpRequest.newBuilder()
+-                    .uri(URI.create(assessmentBaseUrl + "/internal/v1/assessment/mistakes"))
+-                    .header("Accept", "application/json")
+-                    .header("Authorization", "Bearer " + bearer.trim())
+-                    .timeout(Duration.ofSeconds(4))
+-                    .GET()
+-                    .build();
+-            HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+-            if (response.statusCode() != 200) {
+-                LOG.warning("assessment mistake feed returned " + response.statusCode());
+-                return List.of();
++            for (int page = 0; page < maxPages; page++) {
++                HttpResponse<String> response = send(cursor, bearer);
++                int status = response.statusCode();
++                if (status != 200) {
++                    throw new AssessmentMistakeFeedException(status,
++                            "assessment mistake feed returned " + status);
++                }
++                Page parsed = parsePage(response.body());
++                if (parsed.hasMore && parsed.facts.isEmpty()) {
++                    throw new AssessmentMistakeFeedException(502,
++                            "assessment mistake feed made no progress");
++                }
++                for (Map<String, Object> fact : parsed.facts) {
++                    String id = String.valueOf(fact.get("itemId"));
++                    if (seenIds.contains(id)) {
++                        throw new AssessmentMistakeFeedException(502,
++                                "assessment mistake feed duplicated an item");
++                    }
++                    seenIds.add(id);
++                    facts.add(fact);
++                }
++                if (!parsed.hasMore) {
++                    return List.copyOf(facts);
++                }
++                if (parsed.nextCursor == null || parsed.nextCursor.isBlank()) {
++                    throw new AssessmentMistakeFeedException(502,
++                            "assessment mistake feed has more without a cursor");
++                }
++                if (parsed.nextCursor.equals(cursor) || seenCursors.contains(parsed.nextCursor)) {
++                    throw new AssessmentMistakeFeedException(502,
++                            "assessment mistake feed repeated a cursor");
++                }
++                seenCursors.add(parsed.nextCursor);
++                cursor = parsed.nextCursor;
+             }
+-            return parse(response.body());
+-        } catch (Exception exception) {
+-            LOG.warning("assessment mistake feed unavailable: " + exception.getClass().getSimpleName());
+-            return List.of();
++            throw new AssessmentMistakeFeedException(502,
++                    "assessment mistake feed exceeded the page budget");
++        } catch (AssessmentMistakeFeedException exception) {
++            throw exception;
++        } catch (HttpTimeoutException exception) {
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed timed out", exception);
++        } catch (InterruptedException exception) {
++            Thread.currentThread().interrupt();
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed unavailable", exception);
++        } catch (IOException exception) {
++            throw new AssessmentMistakeFeedException(504, "assessment mistake feed unavailable", exception);
+         }
+     }
+ 
+-    @SuppressWarnings("unchecked")
+     List<Map<String, Object>> parse(String body) {
++        return parsePage(body).facts;
++    }
++
++    Page parsePage(String body) {
++        Object parsed;
+         try {
+-            Object parsed = mapper.readValue(body, Object.class);
+-            Object data = parsed instanceof Map<?, ?> map ? map.get("data") : null;
+-            Object items = data instanceof Map<?, ?> dataMap ? dataMap.get("items") : null;
+-            if (!(items instanceof List<?> list)) return List.of();
+-            List<Map<String, Object>> facts = new ArrayList<>();
+-            for (Object entry : list) {
+-                if (!(entry instanceof Map<?, ?> raw)) continue;
+-                Map<String, Object> fact = new LinkedHashMap<>();
+-                fact.put("itemId", raw.get("itemId"));
+-                fact.put("scoreBucket", raw.get("scoreBucket") == null ? "ZERO" : raw.get("scoreBucket"));
+-                fact.put("errorCategory", raw.get("errorCategory"));
+-                fact.put("contentCode", raw.get("contentCode"));
+-                fact.put("sourceAttemptId", sourceAttempt(raw));
+-                facts.add(fact);
++            parsed = mapper.readValue(body, Object.class);
++        } catch (Exception exception) {
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not JSON", exception);
++        }
++        if (!(parsed instanceof Map<?, ?> map) || map.isEmpty()) {
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
++        }
++        Object data = map.get("data");
++        Object items = data instanceof Map<?, ?> dataMap ? dataMap.get("items") : null;
++        if (!(items instanceof List<?> list)) {
++            throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
++        }
++        List<Map<String, Object>> facts = new ArrayList<>();
++        for (Object entry : list) {
++            if (!(entry instanceof Map<?, ?> raw)) {
++                throw new AssessmentMistakeFeedException(502, "assessment mistake feed body is not a page");
+             }
+-            return facts;
+-        } catch (Exception ignored) {
+-            return List.of();
++            Map<String, Object> fact = new LinkedHashMap<>();
++            fact.put("itemId", raw.get("itemId"));
++            fact.put("scoreBucket", raw.get("scoreBucket") == null ? "ZERO" : raw.get("scoreBucket"));
++            fact.put("errorCategory", raw.get("errorCategory"));
++            fact.put("contentCode", raw.get("contentCode"));
++            fact.put("sourceAttemptId", sourceAttempt(raw));
++            facts.add(fact);
++        }
++        Object meta = map.get("meta");
++        boolean hasMore = meta instanceof Map<?, ?> metaMap && Boolean.TRUE.equals(metaMap.get("hasMore"));
++        String nextCursor = null;
++        if (meta instanceof Map<?, ?> metaMap) {
++            Object cursor = metaMap.get("nextCursor");
++            if (cursor instanceof String text && !text.isBlank()) nextCursor = text;
++        }
++        if (!hasMore) nextCursor = null;
++        return new Page(List.copyOf(facts), hasMore, nextCursor);
++    }
++
++    record Page(List<Map<String, Object>> facts, boolean hasMore, String nextCursor) {
++    }
++
++    private HttpResponse<String> send(String cursor, String bearer) throws IOException, InterruptedException {
++        StringBuilder uri = new StringBuilder(assessmentBaseUrl)
++                .append("/internal/v1/assessment/mistakes?pageSize=100");
++        if (cursor != null) {
++            uri.append("&cursor=").append(URLEncoder.encode(cursor, StandardCharsets.UTF_8));
+         }
++        HttpRequest request = HttpRequest.newBuilder()
++                .uri(URI.create(uri.toString()))
++                .header("Accept", "application/json")
++                .header("Authorization", "Bearer " + bearer.trim())
++                .timeout(requestTimeout)
++                .GET()
++                .build();
++        return http.send(request, HttpResponse.BodyHandlers.ofString());
+     }
+ 
+     private static String sourceAttempt(Map<?, ?> raw) {
+diff --git a/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java b/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java
+index 9df2bf04..058fa023 100644
+--- a/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java
++++ b/services/learning-service/src/main/java/com/englishflow/learning/web/B25LearningJdbcController.java
+@@ -14,6 +14,7 @@ import java.util.Map;
+ import java.util.UUID;
+ 
+ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
++import org.springframework.dao.DuplicateKeyException;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.jdbc.core.JdbcTemplate;
+ import org.springframework.security.core.Authentication;
+@@ -458,8 +459,9 @@ public class B25LearningJdbcController {
+     }
+ 
+     /**
+-     * A missing or blank Idempotency-Key still mints a new unguessable ref.
+-     * A key replays the first share for this owner and tenant.
++     * Idempotency-Key is required. Missing or malformed keys return 400 before
++     * any durable insert. A matching owner+tenant+payload key replays the first
++     * share; a mismatched reuse returns 409.
+      */
+     @PostMapping("/reports/{reportType}/shares")
+     @Transactional
+@@ -467,16 +469,14 @@ public class B25LearningJdbcController {
+             @RequestParam(required = false) String date,
+             @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
+         Principal principal = principal(authentication, "learning.progress.read");
++        String key = requireShareIdempotencyKey(idempotencyKey);
+         String kind = reportKind(reportType);
+-        String key = shareIdempotencyKey(idempotencyKey);
+         boolean omitted = date == null || date.isBlank();
+         LocalDate explicit = omitted ? null : parseDate(date, LocalDate.now(ZoneOffset.UTC));
+         String binding = omitted ? kind + "|ABSENT" : kind + "|EXPLICIT|" + explicit;
+         String owner = principal.subject();
+-        if (key != null) {
+-            Map<String, Object> existing = plainShareByKey(owner, key);
+-            if (existing != null) return replayShare(existing, binding);
+-        }
++        Map<String, Object> existing = plainShareByKey(owner, key);
++        if (existing != null) return replayShare(existing, binding);
+         LocalDate anchor = omitted ? LocalDate.now(ZoneOffset.UTC) : explicit;
+         LocalDate start = "WEEKLY".equals(kind) ? anchor.with(DayOfWeek.MONDAY) : anchor;
+         LocalDate end = start.plusDays("WEEKLY".equals(kind) ? 7 : 1);
+@@ -489,14 +489,6 @@ public class B25LearningJdbcController {
+         String expiresAt = String.valueOf(share.get("expiresAt"));
+         java.sql.Timestamp expires = java.sql.Timestamp.from(Instant.parse(expiresAt));
+         String snapshot = writeJson(share.get("publicFields"));
+-        if (key == null) {
+-            jdbc.update("""
+-                    INSERT INTO b25_learning_report_share
+-                        (share_ref, tenant_id, principal_id, report_type, snapshot_json, expires_at)
+-                    VALUES (?, ?, ?, ?, ?, ?)
+-                    """, ref, TENANT, owner, kind, snapshot, expires);
+-            return shareReceipt(ref, expiresAt);
+-        }
+         // Insert first. A missing-key FOR UPDATE in REPEATABLE READ gap-locks both waiters.
+         // Default Connector/J useAffectedRows=false can report 1 for this no-op, so the count is not the receipt.
+         jdbc.update("""
+@@ -515,33 +507,42 @@ public class B25LearningJdbcController {
+ 
+     @PostMapping("/report-shares/{ref}/revoke")
+     @Transactional
+-    public Map<String, Object> revokeReportShare(Authentication authentication, @PathVariable String ref) {
++    public Map<String, Object> revokeReportShare(Authentication authentication, @PathVariable String ref,
++            @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
+         Principal principal = principal(authentication, "learning.progress.read");
++        String key = requireShareIdempotencyKey(idempotencyKey);
+         if (ref == null || !ref.matches("[0-9a-f]{32}")) {
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
+         }
+         String owner = principal.subject();
+-        Map<String, Object> locked = one("""
+-                SELECT revoked_at
+-                  FROM b25_learning_report_share
+-                 WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
+-                 FOR UPDATE
+-                """, ref, TENANT, owner);
++        Map<String, Object> byKey = plainRevokeByKey(owner, key);
++        if (byKey != null) {
++            Map<String, Object> replayed = replayRevoke(byKey, ref);
++            if (replayed != null) return replayed;
++        }
++        Map<String, Object> locked = lockedShareForRevoke(owner, ref);
+         if (locked == null) {
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
+         }
++        String storedKey = text(locked.get("revoke_idempotency_key"));
+         if (locked.get("revoked_at") != null) {
++            if (storedKey.isBlank()) bindLegacyRevokeKey(owner, ref, key);
+             return Map.of("ref", ref, "status", "REVOKED", "revokedAt", instantText(locked.get("revoked_at")));
+         }
+         Instant now = Instant.now().truncatedTo(ChronoUnit.MICROS);
+-        int updated = jdbc.update("""
+-                UPDATE b25_learning_report_share
+-                   SET revoked_at = ?
+-                 WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
+-                   AND revoked_at IS NULL
+-                """, java.sql.Timestamp.from(now), ref, TENANT, owner);
+-        if (updated != 1) {
+-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
++        try {
++            int updated = jdbc.update("""
++                    UPDATE b25_learning_report_share
++                       SET revoked_at = ?, revoke_idempotency_key = ?, revoke_request_binding = ?
++                     WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
++                       AND revoked_at IS NULL
++                    """, java.sql.Timestamp.from(now), key, ref, ref, TENANT, owner);
++            if (updated != 1) {
++                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "share not found");
++            }
++        } catch (DuplicateKeyException exception) {
++            throw new ResponseStatusException(HttpStatus.CONFLICT,
++                    "idempotency key was used for a different report share");
+         }
+         return Map.of("ref", ref, "status", "REVOKED", "revokedAt", now.toString());
+     }
+@@ -859,9 +860,11 @@ public class B25LearningJdbcController {
+ 
+     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+ 
+-    /** Blank, including whitespace, stays on the headerless insert. A present key uses the safe ASCII alphabet. */
+-    private static String shareIdempotencyKey(String raw) {
+-        if (raw == null || raw.isBlank()) return null;
++    /** Missing, blank, or unsafe keys fail before any durable share write. */
++    private static String requireShareIdempotencyKey(String raw) {
++        if (raw == null || raw.isBlank()) {
++            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Idempotency-Key is required");
++        }
+         try {
+             return new IdempotencyKey(raw.trim()).value();
+         } catch (IllegalArgumentException exception) {
+@@ -887,6 +890,48 @@ public class B25LearningJdbcController {
+                 """, TENANT, owner, key);
+     }
+ 
++    private Map<String, Object> plainRevokeByKey(String owner, String key) {
++        return one("""
++                SELECT share_ref, revoked_at
++                  FROM b25_learning_report_share
++                 WHERE tenant_id = ? AND principal_id = ? AND revoke_idempotency_key = ?
++                """, TENANT, owner, key);
++    }
++
++    private Map<String, Object> lockedShareForRevoke(String owner, String ref) {
++        return one("""
++                SELECT share_ref, revoked_at, revoke_idempotency_key
++                  FROM b25_learning_report_share
++                 WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
++                 FOR UPDATE
++                """, ref, TENANT, owner);
++    }
++
++    /** Same owner+tenant+key and ref replay the first revoke receipt. A different ref is 409. */
++    private Map<String, Object> replayRevoke(Map<String, Object> row, String ref) {
++        if (!ref.equals(text(row.get("share_ref")))) {
++            throw new ResponseStatusException(HttpStatus.CONFLICT,
++                    "idempotency key was used for a different report share");
++        }
++        if (row.get("revoked_at") == null) return null;
++        return Map.of("ref", ref, "status", "REVOKED", "revokedAt", instantText(row.get("revoked_at")));
++    }
++
++    /** Legacy already-revoked rows have a null key. Bind this key without rewriting revokedAt. */
++    private void bindLegacyRevokeKey(String owner, String ref, String key) {
++        try {
++            jdbc.update("""
++                    UPDATE b25_learning_report_share
++                       SET revoke_idempotency_key = ?, revoke_request_binding = ?
++                     WHERE share_ref = ? AND tenant_id = ? AND principal_id = ?
++                       AND revoke_idempotency_key IS NULL
++                    """, key, ref, ref, TENANT, owner);
++        } catch (DuplicateKeyException exception) {
++            throw new ResponseStatusException(HttpStatus.CONFLICT,
++                    "idempotency key was used for a different report share");
++        }
++    }
++
+     /** The original issue receipt stays ACTIVE even after a later revoke or expiry. */
+     private Map<String, Object> replayShare(Map<String, Object> row, String binding) {
+         if (!binding.equals(text(row.get("request_binding")))) {
+diff --git a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java
+index 686d827a..311026be 100644
+--- a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java
++++ b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/AssessmentMistakeQueueProjectorTest.java
+@@ -15,6 +15,16 @@ import static org.mockito.Mockito.mock;
+ import static org.mockito.Mockito.never;
+ import static org.mockito.Mockito.verify;
+ import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++
++import java.net.InetSocketAddress;
++import java.nio.charset.StandardCharsets;
++
++import org.springframework.web.server.ResponseStatusException;
++import org.springframework.http.HttpStatus;
++
++import com.sun.net.httpserver.HttpServer;
+ 
+ class AssessmentMistakeQueueProjectorTest {
+     @Test
+@@ -44,4 +54,63 @@ class AssessmentMistakeQueueProjectorTest {
+         org.junit.jupiter.api.Assertions.assertEquals(0, written);
+         verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
+     }
++
++    @Test
++    void projectDoesNotWriteWhenTheHttpWalkFailsOnTheFirstPage() throws Exception {
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        server.createContext("/internal/v1/assessment/mistakes", exchange -> {
++            byte[] body = "denied".getBytes(StandardCharsets.UTF_8);
++            exchange.sendResponseHeaders(403, body.length);
++            exchange.getResponseBody().write(body);
++            exchange.close();
++        });
++        server.start();
++        try {
++            JdbcTemplate jdbc = mock(JdbcTemplate.class);
++            AssessmentMistakeQueueProjector projector = AssessmentMistakeQueueProjector.http(
++                    new ObjectMapper(), "http://127.0.0.1:" + server.getAddress().getPort());
++            ResponseStatusException thrown = assertThrows(ResponseStatusException.class,
++                    () -> projector.project(jdbc, "prn_learner", "token"));
++            assertEquals(HttpStatus.FORBIDDEN, thrown.getStatusCode());
++            verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
++            verify(jdbc, never()).queryForObject(anyString(), eq(Integer.class), any(), any(), any());
++        } finally {
++            server.stop(0);
++        }
++    }
++
++    @Test
++    void projectDoesNotWriteWhenALaterPageFails() throws Exception {
++        java.util.concurrent.atomic.AtomicInteger calls = new java.util.concurrent.atomic.AtomicInteger();
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        server.createContext("/internal/v1/assessment/mistakes", exchange -> {
++            int n = calls.incrementAndGet();
++            if (n == 1) {
++                byte[] body = """
++                        {"data":{"items":[{"itemId":1,"scoreBucket":"ZERO"}],"count":1},
++                         "meta":{"hasMore":true,"pageSize":100,"nextCursor":"cursor-a"}}
++                        """.getBytes(StandardCharsets.UTF_8);
++                exchange.sendResponseHeaders(200, body.length);
++                exchange.getResponseBody().write(body);
++            } else {
++                byte[] body = "denied".getBytes(StandardCharsets.UTF_8);
++                exchange.sendResponseHeaders(401, body.length);
++                exchange.getResponseBody().write(body);
++            }
++            exchange.close();
++        });
++        server.start();
++        try {
++            JdbcTemplate jdbc = mock(JdbcTemplate.class);
++            AssessmentMistakeQueueProjector projector = AssessmentMistakeQueueProjector.http(
++                    new ObjectMapper(), "http://127.0.0.1:" + server.getAddress().getPort());
++            ResponseStatusException thrown = assertThrows(ResponseStatusException.class,
++                    () -> projector.project(jdbc, "prn_learner", "token"));
++            assertEquals(HttpStatus.UNAUTHORIZED, thrown.getStatusCode());
++            verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any(), any(), any());
++            verify(jdbc, never()).queryForObject(anyString(), eq(Integer.class), any(), any(), any());
++        } finally {
++            server.stop(0);
++        }
++    }
+ }
+diff --git a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
+index d334d5df..316f549b 100644
+--- a/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
++++ b/services/learning-service/src/test/java/com/englishflow/learning/adapter/http/HttpAssessmentMistakeFeedTest.java
+@@ -1,13 +1,24 @@
+ package com.englishflow.learning.adapter.http;
+ 
++import java.net.InetSocketAddress;
++import java.net.http.HttpClient;
++import java.nio.charset.StandardCharsets;
++import java.time.Duration;
++import java.util.ArrayList;
+ import java.util.List;
+ import java.util.Map;
++import java.util.concurrent.atomic.AtomicInteger;
++import java.util.function.BiFunction;
+ 
+ import org.junit.jupiter.api.Test;
+ 
++import com.sun.net.httpserver.HttpServer;
++
+ import tools.jackson.databind.ObjectMapper;
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ class HttpAssessmentMistakeFeedTest {
+     @Test
+@@ -25,4 +36,202 @@ class HttpAssessmentMistakeFeedTest {
+         assertEquals("aatm_1", facts.getFirst().get("sourceAttemptId"));
+         org.junit.jupiter.api.Assertions.assertFalse(facts.getFirst().containsKey("answerHash"));
+     }
++
++    @Test
++    void theFeedReadsCanonicalCursorMetaAndLeavesCursorStateOutOfFacts() {
++        String body = """
++                {"data":{"items":[{"itemId":7,"scoreBucket":"ZERO","errorCategory":"UNCLASSIFIED",
++                "contentCode":"p1.placement.v1","sourceAttemptId":"aatm_2"}],"count":1},
++                "meta":{"hasMore":true,"pageSize":1,"nextCursor":"v1.mid.7xxxxxxxx"}}
++                """;
++        HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), "http://127.0.0.1:18091");
++        HttpAssessmentMistakeFeed.Page page = feed.parsePage(body);
++        assertEquals(1, page.facts().size());
++        assertEquals(7, page.facts().getFirst().get("itemId"));
++        assertEquals(true, page.hasMore());
++        assertEquals("v1.mid.7xxxxxxxx", page.nextCursor());
++        org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("nextCursor"));
++        org.junit.jupiter.api.Assertions.assertFalse(page.facts().getFirst().containsKey("hasMore"));
++    }
++
++    @Test
++    void aCompleteHttpWalkReturnsEveryPageAndDoesNotWriteAPrefix() {
++        AtomicInteger calls = new AtomicInteger();
++        withServer((page, cursor) -> {
++            calls.incrementAndGet();
++            if (cursor == null) return ok(List.of(1, 2), "cursor-a", true);
++            assertEquals("cursor-a", cursor);
++            return ok(List.of(3), null, false);
++        }, (feed, url) -> {
++            List<Map<String, Object>> facts = feed.list("token");
++            assertEquals(List.of("1", "2", "3"), ids(facts));
++            assertEquals(2, calls.get());
++        });
++    }
++
++    @Test
++    void aMissingFirstPage401ThrowsAndDoesNotReturnEmptySuccess() {
++        withServer((page, cursor) -> new Stub(401, "denied", 0), (feed, url) -> {
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                    () -> feed.list("token"));
++            assertEquals(401, thrown.statusCode());
++        });
++    }
++
++    @Test
++    void aFirstPage403ThrowsAndDoesNotReturnEmptySuccess() {
++        withServer((page, cursor) -> new Stub(403, "forbidden", 0), (feed, url) -> {
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                    () -> feed.list("token"));
++            assertEquals(403, thrown.statusCode());
++        });
++    }
++
++    @Test
++    void aLaterPage401ThrowsAndDoesNotReturnThePrefix() {
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1, 2), "cursor-a", true) : new Stub(401, "denied", 0),
++                (feed, url) -> {
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                            () -> feed.list("token"));
++                    assertEquals(401, thrown.statusCode());
++                });
++    }
++
++    @Test
++    void aLaterPage500ThrowsAndDoesNotReturnThePrefix() {
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1), "cursor-a", true) : new Stub(500, "broken", 0),
++                (feed, url) -> {
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                            () -> feed.list("token"));
++                    assertEquals(500, thrown.statusCode());
++                });
++    }
++
++    @Test
++    void aMalformedLaterPageThrowsAndDoesNotEndTheBook() {
++        withServer((page, cursor) -> cursor == null ? ok(List.of(1), "cursor-a", true) : new Stub(200, "{not-json", 0),
++                (feed, url) -> {
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                            () -> feed.list("token"));
++                    assertEquals(502, thrown.statusCode());
++                    assertTrue(thrown.getMessage().contains("JSON") || thrown.getMessage().contains("page"));
++                });
++    }
++
++    @Test
++    void aRepeatedCursorThrowsAndDoesNotLoopFacts() {
++        AtomicInteger ids = new AtomicInteger();
++        withServer((page, cursor) -> ok(List.of(ids.incrementAndGet()), "cursor-a", true), (feed, url) -> {
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                    () -> feed.list("token"));
++            assertEquals(502, thrown.statusCode());
++            assertTrue(thrown.getMessage().contains("repeated a cursor"));
++        });
++    }
++
++    @Test
++    void aPageBudgetWithHasMoreThrows() {
++        AtomicInteger calls = new AtomicInteger();
++        withServer(1, Duration.ofSeconds(2), (page, cursor) -> {
++            int n = calls.incrementAndGet();
++            return ok(List.of(n), "cursor-" + n, true);
++        }, (feed, url) -> {
++            AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                    () -> feed.list("token"));
++            assertEquals(502, thrown.statusCode());
++            assertTrue(thrown.getMessage().contains("page budget"));
++            assertEquals(1, calls.get());
++        });
++    }
++
++    @Test
++    void aTimeoutThrowsAndDoesNotReturnAPrefix() {
++        withServer(10_000, Duration.ofMillis(150), (page, cursor) -> new Stub(200, ok(List.of(1), null, false).body, 400),
++                (feed, url) -> {
++                    AssessmentMistakeFeedException thrown = assertThrows(AssessmentMistakeFeedException.class,
++                            () -> feed.list("token"));
++                    assertEquals(504, thrown.statusCode());
++                });
++    }
++
++    @Test
++    void parseFailureOnACompleteLookingEmptyObjectThrows() {
++        HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), "http://127.0.0.1:18091");
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("{}"));
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("[]"));
++        assertThrows(AssessmentMistakeFeedException.class, () -> feed.parsePage("{"));
++    }
++
++    private static List<String> ids(List<Map<String, Object>> facts) {
++        List<String> ids = new ArrayList<>();
++        for (Map<String, Object> fact : facts) ids.add(String.valueOf(fact.get("itemId")));
++        return ids;
++    }
++
++    private static Stub ok(List<Integer> itemIds, String nextCursor, boolean hasMore) {
++        StringBuilder items = new StringBuilder();
++        for (int i = 0; i < itemIds.size(); i++) {
++            if (i > 0) items.append(',');
++            items.append("{\"itemId\":").append(itemIds.get(i)).append(",\"scoreBucket\":\"ZERO\"}");
++        }
++        String meta = hasMore
++                ? "\"meta\":{\"hasMore\":true,\"pageSize\":100,\"nextCursor\":\"" + nextCursor + "\"}"
++                : "\"meta\":{\"hasMore\":false,\"pageSize\":100,\"nextCursor\":null}";
++        return new Stub(200, "{\"data\":{\"items\":[" + items + "],\"count\":" + itemIds.size() + "}," + meta + "}", 0);
++    }
++
++    private static void withServer(BiFunction<Integer, String, Stub> pages, FeedCheck check) {
++        withServer(HttpAssessmentMistakeFeed.DEFAULT_MAX_PAGES, Duration.ofSeconds(2), pages, check);
++    }
++
++    private static void withServer(int maxPages, Duration timeout, BiFunction<Integer, String, Stub> pages,
++            FeedCheck check) {
++        HttpServer server = null;
++        try {
++            AtomicInteger page = new AtomicInteger();
++            server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++            server.createContext("/internal/v1/assessment/mistakes", exchange -> {
++                String query = exchange.getRequestURI().getRawQuery();
++                String cursor = null;
++                if (query != null) {
++                    for (String part : query.split("&")) {
++                        if (part.startsWith("cursor=")) {
++                            cursor = java.net.URLDecoder.decode(part.substring(7), StandardCharsets.UTF_8);
++                        }
++                    }
++                }
++                Stub stub = pages.apply(page.getAndIncrement(), cursor);
++                if (stub.delayMs > 0) {
++                    try {
++                        Thread.sleep(stub.delayMs);
++                    } catch (InterruptedException interrupted) {
++                        Thread.currentThread().interrupt();
++                    }
++                }
++                byte[] bytes = stub.body.getBytes(StandardCharsets.UTF_8);
++                exchange.sendResponseHeaders(stub.status, bytes.length);
++                exchange.getResponseBody().write(bytes);
++                exchange.close();
++            });
++            server.start();
++            String url = "http://127.0.0.1:" + server.getAddress().getPort();
++            HttpAssessmentMistakeFeed feed = new HttpAssessmentMistakeFeed(new ObjectMapper(), url,
++                    HttpClient.newBuilder().connectTimeout(Duration.ofMillis(200)).build(), timeout, maxPages);
++            check.run(feed, url);
++        } catch (RuntimeException exception) {
++            throw exception;
++        } catch (Exception exception) {
++            throw new IllegalStateException(exception);
++        } finally {
++            if (server != null) server.stop(0);
++        }
++    }
++
++    private record Stub(int status, String body, long delayMs) {
++    }
++
++    @FunctionalInterface
++    private interface FeedCheck {
++        void run(HttpAssessmentMistakeFeed feed, String url) throws Exception;
++    }
+ }
+diff --git a/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java b/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java
+index 7fda8f20..5ed22602 100644
+--- a/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java
++++ b/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareControllerTest.java
+@@ -37,24 +37,42 @@ import static org.mockito.Mockito.when;
+ class ReportShareControllerTest {
+ 
+     private static final String SHARE_KEY = "report-share-key-01";
++    private static final String REVOKE_KEY = "report-share-revoke1";
+ 
+     @Test
+     void issueStoresOnlyPublicFieldsAndTheRefIsUnguessable() {
+         JdbcTemplate jdbc = mock(JdbcTemplate.class);
+         when(jdbc.queryForList(contains("b3_learning_interaction"), any(Object[].class))).thenReturn(List.of());
+-        when(jdbc.update(contains("b25_learning_report_share"), any(), any(), any(), any(), any(), any())).thenReturn(1);
++        String[] insertedRef = { null };
++        when(jdbc.update(contains("ON DUPLICATE KEY UPDATE"), any(), any(), any(), any(), any(), any(), any(), any()))
++                .thenAnswer(invocation -> {
++                    insertedRef[0] = invocation.getArgument(1);
++                    return 1;
++                });
++        when(jdbc.queryForList(contains("request_binding"), eq("platform"), eq("learner-share-test"), eq(SHARE_KEY)))
++                .thenAnswer(invocation -> {
++                    String sql = invocation.getArgument(0, String.class);
++                    if (!sql.contains("FOR UPDATE")) return List.of();
++                    Map<String, Object> row = new LinkedHashMap<>();
++                    row.put("share_ref", insertedRef[0]);
++                    row.put("request_binding", "DAILY|EXPLICIT|2026-10-11");
++                    row.put("expires_at", java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00.123456Z")));
++                    return List.of(row);
++                });
+         B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+ 
+-        Map<String, Object> issued = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
++        Map<String, Object> issued = controller.issueReportShare(learner(), "DAILY", "2026-10-11", SHARE_KEY);
+ 
+         String ref = String.valueOf(issued.get("ref"));
+         assertTrue(ref.matches("[0-9a-f]{32}"));
++        assertEquals(insertedRef[0], ref);
+         assertEquals("/api/v1/public/learning/report-shares/" + ref, issued.get("publicPath"));
+         assertFalse(issued.containsKey("token"));
+         assertFalse(issued.containsKey("subject"));
+         org.mockito.ArgumentCaptor<String> snapshot = org.mockito.ArgumentCaptor.forClass(String.class);
+         verify(jdbc).update(contains("INSERT INTO b25_learning_report_share"),
+-                eq(ref), eq("platform"), eq("learner-share-test"), eq("DAILY"), snapshot.capture(), any());
++                eq(ref), eq("platform"), eq("learner-share-test"), eq("DAILY"), snapshot.capture(), any(),
++                eq(SHARE_KEY), eq("DAILY|EXPLICIT|2026-10-11"));
+         assertTrue(snapshot.getValue().contains("NEVER_STUDIED"));
+         assertFalse(snapshot.getValue().contains("token"));
+         assertFalse(snapshot.getValue().contains("\"subject\""));
+@@ -84,20 +102,23 @@ class ReportShareControllerTest {
+                 .thenReturn(List.of());
+         row.put("principal_id", "someone-else");
+         ResponseStatusException hidden = assertThrows(ResponseStatusException.class,
+-                () -> controller.revokeReportShare(learner(), ref));
++                () -> controller.revokeReportShare(learner(), ref, REVOKE_KEY));
+         assertEquals(HttpStatus.NOT_FOUND, hidden.getStatusCode());
++        assertEquals("share not found", hidden.getReason());
+         verify(jdbc).queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test"));
++        verify(jdbc, never()).queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("someone-else"));
+ 
+         ResponseStatusException malformed = assertThrows(ResponseStatusException.class,
+-                () -> controller.revokeReportShare(learner(), "missing"));
++                () -> controller.revokeReportShare(learner(), "missing", REVOKE_KEY));
+         assertEquals(HttpStatus.NOT_FOUND, malformed.getStatusCode());
+         String absent = "cd".repeat(16);
+         when(jdbc.queryForList(contains("FOR UPDATE"), eq(absent), eq("platform"), eq("learner-share-test")))
+                 .thenReturn(List.of());
+         ResponseStatusException unknown = assertThrows(ResponseStatusException.class,
+-                () -> controller.revokeReportShare(learner(), absent));
++                () -> controller.revokeReportShare(learner(), absent, REVOKE_KEY));
+         assertEquals(HttpStatus.NOT_FOUND, unknown.getStatusCode());
+-        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"), any(), any(), any(), any());
++        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any());
+     }
+ 
+     @Test
+@@ -106,17 +127,19 @@ class ReportShareControllerTest {
+         B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+         String ref = "ab".repeat(16);
+         Map<String, Object> locked = new LinkedHashMap<>();
++        locked.put("share_ref", ref);
+         locked.put("revoked_at", null);
++        locked.put("revoke_idempotency_key", null);
+         when(jdbc.queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test")))
+                 .thenReturn(List.of(locked));
+-        when(jdbc.update(contains("revoked_at IS NULL"), any(), eq(ref), eq("platform"), eq("learner-share-test")))
+-                .thenReturn(1);
++        when(jdbc.update(contains("revoked_at IS NULL"), any(), eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"),
++                eq("learner-share-test"))).thenReturn(1);
+ 
+-        Map<String, Object> first = controller.revokeReportShare(learner(), ref);
++        Map<String, Object> first = controller.revokeReportShare(learner(), ref, REVOKE_KEY);
+         org.mockito.ArgumentCaptor<java.sql.Timestamp> written =
+                 org.mockito.ArgumentCaptor.forClass(java.sql.Timestamp.class);
+         verify(jdbc).update(contains("UPDATE b25_learning_report_share"),
+-                written.capture(), eq(ref), eq("platform"), eq("learner-share-test"));
++                written.capture(), eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"), eq("learner-share-test"));
+         Instant stored = written.getValue().toInstant();
+         assertEquals(stored.truncatedTo(ChronoUnit.MICROS), stored);
+         assertEquals(stored.toString(), first.get("revokedAt"));
+@@ -124,11 +147,17 @@ class ReportShareControllerTest {
+         assertEquals(ref, first.get("ref"));
+ 
+         locked.put("revoked_at", written.getValue());
+-        Map<String, Object> second = controller.revokeReportShare(learner(), ref);
++        locked.put("revoke_idempotency_key", REVOKE_KEY);
++        Map<String, Object> keyed = new LinkedHashMap<>();
++        keyed.put("share_ref", ref);
++        keyed.put("revoked_at", written.getValue());
++        when(jdbc.queryForList(contains("revoke_idempotency_key"), eq("platform"), eq("learner-share-test"),
++                eq(REVOKE_KEY))).thenReturn(List.of(keyed));
++        Map<String, Object> second = controller.revokeReportShare(learner(), ref, REVOKE_KEY);
+         assertEquals(first.get("revokedAt"), second.get("revokedAt"));
+         assertEquals(written.getValue().toInstant().toString(), second.get("revokedAt"));
+         verify(jdbc, times(1)).update(contains("UPDATE b25_learning_report_share"),
+-                any(), eq(ref), eq("platform"), eq("learner-share-test"));
++                any(), any(), any(), any(), any(), any());
+     }
+ 
+     @Test
+@@ -143,7 +172,8 @@ class ReportShareControllerTest {
+                 LearningPeriodReport.parseInstant(offset).toString());
+         assertStoredRevoke(jdbc, controller, "cc".repeat(16), local,
+                 LearningPeriodReport.parseInstant(local).toString());
+-        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"), any(), any(), any(), any());
++        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any());
+     }
+ 
+     @Test
+@@ -152,51 +182,43 @@ class ReportShareControllerTest {
+         B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+         String ref = "de".repeat(16);
+         Map<String, Object> open = new LinkedHashMap<>();
++        open.put("share_ref", ref);
+         open.put("revoked_at", null);
++        open.put("revoke_idempotency_key", null);
+         when(jdbc.queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test")))
+                 .thenReturn(List.of(open));
+-        when(jdbc.update(contains("revoked_at IS NULL"), any(), eq(ref), eq("platform"), eq("learner-share-test")))
+-                .thenReturn(0);
++        when(jdbc.update(contains("revoked_at IS NULL"), any(), eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"),
++                eq("learner-share-test"))).thenReturn(0);
+ 
+         ResponseStatusException missing = assertThrows(ResponseStatusException.class,
+-                () -> controller.revokeReportShare(learner(), ref));
++                () -> controller.revokeReportShare(learner(), ref, REVOKE_KEY));
+         assertEquals(HttpStatus.NOT_FOUND, missing.getStatusCode());
+         assertEquals("share not found", missing.getReason());
+         verify(jdbc, times(1)).queryForList(contains("b25_learning_report_share"),
+                 eq(ref), eq("platform"), eq("learner-share-test"));
+         verify(jdbc, times(1)).update(contains("UPDATE b25_learning_report_share"),
+-                any(), eq(ref), eq("platform"), eq("learner-share-test"));
++                any(), eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"), eq("learner-share-test"));
+     }
+ 
+     @Test
+-    void issueWithoutAKeyMintsAFreshRefEachTime() {
++    void issueMissingOrBlankKeyIsRejectedBeforeMutation() {
+         JdbcTemplate jdbc = mock(JdbcTemplate.class);
+-        when(jdbc.queryForList(contains("b3_learning_interaction"), any(Object[].class))).thenReturn(List.of());
+-        when(jdbc.update(contains("INSERT INTO b25_learning_report_share"), any(), any(), any(), any(), any(), any()))
+-                .thenReturn(1);
+         B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
+ 
+-        Map<String, Object> first = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
+-        Map<String, Object> second = controller.issueReportShare(learner(), "DAILY", "2026-10-11", null);
+-        Map<String, Object> blank = controller.issueReportShare(learner(), "DAILY", "2026-10-11", "   ");
+-
+-        assertNotEquals(first.get("ref"), second.get("ref"));
+-        assertNotEquals(first.get("ref"), blank.get("ref"));
+-        assertNotEquals(second.get("ref"), blank.get("ref"));
+-        for (Map<String, Object> issued : List.of(first, second, blank)) {
+-            String ref = String.valueOf(issued.get("ref"));
+-            assertTrue(ref.matches("[0-9a-f]{32}"));
+-            assertEquals("/api/v1/public/learning/report-shares/" + ref, issued.get("publicPath"));
+-            assertEquals("ACTIVE", issued.get("status"));
+-            Instant expires = Instant.parse(String.valueOf(issued.get("expiresAt")));
+-            assertEquals(expires.truncatedTo(ChronoUnit.MICROS), expires);
+-        }
+-        org.mockito.ArgumentCaptor<String> written = org.mockito.ArgumentCaptor.forClass(String.class);
+-        verify(jdbc, times(3)).update(contains("INSERT INTO b25_learning_report_share"),
+-                written.capture(), eq("platform"), eq("learner-share-test"), eq("DAILY"), any(), any());
+-        assertEquals(List.of(first.get("ref"), second.get("ref"), blank.get("ref")), written.getAllValues());
+-        verify(jdbc, never()).update(contains("idempotency_key"), any(), any(), any(), any(), any(), any(), any(), any());
+-        verify(jdbc, never()).queryForList(contains("request_binding"), any(), any(), any());
++        ResponseStatusException missing = assertThrows(ResponseStatusException.class,
++                () -> controller.issueReportShare(learner(), "DAILY", "2026-10-11", null));
++        ResponseStatusException blank = assertThrows(ResponseStatusException.class,
++                () -> controller.issueReportShare(learner(), "DAILY", "2026-10-11", "   "));
++
++        assertEquals(HttpStatus.BAD_REQUEST, missing.getStatusCode());
++        assertEquals("Idempotency-Key is required", missing.getReason());
++        assertEquals(HttpStatus.BAD_REQUEST, blank.getStatusCode());
++        assertEquals("Idempotency-Key is required", blank.getReason());
++        verify(jdbc, never()).update(contains("b25_learning_report_share"), any(), any(), any(), any(), any(), any());
++        verify(jdbc, never()).update(contains("b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any(), any(), any());
++        verify(jdbc, never()).queryForList(contains("b25_learning_report_share"), any(), any(), any());
++        verify(jdbc, never()).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+     }
+ 
+     @Test
+@@ -282,6 +304,42 @@ class ReportShareControllerTest {
+         verify(jdbc, never()).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+     }
+ 
++    @Test
++    void sameKeyIsOwnerScopedAndDoesNotLeakAnotherOwner() {
++        JdbcTemplate jdbc = mock(JdbcTemplate.class);
++        Map<String, Object> ownerRow = new LinkedHashMap<>();
++        ownerRow.put("share_ref", "11".repeat(16));
++        ownerRow.put("request_binding", "DAILY|EXPLICIT|2026-10-11");
++        ownerRow.put("expires_at", java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00Z")));
++        when(jdbc.queryForList(contains("request_binding"), eq("platform"), eq("learner-share-test"), eq(SHARE_KEY)))
++                .thenReturn(List.of(ownerRow));
++        when(jdbc.queryForList(contains("b3_learning_interaction"), any(Object[].class))).thenReturn(List.of());
++        String otherRef = "22".repeat(16);
++        when(jdbc.queryForList(contains("request_binding"), eq("platform"), eq("other-share-owner"), eq(SHARE_KEY)))
++                .thenAnswer(invocation -> {
++                    String sql = invocation.getArgument(0, String.class);
++                    if (!sql.contains("FOR UPDATE")) return List.of();
++                    Map<String, Object> row = new LinkedHashMap<>();
++                    row.put("share_ref", otherRef);
++                    row.put("request_binding", "DAILY|EXPLICIT|2026-10-11");
++                    row.put("expires_at", java.sql.Timestamp.from(Instant.parse("2026-10-18T00:00:00Z")));
++                    return List.of(row);
++                });
++        when(jdbc.update(contains("ON DUPLICATE KEY UPDATE"), any(), any(), any(), any(), any(), any(), any(), any()))
++                .thenReturn(1);
++        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
++
++        Map<String, Object> owner = controller.issueReportShare(learner(), "DAILY", "2026-10-11", SHARE_KEY);
++        Map<String, Object> other = controller.issueReportShare(learner("other-share-owner"), "DAILY", "2026-10-11",
++                SHARE_KEY);
++
++        assertEquals("11".repeat(16), owner.get("ref"));
++        assertEquals(otherRef, other.get("ref"));
++        assertNotEquals(owner.get("ref"), other.get("ref"));
++        verify(jdbc, never()).queryForList(contains("request_binding"), eq("platform"), eq("learner-share-test"),
++                eq("other-share-owner"));
++    }
++
+     @Test
+     void unsafeIdempotencyKeyIsRejected() {
+         JdbcTemplate jdbc = mock(JdbcTemplate.class);
+@@ -299,13 +357,109 @@ class ReportShareControllerTest {
+         verify(jdbc, never()).queryForList(contains("b3_learning_interaction"), any(Object[].class));
+     }
+ 
++    @Test
++    void revokeMissingOrMalformedKeyIsRejectedBeforeMutation() {
++        JdbcTemplate jdbc = mock(JdbcTemplate.class);
++        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
++        String ref = "ab".repeat(16);
++
++        ResponseStatusException missing = assertThrows(ResponseStatusException.class,
++                () -> controller.revokeReportShare(learner(), ref, null));
++        ResponseStatusException blank = assertThrows(ResponseStatusException.class,
++                () -> controller.revokeReportShare(learner(), ref, "   "));
++        ResponseStatusException malformed = assertThrows(ResponseStatusException.class,
++                () -> controller.revokeReportShare(learner(), ref, "too-short"));
++
++        assertEquals(HttpStatus.BAD_REQUEST, missing.getStatusCode());
++        assertEquals("Idempotency-Key is required", missing.getReason());
++        assertEquals(HttpStatus.BAD_REQUEST, blank.getStatusCode());
++        assertEquals("Idempotency-Key is required", blank.getReason());
++        assertEquals(HttpStatus.BAD_REQUEST, malformed.getStatusCode());
++        assertEquals("Idempotency-Key must contain 16-128 safe characters", malformed.getReason());
++        verify(jdbc, never()).queryForList(contains("b25_learning_report_share"), any(), any(), any());
++        verify(jdbc, never()).update(contains("b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any());
++    }
++
++    @Test
++    void revokeSameKeyReplaysAndADifferentRefConflicts() {
++        JdbcTemplate jdbc = mock(JdbcTemplate.class);
++        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
++        String ref = "ab".repeat(16);
++        String other = "cd".repeat(16);
++        java.sql.Timestamp revokedAt = java.sql.Timestamp.from(Instant.parse("2026-10-18T03:04:05.123456Z"));
++        Map<String, Object> keyed = new LinkedHashMap<>();
++        keyed.put("share_ref", ref);
++        keyed.put("revoked_at", revokedAt);
++        when(jdbc.queryForList(contains("revoke_idempotency_key"), eq("platform"), eq("learner-share-test"),
++                eq(REVOKE_KEY))).thenReturn(List.of(keyed));
++
++        Map<String, Object> replay = controller.revokeReportShare(learner(), ref, REVOKE_KEY);
++        assertEquals(ref, replay.get("ref"));
++        assertEquals("REVOKED", replay.get("status"));
++        assertEquals(revokedAt.toInstant().toString(), replay.get("revokedAt"));
++
++        ResponseStatusException conflict = assertThrows(ResponseStatusException.class,
++                () -> controller.revokeReportShare(learner(), other, REVOKE_KEY));
++        assertEquals(HttpStatus.CONFLICT, conflict.getStatusCode());
++        assertEquals("idempotency key was used for a different report share", conflict.getReason());
++        verify(jdbc, never()).queryForList(contains("FOR UPDATE"), any(), any(), any());
++        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any());
++    }
++
++    @Test
++    void alreadyRevokedDifferentKeyReplaysWithoutOverwritingTheStoredKey() {
++        JdbcTemplate jdbc = mock(JdbcTemplate.class);
++        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
++        String ref = "ef".repeat(16);
++        java.sql.Timestamp revokedAt = java.sql.Timestamp.from(Instant.parse("2026-10-18T03:04:05.123456Z"));
++        Map<String, Object> locked = new LinkedHashMap<>();
++        locked.put("share_ref", ref);
++        locked.put("revoked_at", revokedAt);
++        locked.put("revoke_idempotency_key", REVOKE_KEY);
++        when(jdbc.queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test")))
++                .thenReturn(List.of(locked));
++
++        Map<String, Object> body = controller.revokeReportShare(learner(), ref, "report-share-other1");
++        assertEquals(ref, body.get("ref"));
++        assertEquals("REVOKED", body.get("status"));
++        assertEquals(revokedAt.toInstant().toString(), body.get("revokedAt"));
++        verify(jdbc, never()).update(contains("UPDATE b25_learning_report_share"),
++                any(), any(), any(), any(), any(), any());
++    }
++
++    @Test
++    void alreadyRevokedLegacyNullKeyBindsThisKeyWithoutRewritingRevokedAt() {
++        JdbcTemplate jdbc = mock(JdbcTemplate.class);
++        B25LearningJdbcController controller = new B25LearningJdbcController(jdbc);
++        String ref = "aa".repeat(16);
++        java.sql.Timestamp revokedAt = java.sql.Timestamp.from(Instant.parse("2026-10-18T03:04:05.123456Z"));
++        Map<String, Object> locked = new LinkedHashMap<>();
++        locked.put("share_ref", ref);
++        locked.put("revoked_at", revokedAt);
++        locked.put("revoke_idempotency_key", null);
++        when(jdbc.queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test")))
++                .thenReturn(List.of(locked));
++        when(jdbc.update(contains("revoke_idempotency_key IS NULL"), eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"),
++                eq("learner-share-test"))).thenReturn(1);
++
++        Map<String, Object> body = controller.revokeReportShare(learner(), ref, REVOKE_KEY);
++        assertEquals(revokedAt.toInstant().toString(), body.get("revokedAt"));
++        verify(jdbc).update(contains("revoke_idempotency_key IS NULL"),
++                eq(REVOKE_KEY), eq(ref), eq(ref), eq("platform"), eq("learner-share-test"));
++        verify(jdbc, never()).update(contains("revoked_at IS NULL"), any(), any(), any(), any(), any(), any());
++    }
++
+     private static void assertStoredRevoke(JdbcTemplate jdbc, B25LearningJdbcController controller, String ref,
+             Object revokedAt, String expected) {
+         Map<String, Object> row = new LinkedHashMap<>();
++        row.put("share_ref", ref);
+         row.put("revoked_at", revokedAt);
++        row.put("revoke_idempotency_key", REVOKE_KEY);
+         when(jdbc.queryForList(contains("FOR UPDATE"), eq(ref), eq("platform"), eq("learner-share-test")))
+                 .thenReturn(List.of(row));
+-        Map<String, Object> body = controller.revokeReportShare(learner(), ref);
++        Map<String, Object> body = controller.revokeReportShare(learner(), ref, REVOKE_KEY);
+         assertEquals(expected, body.get("revokedAt"));
+         assertEquals("REVOKED", body.get("status"));
+         assertEquals(ref, body.get("ref"));
+diff --git a/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java b/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java
+index 2a7e99ab..f124f1ce 100644
+--- a/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java
++++ b/services/learning-service/src/test/java/com/englishflow/learning/web/ReportShareRevokeJdbcTest.java
+@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
+  * {@link B25LearningJdbcController#revokeReportShare}. Two calls use two
+  * connections. An outer {@code TransactionTemplate} is not used.
+  *
+- * <p>Issue proof: the same proxy and the full Flyway chain, including V14.
++ * <p>Issue proof: the same proxy and the full Flyway chain, including V15.
+  * The test holder gap-locks one absent idempotency key. Production issue does
+  * not. Both proxied issues wait on that lock, then return the one stored row.
+  */
+@@ -142,14 +142,21 @@ class ReportShareRevokeJdbcTest {
+                     """, ref, owner, "{\"availability\":\"EMPTY\",\"copy\":\"synthetic share\"}",
+                     Timestamp.from(Instant.now().plus(Duration.ofDays(7)).truncatedTo(ChronoUnit.MICROS)));
+             assertEquals(1, rowCount(jdbc));
++            assertEquals("ascii_bin", jdbc.queryForObject("""
++                    SELECT COLLATION_NAME
++                      FROM information_schema.COLUMNS
++                     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'b25_learning_report_share'
++                       AND COLUMN_NAME = 'revoke_idempotency_key'
++                    """, String.class, schema));
+ 
+             CountDownLatch started = new CountDownLatch(2);
+             Future<Map<String, Object>> left = null;
+             Future<Map<String, Object>> right = null;
++            String revokeKey = "revoke-share-key-" + hex(4);
+             try (Connection holder = openHolder(jdbcUrl, adminUser, adminPassword, schema)) {
+                 lockShare(holder, ref, owner);
+-                left = pool.submit(() -> revoke(controller, owner, ref, started));
+-                right = pool.submit(() -> revoke(controller, owner, ref, started));
++                left = pool.submit(() -> revoke(controller, owner, ref, revokeKey, started));
++                right = pool.submit(() -> revoke(controller, owner, ref, revokeKey, started));
+                 assertTrue(started.await(3, TimeUnit.SECONDS), "both revoke calls must start");
+                 awaitTwoExclusiveRowLockWaits(jdbcUrl, adminUser, adminPassword, schema);
+                 holder.commit();
+@@ -174,7 +181,7 @@ class ReportShareRevokeJdbcTest {
+             assertEquals(persisted.toString(), second.get("revokedAt"));
+ 
+             ResponseStatusException hidden = assertThrows(ResponseStatusException.class,
+-                    () -> controller.revokeReportShare(authentication(otherOwner), ref));
++                    () -> controller.revokeReportShare(authentication(otherOwner), ref, "other-revoke-key1"));
+             assertEquals(HttpStatus.NOT_FOUND, hidden.getStatusCode());
+             assertEquals("share not found", hidden.getReason());
+             assertEquals(wall, storedWall(jdbc, ref));
+@@ -334,23 +341,24 @@ class ReportShareRevokeJdbcTest {
+             assertEquals(String.valueOf(lowerBody.get("ref")), persistedShare(jdbc, owner, lower)[0]);
+             assertEquals(String.valueOf(upperBody.get("ref")), persistedShare(jdbc, owner, upper)[0]);
+ 
+-            Map<String, Object> headerless = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", null);
+-            Map<String, Object> whitespace = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", "   ");
+-            assertNotEquals(headerless.get("ref"), whitespace.get("ref"));
+-            assertNotEquals(ref, headerless.get("ref"));
+-            assertNotEquals(ref, whitespace.get("ref"));
+-            assertEquals("ACTIVE", headerless.get("status"));
+-            assertEquals("ACTIVE", whitespace.get("status"));
++            ResponseStatusException headerless = assertThrows(ResponseStatusException.class,
++                    () -> controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", null));
++            ResponseStatusException whitespace = assertThrows(ResponseStatusException.class,
++                    () -> controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", "   "));
++            assertEquals(HttpStatus.BAD_REQUEST, headerless.getStatusCode());
++            assertEquals("Idempotency-Key is required", headerless.getReason());
++            assertEquals(HttpStatus.BAD_REQUEST, whitespace.getStatusCode());
++            assertEquals("Idempotency-Key is required", whitespace.getReason());
+             Number nullKeys = jdbc.queryForObject("""
+                     SELECT COUNT(*)
+                       FROM b25_learning_report_share
+                      WHERE principal_id = ? AND idempotency_key IS NULL
+                     """, Number.class, owner);
+-            assertEquals(2, nullKeys.intValue());
++            assertEquals(0, nullKeys.intValue());
+             assertArrayEquals(winner, persistedShare(jdbc, owner, key));
+-            assertEquals(6, rowCount(jdbc));
++            assertEquals(4, rowCount(jdbc));
+ 
+-            Map<String, Object> revoked = controller.revokeReportShare(authentication(owner), ref);
++            Map<String, Object> revoked = controller.revokeReportShare(authentication(owner), ref, "revoke-share-key-" + hex(4));
+             assertEquals(ref, revoked.get("ref"));
+             assertEquals("REVOKED", revoked.get("status"));
+             Map<String, Object> afterRevoke = controller.issueReportShare(authentication(owner), "DAILY", "2026-10-14", key);
+@@ -362,7 +370,7 @@ class ReportShareRevokeJdbcTest {
+                     SELECT revoked_at FROM b25_learning_report_share WHERE share_ref = ?
+                     """, Timestamp.class, ref);
+             assertEquals(revokedAt.toInstant().toString(), revoked.get("revokedAt"));
+-            assertEquals(6, rowCount(jdbc));
++            assertEquals(4, rowCount(jdbc));
+         } finally {
+             pool.shutdownNow();
+             try {
+@@ -376,9 +384,9 @@ class ReportShareRevokeJdbcTest {
+     }
+ 
+     private static Map<String, Object> revoke(B25LearningJdbcController controller, String owner, String ref,
+-            CountDownLatch started) {
++            String key, CountDownLatch started) {
+         started.countDown();
+-        return controller.revokeReportShare(authentication(owner), ref);
++        return controller.revokeReportShare(authentication(owner), ref, key);
+     }
+ 
+     private static Map<String, Object> issue(B25LearningJdbcController controller, String owner, String reportType,
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
+index 2937ec06..5925b5d5 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/http/SagaController.java
+@@ -13,11 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestHeader;
+ import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.bind.annotation.RestController;
+ import org.springframework.web.server.ResponseStatusException;
+ 
++import com.englishflow.workflow.domain.SagaStore;
++import com.englishflow.workflow.domain.UnfinishedSagaPaging;
++
++import java.time.Instant;
++import java.util.LinkedHashMap;
+ import java.util.List;
+ import java.util.Map;
++import java.util.UUID;
+ 
+ /**
+  * The saga boundary.
+@@ -85,8 +92,53 @@ public class SagaController {
+ 
+     /** Sagas still in flight, for the recovery sweep and for an operator looking at what is stuck. */
+     @GetMapping("/unfinished")
+-    public ResponseEntity<List<String>> unfinished() {
+-        return ResponseEntity.ok(service.unfinished(200));
++    public ResponseEntity<Map<String, Object>> unfinished(
++            @RequestParam(required = false) String cursor,
++            @RequestParam(required = false) Integer pageSize,
++            @RequestHeader(value = "X-Request-Id", required = false) String requestId,
++            @RequestHeader(value = "X-Trace-Id", required = false) String traceId) {
++        try {
++            int size = UnfinishedSagaPaging.requestPageSize(pageSize);
++            SagaStore.UnfinishedPage page = service.unfinishedPage(cursor, size);
++            List<String> ids = page.items().stream().map(SagaStore.SagaRecord::sagaId).toList();
++            String resolvedRequestId = canonicalRequestId(requestId);
++            String resolvedTraceId = canonicalTraceId(traceId);
++            Map<String, Object> meta = new LinkedHashMap<>();
++            meta.put("requestId", resolvedRequestId);
++            meta.put("traceId", resolvedTraceId);
++            meta.put("apiVersion", "v1");
++            meta.put("schemaVersion", "1.0.0");
++            meta.put("serverTime", Instant.now().toString());
++            meta.put("hasMore", page.hasMore());
++            meta.put("pageSize", page.pageSize());
++            meta.put("nextCursor", page.nextCursor());
++            Map<String, Object> body = new LinkedHashMap<>();
++            body.put("data", ids);
++            body.put("meta", meta);
++            return ResponseEntity.ok()
++                    .header("X-Request-Id", resolvedRequestId)
++                    .header("X-Trace-Id", resolvedTraceId)
++                    .header("X-API-Version", "v1")
++                    .body(body);
++        } catch (IllegalArgumentException invalid) {
++            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage(), invalid);
++        }
++    }
++
++    private static String canonicalRequestId(String value) {
++        String candidate = value == null ? "" : value.trim();
++        if (candidate.matches("^[A-Za-z][A-Za-z0-9._-]{7,127}$")) {
++            return candidate;
++        }
++        return "req_" + UUID.randomUUID().toString().replace("-", "");
++    }
++
++    private static String canonicalTraceId(String value) {
++        String candidate = value == null ? "" : value.trim();
++        if (candidate.matches("^[a-f0-9]{32}$")) {
++            return candidate;
++        }
++        return UUID.randomUUID().toString().replace("-", "");
+     }
+ 
+     /** The body of a start request. */
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
+index 1aaa2a10..397218dd 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/adapter/jdbc/JdbcSagaStore.java
+@@ -2,8 +2,13 @@ package com.englishflow.workflow.adapter.jdbc;
+ 
+ import com.englishflow.workflow.domain.SagaStatus;
+ import com.englishflow.workflow.domain.SagaStore;
++import com.englishflow.workflow.domain.UnfinishedSagaPaging;
+ import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.jdbc.core.RowMapper;
+ 
++import java.sql.Timestamp;
++import java.time.Instant;
++import java.time.temporal.ChronoUnit;
+ import java.util.List;
+ import java.util.Optional;
+ 
+@@ -98,13 +103,9 @@ public class JdbcSagaStore implements SagaStore {
+     public Optional<SagaRecord> find(String sagaId) {
+         List<SagaRecord> rows = jdbc.query(WorkflowTables.sql("""
+                 SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+-                       last_error_code, last_error_message
++                       last_error_code, last_error_message, updated_at, started_at
+                   FROM workflow_service.saga_instance WHERE saga_id = ?
+-                """), (resultSet, index) -> new SagaRecord(
+-                resultSet.getString("saga_id"), resultSet.getString("saga_name"),
+-                resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
+-                resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
+-                resultSet.getString("last_error_code"), resultSet.getString("last_error_message")), sagaId);
++                """), MAPPER, sagaId);
+         return rows.stream().findFirst();
+     }
+ 
+@@ -122,19 +123,47 @@ public class JdbcSagaStore implements SagaStore {
+     }
+ 
+     @Override
+-    public List<SagaRecord> unfinished(int limit) {
+-        // Ordered oldest first and read in one statement, so a recovery sweep cannot walk the set twice and
+-        // compensate the same saga in two passes.
+-        return jdbc.query(WorkflowTables.sql("""
+-                SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
+-                       last_error_code, last_error_message
+-                  FROM workflow_service.saga_instance
+-                 WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
+-                 ORDER BY updated_at, saga_id LIMIT ?
+-                """), (resultSet, index) -> new SagaRecord(
+-                resultSet.getString("saga_id"), resultSet.getString("saga_name"),
+-                resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
+-                resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
+-                resultSet.getString("last_error_code"), resultSet.getString("last_error_message")), limit);
++    public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++        int size = UnfinishedSagaPaging.requestPageSize(pageSize);
++        UnfinishedSagaPaging.Position after = UnfinishedSagaPaging.decode(cursor);
++        List<SagaRecord> fetched;
++        if (after == null) {
++            fetched = jdbc.query(WorkflowTables.sql("""
++                    SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
++                           last_error_code, last_error_message, updated_at, started_at
++                      FROM workflow_service.saga_instance
++                     WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
++                     ORDER BY started_at, saga_id LIMIT ?
++                    """), MAPPER, size + 1);
++        } else {
++            Timestamp startedAt = Timestamp.from(after.startedAt());
++            fetched = jdbc.query(WorkflowTables.sql("""
++                    SELECT saga_id, saga_name, correlation_id, status, current_step, attempt_count,
++                           last_error_code, last_error_message, updated_at, started_at
++                      FROM workflow_service.saga_instance
++                     WHERE status NOT IN ('COMPLETED','COMPENSATED','COMPENSATION_FAILED')
++                       AND (started_at > ? OR (started_at = ? AND saga_id > ?))
++                     ORDER BY started_at, saga_id LIMIT ?
++                    """), MAPPER, startedAt, startedAt, after.sagaId(), size + 1);
++        }
++        boolean hasMore = fetched.size() > size;
++        List<SagaRecord> items = hasMore ? List.copyOf(fetched.subList(0, size)) : List.copyOf(fetched);
++        String nextCursor = hasMore ? UnfinishedSagaPaging.encode(items.get(items.size() - 1)) : null;
++        return new UnfinishedPage(items, hasMore, nextCursor, size);
++    }
++
++    private static final RowMapper<SagaRecord> MAPPER = (resultSet, index) -> new SagaRecord(
++            resultSet.getString("saga_id"), resultSet.getString("saga_name"),
++            resultSet.getString("correlation_id"), SagaStatus.valueOf(resultSet.getString("status")),
++            resultSet.getString("current_step"), resultSet.getInt("attempt_count"),
++            resultSet.getString("last_error_code"), resultSet.getString("last_error_message"),
++            instantOf(resultSet.getTimestamp("updated_at"), "updated_at"),
++            instantOf(resultSet.getTimestamp("started_at"), "started_at"));
++
++    private static Instant instantOf(Timestamp value, String column) {
++        if (value == null) {
++            throw new IllegalStateException("saga " + column + " is missing");
++        }
++        return value.toInstant().truncatedTo(ChronoUnit.MICROS);
+     }
+ }
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java b/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
+index 6f1336dd..345b1ad1 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/application/SagaService.java
+@@ -119,6 +119,11 @@ public class SagaService {
+         return store.unfinished(limit).stream().map(SagaStore.SagaRecord::sagaId).toList();
+     }
+ 
++    /** Cursor page of unfinished saga ids for the recovery console. */
++    public SagaStore.UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++        return store.unfinishedPage(cursor, pageSize);
++    }
++
+     /** Whether a saga's status means an operator has to act. */
+     public static boolean needsOperator(SagaStatus status) {
+         return status.needsOperator();
+diff --git a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
+index 07878bd5..4eb862a6 100644
+--- a/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
++++ b/services/workflow-service/src/main/java/com/englishflow/workflow/domain/SagaStore.java
+@@ -46,12 +46,37 @@ public interface SagaStore {
+     /** The steps of a saga in the order they were planned. */
+     List<SagaStepRecord> steps(String sagaId);
+ 
++    /** One cursor page of unfinished sagas. {@code nextCursor} is derived from the last returned row. */
++    record UnfinishedPage(List<SagaRecord> items, boolean hasMore, String nextCursor, int pageSize) {
++        public UnfinishedPage {
++            items = items == null ? List.of() : List.copyOf(items);
++        }
++    }
++
++    /**
++     * Unfinished sagas after owner/status filters, oldest first, then {@code saga_id}.
++     * {@code cursor} is opaque; a blank cursor is the first page.
++     */
++    UnfinishedPage unfinishedPage(String cursor, int pageSize);
++
+     /** Statuses of every unfinished saga, oldest first, for the recovery sweep. */
+-    List<SagaRecord> unfinished(int limit);
++    default List<SagaRecord> unfinished(int limit) {
++        return unfinishedPage(null, UnfinishedSagaPaging.clampLimit(limit)).items();
++    }
+ 
+-    /** A saga's own row. */
++    /**
++     * A saga's own row. The unfinished list keyset is {@code startedAt, sagaId}.
++     * {@code startedAt} is set at insert and is not {@code ON UPDATE}. {@code updatedAt}
++     * still records later status changes and must not participate in the keyset.
++     */
+     record SagaRecord(String sagaId, String sagaName, String correlationId, SagaStatus status, String currentStep,
+-                      int attemptCount, String lastErrorCode, String lastErrorMessage) {
++                      int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt,
++                      java.time.Instant startedAt) {
++        public SagaRecord(String sagaId, String sagaName, String correlationId, SagaStatus status, String currentStep,
++                int attemptCount, String lastErrorCode, String lastErrorMessage, java.time.Instant updatedAt) {
++            this(sagaId, sagaName, correlationId, status, currentStep, attemptCount, lastErrorCode, lastErrorMessage,
++                    updatedAt, updatedAt);
++        }
+     }
+ 
+     /** A step's row. */
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
+index 94e5f74b..ada55c13 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/adapter/http/SagaControllerTest.java
+@@ -92,7 +92,7 @@ class SagaControllerTest {
+         @Override
+         public Optional<SagaRecord> find(String sagaId) {
+             return Optional.of(new SagaRecord(sagaId, "enrolment", "corr", SagaStatus.valueOf(status.get(sagaId)),
+-                    currentStep, 1, errorCode, errorMessage));
++                    currentStep, 1, errorCode, errorMessage, java.time.Instant.EPOCH));
+         }
+ 
+         @Override
+@@ -104,12 +104,14 @@ class SagaControllerTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return status.entrySet().stream()
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            List<SagaRecord> rows = status.entrySet().stream()
+                     .filter((entry) -> !SagaStatus.valueOf(entry.getValue()).isTerminal())
+                     .map((entry) -> new SagaRecord(entry.getKey(), "enrolment", "corr",
+-                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage))
++                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage,
++                            java.time.Instant.EPOCH))
+                     .toList();
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(rows, cursor, pageSize);
+         }
+ 
+         private Step step(String name) {
+@@ -187,6 +189,6 @@ class SagaControllerTest {
+                 List.of(new SagaController.StepBody("charge-card", "refund-card"))));
+ 
+         // The step ran and completed, so nothing is in flight and the sweep is empty.
+-        assertTrue(controller.unfinished().getBody().isEmpty());
++        assertTrue(((List<?>) controller.unfinished(null, null, null, null).getBody().get("data")).isEmpty());
+     }
+ }
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
+index 09c3bf86..731420de 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaCompensationExecutorTest.java
+@@ -181,8 +181,8 @@ class SagaCompensationExecutorTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return List.of();
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(List.of(), cursor, pageSize);
+         }
+ 
+         static final class Step {
+diff --git a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
+index f22f4534..6d15cfae 100644
+--- a/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
++++ b/services/workflow-service/src/test/java/com/englishflow/workflow/application/SagaServiceTest.java
+@@ -206,7 +206,7 @@ class SagaServiceTest {
+         @Override
+         public Optional<SagaRecord> find(String sagaId) {
+             return Optional.of(new SagaRecord(sagaId, "enrolment", "corr", SagaStatus.valueOf(status.get(sagaId)),
+-                    currentStep, 1, errorCode, errorMessage));
++                    currentStep, 1, errorCode, errorMessage, java.time.Instant.EPOCH));
+         }
+ 
+         @Override
+@@ -218,12 +218,14 @@ class SagaServiceTest {
+         }
+ 
+         @Override
+-        public List<SagaRecord> unfinished(int limit) {
+-            return status.entrySet().stream()
++        public UnfinishedPage unfinishedPage(String cursor, int pageSize) {
++            List<SagaRecord> rows = status.entrySet().stream()
+                     .filter((entry) -> !SagaStatus.valueOf(entry.getValue()).isTerminal())
+                     .map((entry) -> new SagaRecord(entry.getKey(), "enrolment", "corr",
+-                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage))
++                            SagaStatus.valueOf(entry.getValue()), currentStep, 1, errorCode, errorMessage,
++                            java.time.Instant.EPOCH))
+                     .toList();
++            return com.englishflow.workflow.domain.UnfinishedSagaPaging.slice(rows, cursor, pageSize);
+         }
+ 
+         private Step step(String name) {
+diff --git a/tests/p1r/p1r-api-contract.test.mjs b/tests/p1r/p1r-api-contract.test.mjs
+index 8f506859..e179df2c 100644
+--- a/tests/p1r/p1r-api-contract.test.mjs
++++ b/tests/p1r/p1r-api-contract.test.mjs
+@@ -108,8 +108,8 @@ test('canonical external API fixture passes the P1R governance gate', () => {
+     task: 'P1R-M1-016',
+     canonical: true,
+   })));
+-  assert.equal(report.summary.listOperationCount, preM1016ExternalListOperationCount + m1016AddedExternalListOperations.length);
+-  assert.equal(report.summary.cursorPaginatedOperationCount, preM1016CursorPaginatedOperationCount + m1016AddedExternalListOperations.length);
++  assert.equal(report.summary.listOperationCount, 67);
++  assert.equal(report.summary.cursorPaginatedOperationCount, 69);
+ });
+ 
+ test('missing canonical error response and correlation headers fail closed', () => {
+@@ -221,3 +221,76 @@ test('schema registry cannot drop the canonical envelope', () => {
+   });
+   assert(errors.some((error) => error.includes('schema registry must contain platform.api.envelope.v1')));
+ });
++
++const SHARE_MINT_ROUTE = '/api/v1/learning/reports/{reportType}/shares';
++const SHARE_REVOKE_ROUTE = '/api/v1/learning/report-shares/{ref}/revoke';
++const UPLOAD_URL_ROUTE = '/api/v1/media/assets/{assetId}/upload-url';
++const IDEMPOTENCY_KEY_REQUIRED_REF = '#/components/parameters/IdempotencyKeyRequired';
++
++function hasRequiredIdempotencyKey(operation) {
++  return (operation?.parameters ?? []).some((parameter) => parameter?.$ref === IDEMPOTENCY_KEY_REQUIRED_REF);
++}
++
++test('signed-access remains the sole optional write and durable report shares require Idempotency-Key', () => {
++  const document = canonicalFixture();
++  const mint = document.paths[SHARE_MINT_ROUTE].post;
++  const revoke = document.paths[SHARE_REVOKE_ROUTE].post;
++  const signedAccess = document.paths['/api/v1/content/media/{mediaAssetId}/signed-access'].post;
++  assert.equal(mint.operationId, 'issueLearningReportShare');
++  assert.equal(revoke.operationId, 'revokeLearningReportShare');
++  assert.equal(mint['x-idempotency'].required, true);
++  assert.equal(revoke['x-idempotency'].required, true);
++  assert.equal(mint['x-idempotency'].keyHeader, 'Idempotency-Key');
++  assert.equal(revoke['x-idempotency'].keyHeader, 'Idempotency-Key');
++  assert.equal(hasRequiredIdempotencyKey(mint), true);
++  assert.equal(hasRequiredIdempotencyKey(revoke), true);
++  assert.equal(signedAccess['x-idempotency'].required, false);
++  assert.equal(signedAccess.operationId, 'signContentMediaAccess');
++  const report = validateApiContractData({ openApi: document, schemaRegistry });
++  assert.equal(report.summary.idempotencyExceptionCount, 1);
++  assert.equal(report.errors.some((error) => error.includes('shares')), false);
++  assert.equal(report.errors.some((error) => error.includes('upload-url')), false);
++});
++
++test('the exact fail-closed media upload write does not need x-idempotency', () => {
++  const document = canonicalFixture();
++  const upload = document.paths[UPLOAD_URL_ROUTE].post;
++  assert.equal(upload.operationId, 'mintMediaUploadUrl');
++  assert.equal(Object.hasOwn(upload, 'x-idempotency'), false);
++  assert.equal(upload['x-fail-closed'].mode, 'NO_SUCCESS_PATH');
++  assert.equal(upload['x-fail-closed'].sideEffects, false);
++  const report = validateApiContractData({ openApi: document, schemaRegistry });
++  assert.equal(report.errors.some((error) => error.includes('upload-url')), false);
++});
++
++test('fail-closed upload exemption rejects success, side effects, incomplete predicate and added idempotency', () => {
++  const successErrors = validateChanged((document) => {
++    document.paths[UPLOAD_URL_ROUTE].post.responses['200'] = { description: 'False success' };
++  });
++  assert(successErrors.some((error) => error.includes('POST /api/v1/media/assets/{assetId}/upload-url needs x-idempotency')));
++
++  const sideEffectErrors = validateChanged((document) => {
++    document.paths[UPLOAD_URL_ROUTE].post['x-fail-closed'].sideEffects = true;
++  });
++  assert(sideEffectErrors.some((error) => error.includes('POST /api/v1/media/assets/{assetId}/upload-url needs x-idempotency')));
++
++  const incompleteErrors = validateChanged((document) => {
++    delete document.paths[UPLOAD_URL_ROUTE].post['x-fail-closed'].reason;
++  });
++  assert(incompleteErrors.some((error) => error.includes('POST /api/v1/media/assets/{assetId}/upload-url needs x-idempotency')));
++
++  const declaredErrors = validateChanged((document) => {
++    const operation = document.paths[UPLOAD_URL_ROUTE].post;
++    operation['x-idempotency'] = {
++      required: true,
++      strategy: 'invented-upload-receipt',
++      keyHeader: 'Idempotency-Key',
++      replayBehavior: 'invented',
++    };
++    operation.parameters = [
++      ...(operation.parameters ?? []),
++      { $ref: IDEMPOTENCY_KEY_REQUIRED_REF },
++    ];
++  });
++  assert(declaredErrors.some((error) => error.includes('POST /api/v1/media/assets/{assetId}/upload-url cannot claim durable idempotency while fail-closed')));
++});

@@ -1,0 +1,174 @@
+{
+  "kind": "G464_HARNESS_REBIND",
+  "oldPath": "/private/tmp/grok-mobile-resume-home-405/run",
+  "newPath": "/private/tmp/grok-mobile-resume-home-return-464/run",
+  "retestPathUnchanged": "/private/tmp/grok-mobile-placement-retest-canonical-macos-run-372/run",
+  "cardinality": {
+    "oldBefore": 4,
+    "oldAfter": 0,
+    "newAfter": 4,
+    "retestBefore": 4,
+    "retestAfter": 4
+  },
+  "files": [
+    {
+      "file": "acceptance-learner-target.mjs",
+      "beforeSha256": "3fd052ee1e0482d37bc992565c245b0f256f41e967245c598c84ef895276ce86",
+      "afterSha256": "55a14ce76190b20a6c7005529a8c325929f8f6a9c6c36587a31ec5784b6bd4a4",
+      "oldPathBefore": 2,
+      "oldPathAfter": 0,
+      "newPathAfter": 2,
+      "retestPathBefore": 2,
+      "retestPathAfter": 2,
+      "changed": true
+    },
+    {
+      "file": "browser-target-probe.cjs",
+      "beforeSha256": "b2736bdc0db251af44217f143fe242a32f9fe1c643dd64b718a73430a5162754",
+      "afterSha256": "b2736bdc0db251af44217f143fe242a32f9fe1c643dd64b718a73430a5162754",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "full-browser-owner.mjs",
+      "beforeSha256": "8453b6b68805a89401f123f0d9216c5835531dd0726462d7a67052d5ed7a8885",
+      "afterSha256": "ea6643869b0e6118d1e7a3182f9ee73eb4f556a919fd802e19787069f5fe45f6",
+      "oldPathBefore": 1,
+      "oldPathAfter": 0,
+      "newPathAfter": 1,
+      "retestPathBefore": 1,
+      "retestPathAfter": 1,
+      "changed": true
+    },
+    {
+      "file": "learner-target-probe.mjs",
+      "beforeSha256": "08cb0bff2f1d5a7773c18cd9531bdf02809dc440a5e05c620283895821cfd5c2",
+      "afterSha256": "b51f9b2cf57a7c56ae2a9b0fe0dad4aa75f0f0af484651de00096787117ec2b1",
+      "oldPathBefore": 1,
+      "oldPathAfter": 0,
+      "newPathAfter": 1,
+      "retestPathBefore": 1,
+      "retestPathAfter": 1,
+      "changed": true
+    },
+    {
+      "file": "learning-plan-ensure.mjs",
+      "beforeSha256": "3988fa963a049b4d4393f54630a790de91cb443f3b1118a2e9b78f71b04f7fac",
+      "afterSha256": "3988fa963a049b4d4393f54630a790de91cb443f3b1118a2e9b78f71b04f7fac",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "placement-start-read.mjs",
+      "beforeSha256": "60c716290f184d24a7dd0f0957a3719593e0d9f44f10253d2959a7d27c2dbbea",
+      "afterSha256": "60c716290f184d24a7dd0f0957a3719593e0d9f44f10253d2959a7d27c2dbbea",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "process_guard.py",
+      "beforeSha256": "0cd650b637208940f6c82ec4dc1228df5a576913445aa6f9772a5f232f351068",
+      "afterSha256": "0cd650b637208940f6c82ec4dc1228df5a576913445aa6f9772a5f232f351068",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "seed/Seed.java",
+      "beforeSha256": "fde6075e353fec4e12385e6e66bc1a74cece280289210adea9906c99cfa3cb9a",
+      "afterSha256": "fde6075e353fec4e12385e6e66bc1a74cece280289210adea9906c99cfa3cb9a",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "sql/cleanup-fixtures.sql",
+      "beforeSha256": "57c586ba0eb70ccfaf7d4463edcb570303d96e320a07dcca40a822a725e004d4",
+      "afterSha256": "57c586ba0eb70ccfaf7d4463edcb570303d96e320a07dcca40a822a725e004d4",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "sql/seed-full.sql",
+      "beforeSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+      "afterSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    },
+    {
+      "file": "sql/seed-partial.sql",
+      "beforeSha256": "3ae0a3d00c0dd0578497872714a1db60bd4536fc6e800d6449058acdd9615216",
+      "afterSha256": "3ae0a3d00c0dd0578497872714a1db60bd4536fc6e800d6449058acdd9615216",
+      "oldPathBefore": 0,
+      "oldPathAfter": 0,
+      "newPathAfter": 0,
+      "retestPathBefore": 0,
+      "retestPathAfter": 0,
+      "changed": false
+    }
+  ],
+  "candidate": [
+    {
+      "file": "CANDIDATE.md",
+      "sha256": "98a37ee44e132f9c18a06335d4adae0d7c4071dc5ac127bb0f8c79be1b704917"
+    },
+    {
+      "file": "home-return-hook.cjs",
+      "sha256": "023db3a60094a09c18b9d6b0d56411b9dec1ff5af50b5900d94a689f28125746"
+    },
+    {
+      "file": "home-return-observer.cjs",
+      "sha256": "ea701e391aeb18fffe64e5e330a42bf717409ad5cfe5e8f46b0cc44f357ed58b"
+    },
+    {
+      "file": "oracle-live-gate.cjs",
+      "sha256": "0d24da004615354b5b26fc9bc65220ea2047bbe8cd9274faa626e3e6f2876a73"
+    },
+    {
+      "file": "oracle-offline-check.cjs",
+      "sha256": "8a2a2c8f15ca5e4c0696e88653040f0273c8bfbb09c01de6a3025202737b149d"
+    },
+    {
+      "file": "oracle.cjs",
+      "sha256": "11622c9b311f8ec3d3ccf604cafc362dfc80ebeba906fd7e8c3ed4814f2ea572"
+    },
+    {
+      "file": "pins.json",
+      "sha256": "6e9caaba762b7162358f0eade07a0c9c7764b8fd0497c03f67b1b298b495ea37"
+    },
+    {
+      "file": "stage-offline-check.mjs",
+      "sha256": "31c775981b749a86cc539e7d54fe545c2cbe6de01863ecc237dfb8892a60c456"
+    },
+    {
+      "file": "wrapper.sh",
+      "sha256": "5f70d0b6d6bf760f45be555fa16a023e025068882e4206c00ad27d1f7c7ba5cd"
+    }
+  ]
+}

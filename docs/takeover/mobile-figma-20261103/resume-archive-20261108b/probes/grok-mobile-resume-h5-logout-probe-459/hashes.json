@@ -1,0 +1,121 @@
+{
+  "job": "MB005-H5-IAM-LOGOUT-459",
+  "live": "NOT_RUN",
+  "preflight": "NOT_RUN",
+  "h5Root": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/h5",
+  "indexSha256": "8233e1edfaf8bb40489c80ce068ccc9abd6901a4fbb828bc012e999eaa91e7a3",
+  "treeFingerprintSha256": "4ce625011733acc0a63c2ae08b0911270498f60eb0c0d6106717bf88ebc752dc",
+  "fileCount": 22,
+  "files": [
+    {
+      "path": "COMMAND.txt",
+      "sha256": "9b41848932e7f58e145d54e912d275144cc902b5d7823509cac7bde03d743a45",
+      "bytes": 1439
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "fc50f7d0619d0cfec2f76ba9a0798c1c27b12027b53225190995a58a8268cab1",
+      "bytes": 9262
+    },
+    {
+      "path": "command-exits.txt",
+      "sha256": "9e62f7444b38984070cd9bae15c39c3527804d6568e2b79da9db3c2013e0495b",
+      "bytes": 245
+    },
+    {
+      "path": "forbidden-h5-observer.mjs",
+      "sha256": "20c8281502e092bd1f886f0148a18634d30d01e16609dfe51a575b67f5ed82f1",
+      "bytes": 50257
+    },
+    {
+      "path": "forbidden-h5-wrapper.py",
+      "sha256": "3da683e3d6c29bef45f5994408d02c769f79fd14f6132156ce35e148553a5e9b",
+      "bytes": 55978
+    },
+    {
+      "path": "g457-immutable-pins.json",
+      "sha256": "db5c5efde21c703a0ad3a60d6d5f1073a0ca306995f20c128c92d242fae14e32",
+      "bytes": 2167
+    },
+    {
+      "path": "h5-lease-tail.mjs",
+      "sha256": "5599cf0dddd5af46581d0801dc04a9ba5f5c192d132a10d9de5219929f664df2",
+      "bytes": 3433
+    },
+    {
+      "path": "lsof-18070-after-wrapper-offline.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lsof-18087-after-wrapper-offline.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lsof-18183-after-offline.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lsof-18183-after-wrapper-offline.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lsof-four-ports-after-offline.txt",
+      "sha256": "983d6488b03885655441ca5c6c5bfb88cbfe858f60f9e12c58324cc390352095",
+      "bytes": 44
+    },
+    {
+      "path": "nonce-usage.json",
+      "sha256": "40309ce12ef01732569685bb17b416c5d62422ac513b45b3f8fee63d35fb9737",
+      "bytes": 181
+    },
+    {
+      "path": "observer-prepared.json",
+      "sha256": "12351cee22034861b9e62cb07000718624345908ba74aa7db079e09b4a244b9e",
+      "bytes": 189
+    },
+    {
+      "path": "offline-checks-receipt.json",
+      "sha256": "5611e4938f4ce677f757efea17b09cc3ecbdc0ac09a08afcd0a911e1e4540623",
+      "bytes": 294
+    },
+    {
+      "path": "offline-checks.mjs",
+      "sha256": "036e116ebf1a8a5b7034732ed5dd52fd0cbe2422b7df2f40d3102e5597eb4aca",
+      "bytes": 9827
+    },
+    {
+      "path": "offline-receipt.json",
+      "sha256": "63b840f3b6766ac29211379bdcfff1d6220485251fa1a2134e0c1a106ddb6f42",
+      "bytes": 2175
+    },
+    {
+      "path": "pin.json",
+      "sha256": "f343cbed75636e3be770235ff12405c299e544db7578140bd9ee2f9d8ee11f12",
+      "bytes": 5130
+    },
+    {
+      "path": "pinned-static-nonce.mjs",
+      "sha256": "6065f129812b6648c5e5a19284faddef364b7ea36a74612761a52d04fa565891",
+      "bytes": 11019
+    },
+    {
+      "path": "tail-usage.json",
+      "sha256": "b23b325e1624cd0353c65c92134c5051e319ceffad6907a49ed121fa4aadd48c",
+      "bytes": 271
+    },
+    {
+      "path": "wrapper-offline.stderr",
+      "sha256": "82d20d85c44365ca3eb91b0a5a307e9acc3d968f0da8fccb3cec16f5d2d9a7de",
+      "bytes": 27
+    },
+    {
+      "path": "wrapper-offline.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}

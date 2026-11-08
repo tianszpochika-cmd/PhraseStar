@@ -1,0 +1,100 @@
+{
+  "job": "MB005-H5-IAM-LOGOUT-459",
+  "writable": "/tmp/grok-mobile-resume-h5-logout-probe-459",
+  "authoredAt": "2026-11-08",
+  "executed": false,
+  "live": "NOT_RUN",
+  "preflight": "NOT_RUN",
+  "g393JobId": "MB005-G393-canonical-node-entry",
+  "derivedJobId": "MB005-H5-IAM-LOGOUT-459",
+  "rebinds": "MB005-G393-canonical-node-entry",
+  "predecessor": {
+    "job": "MB005-H5-IAM-LOGOUT-457",
+    "writable": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457",
+    "checkpointExit": 130,
+    "checkpointSession": null,
+    "reportPresent": false,
+    "endSessionId": null,
+    "endSessionIdGuessed": false,
+    "artifactsPreserved": true,
+    "h5Rebuilt": false
+  },
+  "files": {
+    "observer": "/tmp/grok-mobile-resume-h5-logout-probe-459/forbidden-h5-observer.mjs",
+    "tail": "/tmp/grok-mobile-resume-h5-logout-probe-459/h5-lease-tail.mjs",
+    "nonce": "/tmp/grok-mobile-resume-h5-logout-probe-459/pinned-static-nonce.mjs",
+    "wrapper": "/tmp/grok-mobile-resume-h5-logout-probe-459/forbidden-h5-wrapper.py",
+    "offlineChecks": "/tmp/grok-mobile-resume-h5-logout-probe-459/offline-checks.mjs",
+    "report": "/tmp/grok-mobile-resume-h5-logout-probe-459/REPORT.md"
+  },
+  "sourceHead": "ed6a1e57347448a25d7f92d02cb6ea8fad03e1db",
+  "sourceHeadRole": "git-HEAD-only",
+  "integratedDevCommit": "84f0dead8e8d3ea32a1f5d5d7c13b76167371b34",
+  "checkoutHeadIsIntegratedDev": false,
+  "composition": "ed6a1e57 base + B153/G447 dependency files + B156 five mobile files",
+  "h5": {
+    "root": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/h5",
+    "indexSha256": "8233e1edfaf8bb40489c80ce068ccc9abd6901a4fbb828bc012e999eaa91e7a3",
+    "indexBytes": 1419,
+    "treeFingerprintSha256": "4ce625011733acc0a63c2ae08b0911270498f60eb0c0d6106717bf88ebc752dc",
+    "fileCount": 797,
+    "b139Rejected": "706fffb7517121d6a43b6e23e483afa0c1fcc3d7e32a95a0938cc584be66ae32",
+    "b116Rejected": "94047adfbea64364b32e0b6f700caf74d8a3b19cd165c4095c43cd39a3c44520",
+    "g447Rejected": "7622ab9cc7ceeaf68fa009921bb0187232b4cc7a1dcd0913b16f560cbaf4a9d8",
+    "route": "#/pages/forbidden/forbidden"
+  },
+  "g457Provenance": {
+    "sourceProvenance": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/source-provenance.json",
+    "indexManifest": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/index-manifest.json",
+    "treeManifest": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/tree-manifest.json",
+    "treeManifestTxt": "/tmp/grok-mobile-resume-h5-logout-live-candidate-457/OUTPUT/tree-manifest.txt"
+  },
+  "reuse": {
+    "g393Supervisor": "/tmp/grok-mobile-forbidden-iam-canonical-node-entry-393/iam-only-lease.py",
+    "g378Probe": "/tmp/grok-mobile-forbidden-synthetic-age-owner-wire-378/wire-probe.mjs",
+    "g378Fixture": "/tmp/grok-mobile-forbidden-synthetic-age-owner-wire-378/adult-gate-fixture.json",
+    "nonceHeader": "x-mb004-static-qa"
+  },
+  "jars": {
+    "iam": "98f6b2d6b8c44de9d94f44bcf498d154f009c52faf4aa3615d2a9e513b390007",
+    "gateway": "7f796cfb60f571beb155ce3fad87a3e9e6cb13ddddd3f91e2ca9d9771ca6a0a1",
+    "iamJar": "/Users/Admin/.codex/worktrees/mobile-iam-http-acceptance-20261105/cloudstudy/services/iam-service/target/iam-service-0.1.0-SNAPSHOT.jar",
+    "gatewayJar": "/Users/Admin/.codex/worktrees/mobile-iam-http-acceptance-20261105/cloudstudy/services/api-gateway/target/api-gateway-0.1.0-SNAPSHOT.jar",
+    "mysqlImage": "sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b"
+  },
+  "seed": {
+    "java": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/iam-http-24-dsh-draft/seed/Seed.java",
+    "javaSha256": "248094e5a2e6ceb2f1c5433a15d8908dad194e0b0d5e6a421987a5c6c998536e",
+    "sql": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261105/iam-http-24-dsh-draft/sql/seed-full.sql",
+    "sqlSha256": "c507b3fe1c8078700e177d4a168619e69c1c5f7136243e6a98f72d412403fbd9",
+    "role": "three synthetic publication rows required before register; not a consent signature"
+  },
+  "fixture": {
+    "confirmed": true,
+    "birthYear": 2015,
+    "policyVersion": "b30-adult-v1"
+  },
+  "copy": {
+    "adultTitle": "暂时无法开始学习",
+    "adultDescription": "当前版本仅向年满18周岁的用户开放学习。你仍可管理账号或查看帮助。",
+    "logout": "退出登录",
+    "loginTitle": "欢迎回来",
+    "gateTitle": "先确认你的年龄"
+  },
+  "cookieName": "yuxuexing_refresh",
+  "cookiePath": "/api/v1/auth",
+  "ports": [13306, 18070, 18087, 18183],
+  "containerName": "cloudstudy-mobile-h5-logout-459",
+  "label": "cloudstudy.qa.mobile-h5-logout-459",
+  "g444Failure": {
+    "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108/forbidden-444-root/lease-receipt.json",
+    "clearOverHttps": false,
+    "storedBefore": true,
+    "jarRemains": true,
+    "cookieCleared": false,
+    "logoutVia": "gateway",
+    "immutable": true
+  },
+  "actorPrefix": "g459-",
+  "passwordPrefix": "G459!"
+}
