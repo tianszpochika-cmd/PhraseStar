@@ -1,5 +1,7 @@
 # CloudStudy 接手入口
 
+2026-11-08 第二次恢复已收口：B158—B160 已推送 dev；候选与 184 份恢复记录已远程归档。额度读取连续失败后恢复时剩余 12%，低于 20% 预留线，已停止本轮作业。 [Latest handoff](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108-2.md)
+
 2026-11-08 第二次恢复：Grok CLI 从 dev 310a7d01 继续，保留 Codex 20%。[当前恢复与作业](docs/takeover/mobile-figma-20261103/RESUME-20261108-2.md)。下方收口记录作为历史保留。
 
 2026-11-08：本轮已按 Codex 20% 预留收口，B153—B157 与未验候选、真实失败及跨电脑恢复见[最新停点](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)。后续从 dev 和归档差量继续，逐页签收保持待验。

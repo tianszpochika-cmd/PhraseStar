@@ -1,5 +1,7 @@
 # 项目状态总览
 
+2026-11-08 第二次恢复已收口：B158—B160 已推送 dev；候选与 184 份恢复记录已远程归档。额度读取连续失败后恢复时剩余 12%，低于 20% 预留线，已停止本轮作业。 [Latest handoff](takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108-2.md)
+
 2026-11-08 B160：修复许可证库存检查的可解释可选包缺失，并接入 CI 测试发现入口；独立 10/10 通过，Linux 与远程完整 CI 继续待验。 [B160](takeover/mobile-figma-20261103/reviews/INTEGRATION-B160-LICENSE-INVENTORY.md)
 
 2026-11-08 B159：移动端 Vite 安全补丁及 ADR-0030 已审核；独立匿名 H5 75/75 通过，当前高危／严重均为 0，中低危和完整 CI 继续处理。 [B159](takeover/mobile-figma-20261103/reviews/INTEGRATION-B159-VITE-SECURITY.md)

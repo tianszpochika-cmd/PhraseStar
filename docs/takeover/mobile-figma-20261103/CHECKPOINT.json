@@ -6651,7 +6651,7 @@
   },
   "current_supervision_status": "PAUSED_CODEX_RESERVE20",
   "resume20261108b": {
-    "status": "ACTIVE_USER_RESUMED",
+    "status": "STOPPED_QUOTA_RESERVE_BREACHED",
     "base": "310a7d01e4af6dadeb26a815b4e6e58a7bbd380b",
     "entry": "RESUME-20261108-2.md",
     "executor": "Grok CLI",
@@ -6665,7 +6665,11 @@
       "G463",
       "G464",
       "G465",
-      "G466"
+      "G466",
+      "G467",
+      "G468",
+      "G469",
+      "G470"
     ],
     "fullCI": "FAIL_AT_BASE",
     "formalRoutes": "33_TRACE_PENDING",
@@ -6673,6 +6677,26 @@
       "B158",
       "B159",
       "B160"
-    ]
+    ],
+    "archive": {
+      "tag": "archive/cloudstudy-20261108-reserve2",
+      "commit": "ce8e0e7d886011071f05a256f43a393902131f1f",
+      "base": "6cbd2efd8c8190ae8d07b11dea11b80f08327a39",
+      "files": 184,
+      "bytes": 8101931,
+      "prefix": "docs/takeover/mobile-figma-20261103/resume-archive-20261108b",
+      "status": "REMOTE_VERIFIED",
+      "verifiedAt": "2026-11-08T15:03:35.830461+00:00"
+    },
+    "latestCI": {
+      "id": 42492082787,
+      "head_sha": "6cbd2efd8c8190ae8d07b11dea11b80f08327a39",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42492082787"
+    },
+    "close": "RESERVE-CLOSE-20261108-2.md",
+    "codexRemainingLastObserved": 12,
+    "reserveAchieved": false
   }
 }

@@ -1,0 +1,371 @@
+{
+  "archive": {
+    "tag": "archive/cloudstudy-20261108-reserve2",
+    "commit": "ce8e0e7d886011071f05a256f43a393902131f1f",
+    "base": "6cbd2efd8c8190ae8d07b11dea11b80f08327a39",
+    "files": 184,
+    "bytes": 8101931,
+    "prefix": "docs/takeover/mobile-figma-20261103/resume-archive-20261108b",
+    "status": "REMOTE_VERIFIED",
+    "verifiedAt": "2026-11-08T15:03:35.830461+00:00"
+  },
+  "resources": {
+    "portsFree": {
+      "13306": true,
+      "18070": true,
+      "18087": true,
+      "18088": true,
+      "18089": true,
+      "18090": true,
+      "18091": true,
+      "18183": true
+    },
+    "runtimeLease": {
+      "holder": null,
+      "status": "RELEASED_INDEPENDENTLY_VERIFIED",
+      "last": "G464",
+      "receipt": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/resume-20261108b/home-464-root/INDEPENDENT-RELEASE.json"
+    },
+    "at": "2026-11-08T15:03:11.380724+00:00"
+  },
+  "stop": {
+    "at": "2026-11-08T15:02:39.296799+00:00",
+    "workers": [
+      {
+        "checkpoint": "resume-20261108b-mobile-contracts-pagination-integration-468.checkpoint.json",
+        "pid": 69692,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-contracts-pagination-integration-468-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      },
+      {
+        "checkpoint": "resume-20261108b-mobile-reading-current-h5-467.checkpoint.json",
+        "pid": 69225,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-reading-current-h5-467-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      },
+      {
+        "checkpoint": "resume-20261108b-mobile-logout-guard-diagnosis-466.checkpoint.json",
+        "pid": 68303,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-logout-guard-diagnosis-466-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      },
+      {
+        "checkpoint": "resume-20261108b-mobile-home-page-route-observer-470.checkpoint.json",
+        "pid": 71392,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-home-page-route-observer-470-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      },
+      {
+        "checkpoint": "resume-20261108b-mobile-oas-command-schema-469.checkpoint.json",
+        "pid": 71244,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-oas-command-schema-469-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      },
+      {
+        "checkpoint": "resume-20261108b-mobile-ci-current-463.checkpoint.json",
+        "pid": 54268,
+        "task": "/Users/Admin/.codex/visualizations/2026/11/03/01a1a18a-8cb9-7053-8d08-264d34af2235/mobile-supervision/grok/resume-20261108b-mobile-ci-current-463-task.md",
+        "signal": "SIGINT",
+        "stillOwnedAlive": false
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "job": "resume-20261108b-mobile-contracts-pagination-integration-468.checkpoint.json",
+      "state": "exited",
+      "pid": 69692,
+      "exit": 130,
+      "actualEnd": null
+    },
+    {
+      "job": "resume-20261108b-mobile-reading-current-h5-467.checkpoint.json",
+      "state": "exited",
+      "pid": 69225,
+      "exit": 130,
+      "actualEnd": null
+    },
+    {
+      "job": "resume-20261108b-mobile-reading-feedback-458.checkpoint.json",
+      "state": "exited",
+      "pid": 53974,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1bb8d-88ee-7413-b6f8-517af1dfea79",
+        "requestId": "db46f0cb-0f3f-4446-b9b9-fe74f4232a9f",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-reading-feedback-20261108b/cloudstudy",
+        "usage": {
+          "input_tokens": 294124,
+          "cache_read_input_tokens": 6484224,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 51248,
+          "reasoning_tokens": 32159,
+          "total_tokens": 6829596
+        },
+        "num_turns": 42,
+        "total_cost_usd": 1.98314792,
+        "total_cost_usd_ticks": 19831479200,
+        "modelUsage": {
+          "grok-4.6-build": {
+            "inputTokens": 294124,
+            "outputTokens": 51248,
+            "cacheReadInputTokens": 6484224,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 42,
+            "costUSD": 1.98314792
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-license-finish-461.checkpoint.json",
+      "state": "exited",
+      "pid": 53975,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1b8ad-10b5-7483-a8c6-522588468d81",
+        "requestId": "2790fc2e-f1ea-46d1-8789-1e9a0b8137b2",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+        "usage": {
+          "input_tokens": 306534,
+          "cache_read_input_tokens": 2078720,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 36740,
+          "reasoning_tokens": 23992,
+          "total_tokens": 2421994
+        },
+        "num_turns": 29,
+        "total_cost_usd": 0.77816888,
+        "total_cost_usd_ticks": 7781688800,
+        "modelUsage": {
+          "grok-4.7-build": {
+            "inputTokens": 306534,
+            "outputTokens": 36740,
+            "cacheReadInputTokens": 2078720,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 29,
+            "costUSD": 0.77816888
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-logout-guard-diagnosis-466.checkpoint.json",
+      "state": "exited",
+      "pid": 68303,
+      "exit": 130,
+      "actualEnd": null
+    },
+    {
+      "job": "resume-20261108b-mobile-home-return-preflight-464.checkpoint.json",
+      "state": "exited",
+      "pid": 54780,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1b8ae-3865-74c1-911f-3d8bb76036e6",
+        "requestId": "7cb78b18-9462-4642-818c-31127656dd8d",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-resume-reference-20261107/cloudstudy",
+        "usage": {
+          "input_tokens": 228394,
+          "cache_read_input_tokens": 4245760,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 83736,
+          "reasoning_tokens": 55461,
+          "total_tokens": 4557890
+        },
+        "num_turns": 40,
+        "total_cost_usd": 1.08881056,
+        "total_cost_usd_ticks": 10888105600,
+        "modelUsage": {
+          "grok-4.7-build": {
+            "inputTokens": 228394,
+            "outputTokens": 83736,
+            "cacheReadInputTokens": 4245760,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 40,
+            "costUSD": 1.08881056
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-home-page-route-observer-470.checkpoint.json",
+      "state": "exited",
+      "pid": 71392,
+      "exit": 130,
+      "actualEnd": null
+    },
+    {
+      "job": "resume-20261108b-mobile-pagination-rework-460.checkpoint.json",
+      "state": "exited",
+      "pid": 53973,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1b889-f580-7940-8345-4b7c9bf3d213",
+        "requestId": "7f97c662-7634-43be-819e-337e1249997c",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-api-pagination-20261108/cloudstudy",
+        "usage": {
+          "input_tokens": 199940,
+          "cache_read_input_tokens": 5558656,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 62607,
+          "reasoning_tokens": 31229,
+          "total_tokens": 5821203
+        },
+        "num_turns": 37,
+        "total_cost_usd": 1.208649,
+        "total_cost_usd_ticks": 12086490000,
+        "modelUsage": {
+          "grok-4.6-build": {
+            "inputTokens": 199940,
+            "outputTokens": 62607,
+            "cacheReadInputTokens": 5558656,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 37,
+            "costUSD": 1.208649
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-h5-logout-probe-459.checkpoint.json",
+      "state": "exited",
+      "pid": 53976,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1bb8d-88b0-7a01-a20d-8ead8bd22355",
+        "requestId": "bf07e088-2747-4515-8f73-f401d48a6cbf",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+        "usage": {
+          "input_tokens": 210431,
+          "cache_read_input_tokens": 5905920,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 51847,
+          "reasoning_tokens": 20893,
+          "total_tokens": 6168198
+        },
+        "num_turns": 40,
+        "total_cost_usd": 1.40508536,
+        "total_cost_usd_ticks": 14050853600,
+        "modelUsage": {
+          "grok-4.6-build": {
+            "inputTokens": 210431,
+            "outputTokens": 51847,
+            "cacheReadInputTokens": 5905920,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 40,
+            "costUSD": 1.40508536
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-oas-command-schema-469.checkpoint.json",
+      "state": "exited",
+      "pid": 71244,
+      "exit": 130,
+      "actualEnd": null
+    },
+    {
+      "job": "resume-20261108b-mobile-license-ci-entry-465.checkpoint.json",
+      "state": "exited",
+      "pid": 67869,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1b8ad-10b5-7483-a8c6-522588468d81",
+        "requestId": "10cb020b-20b5-4b67-9d63-8e8a5948da14",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+        "usage": {
+          "input_tokens": 44279,
+          "cache_read_input_tokens": 2132480,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 28472,
+          "reasoning_tokens": 21017,
+          "total_tokens": 2205231
+        },
+        "num_turns": 17,
+        "total_cost_usd": 0.4507142,
+        "total_cost_usd_ticks": 4507142000,
+        "modelUsage": {
+          "grok-4.7-build": {
+            "inputTokens": 44279,
+            "outputTokens": 28472,
+            "cacheReadInputTokens": 2132480,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 17,
+            "costUSD": 0.4507142
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-h5-smoke-diagnosis-462.checkpoint.json",
+      "state": "exited",
+      "pid": 53972,
+      "exit": 0,
+      "actualEnd": {
+        "type": "end",
+        "stopReason": "end_turn",
+        "sessionId": "01a1b889-f57a-7d63-bfdc-d06be28982e4",
+        "requestId": "79b79a04-5707-47d9-bbd8-04ffda6d6830",
+        "cwd": "/Users/Admin/.codex/worktrees/mobile-deps-20261108/cloudstudy",
+        "usage": {
+          "input_tokens": 319247,
+          "cache_read_input_tokens": 6222336,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 55262,
+          "reasoning_tokens": 21704,
+          "total_tokens": 6596845
+        },
+        "num_turns": 51,
+        "total_cost_usd": 1.538806,
+        "total_cost_usd_ticks": 15388060000,
+        "modelUsage": {
+          "grok-4.6-build": {
+            "inputTokens": 319247,
+            "outputTokens": 55262,
+            "cacheReadInputTokens": 6222336,
+            "cacheCreationInputTokens": 0,
+            "modelCalls": 51,
+            "costUSD": 1.538806
+          }
+        }
+      }
+    },
+    {
+      "job": "resume-20261108b-mobile-ci-current-463.checkpoint.json",
+      "state": "exited",
+      "pid": 54268,
+      "exit": 130,
+      "actualEnd": null
+    }
+  ],
+  "latestCI": {
+    "id": 42492082787,
+    "head_sha": "6cbd2efd8c8190ae8d07b11dea11b80f08327a39",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/tianszpochika-cmd/PhraseStar/actions/runs/42492082787"
+  },
+  "codexRemainingLastObserved": 12,
+  "requiredReserve": 20,
+  "reserveAchieved": false,
+  "at": "2026-11-08T15:04:44.881759+00:00"
+}
