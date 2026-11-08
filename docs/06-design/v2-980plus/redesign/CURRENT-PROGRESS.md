@@ -32,3 +32,5 @@
 2026-11-07 本轮按 Codex 20% 额度预留收口，已审核成果与未验候选见[续作记录](../../../takeover/mobile-figma-20261103/RESERVE-CLOSE-20261107.md)。
 
 2026-11-08 用户恢复推进，Grok 作业与复验范围见[本轮恢复](../../../takeover/mobile-figma-20261103/RESUME-20261108.md)，Codex 20% 预留继续有效。
+
+2026-11-08 第二次恢复：Grok 从 dev 310a7d01 续作，继续保留 Codex 20%。[当前恢复](../../../takeover/mobile-figma-20261103/RESUME-20261108-2.md)

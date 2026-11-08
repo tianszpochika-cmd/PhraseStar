@@ -4,6 +4,8 @@
 
 <!-- 2026-11-05 mobile resume -->
 
+2026-11-08 第二次恢复：Grok 接续阅读反馈、退出、分页和 CI，继续保留 Codex 20%；33 路由仍为 TRACE_PENDING。[当前恢复](takeover/mobile-figma-20261103/RESUME-20261108-2.md)
+
 2026-11-08，本轮已按 Codex 20% 预留约定收口暂停。B153—B157 已提交；未验候选、真实失败及 255 份恢复文件已远程归档。阅读保存后反馈缺失、新构建 Cookie 清除、分页返工及完整 CI 为后续重点，33 路由签收未变。 [续作与归档](takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)
 
 2026-11-08，B157 完成网关操作清单和计划 ensure／replan 策略登记。独立复跑 123 项中 122 项通过，1 项既有契约投影失败保留；完整 CI 继续处理。 [B157](takeover/mobile-figma-20261103/reviews/INTEGRATION-B157-ROUTE-POLICIES.md)

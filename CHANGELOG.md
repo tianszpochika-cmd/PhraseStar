@@ -1,5 +1,7 @@
 # Changelog
 
+- [MOBILE-FIGMA-RESUME2-20261108] 用户恢复 Grok CLI 推进，接续阅读反馈、组合 H5 退出、分页返工和 CI，继续保留 Codex 20%。
+
 - [MOBILE-FIGMA-CODEX-RESERVE-20261108] 按 Codex 20% 预留收口，保存 B153—B157、真实失败与 255 份远程恢复快照，停止本轮 Grok 和临时服务。
 
 - [MOBILE-FIGMA-B157-20261108] 精确锁定网关新增操作并登记两项计划写接口，独立复验 122 项通过，保留 1 项既有契约投影失败。

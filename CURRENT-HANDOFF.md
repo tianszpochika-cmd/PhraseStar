@@ -1,5 +1,7 @@
 # CloudStudy 接手入口
 
+2026-11-08 第二次恢复：Grok CLI 从 dev 310a7d01 继续，保留 Codex 20%。[当前恢复与作业](docs/takeover/mobile-figma-20261103/RESUME-20261108-2.md)。下方收口记录作为历史保留。
+
 2026-11-08：本轮已按 Codex 20% 预留收口，B153—B157 与未验候选、真实失败及跨电脑恢复见[最新停点](docs/takeover/mobile-figma-20261103/RESERVE-CLOSE-20261108.md)。后续从 dev 和归档差量继续，逐页签收保持待验。
 
 > 更新：2026-11-08。当前状态只看 [docs/STATUS.md](docs/STATUS.md)；本页只给接手顺序。

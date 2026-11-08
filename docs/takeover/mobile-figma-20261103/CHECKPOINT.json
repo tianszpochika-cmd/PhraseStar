@@ -6649,5 +6649,22 @@
       "allOwnedRuntimeReleased": true
     }
   },
-  "current_supervision_status": "PAUSED_CODEX_RESERVE20"
+  "current_supervision_status": "PAUSED_CODEX_RESERVE20",
+  "resume20261108b": {
+    "status": "ACTIVE_USER_RESUMED",
+    "base": "310a7d01e4af6dadeb26a815b4e6e58a7bbd380b",
+    "entry": "RESUME-20261108-2.md",
+    "executor": "Grok CLI",
+    "codexReservePercent": 20,
+    "jobs": [
+      "G458",
+      "G459",
+      "G460",
+      "G461",
+      "G462",
+      "G463"
+    ],
+    "fullCI": "FAIL_AT_BASE",
+    "formalRoutes": "33_TRACE_PENDING"
+  }
 }
