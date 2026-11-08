@@ -6408,6 +6408,11 @@
         "review": "reviews/INTEGRATION-B154-DATA-OWNERSHIP.md",
         "evidence": "evidence/ROOT-B154-DATA-OWNERSHIP-20261108.json",
         "status": "PASS_LOCAL_STATIC_NOT_RUNTIME_VERIFIED"
+      },
+      "B155": {
+        "review": "reviews/INTEGRATION-B155-WORLD-H5.md",
+        "evidence": "evidence/ROOT-B155-WORLD-H5-20261108.json",
+        "status": "PASS_FROZEN_B139_LOCAL_H5_RESOURCE_RELEASED"
       }
     }
   }
