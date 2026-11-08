@@ -340,18 +340,157 @@ function normalizeSqlForPolicyScan(sql, { backslashEscapes = false } = {}) {
   return normalized;
 }
 
-function foreignSchemaReferences(text, expectedSchema) {
+const JAVA_STATE_CODE = 0;
+const JAVA_STATE_COMMENT = 1;
+const JAVA_STATE_LITERAL = 2;
+
+function restAfterSchemaDot(source, match) {
+  return source.slice(match.index + match[0].length);
+}
+
+function isQuotedJavaMethodCall(match, rest) {
+  // P1-LIVE-008: a double-quoted "*_service" constant followed by `.identifier(`
+  // is a Java method call on an authority string, not schema.table.
+  return match[2] !== undefined && /^[A-Za-z_][A-Za-z0-9_]*\s*\(/u.test(rest);
+}
+
+function isBareJavaEqualsCall(match, rest) {
+  // Bare ASSESSMENT_SERVICE.equals(...) / equalsIgnoreCase(...) is a Java
+  // identity compare on a hyphenated service constant, not SQL. Only those two
+  // method tokens are exempt, and only in Java code context. SQL-shaped
+  // ASSESSMENT_SERVICE.attempt / assessment_service.attempt stay denied.
+  return match[3] !== undefined && /^\s*(?:equalsIgnoreCase|equals)\s*\(/u.test(rest);
+}
+
+function unescapeJavaFragment(text) {
+  let out = '';
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+    if (character !== '\\' || index + 1 >= text.length) {
+      out += character;
+      continue;
+    }
+    const next = text[index + 1];
+    if (next === 'u' && /^[0-9a-fA-F]{4}$/u.test(text.slice(index + 2, index + 6))) {
+      out += String.fromCharCode(Number.parseInt(text.slice(index + 2, index + 6), 16));
+      index += 5;
+      continue;
+    }
+    const mapped = { n: '\n', t: '\t', r: '\r', f: '\f', b: '\b' };
+    out += mapped[next] ?? next;
+    index += 1;
+  }
+  return out;
+}
+
+function readJavaStringLiteral(source, start) {
+  let index = start + 1;
+  let content = '';
+  while (index < source.length) {
+    const character = source[index];
+    if (character === '"') return { end: index + 1, content };
+    if (character === '\n' || character === '\r') return { end: index, content };
+    if (character === '\\' && index + 1 < source.length) {
+      if (source[index + 1] === 'u' && /^[0-9a-fA-F]{4}$/u.test(source.slice(index + 2, index + 6))) {
+        content += unescapeJavaFragment(source.slice(index, index + 6));
+        index += 6;
+        continue;
+      }
+      content += unescapeJavaFragment(source.slice(index, index + 2));
+      index += 2;
+      continue;
+    }
+    content += character;
+    index += 1;
+  }
+  return { end: index, content };
+}
+
+function classifyJavaSource(source) {
+  const text = String(source ?? '');
+  const state = new Uint8Array(text.length);
+  const literals = [];
+  let index = 0;
+
+  const mark = (from, to, value) => {
+    state.fill(value, from, Math.min(to, text.length));
+  };
+
+  while (index < text.length) {
+    const character = text[index];
+    const next = text[index + 1];
+    const next2 = text[index + 2];
+
+    if (character === '/' && next === '/') {
+      const start = index;
+      index += 2;
+      while (index < text.length && text[index] !== '\n' && text[index] !== '\r') index += 1;
+      mark(start, index, JAVA_STATE_COMMENT);
+      continue;
+    }
+    if (character === '/' && next === '*') {
+      const start = index;
+      index += 2;
+      while (index + 1 < text.length && !(text[index] === '*' && text[index + 1] === '/')) index += 1;
+      index = index + 1 < text.length ? index + 2 : text.length;
+      mark(start, index, JAVA_STATE_COMMENT);
+      continue;
+    }
+    if (character === "'") {
+      const start = index;
+      index += 1;
+      if (text[index] === '\\') index += 2;
+      else index += 1;
+      if (text[index] === "'") index += 1;
+      mark(start, index, JAVA_STATE_LITERAL);
+      continue;
+    }
+    if (character === '"') {
+      if (next === '"' && next2 === '"') {
+        const start = index;
+        index += 3;
+        let bodyStart = index;
+        while (bodyStart < text.length && (text[bodyStart] === ' ' || text[bodyStart] === '\t' || text[bodyStart] === '\f')) {
+          bodyStart += 1;
+        }
+        if (text[bodyStart] === '\r') bodyStart += 1;
+        if (text[bodyStart] === '\n') bodyStart += 1;
+        while (index + 2 < text.length && !(text[index] === '"' && text[index + 1] === '"' && text[index + 2] === '"')) {
+          if (text[index] === '\\' && index + 1 < text.length) index += 2;
+          else index += 1;
+        }
+        literals.push(unescapeJavaFragment(text.slice(bodyStart, index)));
+        index = index + 2 < text.length ? index + 3 : text.length;
+        mark(start, index, JAVA_STATE_LITERAL);
+        continue;
+      }
+      const start = index;
+      const literal = readJavaStringLiteral(text, start);
+      literals.push(literal.content);
+      mark(start, literal.end, JAVA_STATE_LITERAL);
+      state[start] = JAVA_STATE_CODE;
+      index = literal.end;
+      continue;
+    }
+    index += 1;
+  }
+  return { state, literals };
+}
+
+function isJavaCodeMethodExemption(match, rest, javaState) {
+  if (!(javaState instanceof Uint8Array) || javaState[match.index] !== JAVA_STATE_CODE) return false;
+  return isQuotedJavaMethodCall(match, rest) || isBareJavaEqualsCall(match, rest);
+}
+
+function foreignSchemaReferences(text, expectedSchema, { javaState } = {}) {
   const references = new Set();
   const pattern = /(?:`([a-z][a-z0-9_]*(?:_service)|core_api)`|"([a-z][a-z0-9_]*(?:_service)|core_api)"|([a-z][a-z0-9_]*(?:_service)|core_api))\s*\./giu;
   const source = String(text ?? '');
   for (const match of source.matchAll(pattern)) {
-    // A double-quoted "*_service" constant followed by `.identifier(` is a Java
-    // method call on an authority/constant string (e.g. "TOKEN_TYPE_service"
-    // .equals(...)), not a schema-qualified reference. Quoted schema.table
-    // without a call paren, backtick SQL and bare references still fail closed.
-    if (match[2] !== undefined && /^[A-Za-z_][A-Za-z0-9_]*\s*\(/u.test(source.slice(match[0].length + match.index))) {
-      continue;
-    }
+    const rest = restAfterSchemaDot(source, match);
+    // Java method exemptions apply only to code-context receivers. SQL and
+    // Java string/text-block contents keep schema.function, including equals().
+    if (isJavaCodeMethodExemption(match, rest, javaState)) continue;
     const schema = (match[1] ?? match[2] ?? match[3]).toLowerCase();
     if (schema !== expectedSchema.toLowerCase()) references.add(schema);
   }
@@ -983,7 +1122,24 @@ export function validateOwnerSourceText({ service, relativePath = '<memory>', co
     return validateMigrationSqlText({ service, filename: policyFilename, sql: content });
   }
   const expectedSchema = serviceSchemaName(service);
-  for (const foreignSchema of foreignSchemaReferences(content, expectedSchema)) {
+  const isJavaSource = /\.(?:java|kt)$/iu.test(relativePath);
+  const references = new Set();
+  if (isJavaSource) {
+    const { state, literals } = classifyJavaSource(content);
+    for (const schema of foreignSchemaReferences(content, expectedSchema, { javaState: state })) {
+      references.add(schema);
+    }
+    for (const literal of literals) {
+      for (const schema of foreignSchemaReferences(literal, expectedSchema)) {
+        references.add(schema);
+      }
+    }
+  } else {
+    for (const schema of foreignSchemaReferences(content, expectedSchema)) {
+      references.add(schema);
+    }
+  }
+  for (const foreignSchema of [...references].sort()) {
     errors.push(`${service}: cross-service schema reference is forbidden in ${relativePath}: ${foreignSchema}`);
   }
   return errors;

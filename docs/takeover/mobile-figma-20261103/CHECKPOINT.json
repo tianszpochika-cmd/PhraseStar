@@ -6401,5 +6401,14 @@
     "independent_mobile_tests": 680,
     "security_gate": "FAIL_ONE_HIGH",
     "new_h5_runtime": "NOT_RUN"
+  },
+  "resume_20261108": {
+    "verified_units": {
+      "B154": {
+        "review": "reviews/INTEGRATION-B154-DATA-OWNERSHIP.md",
+        "evidence": "evidence/ROOT-B154-DATA-OWNERSHIP-20261108.json",
+        "status": "PASS_LOCAL_STATIC_NOT_RUNTIME_VERIFIED"
+      }
+    }
   }
 }

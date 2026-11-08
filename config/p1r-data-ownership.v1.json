@@ -770,7 +770,7 @@
       {
         "service": "iam-service",
         "path": "services/iam-service/src/main/resources/db/migration",
-        "fileCount": 17
+        "fileCount": 18
       },
       {
         "service": "learner-service",
@@ -780,17 +780,17 @@
       {
         "service": "content-service",
         "path": "services/content-service/src/main/resources/db/migration",
-        "fileCount": 26
+        "fileCount": 33
       },
       {
         "service": "learning-service",
         "path": "services/learning-service/src/main/resources/db/migration",
-        "fileCount": 11
+        "fileCount": 14
       },
       {
         "service": "assessment-service",
         "path": "services/assessment-service/src/main/resources/db/migration",
-        "fileCount": 8
+        "fileCount": 12
       },
       {
         "service": "media-service",
@@ -825,7 +825,7 @@
       {
         "service": "admin-ops-service",
         "path": "services/admin-ops-service/src/main/resources/db/migration",
-        "fileCount": 6
+        "fileCount": 7
       },
       {
         "service": "audit-service",
